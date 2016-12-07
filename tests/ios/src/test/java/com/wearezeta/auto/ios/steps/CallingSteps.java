@@ -247,7 +247,8 @@ public class CallingSteps {
                 commonCallingSteps.verifyAcceptingCallStatus(calleeList, "active", 20);
                 LOG.info("All instances are active");
 
-                pagesCollection.getPage(CallingOverlayPage.class).isCallStatusLabelVisible();
+                Assert.assertTrue("Calling overlay is not visible",
+                        pagesCollection.getPage(CallingOverlayPage.class).isCallStatusLabelVisible());
                 LOG.info("Calling overlay is visible");
 
                 commonSteps.WaitForTime(callDurationMinutes * 60);
@@ -257,12 +258,13 @@ public class CallingSteps {
                 commonCallingSteps.verifyAcceptingCallStatus(calleeList, "destroyed", 20);
                 LOG.info("All instances are destroyed");
 
-                pagesCollection.getPage(CallingOverlayPage.class).isCallStatusLabelInvisible();
+                Assert.assertTrue("Calling overlay is visible",
+                        pagesCollection.getPage(CallingOverlayPage.class).isCallStatusLabelInvisible());
                 LOG.info("Calling overlay is NOT visible");
                 LOG.info("CALL " + i + " SUCCESSFUL");
                 commonSteps.WaitForTime(timeBetweenCall);
 
-            } catch (InterruptedException t) {
+            } catch (Exception t) {
                 LOG.info("CALL " + i + " FAILED");
                 LOG.error("Can not stop waiting call " + i + " " + t);
                 try {
@@ -306,18 +308,16 @@ public class CallingSteps {
     @Then("^(\\w+) calls to (\\w+) (\\d+) times? for (\\d+) minutes?$")
     public void IReceiveCallsXTimes(String callees, String conversationName, int times, int callDurationMinutes)
             throws Exception {
-
         LOG.info("Call setup_time and estab_time array needs to be emptied");
         arrayCallSetupTime.clear();
         arrayCallEstabTime.clear();
 
         final Map<Integer, Exception> failures = new HashMap<>();
         for (int i = 0; i < times; i++) {
-            receiveOneCallInConsecutiveLoop(callees, i, conversationName, callDurationMinutes, failures);
+            receiveSingleCall(callees, i, conversationName, callDurationMinutes, failures);
         }
 
         int sumCallSetupTime = arrayCallSetupTime.stream().reduce(0, Integer::sum);
-
         int sumCallEstabTime = arrayCallEstabTime.stream().reduce(0, Integer::sum);
 
         int avgCallSetupTime = 0;
@@ -353,7 +353,10 @@ public class CallingSteps {
                 message.getBytes());
     }
 
-    private void receiveOneCallInConsecutiveLoop(String callees, int numberOfCall, String conversationName,
+    private static final String CALLINGOVERLAY_LEAVE_BUTTON = "Leave";
+    private static final String CALLKIT_DECLINE_BUTTON = "Decline";
+    private static final String CALLKIT_ACCEPT_BUTTON = "Accept";
+    private void receiveSingleCall(String callees, int numberOfCall, String conversationName,
                                                  int callDurationMinutes, final Map<Integer, Exception> failures)
             throws Exception {
         final int timeBetweenCall = 10;
@@ -366,10 +369,11 @@ public class CallingSteps {
 
             commonCallingSteps.callToConversation(calleeList, conversationName);
 
-            pagesCollection.getPage(CallKitOverlayPage.class).isVisible("Audio");
+            Assert.assertTrue("Audio Call Kit overlay is NOT visible",
+                    pagesCollection.getPage(CallKitOverlayPage.class).isVisible("Audio"));
             LOG.info("Audio Call Kit overlay is visible");
 
-            pagesCollection.getPage(CallKitOverlayPage.class).tapButton("Accept");
+            pagesCollection.getPage(CallKitOverlayPage.class).tapButton(CALLKIT_ACCEPT_BUTTON);
 
             if (numberOfCall == 0) {
                 pagesCollection.getCommonPage().acceptAlert();
@@ -380,8 +384,9 @@ public class CallingSteps {
 
             commonSteps.WaitForTime(callDurationMinutes * 60);
 
-            pagesCollection.getPage(CallingOverlayPage.class).tapButtonByName("Leave");
-            pagesCollection.getPage(CallingOverlayPage.class).isCallStatusLabelInvisible();
+            pagesCollection.getPage(CallingOverlayPage.class).tapButtonByName(CALLINGOVERLAY_LEAVE_BUTTON);
+            Assert.assertTrue("Audio Call Kit overlay is visible",
+                    pagesCollection.getPage(CallingOverlayPage.class).isCallStatusLabelInvisible());
             LOG.info("Calling overlay is NOT visible");
 
             for (String callee : calleeList) {
@@ -392,20 +397,21 @@ public class CallingSteps {
                 }
             }
 
-            LOG.info("CALL " + numberOfCall + " SUCCESSFUL");
+            LOG.info(String.format("CALL %s SUCCESSFUL", numberOfCall));
             commonSteps.WaitForTime(timeBetweenCall);
 
         } catch (Exception t) {
-            LOG.info("CALL " + numberOfCall + " FAILED");
+            LOG.info(String.format("CALL %s FAILED", numberOfCall));
 
             try {
-                pagesCollection.getPage(CallingOverlayPage.class).tapButtonByName("Leave");
+                pagesCollection.getPage(CallingOverlayPage.class).tapButtonByName(CALLINGOVERLAY_LEAVE_BUTTON);
             } catch (Exception ex) {
-                LOG.error("Can not stop call " + numberOfCall + " " + ex);
+                LOG.error(String.format("Can not stop call %s because %s", numberOfCall, ex));
+
                 try {
-                    pagesCollection.getPage(CallKitOverlayPage.class).tapButton("Decline");
+                    pagesCollection.getPage(CallKitOverlayPage.class).tapButton(CALLKIT_DECLINE_BUTTON);
                 } catch (Exception exe) {
-                    LOG.error("Can not stop call kit " + numberOfCall + " " + exe);
+                    LOG.error(String.format("Can not stop call kit %s because %s", numberOfCall, exe));
                 }
             }
             failures.put(numberOfCall, t);
