@@ -1,6 +1,6 @@
 Feature: Forward Message
 
-  @C345370 @staging @fastLogin
+  @C345370 @regression @fastLogin
   Scenario Outline: Verify forwarding own picture
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
