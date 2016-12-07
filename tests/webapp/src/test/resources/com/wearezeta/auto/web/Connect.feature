@@ -76,7 +76,7 @@ Feature: Connect
   @C1699 @smoke
   Scenario Outline: Verify sending a connection request to user chosen from search
     Given There are 2 users where <Name> is me
-    Given User <Contact> changes unique username to <Contact>
+    Given <Contact> has unique username
     Given I wait until <Contact> exists in backend search results
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
