@@ -682,7 +682,7 @@ public final class CommonSteps {
     public void UsersSetUniqueUsername(String userNameAliases) throws Exception {
         for (String userNameAlias : usrMgr.splitAliases(userNameAliases)) {
             final ClientUser user = usrMgr.findUserByNameOrNameAlias(userNameAlias);
-            BackendAPIWrappers.updateUniqueUsername(usrMgr.findUserByNameOrNameAlias(userNameAlias), user.getName()
+            BackendAPIWrappers.updateUniqueUsername(usrMgr.findUserByNameOrNameAlias(userNameAlias), user.getUniqueUsername()
                     .toLowerCase());
         }
     }
