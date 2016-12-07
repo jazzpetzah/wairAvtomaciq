@@ -1,6 +1,6 @@
 Feature: Bring Your Friends
 
-  @C1727 @regression @torun
+  @C1727 @regression
   Scenario Outline: Invite people when you have no contacts
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
@@ -11,11 +11,11 @@ Feature: Bring Your Friends
     And I click Bring Your Friends or Invite People button
     Then I see Invite People popover
     And I do not see Share Contacts button
-    And I see username <Username> in invitation on Bring Your Friends popover
+    And I see username starting with @<Name> in invitation on Bring Your Friends popover
 
     Examples: 
-      | Login      | Password      | Name      | Username |
-      | user1Email | user1Password | user1Name | Username |
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
 
   @C3217 @regression
   Scenario Outline: Invite people when you have top people or search suggestions

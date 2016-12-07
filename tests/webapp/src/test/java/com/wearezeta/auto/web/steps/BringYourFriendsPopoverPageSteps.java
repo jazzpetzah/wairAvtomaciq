@@ -2,6 +2,7 @@ package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.common.image_send.AssetData;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.external.YouAreInvitedPage;
 import com.wearezeta.auto.web.pages.popovers.BringYourFriendsPopoverPage;
@@ -61,8 +62,9 @@ public class BringYourFriendsPopoverPageSteps {
                 .clickInvitePeopleButton();
     }
 
-    @When("^I see username (.*) in invitation on Bring Your Friends popover$")
+    @When("^I see username starting with (.*) in invitation on Bring Your Friends popover$")
     public void ISeeUsernameInInvitation(String username) throws Exception {
+        username = context.getUserManager().replaceAliasesOccurences(username, ClientUsersManager.FindBy.NAME_ALIAS);
         Assert.assertEquals("Usernames are different in invitation on Bring your friend popover", username, context.getPagesCollection().getPage(
                 BringYourFriendsPopoverPage.class).getUsernameFromInvitation());
     }
