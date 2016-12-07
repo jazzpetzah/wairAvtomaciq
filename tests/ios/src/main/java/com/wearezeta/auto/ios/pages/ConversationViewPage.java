@@ -98,12 +98,6 @@ public class ConversationViewPage extends IOSPage {
     private static final By xpathStrMissedCallButtonByYourself =
             By.xpath(xpathStrMissedCallButtonByContact.apply("you"));
 
-    public static final String MEDIA_STATE_PLAYING = "playing";
-
-    public static final String MEDIA_STATE_PAUSED = "paused";
-
-    public static final String MEDIA_STATE_STOPPED = "ended";
-
     private static final By fbNameCursorSketchButton = FBBy.AccessibilityId("sketchButton");
     private static final By fbNameAddPictureButton = FBBy.AccessibilityId("photoButton");
     private static final By fbNamePingButton = FBBy.AccessibilityId("pingButton");
@@ -348,10 +342,6 @@ public class ConversationViewPage extends IOSPage {
     public boolean isLastMessageEqual(String expectedText) throws Exception {
         final By locator = By.xpath(xpathStrRecentMessageByExactText.apply(expectedText));
         return isLocatorDisplayed(locator);
-    }
-
-    private boolean isMediaBarPlayButtonVisible() throws Exception {
-        return isLocatorDisplayed(namePlayButton, 3);
     }
 
     private void clickMediaBarPlayButton() throws Exception {
@@ -861,10 +851,9 @@ public class ConversationViewPage extends IOSPage {
 
     public void tapImageButton(String buttonName) throws Exception {
         By locator = getImageButtonByName(buttonName);
-        final WebElement dstElement = getElementIfExists(locator).orElseThrow(
+        getElementIfExists(locator).orElseThrow(
                 () -> new IllegalStateException(buttonName + "button can't be found")
-        );
-        this.tapScreenAt(dstElement);
+        ).click();
         // Wait for animation
         Thread.sleep(1000);
     }
