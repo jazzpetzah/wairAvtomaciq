@@ -81,7 +81,7 @@ Feature: Connect
     Given I am signed in properly
     When I open search by clicking the people button
     And I see Bring Your Friends or Invite People button
-    And I type <Contact> in search field of People Picker
+    And I type <ContactUniqueUsername> in search field of People Picker
     And I see user <Contact> found in People Picker
     And I click on not connected user <Contact> found in People Picker
     And I see Connect To popover
@@ -89,8 +89,8 @@ Feature: Connect
     Then I see Contact list with name <Contact>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      | Contact   | ContactUniqueUsername |
+      | user1Email | user1Password | user1Name | user2Name | user2UniqueUsername   |
 
   @C1817 @regression
   Scenario Outline: Verify sending a connection request to user from conversation view
@@ -122,7 +122,7 @@ Feature: Connect
     And I Sign in using login <Login> and password <Password>
     And I am signed in properly
     And I open search by clicking the people button
-    And I type <Name2> in search field of People Picker
+    And I type <Name2UniqueUsername> in search field of People Picker
     And I see user <Name2> found in People Picker
     And I click on not connected user <Name2> found in People Picker
     And I see Connect To popover
@@ -154,8 +154,8 @@ Feature: Connect
     And I see connected message for <Name2> in conversation
 
     Examples: 
-      | Login      | Login2     | Password      | Password2     | Name      | Name2     |
-      | user1Email | user2Email | user1Password | user2Password | user1Name | user2Name |
+      | Login      | Login2     | Password      | Password2     | Name      | Name2     | Name2UniqueUsername |
+      | user1Email | user2Email | user1Password | user2Password | user1Name | user2Name | user2UniqueUsername |
 
   @C1694 @regression
   Scenario Outline: Verify 1:1 conversation is not created on the second end after you ignore connection request
@@ -168,7 +168,7 @@ Feature: Connect
     Then I open search by clicking the people button
     When I see Search is opened
     And I see Bring Your Friends or Invite People button
-    And I type <Login2> in search field of People Picker
+    And I type <Name2UniqueUsername> in search field of People Picker
     And I see user <Name2> found in People Picker
     And I click on not connected user <Name2> found in People Picker
     And I see Connect To popover
@@ -198,8 +198,8 @@ Feature: Connect
     Then I see Contact list with name <Name2>
 
     Examples: 
-      | Login      | Login2     | Password      | Password2     | Name      | Name2     |
-      | user1Email | user2Email | user1Password | user2Password | user1Name | user2Name |
+      | Login      | Login2     | Password      | Password2     | Name      | Name2     | Name2UniqueUsername |
+      | user1Email | user2Email | user1Password | user2Password | user1Name | user2Name | user2UniqueUsername |
 
   @C1695 @regression
   Scenario Outline: Verify you can block a person from profile view
@@ -450,7 +450,7 @@ Feature: Connect
     And I wait until <Contact1> exists in backend search results
     When I open search by clicking the people button
     And I wait for the search field of People Picker to be empty
-    And I type <Contact1Email> in search field of People Picker
+    And I type <Contact1Username> in search field of People Picker
     Then I see user <Contact1> found in People Picker
     When I click on pending user <Contact1> found in People Picker
     And I see Pending Outgoing Connection popover
@@ -475,8 +475,8 @@ Feature: Connect
     And I do not see Contact list with name <Name>
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact1Email | Contact1Password | Contact2  |
-      | user1Email | user1Password | user1Name | user2Name | user2Email    | user2Password    | user3Name |
+      | Login      | Password      | Name      | Contact1  | Contact1Email | Contact1Password | Contact1Username    | Contact2  |
+      | user1Email | user1Password | user1Name | user2Name | user2Email    | user2Password    | user2UniqueUsername | user3Name |
 
   @C145959 @regression
   Scenario Outline: I want to cancel a pending request from conversation list
