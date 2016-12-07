@@ -9,7 +9,6 @@ Feature: Unique Username
     Given I add <ContactInABSameName> into Address Book with phone and email
     Given User <ContactInABEmail> sets the unique username
     Given User <ContactInABPhone> sets the unique username
-    Given User <ContactInABSameName> sets the unique username
     Given User <Connected> sets the unique username
     Given Myself is connected to <Connected>
     Given I sign in using my email or phone number
@@ -30,7 +29,7 @@ Feature: Unique Username
     # Connect in AB with Same Name
     When <ContactInABSameName> sent connection request to me
     And I tap on conversation name <WaitingMess1>
-    Then I see unique user name of user <ContactInABSameName> on Single pending incoming connection page
+    Then I do not see unique user name of user <ContactInABSameName> on Single pending incoming connection page
     And I see user info "in Address Book" on Single pending incoming connection page
     And I tap connect button for user <ContactInABSameName> on Single pending incoming connection page
 
@@ -39,7 +38,7 @@ Feature: Unique Username
       | user1Name | user2Name        | user3Name        | user4Name           | user5Name | 1 person waiting | Email       | Phone       |
 
   @C352019 @staging
-  Scenario Outline: Verify number of common friends is shown on the incoming connection request
+  Scenario Outline: (AN-4758) Verify number of common friends is shown on the incoming connection request
     Given I delete all contacts from Address Book
     Given There are 4 users where <Name> is me
     Given <Contact1> is connected to <Contact2>,<Contact3>
@@ -48,13 +47,13 @@ Feature: Unique Username
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with name <WaitingMess1>
+    Given Myself wait until <CommonContact> common contacts with <Contact1> exists in backend
     When I tap on conversation name <WaitingMess1>
-    And Myself wait until 2 common contacts with <Contact1> exists in backend
-    #TODO: Verify common contact2 and contact3 are show
+    Then I see user info "<CommonContact> people in common" on Single pending incoming connection page
 
     Examples:
-      | Name      | Contact1  | Contact2  | Contact3  | WaitingMess1     |
-      | user1Name | user2Name | user3Name | user4Name | 1 person waiting |
+      | Name      | Contact1  | Contact2  | Contact3  | WaitingMess1     | CommonContact |
+      | user1Name | user2Name | user3Name | user4Name | 1 person waiting | 2             |
 
 
   @C352020 @staging
