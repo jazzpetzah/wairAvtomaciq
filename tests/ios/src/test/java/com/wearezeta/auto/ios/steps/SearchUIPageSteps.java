@@ -34,6 +34,14 @@ public class SearchUIPageSteps {
         getSearchUIPage().tapSearchInput();
     }
 
+    /**
+     * Type in text in Search input field
+     *
+     * @param text text to input
+     * @param isUpper null if should be input as it is
+     * @throws Exception
+     * @step. ^I type "(.*)" in Search UI input field( in upper register)?$
+     */
     @When("^I type \"(.*)\" in Search UI input field( in upper register)?$")
     public void ITypeInSearchInput(String text, String isUpper) throws Exception {
         text = usrMgr.replaceAliasesOccurences(text, ClientUsersManager.FindBy.NAME_ALIAS);
