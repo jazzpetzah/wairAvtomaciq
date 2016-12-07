@@ -5,7 +5,6 @@ import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 import java.util.concurrent.Future;
 import java.util.function.Function;
@@ -49,8 +48,7 @@ public class ConversationActionsPage extends IOSPage {
     public void tapMenuItem(String buttonTitle) throws Exception {
         // Wait for animation
         Thread.sleep(2000);
-        final WebElement btn = getElement(getActionButtonByName(buttonTitle));
-        btn.click();
+        getElement(getActionButtonByName(buttonTitle)).click();
     }
 
     private static final long TRANSITION_DURATION_MS = 4500;
