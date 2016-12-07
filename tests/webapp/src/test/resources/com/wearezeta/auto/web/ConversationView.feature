@@ -56,6 +56,7 @@ Feature: Conversation View
   @C259599 @regression @WEBAPP-3247
   Scenario Outline: Verify delivery receipt of message in 1on1 that was read by webapp
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login2> and password <Password2>
