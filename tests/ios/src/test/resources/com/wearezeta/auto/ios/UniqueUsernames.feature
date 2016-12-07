@@ -278,20 +278,3 @@ Feature: Unique Usernames
     Examples:
       | Name      | Contact1WithABEmail | Contact1ABName | Contact1Email | Contact2WithABPhoneNumber | Contact2ABName | Contact2PhoneNumber | Contact3WithUniqueUserName | Contact3UniqueUserName | Contact4WithCommonFriends | Contact5WithSameNameInAB | Contact5Email | Contact6Common |
       | user1Name | user2Name           | user2ABName    | user2Email    | user3Name                 | user3ABName    | user3PhoneNumber    | user4Name                  | user4UniqueUsername    | user5Name                 | user6Name                | user6Email    | user7Name      |
-
-  @C352666 @staging @fastLogin
-  Scenario Outline: Verify search is not casesensative
-    Given There are 2 users where <Name> is me
-    Given User <Contact> sets the unique username
-    Given User <Contact> changes name to <NewName>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    Given I open search UI
-    Given I accept alert if visible
-    #Given I tap input field on Search UI page
-    When I type "<Contact>" in Search UI input field
-    Then I see the conversation "<Contact>" exists in Search results
-
-    Examples:
-      | Name      | Contact   | NewName  |
-      | user1Name | user2Name | New Name |
