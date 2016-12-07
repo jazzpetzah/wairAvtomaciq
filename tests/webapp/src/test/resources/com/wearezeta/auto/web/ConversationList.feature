@@ -397,7 +397,7 @@ Feature: Conversation List
     And I click delete button in the delete warning for 1:1 conversations
     Then I do not see Contact list with name <Contact1>
     When I open search by clicking the people button
-    And I type <Contact1> in search field of People Picker
+    And I type <Contact1Username> in search field of People Picker
     Then I see user <Contact1> found in People Picker
     And I close People Picker
     When Contact <Contact1> sends message <Msg2> to user <Name>
@@ -419,8 +419,8 @@ Feature: Conversation List
     Then I do not see <Action> action in conversation
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Action | Msg1   | Msg2   |Login2     | Password2     |
-      | user1Email | user1Password | user1Name | user2Name | LEFT   | hello1 | hello2 | user2Email | user2Password |
+      | Login      | Password      | Name      | Contact1  | Contact1Username    | Action | Msg1   | Msg2   |Login2     | Password2     |
+      | user1Email | user1Password | user1Name | user2Name | user2UniqueUsername | LEFT   | hello1 | hello2 | user2Email | user2Password |
 
   @C1809 @regression
   Scenario Outline: Verify I can cancel deleting a 1:1 conversation from conversation list
