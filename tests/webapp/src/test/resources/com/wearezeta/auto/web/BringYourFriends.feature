@@ -1,6 +1,6 @@
 Feature: Bring Your Friends
 
-  @C1727 @regression
+  @C1727 @regression @torun
   Scenario Outline: Invite people when you have no contacts
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
@@ -11,15 +11,11 @@ Feature: Bring Your Friends
     And I click Bring Your Friends or Invite People button
     Then I see Invite People popover
     And I do not see Share Contacts button
-    When I remember invitation link on Bring Your Friends popover
-    And I navigate to previously remembered invitation link
-    Then I see Registration page
-    And I verify text about Wire is visible
-    And I see intro about Wire saying <TextWire>
+    And I see username <Username> in invitation on Bring Your Friends popover
 
     Examples: 
-      | Login      | Password      | Name      | TextWire                                                                                    |
-      | user1Email | user1Password | user1Name | Simple, private & secure messenger for chat, calls, sharing pics, music, videos, GIFs and more.       |
+      | Login      | Password      | Name      | Username |
+      | user1Email | user1Password | user1Name | Username |
 
   @C3217 @regression
   Scenario Outline: Invite people when you have top people or search suggestions
