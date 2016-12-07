@@ -205,6 +205,7 @@ Feature: People View
   @C1715 @regression
   Scenario Outline: Verify users can properly leave a group conversation on the other end
     Given There are 4 users where <Name> is me
+    Given Me,<KnownContact> have unique usernames
     Given Myself is connected to <KnownContact>
     Given <KnownContact> is connected to <UnknownContact>,<UnknownContact2>
     Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>,<UnknownContact2>
