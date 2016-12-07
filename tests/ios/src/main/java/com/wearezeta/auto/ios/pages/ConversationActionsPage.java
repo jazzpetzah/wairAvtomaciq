@@ -29,6 +29,9 @@ public class ConversationActionsPage extends IOSPage {
     private static final By fbXpathNoActionButton =
             FBBy.xpath("//XCUIElementTypeButton[@name='NO']");
 
+    private static final Function<String, String> xpathStrMenuTitleByValue = value ->
+            String.format("//XCUIElementTypeStaticText[@name='name' and @value='%s']", value);
+
     public ConversationActionsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -71,8 +74,8 @@ public class ConversationActionsPage extends IOSPage {
     }
 
     public boolean isVisibleForConversation(String conversation) throws Exception {
-        final By locator = MobileBy.AccessibilityId(conversation.toUpperCase());
-        return selectVisibleElements(locator).size() > 0;
+        final By locator = By.xpath(xpathStrMenuTitleByValue.apply(conversation));
+        return isLocatorDisplayed(locator);
     }
 
     public void declineAction(String actionName) throws Exception {
