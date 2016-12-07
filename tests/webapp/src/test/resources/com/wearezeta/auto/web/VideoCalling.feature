@@ -4,6 +4,7 @@ Feature: VideoCalling
   Scenario Outline: Verify I can start Video call from conversation view
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given User <Contact> changes unique username to <Contact>
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given <Contact> accepts next incoming video call automatically
@@ -37,6 +38,7 @@ Feature: VideoCalling
   Scenario Outline: Verify I can accept Video call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given User <Contact> changes unique username to <Contact>
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page

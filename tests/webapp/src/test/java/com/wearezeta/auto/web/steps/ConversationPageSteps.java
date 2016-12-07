@@ -1343,17 +1343,24 @@ public class ConversationPageSteps {
         context.getPagesCollection().getPage(ConversationPage.class).clickXButtonToCloseEdit();
     }
 
-    @And("^I( do not)? see first time experience with watermark$")
-    public void ISeeWelcomePage(String shouldNotBeVisible) throws Exception {
+    @And("^I( do not)? see watermark$")
+    public void ISeeWatermark(String shouldNotBeVisible) throws Exception {
         if (shouldNotBeVisible == null) {
             assertThat("No watermark wire logo shown",
                     context.getPagesCollection().getPage(ConversationPage.class).isWatermarkVisible());
+        } else {
+            assertThat("Watermark wire logo shown",
+                    context.getPagesCollection().getPage(ConversationPage.class).isWatermarkNotVisible());
+        }
+    }
+
+    @And("^I( do not)? see first time experience hint$")
+    public void ISeeFirstTimeExperienceHint(String shouldNotBeVisible) throws Exception {
+        if (shouldNotBeVisible == null) {
             assertThat("First time experience message",
                     context.getPagesCollection().getPage(ConversationPage.class).getFirstTimeExperienceMessage(),
                     containsString("Start a conversation or invite people to join."));
         } else {
-            assertThat("Watermark wire logo shown",
-                    context.getPagesCollection().getPage(ConversationPage.class).isWatermarkNotVisible());
             assertThat("First time experience message",
                     context.getPagesCollection().getPage(ConversationPage.class).getFirstTimeExperienceMessage(),
                     not(containsString("Start a conversation or invite people to join.")));
