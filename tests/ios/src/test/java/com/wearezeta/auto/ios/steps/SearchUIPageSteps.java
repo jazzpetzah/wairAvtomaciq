@@ -61,6 +61,7 @@ public class SearchUIPageSteps {
     @When("^I type first (\\d+) letters? of (?:user|conversation) name \"(.*)\" into Search UI input field$")
     public void ITypeXLettersIntoSearchInput(int count, String name) throws Exception {
         name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
         if (name.length() > count) {
             getSearchUIPage().typeText(name.substring(0, count));
         } else {
