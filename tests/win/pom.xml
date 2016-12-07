@@ -157,7 +157,6 @@
                             <trimStackTrace>false</trimStackTrace>
                             <!--<rerunFailingTestsCount>1</rerunFailingTestsCount>-->
                             <excludes>
-                                <exclude>**/DevRun.java</exclude>
                                 <exclude>**/PickleJarInheritedTest.java</exclude>
                                 <exclude>**/PickleJarStandaloneTest.java</exclude>
                             </excludes>
@@ -176,53 +175,6 @@
                                 <picklejar.cucumber.report.path>${picklejar.cucumber.report.path}</picklejar.cucumber.report.path>
                                 <picklejar.screenshot.path>${picklejar.screenshot.path}</picklejar.screenshot.path>
                                 <picklejar.random>${picklejar.random}</picklejar.random>
-                                <java.awt.headless>false</java.awt.headless>
-                                <org.apache.commons.logging.Log>org.apache.commons.logging.impl.SimpleLog</org.apache.commons.logging.Log>
-                                <org.apache.commons.logging.simplelog.log.org.apache.http>warn</org.apache.commons.logging.simplelog.log.org.apache.http>
-                                <com.wire.os.name>${com.wire.os.name}</com.wire.os.name>
-                                <com.wire.os.version>${com.wire.os.version}</com.wire.os.version>
-                                <com.wire.browser.name>${com.wire.browser.name}</com.wire.browser.name>
-                                <com.wire.browser.version>${com.wire.browser.version}</com.wire.browser.version>
-                                <com.wire.app.folder>${com.wire.app.folder}</com.wire.app.folder>
-                                <com.wire.app.path>${com.wire.app.path}</com.wire.app.path>
-                                <com.wire.app.cache.folder>${com.wire.app.cache.folder}</com.wire.app.cache.folder>
-                                <com.wire.winium.url>${com.wire.winium.url}</com.wire.winium.url>
-                                <com.wire.winium.path>${com.wire.appium.mac.path}</com.wire.winium.path>
-                                <com.wire.chromedriver.path>${com.wire.chromedriver.path}</com.wire.chromedriver.path>
-                                <com.wire.driver.timeout.seconds>${com.wire.driver.timeout.seconds}</com.wire.driver.timeout.seconds>
-                                <com.wire.environment>${com.wire.environment}</com.wire.environment>
-                                <com.wire.environment.url>${com.wire.environment.url}</com.wire.environment.url>
-                                <extendedLoggingLevel>${extendedLoggingLevel}</extendedLoggingLevel>
-                                <com.wire.database.keep>${com.wire.database.keep}</com.wire.database.keep>
-                                <hubHost>${hubHost}</hubHost>
-                                <hubPort>${hubPort}</hubPort>
-                            </systemPropertyVariables>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>cucumber</id>
-            <activation>
-                <property>
-                    <name>TestRun</name>
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <version>2.17</version>
-                        <configuration>
-                            <skipTests>${skipTests}</skipTests>
-                            <includes>
-                                <include>**/${TestRun}.java</include>
-                            </includes>
-                            <disableXmlReport>true</disableXmlReport>
-                            <argLine>-Djava.library.path=../common/native_lib</argLine>
-                            <systemPropertyVariables>
                                 <java.awt.headless>false</java.awt.headless>
                                 <org.apache.commons.logging.Log>org.apache.commons.logging.impl.SimpleLog</org.apache.commons.logging.Log>
                                 <org.apache.commons.logging.simplelog.log.org.apache.http>warn</org.apache.commons.logging.simplelog.log.org.apache.http>

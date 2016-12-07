@@ -19,11 +19,9 @@ public class ConversationPageSteps {
     private static final Logger LOG = ZetaLogger.getLog(ConversationPageSteps.class.getName());
 
     private final TestContext webContext;
-    private final TestContext wrapperContext;
 
-    public ConversationPageSteps(TestContext webContext, TestContext wrapperContext) {
+    public ConversationPageSteps(TestContext webContext) {
         this.webContext = webContext;
-        this.wrapperContext = wrapperContext;
     }
     
     @Then("^I (do not )?see a picture (.*) from link preview$")

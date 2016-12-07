@@ -38,13 +38,20 @@ public class PendingConnectionsPage extends WebPage {
         return pendingRequests.size();
     }
 
-    public String getEmailByName(String userId) throws Exception {
+    public String getAllTextOfRequestById(String userId) throws Exception {
+        String locator = WebAppLocators.ConnectToPage.cssRequestById.apply(userId);
+        DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(locator));
+        WebElement element = getDriver().findElement(By.cssSelector(locator));
+        return element.getText();
+    }
+
+    public String getUniqueUsernameByName(String userId) throws Exception {
         String locator = WebAppLocators.ConnectToPage.cssRequestById.apply(userId)
-                + WebAppLocators.ConnectToPage.cssRequestEmailPartial;
+                + WebAppLocators.ConnectToPage.cssRequestUniqueUsernamePartial;
         DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(locator));
 
-        WebElement email = getDriver().findElement(By.cssSelector(locator));
-        return email.getText();
+        WebElement element = getDriver().findElement(By.cssSelector(locator));
+        return element.getText();
     }
 
     public String getMessageByName(String userName) throws Exception {

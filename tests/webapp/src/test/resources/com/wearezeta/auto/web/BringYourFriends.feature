@@ -11,15 +11,11 @@ Feature: Bring Your Friends
     And I click Bring Your Friends or Invite People button
     Then I see Invite People popover
     And I do not see Share Contacts button
-    When I remember invitation link on Bring Your Friends popover
-    And I navigate to previously remembered invitation link
-    Then I see Registration page
-    And I verify text about Wire is visible
-    And I see intro about Wire saying <TextWire>
+    And I see username starting with @<Name> in invitation on Bring Your Friends popover
 
     Examples: 
-      | Login      | Password      | Name      | TextWire                                                                                    |
-      | user1Email | user1Password | user1Name | Simple, private & secure messenger for chat, calls, sharing pics, music, videos, GIFs and more.       |
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
 
   @C3217 @regression
   Scenario Outline: Invite people when you have top people or search suggestions
@@ -38,15 +34,11 @@ Feature: Bring Your Friends
     When I click Bring Your Friends or Invite People button
     Then I see Invite People popover
     And I see Share Contacts button
-    When I remember invitation link on Bring Your Friends popover
-    And I navigate to previously remembered invitation link
-    Then I see Registration page
-    And I verify text about Wire is visible
-    And I see intro about Wire saying <TextWire>
+    And I see username starting with @<Name> in invitation on Bring Your Friends popover
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Message | TextWire                                                                                    |
-      | user1Email | user1Password | user1Name | user2Name | Hello   | Simple, private & secure messenger for chat, calls, sharing pics, music, videos, GIFs and more.       |
+      | Login      | Password      | Name      | Contact   | Message |
+      | user1Email | user1Password | user1Name | user2Name | Hello   |
 
   @C1774 @regression
   Scenario Outline: Show invitation button when Gmail import has no suggestions
@@ -62,7 +54,7 @@ Feature: Bring Your Friends
     Then I see Search is opened
     And I see Bring Your Friends or Invite People button
     When I click Bring Your Friends or Invite People button
-    Then I remember invitation link on Bring Your Friends popover
+    Then I see username starting with @<Name> in invitation on Bring Your Friends popover
     And I do not see Gmail Import button on People Picker page
 
     Examples: 

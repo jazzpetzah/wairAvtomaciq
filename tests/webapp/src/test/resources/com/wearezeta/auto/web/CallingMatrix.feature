@@ -4,6 +4,7 @@ Feature: Calling_Matrix
   Scenario Outline: Verify I can make 1:1 audio call to <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
@@ -39,6 +40,7 @@ Feature: Calling_Matrix
   Scenario Outline: Verify I can make 1:1 video call to <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given <Contact> accepts next incoming video call automatically
@@ -70,6 +72,7 @@ Feature: Calling_Matrix
   Scenario Outline: Verify I can make 1:1 call to AVS <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
@@ -95,6 +98,7 @@ Feature: Calling_Matrix
   Scenario Outline: Verify I can receive 1:1 audio call from <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
@@ -124,6 +128,7 @@ Feature: Calling_Matrix
   Scenario Outline: Verify I can receive 1:1 video call from <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
@@ -155,6 +160,7 @@ Feature: Calling_Matrix
   Scenario Outline: Verify I can receive 1:1 audio call from AVS <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
@@ -178,6 +184,7 @@ Feature: Calling_Matrix
   Scenario Outline: Verify I can make audio group call with multiple <WaitBackend>
     Given My browser supports calling
     Given There are 5 users where <Name> is me
+    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> have unique usernames
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given <Contact1>,<Contact2>,<Contact3>,<Contact4> starts instance using <WaitBackend>
@@ -214,6 +221,7 @@ Feature: Calling_Matrix
   Scenario Outline: Verify I can make audio group call with multiple AVS <WaitBackend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
+    Given <Contact1>,<Contact2> have unique usernames
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>
     Given <Contact1>,<Contact2> starts instance using <WaitBackend>
@@ -241,6 +249,7 @@ Feature: Calling_Matrix
   Scenario Outline: Verify I can join audio group call with multiple <Backend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
+    Given <Contact1>,<Contact2> have unique usernames
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>
     Given <Contact1>,<Contact2> starts instance using <Backend>
@@ -280,6 +289,7 @@ Feature: Calling_Matrix
   Scenario Outline: Verify I can join audio group call with AVS <Backend> and <WaitBackend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
+    Given <Contact1>,<Contact2> have unique usernames
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>
     Given <Contact2> starts instance using <WaitBackend>
@@ -324,6 +334,7 @@ Feature: Calling_Matrix
   Scenario Outline: Verify I can join audio group call with AVS <Backend> and <WaitBackend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
+    Given <Contact1>,<Contact2> have unique usernames
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>
     Given <Contact1> starts instance using <Backend>
@@ -356,6 +367,7 @@ Feature: Calling_Matrix
   Scenario Outline: Verify I can create, leave and rejoin an audio group call with <WaitBackend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
+    Given <Contact1>,<Contact2> have unique usernames
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given <Contact1>,<Contact2> starts instance using <WaitBackend>
@@ -389,6 +401,7 @@ Feature: Calling_Matrix
   Scenario Outline: Verify I can create, leave and rejoin an audio group call with AVS <WaitBackend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
+    Given <Contact1>,<Contact2> have unique usernames
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given <Contact1>,<Contact2> starts instance using <WaitBackend>
@@ -419,6 +432,7 @@ Feature: Calling_Matrix
   Scenario Outline: Verify I can 1:1 audio call a user with <CallBackend> twice in a row
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
@@ -456,6 +470,7 @@ Feature: Calling_Matrix
   Scenario Outline: Verify I can 1:1 audio call a user with AVS <CallBackend> twice in a row
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
@@ -485,6 +500,7 @@ Feature: Calling_Matrix
   Scenario Outline: Verify I can 1:1 video call a user with <CallBackend> twice in a row
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page

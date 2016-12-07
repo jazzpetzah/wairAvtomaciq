@@ -36,18 +36,7 @@ public class PickleJarHook implements PickleJarTestHook {
 
     @Override
     public long invoke(String rawStep, Map<String, String> exampleRow) throws StepNotExecutableException, StepNotFoundException {
-        try {
-            // wrapper page step
-            return getPickle().getExecutor().invokeMethodForStep(rawStep, exampleRow, lifecycle.getWebContext(),
-                    lifecycle.getWrapperContext());
-        } catch (StepNotExecutableException snee) {
-            // web page step
-            if (snee.getCause() instanceof NoSuchMethodException) {
-                return getPickle().getExecutor().invokeMethodForStep(rawStep, exampleRow, lifecycle.getWebContext());
-            } else {
-                throw snee;
-            }
-        }
+            return getPickle().getExecutor().invokeMethodForStep(rawStep, exampleRow, lifecycle.getWebContext());
     }
 
     @Override
@@ -92,7 +81,7 @@ public class PickleJarHook implements PickleJarTestHook {
             screenshotHelper.saveScreenshot(step, scenario, scenario.getFeature(), new byte[]{});
         } else {
             try {
-                byte[] screenshot = lifecycle.getWrapperContext().getDriver().getScreenshotAs(OutputType.BYTES);
+                byte[] screenshot = lifecycle.getWebContext().getChildContext().getDriver().getScreenshotAs(OutputType.BYTES);
                 screenshotHelper.saveScreenshot(step, scenario, scenario.getFeature(), screenshot);
             } catch (Exception e) {
                 LOG.warn("Can not make sceenshot", e);

@@ -11,30 +11,28 @@ import static org.junit.Assert.assertTrue;
 public class AboutPageSteps {
 
     private final TestContext webContext;
-    private final TestContext wrapperContext;
     
-    public AboutPageSteps(TestContext webContext, TestContext wrapperContext) {
+    public AboutPageSteps(TestContext webContext) {
         this.webContext = webContext;
-        this.wrapperContext = wrapperContext;
     }
 
     @When("^I close the about window$")
     public void ICloseApp() throws Exception {
-        wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(AboutPage.class).closeWindow();
+        webContext.getChildContext().getPagesCollection(OSXPagesCollection.class).getPage(AboutPage.class).closeWindow();
     }
 
     @When("^I minimize the about window$")
     public void IMinimizeApp() throws Exception {
-        wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(AboutPage.class).minimizeWindow();
+        webContext.getChildContext().getPagesCollection(OSXPagesCollection.class).getPage(AboutPage.class).minimizeWindow();
     }
 
     @Then("^I verify about window is( not)? visible$")
     public void IVerifyAboutWindowIsVisible(String not) throws Exception {
         if (not == null) {
             assertTrue("About window not visible within timeout",
-                    wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(AboutPage.class).isVisible());
+                    webContext.getChildContext().getPagesCollection(OSXPagesCollection.class).getPage(AboutPage.class).isVisible());
         } else {
-            boolean notVisible = wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(AboutPage.class)
+            boolean notVisible = webContext.getChildContext().getPagesCollection(OSXPagesCollection.class).getPage(AboutPage.class)
                     .isNotVisible();
             System.out.println("notVisible: " + notVisible);
             assertTrue("About window is visible", notVisible);
