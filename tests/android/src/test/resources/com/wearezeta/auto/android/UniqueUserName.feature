@@ -161,7 +161,7 @@ Feature: Unique Username
 
   @C352086 @staging
   Scenario Outline: Verify I can see unregistered person from AB in Contacts UI
-    Given There are 1 users where <Name> is me
+    Given There is 1 user where <Name> is me
     Given I add <Contact1InABWithCF> having custom name "<Contact1NameInAB>" into Address Book with email
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -203,3 +203,19 @@ Feature: Unique Username
     Examples:
       | Name      | Contact1InABWithCF | Contact1NameInAB | Contact2InABWoCF | Contact2NameInAB | Contact3WithCF | Contact3UniqueUsername | Contact4WoCF | Contact5SameName | Contact2UniqueUsername | CF1       | CF2       | CF3       |
       | user1Name | user2Name          | user2ABName      | user3Name        | user3ABName      | user4Name      | user4UniqueUsername    | user5Name    | user6Name        | user3UniqueUsername    | user7Name | user8Name | user9Name |
+
+  @C352714 @staging
+  Scenario Outline: Verify existing user has a take over screen with offered username after reloading the app and Settings are opened on choosing generating your own username
+    Given There is 1 user where <Name> is me without unique user name
+    Given I sign in using my email or phone number
+    When I accept First Time overlay as soon as it is visible
+    Then I see Unique Username Takeover page
+    And I minimize the application
+    When I restore the application
+    Then I see Unique Username Takeover page
+    And I tap Choose Your Own button on Unique Username Takeover page
+    Then I see username edit field on Settings page
+
+    Examples:
+      | Name      |
+      | user1Name |

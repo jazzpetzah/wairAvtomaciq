@@ -465,11 +465,10 @@ public class CommonAndroidSteps {
     public void IMinimizeApplication(String action) throws Exception {
         if (action.equals("minimize")) {
             AndroidCommonUtils.tapHomeButton();
-            WaitForTime(UI_DELAY_TIME);
         } else {
             AndroidCommonUtils.switchToApplication(getPackageName());
-            WaitForTime(UI_DELAY_TIME);
         }
+        WaitForTime(UI_DELAY_TIME);
     }
 
     /**
