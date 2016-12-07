@@ -39,6 +39,7 @@ public final class CommonSteps {
 
     //increased timeout to make it stable on jenkins
     private static final int BACKEND_SUGGESTIONS_SYNC_TIMEOUT = 240; // seconds
+    private static final int BACKEND_COMMON_CONTACTS_SYNC_TIMEOUT = 240; // seconds
 
     private final ClientUsersManager usrMgr;
 
@@ -714,6 +715,18 @@ public final class CommonSteps {
         query = usrMgr.replaceAliasesOccurences(query, FindBy.EMAIL_ALIAS);
         BackendAPIWrappers.waitUntilContactsFound(usrMgr.findUserByNameOrNameAlias(searchByNameAlias), query, 1,
                 true, BACKEND_USER_SYNC_TIMEOUT);
+    }
+
+    public void WaitUntilCommonContactsIsGenerated(String searchByNameAlias, String contactAlias) throws Exception {
+        WaitUntilCommonContactsIsGenerated(searchByNameAlias, contactAlias, 1);
+    }
+
+    public void WaitUntilCommonContactsIsGenerated(String searchByNameAlias, String contactAlias,
+                                                   int expectCountOfCommonContacts) throws Exception {
+        ClientUser searchByUser = usrMgr.findUserBy(searchByNameAlias, FindBy.NAME_ALIAS);
+        ClientUser destUser = usrMgr.findUserBy(contactAlias, FindBy.NAME_ALIAS);
+        BackendAPIWrappers.waitUntilCommonContactsFound(searchByUser, destUser, expectCountOfCommonContacts,
+                true, BACKEND_COMMON_CONTACTS_SYNC_TIMEOUT);
     }
 
     public void WaitUntilContactIsSuggestedInSearchResult(String searchByNameAlias,

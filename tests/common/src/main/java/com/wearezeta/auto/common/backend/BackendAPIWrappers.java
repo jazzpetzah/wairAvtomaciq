@@ -1,6 +1,5 @@
 package com.wearezeta.auto.common.backend;
 
-import com.google.common.base.Throwables;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.email.ActivationMessage;
@@ -717,6 +716,32 @@ public final class BackendAPIWrappers {
             super(msg);
         }
 
+    }
+
+    public static void waitUntilCommonContactsFound(ClientUser searchByUser, ClientUser destUser, int expectedCount,
+                                                    boolean orMore, int timeoutSeconds) throws Exception {
+        final long startTimestamp = System.currentTimeMillis();
+        while (System.currentTimeMillis() - startTimestamp <= timeoutSeconds * 1000) {
+            JSONObject searchResult = new JSONObject();
+            try {
+                searchResult = BackendREST.searchForCommonContacts(receiveAuthToken(searchByUser), destUser.getId());
+            } catch (BackendRequestException e) {
+                if (e.getReturnCode() == SERVER_SIDE_ERROR) {
+                    Thread.sleep(1000);
+                    continue;
+                }
+            }
+            int currentCount = 0;
+            if (searchResult.has("documents") && (searchResult.get("documents") instanceof JSONArray)) {
+                currentCount = searchResult.getJSONArray("documents").length();
+            }
+            if (currentCount == expectedCount || (orMore && currentCount >= expectedCount)) {
+                return;
+            }
+            Thread.sleep(1000);
+        }
+        throw new NoContactsFoundException(String.format("%s 's common contact(s) with user '%s' were not found within %s second(s) timeout",
+                expectedCount, destUser.getName(), timeoutSeconds));
     }
 
     public static void waitUntilContactsFound(ClientUser searchByUser,
