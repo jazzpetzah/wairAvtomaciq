@@ -240,11 +240,13 @@ Feature: Edit
   @C223070 @edit @regression
   Scenario Outline: Verify position and date of edited message
     Given There are 2 users where <Name> is me
+    Given <Contact> have unique usernames
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login2> and password <Password2>
     Given I am signed in properly
-    Given I see first time experience with watermark
+    Given I see watermark
+    Given I see first time experience hint
     Given I open preferences by clicking the gear button
     Given I click logout in account preferences
     Given I see the clear data dialog
