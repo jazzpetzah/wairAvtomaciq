@@ -144,7 +144,7 @@ public class CommonWebAppSteps {
         context.getCommonSteps().IChangeUniqueUsername(userNameAlias, name);
     }
 
-    @Given("(.*) (has|have) unique usernames?$")
+    @Given("(.*) (?:has|have) unique usernames?$")
     public void UserHasUniqueUsername(String userNameAliases) throws Exception {
         context.getCommonSteps().UsersSetUniqueUsername(userNameAliases);
     }
