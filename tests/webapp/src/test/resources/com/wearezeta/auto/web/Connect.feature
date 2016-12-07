@@ -81,7 +81,7 @@ Feature: Connect
     Given I am signed in properly
     When I open search by clicking the people button
     And I see Bring Your Friends or Invite People button
-    And I type <ContactEmail> in search field of People Picker
+    And I type <Contact> in search field of People Picker
     And I see user <Contact> found in People Picker
     And I click on not connected user <Contact> found in People Picker
     And I see Connect To popover
@@ -89,8 +89,8 @@ Feature: Connect
     Then I see Contact list with name <Contact>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | ContactEmail |
-      | user1Email | user1Password | user1Name | user2Name | user2Email   |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
 
   @C1817 @regression
   Scenario Outline: Verify sending a connection request to user from conversation view
@@ -122,7 +122,7 @@ Feature: Connect
     And I Sign in using login <Login> and password <Password>
     And I am signed in properly
     And I open search by clicking the people button
-    And I type <Login2> in search field of People Picker
+    And I type <Name2> in search field of People Picker
     And I see user <Name2> found in People Picker
     And I click on not connected user <Name2> found in People Picker
     And I see Connect To popover
@@ -300,6 +300,7 @@ Feature: Connect
   @C1805 @smoke
   Scenario Outline: Verify you dont receive any messages from blocked person in 1:1 chat
     Given There are 2 users where <User1> is me
+    Given User <User2> changes unique username to <User2>
     Given Myself is connected to <User2>
     Given User <User2> changes avatar picture to default
     Given I switch to Sign In page
