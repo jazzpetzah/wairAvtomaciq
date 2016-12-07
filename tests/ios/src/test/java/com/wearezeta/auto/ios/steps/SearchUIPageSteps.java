@@ -34,11 +34,12 @@ public class SearchUIPageSteps {
         getSearchUIPage().tapSearchInput();
     }
 
-    @When("^I type \"(.*)\" in Search UI input field$")
-    public void ITypeInSearchInput(String text) throws Exception {
+    @When("^I type \"(.*)\" in Search UI input field( in upper register)?$")
+    public void ITypeInSearchInput(String text, String isUpper) throws Exception {
         text = usrMgr.replaceAliasesOccurences(text, ClientUsersManager.FindBy.NAME_ALIAS);
         text = usrMgr.replaceAliasesOccurences(text, ClientUsersManager.FindBy.EMAIL_ALIAS);
-        getSearchUIPage().typeText(text);
+        text = usrMgr.replaceAliasesOccurences(text, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
+        getSearchUIPage().typeText((isUpper == null) ? text : text.toUpperCase());
     }
 
     /**
