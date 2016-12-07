@@ -676,6 +676,7 @@ public final class WebAppLocators {
 
         public static final String cssRequestEmailPartial = " .mail";
         public static final String cssRequestMessagePartial = " .message";
+        public static final String cssRequestUniqueUsernamePartial = " .connect-request-username";
 
         public static final Function<String, String> cssRequestById = uid -> String
                 .format("[data-uie-name='connect-request'][data-uie-uid='%s']",
@@ -692,7 +693,7 @@ public final class WebAppLocators {
         public static final String cssAllConnectionRequests = "[data-uie-name='connect-request']";
 
         public static final Function<String, String> cssRequestAvatarByUserId = uid -> String
-                .format("[data-uie-name='connect-request'][data-uie-uid='%s'] .image",
+                .format("[data-uie-name='connect-request'][data-uie-uid='%s'] user-avatar",
                         uid);
 
         public static final Function<String, String> cssKnownConnectionAvatarsById = uid -> String

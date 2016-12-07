@@ -21,6 +21,7 @@ Feature: Connect
   @C1691 @regression
   Scenario Outline: Verify pending user profiles contain all the info required by spec
     Given There are 2 users where <Name> is me
+    Given <UnknownContact> has unique username
     Given <UnknownContact> sent connection request to me
     Given User me change accent color to VividRed
     Given I switch to Sign In page
@@ -28,7 +29,8 @@ Feature: Connect
     Given I am signed in properly
     Then I see connection request from one user
     When I open the list of incoming connection requests
-    Then I see mail <UnknownContactMail> in connection request from user <UnknownContact>
+    Then I see unique username in connection request from user <UnknownContact>
+    And I do not see mail in connection request from user <UnknownContact>
     And I see avatar in connection request from user <UnknownContact>
     And I see accept button in connection request from user <UnknownContact>
     And I see ignore button in connection request from user <UnknownContact>
@@ -36,8 +38,8 @@ Feature: Connect
     And I see correct color for ignore button in connection request from user <UnknownContact>
 
     Examples: 
-      | Login      | Password      | Name      | UnknownContact | UnknownContactMail |
-      | user1Email | user1Password | user1Name | user2Name      | user2Email         |
+      | Login      | Password      | Name      | UnknownContact |
+      | user1Email | user1Password | user1Name | user2Name      |
 
   @C1815 @mute
   Scenario Outline: Verify pending user profiles contain known people information
@@ -74,7 +76,7 @@ Feature: Connect
   @C1699 @smoke
   Scenario Outline: Verify sending a connection request to user chosen from search
     Given There are 2 users where <Name> is me
-    Given User <Contact> changes unique username to <Contact>
+    Given <Contact> has unique username
     Given I wait until <Contact> exists in backend search results
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -160,10 +162,10 @@ Feature: Connect
   @C1694 @regression
   Scenario Outline: Verify 1:1 conversation is not created on the second end after you ignore connection request
     Given There are 2 users where <Name> is me
-    Given User <Name2> changes unique username to <Name2>
+    Given <Name2> has unique username
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Given I wait until <Name2> exists in backend search results
+    Given I wait until <Name2UniqueUsername> exists in backend search results
     When I am signed in properly
     Then I open search by clicking the people button
     When I see Search is opened
@@ -441,7 +443,7 @@ Feature: Connect
   @C1790 @regression
   Scenario Outline: I want to cancel a pending request from search
     Given There are 3 users where <Name> is me
-    Given User <Contact1> changes unique username to <Contact1>
+    Given <Contact1> has unique username
     Given I sent connection request to <Contact1>
     Given Myself is connected to <Contact2>
     Given I switch to Sign In page

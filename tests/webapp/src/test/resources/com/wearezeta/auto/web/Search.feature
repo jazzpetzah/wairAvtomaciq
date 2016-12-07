@@ -214,7 +214,7 @@ Feature: Search
   Scenario Outline: Verify I can start a 1:1 call with search ui buttons
     Given My browser supports calling
     Given There are 3 users where <Name> is me
-    Given User <Contact1> changes unique username to <Contact1>
+    Given <Contact1> has unique username
     Given Myself is connected to <Contact1>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
