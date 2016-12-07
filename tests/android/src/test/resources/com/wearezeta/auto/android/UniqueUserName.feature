@@ -3,37 +3,40 @@ Feature: Unique Username
   @C352018 @staging
   Scenario Outline: Verify I see Unique User Name and AB name within Incoming Request and Conversation View in different condition
     Given I delete all contacts from Address Book
-    Given There are 4 users where <Name> is me
-    Given I add <ContactInABEmail> having custom name "Email" into Address Book with email
-    Given I add <ContactInABPhone> having custom name "Phone" into Address Book with phone
+    Given There are 5 users where <Name> is me
+    Given I add <ContactInABEmail> having custom name "<ABNameEmail>" into Address Book with email
+    Given I add <ContactInABPhone> having custom name "<ABNamePhone>" into Address Book with phone
     Given I add <ContactInABSameName> into Address Book with phone and email
-    Given User <ContactInABEmail> updates the unique user name to "<UniqueName1>"
-    Given User <ContactInABPhone> updates the unique user name to "<UniqueName2>"
-    Given User <ContactInABSameName> updates the unique user name to "<UniqueName3>"
+    Given User <ContactInABEmail> sets the unique username
+    Given User <ContactInABPhone> sets the unique username
+    Given User <ContactInABSameName> sets the unique username
+    Given User <Connected> sets the unique username
+    Given Myself is connected to <Connected>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list
+    # Connect in AB with Email
     When <ContactInABEmail> sent connection request to me
     And I tap on conversation name <WaitingMess1>
     Then I see unique user name of user <ContactInABEmail> on Single pending incoming connection page
-    #TODO: AB name is show
+    And I see user info "<ABNameEmail> in Address Book" on Single pending incoming connection page
     When I tap connect button for user <ContactInABEmail> on Single pending incoming connection page
-    And I navigate back from conversation
+    # Connect in AB with Phone
     When <ContactInABPhone> sent connection request to me
-    And I tap on conversation name <ContactInABPhone>
+    And I tap on conversation name <WaitingMess1>
     And I see unique user name of user <ContactInABPhone> on Single pending incoming connection page
-    #TODO: AB name is show
-    And I tap connect button for user <ContactInABSameName> on Single pending incoming connection page
-    And I navigate back from conversation
+    # And I see user info "<ABNamePhone> in Address Book" on Single pending incoming connection page
+    And I tap connect button for user <ContactInABPhone> on Single pending incoming connection page
+    # Connect in AB with Same Name
     When <ContactInABSameName> sent connection request to me
     And I tap on conversation name <WaitingMess1>
     Then I see unique user name of user <ContactInABSameName> on Single pending incoming connection page
-    #TODO: AB name is not show
+    And I see user info "in Address Book" on Single pending incoming connection page
     And I tap connect button for user <ContactInABSameName> on Single pending incoming connection page
 
     Examples:
-      | Name      | ContactInABEmail | ContactInABPhone | ContactInABSameName | WaitingMess1     | UniqueName1         | UniqueName2         | UniqueName3         |
-      | user1Name | user2Name        | user3Name        | user4Name           | 1 person waiting | user2UniqueUsername | user3UniqueUsername | user4UniqueUsername |
+      | Name      | ContactInABEmail | ContactInABPhone | ContactInABSameName | Connected | WaitingMess1     | ABNameEmail | ABNamePhone |
+      | user1Name | user2Name        | user3Name        | user4Name           | user5Name | 1 person waiting | Email       | Phone       |
 
   @C352019 @staging
   Scenario Outline: Verify number of common friends is shown on the incoming connection request

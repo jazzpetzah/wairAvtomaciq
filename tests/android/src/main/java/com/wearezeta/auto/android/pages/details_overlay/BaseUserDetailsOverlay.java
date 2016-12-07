@@ -25,7 +25,7 @@ public abstract class BaseUserDetailsOverlay extends BaseDetailsOverlay {
     private static final Function<String, String> xpathStrUniqueUserName = text -> String.format
             ("//*[@id='%s' and @value='@%s']", strIdUniqueName, text);
     private static final Function<String, String> xpathStrUserInfo = text -> String.format
-            ("//*[@id='%s' and @value='%s']", strIdUserInfo, text);
+            ("//*[@id='%s' and contains(@value,'%s')]", strIdUserInfo, text);
     private final Function<String, String> xpathStrUserName = userName -> String.format
             ("//*[@id='%s' and @value='%s']", getUserNameId(), userName);
     private final Function<String, String> xpathStrAcceptButtonByUserName = userName -> String.format
