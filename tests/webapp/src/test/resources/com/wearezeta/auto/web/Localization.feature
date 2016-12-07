@@ -134,6 +134,7 @@ Feature: Localization
     Then I verify that an envelope icon is shown
     And I see email <Email> on Verification page
     When I activate user by URL
+    Then I see watermark
     And I see take over screen
     And I see TakeThisOne button on take over screen
     When I click TakeThisOne button on take over screen

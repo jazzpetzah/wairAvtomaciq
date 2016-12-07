@@ -7,6 +7,7 @@ Feature: Usernames
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
+    Then I see watermark
     And I see take over screen
     And I see name <NameAlias> on take over screen
     And I see unique username starts with <Username> on take over screen
@@ -30,6 +31,7 @@ Feature: Usernames
     And I start activation email monitoring
     And I submit registration form
     When I activate user by URL
+    Then I see watermark
     And I see take over screen
     And I see name <NameAlias> on take over screen
     And I see unique username starts with <Username> on take over screen
@@ -49,11 +51,13 @@ Feature: Usernames
     Given User <NameAlias> changes name to <Name>
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
+    Then I see watermark
     And I see take over screen
     And I see name <NameAlias> on take over screen
     And I see unique username starts with <Username> on take over screen
     When I refresh page
-    Then I see take over screen
+    Then I see watermark
+    And I see take over screen
     And I see name <NameAlias> on take over screen
     And I see unique username starts with <Username> on take over screen
 
@@ -70,6 +74,7 @@ Feature: Usernames
     And I start activation email monitoring
     And I submit registration form
     When I activate user by URL
+    Then I see watermark
     And I see take over screen
     And I see name <NameAlias> on take over screen
     And I see unique username starts with <Username> on take over screen
@@ -86,6 +91,7 @@ Feature: Usernames
     Given User <NameAlias> changes name to <Name>
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
+    Then I see watermark
     And I see take over screen
     And I see name <NameAlias> on take over screen
     And I see unique username starts with <Username> on take over screen
@@ -102,6 +108,7 @@ Feature: Usernames
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
     And I am signed in properly
+    Then I see watermark
     And I see take over screen
     And I see name <NameAlias> on take over screen
     When I click ChooseYourOwn button on take over screen
@@ -112,6 +119,7 @@ Feature: Usernames
     Then I see hint message for unique username saying <Hint>
     When I refresh page
     And I am signed in properly
+    Then I see watermark
     And I see take over screen
     And I see name <NameAlias> on take over screen
 
@@ -127,6 +135,7 @@ Feature: Usernames
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
     And I am signed in properly
+    Then I see watermark
     And I see take over screen
     And I see name <Name> on take over screen
     When I click ChooseYourOwn button on take over screen
@@ -137,6 +146,7 @@ Feature: Usernames
     Then I see error message for unique username saying <Error>
     When I refresh page
     And I am signed in properly
+    Then I see watermark
     And I see take over screen
     And I see name <Name> on take over screen
 
@@ -146,17 +156,18 @@ Feature: Usernames
 
   @C352077 @usernames @staging
   Scenario Outline: Verify autogeneration of a username for a user (different scenarios)
-      Given There are 2 users where <NameAlias> is me without unique username
-      Given User <NameAlias> changes name to <Name>
-      Given I switch to Sign In page
-      When I Sign in using login <Email> and password <Password>
-      And I am signed in properly
-      Then I see take over screen
-      And I see name <NameAlias> on take over screen
-      And I see unique username starts with <Username> on take over screen
-      When I click TakeThisOne button on take over screen
-      When I open preferences by clicking the gear button
-      Then I see unique username starts with <Username> in account preferences
+    Given There are 2 users where <NameAlias> is me without unique username
+    Given User <NameAlias> changes name to <Name>
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+    And I am signed in properly
+    Then I see watermark
+    Then I see take over screen
+    And I see name <NameAlias> on take over screen
+    And I see unique username starts with <Username> on take over screen
+    When I click TakeThisOne button on take over screen
+    When I open preferences by clicking the gear button
+    Then I see unique username starts with <Username> in account preferences
 
     Examples:
       | Email      | Password      | NameAlias | Name         | Username      |
@@ -174,6 +185,7 @@ Feature: Usernames
     Given I switch to Sign In page
     Given I remember current page
     Given I Sign in using login <Email> and password <Password>
+    Then I see watermark
     And I see take over screen
     And I see name <Name> on take over screen
     When I click ChooseYourOwn button on take over screen
@@ -189,6 +201,7 @@ Feature: Usernames
     Then the sign in error message reads <Error>
     When I Sign in using login <Email2> and password <Password>
     And I am signed in properly
+    Then I see watermark
     And I see take over screen
     And I see name <Name2> on take over screen
     When I click ChooseYourOwn button on take over screen
