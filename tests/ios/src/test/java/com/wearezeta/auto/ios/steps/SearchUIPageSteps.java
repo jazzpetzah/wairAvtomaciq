@@ -38,6 +38,7 @@ public class SearchUIPageSteps {
     public void ITypeInSearchInput(String text) throws Exception {
         text = usrMgr.replaceAliasesOccurences(text, ClientUsersManager.FindBy.NAME_ALIAS);
         text = usrMgr.replaceAliasesOccurences(text, ClientUsersManager.FindBy.EMAIL_ALIAS);
+        text = usrMgr.replaceAliasesOccurences(text, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
         getSearchUIPage().typeText(text);
     }
 
