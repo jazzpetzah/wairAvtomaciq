@@ -215,6 +215,8 @@ Feature: Conversation View
     And I open conversation details
     And I tap Open Menu button on Single user profile page
     And I tap Archive conversation action button
+    # Wait for transition
+    And I wait for 3 seconds
     Then I do not see conversation <Contact> in conversations list
     And I open archived conversations
     Then I see conversation <Contact> in conversations list
