@@ -31,6 +31,8 @@ Feature: ContactsUI
     And I accept alert if visible
     And I tap Send Invite button on Search UI page
     And I tap Open button next to user name <Contact> on ContactsUI
+    # Wait for animation
+    And I wait for 2 seconds
     Then I see the conversation with <Contact>
 
     Examples: 
