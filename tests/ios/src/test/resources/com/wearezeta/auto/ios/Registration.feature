@@ -17,6 +17,7 @@ Feature: Registration
     And I accept alert if visible
     And I tap Share Contacts button on Share Contacts overlay
     And I accept alert if visible
+    And I tap Keep This One button on Unique Username Takeover page
     Then I see conversations list
 
     Examples:
