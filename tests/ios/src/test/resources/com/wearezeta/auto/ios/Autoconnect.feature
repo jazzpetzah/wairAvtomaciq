@@ -46,6 +46,8 @@ Feature: Autoconnect
     When I open search UI
     And I accept alert
     And I tap X button on Search UI page
+    # Let it sync
+    And I wait for 5 seconds
     Then I see conversation <Contact1> in conversations list
     And I see conversation <Contact2> in conversations list
 
