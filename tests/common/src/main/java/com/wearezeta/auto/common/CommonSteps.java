@@ -705,6 +705,7 @@ public final class CommonSteps {
                                                    String contactAlias, int timeoutSeconds) throws Exception {
         String query = usrMgr.replaceAliasesOccurences(contactAlias, FindBy.NAME_ALIAS);
         query = usrMgr.replaceAliasesOccurences(query, FindBy.EMAIL_ALIAS);
+        query = usrMgr.replaceAliasesOccurences(query, FindBy.UNIQUE_USERNAME_ALIAS);
         BackendAPIWrappers.waitUntilContactNotFound(usrMgr.findUserByNameOrNameAlias(searchByNameAlias), query,
                 timeoutSeconds);
     }
@@ -713,8 +714,9 @@ public final class CommonSteps {
                                                 String contactAlias) throws Exception {
         String query = usrMgr.replaceAliasesOccurences(contactAlias, FindBy.NAME_ALIAS);
         query = usrMgr.replaceAliasesOccurences(query, FindBy.EMAIL_ALIAS);
-        BackendAPIWrappers.waitUntilContactsFound(usrMgr.findUserByNameOrNameAlias(searchByNameAlias), query, 1,
-                true, BACKEND_USER_SYNC_TIMEOUT);
+        query = usrMgr.replaceAliasesOccurences(query, FindBy.UNIQUE_USERNAME_ALIAS);
+        BackendAPIWrappers.waitUntilContactsFound(usrMgr.findUserByNameOrNameAlias(searchByNameAlias), query,
+                1, true, BACKEND_USER_SYNC_TIMEOUT);
     }
 
     public void WaitUntilCommonContactsIsGenerated(String searchByNameAlias, String contactAlias) throws Exception {

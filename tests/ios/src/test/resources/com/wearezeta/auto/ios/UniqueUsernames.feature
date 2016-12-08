@@ -295,6 +295,7 @@ Feature: Unique Usernames
     Given User <Contact> sets the unique username
     Given I sign in using my email or phone number
     Given I see conversations list
+    Given I wait until <ContactUniqueUserName> exists in backend search results
     Given I open search UI
     Given I accept alert if visible
     When I type "<ContactUniqueUserName>" in Search UI input field
@@ -313,6 +314,7 @@ Feature: Unique Usernames
     Given User <Contact> sets the unique username
     Given I sign in using my email or phone number
     Given I see conversations list
+    Given I wait until <ContactWithUniqueUserName> exists in backend search results
     Given I open search UI
     Given I accept alert if visible
     Given I tap input field on Search UI page
