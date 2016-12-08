@@ -284,8 +284,8 @@ Feature: Recall Message
     Given Myself is connected to <Contact>
     Given User <Contact> adds new device <HisDevice>
     Given I sign in using my email or phone number
-    Given I see conversations list
     Given User Myself sends encrypted message "Try this app <Link>" to user <Contact>
+    Given I see conversations list
     When I tap on contact name <Contact>
     Then I see link preview container in the conversation view
     And User <Contact> remembers the recent message from user Myself via device <HisDevice>
