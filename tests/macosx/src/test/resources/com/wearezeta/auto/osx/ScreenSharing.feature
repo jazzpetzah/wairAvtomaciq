@@ -3,6 +3,7 @@ Feature: Screen Sharing
   @C165194 @smoke
   Scenario Outline: Verify I can switch to screen sharing during maximized video call
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given <Contact> accept next incoming video call automatically
@@ -23,6 +24,7 @@ Feature: Screen Sharing
   @C165195 @smoke
   Scenario Outline: Verify I can switch to screen sharing during minimized video call
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given <Contact> accept next incoming video call automatically
@@ -45,6 +47,7 @@ Feature: Screen Sharing
   @C167025 @smoke
   Scenario Outline: Verify I can toggle between screen sharing and video
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given <Contact> accept next incoming video call automatically
@@ -70,6 +73,7 @@ Feature: Screen Sharing
   @C183898 @smoke @WEBAPP-3094
   Scenario Outline: Verify I can share my screen in a 1:1 audio call
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given <Contact> accept next incoming call automatically
@@ -93,6 +97,7 @@ Feature: Screen Sharing
   @C183897 @smoke @WEBAPP-3094
   Scenario Outline: Verify I can share my screen in a group audio call
     Given There are 3 users where <Name> is me
+    Given <Contact1>,<Contact2> have unique usernames
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>
     Given <Contact1>,<Contact2> starts instance using <CallBackend>
