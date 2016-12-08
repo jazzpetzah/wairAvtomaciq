@@ -41,6 +41,11 @@ Feature: Unique Usernames
     Given I restore Wire
     Given I sign in using my email or phone number
     Given I see conversations list
+    Given I wait until <Contact1WithABEmail> exists in backend search results
+    Given I wait until <Contact2WithABPhoneNumber> exists in backend search results
+    Given I wait until <Contact3WithUniqueUserName> exists in backend search results
+    Given I wait until <Contact4WithCommonFriends> exists in backend search results
+    Given I wait until <Contact5WithSameNameInAB> exists in backend search results
     Given I open search UI
     Given I accept alert if visible
     Given I tap input field on Search UI page
@@ -127,6 +132,11 @@ Feature: Unique Usernames
     Given I restore Wire
     Given I sign in using my email or phone number
     Given I see conversations list
+    Given I wait until <Contact1WithABEmail> exists in backend search results
+    Given I wait until <Contact2WithABPhoneNumber> exists in backend search results
+    Given I wait until <Contact3WithUniqueUserName> exists in backend search results
+    Given I wait until <Contact4WithCommonFriends> exists in backend search results
+    Given I wait until <Contact5WithSameNameInAB> exists in backend search results
     Given I open search UI
     Given I accept alert if visible
     Given I tap input field on Search UI page
