@@ -122,9 +122,9 @@ public class SearchPageSteps {
      * @param partialWords if not null, means only type the part of word[Start from index 0]
      * @param text         the text to type
      * @throws Exception
-     * @step. ^I type (the first \d+ chars? of )?(user name|user email|user phone number|group name) "(.*)" in search field$
+     * @step. ^I type (the first \d+ chars? of )?(user name|unique user name|user email|user phone number|group name) "(.*)" in search field$
      */
-    @When("^I type (the first \\d+ chars? of )?(user name|user email|user phone number|group name) \"(.*)\" in search field$")
+    @When("^I type (the first \\d+ chars? of )?(user name|unique user name|user email|user phone number|group name) \"(.*)\" in search field$")
     public void ITypeWordInSearchFiled(String partialWords, String type, String text) throws Exception {
         switch (type) {
             case "user name":
@@ -136,6 +136,8 @@ public class SearchPageSteps {
             case "user phone number":
                 text = usrMgr.replaceAliasesOccurences(text, FindBy.PHONENUMBER_ALIAS);
                 break;
+            case "unique user name":
+                text = usrMgr.replaceAliasesOccurences(text, FindBy.UNIQUE_USERNAME_ALIAS);
             case "group name":
                 break;
             default:
@@ -504,17 +506,15 @@ public class SearchPageSteps {
                     searchListPage.clearTextInPeopleSearch();
                 }
 
-                searchListPage.typeTextInPeopleSearch(contactActualName);
-                Assert.assertTrue(
-                        String.format("No user was found with name: %s", contactActualName),
-                        searchListPage.waitUntilNameVisible(false, contactActualName));
-                searchListPage.swipeRightOnContactAvatar(contactActualName);
+                String userInfo = usrMgr.replaceAliasesOccurences(resultParameter.userInfo, FindBy.UNIQUE_USERNAME_ALIAS);
 
-                String abName = usrMgr.replaceAliasesOccurences(resultParameter.aBName, FindBy.NAME_ALIAS);
-                String expectedDetailsValue = searchListPage.compileSearchResultItemDetails(contactName, abName, resultParameter.commonFriends);
+                searchListPage.typeTextInPeopleSearch(contactActualName);
+                Assert.assertTrue(String.format("No user was found with name: %s", contactActualName),
+                        searchListPage.waitUntilNameVisible(false, contactActualName));
+
                 Assert.assertTrue(
-                        String.format("There is no search item details '%s' for user %s", expectedDetailsValue, contactActualName),
-                        searchListPage.isSearchResultItemDetailsVisible(contactActualName, expectedDetailsValue));
+                        String.format("There is no user details '%s' for user %s", userInfo, contactActualName),
+                        searchListPage.waitUntilSearchResultItemDetailsVisible(contactActualName, userInfo));
             } catch (AssertionError e) {
                 assertionErrors.add(e);
             }
@@ -529,13 +529,11 @@ public class SearchPageSteps {
 
     class ResultParameter {
         private final String name;
-        private final String aBName;
-        private final Integer commonFriends;
+        private final String userInfo;
 
-        public ResultParameter(String name, String aBName, Integer commonFriends) {
+        public ResultParameter(String name, String userInfo) {
             this.name = name;
-            this.aBName = aBName;
-            this.commonFriends = commonFriends;
+            this.userInfo = userInfo;
         }
     }
 }

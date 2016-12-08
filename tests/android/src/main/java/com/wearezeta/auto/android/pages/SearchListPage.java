@@ -26,7 +26,7 @@ public class SearchListPage extends AbstractPickUserPage {
 
     public static final BiFunction<String, String, String> xpathStrSearchResultUserNameAndAddressBook = (name, details) -> String
             .format("//*[@id='%s' and @value='%s']"
-                    + "/../*[@id='ttv__contactlist__user__username_and_address_book' and @value='%s']", strIdUserName,  name, details);
+                    + "/../*[@id='ttv__contactlist__user__username_and_address_book' and contains(@value,'%s')]", strIdUserName,  name, details);
 
     public SearchListPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -68,12 +68,7 @@ public class SearchListPage extends AbstractPickUserPage {
         throw new NotImplementedException("Do not support invite button on search list");
     }
 
-    public String compileSearchResultItemDetails(String name, String ABName, Integer commonFriendsCount) {
-        //TODO: implement mechanism, that will generate string like "unique name, someName in your AB, has X common friends" from parameters
-        return "";
-    }
-
-    public boolean isSearchResultItemDetailsVisible(String name, String searchResultItemDetails) throws Exception {
+    public boolean waitUntilSearchResultItemDetailsVisible(String name, String searchResultItemDetails) throws Exception {
         final By locator = By.xpath(xpathStrSearchResultUserNameAndAddressBook.apply(name, searchResultItemDetails));
         return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
     }
