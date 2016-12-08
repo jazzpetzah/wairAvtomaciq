@@ -421,7 +421,7 @@ Feature: Conversation List
     When I swipe right on a <Contact1>
     And I tap Block conversation action button
     And I tap Cancel conversation action button
-    Then I see conversation actions menu
+    Then I see actions menu for <Contact1> conversation
 
     Examples:
       | Name      | Contact1  |
