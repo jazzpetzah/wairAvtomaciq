@@ -272,6 +272,7 @@ public class SearchUIPageSteps {
     /**
      * Verify avatars details for the found users
      *
+     * @step. ^I verify correct details are shown for the found users$
      * @param table data table containing 2 columns: user name/alias to search for and the
      *              expected user details string
      * @throws Exception
