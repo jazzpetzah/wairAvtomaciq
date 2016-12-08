@@ -114,7 +114,7 @@ Feature: Forward Message
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3name |
 
-  @C345373 @regression @fastLogin
+  @C345373 @regression @fastLogin @torun
   Scenario Outline: Verify forwarding someone else audio message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -132,6 +132,8 @@ Feature: Forward Message
     And I wait for 5 seconds
     And I long tap on audio message placeholder in conversation view
     And I tap on Forward badge item
+    # Wait for animation
+    And I wait for 2 seconds
     And I select <Contact2> conversation on Forward page
     And I tap Send button on Forward page
     Then I see conversation with user <Contact1>
