@@ -59,17 +59,16 @@ Feature: People View
     Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap on contact name <Contact1>
-    And I open conversation details
-    And I tap Create Group button on Single user profile page
+    Given I tap on contact name <Contact1>
+    Given I open conversation details
+    When I tap Create Group button on Single user profile page
     And I tap connected user <Contact2> in Search UI on iPad popover
     And I tap connected user <Contact3> in Search UI on iPad popover
-    And I tap Create button on iPad popover
     And I tap Create button on iPad popover
     # Wait until the conversation is created
     And I wait for 3 seconds
     Then I see group conversation with users <Contact1>,<Contact2>,<Contact3>
-    And I navigate back to conversations list
+    When I navigate back to conversations list
     Then I see in conversations list group chat with <Contact1>,<Contact2>,<Contact3>
 
     Examples:
