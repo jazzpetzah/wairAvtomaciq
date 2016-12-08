@@ -35,6 +35,8 @@ Feature: People View
     And I type "<Contact3>" in Search UI input field
     And I tap on conversation <Contact3> in search result
     And I tap Done keyboard button
+    # Wait for transition
+    And I wait for 3 seconds
     Then I can see You Added <Contact3> message
     When I open group conversation details
     Then I see "<Number> people" label on Group info page
@@ -211,6 +213,8 @@ Feature: People View
     And I tap on conversation <Contact2> in search result
     And I tap on conversation <Contact3> in search result
     And I tap Create conversation action button on Search UI page
+    # Wait for transition
+    And I wait for 3 seconds
     And I see group conversation with users <Contact1>,<Contact2>,<Contact3>
     And I navigate back to conversations list
     And I see conversations list
@@ -449,6 +453,8 @@ Feature: People View
     And I type "<Contact1>" in Search UI input field
     And I tap on conversation <Contact1> in search result
     And I tap Open conversation action button on Search UI page
+    # Wait for transition
+    And I wait for 3 seconds
     Then I see the conversation with <Contact1>
 
     Examples:
