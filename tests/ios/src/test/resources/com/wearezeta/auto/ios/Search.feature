@@ -89,8 +89,7 @@ Feature: Search
     And I tap Connect button on Single user Pending outgoing connection page
     And I tap X button on Search UI page
     And I tap on contact name <UnconnectedUser>
-    And I open conversation details
-    And I see name "<UnconnectedUser>" on Single user Pending outgoing connection page
+    Then I see conversation with user <UnconnectedUser>
 
     Examples:
       | Name      | UnconnectedUser | Contact2  |
