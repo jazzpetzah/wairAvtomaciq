@@ -17,8 +17,8 @@ Feature: Connect
     And I tap Connect button on Single user Pending outgoing connection page
     And I tap X button on Search UI page
     Then I see first item in contact list named <Contact>
-    And I tap on contact name <Contact>
-    Then I see name "<Contact>" on Single user Pending outgoing connection page
+    When I tap on contact name <Contact>
+    Then I see the conversation with <Contact>
     And I see Cancel Request button on Single user Pending outgoing connection page
 
     Examples:
@@ -43,7 +43,7 @@ Feature: Connect
     And I tap X button on Search UI page
     Then I see first item in contact list named <Contact>
     When I tap on contact name <Contact>
-    Then I see name "<Contact>" on Single user Pending outgoing connection page
+    Then I see the conversation with <Contact>
     And I see Cancel Request button on Single user Pending outgoing connection page
 
     Examples:
@@ -203,9 +203,8 @@ Feature: Connect
     Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
-    And I see conversation <Contact> in conversations list
     When I tap on contact name <Contact>
-    Then I see name "<Contact>" on Single user Pending outgoing connection page
+    Then I see the conversation with <Contact>
     And I see Cancel Request button on Single user Pending outgoing connection page
 
     Examples:
@@ -220,9 +219,8 @@ Feature: Connect
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    And I see conversation <Contact> in conversations list
     When I tap on contact name <Contact>
-    Then I see name "<Contact>" on Single user Pending outgoing connection page
+    Then I see the conversation with <Contact>
     And I see Cancel Request button on Single user Pending outgoing connection page
 
     Examples:
