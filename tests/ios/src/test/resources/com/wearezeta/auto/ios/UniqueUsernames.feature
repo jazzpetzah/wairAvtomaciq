@@ -327,3 +327,21 @@ Feature: Unique Usernames
     Examples:
       | Name      | Contact   | ContactWithUniqueUserName |
       | user1Name | user2Name | user2UniqueUsername       |
+
+  @C352029 @staging
+  Scenario Outline: Verify autogeneration of a username for an existing user (different scenarios)
+    Given There is 1 user
+    Given User <NameAlias> is me
+    Given User <NameAlias> changes name to <Name>
+    Given I sign in using my email or phone number
+    And I see username <NameAlias> on Unique Username Takeover page
+    Then I see unique username starts with <UniqueName> on Unique Username Takeover page
+
+    Examples:
+      | NameAlias | Name        | UniqueName |
+      | user1Name | Tom         | @tom       |
+      | user1Name | Tom.Sawyer  | @tomsawyer |
+      | user1Name | Æéÿüíøšłźçñ | @eyuiszcn  |
+      | user1Name | Даша        | @dasa      |
+      | user1Name | داريا       | @darya     |
+      | user1Name | 明麗          | @mingli    |

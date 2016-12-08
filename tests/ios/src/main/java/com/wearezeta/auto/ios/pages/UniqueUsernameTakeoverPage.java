@@ -15,8 +15,8 @@ public class UniqueUsernameTakeoverPage extends IOSPage {
     private static final By nameTitleLabel = MobileBy.AccessibilityId(nameStrTitleLabel);
 
     private static final Function<String, String> xpathStrUniqueUsernameByName = name ->
-            String.format("//XCUIElementTypeStaticText[@name='%s']/preceding::XCUIElementTypeStaticText[1][@name='%s']",
-                    nameStrTitleLabel, name);
+            String.format("//XCUIElementTypeStaticText[@name='%s']/preceding::XCUIElementTypeStaticText[1][@name='%s' or starts-with(@name,'%s')]",
+                    nameStrTitleLabel, name, name);
     private static final Function<String, String> xpathStrUsernameByName = name ->
             String.format("//XCUIElementTypeStaticText[@name='%s']/preceding::XCUIElementTypeStaticText[2][@name='%s']",
                     nameStrTitleLabel, name);

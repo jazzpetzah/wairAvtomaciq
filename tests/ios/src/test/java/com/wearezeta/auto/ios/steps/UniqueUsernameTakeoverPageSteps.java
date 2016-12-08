@@ -28,15 +28,15 @@ public class UniqueUsernameTakeoverPageSteps {
     }
 
     /**
-     * Verify whether username is visible on the ttakeover page
+     * Verify visibility of username/unique name on the takeover page
      *
      * @param shouldNotSee     equals to null if the name should be visible
      * @param isUnique         if present then unique username will be verified otherwise the 'simple' one
      * @param expectedUsername name, unique username or an alias
      * @throws Exception
-     * @step. ^I (do not )?see (unique )?username (.*) on Unique Username Takeover page$
+     * @step. ^I (do not )?see (unique )?username (?:starts with )?(.*) on Unique Username Takeover page$
      */
-    @Then("^I (do not )?see (unique )?username (.*) on Unique Username Takeover page$")
+    @Then("^I (do not )?see (unique )?username (?:starts with )?(.*) on Unique Username Takeover page$")
     public void ISeeUniqueUsername(String shouldNotSee, String isUnique, String expectedUsername) throws Exception {
         if (isUnique == null) {
             expectedUsername = usrMgr.replaceAliasesOccurences(expectedUsername,
@@ -54,7 +54,7 @@ public class UniqueUsernameTakeoverPageSteps {
                         expectedUsername.substring(1, expectedUsername.length()),
                         ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
             } else {
-                expectedUsername = usrMgr.replaceAliasesOccurences(expectedUsername,
+                expectedUsername = "@" + usrMgr.replaceAliasesOccurences(expectedUsername,
                         ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
             }
             if (shouldNotSee == null) {
