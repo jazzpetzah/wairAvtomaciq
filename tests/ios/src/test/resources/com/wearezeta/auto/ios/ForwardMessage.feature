@@ -156,7 +156,6 @@ Feature: Forward Message
     Given I wait for 3 seconds
     # Have to tap play video message to download video. Otherwise Forward button is missing.
     Given I tap on video message in conversation view
-    Given I do not see video message container in the conversation view
     Given I tap Done button on video message player page
     When I long tap on video message in conversation view
     And I tap on Forward badge item
