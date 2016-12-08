@@ -319,7 +319,7 @@ Feature: Conversation List
       | user1Name | user2Name |
 
   @C844 @regression @fastLogin
-  Scenario Outline: Verify deleting 1-to-1 conversation from archive
+  Scenario Outline: (ZIOS-7745) Verify deleting 1-to-1 conversation from archive
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
