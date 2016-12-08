@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios.pages;
 
 import java.util.Optional;
 import java.util.concurrent.Future;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
@@ -60,6 +61,22 @@ public class SearchUIPage extends IOSPage {
     private static final By nameNoResults = MobileBy.AccessibilityId("No results.");
 
     private static final By nameVideoCallButton = MobileBy.AccessibilityId("actionBarVideoCallButton");
+
+    private static final BiFunction<String, String, String> xpathStrFoundUserDetailsByName =
+            (name, expectedDetails) -> {
+                if (expectedDetails.trim().isEmpty()) {
+                    return String.format(
+                            "//XCUIElementTypeCell[ ./XCUIElementTypeStaticText[@name='%s'] and " +
+                                    "not(./XCUIElementTypeStaticText[@name='additionalUserInfo']) ]",
+                            name
+                    );
+                }
+                return String.format(
+                        "//XCUIElementTypeCell[ ./XCUIElementTypeStaticText[@name='%s'] ]" +
+                                "/XCUIElementTypeStaticText[@name='additionalUserInfo' and @value='%s']",
+                        name, expectedDetails
+                );
+            };
 
     public SearchUIPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -223,5 +240,10 @@ public class SearchUIPage extends IOSPage {
 
     public void clearSearchInput() throws Exception {
         getElement(xpathSearchInput).clear();
+    }
+
+    public boolean isSearchResultDetailsVisible(String textToEnter, String expectedDetails) throws Exception {
+        final By locator = By.xpath(xpathStrFoundUserDetailsByName.apply(textToEnter, expectedDetails));
+        return isLocatorDisplayed(locator);
     }
 }
