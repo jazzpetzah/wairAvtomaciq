@@ -242,6 +242,7 @@ Feature: Usernames
   @C345365 @usernames @staging
   Scenario Outline: Verify new username is synched across the devices
     Given There are 2 users where <NameAlias> is me
+    Given I remember unique username of Me
     Given user <NameAlias> adds a new device Device1 with label Label1
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
@@ -249,13 +250,13 @@ Feature: Usernames
     Then I click confirm on history info page
     And I am signed in properly
     And I open preferences by clicking the gear button
-    Then I see unique username starts with <NameAlias> in account preferences
-    When User <NameAlias> updates the unique user name to the one started with "<NewUsername>" via device Device1
-    Then I see unique username starts with <NewUsername> in account preferences
-    When User <NameAlias> updates the unique user name to the one started with "<Username>" via device Device1
-    Then I see unique username starts with <Username> in account preferences
+    Then I see unique username is the remembered one in account preferences
+    When User Me changes his unique username to a random value
+    Then I do not see unique username is the remembered one in account preferences
+    When I remember unique username of Me
+    Then I see unique username is the remembered one in account preferences
 
     Examples:
-      | Email      | Password      | NameAlias | Username | NewUsername |
-      | user1Email | user1Password | user1Name | johnson  | robinson    |
+      | Email      | Password      | NameAlias |
+      | user1Email | user1Password | user1Name |
 
