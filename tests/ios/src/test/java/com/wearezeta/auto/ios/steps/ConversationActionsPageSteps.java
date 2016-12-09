@@ -47,9 +47,9 @@ public class ConversationActionsPageSteps {
      * @param what either 'confirm' or 'decline'
      * @param actionName one of available action names
      * @throws Exception
-     * @step. ^I (confirm|decline)  (Block|Remove|Delete|Leave|Cancel Request|Connect) conversation action$
+     * @step. ^I (confirm|decline)  (Block|Remove|Delete|Cancel Request|Leave|Connect) conversation action$
      */
-    @Then("^I (confirm|decline) (Block|Remove|Delete|Leave|Cancel Request|Connect) conversation action$")
+    @Then("^I (confirm|decline) (Block|Remove|Delete|Cancel Request|Leave|Connect) conversation action$")
     public void IDoAction(String what, String actionName) throws Exception {
         if (what.equals("confirm")) {
             getPage().confirmAction(actionName);
@@ -77,7 +77,6 @@ public class ConversationActionsPageSteps {
      * @param conversation conversation name
      * @throws Exception
      * @step. I see actions menu for (.*) conversation$
-     * [Ll]ist$
      */
     @And("^I see actions menu for (.*) conversation$")
     public void ISeeConversationNameInActionMenu(String conversation) throws Exception {

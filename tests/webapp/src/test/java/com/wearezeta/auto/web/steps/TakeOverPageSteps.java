@@ -1,7 +1,5 @@
 package com.wearezeta.auto.web.steps;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -15,6 +13,7 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 
 import static org.hamcrest.CoreMatchers.startsWith;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class TakeOverPageSteps {
 
@@ -46,10 +45,15 @@ public class TakeOverPageSteps {
         }
     }
 
-    @Given("^I see take over screen page$")
-    public void ISeeTakeOverScreenPage() throws Exception {
-        Assert.assertTrue(context.getPagesCollection().getPage(TakeOverPage.class)
-                .isTakeOverScreenVisible());
+    @Given("^I( do not)? see take over screen$")
+    public void ISeeTakeOverScreen(String doNot) throws Exception {
+        if (doNot == null) {
+            assertThat("Take over screen not shown",
+                    context.getPagesCollection().getPage(TakeOverPage.class).isTakeOverScreenVisible());
+        } else {
+            assertThat("Take over screen shown",
+                    context.getPagesCollection().getPage(TakeOverPage.class).isTakeOverScreenNotVisible());
+        }
     }
 
     @Then("^I see (ChooseYourOwn|TakeThisOne) button on take over screen$")

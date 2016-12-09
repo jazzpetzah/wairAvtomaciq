@@ -9,11 +9,9 @@ import org.openqa.selenium.WebDriverException;
 public class StartUIPageSteps {
 
     private final TestContext webContext;
-    private final TestContext wrapperContext;
     
-    public StartUIPageSteps(TestContext webContext, TestContext wrapperContext) {
+    public StartUIPageSteps(TestContext webContext) {
         this.webContext = webContext;
-        this.wrapperContext = wrapperContext;
     }
 
     @When("^I click button to import contacts from address book via search UI")

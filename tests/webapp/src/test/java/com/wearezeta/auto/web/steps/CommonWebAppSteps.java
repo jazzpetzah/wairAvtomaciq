@@ -15,6 +15,7 @@ import com.wearezeta.auto.web.common.Message;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
+import com.wearezeta.auto.web.pages.ConversationPage;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.pages.WebPage;
 import com.wearezeta.auto.web.pages.external.DeleteAccountPage;
@@ -38,7 +39,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertTrue;
 
 import org.openqa.selenium.logging.LogEntry;
@@ -50,6 +50,8 @@ public class CommonWebAppSteps {
     private static final int DELETION_RECEIVING_TIMEOUT = 120;
 
     private String rememberedPage = null;
+
+    private String rememberedMessageId = null;
 
     private static final String DEFAULT_USER_PICTURE = "/images/aqaPictureContact600_800.jpg";
 
@@ -123,7 +125,7 @@ public class CommonWebAppSteps {
         context.getCommonSteps().ThereAreNUsersWhereXIsMe(context.getCurrentPlatform(), count,
                 myNameAlias);
         IChangeUserAvatarPicture(myNameAlias, "default");
-        context.getCommonSteps().ISetUniqueUsername(myNameAlias);
+        context.getCommonSteps().UsersSetUniqueUsername(myNameAlias);
     }
 
     @Given("^User (\\w+) change accent color to (StrongBlue|StrongLimeGreen|BrightYellow|VividRed|BrightOrange|SoftPink|Violet)$")
@@ -142,12 +144,23 @@ public class CommonWebAppSteps {
         context.getCommonSteps().IChangeUniqueUsername(userNameAlias, name);
     }
 
+    @When("^User (\\w+) changes? his unique username to a random value$")
+    public void IChangeUniqueUsernameRandom(String userNameAlias) throws Exception {
+        String randomUniqueUsername = CommonUtils.generateGUID().replace("-", "").substring(0, 8);
+        context.getCommonSteps().IChangeUniqueUsername(userNameAlias, randomUniqueUsername);
+    }
+
+    @Given("(.*) (?:has|have) unique usernames?$")
+    public void UserHasUniqueUsername(String userNameAliases) throws Exception {
+        context.getCommonSteps().UsersSetUniqueUsername(userNameAliases);
+    }
+
     @Given("^There (?:is|are) (\\d+) users? where (.*) is me without avatar picture$")
     public void ThereAreNUsersWhereXIsMeWithoutAvatar(int count,
             String myNameAlias) throws Exception {
         context.getCommonSteps().ThereAreNUsersWhereXIsMe(context.getCurrentPlatform(), count,
                 myNameAlias);
-        context.getCommonSteps().ISetUniqueUsername(myNameAlias);
+        context.getCommonSteps().UsersSetUniqueUsername(myNameAlias);
     }
 
     @Given("^There (?:is|are) (\\d+) users? where (.*) is me without unique username$")
@@ -450,6 +463,20 @@ public class CommonWebAppSteps {
         context.getCommonSteps().UserUpdateSecondLastMessage(userNameAlias, dstNameAlias, newMessage, deviceName + context.
                 getTestname().
                 hashCode(), isGroup);
+    }
+
+    @When("^I remember the message (.*)")
+    public void IRememberTheMessage(String text) throws Exception {
+        rememberedMessageId = context.getPagesCollection().getPage(ConversationPage.class).getMessageIdFromMessageText(text);
+    }
+
+    @When("^User (.*) edits? the remembered message to \"(.*)\" on device (.*)$")
+    public void UserXEditRememberedMessage(String userNameAlias, String newMessage, String deviceName) throws Exception {
+        if (rememberedMessageId == null) {
+            throw new PendingException("No remembered message found. Please run the step first.");
+        }
+        context.getCommonSteps().UserUpdateMessageById(userNameAlias, rememberedMessageId, newMessage,
+                deviceName + context.getTestname().hashCode());
     }
 
     @When("^User (.*) (likes|unlikes) the recent message from (?:user|group conversation) (.*) via device (.*)$")

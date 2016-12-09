@@ -16,8 +16,9 @@ Feature: Connect
     And I tap Connect button on Single user Pending outgoing connection page
     And I tap X button on Search UI page
     Then I see first item in contact list named <Contact>
-    And I tap on contact name <Contact>
-    And I see Pending Connect to <Contact> message in the conversation view
+    When I tap on contact name <Contact>
+    Then I see the conversation with <Contact>
+    And I see Cancel Request button on Single user Pending outgoing connection page
 
     Examples:
       | Name      | Contact   | Contact2  |
@@ -205,10 +206,12 @@ Feature: Connect
     And I tap X button on Search UI page
     And I tap on contact name <Contact>
     And I tap on text input
+    # Wait for sync
+    And I wait for 2 seconds
     And I long tap on text input
     And I tap on Paste badge item
     And I tap Send Message button in conversation view
-    Then I see last message in the conversation view contains expected message MyEmail
+    Then I see link preview container in the conversation view
 
     Examples:
       | Name      | Contact   |
@@ -219,20 +222,18 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given I wait until <ContactEmail> exists in backend search results
+    Given I wait until <UnconnectedUser> exists in backend search results
     Given I open search UI
     Given I accept alert if visible
     Given I tap input field on Search UI page
-    Given I type "<ContactEmail>" in Search UI input field
-    # Wait for animation
-    Given I wait for 3 seconds
+    Given I type "<UnconnectedUser>" in Search UI input field
     When I tap the instant connect button next to <UnconnectedUser>
     And I tap on conversation <UnconnectedUser> in search result
     Then I see Cancel Request button on Single user Pending outgoing connection page
 
     Examples:
-      | Name      | UnconnectedUser | ContactEmail |
-      | user1Name | user2Name       | user2Email   |
+      | Name      | UnconnectedUser |
+      | user1Name | user2Name       |
 
   @C38 @rc @clumsy @regression @fastLogin
   Scenario Outline: Verify possibility of disconnecting from conversation list
@@ -244,7 +245,6 @@ Feature: Connect
     When I tap on contact name <Contact1>
     And I open conversation details
     And I tap Cancel Request button on Single user Pending outgoing connection page
-    And I confirm Cancel Request conversation action
     Then I do not see conversation <Contact1> in conversations list
 
     Examples:
@@ -261,7 +261,6 @@ Feature: Connect
     When I tap on contact name <Contact1>
     And I open conversation details
     And I tap Cancel Request button on Single user Pending outgoing connection page
-    And I confirm Cancel Request conversation action
     And I navigate back to conversations list
     And I wait until <Contact1> exists in backend search results
     And I open search UI
@@ -291,8 +290,6 @@ Feature: Connect
     And I tap on conversation <Contact1> in search result
     And I tap Cancel Request button on Single user Pending outgoing connection page
     And I confirm Cancel Request conversation action
-    # Wait for animation
-    And I wait for 1 second
     Then I see the conversation "<Contact1>" exists in Search results
 
     Examples:

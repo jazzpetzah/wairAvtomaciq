@@ -17,9 +17,10 @@ Feature: Registration
     And I tap Choose Photo button
     And I accept alert if visible
     And I select the first picture from Camera Roll
+    And User <Name> sets the unique username
     And I tap Share Contacts button on Share Contacts overlay
     And I accept alert if visible
-    And I tap Keep This One button on Unique Username Takeover page
+    And I dismiss settings warning if visible
     Then I see conversations list
 
     Examples: 

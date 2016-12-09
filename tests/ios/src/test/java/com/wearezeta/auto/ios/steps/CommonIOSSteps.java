@@ -704,7 +704,7 @@ public class CommonIOSSteps {
     public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias) throws Exception {
         commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count, myNameAlias);
         IChangeUserAvatarPicture(myNameAlias, "", "default");
-        commonSteps.ISetUniqueUsername(myNameAlias);
+        commonSteps.UsersSetUniqueUsername(myNameAlias);
         final FastLoginContainer flc = FastLoginContainer.getInstance();
         if (flc.isEnabled()) {
             updateDriver(flc.executeDriverCreation(usrMgr.getSelfUserOrThrowError()));
@@ -726,7 +726,7 @@ public class CommonIOSSteps {
     public void UserSetsUniqueUsername(String userAs, String action, String uniqUsername) throws Exception {
         switch (action.toLowerCase()) {
             case "sets":
-                commonSteps.ISetUniqueUsername(userAs);
+                commonSteps.UsersSetUniqueUsername(userAs);
                 break;
             case "changes":
                 if (uniqUsername == null) {
@@ -759,7 +759,7 @@ public class CommonIOSSteps {
     public void ThereAreNUsersWhereXIsMeWithoutEmail(int count, String myNameAlias) throws Exception {
         commonSteps.ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(count, myNameAlias);
         IChangeUserAvatarPicture(myNameAlias, "", "default");
-        commonSteps.ISetUniqueUsername(myNameAlias);
+        commonSteps.UsersSetUniqueUsername(myNameAlias);
         final FastLoginContainer flc = FastLoginContainer.getInstance();
         if (flc.isEnabled()) {
             throw new IllegalStateException("Fast login feature is only supported in log in by email");
@@ -780,7 +780,7 @@ public class CommonIOSSteps {
     public void ThereAreNUsersWhereXIsMeWithoutPhone(int count, String myNameAlias) throws Exception {
         commonSteps.ThereAreNUsersWhereXIsMeRegOnlyByMail(count, myNameAlias);
         IChangeUserAvatarPicture(myNameAlias, "", "default");
-        commonSteps.ISetUniqueUsername(myNameAlias);
+        commonSteps.UsersSetUniqueUsername(myNameAlias);
         final FastLoginContainer flc = FastLoginContainer.getInstance();
         if (flc.isEnabled()) {
             updateDriver(flc.executeDriverCreation(usrMgr.getSelfUserOrThrowError()));

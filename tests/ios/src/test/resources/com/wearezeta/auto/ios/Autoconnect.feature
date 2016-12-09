@@ -22,6 +22,7 @@ Feature: Autoconnect
     And User <Name> is me
     And User Myself sets the unique username
     And I accept alert if visible
+    And I dismiss settings warning if visible
     Then I see conversation <Contact1> in conversations list
     And I see conversation <Contact2> in conversations list
 
@@ -45,6 +46,8 @@ Feature: Autoconnect
     When I open search UI
     And I accept alert
     And I tap X button on Search UI page
+    # Let it sync
+    And I wait for 5 seconds
     Then I see conversation <Contact1> in conversations list
     And I see conversation <Contact2> in conversations list
 
@@ -96,7 +99,7 @@ Feature: Autoconnect
     And User <Name> is me
     And User Myself sets the unique username
     And I accept alert
-    And I tap Keep This One button on Unique Username Takeover page
+    And I dismiss settings warning if visible
     And I see conversations list
     And I wait until <Contact> exists in backend search results
     When I open search UI

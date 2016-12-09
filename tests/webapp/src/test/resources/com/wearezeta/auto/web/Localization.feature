@@ -134,8 +134,11 @@ Feature: Localization
     Then I verify that an envelope icon is shown
     And I see email <Email> on Verification page
     When I activate user by URL
-    And I am signed in properly
-    And I switch language to en
+    Then I see watermark
+    And I see take over screen
+    And I see TakeThisOne button on take over screen
+    When I click TakeThisOne button on take over screen
+    And I switch language to <Language>
     And I am signed in properly
     And I open preferences by clicking the gear button
     And I click logout in account preferences

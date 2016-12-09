@@ -1,6 +1,5 @@
 package com.wearezeta.auto.win.common;
 
-import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.driver.ZetaWinDriver;
 import com.wearezeta.auto.common.driver.ZetaWinWebAppDriver;
@@ -58,10 +57,6 @@ public class Lifecycle {
      */
     public TestContext getWebContext() {
         return webContext;
-    }
-
-    public TestContext getWrapperContext() {
-        return wrapperContext;
     }
 
     private Future<ZetaWebAppDriver> createWebDriver(Future<ZetaWinDriver> winDriver) throws IOException {
@@ -129,10 +124,6 @@ public class Lifecycle {
         webappDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         
         LOG.debug("Waiting for App to be started");
-        
-        LOG.debug("Setting formatter");
-        ZetaFormatter.setLazyDriver(winDriverFuture);
-        
         webContext = new TestContext(testname, webDriverFuture);
         wrapperContext = webContext.fromPrimaryContext(winDriverFuture, new WinPagesCollection());
         LOG.debug("Setting first Win Page");

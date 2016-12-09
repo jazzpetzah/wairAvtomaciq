@@ -3,6 +3,8 @@ Feature: Search
   @C1711 @smoke
   Scenario Outline: Start group chat with users from contact list
     Given There are 3 users where <Name> is me
+    Given User <Contact1> changes unique username to <Contact1>
+    Given User <Contact2> changes unique username to <Contact2>
     Given Myself is connected to <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -26,6 +28,8 @@ Feature: Search
   @C1723 @regression
   Scenario Outline: Verify the new conversation is created on the other end from Search UI
     Given There are 3 users where <Name> is me
+    Given User <Contact1> changes unique username to <Contact1>
+    Given User <Contact2> changes unique username to <Contact2>
     Given Myself is connected to <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -67,6 +71,7 @@ Feature: Search
   @C1698 @regression
   Scenario Outline: Verify you can unblock someone from search list
     Given There are 2 users where <Name> is me
+    Given User <Contact> changes unique username to <Contact>
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -81,19 +86,20 @@ Feature: Search
     Then I do not see Contact list with name <Contact>
     Then I do not see Single User Profile popover
     When I open search by clicking the people button
-    And I type <ContactEmail> in search field of People Picker
+    And I type <ContactUniqueUsername> in search field of People Picker
     And I select <Contact> from People Picker results
     And I see Unblock button on Single User Profile popover
     When I click Unblock button on Single User popover
     Then I see Contact list with name <Contact>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | ContactEmail |
-      | user1Email | user1Password | user1Name | user2Name | user2Email   |
+      | Login      | Password      | Name      | Contact   | ContactUniqueUsername |
+      | user1Email | user1Password | user1Name | user2Name | user2UniqueUsername   |
 
   @C1722 @regression
   Scenario Outline: Verify you can add new user from search results from the other end
     Given There are 2 users where <Name> is me
+    Given User <Name2> changes unique username to <Name2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I wait until <Name2> exists in backend search results
@@ -187,8 +193,9 @@ Feature: Search
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | Message1 |
 
   @C1802 @smoke
-  Scenario Outline: Verify you can search by email
+  Scenario Outline: Verify you can not search by email
     Given There are 2 users where <Name> is me
+    Given User <Name2> changes unique username to <Name2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I wait until <Name2> exists in backend search results
@@ -197,7 +204,7 @@ Feature: Search
     When I see Search is opened
     And I see Bring Your Friends or Invite People button
     And I type <Email2> in search field of People Picker
-    Then I see user <Name2> found in People Picker
+    Then I do not see user <Name2> found in People Picker
 
     Examples: 
       | Login      | Password      | Name      | Name2     | Email2     |
@@ -207,6 +214,7 @@ Feature: Search
   Scenario Outline: Verify I can start a 1:1 call with search ui buttons
     Given My browser supports calling
     Given There are 3 users where <Name> is me
+    Given <Contact1> has unique username
     Given Myself is connected to <Contact1>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -229,6 +237,8 @@ Feature: Search
   Scenario Outline: Verify I can start a group call with search ui buttons
     Given My browser supports calling
     Given There are 3 users where <Name> is me
+    Given User <Contact1> changes unique username to <Contact1>
+    Given User <Contact2> changes unique username to <Contact2>
     Given Myself is connected to <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>

@@ -19,8 +19,6 @@ public class GroupPendingParticipantOutgoingConnectionPage extends BasePendingOu
                 return getLeftActionButtonLocator();
             case "connect":
                 return xpathConnectOtherUserButton;
-            case "cancel request":
-                return xpathCancelRequestButton;
             case "x":
                 return nameXButton;
             case "remove from group":

@@ -39,6 +39,7 @@ public final class CommonSteps {
 
     //increased timeout to make it stable on jenkins
     private static final int BACKEND_SUGGESTIONS_SYNC_TIMEOUT = 240; // seconds
+    private static final int BACKEND_COMMON_CONTACTS_SYNC_TIMEOUT = 240; // seconds
 
     private final ClientUsersManager usrMgr;
 
@@ -424,6 +425,12 @@ public final class CommonSteps {
         seBridge.updateMessage(user, getFilteredSecondLastMessageId(messageInfos), newMessage, deviceName);
     }
 
+    public void UserUpdateMessageById(String msgFromUserNameAlias, String messageId,
+                                      String newMessage, String deviceName) throws Exception {
+        ClientUser user = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
+        seBridge.updateMessage(user, MessageId.apply(messageId), newMessage, deviceName);
+    }
+
     /**
      * Note: if there is no message in conversation, it will return Optional.empty()
      */
@@ -673,9 +680,12 @@ public final class CommonSteps {
         BackendAPIWrappers.updateUniqueUsername(usrMgr.findUserByNameOrNameAlias(userNameAlias), name);
     }
 
-    public void ISetUniqueUsername(String userNameAlias) throws Exception {
-        final ClientUser user = usrMgr.findUserByNameOrNameAlias(userNameAlias);
-        BackendAPIWrappers.updateUniqueUsername(usrMgr.findUserByNameOrNameAlias(userNameAlias), user.getName().toLowerCase());
+    public void UsersSetUniqueUsername(String userNameAliases) throws Exception {
+        for (String userNameAlias : usrMgr.splitAliases(userNameAliases)) {
+            final ClientUser user = usrMgr.findUserByNameOrNameAlias(userNameAlias);
+            BackendAPIWrappers.updateUniqueUsername(usrMgr.findUserByNameOrNameAlias(userNameAlias), user.getUniqueUsername()
+                    .toLowerCase());
+        }
     }
 
     public void IChangeUserAccentColor(String userNameAlias, String colorName) throws Exception {
@@ -695,6 +705,7 @@ public final class CommonSteps {
                                                    String contactAlias, int timeoutSeconds) throws Exception {
         String query = usrMgr.replaceAliasesOccurences(contactAlias, FindBy.NAME_ALIAS);
         query = usrMgr.replaceAliasesOccurences(query, FindBy.EMAIL_ALIAS);
+        query = usrMgr.replaceAliasesOccurences(query, FindBy.UNIQUE_USERNAME_ALIAS);
         BackendAPIWrappers.waitUntilContactNotFound(usrMgr.findUserByNameOrNameAlias(searchByNameAlias), query,
                 timeoutSeconds);
     }
@@ -703,8 +714,21 @@ public final class CommonSteps {
                                                 String contactAlias) throws Exception {
         String query = usrMgr.replaceAliasesOccurences(contactAlias, FindBy.NAME_ALIAS);
         query = usrMgr.replaceAliasesOccurences(query, FindBy.EMAIL_ALIAS);
-        BackendAPIWrappers.waitUntilContactsFound(usrMgr.findUserByNameOrNameAlias(searchByNameAlias), query, 1,
-                true, BACKEND_USER_SYNC_TIMEOUT);
+        query = usrMgr.replaceAliasesOccurences(query, FindBy.UNIQUE_USERNAME_ALIAS);
+        BackendAPIWrappers.waitUntilContactsFound(usrMgr.findUserByNameOrNameAlias(searchByNameAlias), query,
+                1, true, BACKEND_USER_SYNC_TIMEOUT);
+    }
+
+    public void WaitUntilCommonContactsIsGenerated(String searchByNameAlias, String contactAlias) throws Exception {
+        WaitUntilCommonContactsIsGenerated(searchByNameAlias, contactAlias, 1);
+    }
+
+    public void WaitUntilCommonContactsIsGenerated(String searchByNameAlias, String contactAlias,
+                                                   int expectCountOfCommonContacts) throws Exception {
+        ClientUser searchByUser = usrMgr.findUserBy(searchByNameAlias, FindBy.NAME_ALIAS);
+        ClientUser destUser = usrMgr.findUserBy(contactAlias, FindBy.NAME_ALIAS);
+        BackendAPIWrappers.waitUntilCommonContactsFound(searchByUser, destUser, expectCountOfCommonContacts,
+                true, BACKEND_COMMON_CONTACTS_SYNC_TIMEOUT);
     }
 
     public void WaitUntilContactIsSuggestedInSearchResult(String searchByNameAlias,

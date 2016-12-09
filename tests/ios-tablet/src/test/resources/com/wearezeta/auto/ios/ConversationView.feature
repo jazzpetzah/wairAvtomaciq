@@ -575,14 +575,14 @@ Feature: Conversation View
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C2549 @regression @ZIOS-5063 @fastLogin
+  @C2549 @regression @fastLogin
   Scenario Outline: Verify posting in a 1-to-1 conversation without content [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see conversations list
     Given User Myself sends 1 encrypted message to user <Contact1>
+    Given I see conversations list
     When I swipe right on iPad the conversation named <Contact1>
     And I tap Delete conversation action button
     And I confirm Delete conversation action

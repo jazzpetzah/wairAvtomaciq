@@ -142,7 +142,8 @@ public class ConversationsListPage extends IOSPage {
     }
 
     public boolean isConversationNotInList(String name, int timeoutSeconds) throws Exception {
-        return isLocatorInvisible(MobileBy.AccessibilityId(name), timeoutSeconds);
+        final By locator = FBBy.xpath(xpathStrConvoListEntryByName.apply(name));
+        return isLocatorInvisible(locator, timeoutSeconds);
     }
 
     public boolean isConversationNotInList(String name) throws Exception {
@@ -193,6 +194,8 @@ public class ConversationsListPage extends IOSPage {
 
     public void openArchivedConversations() throws Exception {
         tapElementWithRetryIfStillDisplayed(nameOpenArchiveButton);
+        // Wait for animation
+        Thread.sleep(1000);
     }
 
     public boolean isArchiveButtonVisible() throws Exception {

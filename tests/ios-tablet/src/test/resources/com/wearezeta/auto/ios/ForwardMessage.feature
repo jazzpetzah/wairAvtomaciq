@@ -160,8 +160,7 @@ Feature: Forward Message
     Given I wait for 3 seconds
     When I tap on video message in conversation view
     # Small wait to make sure download is completed
-    And I wait for 5 seconds
-    And I see video message player page is opened
+    And I wait for 2 seconds
     And I tap Done button on video message player page
     And I long tap on video message in conversation view
     And I tap on Forward badge item

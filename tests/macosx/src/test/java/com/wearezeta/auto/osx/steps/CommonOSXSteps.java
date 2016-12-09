@@ -20,28 +20,26 @@ public class CommonOSXSteps {
     public static final Logger LOG = ZetaLogger.getLog(CommonOSXSteps.class.getName());
 
     private final TestContext webContext;
-    private final TestContext wrapperContext;
 
-    public CommonOSXSteps(TestContext webContext, TestContext wrapperContext) {
+    public CommonOSXSteps(TestContext webContext) {
         this.webContext = webContext;
-        this.wrapperContext = wrapperContext;
     }
 
     @When("^I click menu bar item \"(.*)\" and menu item \"(.*)\"$")
     public void clickMenuBarItem(String menuBarItemName, String menuItemName) throws Exception {
-        MainWirePage mainPage = wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class);
-        mainPage.clickMenuBarItem(menuBarItemName, menuItemName);
+        webContext.getChildContext().getPagesCollection(OSXPagesCollection.class).getPage(
+                MainWirePage.class).clickMenuBarItem(menuBarItemName, menuItemName);
     }
 
     @When("^I click menu bar item \"(.*)\" and menu items \"(.*)\" and \"(.*)\"$")
     public void clickMenuBarItem(String menuBarItemName, String menuItemName, String menuItemName2) throws Exception {
-        MainWirePage mainPage = wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class);
-        mainPage.clickMenuBarItem(menuBarItemName, menuItemName, menuItemName2);
+        webContext.getChildContext().getPagesCollection(OSXPagesCollection.class).getPage(
+                MainWirePage.class).clickMenuBarItem(menuBarItemName, menuItemName, menuItemName2);
     }
 
     @When("^I click menu bar item with name \"(.*)\"$")
     public void clickMenuBarItem(String menuBarItemName) throws Exception {
-        wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class).
+        webContext.getChildContext().getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class).
                 clickMenuBarItem(menuBarItemName);
     }
 

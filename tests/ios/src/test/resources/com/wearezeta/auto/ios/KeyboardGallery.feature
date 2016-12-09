@@ -50,16 +50,14 @@ Feature: Keyboard Gallery
     And I accept alert if visible
     And I accept alert if visible
     Then I see Camera Roll button on Keyboard Gallery overlay
-    When I tap File Transfer button from input tools
-    # Wait for animation
-    And I wait for 5 seconds
-    Then I see file transfer menu item <ItemName>
+    When I tap Audio Message button from input tools
+    Then I see Start Recording button on Voice Filters overlay
     And I do not see Camera Roll button on Keyboard Gallery overlay
     And I do not see the on-screen keyboard
 
     Examples:
-      | Name      | Contact   | ItemName                   |
-      | user1Name | user2Name | FTRANSFER_MENU_DEFAULT_PNG |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @C183904 @rc @regression @fastLogin
   Scenario Outline: I can draw a sketch on picture from gallery

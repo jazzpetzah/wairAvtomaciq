@@ -36,18 +36,7 @@ public class PickleJarHook implements PickleJarTestHook {
 
     @Override
     public long invoke(String rawStep, Map<String, String> exampleRow) throws StepNotExecutableException, StepNotFoundException {
-        try {
-            // wrapper page step
-            return getPickle().getExecutor().invokeMethodForStep(rawStep, exampleRow, lifecycle.getWebContext(),
-                    lifecycle.getWrapperContext());
-        } catch (StepNotExecutableException snee) {
-            // web page step
-            if (snee.getCause() instanceof NoSuchMethodException) {
-                return getPickle().getExecutor().invokeMethodForStep(rawStep, exampleRow, lifecycle.getWebContext());
-            } else {
-                throw snee;
-            }
-        }
+            return getPickle().getExecutor().invokeMethodForStep(rawStep, exampleRow, lifecycle.getWebContext());
     }
 
     @Override
@@ -79,7 +68,7 @@ public class PickleJarHook implements PickleJarTestHook {
     @Override
     public void onStepFailed(Scenario scenario, Step step) throws Throwable {
         step.setResult(new Result(step.getResult().getDuration(), FAILED,
-                step.getResult().getStatus() + "\n" + tailBrowserLog(MAX_LOG_TAIL_SIZE)));
+                step.getResult().getErrorMessage() + "\n" + tailBrowserLog(MAX_LOG_TAIL_SIZE)));
     }
 
     @Override
@@ -92,7 +81,7 @@ public class PickleJarHook implements PickleJarTestHook {
             screenshotHelper.saveScreenshot(step, scenario, scenario.getFeature(), new byte[]{});
         } else {
             try {
-                byte[] screenshot = lifecycle.getWrapperContext().getDriver().getScreenshotAs(OutputType.BYTES);
+                byte[] screenshot = lifecycle.getWebContext().getChildContext().getDriver().getScreenshotAs(OutputType.BYTES);
                 screenshotHelper.saveScreenshot(step, scenario, scenario.getFeature(), screenshot);
             } catch (Exception e) {
                 LOG.warn("Can not make sceenshot", e);
@@ -104,6 +93,7 @@ public class PickleJarHook implements PickleJarTestHook {
     @Override
     public void onAfterScenario(Scenario scenario) throws Throwable {
         List<Step> reportSteps = scenario.getSteps();
+        Exception ex = null;
         try {
             checkLogForErrors();
         } catch (Exception e) {
@@ -112,13 +102,16 @@ public class PickleJarHook implements PickleJarTestHook {
                 lastStep.setResult(new Result(lastStep.getResult().getDuration(), FAILED,
                         PickleExecutor.getThrowableStacktraceString(e) + "\n" + tailBrowserLog(MAX_LOG_TAIL_SIZE)));
             }
-            throw e;
+            ex = e;
         }
         lifecycle.tearDown(scenario);
         LOG.info(String.format("### After testcase Count: %d", CURRENTLY_RUNNING_TESTS.decrementAndGet()));
         reportSteps.forEach((step)
                 -> LOG.info(String.format("::          %s - %s", step.getResult().getStatus().toUpperCase(), step.getName()))
         );
+        if (ex != null) {
+            throw ex;
+        }
     }
 
     private String tailBrowserLog(int maxLogTailSize) throws InterruptedException, ExecutionException, TimeoutException {

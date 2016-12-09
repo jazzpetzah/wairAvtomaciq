@@ -9,7 +9,6 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.wearezeta.auto.common.CommonSteps;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
@@ -23,7 +22,6 @@ import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.pages.ContactListPage;
 import com.wearezeta.auto.web.pages.ConversationPage;
-import com.wearezeta.auto.web.pages.TakeOverPage;
 import com.wearezeta.auto.web.pages.popovers.GroupPopoverContainer;
 import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
 
@@ -939,6 +937,11 @@ public class ConversationPageSteps {
         context.getPagesCollection().getPage(ConversationPage.class).waitForDisplayedMessageContains(message, 30);
     }
 
+    @Then("^I scroll up in the conversation")
+    public void IScrollUp() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).scrollUp();
+    }
+
     private int getXLastMessageIndex(String indexValue) throws Exception {
         int indexNummer = 1;
         if (indexValue == null) {
@@ -1338,31 +1341,28 @@ public class ConversationPageSteps {
         context.getPagesCollection().getPage(ConversationPage.class).clickXButtonToCloseEdit();
     }
 
-    @And("^I( do not)? see first time experience with watermark$")
-    public void ISeeWelcomePage(String shouldNotBeVisible) throws Exception {
+    @And("^I( do not)? see watermark$")
+    public void ISeeWatermark(String shouldNotBeVisible) throws Exception {
         if (shouldNotBeVisible == null) {
             assertThat("No watermark wire logo shown",
                     context.getPagesCollection().getPage(ConversationPage.class).isWatermarkVisible());
+        } else {
+            assertThat("Watermark wire logo shown",
+                    context.getPagesCollection().getPage(ConversationPage.class).isWatermarkNotVisible());
+        }
+    }
+
+    @And("^I( do not)? see first time experience hint$")
+    public void ISeeFirstTimeExperienceHint(String shouldNotBeVisible) throws Exception {
+        if (shouldNotBeVisible == null) {
             assertThat("First time experience message",
                     context.getPagesCollection().getPage(ConversationPage.class).getFirstTimeExperienceMessage(),
                     containsString("Start a conversation or invite people to join."));
         } else {
-            assertThat("Watermark wire logo shown",
-                    context.getPagesCollection().getPage(ConversationPage.class).isWatermarkNotVisible());
             assertThat("First time experience message",
                     context.getPagesCollection().getPage(ConversationPage.class).getFirstTimeExperienceMessage(),
                     not(containsString("Start a conversation or invite people to join.")));
         }
     }
 
-    @And("^I( do not)? see take over screen$")
-    public void ISeeTakeOverScreen(String doNot) throws Exception {
-        if (doNot == null) {
-            assertThat("Take over screen not shown",
-                    context.getPagesCollection().getPage(TakeOverPage.class).isTakeOverScreenVisible());
-        } else {
-            assertThat("Take over screen shown",
-                    context.getPagesCollection().getPage(TakeOverPage.class).isTakeOverScreenNotVisible());
-        }
-    }
 }

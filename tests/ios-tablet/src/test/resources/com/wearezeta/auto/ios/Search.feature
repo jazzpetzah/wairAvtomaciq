@@ -1,17 +1,16 @@
 Feature: Search
 
   @C2788 @rc @regression @fastLogin
-  Scenario Outline: Verify search by email [LANDSCAPE]
+  Scenario Outline: Verify search by email does not work [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    Given I wait until <ContactEmail> exists in backend search results
     When I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
     And I type "<ContactEmail>" in Search UI input field
-    Then I see the conversation "<ContactName>" exists in Search results
+    Then I see the conversation "<ContactName>" does not exist in Search results
 
     Examples:
       | Name      | ContactEmail | ContactName |
