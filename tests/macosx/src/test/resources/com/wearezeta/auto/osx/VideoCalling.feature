@@ -1,6 +1,6 @@
-Feature: VideoCalling
+Feature: Video Calling
 
-  @videocalling @staging
+  @C354979 @videocalling @regression
   Scenario Outline: Verify I can put macbook into sleep after video call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
