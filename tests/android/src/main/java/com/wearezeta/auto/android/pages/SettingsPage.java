@@ -47,11 +47,6 @@ public class SettingsPage extends AndroidPage {
     private static final Function<Integer, String> idStrVerificationCodeDigitInput = idx ->
             String.format("et__verification_code__%s", idx);
 
-    private static final By idUsernameEdit = By.id("acet__change_username");
-
-    private static final Function<String, By> usernameEditWithValue = (expectedValue)
-            -> By.xpath(String.format("//*[@id='acet__change_username' and @value='%s']", expectedValue));
-
     public SettingsPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -158,23 +153,5 @@ public class SettingsPage extends AndroidPage {
         }
         Thread.sleep(1000);
         getElement(idVerificationCodeOKButton).click();
-    }
-
-    public boolean isUsernameEditVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idUsernameEdit);
-    }
-
-    public boolean isUsernameEditInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idUsernameEdit);
-    }
-
-    public boolean isUsernameEditVisible(String expectedValue) throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), usernameEditWithValue.apply(expectedValue));
-    }
-
-    public void enterNewUsername(String username) throws Exception {
-        WebElement edit = getElement(idUsernameEdit);
-        edit.clear();
-        edit.sendKeys(username);
     }
 }

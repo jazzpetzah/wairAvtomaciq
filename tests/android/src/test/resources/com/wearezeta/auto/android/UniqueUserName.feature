@@ -219,3 +219,24 @@ Feature: Unique Username
     Examples:
       | Name      |
       | user1Name |
+
+  @C352678 @staging
+  Scenario Outline: Verify username settings allows to specify only correct value
+    Given There is 1 user where <Name> is me without unique user name
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Unique Username Takeover page
+    Given I tap Choose Your Own button on Unique Username Takeover page
+    When I see username edit field on Settings page
+    Then I enter new username on Settings page, according to datatable
+      | UsernameTyped             | IsShownAsCorrect |
+      | aabbcc1234567890          | True             |
+      | aabbccCyrillicМоёИмя      | False            |
+      | aabbccArabicاسمي          | False            |
+      | aabbccChinese我的名字         | False            |
+      | aabbccSpecialChars%^&@#$  | False            |
+      | aabbccLong123456789012345 | False            |
+
+    Examples:
+      | Name      |
+      | user1Name |

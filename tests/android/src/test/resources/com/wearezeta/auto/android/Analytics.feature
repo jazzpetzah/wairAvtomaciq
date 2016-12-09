@@ -16,7 +16,10 @@ Feature: Analytics
     And I tap Take Photo button on Take Picture view
     And I tap Confirm button on Take Picture view
     Then I verify that <LogType> log contains string "registration.added_photo"
-    And I see Conversations list with no conversations
+    When I see Unique Username Takeover page
+    And I see username on Unique Username Takeover page
+    And I tap Keep This One button on Unique Username Takeover page
+    Then I see Conversations list with no conversations
 
     Examples:
       | Name      | LogType   |

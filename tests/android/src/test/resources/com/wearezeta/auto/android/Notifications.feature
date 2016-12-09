@@ -11,6 +11,9 @@ Feature: Notifications
     Given I select Camera as picture source
     Given I tap Take Photo button on Take Picture view
     Given I tap Confirm button on Take Picture view
+    Given I see Unique Username Takeover page
+    Given I see username on Unique Username Takeover page
+    Given I tap Keep This One button on Unique Username Takeover page
     Given User <Name> is me
     Given There is 1 additional user
     Given Myself is connected to <Contact>

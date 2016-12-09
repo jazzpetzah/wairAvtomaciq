@@ -142,18 +142,15 @@ public class SingleUserPopoverPageSteps {
 
     @Then("^I( do not)? see Mail of user (.*) on Single Participant popover$")
     public void ISeeMailOfUser(String not, String userAlias) throws Exception {
+        final SingleUserPopoverContainer singleUserPopover = context.getPagesCollection().getPage(
+                SingleUserPopoverContainer.class);
         if (not == null) {
             ClientUser user = context.getUserManager().findUserBy(userAlias, FindBy.NAME_ALIAS);
-            assertThat(
-                    context.getPagesCollection()
-                            .getPage(SingleUserPopoverContainer.class)
-                            .getUserMail().toLowerCase(),
-                    equalTo(user.getEmail()));
+            assertThat(singleUserPopover.getUserMail().toLowerCase(), equalTo(user.getEmail()));
         } else {
-            assertThat(
-                    context.getPagesCollection().getPage(
-                            SingleUserPopoverContainer.class).getUserMail(),
-                    equalTo(""));
+            if (singleUserPopover.isUserMailVisible()) {
+                assertThat(singleUserPopover.getUserMail(), equalTo(""));
+            }
         }
     }
 

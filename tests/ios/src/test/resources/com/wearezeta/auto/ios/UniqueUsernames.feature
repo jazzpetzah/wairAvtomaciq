@@ -86,7 +86,7 @@ Feature: Unique Usernames
       | Name      | Contact1WithABEmail | Contact1ABName | Contact1Email | Contact2WithABPhoneNumber | Contact2ABName | Contact2PhoneNumber | Contact3WithUniqueUserName | Contact3UniqueUserName | Contact4WithCommonFriends | Contact5WithSameNameInAB | Contact5Email | Contact6Common |
       | user1Name | user2Name           | user2ABName    | user2Email    | user3Name                 | user3ABName    | user3PhoneNumber    | user4Name                  | user4UniqueUsername    | user5Name                 | user6Name                | user6Email    | user7Name      |
 
-  @C352039 @staging @fastLogin
+  @C352039 @regression @fastLogin
   Scenario Outline: Verify impossibility to save incorrect username
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -176,7 +176,7 @@ Feature: Unique Usernames
       | Name      | Contact1WithABEmail | Contact1ABName | Contact1Email | Contact2WithABPhoneNumber | Contact2ABName | Contact2PhoneNumber | Contact3WithUniqueUserName | Contact3UniqueUserName | Contact4WithCommonFriends | Contact5WithSameNameInAB | Contact5Email | Contact6Common |
       | user1Name | user2Name           | user2ABName    | user2Email    | user3Name                 | user3ABName    | user3PhoneNumber    | user4Name                  | user4UniqueUsername    | user5Name                 | user6Name                | user6Email    | user7Name      |
 
-  @C352036 @staging @fastLogin
+  @C352036 @regression @fastLogin
   Scenario Outline: Verify setting correct user name
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -200,7 +200,7 @@ Feature: Unique Usernames
       | Name      | RegularLength | MinLength | MaxLength |
       | user1Name | 6             | 2         | 21        |
 
-  @C352027 @staging @fastLogin
+  @C352027 @regression @fastLogin
   Scenario Outline: Verify Settings are opened on choosing generating your own username
     Given There is 1 user
     Given User <Name> is me
@@ -219,7 +219,7 @@ Feature: Unique Usernames
       | Name      | NewNameLength |
       | user1Name | 8             |
 
-  @C352042 @staging @fastLogin
+  @C352042 @regression @fastLogin
   Scenario Outline: Verify username is unique
     Given There are 2 users
     Given User <Name> is me
@@ -289,7 +289,7 @@ Feature: Unique Usernames
       | Name      | Contact1WithABEmail | Contact1ABName | Contact1Email | Contact2WithABPhoneNumber | Contact2ABName | Contact2PhoneNumber | Contact3WithUniqueUserName | Contact3UniqueUserName | Contact4WithCommonFriends | Contact5WithSameNameInAB | Contact5Email | Contact6Common |
       | user1Name | user2Name           | user2ABName    | user2Email    | user3Name                 | user3ABName    | user3PhoneNumber    | user4Name                  | user4UniqueUsername    | user5Name                 | user6Name                | user6Email    | user7Name      |
 
-  @C352666 @staging @fastLogin
+  @C352666 @regression @fastLogin
   Scenario Outline: Verify search is not case sensitive
     Given There are 2 users where <Name> is me
     Given User <Contact> sets the unique username
@@ -307,7 +307,7 @@ Feature: Unique Usernames
       | Name      | Contact   | ContactUniqueUserName |
       | user1Name | user2Name | user2UniqueUsername   |
 
-  @C352054 @staging @fastLogin
+  @C352054 @regression @fastLogin
   Scenario Outline: Verify search by full and partial user name
     Given There are 2 users where <Name> is me
     Given User <Contact> sets the unique username
@@ -366,7 +366,7 @@ Feature: Unique Usernames
       | Name      | Contact1WithABEmail | Contact1ABName | Contact1UniqueUsername | Contact1Email | Contact2WithABPhoneNumber | Contact2ABName | Contact2PhoneNumber | Contact3WithUniqueUserName | Contact3UniqueUserName | Contact4WithCommonFriends | Contact5WithSameNameInAB | Contact5Email | Contact6Common | Contact7WoCF |
       | user1Name | user2Name           | user2ABName    | user2UniqueUsername    | user2Email    | user3Name                 | user3ABName    | user3PhoneNumber    | user4Name                  | user4UniqueUsername    | user5Name                 | user6Name                | user6Email    | user7Name      | user8Name    |
 
-  @C352029 @staging @fastLogin
+  @C352029 @regression @fastLogin
   Scenario Outline: Verify autogeneration of a username for an existing user (different scenarios)
     Given There is 1 user
     Given User <NameAlias> is me
