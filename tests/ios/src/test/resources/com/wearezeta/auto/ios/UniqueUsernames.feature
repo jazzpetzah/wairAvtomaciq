@@ -332,7 +332,7 @@ Feature: Unique Usernames
     Given Myself is connected to <Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact5WithSameNameInAB>,<Contact6Common>,<Contact7WoCF>
     Given User <Contact3WithUniqueUserName> sets the unique username
     Given User <Contact1WithABEmail> sets the unique username
-    Given <Contact6Common> is connected to <Contact4WithCommonFriends>,<Contact1WithABEmail>,<Contact2WithABPhoneNumber>
+    Given <Contact6Common> is connected to <Contact4WithCommonFriends>,<Contact1WithABEmail>
     Given I minimize Wire
     Given I install Address Book Helper app
     Given I launch Address Book Helper app
