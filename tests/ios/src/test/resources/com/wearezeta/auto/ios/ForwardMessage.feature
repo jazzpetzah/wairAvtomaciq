@@ -114,7 +114,7 @@ Feature: Forward Message
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3name |
 
-  @C345373 @regression @fastLogin @torun
+  @C345373 @regression @fastLogin
   Scenario Outline: Verify forwarding someone else audio message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
