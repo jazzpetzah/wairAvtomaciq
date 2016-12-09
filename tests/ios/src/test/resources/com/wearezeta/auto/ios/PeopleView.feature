@@ -57,8 +57,6 @@ Feature: People View
     And I open group conversation details
     And I tap Open Menu button on Group info page
     And I tap Leave conversation action button
-    # Wait for animation
-    And I wait for 3 seconds
     And I confirm Leave conversation action
     And I open archived conversations
     And I tap on group chat with name <GroupChatName>
@@ -136,8 +134,6 @@ Feature: People View
     And I select participant <GroupCreator> on Group info page
     And I see name "<GroupCreator>" on Group participant profile page
     And I tap X button on Group participant profile page
-    # Wait for animation
-    And I wait for 2 seconds
     And I select participant <NonConnectedContact> on Group info page
     Then I see name "<NonConnectedContact>" on Group participant Pending outgoing connection page
 
@@ -474,8 +470,6 @@ Feature: People View
     And I open group conversation details
     And I tap Open Menu button on Group info page
     And I tap Leave conversation action button
-    # Wait for animation
-    And I wait for 3 seconds
     And I confirm Leave conversation action
     And I open archived conversations
     And I see conversation <GroupChatName> in conversations list

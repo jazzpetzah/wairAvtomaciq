@@ -63,8 +63,6 @@ Feature: Search
     And I see top people list on Search UI page
     Then I tap on first 2 top connections
     When I tap Create conversation action button on Search UI page
-    # Wait for animation
-    And I wait for 3 seconds
     And I see conversation view page
     And I open group conversation details
     Then I see "<ParticipantsCount> people" label on Group info page
@@ -111,8 +109,6 @@ Feature: Search
     And I type "<Contact>" in Search UI input field
     And I tap on conversation <Contact> in search result
     And I tap Create conversation action button on Search UI page
-    # Wait for animation
-    And I wait for 3 seconds
     Then I see group conversation with users <Contact>,<Contact2>
 
     Examples:

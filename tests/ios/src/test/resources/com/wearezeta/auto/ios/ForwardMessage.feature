@@ -132,8 +132,6 @@ Feature: Forward Message
     And I wait for 5 seconds
     And I long tap on audio message placeholder in conversation view
     And I tap on Forward badge item
-    # Wait for animation
-    And I wait for 2 seconds
     And I select <Contact2> conversation on Forward page
     And I tap Send button on Forward page
     Then I see conversation with user <Contact1>
