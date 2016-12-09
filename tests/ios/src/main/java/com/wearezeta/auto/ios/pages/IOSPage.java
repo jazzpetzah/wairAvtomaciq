@@ -19,6 +19,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.IOSDistributable;
 import com.wearezeta.auto.common.driver.device_helpers.IOSSimulatorHelpers;
 import io.appium.java_client.MobileBy;
+import javafx.print.PageOrientation;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
@@ -381,6 +382,13 @@ public abstract class IOSPage extends BasePage {
     }
 
     protected void doubleTapAt(Optional<WebElement> el, int percentX, int percentY) throws Exception {
+        if (getDriver().getOrientation() == ScreenOrientation.LANDSCAPE) {
+            // FIXME: Remove the workaround after landscape orientation is respected by XCTest
+            if (el.isPresent() && el.get() instanceof FBElement) {
+                ((FBElement)(el.get())).doubleTap();
+                return;
+            }
+        }
         final Point tapPoint = calculateTapCoordinates(el, percentX, percentY);
         getDriver().doubleTapScreenAt(tapPoint.getX(), tapPoint.getY());
     }
@@ -391,6 +399,13 @@ public abstract class IOSPage extends BasePage {
 
     protected void longTapAt(Optional<WebElement> el, int percentX, int percentY, double durationSeconds)
             throws Exception {
+        if (getDriver().getOrientation() == ScreenOrientation.LANDSCAPE) {
+            // FIXME: Remove the workaround after landscape orientation is respected by XCTest
+            if (el.isPresent() && el.get() instanceof FBElement) {
+                ((FBElement)(el.get())).longTap();
+                return;
+            }
+        }
         final Point tapPoint = calculateTapCoordinates(el, percentX, percentY);
         getDriver().longTapScreenAt(tapPoint.getX(), tapPoint.getY(), durationSeconds);
     }
@@ -519,12 +534,14 @@ public abstract class IOSPage extends BasePage {
         return this.getElement(locator, message, DriverUtils.getDefaultLookupTimeoutSeconds());
     }
 
-    private static final long ELEMENT_QUERY_DELAY_MS = 1000;
+    private static final double MAX_EXISTENCE_DELAY_MS = 3000.0;
+    private static final long MIN_EXISTENCE_ITERATIONS_COUNT = 2;
 
     @Override
     protected WebElement getElement(By locator, String message, int timeoutSeconds) throws Exception {
         WebDriverException savedException;
         final long msStarted = System.currentTimeMillis();
+        int iterationNumber = 1;
         do {
             try {
                 final WebElement el = getDriver().findElement(locator);
@@ -537,8 +554,10 @@ public abstract class IOSPage extends BasePage {
                 log.debug(e.getMessage());
                 savedException = e;
             }
-            Thread.sleep(ELEMENT_QUERY_DELAY_MS);
-        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000);
+            Thread.sleep((long) (MAX_EXISTENCE_DELAY_MS / iterationNumber));
+            iterationNumber++;
+        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000 ||
+                iterationNumber <= MIN_EXISTENCE_ITERATIONS_COUNT);
         throw new IllegalStateException(message, savedException);
     }
 
@@ -548,6 +567,7 @@ public abstract class IOSPage extends BasePage {
 
     protected boolean isLocatorExist(By locator, int timeoutSeconds) throws Exception {
         final long msStarted = System.currentTimeMillis();
+        int iterationNumber = 1;
         do {
             try {
                 final WebElement el = getDriver().findElement(locator);
@@ -559,8 +579,10 @@ public abstract class IOSPage extends BasePage {
             } catch (WebDriverException e) {
                 log.debug(e.getMessage());
             }
-            Thread.sleep(ELEMENT_QUERY_DELAY_MS);
-        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000);
+            Thread.sleep((long) (MAX_EXISTENCE_DELAY_MS / iterationNumber));
+            iterationNumber++;
+        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000 ||
+                iterationNumber <= MIN_EXISTENCE_ITERATIONS_COUNT);
         return false;
     }
 
@@ -570,6 +592,7 @@ public abstract class IOSPage extends BasePage {
 
     protected boolean isLocatorDisplayed(By locator, int timeoutSeconds) throws Exception {
         final long msStarted = System.currentTimeMillis();
+        int iterationNumber = 1;
         do {
             try {
                 final WebElement el = getDriver().findElement(locator);
@@ -581,8 +604,10 @@ public abstract class IOSPage extends BasePage {
             } catch (WebDriverException e) {
                 log.debug(e.getMessage());
             }
-            Thread.sleep(ELEMENT_QUERY_DELAY_MS);
-        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000);
+            Thread.sleep((long) (MAX_EXISTENCE_DELAY_MS / iterationNumber));
+            iterationNumber++;
+        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000 ||
+                iterationNumber <= MIN_EXISTENCE_ITERATIONS_COUNT);
         return false;
     }
 
@@ -592,6 +617,7 @@ public abstract class IOSPage extends BasePage {
 
     protected boolean isLocatorInvisible(By locator, int timeoutSeconds) throws Exception {
         final long msStarted = System.currentTimeMillis();
+        int iterationNumber = 1;
         do {
             try {
                 final WebElement el = getDriver().findElement(locator);
@@ -603,8 +629,10 @@ public abstract class IOSPage extends BasePage {
             } catch (WebDriverException e) {
                 return true;
             }
-            Thread.sleep(ELEMENT_QUERY_DELAY_MS);
-        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000);
+            Thread.sleep((long) (MAX_EXISTENCE_DELAY_MS / iterationNumber));
+            iterationNumber++;
+        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000 ||
+                iterationNumber <= MIN_EXISTENCE_ITERATIONS_COUNT);
         return false;
     }
 
@@ -614,6 +642,7 @@ public abstract class IOSPage extends BasePage {
 
     protected boolean isElementInvisible(WebElement el, int timeoutSeconds) throws Exception {
         final long msStarted = System.currentTimeMillis();
+        int iterationNumber = 1;
         do {
             try {
                 if (!el.isDisplayed()) {
@@ -624,14 +653,17 @@ public abstract class IOSPage extends BasePage {
             } catch (WebDriverException e) {
                 return true;
             }
-            Thread.sleep(ELEMENT_QUERY_DELAY_MS);
-        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000);
+            Thread.sleep((long) (MAX_EXISTENCE_DELAY_MS / iterationNumber));
+            iterationNumber++;
+        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000 ||
+                iterationNumber <= MIN_EXISTENCE_ITERATIONS_COUNT);
         return false;
     }
 
     @Override
     protected Optional<WebElement> getElementIfDisplayed(By locator, int timeoutSeconds) throws Exception {
         final long msStarted = System.currentTimeMillis();
+        int iterationNumber = 1;
         do {
             try {
                 final WebElement el = getDriver().findElement(locator);
@@ -643,8 +675,10 @@ public abstract class IOSPage extends BasePage {
             } catch (WebDriverException e) {
                 log.debug(e.getMessage());
             }
-            Thread.sleep(ELEMENT_QUERY_DELAY_MS);
-        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000);
+            Thread.sleep((long) (MAX_EXISTENCE_DELAY_MS / iterationNumber));
+            iterationNumber++;
+        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000 ||
+                iterationNumber <= MIN_EXISTENCE_ITERATIONS_COUNT);
         return Optional.empty();
     }
 
@@ -656,6 +690,7 @@ public abstract class IOSPage extends BasePage {
     @Override
     protected Optional<WebElement> getElementIfExists(By locator, int timeoutSeconds) throws Exception {
         final long msStarted = System.currentTimeMillis();
+        int iterationNumber = 1;
         do {
             try {
                 final WebElement el = getDriver().findElement(locator);
@@ -667,8 +702,10 @@ public abstract class IOSPage extends BasePage {
             } catch (WebDriverException e) {
                 log.debug(e.getMessage());
             }
-            Thread.sleep(ELEMENT_QUERY_DELAY_MS);
-        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000);
+            Thread.sleep((long) (MAX_EXISTENCE_DELAY_MS / iterationNumber));
+            iterationNumber++;
+        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000 ||
+                iterationNumber <= MIN_EXISTENCE_ITERATIONS_COUNT);
         return Optional.empty();
     }
 
@@ -681,6 +718,7 @@ public abstract class IOSPage extends BasePage {
     protected List<WebElement> selectVisibleElements(By locator, int timeoutSeconds) throws Exception {
         final List<WebElement> result = new ArrayList<>();
         final long msStarted = System.currentTimeMillis();
+        int iterationNumber = 1;
         do {
             result.addAll(
                     getDriver().findElements(locator).stream().
@@ -689,8 +727,10 @@ public abstract class IOSPage extends BasePage {
             if (result.size() > 0) {
                 return result;
             }
-            Thread.sleep(ELEMENT_QUERY_DELAY_MS);
-        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000);
+            Thread.sleep((long) (MAX_EXISTENCE_DELAY_MS / iterationNumber));
+            iterationNumber++;
+        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000 ||
+                iterationNumber <= MIN_EXISTENCE_ITERATIONS_COUNT);
         return result;
     }
 

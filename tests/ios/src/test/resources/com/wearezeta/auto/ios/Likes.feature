@@ -123,7 +123,6 @@ Feature: Likes
     And I type the "<Text>" message
     And I tap Confirm button on Edit control
     Then I see last message in the conversation view is expected message <Text>
-    And I do not see Like icon in the conversation
     When I tap "<Text>" message in conversation view
     And I tap Like icon in the conversation
     Then I see the state of Like icon is not changed in the conversation

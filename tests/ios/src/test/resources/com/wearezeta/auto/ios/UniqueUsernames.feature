@@ -204,10 +204,11 @@ Feature: Unique Usernames
       | Name      | RegularLength | MinLength | MaxLength |
       | user1Name | 6             | 2         | 21        |
 
-  @C352027 @staging
+  @C352027 @staging @fastLogin
   Scenario Outline: Verify Settings are opened on choosing generating your own username
     Given There is 1 user
     Given User <Name> is me
+    Given I prepare Wire to perform fast log in by email as <Name>
     Given I sign in using my email or phone number
     When I tap Choose Yours button on Unique Username Takeover page
     Then I see Unique Username page
@@ -220,11 +221,12 @@ Feature: Unique Usernames
       | Name      | NewNameLength |
       | user1Name | 8             |
 
-  @C352042 @staging
+  @C352042 @staging @fastLogin
   Scenario Outline: Verify username is unique
     Given There are 2 users
     Given User <Name> is me
     Given User <Contact> changes the unique username to "<MyUniqueUsername>"
+    Given I prepare Wire to perform fast log in by email as <Name>
     Given I sign in using my email or phone number
     When I tap Choose Yours button on Unique Username Takeover page
     And I enter "<MyUniqueUsername>" name on Unique Username page
@@ -327,6 +329,43 @@ Feature: Unique Usernames
     Examples:
       | Name      | Contact   | ContactWithUniqueUserName |
       | user1Name | user2Name | user2UniqueUsername       |
+
+  @C352052 @addressbookStart @forceReset @staging
+  Scenario Outline: Verify search for connected users returns proper results
+    Given There are 8 users where <Name> is me
+    Given Myself is connected to <Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact5WithSameNameInAB>,<Contact6Common>,<Contact7WoCF>
+    Given User <Contact3WithUniqueUserName> sets the unique username
+    Given User <Contact1WithABEmail> sets the unique username
+    Given <Contact6Common> is connected to <Contact4WithCommonFriends>,<Contact1WithABEmail>,<Contact2WithABPhoneNumber>
+    Given I minimize Wire
+    Given I install Address Book Helper app
+    Given I launch Address Book Helper app
+    Given I add name <Contact1ABName> and email <Contact1Email> to Address Book
+    Given I add name <Contact2ABName> and phone <Contact2PhoneNumber> to Address Book
+    Given I add name <Contact5WithSameNameInAB> and email <Contact5Email> to Address Book
+    Given I restore Wire
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I wait until <Contact1WithABEmail> exists in backend search results
+    Given I wait until <Contact2WithABPhoneNumber> exists in backend search results
+    Given I wait until <Contact3WithUniqueUserName> exists in backend search results
+    Given I wait until <Contact4WithCommonFriends> exists in backend search results
+    Given I wait until <Contact5WithSameNameInAB> exists in backend search results
+    Given I wait until <Contact7WoCF> exists in backend search results
+    When I open search UI
+    And I accept alert if visible
+    Then I verify correct details are shown for the found users
+      | Name                         | Details                                                      |
+      | <Contact1WithABEmail>        | @<Contact1UniqueUsername> - <Contact1ABName> in Address Book |
+      | <Contact2WithABPhoneNumber>  | <Contact2ABName> in Address Book                             |
+      | <Contact3WithUniqueUserName> | @<Contact3UniqueUserName>                                    |
+      | <Contact4WithCommonFriends>  | 1 friend in common                                           |
+      | <Contact5WithSameNameInAB>   | in Address Book                                              |
+      | <Contact7WoCF>               |                                                              |
+
+    Examples:
+      | Name      | Contact1WithABEmail | Contact1ABName | Contact1UniqueUsername | Contact1Email | Contact2WithABPhoneNumber | Contact2ABName | Contact2PhoneNumber | Contact3WithUniqueUserName | Contact3UniqueUserName | Contact4WithCommonFriends | Contact5WithSameNameInAB | Contact5Email | Contact6Common | Contact7WoCF |
+      | user1Name | user2Name           | user2ABName    | user2UniqueUsername    | user2Email    | user3Name                 | user3ABName    | user3PhoneNumber    | user4Name                  | user4UniqueUsername    | user5Name                 | user6Name                | user6Email    | user7Name      | user8Name    |
 
   @C352029 @staging
   Scenario Outline: Verify autogeneration of a username for an existing user (different scenarios)

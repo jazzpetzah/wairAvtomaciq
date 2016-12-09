@@ -85,6 +85,32 @@ Feature: Usernames
       | Email      | Password      | NameAlias | Name         | Username    |
       | user1Email | user1Password | user1Name | Jack Johnson | jackjohnson |
 
+  @C352242 @usernames @staging
+  Scenario Outline: Verify it's possible to take over previously released username
+    Given There are 2 users where <Name> is me without unique username
+    Given <Contact> has unique username
+    Given I remember unique username of <Contact>
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+    And I am signed in properly
+    Then I see watermark
+    Then I see take over screen
+    And I see name <Name> on take over screen
+    When I click ChooseYourOwn button on take over screen
+    Then I see unique username starts with <Name> in account preferences
+    When I change my unique username to previously remembered unique username
+    Then I see hint message for unique username saying <TakenHint>
+    When I open account in preferences
+    Then I do not see unique username is the remembered one in account preferences
+    When User <Contact> changes his unique username to a random value
+    And I change my unique username to previously remembered unique username
+    When I open account in preferences
+    Then I see unique username is the remembered one in account preferences
+
+    Examples:
+      | Email      | Password      | Contact   | Name      | TakenHint     |
+      | user1Email | user1Password | user2Name | user1Name | Already taken |
+
   @C343176 @usernames @staging
   Scenario Outline: Verify Settings are opened on choosing generating your own username for existing user
     Given There are 2 users where <NameAlias> is me without unique username

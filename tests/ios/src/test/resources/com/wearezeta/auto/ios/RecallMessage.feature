@@ -206,7 +206,6 @@ Feature: Recall Message
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    #YouTube
     And I type the "<YouTubeLink>" message and send it
     Then I see media container in the conversation view
     And User <Contact> remembers the recent message from user Myself via device <HisDevice>
@@ -221,17 +220,19 @@ Feature: Recall Message
     And I do not see the conversation view contains message <YouTubeLink>
     And User <Contact> sees the recent message from user Myself via device <HisDevice> is changed in <Wait1> seconds
     And User Myself sees the recent message from user <Contact> via device <MySecondDevice> is changed in <Wait2> seconds
-    #SoundCloud
     When User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
+    # Wait for sync
+    And I wait for 5 seconds
     Then I see media container in the conversation view
     And User <Contact> remembers the recent message from user Myself via device <HisDevice>
     And User Myself remembers the recent message from user <Contact> via device <MySecondDevice>
     When User Myself deletes the recent message everywhere from user <Contact> via device <MySecondDevice>
+    # Wait for sync
+    And I wait for 3 seconds
     Then I do not see media container in the conversation view
     And I do not see the conversation view contains message <SoundCloudLink>
     And User <Contact> sees the recent message from user Myself via device <HisDevice> is changed in <Wait1> seconds
     And User Myself sees the recent message from user <Contact> via device <MySecondDevice> is changed in <Wait2> seconds
-    #Vimeo
     When User <Contact> sends encrypted message "<VimeoLink>" to user Myself
     # Wait for the preview to be generated
     And I wait for 5 seconds

@@ -69,9 +69,9 @@ public abstract class BaseUserDetailsOverlay extends BaseDetailsOverlay {
             case "name":
                 return xpathName;
             case "unique username":
-                return nameABName;
-            case "address book name":
                 return nameUniqueUsername;
+            case "address book name":
+                return nameABName;
             case "common friends count":
                 return nameCommonFriends;
             default:

@@ -21,6 +21,7 @@ Feature: Bring Your Friends
   Scenario Outline: Invite people when you have top people or search suggestions
     Given There is 2 user where <Name> is me
     Given Myself is connected to <Contact>
+    Given User Myself changes unique username to <Name>
     Given Contact Me sends message <Message> to user <Contact>
     Given Contact <Contact> sends message <Message> to user <Name>
     Given I switch to Sign In page

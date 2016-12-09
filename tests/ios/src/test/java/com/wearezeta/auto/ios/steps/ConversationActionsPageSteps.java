@@ -77,7 +77,6 @@ public class ConversationActionsPageSteps {
      * @param conversation conversation name
      * @throws Exception
      * @step. I see actions menu for (.*) conversation$
-     * [Ll]ist$
      */
     @And("^I see actions menu for (.*) conversation$")
     public void ISeeConversationNameInActionMenu(String conversation) throws Exception {

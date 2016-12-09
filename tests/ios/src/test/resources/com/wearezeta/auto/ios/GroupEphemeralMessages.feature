@@ -16,8 +16,6 @@ Feature: Group Ephemeral Messages
     And I accept alert if visible
     And I select the first picture from Keyboard Gallery
     Then I tap Confirm button on Picture preview page
-    # wait to make the transition and image arrival
-    And I wait for 3 seconds
     When I remember asset container state at cell 1
     And I wait for <Timeout> seconds
     Then I see asset container state is changed

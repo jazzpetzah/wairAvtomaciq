@@ -74,9 +74,8 @@ public class ConversationActionsPage extends IOSPage {
     }
 
     public boolean isVisibleForConversation(String conversation) throws Exception {
-        final By locator = MobileBy.AccessibilityId(conversation.toUpperCase());
-        return selectVisibleElements(locator).size() > 0;
-
+        final By locator = By.xpath(xpathStrMenuTitleByValue.apply(conversation));
+        return isLocatorDisplayed(locator);
     }
 
     public void declineAction(String actionName) throws Exception {

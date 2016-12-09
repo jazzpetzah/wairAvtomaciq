@@ -811,9 +811,7 @@ public class ConversationViewPage extends IOSPage {
         if (isDoubleTap) {
             dstElement.doubleTap();
         } else if (isLongTap) {
-            // FIXME: replace it after switch to Appium 1.6.2
-            // longTapAt(dstElement, 25, 50);
-            longClickAt(dstElement, 25, 50);
+            longTapAt(dstElement, 25, 50);
         } else {
             dstElement.click();
         }
