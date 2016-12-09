@@ -65,6 +65,10 @@ public abstract class AbstractPickUserPage extends AndroidPage {
         pickerSearch.sendKeys(text);
     }
 
+    public void clearTextInPeopleSearch() throws Exception {
+        getPickerEdit().clear();
+    }
+
     public boolean isPeopleSearchTextEmpty() throws Exception {
         final By locator = By.xpath(xpathStrSearchFieldByName.apply(""));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);

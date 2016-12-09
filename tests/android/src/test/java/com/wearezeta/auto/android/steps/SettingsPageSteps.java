@@ -10,6 +10,8 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class SettingsPageSteps {
@@ -128,7 +130,8 @@ public class SettingsPageSteps {
      * @step. ^I commit my new (name|email|phone number) "(.*)"( with password (.*))?$
      */
     @And("^I commit my new (name|email|phone number) \"(.*)\"( with password (.*))?$")
-    public void ICommitNewUSerName(String what, String newValue, String withPassword, String password) throws Exception {
+    public void ICommitNewUSerName(String what, String newValue, String withPassword, String password) throws
+            Exception {
         final ClientUser self = usrMgr.getSelfUserOrThrowError();
         password = withPassword != null ?
                 usrMgr.replaceAliasesOccurences(password, ClientUsersManager.FindBy.PASSWORD_ALIAS) : null;
@@ -174,5 +177,52 @@ public class SettingsPageSteps {
                 PhoneNumber.WIRE_COUNTRY_PREFIX, number.replace(PhoneNumber.WIRE_COUNTRY_PREFIX, "")
         ));
         getSettingsPage().commitPhoneNumberVerificationCode(activationCode);
+    }
+
+    /**
+     * Checks if username edit is visible or not on Settings page
+     *
+     * @param shouldNotSee null if should see
+     * @return true if visible
+     * @throws Exception
+     */
+    @And("^I(do not)? see username edit field on Settings page$")
+    public void iSeeUsernameEdit(String shouldNotSee) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue("Username edit is not visible", getSettingsPage().isUsernameEditVisible());
+        } else {
+            Assert.assertTrue("Username edit is visible", getSettingsPage().isUsernameEditInvisible());
+        }
+    }
+
+    /**
+     * Enter username and check if there is error with specific message
+     *
+     * @param usernameDatatable datatable (| UsernameTyped | DisplayedUsername |), that provides testing data
+     * @throws Exception
+     * @step. ^I enter new username on Settings page, according to datatable$
+     */
+    @Then("^I enter new username on Settings page, according to datatable$")
+    public void iEnterNewUsernameOnSettingsPageAccordingToDatatable(List<UsernameDatatable> usernameDatatable) throws
+            Exception {
+        List<String> assertionErrorList = new ArrayList<>();
+        for (UsernameDatatable datatableRow : usernameDatatable) {
+            getSettingsPage().enterNewUsername(datatableRow.usernameTyped);
+            String displayedUsername = datatableRow.displayedUsername;
+            if (!getSettingsPage().isUsernameEditVisible(displayedUsername)) {
+                assertionErrorList.add(String.format("No username edit is visible with value '%s'", displayedUsername));
+            }
+        }
+        if (!assertionErrorList.isEmpty()) {
+            if (assertionErrorList.size() == 1) {
+                Assert.fail(assertionErrorList.get(0));
+            }
+            Assert.fail(String.join("\n", assertionErrorList));
+        }
+    }
+
+    private class UsernameDatatable {
+        private String usernameTyped;
+        private String displayedUsername;
     }
 }
