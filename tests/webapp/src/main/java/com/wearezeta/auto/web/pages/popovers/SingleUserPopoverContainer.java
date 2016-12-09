@@ -156,6 +156,14 @@ public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 		return this.pendingParticipantInfoPopoverPage
 				.isPendingTextBoxDisplayed();
 	}
+        
+    public boolean isUserMailInvisible() throws Exception {
+        return getCurrentUserInfoPage().isMailInvisible();
+    }
+
+    public boolean isUserMailVisible() throws Exception {
+        return getCurrentUserInfoPage().isMailVisible();
+    }
 
 	public String getUserMail() throws Exception {
 		return getCurrentUserInfoPage().getMailText();
