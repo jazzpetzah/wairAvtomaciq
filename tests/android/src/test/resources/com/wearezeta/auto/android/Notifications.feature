@@ -103,7 +103,7 @@ Feature: Notifications
 
     Examples:
       | Name      | Contact   | Message |
-      | user1Name | user2Name | hello   |
+      | user1Name | user2Name | TestQA  |
 
   @C248344 @regression @GCMToken
   Scenario Outline: Verify unregister push token at backend and see if client can resume getting notifications by itself
@@ -129,7 +129,7 @@ Feature: Notifications
       | user1Name | user2Name | Yo      | Nop      |
 
   @C226044 @regression
-  Scenario Outline: When somebody likes my message - I receive notification (app in background)
+  Scenario Outline: When somebody likes my message - I receive notification and do not receive when muted(app in background)
     Given I am on Android 4.4 or better
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -139,9 +139,21 @@ Feature: Notifications
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
     When I type the message "<Message>" and send it by cursor Send button
+    And I navigate back from conversation
     And I minimize the application
     And User <Contact> likes the recent message from user Myself via device <ContactDevice>
     Then I see the message "<Notification>" in push notifications list
+    When I restore the application
+    And I swipe right on a <Contact>
+    And I select MUTE from conversation settings menu
+    And Conversation <Contact> is muted
+    # Wait for animation
+    And I wait for 2 seconds
+    And I tap on conversation name <Contact>
+    And I type the message "<Message>" and send it by cursor Send button
+    And I minimize the application
+    And User <Contact> likes the recent message from user Myself via device <ContactDevice>
+    Then I do not see the message "<Notification>" in push notifications list
 
     Examples:
       | Name      | Contact   | Message | ContactDevice | Notification |

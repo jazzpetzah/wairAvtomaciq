@@ -1640,7 +1640,7 @@ public class CommonAndroidSteps {
         commonSteps.ThereAreXAdditionalUsers(CURRENT_PLATFORM, count);
     }
 
-    private static final int PUSH_NOTIFICATION_TIMEOUT_SEC = 15;
+    private static final int PUSH_NOTIFICATION_TIMEOUT_SEC = 30;
 
     /**
      * Verify whether the particular string is present in Wire push messages
