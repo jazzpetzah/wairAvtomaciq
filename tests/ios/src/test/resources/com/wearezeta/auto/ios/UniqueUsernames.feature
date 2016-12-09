@@ -334,7 +334,7 @@ Feature: Unique Usernames
     Given User <NameAlias> is me
     Given User <NameAlias> changes name to <Name>
     Given I sign in using my email or phone number
-    And I see username <NameAlias> on Unique Username Takeover page
+    When I see username <NameAlias> on Unique Username Takeover page
     Then I see unique username starts with <UniqueName> on Unique Username Takeover page
 
     Examples:

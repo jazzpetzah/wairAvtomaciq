@@ -15,8 +15,14 @@ public class UniqueUsernameTakeoverPage extends IOSPage {
     private static final By nameTitleLabel = MobileBy.AccessibilityId(nameStrTitleLabel);
 
     private static final Function<String, String> xpathStrUniqueUsernameByName = name ->
-            String.format("//XCUIElementTypeStaticText[@name='%s']/preceding::XCUIElementTypeStaticText[1][@name='%s' or starts-with(@name,'%s')]",
+            String.format("//XCUIElementTypeStaticText[@name='%s']/preceding::XCUIElementTypeStaticText[1][@name='%s']",
                     nameStrTitleLabel, name, name);
+
+    private static final Function<String, String> xpathStrUniqueUsernameStartsByName = name ->
+            String.format("//XCUIElementTypeStaticText[@name='%s']/preceding::XCUIElementTypeStaticText[1][starts-with(@name," +
+                    "'%s')]",
+                    nameStrTitleLabel, name, name);
+
     private static final Function<String, String> xpathStrUsernameByName = name ->
             String.format("//XCUIElementTypeStaticText[@name='%s']/preceding::XCUIElementTypeStaticText[2][@name='%s']",
                     nameStrTitleLabel, name);
@@ -45,13 +51,15 @@ public class UniqueUsernameTakeoverPage extends IOSPage {
         getElement(locator).click();
     }
 
-    public boolean isUniqueUsernameVisible(String expectedUsername) throws Exception {
-        final By locator = By.xpath(xpathStrUniqueUsernameByName.apply(expectedUsername));
+    public boolean isUniqueUsernameVisible(Boolean startsWith, String expectedUsername) throws Exception {
+        final By locator = By.xpath((startsWith ? xpathStrUniqueUsernameStartsByName : xpathStrUniqueUsernameByName).apply
+                (expectedUsername));
         return isLocatorDisplayed(locator);
     }
 
-    public boolean isUniqueUsernameInvisible(String expectedUsername) throws Exception {
-        final By locator = By.xpath(xpathStrUniqueUsernameByName.apply(expectedUsername));
+    public boolean isUniqueUsernameInvisible(Boolean startsWith, String expectedUsername) throws Exception {
+        final By locator = By.xpath((startsWith ? xpathStrUniqueUsernameStartsByName : xpathStrUniqueUsernameByName).apply
+                (expectedUsername));
         return isLocatorInvisible(locator);
     }
 
