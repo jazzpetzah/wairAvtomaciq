@@ -3,7 +3,6 @@ package com.wearezeta.auto.web.pages.popovers;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.Future;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.locators.PopoverLocators;
@@ -78,6 +77,16 @@ abstract class AbstractUserInfoPopoverPage extends AbstractPopoverPage {
 	public BufferedImage getAvatar() throws Exception {
 		return this.getElementScreenshot(avatar).orElseThrow(IllegalStateException::new);
 	}
+       
+    public boolean isMailInvisible() throws Exception {
+        final By locator = By.xpath(PopoverLocators.GroupPopover.ParticipantInfoPage.xpathEmailLabel);
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
+    }
+    
+    public boolean isMailVisible() throws Exception {
+        final By locator = By.xpath(PopoverLocators.GroupPopover.ParticipantInfoPage.xpathEmailLabel);
+        return DriverUtils.waitUntilLocatorAppears(this.getDriver(), locator);
+    }
 
 	public String getMailText() {
 		return mail.getText();
