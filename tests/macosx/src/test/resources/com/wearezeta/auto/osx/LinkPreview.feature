@@ -16,8 +16,8 @@ Feature: Link Preview
     And I see 2 messages in conversation
 
     Examples:
-      | Login      | Password      | Name      | Contact   | Link              | LinkInPreview | LinkTitle                                                                            | LinkPreviewImage |
-      | user1Email | user1Password | user1Name | user2Name | https://wire.com/ | wire.com      | Wire · Modern communication, full privacy. For iOS, Android, macOS, Windows and web. | linkpreview0.png |
+      | Login      | Password      | Name      | Contact   | Link              | LinkInPreview | LinkTitle                                                                                   | LinkPreviewImage |
+      | user1Email | user1Password | user1Name | user2Name | https://wire.com/ | wire.com      | Wire · Modern communication, full privacy. For iOS, Android, macOS, Windows, Linux and web. | linkpreview0.png |
 
   @C169203 @smoke
   Scenario Outline: Verify you can see preview for received link in group
@@ -36,8 +36,8 @@ Feature: Link Preview
     And I see 2 messages in conversation
 
     Examples:
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  | Link              | LinkInPreview | LinkTitle                                                                            | LinkPreviewImage |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat | https://wire.com/ | wire.com      | Wire · Modern communication, full privacy. For iOS, Android, macOS, Windows and web. | linkpreview0.png |
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  | Link              | LinkInPreview | LinkTitle                                                                                   | LinkPreviewImage |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat | https://wire.com/ | wire.com      | Wire · Modern communication, full privacy. For iOS, Android, macOS, Windows, Linux and web. | linkpreview0.png |
 
 
   @C169205 @smoke
@@ -62,8 +62,8 @@ Feature: Link Preview
     And I see 1 messages in conversation
 
     Examples:
-      | Login      | Password      | Name      | Contact   | Link             | LinkInPreview | LinkTitle                                                                            | LinkPreviewImage |
-      | user1Email | user1Password | user1Name | user2Name | https://wire.com | wire.com      | Wire · Modern communication, full privacy. For iOS, Android, macOS, Windows and web. | linkpreview0.png |
+      | Login      | Password      | Name      | Contact   | Link             | LinkInPreview | LinkTitle                                                                                   | LinkPreviewImage |
+      | user1Email | user1Password | user1Name | user2Name | https://wire.com | wire.com      | Wire · Modern communication, full privacy. For iOS, Android, macOS, Windows, Linux and web. | linkpreview0.png |
 
   @C169208 @smoke
   Scenario Outline: Verify sending link previews for link mixed with text
@@ -81,5 +81,5 @@ Feature: Link Preview
     And I see text message <TextWithLink>
 
     Examples:
-      | Login      | Password      | Name      | Contact   | TextWithLink                                          | LinkInPreview | LinkTitle                                                                            | LinkPreviewImage |
-      | user1Email | user1Password | user1Name | user2Name | You can go to wire.com and download the best app ever | wire.com      | Wire · Modern communication, full privacy. For iOS, Android, macOS, Windows and web. | linkpreview0.png |
+      | Login      | Password      | Name      | Contact   | TextWithLink                                          | LinkInPreview | LinkTitle                                                                                   | LinkPreviewImage |
+      | user1Email | user1Password | user1Name | user2Name | You can go to wire.com and download the best app ever | wire.com      | Wire · Modern communication, full privacy. For iOS, Android, macOS, Windows, Linux and web. | linkpreview0.png |
