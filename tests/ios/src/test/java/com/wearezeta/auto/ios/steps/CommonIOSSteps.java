@@ -1006,10 +1006,24 @@ public class CommonIOSSteps {
         commonSteps.UserXIsMe(nameAlias);
     }
 
-    @Given("^(\\w+) waits? until (.*) exists in backend search results$")
+    @Given("^(\\w+) waits? until (\\w+) exists in backend search results$")
     public void UserWaitsUntilContactExistsInHisSearchResults(
             String searchByNameAlias, String query) throws Exception {
         commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
+    }
+
+    /**
+     * Wait until contact friends are calculated on the backend
+     *
+     * @step. ^(\w+) waits? until (\w+) has (\d+) common friends?$
+     * @param userAsAlias user name/alias who executes the search
+     * @param query user mame/alias who is supposed to have friends
+     * @param expectedFriendsCount the minimum expected friends count
+     * @throws Exception
+     */
+    @Given("^(\\w+) waits? until (\\w+) has (\\d+) common friends? on the backend$")
+    public void UserWaitForCommonFriends(String userAsAlias, String query, int expectedFriendsCount) throws Exception {
+        commonSteps.WaitUntilCommonContactsIsGenerated(userAsAlias, query, expectedFriendsCount);
     }
 
     /**

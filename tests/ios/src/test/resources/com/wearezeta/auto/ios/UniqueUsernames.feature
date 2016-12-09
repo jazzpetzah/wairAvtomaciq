@@ -45,6 +45,7 @@ Feature: Unique Usernames
     Given I wait until <Contact2WithABPhoneNumber> exists in backend search results
     Given I wait until <Contact3WithUniqueUserName> exists in backend search results
     Given I wait until <Contact4WithCommonFriends> exists in backend search results
+    Given I wait until <Contact4WithCommonFriends> has 1 common friend on the backend
     Given I wait until <Contact5WithSameNameInAB> exists in backend search results
     Given I open search UI
     Given I accept alert if visible
@@ -136,6 +137,7 @@ Feature: Unique Usernames
     Given I wait until <Contact2WithABPhoneNumber> exists in backend search results
     Given I wait until <Contact3WithUniqueUserName> exists in backend search results
     Given I wait until <Contact4WithCommonFriends> exists in backend search results
+    Given I wait until <Contact4WithCommonFriends> has 1 common friend on the backend
     Given I wait until <Contact5WithSameNameInAB> exists in backend search results
     Given I open search UI
     Given I accept alert if visible
@@ -252,6 +254,7 @@ Feature: Unique Usernames
     Given I restore Wire
     Given I sign in using my email or phone number
     Given I see conversations list
+    Given I wait until <Contact4WithCommonFriends> has 1 common friend on the backend
     When I tap on contact name <Contact1WithABEmail>
     And I open conversation details
     And I see name "<Contact1WithABEmail>" on Single user profile page
@@ -347,9 +350,12 @@ Feature: Unique Usernames
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I wait until <Contact1WithABEmail> exists in backend search results
+    Given I wait until <Contact1WithABEmail> has 1 common friend on the backend
     Given I wait until <Contact2WithABPhoneNumber> exists in backend search results
+    Given I wait until <Contact2WithABPhoneNumber> has 1 common friend on the backend
     Given I wait until <Contact3WithUniqueUserName> exists in backend search results
     Given I wait until <Contact4WithCommonFriends> exists in backend search results
+    Given I wait until <Contact4WithCommonFriends> has 1 common friend on the backend
     Given I wait until <Contact5WithSameNameInAB> exists in backend search results
     Given I wait until <Contact7WoCF> exists in backend search results
     When I open search UI
