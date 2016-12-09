@@ -32,12 +32,14 @@ public class UniqueUsernameTakeoverPageSteps {
      *
      * @param shouldNotSee     equals to null if the name should be visible
      * @param isUnique         if present then unique username will be verified otherwise the 'simple' one
+     * @param startsWith       equals to null if there should be complete name accordance
      * @param expectedUsername name, unique username or an alias
      * @throws Exception
-     * @step. ^I (do not )?see (unique )?username (.*) on Unique Username Takeover page$
+     * @step. ^I (do not )?see (unique )?username (starts with )?(.*) on Unique Username Takeover page
      */
-    @Then("^I (do not )?see (unique )?username (.*) on Unique Username Takeover page$")
-    public void ISeeUniqueUsername(String shouldNotSee, String isUnique, String expectedUsername) throws Exception {
+    @Then("^I (do not )?see (unique )?username (starts with )?(.*) on Unique Username Takeover page$")
+    public void ISeeUniqueUsername(String shouldNotSee, String isUnique, String startsWith, String expectedUsername) throws
+            Exception {
         if (isUnique == null) {
             expectedUsername = usrMgr.replaceAliasesOccurences(expectedUsername,
                     ClientUsersManager.FindBy.NAME_ALIAS);
@@ -49,20 +51,14 @@ public class UniqueUsernameTakeoverPageSteps {
                         getPage().isUsernameInvisible(expectedUsername));
             }
         } else {
-            if (expectedUsername.startsWith("@")) {
-                expectedUsername = "@" + usrMgr.replaceAliasesOccurences(
-                        expectedUsername.substring(1, expectedUsername.length()),
-                        ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
-            } else {
-                expectedUsername = usrMgr.replaceAliasesOccurences(expectedUsername,
-                        ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
-            }
+            expectedUsername = usrMgr.replaceAliasesOccurences(expectedUsername,
+                    ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
             if (shouldNotSee == null) {
                 Assert.assertTrue(String.format("Unique username '%s' is not visible", expectedUsername),
-                        getPage().isUniqueUsernameVisible(expectedUsername));
+                        getPage().isUniqueUsernameVisible(startsWith != null, expectedUsername));
             } else {
                 Assert.assertTrue(String.format("Unique username '%s' is not visible", expectedUsername),
-                        getPage().isUniqueUsernameInvisible(expectedUsername));
+                        getPage().isUniqueUsernameInvisible(startsWith != null, expectedUsername));
             }
         }
     }
