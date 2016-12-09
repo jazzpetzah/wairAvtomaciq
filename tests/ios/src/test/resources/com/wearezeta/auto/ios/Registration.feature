@@ -63,6 +63,7 @@ Feature: Registration
     And I wait for 5 seconds
     And I tap Share Contacts button on Share Contacts overlay
     And I accept alert if visible
+    And I tap Keep This One button on Unique Username Takeover page
     And I tap settings gear button
     And I select settings item Account
     And I select settings item Picture
@@ -82,6 +83,7 @@ Feature: Registration
     Given I accept alert if visible
     Given I tap Keep This One button
     When I tap Not Now button on Share Contacts overlay
+    And I tap Keep This One button on Unique Username Takeover page
     Then I see conversations list
     When I tap settings gear button
     And I select settings item Account
