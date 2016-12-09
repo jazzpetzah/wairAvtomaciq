@@ -10,8 +10,6 @@ Feature: Unique Usernames
     Given I accept alert if visible
     Given I tap Keep This One button
     Given I tap Not Now button on Share Contacts overlay
-    # Wait until takeover screen appears
-    Given I wait for 7 seconds
     When I see username <Name> on Unique Username Takeover page
     Then I see unique username <ExpectedUniqueName> on Unique Username Takeover page
     When I tap Keep This One button on Unique Username Takeover page
@@ -45,6 +43,7 @@ Feature: Unique Usernames
     Given I wait until <Contact2WithABPhoneNumber> exists in backend search results
     Given I wait until <Contact3WithUniqueUserName> exists in backend search results
     Given I wait until <Contact4WithCommonFriends> exists in backend search results
+    Given I wait until <Contact4WithCommonFriends> has 1 common friend on the backend
     Given I wait until <Contact5WithSameNameInAB> exists in backend search results
     Given I open search UI
     Given I accept alert if visible
@@ -55,30 +54,26 @@ Feature: Unique Usernames
     Then I see Address Book name "<Contact1ABName>" on Single user Pending incoming connection page
     And I do not see unique username on Single user Pending incoming connection page
     And I tap Ignore button on Single user Pending incoming connection page
-    When I clear search input on Search UI page
-    And I type "<Contact2WithABPhoneNumber>" in Search UI input field
+    When I type "<Contact2WithABPhoneNumber>" in cleared Search UI input field
     And I tap on conversation <Contact2WithABPhoneNumber> in search result
     Then I see name "<Contact2WithABPhoneNumber>" on Single user Pending incoming connection page
     And I see Address Book name "<Contact2ABName>" on Single user Pending incoming connection page
     And I do not see unique username on Single user Pending incoming connection page
     And I tap Ignore button on Single user Pending incoming connection page
-    When I clear search input on Search UI page
-    And I type "<Contact3WithUniqueUserName>" in Search UI input field
+    When I type "<Contact3WithUniqueUserName>" in cleared Search UI input field
     And I tap on conversation <Contact3WithUniqueUserName> in search result
     Then I see name "<Contact3WithUniqueUserName>" on Single user Pending incoming connection page
     And I see unique username "<Contact3UniqueUserName>" on Single user Pending incoming connection page
     And I do not see Address Book name on Single user Pending incoming connection page
     And I tap Ignore button on Single user Pending incoming connection page
-    When I clear search input on Search UI page
-    And I type "<Contact4WithCommonFriends>" in Search UI input field
+    When I type "<Contact4WithCommonFriends>" in cleared Search UI input field
     And I tap on conversation <Contact4WithCommonFriends> in search result
     Then I see name "<Contact4WithCommonFriends>" on Single user Pending incoming connection page
     And I do not see unique username on Single user Pending incoming connection page
     And I do not see Address Book name on Single user Pending incoming connection page
     And I see common friends count "1" on Single user Pending incoming connection page
     And I tap Ignore button on Single user Pending incoming connection page
-    When I clear search input on Search UI page
-    And I type "<Contact5WithSameNameInAB>" in Search UI input field
+    When I type "<Contact5WithSameNameInAB>" in cleared Search UI input field
     And I tap on conversation <Contact5WithSameNameInAB> in search result
     Then I see name "<Contact5WithSameNameInAB>" on Single user Pending incoming connection page
     And I do not see unique username on Single user Pending incoming connection page
@@ -136,6 +131,7 @@ Feature: Unique Usernames
     Given I wait until <Contact2WithABPhoneNumber> exists in backend search results
     Given I wait until <Contact3WithUniqueUserName> exists in backend search results
     Given I wait until <Contact4WithCommonFriends> exists in backend search results
+    Given I wait until <Contact4WithCommonFriends> has 1 common friend on the backend
     Given I wait until <Contact5WithSameNameInAB> exists in backend search results
     Given I open search UI
     Given I accept alert if visible
@@ -146,30 +142,26 @@ Feature: Unique Usernames
     Then I see Address Book name "<Contact1ABName>" on Single user Pending outgoing connection page
     And I do not see unique username on Single user Pending outgoing connection page
     And I tap Cancel Request button on Single user Pending outgoing connection page
-    When I clear search input on Search UI page
-    And I type "<Contact2WithABPhoneNumber>" in Search UI input field
+    When I type "<Contact2WithABPhoneNumber>" in cleared Search UI input field
     And I tap on conversation <Contact2WithABPhoneNumber> in search result
     Then I see name "<Contact2WithABPhoneNumber>" on Single user Pending outgoing connection page
     And I see Address Book name "<Contact2ABName>" on Single user Pending outgoing connection page
     And I do not see unique username on Single user Pending outgoing connection page
     And I tap Cancel Request button on Single user Pending outgoing connection page
-    When I clear search input on Search UI page
-    And I type "<Contact3WithUniqueUserName>" in Search UI input field
+    When I type "<Contact3WithUniqueUserName>" in cleared Search UI input field
     And I tap on conversation <Contact3WithUniqueUserName> in search result
     Then I see name "<Contact3WithUniqueUserName>" on Single user Pending outgoing connection page
     And I see unique username "<Contact3UniqueUserName>" on Single user Pending outgoing connection page
     And I do not see Address Book name on Single user Pending outgoing connection page
     And I tap Cancel Request button on Single user Pending outgoing connection page
-    When I clear search input on Search UI page
-    And I type "<Contact4WithCommonFriends>" in Search UI input field
+    When I type "<Contact4WithCommonFriends>" in cleared Search UI input field
     And I tap on conversation <Contact4WithCommonFriends> in search result
     Then I see name "<Contact4WithCommonFriends>" on Single user Pending outgoing connection page
     And I do not see unique username on Single user Pending outgoing connection page
     And I do not see Address Book name on Single user Pending outgoing connection page
     And I see common friends count "1" on Single user Pending outgoing connection page
     And I tap Cancel Request button on Single user Pending outgoing connection page
-    When I clear search input on Search UI page
-    And I type "<Contact5WithSameNameInAB>" in Search UI input field
+    When I type "<Contact5WithSameNameInAB>" in cleared Search UI input field
     And I tap on conversation <Contact5WithSameNameInAB> in search result
     Then I see name "<Contact5WithSameNameInAB>" on Single user Pending outgoing connection page
     And I do not see unique username on Single user Pending outgoing connection page
@@ -204,10 +196,11 @@ Feature: Unique Usernames
       | Name      | RegularLength | MinLength | MaxLength |
       | user1Name | 6             | 2         | 21        |
 
-  @C352027 @staging
+  @C352027 @staging @fastLogin
   Scenario Outline: Verify Settings are opened on choosing generating your own username
     Given There is 1 user
     Given User <Name> is me
+    Given I prepare Wire to perform fast log in by email as <Name>
     Given I sign in using my email or phone number
     When I tap Choose Yours button on Unique Username Takeover page
     Then I see Unique Username page
@@ -220,11 +213,12 @@ Feature: Unique Usernames
       | Name      | NewNameLength |
       | user1Name | 8             |
 
-  @C352042 @staging
+  @C352042 @staging @fastLogin
   Scenario Outline: Verify username is unique
     Given There are 2 users
     Given User <Name> is me
     Given User <Contact> changes the unique username to "<MyUniqueUsername>"
+    Given I prepare Wire to perform fast log in by email as <Name>
     Given I sign in using my email or phone number
     When I tap Choose Yours button on Unique Username Takeover page
     And I enter "<MyUniqueUsername>" name on Unique Username page
@@ -250,6 +244,7 @@ Feature: Unique Usernames
     Given I restore Wire
     Given I sign in using my email or phone number
     Given I see conversations list
+    Given I wait until <Contact4WithCommonFriends> has 1 common friend on the backend
     When I tap on contact name <Contact1WithABEmail>
     And I open conversation details
     And I see name "<Contact1WithABEmail>" on Single user profile page
@@ -300,8 +295,7 @@ Feature: Unique Usernames
     Given I accept alert if visible
     When I type "<ContactUniqueUserName>" in Search UI input field
     Then I see the conversation "<Contact>" exists in Search results
-    When I clear search input on Search UI page
-    And I type "<ContactUniqueUserName>" in Search UI input field in upper case
+    When I type "<ContactUniqueUserName>" in cleared Search UI input field in upper case
     Then I see the conversation "<Contact>" exists in Search results
 
     Examples:
@@ -320,8 +314,7 @@ Feature: Unique Usernames
     Given I tap input field on Search UI page
     When I type "<ContactWithUniqueUserName>" in Search UI input field
     Then I see the conversation "<Contact>" exists in Search results
-    And I clear search input on Search UI page
-    When I type first 6 letter of user name "<ContactWithUniqueUserName>" into Search UI input field
+    When I type first 6 letter of user name "<ContactWithUniqueUserName>" into cleared Search UI input field
     And I see the conversation "<Contact>" exists in Search results
 
     Examples:
@@ -345,9 +338,12 @@ Feature: Unique Usernames
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I wait until <Contact1WithABEmail> exists in backend search results
+    Given I wait until <Contact1WithABEmail> has 1 common friend on the backend
     Given I wait until <Contact2WithABPhoneNumber> exists in backend search results
+    Given I wait until <Contact2WithABPhoneNumber> has 1 common friend on the backend
     Given I wait until <Contact3WithUniqueUserName> exists in backend search results
     Given I wait until <Contact4WithCommonFriends> exists in backend search results
+    Given I wait until <Contact4WithCommonFriends> has 1 common friend on the backend
     Given I wait until <Contact5WithSameNameInAB> exists in backend search results
     Given I wait until <Contact7WoCF> exists in backend search results
     When I open search UI
@@ -364,3 +360,22 @@ Feature: Unique Usernames
     Examples:
       | Name      | Contact1WithABEmail | Contact1ABName | Contact1UniqueUsername | Contact1Email | Contact2WithABPhoneNumber | Contact2ABName | Contact2PhoneNumber | Contact3WithUniqueUserName | Contact3UniqueUserName | Contact4WithCommonFriends | Contact5WithSameNameInAB | Contact5Email | Contact6Common | Contact7WoCF |
       | user1Name | user2Name           | user2ABName    | user2UniqueUsername    | user2Email    | user3Name                 | user3ABName    | user3PhoneNumber    | user4Name                  | user4UniqueUsername    | user5Name                 | user6Name                | user6Email    | user7Name      | user8Name    |
+
+  @C352029 @staging @fastLogin
+  Scenario Outline: Verify autogeneration of a username for an existing user (different scenarios)
+    Given There is 1 user
+    Given User <NameAlias> is me
+    Given User <NameAlias> changes name to <Name>
+    Given I prepare Wire to perform fast log in by email as <Name>
+    Given I sign in using my email or phone number
+    When I see username <NameAlias> on Unique Username Takeover page
+    Then I see unique username starts with <UniqueName> on Unique Username Takeover page
+
+    Examples:
+      | NameAlias | Name        | UniqueName |
+      | user1Name | Tom         | @tom       |
+      | user1Name | Tom.Sawyer  | @tomsawyer |
+      | user1Name | Æéÿüíøšłźçñ | @eyuiszcn  |
+      | user1Name | Даша        | @dasa      |
+      | user1Name | داريا       | @darya     |
+      | user1Name | 明麗          | @mingli    |

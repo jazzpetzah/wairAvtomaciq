@@ -1,9 +1,16 @@
 package com.wearezeta.auto.web.steps;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebCommonUtils;
+import com.wearezeta.auto.web.pages.AccountPage;
 import com.wearezeta.auto.web.pages.TakeOverPage;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import cucumber.api.java.en.Given;
@@ -21,6 +28,8 @@ public class TakeOverPageSteps {
             .getSimpleName());
 
     private final TestContext context;
+
+    private String rememberedUsername = null;
 
     public TakeOverPageSteps() {
         this.context = new TestContext();
@@ -71,5 +80,58 @@ public class TakeOverPageSteps {
         name = context.getUserManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
         Assert.assertThat("Username on take over screen",
                 context.getPagesCollection().getPage(TakeOverPage.class).getUniqueUsername(), startsWith(name));
+    }
+
+    @Then("^I remember unique user name on take over screen$")
+    public void IRememberUniqueUsername() throws Throwable {
+        rememberedUsername = context.getPagesCollection().getPage(TakeOverPage.class).getUniqueUsername();
+    }
+
+    @Then("^I see remembered unique username in account preferences$")
+    public void ISeeRememberedUsername() throws Throwable {
+        if (rememberedUsername == null) {
+            throw new Exception("Please use step to remember unique username before this step");
+        }
+        String username = context.getPagesCollection().getPage(AccountPage.class).getUniqueUsername();
+        Assert.assertTrue("Username in settings("+ username +") not equal to username on take over screen("+ rememberedUsername +")",
+                username.equals(rememberedUsername));
+    }
+
+    @Then("^I see remembered unique username contains a random adjective and noun$")
+    public void ISeeUsernameContainsX() throws Exception {
+        if (rememberedUsername == null) {
+            throw new Exception("Please use step to remember unique username before this step");
+        }
+        String file = "adjectives.txt";
+        Scanner s = new Scanner(new File(WebCommonUtils.getFullFilePath(file)));
+        ArrayList<String> adjectiveList = new ArrayList<>();
+        while (s.hasNextLine()) {
+            adjectiveList.add(s.nextLine());
+        }
+        s.close();
+
+        file = "nouns.txt";
+        s = new Scanner(new File(WebCommonUtils.getFullFilePath(file)));
+        ArrayList<String> nounList = new ArrayList<>();
+        while (s.hasNextLine()) {
+            nounList.add(s.nextLine());
+        }
+        s.close();
+
+        int charPointer = 1;
+        String adjective = rememberedUsername.substring(0, charPointer);
+        while (!adjectiveList.contains(adjective)) {
+            charPointer ++;
+            if (charPointer > rememberedUsername.length()) {
+                throw new Exception("No such adjective: " + adjective);
+            }
+            adjective = rememberedUsername.substring(0, charPointer);
+        }
+        String noun = rememberedUsername.substring(charPointer, rememberedUsername.length());
+        if (!nounList.contains(noun)) {
+            throw new Exception("No such noun: " + noun);
+        }
+        Assert.assertTrue("Combination of adjective " + adjective + " and noun " + noun + " does not exist.",
+                rememberedUsername.equals(adjective.concat(noun)));
     }
 }

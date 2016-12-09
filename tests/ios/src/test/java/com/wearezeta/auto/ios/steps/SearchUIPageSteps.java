@@ -41,33 +41,36 @@ public class SearchUIPageSteps {
     /**
      * Type in text in Search input field
      *
-     * @param text    text to input
-     * @param isUpper null if should be input as it is
+     * @param text                   text to input
+     * @param isUpper                null if should be input as it is
+     * @param shouldClearBeforeInput equals to null if the field should not be cleared first
      * @throws Exception
-     * @step. ^I type "(.*)" in Search UI input field( in upper case)?$
+     * @step. ^I type "(.*)" in (cleared )?Search UI input field( in upper case)?$
      */
-    @When("^I type \"(.*)\" in Search UI input field( in upper case)?$")
-    public void ITypeInSearchInput(String text, String isUpper) throws Exception {
+    @When("^I type \"(.*)\" in (cleared )?Search UI input field( in upper case)?$")
+    public void ITypeInSearchInput(String text, String shouldClearBeforeInput, String isUpper) throws Exception {
         text = usrMgr.replaceAliasesOccurences(text, ClientUsersManager.FindBy.NAME_ALIAS);
         text = usrMgr.replaceAliasesOccurences(text, ClientUsersManager.FindBy.EMAIL_ALIAS);
         text = usrMgr.replaceAliasesOccurences(text, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
-        getSearchUIPage().typeText((isUpper == null) ? text : text.toUpperCase());
+        getSearchUIPage().typeText((isUpper == null) ? text : text.toUpperCase(),
+                shouldClearBeforeInput != null);
     }
 
     /**
      * Fills in search field pointed amount of letters from username/conversation starting from the first one
      *
-     * @param count amount of letters to be input
-     * @param name  user name
+     * @param count           amount of letters to be input
+     * @param name            user name
+     * @param shouldBeCleared equals to null oif the input field should not be cleaned before input
      * @throws Exception
      * @step. ^I type first (\d+) letters? of (?:user|conversation) name "(.*)" into Search UI input field$
      */
-    @When("^I type first (\\d+) letters? of (?:user|conversation) name \"(.*)\" into Search UI input field$")
-    public void ITypeXLettersIntoSearchInput(int count, String name) throws Exception {
+    @When("^I type first (\\d+) letters? of (?:user|conversation) name \"(.*)\" into (cleared )?Search UI input field$")
+    public void ITypeXLettersIntoSearchInput(int count, String name, String shouldBeCleared) throws Exception {
         name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
         name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
         if (name.length() > count) {
-            getSearchUIPage().typeText(name.substring(0, count));
+            getSearchUIPage().typeText(name.substring(0, count), shouldBeCleared != null);
         } else {
             throw new IllegalArgumentException(String.format("Name is only %s chars length. Put in step a less value",
                     name.length()));
@@ -186,17 +189,6 @@ public class SearchUIPageSteps {
     }
 
     /**
-     * Clear the text from search input field
-     *
-     * @throws Exception
-     * @step. ^I clear search input on Search UI page$
-     */
-    @And("^I clear search input on Search UI page$")
-    public void IClearSearchInput() throws Exception {
-        getSearchUIPage().clearSearchInput();
-    }
-
-    /**
      * Verify button visiblity on Search UI page
      *
      * @param shouldNotSee equals to null if the button should be visible
@@ -272,10 +264,10 @@ public class SearchUIPageSteps {
     /**
      * Verify avatars details for the found users
      *
-     * @step. ^I verify correct details are shown for the found users$
      * @param table data table containing 2 columns: user name/alias to search for and the
      *              expected user details string
      * @throws Exception
+     * @step. ^I verify correct details are shown for the found users$
      */
     @Then("^I verify correct details are shown for the found users$")
     public void IVerifyFoundUsersDetails(DataTable table) throws Exception {
@@ -287,8 +279,7 @@ public class SearchUIPageSteps {
             textToEnter = usrMgr.replaceAliasesOccurences(textToEnter, ClientUsersManager.FindBy.NAME_ALIAS);
             textToEnter = usrMgr.replaceAliasesOccurences(textToEnter,
                     ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
-            getSearchUIPage().clearSearchInput();
-            getSearchUIPage().typeText(textToEnter);
+            getSearchUIPage().typeText(textToEnter, i > 1);
             String expectedDetails = data.get(i).get(1);
             expectedDetails = usrMgr.replaceAliasesOccurences(expectedDetails, ClientUsersManager.FindBy.NAME_ALIAS);
             expectedDetails = usrMgr.replaceAliasesOccurences(expectedDetails,

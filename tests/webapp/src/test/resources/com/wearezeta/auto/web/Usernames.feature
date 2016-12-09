@@ -196,13 +196,13 @@ Feature: Usernames
     Then I see unique username starts with <Username> in account preferences
 
     Examples:
-      | Email      | Password      | NameAlias | Name         | Username     |
-      | user1Email | user1Password | user1Name | Jack         | jack         |
-      | user1Email | user1Password | user1Name | Jack.Wireson | jackwireson  |
-      | user1Email | user1Password | user1Name | Æéÿüíøšłźçñ  | aeeyuioslzcn |
-      | user1Email | user1Password | user1Name | Даша         | dasha        |
-      | user1Email | user1Password | user1Name |   داريا      | darya        |
-      | user1Email | user1Password | user1Name | 明麗          | mengli       |
+      | Email      | Password      | NameAlias | Name         | Username      |
+      | user1Email | user1Password | user1Name | Jack         | jack          |
+      | user1Email | user1Password | user1Name | Jack.Wireson | jackwireson   |
+      | user1Email | user1Password | user1Name | Æéÿüíøšłźçñ  | aeeyueioslzcn |
+      | user1Email | user1Password | user1Name | Даша         | dasha         |
+      | user1Email | user1Password | user1Name |   داريا      | darya         |
+      | user1Email | user1Password | user1Name | Jack😼        | jack          |
 
   @C352080 @staging @useSpecialEmail @usernames
   Scenario Outline: Verify deleting an account release a username
@@ -238,7 +238,7 @@ Feature: Usernames
     Examples:
       | Email      | Password      | Name      | Error                                     | UserName      | Name2     | Email2     |
       | user1Email | user1Password | user1Name | Please verify your details and try again. | torelease1086 | user2Name | user2Email |
-
+    
   @C345365 @usernames @staging
   Scenario Outline: Verify new username is synched across the devices
     Given There are 2 users where <NameAlias> is me
@@ -259,4 +259,25 @@ Feature: Usernames
     Examples:
       | Email      | Password      | NameAlias |
       | user1Email | user1Password | user1Name |
+
+  @C352081 @usernames @staging
+  Scenario Outline: Verify autogeneration of a username for a user with emoji in name
+    Given There is 1 user where <NameAlias> is me without unique username
+    Given User <NameAlias> changes name to <Name>
+    Given I switch to Sign In page
+    Given I Sign in using login <Email> and password <Password>
+    Given I am signed in properly
+    When I see take over screen
+    And I see name <NameAlias> on take over screen
+    Then I remember unique user name on take over screen
+    And I see remembered unique username contains a random adjective and noun
+    When I click TakeThisOne button on take over screen
+    And I wait for 3 seconds
+    And I open preferences by clicking the gear button
+    Then I see remembered unique username in account preferences
+
+    Examples:
+      | Email      | Password      | NameAlias | Name    |
+      | user1Email | user1Password | user1Name | 😼      |
+      | user1Email | user1Password | user1Name | 明麗    |
 
