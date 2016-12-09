@@ -305,8 +305,8 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
-    Given I see conversations list
     Given User <Name> sends 1 encrypted message to user <Contact1>
+    Given I see conversations list
     When I swipe right on a <Contact1>
     And I tap Delete conversation action button
     And I confirm Delete conversation action
