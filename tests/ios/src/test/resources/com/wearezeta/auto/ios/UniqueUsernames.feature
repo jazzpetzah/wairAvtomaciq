@@ -425,3 +425,17 @@ Feature: Unique Usernames
       | Name      | Contact1WithABEmail | Contact1ABName | Contact1UniqueUsername | Contact1Email | Contact2WithABPhoneNumber | Contact2ABName | Contact2PhoneNumber | Contact3WithUniqueUserName | Contact3UniqueUserName | Contact4WithCommonFriends | Contact5WithSameNameInAB | Contact5Email | Contact6Common | Contact7WoCF |
       | user1Name | user2Name           | user2ABName    | user2UniqueUsername    | user2Email    | user3Name                 | user3ABName    | user3PhoneNumber    | user4Name                  | user4UniqueUsername    | user5Name                 | user6Name                | user6Email    | user7Name      | user8Name    |
 
+  @C352025 @staging @fastLogin
+  Scenario Outline: Verify take over screen doesn't go away on app killing / reload
+    Given There is 1 user
+    Given User <Name> is me
+    Given I prepare Wire to perform fast log in by email as <Name>
+    Given I sign in using my email or phone number
+    Given I see username <Name> on Unique Username Takeover page
+    When I restart Wire
+    And I accept alert if visible
+    Then I see username <Name> on Unique Username Takeover page
+
+    Examples:
+      | Name      |
+      | user1Name |
