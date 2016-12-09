@@ -16,7 +16,7 @@ public class UniqueUsernamePage extends IOSPage {
     private static final By namePageHeader = MobileBy.AccessibilityId("Username");
     private static final By nameSaveButton = MobileBy.AccessibilityId("Save");
     private static final By nameUniqueUsernameInput = MobileBy.AccessibilityId("handleTextField");
-    private static final Function<String, String> xpathStrErrorLabelByText = text ->
+    private static final Function<String, String> xpathStrErrorLabelByStartWithText = text ->
             String.format("//XCUIElementTypeStaticText[starts-with(@value,'%s')]", text);
 
     public UniqueUsernamePage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
@@ -61,7 +61,7 @@ public class UniqueUsernamePage extends IOSPage {
     }
 
     public boolean isNameInputEmpty() throws Exception {
-        return getNameInputValue() == null;
+        return (getNameInputValue() == null || getNameInputValue().equals(FBDriverAPI.NULL_VALUE));
     }
 
     public boolean isPageHeaderVisible() throws Exception {
@@ -69,7 +69,7 @@ public class UniqueUsernamePage extends IOSPage {
     }
 
     public boolean isErrorLabelVisible(String expectedLabel) throws Exception {
-        final By locator = By.xpath(xpathStrErrorLabelByText.apply(expectedLabel));
+        final By locator = By.xpath(xpathStrErrorLabelByStartWithText.apply(expectedLabel));
         return isLocatorDisplayed(locator);
     }
 }
