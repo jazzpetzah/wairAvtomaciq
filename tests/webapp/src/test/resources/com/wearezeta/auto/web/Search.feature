@@ -106,7 +106,7 @@ Feature: Search
     And I am signed in properly
     And I open search by clicking the people button
     And I see Search is opened
-    And I type <Login2> in search field of People Picker
+    And I type <Name2> in search field of People Picker
     Then I see user <Name2> found in People Picker
     When I click on not connected user <Name2> found in People Picker
     And I see Connect To popover
