@@ -17,7 +17,7 @@ public class UniqueUsernamePage extends IOSPage {
     private static final By nameSaveButton = MobileBy.AccessibilityId("Save");
     private static final By nameUniqueUsernameInput = MobileBy.AccessibilityId("handleTextField");
     private static final Function<String, String> xpathStrErrorLabelByText = text ->
-            String.format("//XCUIElementTypeStaticText[@value='%s']", text);
+            String.format("//XCUIElementTypeStaticText[starts-with(@value,'%s')]", text);
 
     public UniqueUsernamePage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
