@@ -38,17 +38,16 @@ public class UniqueUsernameTakeoverPageSteps {
      * @step. ^I (do not )?see (unique )?username (starts with )?(.*) on Unique Username Takeover page
      */
     @Then("^I (do not )?see (unique )?username (starts with )?(.*) on Unique Username Takeover page$")
-    public void ISeeUniqueUsername(String shouldNotSee, String isUnique, String startsWith, String expectedUsername) throws
-            Exception {
+    public void ISeeUniqueUsername(String shouldNotSee, String isUnique, String startsWith, String expectedUsername)
+            throws Exception {
         if (isUnique == null) {
-            expectedUsername = usrMgr.replaceAliasesOccurences(expectedUsername,
-                    ClientUsersManager.FindBy.NAME_ALIAS);
+            expectedUsername = usrMgr.replaceAliasesOccurences(expectedUsername, ClientUsersManager.FindBy.NAME_ALIAS);
             if (shouldNotSee == null) {
                 Assert.assertTrue(String.format("Username '%s' is not visible", expectedUsername),
-                        getPage().isUsernameVisible(expectedUsername));
+                        getPage().isUsernameVisible(startsWith != null, expectedUsername));
             } else {
                 Assert.assertTrue(String.format("Username '%s' should not be visible", expectedUsername),
-                        getPage().isUsernameInvisible(expectedUsername));
+                        getPage().isUsernameInvisible(startsWith != null, expectedUsername));
             }
         } else {
             expectedUsername = usrMgr.replaceAliasesOccurences(expectedUsername,
