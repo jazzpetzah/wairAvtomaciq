@@ -35,9 +35,10 @@ public abstract class BaseUserDetailsOverlay extends BaseDetailsOverlay {
     private static final By nameCommonFriends = nameABName;
 
     private static final Function<String, String> xpathStrUniqueUsernameByUsername = username ->
-            String.format("//XCUIElementTypeStaticText[@name='handle' and @value='%s']",
+            String.format("//XCUIElementTypeStaticText[(@name='username' or @name='handle') and @value='%s']",
                     username.startsWith("@") ? username : ("@" + username));
-    private static final By nameUniqueUsername = MobileBy.AccessibilityId("handle");
+    private static final By xpathUniqueUsername =
+            By.xpath("//XCUIElementTypeStaticText[@name='username' or @name='handle'");
 
     public BaseUserDetailsOverlay(Future<ZetaIOSDriver> driver) throws Exception {
         super(driver);
@@ -69,7 +70,7 @@ public abstract class BaseUserDetailsOverlay extends BaseDetailsOverlay {
             case "name":
                 return xpathName;
             case "unique username":
-                return nameUniqueUsername;
+                return xpathUniqueUsername;
             case "address book name":
                 return nameABName;
             case "common friends count":
