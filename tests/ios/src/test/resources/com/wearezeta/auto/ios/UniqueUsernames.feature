@@ -54,30 +54,26 @@ Feature: Unique Usernames
     Then I see Address Book name "<Contact1ABName>" on Single user Pending incoming connection page
     And I do not see unique username on Single user Pending incoming connection page
     And I tap Ignore button on Single user Pending incoming connection page
-    When I clear search input on Search UI page
-    And I type "<Contact2WithABPhoneNumber>" in Search UI input field
+    When I type "<Contact2WithABPhoneNumber>" in cleared Search UI input field
     And I tap on conversation <Contact2WithABPhoneNumber> in search result
     Then I see name "<Contact2WithABPhoneNumber>" on Single user Pending incoming connection page
     And I see Address Book name "<Contact2ABName>" on Single user Pending incoming connection page
     And I do not see unique username on Single user Pending incoming connection page
     And I tap Ignore button on Single user Pending incoming connection page
-    When I clear search input on Search UI page
-    And I type "<Contact3WithUniqueUserName>" in Search UI input field
+    When I type "<Contact3WithUniqueUserName>" in cleared Search UI input field
     And I tap on conversation <Contact3WithUniqueUserName> in search result
     Then I see name "<Contact3WithUniqueUserName>" on Single user Pending incoming connection page
     And I see unique username "<Contact3UniqueUserName>" on Single user Pending incoming connection page
     And I do not see Address Book name on Single user Pending incoming connection page
     And I tap Ignore button on Single user Pending incoming connection page
-    When I clear search input on Search UI page
-    And I type "<Contact4WithCommonFriends>" in Search UI input field
+    When I type "<Contact4WithCommonFriends>" in cleared Search UI input field
     And I tap on conversation <Contact4WithCommonFriends> in search result
     Then I see name "<Contact4WithCommonFriends>" on Single user Pending incoming connection page
     And I do not see unique username on Single user Pending incoming connection page
     And I do not see Address Book name on Single user Pending incoming connection page
     And I see common friends count "1" on Single user Pending incoming connection page
     And I tap Ignore button on Single user Pending incoming connection page
-    When I clear search input on Search UI page
-    And I type "<Contact5WithSameNameInAB>" in Search UI input field
+    When I type "<Contact5WithSameNameInAB>" in cleared Search UI input field
     And I tap on conversation <Contact5WithSameNameInAB> in search result
     Then I see name "<Contact5WithSameNameInAB>" on Single user Pending incoming connection page
     And I do not see unique username on Single user Pending incoming connection page
@@ -146,30 +142,26 @@ Feature: Unique Usernames
     Then I see Address Book name "<Contact1ABName>" on Single user Pending outgoing connection page
     And I do not see unique username on Single user Pending outgoing connection page
     And I tap Cancel Request button on Single user Pending outgoing connection page
-    When I clear search input on Search UI page
-    And I type "<Contact2WithABPhoneNumber>" in Search UI input field
+    When I type "<Contact2WithABPhoneNumber>" in cleared Search UI input field
     And I tap on conversation <Contact2WithABPhoneNumber> in search result
     Then I see name "<Contact2WithABPhoneNumber>" on Single user Pending outgoing connection page
     And I see Address Book name "<Contact2ABName>" on Single user Pending outgoing connection page
     And I do not see unique username on Single user Pending outgoing connection page
     And I tap Cancel Request button on Single user Pending outgoing connection page
-    When I clear search input on Search UI page
-    And I type "<Contact3WithUniqueUserName>" in Search UI input field
+    When I type "<Contact3WithUniqueUserName>" in cleared Search UI input field
     And I tap on conversation <Contact3WithUniqueUserName> in search result
     Then I see name "<Contact3WithUniqueUserName>" on Single user Pending outgoing connection page
     And I see unique username "<Contact3UniqueUserName>" on Single user Pending outgoing connection page
     And I do not see Address Book name on Single user Pending outgoing connection page
     And I tap Cancel Request button on Single user Pending outgoing connection page
-    When I clear search input on Search UI page
-    And I type "<Contact4WithCommonFriends>" in Search UI input field
+    When I type "<Contact4WithCommonFriends>" in cleared Search UI input field
     And I tap on conversation <Contact4WithCommonFriends> in search result
     Then I see name "<Contact4WithCommonFriends>" on Single user Pending outgoing connection page
     And I do not see unique username on Single user Pending outgoing connection page
     And I do not see Address Book name on Single user Pending outgoing connection page
     And I see common friends count "1" on Single user Pending outgoing connection page
     And I tap Cancel Request button on Single user Pending outgoing connection page
-    When I clear search input on Search UI page
-    And I type "<Contact5WithSameNameInAB>" in Search UI input field
+    When I type "<Contact5WithSameNameInAB>" in cleared Search UI input field
     And I tap on conversation <Contact5WithSameNameInAB> in search result
     Then I see name "<Contact5WithSameNameInAB>" on Single user Pending outgoing connection page
     And I do not see unique username on Single user Pending outgoing connection page
@@ -303,8 +295,7 @@ Feature: Unique Usernames
     Given I accept alert if visible
     When I type "<ContactUniqueUserName>" in Search UI input field
     Then I see the conversation "<Contact>" exists in Search results
-    When I clear search input on Search UI page
-    And I type "<ContactUniqueUserName>" in Search UI input field in upper case
+    When I type "<ContactUniqueUserName>" in cleared Search UI input field in upper case
     Then I see the conversation "<Contact>" exists in Search results
 
     Examples:
@@ -323,8 +314,7 @@ Feature: Unique Usernames
     Given I tap input field on Search UI page
     When I type "<ContactWithUniqueUserName>" in Search UI input field
     Then I see the conversation "<Contact>" exists in Search results
-    And I clear search input on Search UI page
-    When I type first 6 letter of user name "<ContactWithUniqueUserName>" into Search UI input field
+    When I type first 6 letter of user name "<ContactWithUniqueUserName>" into cleared Search UI input field
     And I see the conversation "<Contact>" exists in Search results
 
     Examples:

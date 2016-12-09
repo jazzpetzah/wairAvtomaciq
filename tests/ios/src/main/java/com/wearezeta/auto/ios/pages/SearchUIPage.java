@@ -96,7 +96,14 @@ public class SearchUIPage extends IOSPage {
     }
 
     public void typeText(String text) throws Exception {
+        typeText(text, false);
+    }
+
+    public void typeText(String text, boolean shoullClearFieldBeforeInput) throws Exception {
         final WebElement searchInput = getElement(xpathSearchInput);
+        if (shoullClearFieldBeforeInput) {
+            searchInput.clear();
+        }
         searchInput.sendKeys(text + " ");
         // Wait for a user to be found
         Thread.sleep(2000);
@@ -236,10 +243,6 @@ public class SearchUIPage extends IOSPage {
     public boolean isButtonInvisible(String btnName) throws Exception {
         final By locator = getButtonLocatorByName(btnName);
         return isLocatorInvisible(locator);
-    }
-
-    public void clearSearchInput() throws Exception {
-        getElement(xpathSearchInput).clear();
     }
 
     public boolean isSearchResultDetailsVisible(String textToEnter, String expectedDetails) throws Exception {
