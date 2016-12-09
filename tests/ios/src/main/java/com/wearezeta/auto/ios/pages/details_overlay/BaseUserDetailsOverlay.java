@@ -31,7 +31,7 @@ public abstract class BaseUserDetailsOverlay extends BaseDetailsOverlay {
 
     private static final Function<Integer, String> xpathStrCommonFriendsByCount = count ->
             String.format("//XCUIElementTypeStaticText[@name='correlation' and @value='%s']",
-                    (count == 1) ? "1 friend in common" : count + " friends in common");
+                    (count == 1) ? "1 person in common" : count + " persons in common");
     private static final By nameCommonFriends = nameABName;
 
     private static final Function<String, String> xpathStrUniqueUsernameByUsername = username ->

@@ -358,7 +358,7 @@ Feature: Unique Usernames
       | <Contact1WithABEmail>        | @<Contact1UniqueUsername> - <Contact1ABName> in Address Book |
       | <Contact2WithABPhoneNumber>  | <Contact2ABName> in Address Book                             |
       | <Contact3WithUniqueUserName> | @<Contact3UniqueUserName>                                    |
-      | <Contact4WithCommonFriends>  | 1 friend in common                                           |
+      | <Contact4WithCommonFriends>  | 1 person in common                                           |
       | <Contact5WithSameNameInAB>   | in Address Book                                              |
       | <Contact7WoCF>               |                                                              |
 
@@ -384,3 +384,44 @@ Feature: Unique Usernames
       | user1Name | Даша        | @dasa      |
       | user1Name | داريا       | @darya     |
       | user1Name | 明麗          | @mingli    |
+
+  @C352049 @addressbookStart @forceReset @staging
+  Scenario Outline: Verify search for unconnected users returns proper results
+    Given There are 8 users where <Name> is me
+    Given Myself is connected to <Contact6Common>
+    Given User <Contact3WithUniqueUserName> sets the unique username
+    Given User <Contact1WithABEmail> sets the unique username
+    Given <Contact6Common> is connected to <Contact4WithCommonFriends>,<Contact1WithABEmail>,<Contact2WithABPhoneNumber>
+    Given I minimize Wire
+    Given I install Address Book Helper app
+    Given I launch Address Book Helper app
+    Given I add name <Contact1ABName> and email <Contact1Email> to Address Book
+    Given I add name <Contact2ABName> and phone <Contact2PhoneNumber> to Address Book
+    Given I add name <Contact5WithSameNameInAB> and email <Contact5Email> to Address Book
+    Given I restore Wire
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I wait until <Contact1WithABEmail> exists in backend search results
+    Given I wait until <Contact1WithABEmail> has 1 common friend on the backend
+    Given I wait until <Contact2WithABPhoneNumber> exists in backend search results
+    Given I wait until <Contact2WithABPhoneNumber> has 1 common friend on the backend
+    Given I wait until <Contact3WithUniqueUserName> exists in backend search results
+    Given I wait until <Contact4WithCommonFriends> exists in backend search results
+    Given I wait until <Contact4WithCommonFriends> has 1 common friend on the backend
+    Given I wait until <Contact5WithSameNameInAB> exists in backend search results
+    Given I wait until <Contact7WoCF> exists in backend search results
+    When I open search UI
+    And I accept alert if visible
+    Then I verify correct details are shown for the found users
+      | Name                         | Details                                                      |
+      | <Contact1WithABEmail>        | @<Contact1UniqueUsername> - <Contact1ABName> in Address Book |
+      | <Contact2WithABPhoneNumber>  | <Contact2ABName> in Address Book                             |
+      | <Contact3WithUniqueUserName> | @<Contact3UniqueUserName>                                    |
+      | <Contact4WithCommonFriends>  | 1 person in common                                           |
+      | <Contact5WithSameNameInAB>   | in Address Book                                              |
+      | <Contact7WoCF>               |                                                              |
+
+    Examples:
+      | Name      | Contact1WithABEmail | Contact1ABName | Contact1UniqueUsername | Contact1Email | Contact2WithABPhoneNumber | Contact2ABName | Contact2PhoneNumber | Contact3WithUniqueUserName | Contact3UniqueUserName | Contact4WithCommonFriends | Contact5WithSameNameInAB | Contact5Email | Contact6Common | Contact7WoCF |
+      | user1Name | user2Name           | user2ABName    | user2UniqueUsername    | user2Email    | user3Name                 | user3ABName    | user3PhoneNumber    | user4Name                  | user4UniqueUsername    | user5Name                 | user6Name                | user6Email    | user7Name      | user8Name    |
+
