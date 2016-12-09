@@ -1,7 +1,7 @@
 Feature: Unique Usernames
 
   @C352028 @staging
-  Scenario Outline: Verify autogeneration of a username for a user with latin characters only
+  Scenario Outline: (ZIOS-7741) Verify autogeneration of a username for a user with latin characters only
     Given I see sign in screen
     Given I enter phone number for <Name>
     Given I enter activation code
@@ -325,7 +325,7 @@ Feature: Unique Usernames
       | user1Name | user2Name | user2UniqueUsername       |
 
   @C352052 @addressbookStart @forceReset @staging
-  Scenario Outline: Verify search for connected users returns proper results
+  Scenario Outline: (ZIOS-7756) Verify search for connected users returns proper results
     Given There are 8 users where <Name> is me
     Given Myself is connected to <Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact5WithSameNameInAB>,<Contact6Common>,<Contact7WoCF>
     Given User <Contact3WithUniqueUserName> sets the unique username
