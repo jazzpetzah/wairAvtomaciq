@@ -245,7 +245,6 @@ Feature: Edit
     Given I switch to Sign In page
     Given I Sign in using login <Login2> and password <Password2>
     Given I am signed in properly
-    Given I see watermark
     Given I see first time experience hint
     Given I open preferences by clicking the gear button
     Given I click logout in account preferences

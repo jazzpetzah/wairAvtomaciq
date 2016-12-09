@@ -126,7 +126,6 @@ Feature: Search
     And I open the list of incoming connection requests
     When I accept connection request from user <Name>
     Then I see conversation with <Name> is selected in conversations list
-    And I see connected message for <Name> in conversation
     And I open preferences by clicking the gear button
     And I click logout in account preferences
     And I see the clear data dialog
@@ -137,7 +136,6 @@ Feature: Search
     And I am signed in properly
     And I see Contact list with name <Name2>
     And I open conversation with <Name2>
-    And I see connected message for <Name2> in conversation
 
     Examples: 
       | Login      | Password      | Name      | Name2     | Login2     | Password2     |
