@@ -18,6 +18,8 @@ import java.io.InputStreamReader;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import static com.wearezeta.auto.common.driver.ZetaAndroidDriver.ADB_PREFIX;
 
@@ -36,8 +38,14 @@ public class AndroidCommonUtils extends CommonUtils {
     private static final String IMAGE_FOR_VIDEO_GENERATION = "about_page_logo_iPad.png";
 
     public static void executeAdb(final String cmdline) throws Exception {
-        executeOsXCommand(new String[]{"/bin/bash", "-c",
-                ADB_PREFIX + "adb " + cmdline});
+        executeOsXCommand(new String[]{"/bin/bash", "-c", String.format("%sadb %s", ADB_PREFIX, cmdline)});
+    }
+
+    public static void executeAdb(final List<String> cmdLines) throws Exception {
+        final List<String> commands = cmdLines.stream().map(x ->
+                String.format("%sadb %s", ADB_PREFIX, x)
+        ).collect(Collectors.toList());
+        executeOsXCommand(new String[]{"/bin/bash", "-c", String.join(" ; ", commands)});
     }
 
     public static void uploadPhotoToAndroid(String photoPathOnDevice)
@@ -756,16 +764,18 @@ public class AndroidCommonUtils extends CommonUtils {
      *                 for more details
      * @throws Exception
      */
-    public static void grantPermissionsTo(String bundleId, String... perms) throws Exception {
-        for (String permissionName : perms) {
-            executeAdb(String.format("shell pm grant %s %s", bundleId, permissionName));
-        }
+    public static void grantPermissionsTo(final String bundleId, String... perms) throws Exception {
+        final List<String> commands = Arrays.stream(perms).map(x ->
+                String.format("shell pm grant %s %s", bundleId, x)
+        ).collect(Collectors.toList());
+        executeAdb(commands);
     }
 
-    public static void revokePermissionsFrom(String bundleId, String... perms) throws Exception {
-        for (String permissionName : perms) {
-            executeAdb(String.format("shell pm revoke %s %s", bundleId, permissionName));
-        }
+    public static void revokePermissionsFrom(final String bundleId, String... perms) throws Exception {
+        final List<String> commands = Arrays.stream(perms).map(x ->
+                String.format("shell pm revoke %s %s", bundleId, x)
+        ).collect(Collectors.toList());
+        executeAdb(commands);
     }
 
     public static void verifyWireIsInForeground() throws Exception {
