@@ -10,14 +10,13 @@ import java.util.function.Function;
 
 public class FirstTimeUsernameOverlay extends AndroidPage {
 
-    public static final By xpathKeepThisOneButton = By.xpath("//*[@value='Usernames are here.']/../" +
+    private static final By xpathKeepThisOneButton = By.xpath("//*[@value='Usernames are here.']/../" +
             "*[@id='zb__username_first_assign__keep']");
 
-    public static final By xpathChooseYourOwnButton = By.xpath("//*[@value='Usernames are here.']/../" +
+    private static final By xpathChooseYourOwnButton = By.xpath("//*[@value='Usernames are here.']/../" +
             "*[@id='zb__username_first_assign__choose']");
 
-    public static final Function<String, By> xpathOfferedUsername = (username) -> By.xpath(String.format
-            ("//*[@id='ttv__username' and value='%s'", username));
+    private static final By xpathOfferedUsername = By.xpath("//*[@id='ttv__username' and string-length(@value) > 1]");
 
     public FirstTimeUsernameOverlay(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -47,11 +46,11 @@ public class FirstTimeUsernameOverlay extends AndroidPage {
         getElement(xpathChooseYourOwnButton).click();
     }
 
-    public boolean isOfferedUsernameVisible(String username) throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathOfferedUsername.apply(username));
+    public boolean isOfferedUsernameVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathOfferedUsername);
     }
 
-    public boolean isOfferedUsernameInvisible(String username) throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathOfferedUsername.apply(username));
+    public boolean isOfferedUsernameInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathOfferedUsername);
     }
 }
