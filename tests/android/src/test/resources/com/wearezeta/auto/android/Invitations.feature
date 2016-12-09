@@ -42,6 +42,9 @@ Feature: Invitations
     And I select Camera as picture source
     And I tap Take Photo button on Take Picture view
     And I tap Confirm button on Take Picture view
+    And I see Unique Username Takeover page
+    And I see username on Unique Username Takeover page
+    And I tap Keep This One button on Unique Username Takeover page
     And I add <Contact> to the list of test case users
     And User <Contact> is me without picture
     Then I see Conversations list with conversations

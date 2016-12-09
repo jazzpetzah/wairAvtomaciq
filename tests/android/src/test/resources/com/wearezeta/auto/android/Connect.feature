@@ -379,7 +379,6 @@ Feature: Connect
   @C183892 @C183893 @regression
   Scenario Outline: Verify autoconnect users by phones
     Given I delete all contacts from Address Book
-    Given I see welcome screen
   # Add A into B's address book
     Given I add name <AName> and phone <APhone> with prefix <PhonePrefix> to Address Book
     Given I add name <A2Name> and phone <A2Phone> with prefix <PhonePrefix> to Address Book
@@ -390,6 +389,9 @@ Feature: Connect
     And I input my name
     And I wait for 3 seconds
     And I select to keep the current picture
+    And I see Unique Username Takeover page
+    And I see username on Unique Username Takeover page
+    And I tap Keep This One button on Unique Username Takeover page
     Then I see Conversations list with name <AName>
     And I see Conversations list with name <A2Name>
 
