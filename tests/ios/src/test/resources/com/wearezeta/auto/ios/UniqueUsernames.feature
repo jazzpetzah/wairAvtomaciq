@@ -204,10 +204,11 @@ Feature: Unique Usernames
       | Name      | RegularLength | MinLength | MaxLength |
       | user1Name | 6             | 2         | 21        |
 
-  @C352027 @staging
+  @C352027 @staging @fastLogin
   Scenario Outline: Verify Settings are opened on choosing generating your own username
     Given There is 1 user
     Given User <Name> is me
+    Given I prepare Wire to perform fast log in by email as <Name>
     Given I sign in using my email or phone number
     When I tap Choose Yours button on Unique Username Takeover page
     Then I see Unique Username page
@@ -220,11 +221,12 @@ Feature: Unique Usernames
       | Name      | NewNameLength |
       | user1Name | 8             |
 
-  @C352042 @staging
+  @C352042 @staging @fastLogin
   Scenario Outline: Verify username is unique
     Given There are 2 users
     Given User <Name> is me
     Given User <Contact> changes the unique username to "<MyUniqueUsername>"
+    Given I prepare Wire to perform fast log in by email as <Name>
     Given I sign in using my email or phone number
     When I tap Choose Yours button on Unique Username Takeover page
     And I enter "<MyUniqueUsername>" name on Unique Username page

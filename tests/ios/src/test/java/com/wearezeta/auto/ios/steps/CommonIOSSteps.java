@@ -1330,6 +1330,26 @@ public class CommonIOSSteps {
     }
 
     /**
+     * Use this step if you have @fastLogin option set and you want the application to log in
+     * under particular user, skipping the whole login flow in UI, which is supposed to be quite faster
+     * in comparison to the "classic" flow
+     *
+     * @param alias user name/alias to sign in as. This user should have his email address registered on the backedn
+     * @throws Exception
+     * @step. ^I prepare Wire to perform fast log in by email as (.*)
+     */
+    @Given("^I prepare Wire to perform fast log in by email as (.*)")
+    public void IDoFastLogin(String alias) throws Exception {
+        final FastLoginContainer flc = FastLoginContainer.getInstance();
+        if (!flc.isEnabled()) {
+            throw new IllegalStateException(
+                    String.format("Fast login should be enabled first in order to call this step." +
+                            "Make sure you have the '%s' tag in your scenario", FastLoginContainer.TAG_NAME));
+        }
+        updateDriver(flc.executeDriverCreation(usrMgr.findUserByNameOrNameAlias(alias)));
+    }
+
+    /**
      * Send location sharing message
      *
      * @param userNameAlias sender name/alias
