@@ -207,6 +207,8 @@ Feature: Unique Usernames
     And I see unique username input is prefilled with <Name> on Unique Username page
     When I attempt to enter <NewNameLength> random latin alphanumeric chars as name on Unique Username page
     And I tap Save button on Unique Username page
+    And I tap settings gear button
+    And I select settings item Account
     Then I see new previously set unique username is displayed on Settings Page
 
     Examples:

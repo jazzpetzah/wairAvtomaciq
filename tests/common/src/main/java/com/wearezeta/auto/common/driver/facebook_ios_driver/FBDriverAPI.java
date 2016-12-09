@@ -24,7 +24,6 @@ public class FBDriverAPI {
     private static final String BY_ACCESSIBILITY_ID_STRING = "accessibility id";
 
     private static final String OBJC_YES = "true";
-    public static final String NULL_VALUE = "null";
 
     private static final FBDriverRESTClient client = new FBDriverRESTClient(HOST_NAME, PORT_NUMBER);
     private Optional<String> sessionId = Optional.empty();

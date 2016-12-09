@@ -61,7 +61,7 @@ public class UniqueUsernamePage extends IOSPage {
     }
 
     public boolean isNameInputEmpty() throws Exception {
-        return getNameInputValue().equals(FBDriverAPI.NULL_VALUE);
+        return getNameInputValue() == null;
     }
 
     public boolean isPageHeaderVisible() throws Exception {
