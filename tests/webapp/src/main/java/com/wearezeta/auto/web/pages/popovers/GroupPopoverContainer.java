@@ -264,5 +264,4 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
     public boolean isUserMailVisible() throws Exception {
         return getCurrentUserInfoPage().isMailVisible();
     }
-
 }
