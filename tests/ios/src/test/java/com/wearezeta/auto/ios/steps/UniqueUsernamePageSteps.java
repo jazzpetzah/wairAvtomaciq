@@ -58,6 +58,7 @@ public class UniqueUsernamePageSteps {
      */
     @When("^I enter \"(.*)\" name on Unique Username page$")
     public void IFillInNameInInputOnUniqueUsernamePage(String name) throws Exception {
+        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
         getUniqueUsernamePage().inputStringInNameInput(name);
     }
 
