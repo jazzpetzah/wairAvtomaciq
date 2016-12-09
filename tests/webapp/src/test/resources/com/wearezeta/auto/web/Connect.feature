@@ -165,7 +165,7 @@ Feature: Connect
     Given <Name2> has unique username
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Given I wait until <Name2UniqueUsername> exists in backend search results
+    Given I wait until <Name2> exists in backend search results
     When I am signed in properly
     Then I open search by clicking the people button
     When I see Search is opened
