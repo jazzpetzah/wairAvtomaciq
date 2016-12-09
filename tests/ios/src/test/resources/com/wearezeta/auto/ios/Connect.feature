@@ -206,6 +206,8 @@ Feature: Connect
     And I tap X button on Search UI page
     And I tap on contact name <Contact>
     And I tap on text input
+    # Wait for sync
+    And I wait for 2 seconds
     And I long tap on text input
     And I tap on Paste badge item
     And I tap Send Message button in conversation view
