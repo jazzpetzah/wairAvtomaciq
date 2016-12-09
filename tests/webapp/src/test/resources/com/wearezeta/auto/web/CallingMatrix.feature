@@ -4,6 +4,7 @@ Feature: Calling_Matrix
   Scenario Outline: Verify I can make 1:1 audio call to <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
@@ -29,9 +30,9 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend          | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome:55.0.2883.75  | 20      |
       | user1Email | user1Password | user1Name | user2Name | chrome:54.0.2840.100 | 20      |
-      | user1Email | user1Password | user1Name | user2Name | chrome:53.0.2785.116 | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:50.0         | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:50.0.2       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:49.0.2       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:45.5         | 20      |
 
@@ -39,6 +40,7 @@ Feature: Calling_Matrix
   Scenario Outline: Verify I can make 1:1 video call to <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given <Contact> accepts next incoming video call automatically
@@ -60,9 +62,9 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend          | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome:55.0.2883.75  | 20      |
       | user1Email | user1Password | user1Name | user2Name | chrome:54.0.2840.100 | 20      |
-      | user1Email | user1Password | user1Name | user2Name | chrome:53.0.2785.116 | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:50.0         | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:50.0.2       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:49.0.2       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:45.5         | 20      |
 
@@ -70,6 +72,7 @@ Feature: Calling_Matrix
   Scenario Outline: Verify I can make 1:1 call to AVS <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
@@ -95,6 +98,7 @@ Feature: Calling_Matrix
   Scenario Outline: Verify I can receive 1:1 audio call from <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
@@ -114,9 +118,9 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend          | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome:55.0.2883.75  | 20      |
       | user1Email | user1Password | user1Name | user2Name | chrome:54.0.2840.100 | 20      |
-      | user1Email | user1Password | user1Name | user2Name | chrome:53.0.2785.116 | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:50.0         | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:50.0.2       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:49.0.2       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:45.5         | 20      |
 
@@ -124,6 +128,7 @@ Feature: Calling_Matrix
   Scenario Outline: Verify I can receive 1:1 video call from <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
@@ -145,9 +150,9 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend          | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome:55.0.2883.75  | 20      |
       | user1Email | user1Password | user1Name | user2Name | chrome:54.0.2840.100 | 20      |
-      | user1Email | user1Password | user1Name | user2Name | chrome:53.0.2785.116 | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:50.0         | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:50.0.2       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:49.0.2       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:45.5         | 20      |
 
@@ -155,6 +160,7 @@ Feature: Calling_Matrix
   Scenario Outline: Verify I can receive 1:1 audio call from AVS <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
@@ -168,7 +174,7 @@ Feature: Calling_Matrix
     And I hang up call with conversation <Contact>
     And I do not see the call controls for conversation <Contact>
     Then <Contact> verifies that call status to me is changed to destroyed in <Timeout> seconds
-    And <Contact> verifies that call to conversation <Contact> was successful
+    And <Contact> verifies that call to conversation <Name> was successful
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend       | Timeout |
@@ -178,6 +184,7 @@ Feature: Calling_Matrix
   Scenario Outline: Verify I can make audio group call with multiple <WaitBackend>
     Given My browser supports calling
     Given There are 5 users where <Name> is me
+    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> have unique usernames
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given <Contact1>,<Contact2>,<Contact3>,<Contact4> starts instance using <WaitBackend>
@@ -204,9 +211,9 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName1 | WaitBackend          | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome:55.0.2883.75  | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome:54.0.2840.100 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome:53.0.2785.116 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:50.0         | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:50.0.2       | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:49.0.2       | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:45.5         | 30      |
 
@@ -214,6 +221,7 @@ Feature: Calling_Matrix
   Scenario Outline: Verify I can make audio group call with multiple AVS <WaitBackend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
+    Given <Contact1>,<Contact2> have unique usernames
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>
     Given <Contact1>,<Contact2> starts instance using <WaitBackend>
@@ -241,6 +249,7 @@ Feature: Calling_Matrix
   Scenario Outline: Verify I can join audio group call with multiple <Backend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
+    Given <Contact1>,<Contact2> have unique usernames
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>
     Given <Contact1>,<Contact2> starts instance using <Backend>
@@ -269,9 +278,9 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName1 | Backend              | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome:55.0.2883.75  | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome:54.0.2840.100 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome:53.0.2785.116 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:50.0         | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:50.0.2       | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:49.0.2       | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:45.5         | 30      |
       
@@ -280,6 +289,7 @@ Feature: Calling_Matrix
   Scenario Outline: Verify I can join audio group call with AVS <Backend> and <WaitBackend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
+    Given <Contact1>,<Contact2> have unique usernames
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>
     Given <Contact2> starts instance using <WaitBackend>
@@ -314,9 +324,9 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName1 | Backend      | WaitBackend          | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.14 | chrome:55.0.2883.75  | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.14 | chrome:54.0.2840.100 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.14 | chrome:53.0.2785.116 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.14 | firefox:50.0         | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.14 | firefox:50.0.2       | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.14 | firefox:49.0.2       | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.14 | firefox:45.5         | 30      |
 
@@ -324,6 +334,7 @@ Feature: Calling_Matrix
   Scenario Outline: Verify I can join audio group call with AVS <Backend> and <WaitBackend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
+    Given <Contact1>,<Contact2> have unique usernames
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>
     Given <Contact1> starts instance using <Backend>
@@ -356,6 +367,7 @@ Feature: Calling_Matrix
   Scenario Outline: Verify I can create, leave and rejoin an audio group call with <WaitBackend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
+    Given <Contact1>,<Contact2> have unique usernames
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given <Contact1>,<Contact2> starts instance using <WaitBackend>
@@ -379,9 +391,9 @@ Feature: Calling_Matrix
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | WaitBackend          | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | chrome:55.0.2883.75  | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | chrome:54.0.2840.100 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | chrome:53.0.2785.116 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox:50.0         | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox:50.0.2       | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox:49.0.2       | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox:45.5         | 30      |
 
@@ -389,6 +401,7 @@ Feature: Calling_Matrix
   Scenario Outline: Verify I can create, leave and rejoin an audio group call with AVS <WaitBackend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
+    Given <Contact1>,<Contact2> have unique usernames
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given <Contact1>,<Contact2> starts instance using <WaitBackend>
@@ -419,6 +432,7 @@ Feature: Calling_Matrix
   Scenario Outline: Verify I can 1:1 audio call a user with <CallBackend> twice in a row
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
@@ -445,16 +459,18 @@ Feature: Calling_Matrix
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend          | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome:55.0.2883.75  | 20      |
       | user1Email | user1Password | user1Name | user2Name | chrome:54.0.2840.100 | 20      |
-      | user1Email | user1Password | user1Name | user2Name | chrome:53.0.2785.116 | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:50.0         | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:49.0.2       | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:45.5         | 20      |
+# Flakes continuously
+#      | user1Email | user1Password | user1Name | user2Name | firefox:50.0.2       | 20      |
+#      | user1Email | user1Password | user1Name | user2Name | firefox:49.0.2       | 20      |
+#      | user1Email | user1Password | user1Name | user2Name | firefox:45.5         | 20      |
 
   @C5373 @calling_matrix
   Scenario Outline: Verify I can 1:1 audio call a user with AVS <CallBackend> twice in a row
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
@@ -484,6 +500,7 @@ Feature: Calling_Matrix
   Scenario Outline: Verify I can 1:1 video call a user with <CallBackend> twice in a row
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
@@ -514,9 +531,9 @@ Feature: Calling_Matrix
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend          | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome:55.0.2883.75  | 20      |
       | user1Email | user1Password | user1Name | user2Name | chrome:54.0.2840.100 | 20      |
-      | user1Email | user1Password | user1Name | user2Name | chrome:53.0.2785.116 | 20      |
 # fails continuously
-#      | user1Email | user1Password | user1Name | user2Name | firefox:50.0         | 20      |
+#      | user1Email | user1Password | user1Name | user2Name | firefox:50.0.2       | 20      |
 #      | user1Email | user1Password | user1Name | user2Name | firefox:49.0.2       | 20      |
 #      | user1Email | user1Password | user1Name | user2Name | firefox:45.5         | 20      |

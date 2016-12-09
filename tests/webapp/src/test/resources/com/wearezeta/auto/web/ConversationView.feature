@@ -35,6 +35,7 @@ Feature: Conversation View
   @C1703 @smoke @localytics
   Scenario Outline: Send message in 1on1
     Given There are 2 users where <Name> is me
+    Given User <Contact> changes unique username to <Contact>
     Given user <Contact> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact>
     Given I enable localytics via URL parameter
@@ -42,6 +43,7 @@ Feature: Conversation View
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
     And I open conversation with <Contact>
+    And I see unique username starts with <Contact> in conversation
     When I write random message
     And I send message
     Then I see random message in conversation
@@ -54,6 +56,7 @@ Feature: Conversation View
   @C259599 @regression @WEBAPP-3247
   Scenario Outline: Verify delivery receipt of message in 1on1 that was read by webapp
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login2> and password <Password2>
@@ -116,6 +119,7 @@ Feature: Conversation View
   @C1701 @smoke @WEBAPP-3248
   Scenario Outline: Verify you can see image on the second end in a group conversation
     Given There are 3 users where <Name> is me
+    Given User <Contact1> changes unique username to <Contact1>
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page

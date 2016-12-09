@@ -2,11 +2,10 @@ package com.wearezeta.auto.web.steps;
 
 import java.awt.image.BufferedImage;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.backend.AccentColor;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.web.common.TestContext;
@@ -17,13 +16,13 @@ import cucumber.api.java.en.When;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 
-import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.lessThan;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.Assert;
@@ -31,7 +30,7 @@ import org.junit.Assert;
 public class AccountPageSteps {
 
     private BufferedImage profileImage = null;
-
+    private String rememberedUniqueUsername = null;
     private final TestContext context;
 
     public AccountPageSteps() {
@@ -92,6 +91,17 @@ public class AccountPageSteps {
         Assert.assertThat("Username in settings",
                 context.getPagesCollection().getPage(AccountPage.class).getUniqueUsername(), startsWith(name));
     }
+    
+    @And("^I (do not )?see unique username is the remembered one in account preferences$")
+    public void ISeeRememberedUniqueUsernameOnSelfProfilePage(String not) throws Exception {
+        if (not == null) {
+            Assert.assertThat("Remembered username is NOT in settings",
+                context.getPagesCollection().getPage(AccountPage.class).getUniqueUsername(), equalTo(rememberedUniqueUsername));
+        }else{
+            Assert.assertThat("Remembered username is in settings",
+                context.getPagesCollection().getPage(AccountPage.class).getUniqueUsername(), not(equalTo(rememberedUniqueUsername)));
+        }
+    }
 
     @When("^I remember the profile image on the account page$")
     public void IRememberSmallProfileImage() throws Exception {
@@ -131,14 +141,38 @@ public class AccountPageSteps {
         context.getUserManager().getSelfUserOrThrowError().setName(name);
     }
 
+    @And("^I type (.*) into unique username field$")
+    public void ITypeIntoUniqueUserNameField(String name) throws Exception {
+        name = context.getUserManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        context.getPagesCollection().getPage(AccountPage.class).setUniqueUsername(name);
+    }
+
     @And("^I change unique username to (.*)")
     public void IChangeUniqueUserNameTo(String name) throws Exception {
+        name = context.getUserManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
         context.getPagesCollection().getPage(AccountPage.class).setUniqueUsername(name);
+    }
+    
+    @Then("I remember unique username of (.*)$")
+    public void RememberUniqueUsername(String nameAlias) throws Exception {
+        ClientUser user = context.getUserManager().findUserByNameOrNameAlias(nameAlias);
+        rememberedUniqueUsername = user.getUniqueUsername();
+    }
+    
+    @And("^I change my unique username to previously remembered unique username$")
+    public void IChangeUniqueUserNameToRemembered() throws Exception {
+        context.getPagesCollection().getPage(AccountPage.class).setUniqueUsername(rememberedUniqueUsername);
     }
 
     @Then("^I see error message for unique username saying (.*)")
     public void ISeeErrorMessageForUniqueUsername(String error) throws Exception {
         assertThat("Error does not match", context.getPagesCollection().getPage(AccountPage.class).getUniqueUsernameError(),
+                is(error));
+    }
+
+    @Then("^I see hint message for unique username saying (.*)")
+    public void ISeeHintMessageForUniqueUsername(String error) throws Exception {
+        assertThat("Hint does not match", context.getPagesCollection().getPage(AccountPage.class).getUniqueUsernameHint(),
                 is(error));
     }
 

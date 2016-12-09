@@ -34,6 +34,10 @@ public class Result implements Serializable {
     public Long getDuration() {
         return duration;
     }
+
+    public String getErrorMessage() {
+        return error_message;
+    }
     
     @Override
     public String toString() {

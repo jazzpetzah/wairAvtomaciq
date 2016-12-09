@@ -264,7 +264,7 @@ Feature: Calling
       | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | user9Name | user10Name | user11Name | MaxGroupCallNegChat | Too many people to call | zcall       |
 
   @C806 @calling_advanced @regression
-  Scenario Outline: Verify incoming group call ignored during ongoing 1:1 call
+  Scenario Outline: Verify incoming group call not showed during ongoing 1:1 call
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>
@@ -274,20 +274,22 @@ Feature: Calling
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact3>
     And <Contact3> calls <Name>
-    Then I see incoming call
+    Then I see incoming call from <Contact3>
     When I swipe to accept the call
     Then I see ongoing call
     When <Contact1>,<Contact2> calls <GroupChatName>
     Then I do not see incoming call
-    And <Contact3> stop calling me
-    And <Contact1>,<Contact2> stop calling <GroupChatName>
+    When <Contact3> stop calling me
+    Then I see incoming call from <GroupChatName>
+    When <Contact1> stop calling <GroupChatName>
+    Then I do not see incoming call
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
       | user1Name | user2Name | user3Name | user4Name | GroupCallChat | zcall       |
 
   @C428 @calling_advanced
-  Scenario Outline: Verify incoming 1:1 call ignored during ongoing group call
+  Scenario Outline: Verify incoming 1:1 call not showed during ongoing group call
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>
@@ -297,13 +299,15 @@ Feature: Calling
     Given I see Conversations list with conversations
     When I tap on conversation name <GroupChatName>
     And <Contact1>,<Contact2> calls <GroupChatName>
-    Then I see incoming call
+    Then I see incoming call from <GroupChatName>
     When I swipe to accept the call
     Then I see ongoing call
     When <Contact3> calls <Name>
     Then I do not see incoming call
-    And <Contact3> stop calling me
-    And <Contact1>,<Contact2> stop calling <GroupChatName>
+    When <Contact1>,<Contact2> stop calling <GroupChatName>
+    Then I see incoming call from <Contact3>
+    When <Contact3> stop calling me
+    Then I do not see incoming call
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |

@@ -7,6 +7,7 @@ Feature: Usernames
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
+    Then I see watermark
     And I see take over screen
     And I see name <NameAlias> on take over screen
     And I see unique username starts with <Username> on take over screen
@@ -30,6 +31,7 @@ Feature: Usernames
     And I start activation email monitoring
     And I submit registration form
     When I activate user by URL
+    Then I see watermark
     And I see take over screen
     And I see name <NameAlias> on take over screen
     And I see unique username starts with <Username> on take over screen
@@ -49,11 +51,13 @@ Feature: Usernames
     Given User <NameAlias> changes name to <Name>
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
+    Then I see watermark
     And I see take over screen
     And I see name <NameAlias> on take over screen
     And I see unique username starts with <Username> on take over screen
     When I refresh page
-    Then I see take over screen
+    Then I see watermark
+    And I see take over screen
     And I see name <NameAlias> on take over screen
     And I see unique username starts with <Username> on take over screen
 
@@ -70,6 +74,7 @@ Feature: Usernames
     And I start activation email monitoring
     And I submit registration form
     When I activate user by URL
+    Then I see watermark
     And I see take over screen
     And I see name <NameAlias> on take over screen
     And I see unique username starts with <Username> on take over screen
@@ -80,12 +85,39 @@ Feature: Usernames
       | Email      | Password      | NameAlias | Name         | Username    |
       | user1Email | user1Password | user1Name | Jack Johnson | jackjohnson |
 
+  @C352242 @usernames @staging
+  Scenario Outline: Verify it's possible to take over previously released username
+    Given There are 2 users where <Name> is me without unique username
+    Given <Contact> has unique username
+    Given I remember unique username of <Contact>
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+    And I am signed in properly
+    Then I see watermark
+    Then I see take over screen
+    And I see name <Name> on take over screen
+    When I click ChooseYourOwn button on take over screen
+    Then I see unique username starts with <Name> in account preferences
+    When I change my unique username to previously remembered unique username
+    Then I see hint message for unique username saying <TakenHint>
+    When I open account in preferences
+    Then I do not see unique username is the remembered one in account preferences
+    When User <Contact> changes his unique username to a random value
+    And I change my unique username to previously remembered unique username
+    When I open account in preferences
+    Then I see unique username is the remembered one in account preferences
+
+    Examples:
+      | Email      | Password      | Contact   | Name      | TakenHint     |
+      | user1Email | user1Password | user2Name | user1Name | Already taken |
+
   @C343176 @usernames @staging
   Scenario Outline: Verify Settings are opened on choosing generating your own username for existing user
     Given There are 2 users where <NameAlias> is me without unique username
     Given User <NameAlias> changes name to <Name>
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
+    Then I see watermark
     And I see take over screen
     And I see name <NameAlias> on take over screen
     And I see unique username starts with <Username> on take over screen
@@ -97,37 +129,71 @@ Feature: Usernames
       | user1Email | user1Password | user1Name | Jack Johnson | jackjohnson |
 
   @C343177 @usernames @staging
-  Scenario Outline: Verifying impossibility of setting incorrect username
+  Scenario Outline: Verifying impossibility to set username with less than 2 characters
     Given There are 2 users where <NameAlias> is me without unique username
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
     And I am signed in properly
+    Then I see watermark
     And I see take over screen
     And I see name <NameAlias> on take over screen
     When I click ChooseYourOwn button on take over screen
     Then I see unique username starts with <NameAlias> in account preferences
+    When I type <IncorrectName> into unique username field
+    Then I see hint message for unique username saying <Hint>
     When I change unique username to <IncorrectName>
-    Then I see error message for unique username saying <Error>
+    Then I see hint message for unique username saying <Hint>
+    When I refresh page
+    And I am signed in properly
+    Then I see watermark
+    And I see take over screen
+    And I see name <NameAlias> on take over screen
 
     Examples:
-      | Email      | Password      | NameAlias | IncorrectName          | Error            |
-      | user1Email | user1Password | user1Name |                        | Invalid username |
-      | user1Email | user1Password | user1Name | a                      | Invalid username |
-      | user1Email | user1Password | user1Name | 1234567890123456789012 | Invalid username |
+      | Email      | Password      | NameAlias | IncorrectName | Hint                                        |
+      | user1Email | user1Password | user1Name |               | At least 2 characters. a—z, 0—9 and _ only. |
+      | user1Email | user1Password | user1Name | a             | At least 2 characters. a—z, 0—9 and _ only. |
+
+  @C352079 @usernames @staging
+  Scenario Outline: Verify username is unique
+    Given There are 2 users where <Name> is me without unique username
+    Given User <SecondUser> changes unique username to <SecondUser>
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+    And I am signed in properly
+    Then I see watermark
+    And I see take over screen
+    And I see name <Name> on take over screen
+    When I click ChooseYourOwn button on take over screen
+    Then I see unique username starts with <Name> in account preferences
+    When I type <SecondUser> into unique username field
+    Then I see error message for unique username saying <Error>
+    When I change unique username to <SecondUser>
+    Then I see error message for unique username saying <Error>
+    When I refresh page
+    And I am signed in properly
+    Then I see watermark
+    And I see take over screen
+    And I see name <Name> on take over screen
+
+    Examples:
+      | Email      | Password      | Name      | SecondUser | Error         |
+      | user1Email | user1Password | user1Name | user2Name  | Already taken |
 
   @C352077 @usernames @staging
   Scenario Outline: Verify autogeneration of a username for a user (different scenarios)
-      Given There are 2 users where <NameAlias> is me without unique username
-      Given User <NameAlias> changes name to <Name>
-      Given I switch to Sign In page
-      When I Sign in using login <Email> and password <Password>
-      And I am signed in properly
-      Then I see take over screen
-      And I see name <NameAlias> on take over screen
-      And I see unique username starts with <Username> on take over screen
-      When I click TakeThisOne button on take over screen
-      When I open preferences by clicking the gear button
-      Then I see unique username starts with <Username> in account preferences
+    Given There are 2 users where <NameAlias> is me without unique username
+    Given User <NameAlias> changes name to <Name>
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+    And I am signed in properly
+    Then I see watermark
+    Then I see take over screen
+    And I see name <NameAlias> on take over screen
+    And I see unique username starts with <Username> on take over screen
+    When I click TakeThisOne button on take over screen
+    When I open preferences by clicking the gear button
+    Then I see unique username starts with <Username> in account preferences
 
     Examples:
       | Email      | Password      | NameAlias | Name         | Username      |
@@ -138,13 +204,14 @@ Feature: Usernames
       | user1Email | user1Password | user1Name |   داريا      | darya         |
       | user1Email | user1Password | user1Name | 明麗         | mengli        |
 
-  @C352080 @staging @useSpecialEmail
+  @C352080 @staging @useSpecialEmail @usernames
   Scenario Outline: Verify deleting an account release a username
     Given There are 2 users where <Name2> is me without unique username
     And User <Name> is me
     Given I switch to Sign In page
     Given I remember current page
     Given I Sign in using login <Email> and password <Password>
+    Then I see watermark
     And I see take over screen
     And I see name <Name> on take over screen
     When I click ChooseYourOwn button on take over screen
@@ -160,6 +227,7 @@ Feature: Usernames
     Then the sign in error message reads <Error>
     When I Sign in using login <Email2> and password <Password>
     And I am signed in properly
+    Then I see watermark
     And I see take over screen
     And I see name <Name2> on take over screen
     When I click ChooseYourOwn button on take over screen

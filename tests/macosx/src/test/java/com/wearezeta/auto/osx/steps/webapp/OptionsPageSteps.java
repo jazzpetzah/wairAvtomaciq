@@ -8,12 +8,9 @@ import cucumber.api.java.en.When;
 public class OptionsPageSteps {
     
     private final TestContext webContext;
-    private final TestContext wrapperContext;
-
     
-    public OptionsPageSteps(TestContext webContext, TestContext wrapperContext) {
+    public OptionsPageSteps(TestContext webContext) {
         this.webContext = webContext;
-        this.wrapperContext = wrapperContext;
     }
     
     @When("^I click button to import contacts from address book via preferences$")

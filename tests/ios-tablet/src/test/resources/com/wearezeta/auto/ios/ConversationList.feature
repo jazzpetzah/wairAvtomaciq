@@ -116,7 +116,7 @@ Feature: Conversation List
     # Workaround for ZIOS-6338
     And I tap Incoming Pending Requests item in conversations list
     Then I see Connect button on Single user Pending incoming connection page
-    And I see <Contact> name on Single user Pending incoming connection page
+    And I see name "<Contact>" on Single user Pending incoming connection page
 
     Examples:
       | Name      | Contact   |
@@ -301,7 +301,7 @@ Feature: Conversation List
     When I swipe right on iPad the conversation named <Contact1>
     And I tap Block conversation action button
     And I tap Cancel conversation action button
-    Then I see conversation actions menu
+    Then I see actions menu for <Contact1> conversation
 
     Examples:
       | Name      | Contact1  |

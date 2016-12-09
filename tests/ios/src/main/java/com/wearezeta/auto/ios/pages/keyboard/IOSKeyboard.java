@@ -17,10 +17,10 @@ import org.openqa.selenium.WebElement;
 
 public class IOSKeyboard extends IOSPage {
     private static final KeyboardState UNKNOWN_STATE = new KeyboardStateUnknown();
-    private static final String xpathStrKeyboard = "//XCUIElementTypeKeyboard";
-    private static final By xpathKeyboard = By.xpath(xpathStrKeyboard);
-    private static final By xpathCommitButton = By.xpath(xpathStrKeyboard + "//*" +
-                    "[@name='Go' or @name='Send' or @name='Done' or @name='return' or @name='Return']");
+    private static final By classKeyboard = By.className("XCUIElementTypeKeyboard");
+    private static final By xpathCommitButton = By.xpath(
+            "//*[@name='Go' or @name='Send' or @name='Done' or @name='return' or @name='Return']"
+    );
 
     private static final By nameSpaceButton = MobileBy.AccessibilityId("space");
 
@@ -46,11 +46,11 @@ public class IOSKeyboard extends IOSPage {
     }
 
     public boolean isVisible(int timeoutSeconds) throws Exception {
-        return isLocatorDisplayed(xpathKeyboard, timeoutSeconds);
+        return isLocatorDisplayed(classKeyboard, timeoutSeconds);
     }
 
     public boolean isInvisible(int timeoutSeconds) throws Exception {
-        return isLocatorInvisible(xpathKeyboard, timeoutSeconds);
+        return isLocatorInvisible(classKeyboard, timeoutSeconds);
     }
 
     public boolean isVisible() throws Exception {
@@ -74,7 +74,9 @@ public class IOSKeyboard extends IOSPage {
     }
 
     public void pressCommitButton() throws Exception {
-        getElement(xpathCommitButton, "Keyboard commit key is not visible", 15).click();
+        getElement(classKeyboard, "Keyboard is not visible", 15)
+                .findElement(xpathCommitButton)
+                .click();
     }
 
     private KeyboardState getInitialState(List<KeyboardState> statesList) throws Exception {
@@ -96,7 +98,7 @@ public class IOSKeyboard extends IOSPage {
     }
 
     public void typeString(String message) throws Exception {
-        final WebElement keyboard = DriverUtils.verifyPresence(getDriver(), xpathKeyboard);
+        final WebElement keyboard = DriverUtils.verifyPresence(getDriver(), classKeyboard);
 
         final KeyboardStateAlpha keyboardStateAlpha = new KeyboardStateAlpha(keyboard);
         final KeyboardStateAlphaCaps keyboardStateAlphaCaps = new KeyboardStateAlphaCaps(getDriver(), keyboard);

@@ -128,7 +128,6 @@ Feature: Settings
     When I clear Name input field on Settings page
     And I set "<OneCharName>" value to Name input field on Settings page
     And I tap Return button on the keyboard
-    And I tap Return button on the keyboard if visible
     Then I see alert contains text <ExpectedAlertText>
 
     Examples:
@@ -267,8 +266,10 @@ Feature: Settings
     Given I accept alert if visible
     Given I tap Keep This One button
     Given I accept alert if visible
+    Given User <Name> sets the unique username
     Given I tap Share Contacts button on Share Contacts overlay
     Given I accept alert if visible
+    Given I dismiss settings warning if visible
     Given I see conversations list
     Given I tap settings gear button
     Given I select settings item Account

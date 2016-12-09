@@ -14,11 +14,9 @@ public class LoginPageSteps {
 
     private static final Logger LOG = ZetaLogger.getLog(LoginPageSteps.class.getName());
     private final TestContext webContext;
-    private final TestContext wrapperContext;
 
-    public LoginPageSteps(TestContext webContext, TestContext wrapperContext) {
+    public LoginPageSteps(TestContext webContext) {
         this.webContext = webContext;
-        this.wrapperContext = wrapperContext;
     }
 
     @Given("^I Sign in using login (.*) and password (.*)$")

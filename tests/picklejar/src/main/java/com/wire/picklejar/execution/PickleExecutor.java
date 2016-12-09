@@ -5,11 +5,6 @@ import com.wire.picklejar.execution.exception.StepNotExecutableException;
 import com.wire.picklejar.execution.exception.StepNotFoundException;
 import com.wire.picklejar.scan.PickleAnnotationSeeker;
 import com.wire.picklejar.scan.JavaSeeker;
-import cucumber.api.PendingException;
-import cucumber.api.java.en.And;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -36,20 +31,18 @@ public class PickleExecutor {
     private static final Logger LOG = LoggerFactory.getLogger(PickleExecutor.class.getSimpleName());
 
     private static final String CUCUMBER_ANNOTATION_REGEX_METHOD_NAME = "value";
-    private static final Class<? extends Annotation>[] CUCUMBER_STEP_ANNOTATIONS = new Class[]{
-        When.class, Then.class, And.class, Given.class
-    };
-
     private final Map<String, Method> methodCache = new ConcurrentHashMap<>();
     private final Map<String, Object> classInstanceCache = new ConcurrentHashMap<>();
 
     public PickleExecutor() {
         try {
+            Collection<Class> annotationClasses = PickleAnnotationSeeker.getAnnotationClassesFromPackage(
+                    Config.ANNOTATION_PACKAGES);
             // Gets all classes in reversed order to override methods with most important methods in cachemap
             // Config.STEP_PACKAGES defines importance of packages - first package path is most important
             Collection<Class> loadedClasses = JavaSeeker.getClasses(Config.STEP_PACKAGES);
             for (Class<?> loadedClass : loadedClasses) {
-                for (Class<? extends Annotation> annotationClass : CUCUMBER_STEP_ANNOTATIONS) {
+                for (Class<? extends Annotation> annotationClass : annotationClasses) {
                     cacheMethodsByAnnotationValue(loadedClass, annotationClass);
                 }
             }
@@ -57,8 +50,8 @@ public class PickleExecutor {
             loadedClasses.stream().forEach((c) -> {
                 LOG.trace(String.format("Loaded class %s", c.getCanonicalName()));
             });
-        } catch (IOException | NoSuchMethodException | IllegalAccessException | IllegalArgumentException |
-                InvocationTargetException | InstantiationException ex) {
+        } catch (IOException | NoSuchMethodException | IllegalAccessException | IllegalArgumentException
+                | InvocationTargetException | InstantiationException ex) {
             LOG.error("Could not load step classes and cache step methods", ex);
         }
     }
@@ -115,17 +108,13 @@ public class PickleExecutor {
 
                 startTime = Instant.now();
                 try {
-                    LOG.info("\n"
-                            + ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,\n"
-                            + "::          {}\n"
-                            + "''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''", step);
                     if (params.isEmpty()) {
                         method.invoke(getOrAddCachedDeclaringClassForMethod(method, constructorParams));
                     } else {
                         method.invoke(getOrAddCachedDeclaringClassForMethod(method, constructorParams), params.toArray());
                     }
-                } catch (PendingException | IllegalArgumentException | InvocationTargetException | IllegalAccessException |
-                        InstantiationException | NoSuchMethodException ite) {
+                } catch (InvocationTargetException | IllegalAccessException | InstantiationException | NoSuchMethodException
+                        | RuntimeException ite) {
                     endTime = Instant.now();
                     throw new StepNotExecutableException(Duration.between(startTime, endTime).toNanos(), String.format("\n"
                             + ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,\n"
@@ -151,7 +140,7 @@ public class PickleExecutor {
         final Object declaringClassObject;
         final String declaringClassName = method.getDeclaringClass().getName();
         if (classInstanceCache.containsKey(declaringClassName)) {
-            LOG.debug("Using cached decalred class {}", declaringClassName);
+            LOG.trace("Using cached decalred class {}", declaringClassName);
             declaringClassObject = classInstanceCache.get(declaringClassName);
         } else {
             final List<Object> constructorParamsList = Arrays.asList(constructorParams);
@@ -232,7 +221,8 @@ public class PickleExecutor {
 
     public static String replaceExampleOccurences(String rawStep, Map<String, String> exampleParams) {
         for (String key : exampleParams.keySet()) {
-            rawStep = rawStep.replaceAll(Matcher.quoteReplacement("<" + key + ">"), Matcher.quoteReplacement(exampleParams.get(key)));
+            rawStep = rawStep.replaceAll(Matcher.quoteReplacement("<" + key + ">"), Matcher.quoteReplacement(exampleParams.get(
+                    key)));
         }
         return rawStep;
     }

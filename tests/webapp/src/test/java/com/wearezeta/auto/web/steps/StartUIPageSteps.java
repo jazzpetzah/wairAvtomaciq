@@ -55,14 +55,15 @@ public class StartUIPageSteps {
     }
 
     @When("^I type (.*) in search field of People Picker$")
-    public void ISearchForUser(String nameOrEmail) throws Exception {
-        nameOrEmail = context.getUserManager().replaceAliasesOccurences(nameOrEmail,
+    public void ISearchForUser(String nameOrEmailOrUniqueUsername) throws Exception {
+        nameOrEmailOrUniqueUsername = context.getUserManager().replaceAliasesOccurences(nameOrEmailOrUniqueUsername,
                 FindBy.NAME_ALIAS);
-        nameOrEmail = context.getUserManager().replaceAliasesOccurences(nameOrEmail,
+        nameOrEmailOrUniqueUsername = context.getUserManager().replaceAliasesOccurences(nameOrEmailOrUniqueUsername,
                 FindBy.EMAIL_ALIAS);
+        nameOrEmailOrUniqueUsername = context.getUserManager().replaceAliasesOccurences(nameOrEmailOrUniqueUsername,
+                FindBy.UNIQUE_USERNAME_ALIAS);
         // adding spaces to ensure trimming of input
-        context.getPagesCollection().getPage(StartUIPage.class).searchForUser(
-                " " + nameOrEmail + " ");
+        context.getPagesCollection().getPage(StartUIPage.class).searchForUser(" " + nameOrEmailOrUniqueUsername + " ");
     }
 
     @When("^I( do not)? see user (.*) found in People Picker$")

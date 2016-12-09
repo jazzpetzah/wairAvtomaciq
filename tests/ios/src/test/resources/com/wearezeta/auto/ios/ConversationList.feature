@@ -319,7 +319,7 @@ Feature: Conversation List
       | user1Name | user2Name |
 
   @C844 @regression @fastLogin
-  Scenario Outline: Verify deleting 1-to-1 conversation from archive
+  Scenario Outline: (ZIOS-7745) Verify deleting 1-to-1 conversation from archive
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
@@ -421,7 +421,7 @@ Feature: Conversation List
     When I swipe right on a <Contact1>
     And I tap Block conversation action button
     And I tap Cancel conversation action button
-    Then I see conversation actions menu
+    Then I see actions menu for <Contact1> conversation
 
     Examples:
       | Name      | Contact1  |
@@ -494,7 +494,7 @@ Feature: Conversation List
     Given I tap Login button
     Given I dismiss alert
     Given I accept First Time overlay
-    Given I dismiss settings warning
+    Given I dismiss settings warning if visible
     Given I see conversations list
     When I open search UI
     And I see alert contains text <AlertText>

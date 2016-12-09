@@ -28,7 +28,7 @@ Feature: Sign Out
     And I see Sign In page
     And I Sign in using login <Email3> and password <Password3>
     And I am signed in properly
-    And I see first time experience with watermark
+    And I see watermark
     When I open search by clicking the people button
     Then I see Search is opened
     And I see Bring Your Friends or Invite People button

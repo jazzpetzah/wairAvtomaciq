@@ -14,7 +14,7 @@ import org.openqa.selenium.WebElement;
 
 
 public class TabletConversationsListPage extends ConversationsListPage {
-    protected static final Function<String, String> xpathStrConvoListTitleByName = name ->
+    private static final Function<String, String> xpathStrConvoListTitleByName = name ->
             String.format("%s/XCUIElementTypeStaticText[@value='%s']", xpathStrContactListItems, name);
 
     public TabletConversationsListPage(Future<ZetaIOSDriver> lazyDriver)

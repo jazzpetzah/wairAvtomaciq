@@ -1,6 +1,6 @@
 Feature: Forward Message
 
-  @C345370 @staging @fastLogin
+  @C345370 @regression @fastLogin
   Scenario Outline: Verify forwarding own picture
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -156,7 +156,6 @@ Feature: Forward Message
     Given I wait for 3 seconds
     # Have to tap play video message to download video. Otherwise Forward button is missing.
     Given I tap on video message in conversation view
-    Given I do not see video message container in the conversation view
     Given I tap Done button on video message player page
     When I long tap on video message in conversation view
     And I tap on Forward badge item

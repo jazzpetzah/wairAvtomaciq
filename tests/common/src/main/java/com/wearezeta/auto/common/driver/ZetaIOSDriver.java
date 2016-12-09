@@ -105,13 +105,13 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
         return this.isSessionLost;
     }
 
-    private void setSessionLost(boolean isSessionLost) {
-        if (isSessionLost != this.isSessionLost) {
-            log.warn(String.format("Changing isSessionLost to %s", isSessionLost));
+    private void setSessionLost(boolean isLost) {
+        if (isLost != this.isSessionLost) {
+            log.warn(String.format("Changing isSessionLost to %s", isLost));
             log.debug(LOG_DECORATION_PREFIX + "\n" + AppiumServer.getInstance().getLog().orElse("")
                     + "\n" + LOG_DECORATION_SUFFIX);
         }
-        this.isSessionLost = isSessionLost;
+        this.isSessionLost = isLost;
     }
 
     private ExecutorService pool;
@@ -317,13 +317,12 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
                     final Dimension originalDimension = FBElement.apiStringToDimension(
                             getFbDriverAPI().getWindowSize(CommonUtils.generateGUID().toUpperCase())
                     );
-                    // FIXME: workaround for webdriver bug https://github.com/facebook/WebDriverAgent/issues/303
                     if (ZetaIOSDriver.this.getOrientation() == ScreenOrientation.LANDSCAPE &&
                             originalDimension.getHeight() > originalDimension.getWidth()) {
+                        // FIXME: workaround for webdriver bug https://github.com/facebook/WebDriverAgent/issues/303
                         return new Dimension(originalDimension.getHeight(), originalDimension.getWidth());
-                    } else {
-                        return originalDimension;
                     }
+                    return originalDimension;
                 } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
                     throw new WebDriverException(e);
                 }

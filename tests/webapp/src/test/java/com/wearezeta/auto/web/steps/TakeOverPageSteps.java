@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 
 import static org.hamcrest.CoreMatchers.startsWith;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class TakeOverPageSteps {
 
@@ -53,10 +54,15 @@ public class TakeOverPageSteps {
         }
     }
 
-    @Given("^I see take over screen page$")
-    public void ISeeTakeOverScreenPage() throws Exception {
-        Assert.assertTrue(context.getPagesCollection().getPage(TakeOverPage.class)
-                .isTakeOverScreenVisible());
+    @Given("^I( do not)? see take over screen$")
+    public void ISeeTakeOverScreen(String doNot) throws Exception {
+        if (doNot == null) {
+            assertThat("Take over screen not shown",
+                    context.getPagesCollection().getPage(TakeOverPage.class).isTakeOverScreenVisible());
+        } else {
+            assertThat("Take over screen shown",
+                    context.getPagesCollection().getPage(TakeOverPage.class).isTakeOverScreenNotVisible());
+        }
     }
 
     @Then("^I see (ChooseYourOwn|TakeThisOne) button on take over screen$")
@@ -86,8 +92,9 @@ public class TakeOverPageSteps {
         if (rememberedUsername == null) {
             throw new Exception("Please use step to remember unique username before this step");
         }
-        Assert.assertTrue("Username in settings not equal to username on take over screen",
-                context.getPagesCollection().getPage(AccountPage.class).getUniqueUsername().equals(rememberedUsername));
+        String username = context.getPagesCollection().getPage(AccountPage.class).getUniqueUsername();
+        Assert.assertTrue("Username in settings("+ username +") not equal to username on take over screen("+ rememberedUsername +")",
+                username.equals(rememberedUsername));
     }
 
     @Then("^I see remembered unique username contains a random adjective and noun$")
@@ -120,17 +127,11 @@ public class TakeOverPageSteps {
             }
             adjective = rememberedUsername.substring(0, charPointer);
         }
-        int newStart = charPointer;
-        charPointer++;
-        String noun = rememberedUsername.substring(newStart, charPointer);
-        while (!nounList.contains(noun)) {
-            charPointer ++;
-            if (charPointer > rememberedUsername.length()) {
-                throw new Exception("No such noun: " + noun);
-            }
-            noun = rememberedUsername.substring(newStart, charPointer);
+        String noun = rememberedUsername.substring(charPointer, rememberedUsername.length());
+        if (!nounList.contains(noun)) {
+            throw new Exception("No such noun: " + noun);
         }
-        Assert.assertTrue("Unique Username " + adjective + noun + " does not exist.",
+        Assert.assertTrue("Combination of adjective " + adjective + " and noun " + noun + " does not exist.",
                 rememberedUsername.equals(adjective.concat(noun)));
     }
 }

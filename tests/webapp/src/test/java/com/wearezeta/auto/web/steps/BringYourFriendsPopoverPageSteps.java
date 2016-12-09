@@ -1,6 +1,8 @@
 package com.wearezeta.auto.web.steps;
 
+import com.wearezeta.auto.common.image_send.AssetData;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.external.YouAreInvitedPage;
 import com.wearezeta.auto.web.pages.popovers.BringYourFriendsPopoverPage;
@@ -8,6 +10,7 @@ import com.wearezeta.auto.web.pages.popovers.BringYourFriendsPopoverPage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.apache.log4j.Logger;
+import org.junit.Assert;
 
 public class BringYourFriendsPopoverPageSteps {
 
@@ -59,23 +62,11 @@ public class BringYourFriendsPopoverPageSteps {
                 .clickInvitePeopleButton();
     }
 
-    @When("^I remember invitation link on Bring Your Friends popover$")
-    public void IRemeberInvitationLink() throws Exception {
-        invitationLink = context.getPagesCollection().getPage(
-                BringYourFriendsPopoverPage.class).parseInvitationLink();
-        LOG.info("Invitation link: " + invitationLink);
+    @When("^I see username starting with (.*) in invitation on Bring Your Friends popover$")
+    public void ISeeUsernameInInvitation(String username) throws Exception {
+        username = context.getUserManager().replaceAliasesOccurences(username, ClientUsersManager.FindBy.NAME_ALIAS);
+        Assert.assertEquals("Usernames are different in invitation on Bring your friend popover", username, context.getPagesCollection().getPage(
+                BringYourFriendsPopoverPage.class).getUsernameFromInvitation());
     }
 
-    @When("^I navigate to previously remembered invitation link$")
-    public void INavigateToNavigationLink() throws Exception {
-        if (invitationLink == null) {
-            throw new RuntimeException(
-                    "Invitation link has not been remembered before!");
-        }
-
-        YouAreInvitedPage youAreInvitedPage = context.getPagesCollection()
-                .getPage(YouAreInvitedPage.class);
-        youAreInvitedPage.setUrl(invitationLink);
-        youAreInvitedPage.navigateTo();
-    }
 }

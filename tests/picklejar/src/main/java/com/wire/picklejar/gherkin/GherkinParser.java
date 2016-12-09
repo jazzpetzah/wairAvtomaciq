@@ -25,10 +25,10 @@ public class GherkinParser {
     
     private static final Logger LOG = LoggerFactory.getLogger(GherkinParser.class);
 
-    private static final Parser<Feature> parser = new Parser<>(new AstBuilder());
-    private static final Map<String, String> featureContents;
+    private static final Parser<Feature> PARSER = new Parser<>(new AstBuilder());
+    private static final Map<String, String> FEATURE_CONTENTS;
     static {
-        featureContents = getFeatureContents(getFeatureFiles());
+        FEATURE_CONTENTS = getFeatureContents(getFeatureFiles());
     }
     
     private static Map<String, File> getFeatureFiles() {
@@ -61,8 +61,8 @@ public class GherkinParser {
 
     public static List<Feature> getAllFeatures() {
         List<Feature> features = new ArrayList<>();
-        for (Map.Entry<String, String> featureEntry : featureContents.entrySet()) {
-            Feature feature = parser.parse(featureEntry.getValue());
+        for (Map.Entry<String, String> featureEntry : FEATURE_CONTENTS.entrySet()) {
+            Feature feature = PARSER.parse(featureEntry.getValue());
             features.add(feature);
         }
         return features;
@@ -71,8 +71,8 @@ public class GherkinParser {
     public static List<Feature> getFilteredFeatures(String[] tagFilter) {
         List<Feature> features = new ArrayList<>();
         List<String> tagsToSelectList = Arrays.asList(tagFilter);
-        for (Map.Entry<String, String> featureEntry : featureContents.entrySet()) {
-            Feature feature = parser.parse(featureEntry.getValue());
+        for (Map.Entry<String, String> featureEntry : FEATURE_CONTENTS.entrySet()) {
+            Feature feature = PARSER.parse(featureEntry.getValue());
             List<ScenarioDefinition> scenarioDefinitions = feature.getScenarioDefinitions();
             List<ScenarioDefinition> selectedScenarios = scenarioDefinitions.stream().filter(
                     (scenarioDefinition) -> ((ScenarioOutline) scenarioDefinition).getTags().stream().anyMatch(
@@ -88,8 +88,8 @@ public class GherkinParser {
 
     public static List<ScenarioDefinition> getAllScenarios() {
         ArrayList<ScenarioDefinition> filteredScenraios = new ArrayList<>();
-        for (Map.Entry<String, String> featureEntry : featureContents.entrySet()) {
-            Feature feature = parser.parse(featureEntry.getValue());
+        for (Map.Entry<String, String> featureEntry : FEATURE_CONTENTS.entrySet()) {
+            Feature feature = PARSER.parse(featureEntry.getValue());
             for (ScenarioDefinition scenarioDefinition : feature.getScenarioDefinitions()) {
                 filteredScenraios.add(scenarioDefinition);
             }
@@ -100,8 +100,8 @@ public class GherkinParser {
     public static List<ScenarioDefinition> getFilteredScenarios(String[] tagFilter) {
         List<String> tagsToSelectList = Arrays.asList(tagFilter);
         ArrayList<ScenarioDefinition> filteredScenarios = new ArrayList<>();
-        for (Map.Entry<String, String> featureEntry : featureContents.entrySet()) {
-            Feature feature = parser.parse(featureEntry.getValue());
+        for (Map.Entry<String, String> featureEntry : FEATURE_CONTENTS.entrySet()) {
+            Feature feature = PARSER.parse(featureEntry.getValue());
             for (ScenarioDefinition scenarioDefinition : feature.getScenarioDefinitions()) {
                 if (scenarioDefinition.getTags().stream().anyMatch((t) -> tagsToSelectList.contains(t.getName()))) {
                     filteredScenarios.add(scenarioDefinition);

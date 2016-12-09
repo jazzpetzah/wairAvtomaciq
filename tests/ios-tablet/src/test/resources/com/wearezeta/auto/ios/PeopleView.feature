@@ -18,13 +18,15 @@ Feature: People View
     And I type "<Contact2>" in Search UI input field
     And I tap on conversation <Contact2> in search result
     And I tap Create conversation action button on Search UI page
+    # Wait until the conversation is created
+    And I wait for 3 seconds
     Then I see group conversation with users <Contact1>,<Contact2>
 
     Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C2896 @regression @fastLogin
+  @C2896 @regression @fastLogin @torun
   Scenario Outline: Start group chat with users from contact list [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -42,6 +44,8 @@ Feature: People View
     And I type "<Contact2>" in Search UI input field
     And I tap on conversation <Contact2> in search result
     And I tap Create conversation action button on Search UI page
+    # Wait until the conversation is created
+    And I wait for 3 seconds
     Then I see group conversation with users <Contact1>,<Contact2>
 
     Examples:
@@ -55,14 +59,16 @@ Feature: People View
     Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap on contact name <Contact1>
-    And I open conversation details
-    And I tap Create Group button on Single user profile page
+    Given I tap on contact name <Contact1>
+    Given I open conversation details
+    When I tap Create Group button on Single user profile page
     And I tap connected user <Contact2> in Search UI on iPad popover
     And I tap connected user <Contact3> in Search UI on iPad popover
     And I tap Create button on iPad popover
+    # Wait until the conversation is created
+    And I wait for 3 seconds
     Then I see group conversation with users <Contact1>,<Contact2>,<Contact3>
-    And I navigate back to conversations list
+    When I navigate back to conversations list
     Then I see in conversations list group chat with <Contact1>,<Contact2>,<Contact3>
 
     Examples:
@@ -82,6 +88,8 @@ Feature: People View
     And I tap connected user <Contact2> in Search UI on iPad popover
     And I tap connected user <Contact3> in Search UI on iPad popover
     And I tap Create button on iPad popover
+    # Wait until the conversation is created
+    And I wait for 3 seconds
     And I see group conversation with users <Contact1>,<Contact2>,<Contact3>
     Then I see in conversations list group chat with <Contact1>,<Contact2>,<Contact3>
 
@@ -260,7 +268,7 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select user on iPad group popover <Contact2>
-    Then I see <Contact2> name on Group participant profile page
+    Then I see name "<Contact2>" on Group participant profile page
 
     Examples:
       | Name      | Contact2  | ConnectedContact | GroupChatName   |
@@ -277,7 +285,7 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select user on iPad group popover <Contact2>
-    Then I see <Contact2> name on Group participant profile page
+    Then I see name "<Contact2>" on Group participant profile page
 
     Examples:
       | Name      | Contact2  | ConnectedContact | GroupChatName   |
@@ -882,7 +890,7 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select participant <Contact3> on Group info page
-    Then I see <Contact3> name on Group participant Pending outgoing connection page
+    Then I see name "<Contact3>" on Group participant Pending outgoing connection page
     And I see Remove From Group button on Group participant Pending outgoing connection page
 
     Examples:
@@ -901,7 +909,7 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select participant <Contact3> on Group info page
-    Then I see <Contact3> name on Group participant Pending outgoing connection page
+    Then I see name "<Contact3>" on Group participant Pending outgoing connection page
     And I see Remove From Group button on Group participant Pending outgoing connection page
 
     Examples:

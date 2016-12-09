@@ -264,6 +264,8 @@ public final class WebAppLocators {
 
         public static final String cssUniqueUsernameError = ".preferences-account-username-error";
 
+        public static final String cssUniqueUsernameHint = ".preferences-account-username-hint";
+
         public static final String cssNameSelfUserMail = "[data-uie-name='enter-email']";
 
         public static final String cssNameSelfUserPhoneNumber = "[data-uie-name='enter-phone']";
@@ -359,6 +361,8 @@ public final class WebAppLocators {
         
         public static final String cssCancelRequestButton = "#"+idConversation+" [data-uie-name='do-cancel-request']";
 
+        public static final String cssUsername = ".message-connected-username.label-username";
+
         // messages (including images, text, missed call notifications, pings)
         public static final String cssMessage = "[data-uie-name='item-message']";
 
@@ -371,6 +375,10 @@ public final class WebAppLocators {
 
         public static final Function<String, String> cssMessagesById = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s']", text);
+
+        public static final Function<String, String> xpathMessageHeaderByText = text -> String
+                .format("//*[@data-uie-name='item-message']//*[contains(@class,'text') and contains(text(),'%s')]//../../..",
+                        text);
         
         public static final FunctionFor2Parameters<String, String, String> xpathMessageTextByMessageId = (messageId, text) -> String
                 .format("//*[@data-uie-name='item-message' and @data-uie-uid='%s']//*[contains(@class, 'text') and text()='%s']", messageId, text);
@@ -668,6 +676,7 @@ public final class WebAppLocators {
 
         public static final String cssRequestEmailPartial = " .mail";
         public static final String cssRequestMessagePartial = " .message";
+        public static final String cssRequestUniqueUsernamePartial = " .connect-request-username";
 
         public static final Function<String, String> cssRequestById = uid -> String
                 .format("[data-uie-name='connect-request'][data-uie-uid='%s']",
@@ -684,7 +693,7 @@ public final class WebAppLocators {
         public static final String cssAllConnectionRequests = "[data-uie-name='connect-request']";
 
         public static final Function<String, String> cssRequestAvatarByUserId = uid -> String
-                .format("[data-uie-name='connect-request'][data-uie-uid='%s'] .image",
+                .format("[data-uie-name='connect-request'][data-uie-uid='%s'] user-avatar",
                         uid);
 
         public static final Function<String, String> cssKnownConnectionAvatarsById = uid -> String

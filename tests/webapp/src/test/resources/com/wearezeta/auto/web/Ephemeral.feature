@@ -3,6 +3,7 @@ Feature: Ephemeral
   @C261723 @ephemeral @regression @localytics @WEBAPP-3302
   Scenario Outline: Verify sending ephemeral text message in 1:1
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given I enable localytics via URL parameter
     Given I switch to Sign In page
@@ -101,6 +102,7 @@ Feature: Ephemeral
   @C262533 @ephemeral @regression
   Scenario Outline: Verify that messages with previous timer are deleted on start-up when the timeout passed in 1:1
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login2> and password <Password>

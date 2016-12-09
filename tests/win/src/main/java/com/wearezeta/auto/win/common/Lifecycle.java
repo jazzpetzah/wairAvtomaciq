@@ -1,6 +1,5 @@
 package com.wearezeta.auto.win.common;
 
-import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.driver.ZetaWinDriver;
 import com.wearezeta.auto.common.driver.ZetaWinWebAppDriver;
@@ -18,6 +17,7 @@ import static com.wearezeta.auto.win.common.WinExecutionContext.WIRE_APP_FOLDER;
 import static com.wearezeta.auto.win.common.WinExecutionContext.WIRE_APP_PATH;
 import com.wearezeta.auto.win.pages.win.MainWirePage;
 import com.wearezeta.auto.win.pages.win.WinPagesCollection;
+import com.wire.picklejar.gherkin.model.Scenario;
 import com.wire.picklejar.gherkin.model.Step;
 import java.io.File;
 import java.io.IOException;
@@ -57,10 +57,6 @@ public class Lifecycle {
      */
     public TestContext getWebContext() {
         return webContext;
-    }
-
-    public TestContext getWrapperContext() {
-        return wrapperContext;
     }
 
     private Future<ZetaWebAppDriver> createWebDriver(Future<ZetaWinDriver> winDriver) throws IOException {
@@ -128,10 +124,6 @@ public class Lifecycle {
         webappDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         
         LOG.debug("Waiting for App to be started");
-        
-        LOG.debug("Setting formatter");
-        ZetaFormatter.setLazyDriver(winDriverFuture);
-        
         webContext = new TestContext(testname, webDriverFuture);
         wrapperContext = webContext.fromPrimaryContext(winDriverFuture, new WinPagesCollection());
         LOG.debug("Setting first Win Page");
@@ -141,8 +133,8 @@ public class Lifecycle {
         webContext.getPagesCollection().setFirstPage(new RegistrationPage(webDriverFuture));
     }
 
-    public void setUp(String testname) throws Exception {
-        this.testname = testname;
+    public void setUp(Scenario scenario) throws Exception {
+        this.testname = scenario.getName();
         try {
             killAllApps();
             if (!KEEP_DATABASE) {
@@ -154,7 +146,7 @@ public class Lifecycle {
         startApp();
     }
 
-    public void tearDown(com.wire.picklejar.gherkin.model.Scenario scenario) throws Exception {
+    public void tearDown(Scenario scenario) throws Exception {
         try {
             Set<String> tagSet = scenario.getTags().stream()
                     .map((tag) -> tag.getName())
@@ -167,7 +159,7 @@ public class Lifecycle {
         tearDown();
     }
 
-    private Map<String, String> mapScenario(com.wire.picklejar.gherkin.model.Scenario scenario) {
+    private Map<String, String> mapScenario(Scenario scenario) {
         Map<String, String> stepResultMap = new LinkedHashMap<>();
         for (Step step : scenario.getSteps()) {
             stepResultMap.put(step.getName(), step.getResult().getStatus());

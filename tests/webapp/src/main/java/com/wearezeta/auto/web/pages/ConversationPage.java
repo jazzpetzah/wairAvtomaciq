@@ -178,6 +178,9 @@ public class ConversationPage extends WebPage {
     @FindBy(css = WebAppLocators.ConversationPage.cssLinkPreviewImage)
     private WebElement previewImage;
 
+    @FindBy(css = WebAppLocators.ConversationPage.cssUsername)
+    private WebElement uniqueUsername;
+
     public ConversationPage(Future<ZetaWebAppDriver> lazyDriver)
             throws Exception {
         super(lazyDriver);
@@ -254,6 +257,15 @@ public class ConversationPage extends WebPage {
                 .cssSelector(WebAppLocators.ConversationPage.cssMessageHeader);
         Thread.sleep(DriverUtils.getDefaultLookupTimeoutSeconds() * 1000);
         return getNumberOfElementsContainingText(locator, parts);
+    }
+
+    public String getMessageIdFromMessageText(String messageText) throws Exception {
+        By locator = By.xpath(WebAppLocators.ConversationPage.xpathMessageHeaderByText.apply(messageText));
+        return getDriver().findElement(locator).getAttribute("data-uie-uid");
+    }
+
+    public String getUniqueUsername() throws Exception{
+        return uniqueUsername.getText();
     }
 
     /**

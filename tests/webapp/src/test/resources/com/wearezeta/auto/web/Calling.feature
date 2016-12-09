@@ -4,6 +4,7 @@ Feature: Calling
   Scenario Outline: Verify I can send text, image and ping while in the same convo
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
@@ -47,6 +48,7 @@ Feature: Calling
   Scenario Outline: Verify I can get pinged by callee during call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
@@ -60,7 +62,7 @@ Feature: Calling
     And <Contact> verifies to have 1 flow
     And <Contact> verifies to get audio data from me
     And <Contact> verify that all audio flows have greater than 0 bytes
-    And User <Contact> pinged in the conversation with <Contact>
+    And User <Contact> pinged in the conversation with <Name>
     And I see <PING> action in conversation
     And <Contact> verifies to get audio data from me
     And I hang up call with conversation <Contact>
@@ -73,13 +75,14 @@ Feature: Calling
   Scenario Outline: Verify the corresponding conversations list item gets sticky on outgoing call
     Given My browser supports calling
     Given There are 3 users where <Name> is me
+    Given <Contact1> has unique username
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Contact1> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly
     And I open conversation with <Contact1>
-    When User <Contact2> pinged in the conversation with <Contact2>
+    When User <Contact2> pinged in the conversation with <Name>
     And I see conversation <Contact2> is on the top
     And I call
     And I see the outgoing call controls for conversation <Contact1>
@@ -89,10 +92,10 @@ Feature: Calling
     And <Contact1> verifies to have 1 flow
     And <Contact1> verifies to get audio data from me
     And <Contact1> verify that all audio flows have greater than 0 bytes
-    When User <Contact2> pinged in the conversation with <Contact2>
+    When User <Contact2> pinged in the conversation with <Name>
     And I see conversation <Contact1> is on the top
     And I hang up call with conversation <Contact1>
-    When User <Contact2> pinged in the conversation with <Contact2>
+    When User <Contact2> pinged in the conversation with <Name>
     And I see conversation <Contact2> is on the top
 
     Examples:
@@ -103,13 +106,14 @@ Feature: Calling
   Scenario Outline: Verify the corresponding conversations list item gets sticky on incoming call
     Given My browser supports calling
     Given There are 3 users where <Name> is me
+    Given <Contact1> has unique username
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Contact1> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly
     And I open conversation with <Contact1>
-    When User <Contact2> pinged in the conversation with <Contact2>
+    When User <Contact2> pinged in the conversation with <Name>
     And I see conversation <Contact2> is on the top
     Then Soundfile ringing_from_them did not start playing in loop
     And <Contact1> calls me
@@ -124,13 +128,13 @@ Feature: Calling
     And <Contact1> verifies to get audio data from me
     And <Contact1> verify that all audio flows have greater than 0 bytes
 #    And I see conversation <Contact1> is on the top
-    When User <Contact2> pinged in the conversation with <Contact2>
+    When User <Contact2> pinged in the conversation with me
     And I see conversation <Contact1> is on the top
     And Soundfile nw_interruption did not start playing
     And Soundfile call_drop did not start playing
     And I hang up call with conversation <Contact1>
     And Soundfile call_drop did start playing
-    When User <Contact2> pinged in the conversation with <Contact2>
+    When User <Contact2> pinged in the conversation with me
     #And I see conversation <Contact2> is on the top
 
     Examples:
@@ -141,6 +145,7 @@ Feature: Calling
   Scenario Outline: Verify I can call a user twice in a row
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
@@ -173,6 +178,7 @@ Feature: Calling
   Scenario Outline: Verify I can call a user for more than 30 mins
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
@@ -297,6 +303,7 @@ Feature: Calling
   Scenario Outline: Verify I can call a group for more than 30 mins with browsers
     Given My browser supports calling
     Given There are 3 users where <Name> is me
+    Given <Contact1>,<Contact2> have unique usernames
     Given Myself is connected to <Contact>,<Contact2>
     Given Myself has group chat <ChatName1> with <Contact>,<Contact2>
     Given <Contact>,<Contact2> starts instance using <CallBackend>
@@ -543,6 +550,7 @@ Feature: Calling
   Scenario Outline: Verify that current call is terminated if you want to call someone else (as caller)
     Given My browser supports calling
     Given There are 3 users where <Name> is me
+    Given <Contact1>,<Contact2> have unique usernames
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Contact1>,<Contact2> starts instance using <CallBackend>    
     Given I switch to Sign In page
@@ -591,6 +599,7 @@ Feature: Calling
   Scenario Outline: Verify that current call is terminated if you want to call someone else (as callee)
     Given My browser supports calling
     Given There are 3 users where <Name> is me
+    Given <Contact1>,<Contact2> have unique usernames
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Contact2> starts instance using <WaitBackend>
     Given <Contact1> starts instance using <CallBackend>
@@ -675,6 +684,7 @@ Feature: Calling
   Scenario Outline: Verify receiving group call during group call
     Given My browser supports calling
     Given There are 5 users where <Name> is me
+    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> have unique usernames
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>
     Given Myself has group chat <ChatName2> with <Contact3>,<Contact4>
@@ -750,6 +760,7 @@ Feature: Calling
   @C1766 @regression @calling
   Scenario Outline: Verify I get missed call notification when someone calls me
     Given There are 3 users where <Name> is me
+    Given <Contact1> has unique username
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Contact1> starts instance using <CallBackend>
     Given I switch to Sign In page
@@ -773,6 +784,7 @@ Feature: Calling
   Scenario Outline: Verify I can make another call while current one is ignored
     Given My browser supports calling
     Given There are 3 users where <Name> is me
+    Given <Contact1>,<Contact2> have unique usernames
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Contact1>,<Contact2> starts instance using <CallWaitBackend>
     Given I switch to Sign In page
@@ -801,6 +813,7 @@ Feature: Calling
   Scenario Outline: Verify I can not see blocked contact trying to call me
     Given My browser supports calling
     Given There are 3 users where <Name> is me
+    Given <Contact> has unique username
     # OtherContact is needed otherwise the search will show up sometimes
     Given Myself is connected to <Contact>,<OtherContact>
     Given Myself blocked <Contact>
@@ -820,6 +833,7 @@ Feature: Calling
   Scenario Outline: Verify I can see muted conversation person trying to call me
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -839,6 +853,7 @@ Feature: Calling
     Given My browser supports calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given <Contact1>,<Contact2> have unique usernames
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given <Contact1>,<Contact2> starts instance using <CallBackend>
     Given <Contact1>,<Contact2> accept next incoming call automatically
@@ -864,6 +879,7 @@ Feature: Calling
   Scenario Outline: Verify accepting group call
     Given My browser supports calling
     Given There are 5 users where <Name> is me
+    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> have unique usernames
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
     # Splitting large instance creation requests to double the timeout
@@ -900,6 +916,7 @@ Feature: Calling
   Scenario Outline: Verify impossibility to connect 11th person to the call
     Given My browser supports calling
     Given There are 11 users where <Name> is me
+    Given <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>,<Contact7>,<Contact8>,<Contact9>,<Contact10> have unique usernames
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>,<Contact7>,<Contact8>,<Contact9>,<Contact10>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>,<Contact7>,<Contact8>,<Contact9>,<Contact10>
     Given <Contact1> starts instance using <CallBackend>
@@ -937,6 +954,7 @@ Feature: Calling
   Scenario Outline: Verify initiating group call
     Given My browser supports calling
     Given There are 5 users where <Name> is me
+    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> have unique usernames
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
     # Splitting large instance creation requests to double the timeout
@@ -967,6 +985,7 @@ Feature: Calling
   Scenario Outline: Verify ignoring group call
     Given My browser supports calling
     Given There are 3 users where <Name> is me
+    Given <Contact1>,<Contact2> have unique usernames
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given <Contact2> starts instance using <WaitBackend>
@@ -991,6 +1010,7 @@ Feature: Calling
   Scenario Outline: Verify leaving and coming back to the call
     Given My browser supports calling
     Given There are 3 users where <Name> is me
+    Given <Contact1>,<Contact2> have unique usernames
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given <Contact1>,<Contact2> starts instance using <WaitBackend>
@@ -1021,6 +1041,7 @@ Feature: Calling
   Scenario Outline: Verify possibility to join call after 1 minutes of starting it
     Given My browser supports calling
     Given There are 3 users where <Name> is me
+    Given <Contact1>,<Contact2> have unique usernames
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given <Contact2> starts instance using <WaitBackend>
@@ -1052,6 +1073,7 @@ Feature: Calling
   Scenario Outline: Verify initiating group call several times
     Given My browser supports calling
     Given There are 5 users where <Name> is me
+    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> have unique usernames
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given <Contact1>,<Contact2>,<Contact3>,<Contact4> starts instance using <WaitBackend>
@@ -1069,6 +1091,7 @@ Feature: Calling
   Scenario Outline: Verify 5 min group call several times
     Given My browser supports calling
     Given There are 5 users where <Name> is me
+    Given <Contact1>,<Contact2> have unique usernames
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given <Contact1>,<Contact2> starts instance using <WaitBackend>
@@ -1086,6 +1109,7 @@ Feature: Calling
   Scenario Outline: Verify receiving 1-to-1 call during group call
     Given My browser supports calling
     Given There are 4 users where <Name> is me
+    Given <Contact1>,<Contact2>,<Contact3> have unique usernames
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>
     Given <Contact1>,<Contact2> starts instance using <WaitBackend>
@@ -1144,6 +1168,7 @@ Feature: Calling
   Scenario Outline: Verify I can silence an incoming audio call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page

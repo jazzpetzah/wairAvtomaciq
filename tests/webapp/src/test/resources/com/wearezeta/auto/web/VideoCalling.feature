@@ -4,6 +4,7 @@ Feature: VideoCalling
   Scenario Outline: Verify I can start Video call from conversation view
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given User <Contact> changes unique username to <Contact>
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given <Contact> accepts next incoming video call automatically
@@ -37,6 +38,7 @@ Feature: VideoCalling
   Scenario Outline: Verify I can accept Video call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given User <Contact> changes unique username to <Contact>
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
@@ -70,6 +72,7 @@ Feature: VideoCalling
   Scenario Outline: Verify I can decline Video call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
@@ -94,6 +97,7 @@ Feature: VideoCalling
   Scenario Outline: Verify I cannot see blocked contact trying to make a video call to me
     Given My browser supports calling
     Given There are 3 users where <Name> is me
+    Given <Contact> has unique username
     # OtherContact is needed otherwise the search will show up sometimes
     Given Myself is connected to <Contact>,<OtherContact>
     Given Myself blocked <Contact>
@@ -115,6 +119,7 @@ Feature: VideoCalling
   Scenario Outline: Verify I can make a Video call one after another
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given <Contact> accepts next incoming video call automatically
@@ -313,6 +318,7 @@ Feature: VideoCalling
   Scenario Outline: Verify I can mute Video call after the call is established
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given <Contact> accepts next incoming video call automatically
@@ -350,6 +356,7 @@ Feature: VideoCalling
   Scenario Outline: Verify I can mute Video call before the call is established
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
@@ -386,6 +393,7 @@ Feature: VideoCalling
   Scenario Outline: Verify I can start 1:1 Video Call from Start UI
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given User <Contact> changes unique username to <Contact>
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
@@ -420,6 +428,8 @@ Feature: VideoCalling
   Scenario Outline: Verify you don't see video call button when you're creating group from Start UI
     Given My browser supports calling
     Given There are 3 users where <Name> is me
+    Given User <Contact1> changes unique username to <Contact1>
+    Given User <Contact2> changes unique username to <Contact2>
     Given Myself is connected to <Contact1>, <Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -444,6 +454,7 @@ Feature: VideoCalling
   Scenario Outline: Verify I can start Video call after declining an audio call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
@@ -477,6 +488,7 @@ Feature: VideoCalling
   Scenario Outline: Verify I see the timer/duration of the video call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
@@ -500,6 +512,7 @@ Feature: VideoCalling
   Scenario Outline: Verify I can see the incoming video call when I just login
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
@@ -534,6 +547,7 @@ Feature: VideoCalling
   Scenario Outline: Verify I get missed call indication when someone called (video)
     Given My browser supports calling
     Given There are 3 users where <Name> is me
+    Given <Contact1> has unique username
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Contact1> starts instance using <CallBackend>
     Given I switch to Sign In page
@@ -588,6 +602,7 @@ Feature: VideoCalling
   Scenario Outline: Verify I can start an audio call back after declining a video call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
@@ -617,6 +632,7 @@ Feature: VideoCalling
   Scenario Outline: Verify you can multitask while video call is minimized
     Given My browser supports calling
     Given There are 3 users where <Name> is me
+    Given <Contact1> has unique username
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Contact1> starts instance using <CallBackend>
     Given <Contact1> accepts next incoming video call automatically
@@ -667,6 +683,7 @@ Feature: VideoCalling
   Scenario Outline: Verify that current video call is terminated if you want to call someone else
     Given My browser supports calling
     Given There are 3 users where <Name> is me
+    Given <Contact1>,<Contact2> have unique username
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Contact1>,<Contact2> starts instance using <CallBackend>    
     Given I switch to Sign In page
@@ -736,6 +753,7 @@ Feature: VideoCalling
   Scenario Outline: Verify that current video call is terminated if you want to videocall someone else
     Given My browser supports calling
     Given There are 3 users where <Name> is me
+    Given <Contact1>,<Contact2> have unique username
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Contact1>,<Contact2> starts instance using <CallBackend>    
     Given I switch to Sign In page
@@ -811,6 +829,7 @@ Feature: VideoCalling
   Scenario Outline: Verify I can disable video in Video call and enable it back
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given <Contact> accepts next incoming video call automatically
@@ -876,6 +895,7 @@ Feature: VideoCalling
   Scenario Outline: Verify my video is not shown if my audio call is declined but I got called back via video
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
@@ -883,7 +903,7 @@ Feature: VideoCalling
     And I am signed in properly
     And I open conversation with <Contact>
     When I call
-    Then <Contact> declines call from conversation <Contact>
+    Then <Contact> declines call from conversation <Name>
     And <Contact> starts a video call to me
     And I see video call is minimized
     And I see video button unpressed
@@ -909,6 +929,7 @@ Feature: VideoCalling
   Scenario Outline: Verify I can start an audio call and can upgrade to video call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
@@ -945,6 +966,7 @@ Feature: VideoCalling
   Scenario Outline: Verify I can silence an incoming video call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page

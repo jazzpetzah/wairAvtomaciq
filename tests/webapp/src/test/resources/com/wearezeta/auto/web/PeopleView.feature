@@ -12,7 +12,7 @@ Feature: People View
     And I click People button in one to one conversation
     Then I see Single User Profile popover
     And I see username <Contact> on Single User Profile popover
-    And I see Mail of user <Contact> on Single Participant popover
+    And I do not see Mail of user <Contact> on Single Participant popover
     And I see avatar <Avatar> of user <Contact> on Single Participant popover
     And I see Add people button on Single User Profile popover
     And I see Block button on Single User Profile popover
@@ -113,7 +113,7 @@ Feature: People View
     And I see an avatar on Group Participants popover
     And I see Remove button on Group Participants popover
     And I see correct remove from group button tool tip on Group Participants popover
-    And I see Mail <UnknownContactMail> on Group Participants popover
+    And I do not see Mail <UnknownContactMail> on Group Participants popover
     And I see Pending button on Group Participants popover
     And I see correct pending button tool tip on Group Participants popover
     When I click Pending button on Group Participants popover
@@ -138,7 +138,7 @@ Feature: People View
     Then I see Group Participants popover
     When I click on participant <KnownContact> on Group Participants popover
     Then I see username <KnownContact> on Group Participants popover
-    And I see Mail <KnownContactMail> on Group Participants popover
+    And I do not see Mail <KnownContactMail> on Group Participants popover
     And I see open conversation button on Group Participants popover
     When I click open conversation from Group Participants popover
     Then I see conversation with <KnownContact> is selected in conversations list
@@ -167,7 +167,7 @@ Feature: People View
     And I see Remove button on Group Participants popover
     And I see Unblock button on Group Participants popover
     And I see correct Unblock button tool tip on Group Participants popover
-    And I see Mail <KnownContactMail> on Group Participants popover
+    And I do not see Mail <KnownContactMail> on Group Participants popover
     When I click Unblock button on Group Participants popover
     And I confirm Unblock from group chat on Group Participants popover
     Then I see Contact list with name <KnownContact>
@@ -192,7 +192,7 @@ Feature: People View
     When I click on participant <UnknownContact> on Group Participants popover
     Then I see correct remove from group button tool tip on Group Participants popover
     And I see username <UnknownContact> on Group Participants popover
-    And I see Mail <UnknownContactMail> on Group Participants popover
+    And I do not see Mail <UnknownContactMail> on Group Participants popover
     And I see Pending button on Group Participants popover
     When I click Pending button on Group Participants popover
     When I click ignore connect button on Group Participants popover
@@ -205,6 +205,7 @@ Feature: People View
   @C1715 @regression
   Scenario Outline: Verify users can properly leave a group conversation on the other end
     Given There are 4 users where <Name> is me
+    Given Me,<KnownContact> have unique usernames
     Given Myself is connected to <KnownContact>
     Given <KnownContact> is connected to <UnknownContact>,<UnknownContact2>
     Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>,<UnknownContact2>
@@ -308,6 +309,7 @@ Feature: People View
   @C1714 @regression
   Scenario Outline: Verify the new conversation is created on the other end from 1to1
     Given There are 3 users where <Name> is me
+    Given User <Contact1> changes unique username to <Contact1>
     Given Myself is connected to <Contact1>,<Contact2>
     Given User <Contact1> changes avatar picture to default
     Given I switch to Sign In page

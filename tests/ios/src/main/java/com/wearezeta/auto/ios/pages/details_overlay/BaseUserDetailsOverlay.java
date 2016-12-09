@@ -20,8 +20,24 @@ public abstract class BaseUserDetailsOverlay extends BaseDetailsOverlay {
                     "XCUIElementTypeOther[ ./XCUIElementTypeImage or ./XCUIElementTypeStaticText ][1]"
     );
 
-    private static final Function<String, String> nameStrABNameByName = name ->
-            String.format("%s in Address Book", name);
+    private static final Function<String, String> xpathStrNameByValue = name ->
+            String.format("(//XCUIElementTypeStaticText[@name='name' and @value='%s'])[last()]", name);
+    private static final By xpathName = By.xpath("(//XCUIElementTypeStaticText[@name='name'])[last()]");
+
+    private static final Function<String, String> xpathStrABNameByName = name ->
+            String.format("//XCUIElementTypeStaticText[@name='correlation' and @value='%s']",
+                    name.trim().length() > 0 ? (name + " in Address Book") : "in Address Book");
+    private static final By nameABName = MobileBy.AccessibilityId("correlation");
+
+    private static final Function<Integer, String> xpathStrCommonFriendsByCount = count ->
+            String.format("//XCUIElementTypeStaticText[@name='correlation' and @value='%s']",
+                    (count == 1) ? "1 friend in common" : count + " friends in common");
+    private static final By nameCommonFriends = nameABName;
+
+    private static final Function<String, String> xpathStrUniqueUsernameByUsername = username ->
+            String.format("//XCUIElementTypeStaticText[@name='handle' and @value='%s']",
+                    username.startsWith("@") ? username : ("@" + username));
+    private static final By nameUniqueUsername = MobileBy.AccessibilityId("handle");
 
     public BaseUserDetailsOverlay(Future<ZetaIOSDriver> driver) throws Exception {
         super(driver);
@@ -33,34 +49,54 @@ public abstract class BaseUserDetailsOverlay extends BaseDetailsOverlay {
         Thread.sleep(1000);
     }
 
-    public boolean isNameVisible(String value) throws Exception {
-        final By locator = MobileBy.AccessibilityId(value);
-        return selectVisibleElements(locator).size() > 0;
+    private By getUserDetailLocator(String detailName, String expectedValue) {
+        switch (detailName.toLowerCase()) {
+            case "name":
+                return By.xpath(xpathStrNameByValue.apply(expectedValue));
+            case "unique username":
+                return By.xpath(xpathStrUniqueUsernameByUsername.apply(expectedValue));
+            case "address book name":
+                return By.xpath(xpathStrABNameByName.apply(expectedValue));
+            case "common friends count":
+                return By.xpath(xpathStrCommonFriendsByCount.apply(Integer.parseInt(expectedValue.trim())));
+            default:
+                throw new IllegalArgumentException(String.format("Unknown user detail name '%s'", detailName));
+        }
     }
 
-    public boolean isNameInvisible(String value) throws Exception {
-        final By locator = MobileBy.AccessibilityId(value);
-        return selectVisibleElements(locator).size() == 0;
+    private By getUserDetailLocator(String detailName) {
+        switch (detailName.toLowerCase()) {
+            case "name":
+                return xpathName;
+            case "unique username":
+                return nameABName;
+            case "address book name":
+                return nameUniqueUsername;
+            case "common friends count":
+                return nameCommonFriends;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown user detail name '%s'", detailName));
+        }
     }
 
-    public boolean isAddressBookNameVisible(String value) throws Exception {
-        final By locator = MobileBy.AccessibilityId(nameStrABNameByName.apply(value));
+    public boolean isUserDetailVisible(String detailName, String value) throws Exception {
+        final By locator = getUserDetailLocator(detailName, value);
         return isLocatorDisplayed(locator);
     }
 
-    public boolean isAddressBookNameInvisible(String value) throws Exception {
-        final By locator = MobileBy.AccessibilityId(nameStrABNameByName.apply(value));
+    public boolean isUserDetailInvisible(String detailName, String value) throws Exception {
+        final By locator = getUserDetailLocator(detailName, value);
         return isLocatorInvisible(locator);
     }
 
-    public boolean isEmailVisible(String value) throws Exception {
-        final By locator = MobileBy.AccessibilityId(value.toUpperCase());
-        return selectVisibleElements(locator).size() > 0;
+    public boolean isUserDetailVisible(String detailName) throws Exception {
+        final By locator = getUserDetailLocator(detailName);
+        return isLocatorDisplayed(locator);
     }
 
-    public boolean isEmailInvisible(String value) throws Exception {
-        final By locator = MobileBy.AccessibilityId(value.toUpperCase());
-        return selectVisibleElements(locator).size() == 0;
+    public boolean isUserDetailInvisible(String detailName) throws Exception {
+        final By locator = getUserDetailLocator(detailName);
+        return isLocatorInvisible(locator);
     }
 
     public BufferedImage getProfilePictureScreenshot() throws Exception {

@@ -1,6 +1,6 @@
 Feature: Sound
 
-  @C2326 @staging
+  @C2326 @smoke
   Scenario Outline: I want to hear a sound when I receive a new message in a conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -18,7 +18,7 @@ Feature: Sound
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @C2327 @staging
+  @C2327 @smoke
   Scenario Outline: I want to hear a sound when someone calls me
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

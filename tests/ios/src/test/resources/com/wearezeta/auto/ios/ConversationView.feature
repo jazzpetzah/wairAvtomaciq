@@ -64,7 +64,7 @@ Feature: Conversation View
     And I tap Confirm button on Picture preview page
     Then I see 1 photo in the conversation view
     # Wait for delivery
-    And I wait for 6 seconds
+    And I wait for 8 seconds
     And I see "<DeliveredLabel>" on the message toolbox in conversation view
 
     Examples:
@@ -215,6 +215,8 @@ Feature: Conversation View
     And I open conversation details
     And I tap Open Menu button on Single user profile page
     And I tap Archive conversation action button
+    # Wait for transition
+    And I wait for 3 seconds
     Then I do not see conversation <Contact> in conversations list
     And I open archived conversations
     Then I see conversation <Contact> in conversations list
@@ -303,8 +305,8 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
-    Given I see conversations list
     Given User <Name> sends 1 encrypted message to user <Contact1>
+    Given I see conversations list
     When I swipe right on a <Contact1>
     And I tap Delete conversation action button
     And I confirm Delete conversation action
@@ -316,6 +318,8 @@ Feature: Conversation View
     And I type "<Contact1>" in Search UI input field
     And I tap on conversation <Contact1> in search result
     When I tap Open conversation action button on Search UI page
+    # Wait for trasition
+    And I wait for 3 seconds
     And I type the default message and send it
     Then I see 1 default message in the conversation view
 

@@ -32,6 +32,8 @@ public class TestContext {
     private final Platform currentPlatform = Platform.Web;
     private final Pinger pinger;
 
+    private TestContext childContext;
+    
     private final String testname;
     private final CommonSteps commonSteps;
     private final ClientUsersManager userManager;
@@ -40,11 +42,13 @@ public class TestContext {
     private final LogManager logManager;
     private final AbstractPagesCollection<? extends BasePage> pagesCollection;
     private final Future<? extends RemoteWebDriver> driver;
+    
     private final ConversationStates conversationStates;
 
     public TestContext(String uniqueTestname, Future<? extends RemoteWebDriver> driver) throws Exception {
         this.testname = uniqueTestname;
         this.driver = driver;
+        this.childContext = null;
         this.userManager = new ClientUsersManager();
         this.deviceManager = SEBridge.getInstance();
         this.commonSteps = new CommonSteps(userManager, deviceManager);
@@ -62,6 +66,7 @@ public class TestContext {
     public TestContext() {
         this.testname = "";
         this.driver = COMPAT_WEB_DRIVER;
+        this.childContext = null;
         this.userManager = ClientUsersManager.getInstance();
         this.deviceManager = SEBridge.getInstance();
         this.commonSteps = CommonSteps.getInstance();
@@ -83,6 +88,7 @@ public class TestContext {
         this.callingManager = callingManager;
         this.pagesCollection = pagesCollection;
         this.driver = driver;
+        this.childContext = null;
         
         this.conversationStates = new ConversationStates();
         this.logManager = new LogManager(this);
@@ -91,8 +97,9 @@ public class TestContext {
 
     public TestContext fromPrimaryContext(Future<? extends RemoteWebDriver> driver,
             AbstractPagesCollection<? extends BasePage> pagesCollection) throws Exception {
-        return new TestContext(this.testname, this.commonSteps, this.userManager, this.deviceManager, this.callingManager,
-                pagesCollection, driver);
+        setChildContext(new TestContext(this.testname, this.commonSteps, this.userManager, this.deviceManager, this.callingManager,
+                pagesCollection, driver));
+        return getChildContext();
     }
 
     public String getTestname() {
@@ -130,7 +137,7 @@ public class TestContext {
     public RemoteWebDriver getDriver() throws InterruptedException, ExecutionException, TimeoutException {
         return driver.get(DRIVER_INIT_TIMEOUT, TimeUnit.SECONDS);
     }
-
+    
     public Platform getCurrentPlatform() {
         return currentPlatform;
     }
@@ -151,4 +158,12 @@ public class TestContext {
         pinger.stopPinging();
     }
 
+    public TestContext getChildContext() {
+        return childContext;
+    }
+
+    private void setChildContext(TestContext childContext) {
+        this.childContext = childContext;
+    }
+    
 }

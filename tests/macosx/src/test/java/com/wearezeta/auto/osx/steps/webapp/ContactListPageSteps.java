@@ -16,11 +16,9 @@ public class ContactListPageSteps {
     private static final Logger LOG = ZetaLogger.getLog(ContactListPageSteps.class.getName());
     
     private final TestContext webContext;
-    private final TestContext wrapperContext;
 
-    public ContactListPageSteps(TestContext webContext, TestContext wrapperContext) {
+    public ContactListPageSteps(TestContext webContext) {
         this.webContext = webContext;
-        this.wrapperContext = wrapperContext;
     }
     
     @Given("^I open context menu of conversation (.*)$")

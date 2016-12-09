@@ -17,10 +17,9 @@ Feature: Connect
     And I tap Connect button on Single user Pending outgoing connection page
     And I tap X button on Search UI page
     Then I see first item in contact list named <Contact>
-    And I tap on contact name <Contact>
-    And I see Pending Connect to <Contact> message in the conversation view
-    When I open conversation details
-    Then I see <Contact> name on Single user Pending outgoing connection page
+    When I tap on contact name <Contact>
+    Then I see the conversation with <Contact>
+    And I see Cancel Request button on Single user Pending outgoing connection page
 
     Examples:
       | Name      | Contact   | Contact2  |
@@ -43,10 +42,9 @@ Feature: Connect
     And I tap Connect button on Single user Pending outgoing connection page
     And I tap X button on Search UI page
     Then I see first item in contact list named <Contact>
-    And I tap on contact name <Contact>
-    And I see Pending Connect to <Contact> message in the conversation view
-    When I open conversation details
-    Then I see <Contact> name on Single user Pending outgoing connection page
+    When I tap on contact name <Contact>
+    Then I see the conversation with <Contact>
+    And I see Cancel Request button on Single user Pending outgoing connection page
 
     Examples:
       | Name      | Contact   | Contact2  |
@@ -115,7 +113,7 @@ Feature: Connect
     And I tap input field on Search UI page
     And I type "<Contact1>" in Search UI input field
     And I tap on conversation <Contact1> in search result
-    Then I see <Contact1> name on Group participant Pending incoming connection page
+    Then I see name "<Contact1>" on Group participant Pending incoming connection page
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  |
@@ -144,7 +142,7 @@ Feature: Connect
     And I tap input field on Search UI page
     And I type "<Contact1>" in Search UI input field
     And I tap on conversation <Contact1> in search result
-    Then I see <Contact1> name on Group participant Pending incoming connection page
+    Then I see name "<Contact1>" on Group participant Pending incoming connection page
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  |
@@ -205,10 +203,9 @@ Feature: Connect
     Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
-    And I see conversation <Contact> in conversations list
     When I tap on contact name <Contact>
-    And I see Pending Connect to <Contact> message in the conversation view
-    Then I do not see text input in conversation view
+    Then I see the conversation with <Contact>
+    And I see Cancel Request button on Single user Pending outgoing connection page
 
     Examples:
       | Name      | Contact   | Contact2  |
@@ -222,10 +219,9 @@ Feature: Connect
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    And I see conversation <Contact> in conversations list
     When I tap on contact name <Contact>
-    And I see Pending Connect to <Contact> message in the conversation view
-    Then I do not see text input in conversation view
+    Then I see the conversation with <Contact>
+    And I see Cancel Request button on Single user Pending outgoing connection page
 
     Examples:
       | Name      | Contact   | Contact2  |
@@ -306,7 +302,7 @@ Feature: Connect
     And I tap input field on Search UI page
     And I type "<Contact>" in Search UI input field
     And I tap on conversation <Contact> in search result
-    Then I see <Contact> name on Single user Pending outgoing connection page
+    Then I see name "<Contact>" on Single user Pending outgoing connection page
 
     Examples:
       | Name      | Contact   | Contact2  |
@@ -331,7 +327,7 @@ Feature: Connect
     And I long tap on text input
     And I tap on Paste badge item
     And I tap Send Message button in conversation view
-    Then I see last message in the conversation view contains expected message MyEmail
+    Then I see link preview container in the conversation view
 
     Examples:
       | Name      | Contact   |
@@ -347,7 +343,6 @@ Feature: Connect
     When I tap on contact name <Contact1>
     And I open conversation details
     And I tap Cancel Request button on Single user Pending outgoing connection page
-    And I confirm Cancel Request conversation action
     When I navigate back to conversations list
     Then I do not see conversation <Contact1> in conversations list
 
@@ -365,7 +360,6 @@ Feature: Connect
     When I tap on contact name <Contact1>
     And I open conversation details
     And I tap Cancel Request button on Single user Pending outgoing connection page
-    And I confirm Cancel Request conversation action
     Then I do not see conversation <Contact1> in conversations list
 
     Examples:
@@ -382,7 +376,6 @@ Feature: Connect
     When I tap on contact name <Contact1>
     And I open conversation details
     And I tap Cancel Request button on Single user Pending outgoing connection page
-    And I confirm Cancel Request conversation action
     And I navigate back to conversations list
     And I wait until <Contact1> exists in backend search results
     And I open search UI
@@ -409,7 +402,6 @@ Feature: Connect
     When I tap on contact name <Contact1>
     And I open conversation details
     And I tap Cancel Request button on Single user Pending outgoing connection page
-    And I confirm Cancel Request conversation action
     And I wait until <Contact1> exists in backend search results
     And I open search UI
     And I accept alert if visible
@@ -439,7 +431,6 @@ Feature: Connect
     And I type "<Contact1>" in Search UI input field
     And I tap on conversation <Contact1> in search result
     And I tap Cancel Request button on Single user Pending outgoing connection page
-    And I confirm Cancel Request conversation action
     Then I see the conversation "<Contact1>" exists in Search results
 
     Examples:
@@ -460,7 +451,6 @@ Feature: Connect
     And I type "<Contact1>" in Search UI input field
     And I tap on conversation <Contact1> in search result
     And I tap Cancel Request button on Single user Pending outgoing connection page
-    And I confirm Cancel Request conversation action
     Then I see the conversation "<Contact1>" exists in Search results
 
     Examples:
@@ -482,7 +472,7 @@ Feature: Connect
     And I open group conversation details
     And I select user on iPad group popover <Contact3>
     And I tap Connect button on Group participant Pending incoming connection page
-    And I tap Ignore button on Single user Pending incoming connection page
+    And I decline Connect conversation action
     And I dismiss popover on iPad
     And I navigate back to conversations list
     # Workaround for ZIOS-4985
@@ -509,7 +499,7 @@ Feature: Connect
     And I open group conversation details
     And I select user on iPad group popover <Contact3>
     And I tap Connect button on Group participant Pending incoming connection page
-    And I tap Ignore button on Single user Pending incoming connection page
+    And I decline Connect conversation action
     And I dismiss popover on iPad
     # Workaround for ZIOS-4985
     # Then I do not see Pending request link in conversations list
@@ -545,7 +535,7 @@ Feature: Connect
     Given I see conversations list
     When I tap Incoming Pending Requests item in conversations list
     Then I see Connect button on Single user Pending incoming connection page
-    And I see <NewName> name on Single user Pending incoming connection page
+    And I see name "<NewName>" on Single user Pending incoming connection page
 
     Examples:
       | Name      | Contact   | NewName  |
@@ -561,7 +551,7 @@ Feature: Connect
     Given I see conversations list
     When I tap Incoming Pending Requests item in conversations list
     Then I see Connect button on Single user Pending incoming connection page
-    And I see <NewName> name on Single user Pending incoming connection page
+    And I see name "<NewName>" on Single user Pending incoming connection page
 
     Examples:
       | Name      | Contact   | NewName  |
@@ -641,7 +631,7 @@ Feature: Connect
     And I long tap on text input
     And I tap on Paste badge item
     And I tap Send Message button in conversation view
-    Then I see last message in the conversation view contains expected message MyEmail
+    Then I see link preview container in the conversation view
 
     Examples:
       | Name      | Contact   |

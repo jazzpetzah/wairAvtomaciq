@@ -13,7 +13,7 @@ import org.openqa.selenium.Dimension;
 
 public class TabletConversationViewPage extends ConversationViewPage {
 
-    public static final By nameOpenConversationDetails =
+    private static final By nameOpenConversationDetails =
             MobileBy.AccessibilityId("ComposeControllerConversationDetailButton");
 
     private static final By fbXpathUploadMenu =

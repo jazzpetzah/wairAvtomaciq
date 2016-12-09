@@ -2,7 +2,6 @@ package com.wearezeta.auto.ios.pages.details_overlay.group;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.ios.pages.details_overlay.BaseUserDetailsOverlay;
-import org.openqa.selenium.By;
 
 import java.util.concurrent.Future;
 
