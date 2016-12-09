@@ -373,11 +373,12 @@ Feature: Unique Usernames
       | Name      | Contact1WithABEmail | Contact1ABName | Contact1UniqueUsername | Contact1Email | Contact2WithABPhoneNumber | Contact2ABName | Contact2PhoneNumber | Contact3WithUniqueUserName | Contact3UniqueUserName | Contact4WithCommonFriends | Contact5WithSameNameInAB | Contact5Email | Contact6Common | Contact7WoCF |
       | user1Name | user2Name           | user2ABName    | user2UniqueUsername    | user2Email    | user3Name                 | user3ABName    | user3PhoneNumber    | user4Name                  | user4UniqueUsername    | user5Name                 | user6Name                | user6Email    | user7Name      | user8Name    |
 
-  @C352029 @staging
+  @C352029 @staging @fastLogin
   Scenario Outline: Verify autogeneration of a username for an existing user (different scenarios)
     Given There is 1 user
     Given User <NameAlias> is me
     Given User <NameAlias> changes name to <Name>
+    Given I prepare Wire to perform fast log in by email as <Name>
     Given I sign in using my email or phone number
     When I see username <NameAlias> on Unique Username Takeover page
     Then I see unique username starts with <UniqueName> on Unique Username Takeover page
