@@ -51,14 +51,8 @@ public class UniqueUsernameTakeoverPageSteps {
                         getPage().isUsernameInvisible(expectedUsername));
             }
         } else {
-            if (expectedUsername.startsWith("@")) {
-                expectedUsername = "@" + usrMgr.replaceAliasesOccurences(
-                        expectedUsername.substring(1, expectedUsername.length()),
-                        ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
-            } else {
-                expectedUsername = "@" + usrMgr.replaceAliasesOccurences(expectedUsername,
-                        ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
-            }
+            expectedUsername = usrMgr.replaceAliasesOccurences(expectedUsername,
+                    ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
             if (shouldNotSee == null) {
                 Assert.assertTrue(String.format("Unique username '%s' is not visible", expectedUsername),
                         getPage().isUniqueUsernameVisible(startsWith != null, expectedUsername));

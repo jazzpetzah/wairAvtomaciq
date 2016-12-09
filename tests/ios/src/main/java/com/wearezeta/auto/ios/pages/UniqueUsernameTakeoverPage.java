@@ -16,12 +16,12 @@ public class UniqueUsernameTakeoverPage extends IOSPage {
 
     private static final Function<String, String> xpathStrUniqueUsernameByName = name ->
             String.format("//XCUIElementTypeStaticText[@name='%s']/preceding::XCUIElementTypeStaticText[1][@name='%s']",
-                    nameStrTitleLabel, name, name);
+                    nameStrTitleLabel, name);
 
     private static final Function<String, String> xpathStrUniqueUsernameStartsByName = name ->
-            String.format("//XCUIElementTypeStaticText[@name='%s']/preceding::XCUIElementTypeStaticText[1][starts-with(@name," +
-                    "'%s')]",
-                    nameStrTitleLabel, name, name);
+            String.format(
+                    "//XCUIElementTypeStaticText[@name='%s']/preceding::XCUIElementTypeStaticText[1][starts-with(@name,'%s')]",
+                    nameStrTitleLabel, name.startsWith("@") ? name : "@" + name);
 
     private static final Function<String, String> xpathStrUsernameByName = name ->
             String.format("//XCUIElementTypeStaticText[@name='%s']/preceding::XCUIElementTypeStaticText[2][@name='%s']",
