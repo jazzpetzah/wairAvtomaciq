@@ -38,7 +38,7 @@ public abstract class BaseUserDetailsOverlay extends BaseDetailsOverlay {
             String.format("//XCUIElementTypeStaticText[(@name='username' or @name='handle') and @value='%s']",
                     username.startsWith("@") ? username : ("@" + username));
     private static final By xpathUniqueUsername =
-            By.xpath("//XCUIElementTypeStaticText[@name='username' or @name='handle'");
+            By.xpath("//XCUIElementTypeStaticText[@name='username' or @name='handle']");
 
     public BaseUserDetailsOverlay(Future<ZetaIOSDriver> driver) throws Exception {
         super(driver);
