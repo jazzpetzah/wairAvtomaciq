@@ -1,18 +1,5 @@
 package com.wearezeta.auto.android.common;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.email.MessagingUtils;
@@ -25,15 +12,16 @@ import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.ScreenOrientation;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStreamReader;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import static com.wearezeta.auto.common.driver.ZetaAndroidDriver.ADB_PREFIX;
 
 public class AndroidCommonUtils extends CommonUtils {
-
-    private static final Logger log = ZetaLogger.getLog(AndroidCommonUtils.class.getSimpleName());
-
-    private static final String FILE_TRANSFER_SOURCE_LOCATION = "/mnt/sdcard/Download/";
-
-    private static final String IMAGE_FOR_VIDEO_GENERATION = "about_page_logo_iPad.png";
 
     public static final String[] STANDARD_WIRE_PERMISSIONS = new String[]{
             "android.permission.WRITE_EXTERNAL_STORAGE",
@@ -43,6 +31,9 @@ public class AndroidCommonUtils extends CommonUtils {
             "android.permission.READ_PHONE_STATE",
             "android.permission.ACCESS_FINE_LOCATION"
     };
+    private static final Logger log = ZetaLogger.getLog(AndroidCommonUtils.class.getSimpleName());
+    private static final String FILE_TRANSFER_SOURCE_LOCATION = "/mnt/sdcard/Download/";
+    private static final String IMAGE_FOR_VIDEO_GENERATION = "about_page_logo_iPad.png";
 
     public static void executeAdb(final String cmdline) throws Exception {
         executeOsXCommand(new String[]{"/bin/bash", "-c",
@@ -53,7 +44,8 @@ public class AndroidCommonUtils extends CommonUtils {
             throws Exception {
         executeAdb(String.format("push %s %s", getDefaultUserImagePath(CommonUtils.class), photoPathOnDevice));
         executeAdb("shell \"am broadcast -a android.intent.action.MEDIA_MOUNTED -d "
-                + "file:///sdcard \"Broadcasting: Intent { act=android.intent.action.MEDIA_MOUNTED dat=file:///sdcard }");
+                + "file:///sdcard \"Broadcasting: Intent { act=android.intent.action.MEDIA_MOUNTED dat=file:///sdcard" +
+                " }");
     }
 
     public static void unlockScreen() throws Exception {
@@ -216,11 +208,13 @@ public class AndroidCommonUtils extends CommonUtils {
     }
 
     /**
-     * Compares the Android of the plugged-in device with the input (target) version that you wish to check for. For exmaple, if
+     * Compares the Android of the plugged-in device with the input (target) version that you wish to check for. For
+     * exmaple, if
      * you want to check that the plugged in device is 4.4 or higher, you need to supply "4.4" as the target version
      *
      * @param targetVersion the Android version you wish to check for
-     * @return a negative int, 0, or a positive int if the targetVersion is less than, equal to or greater than the current
+     * @return a negative int, 0, or a positive int if the targetVersion is less than, equal to or greater than the
+     * current
      * device's version
      * @throws Exception
      */
@@ -464,7 +458,8 @@ public class AndroidCommonUtils extends CommonUtils {
     }
 
     /**
-     * We try to insert contacts in different groups to make them detectable by Wire. Anyway, the created contact will not be
+     * We try to insert contacts in different groups to make them detectable by Wire. Anyway, the created contact
+     * will not be
      * visible in Wire invitations list if current Google account on device under test is not set to
      * MessagingUtils.getAccountName()
      *
@@ -547,7 +542,8 @@ public class AndroidCommonUtils extends CommonUtils {
                 insertContact(name, email, phoneNumber);
                 break;
             default:
-                throw new IllegalArgumentException(String.format("Cannot identify the insert contact type '%s'", addType));
+                throw new IllegalArgumentException(String.format("Cannot identify the insert contact type '%s'",
+                        addType));
         }
     }
 
@@ -599,7 +595,8 @@ public class AndroidCommonUtils extends CommonUtils {
      * @param size         the expected size of file
      * @throws Exception
      */
-    public static void pushRandomFileToSdcardDownload(String fileFullName, String size, boolean isVideo) throws Exception {
+    public static void pushRandomFileToSdcardDownload(String fileFullName, String size, boolean isVideo) throws
+            Exception {
         String basePath = getBuildPathFromConfig(AndroidCommonUtils.class);
         String extension = FilenameUtils.getExtension(fileFullName);
         String fileName = FilenameUtils.getBaseName(fileFullName);
@@ -745,20 +742,6 @@ public class AndroidCommonUtils extends CommonUtils {
 
     // ***
 
-    public enum PadButton {
-        RIGHT(22), LEFT(21), UP(19), DOWN(20), CENTER(23);
-
-        private int code;
-
-        PadButton(int code) {
-            this.code = code;
-        }
-
-        public int getCode() {
-            return this.code;
-        }
-    }
-
     public static void pressPadButton(PadButton button) throws Exception {
         executeAdb(String.format("shell input keyevent %s", button.getCode()));
         Thread.sleep(300);
@@ -768,7 +751,8 @@ public class AndroidCommonUtils extends CommonUtils {
      * Grant permission to the particular application with bundleId identifier
      *
      * @param bundleId app identifier, dor example com.wire.x
-     * @param perms    array of permission name. See https://developer.android.com/reference/android/Manifest.permission.html
+     * @param perms    array of permission name. See https://developer.android.com/reference/android/Manifest
+     *                 .permission.html
      *                 for more details
      * @throws Exception
      */
@@ -820,5 +804,19 @@ public class AndroidCommonUtils extends CommonUtils {
         String output = AndroidCommonUtils.getAdbOutput("shell dumpsys input_method | grep mInputShown");
         final Pattern pattern = Pattern.compile("\\b" + Pattern.quote("mInputShown=true") + "\\b");
         return pattern.matcher(output).find();
+    }
+
+    public enum PadButton {
+        RIGHT(22), LEFT(21), UP(19), DOWN(20), CENTER(23);
+
+        private int code;
+
+        PadButton(int code) {
+            this.code = code;
+        }
+
+        public int getCode() {
+            return this.code;
+        }
     }
 }

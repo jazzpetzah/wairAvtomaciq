@@ -9,8 +9,8 @@ Feature: Conversation View
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     And I tap conversation name from top toolbar
-    And I tap options menu button
-    And I tap MUTE conversation menu button
+    And I tap open menu button on Single connected user details page
+    And I tap MUTE button on Conversation options menu overlay page
     And I tap back button
     And I tap back button
     Then Conversation <Contact1> is muted
@@ -30,8 +30,8 @@ Feature: Conversation View
     Given Conversation <Contact1> is muted
     When I tap on conversation name <Contact1>
     And I tap conversation name from top toolbar
-    And I tap options menu button
-    And I tap UNMUTE conversation menu button
+    And I tap open menu button on Single connected user details page
+    And I tap UNMUTE button on Conversation options menu overlay page
     And I tap back button
     And I navigate back from conversation
     Then Conversation <Contact1> is not muted
@@ -82,8 +82,8 @@ Feature: Conversation View
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     And I tap conversation name from top toolbar
-    And I see <Contact1> user profile page
-    And I tap add contact button
+    And I see user name of user <Contact1> on Single connected user details page
+    And I tap create group button on Single connected user details page
     And I tap on Search input on Search page
     And I type user name "<Contact2>" in search field
     And I see user <Contact2> in Search result list
@@ -343,9 +343,9 @@ Feature: Conversation View
     Given I see Conversations list with conversations
     When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
-    And I tap options menu button
-    And I tap LEAVE conversation menu button
-    And I confirm leaving
+    And I tap open menu button on Group info page
+    And I tap LEAVE button on Conversation options menu overlay page
+    And I tap LEAVE button on Confirm overlay page
     And I see Conversations list
     And I open Search UI
     And I type group name "<GroupChatName>" in search field

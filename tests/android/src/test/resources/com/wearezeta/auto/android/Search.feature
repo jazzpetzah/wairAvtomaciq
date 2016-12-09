@@ -330,8 +330,6 @@ Feature: Search
     And I tap on user name found on Search page <Contact2>
     And I tap Call action button on Search page
     Then I see outgoing call
-#    When I tap conversation details button
-#    Then I see the correct number of participants in the title 2
 
     Examples:
       | Name      | Contact1  | Contact2  |
