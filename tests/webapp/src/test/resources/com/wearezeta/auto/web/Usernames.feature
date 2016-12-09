@@ -202,7 +202,7 @@ Feature: Usernames
       | user1Email | user1Password | user1Name | Æéÿüíøšłźçñ  | aeeyueioslzcn |
       | user1Email | user1Password | user1Name | Даша         | dasha         |
       | user1Email | user1Password | user1Name |   داريا      | darya         |
-      | user1Email | user1Password | user1Name | 明麗         | mengli        |
+      | user1Email | user1Password | user1Name | Jack😼        | jack          |
 
   @C352080 @staging @useSpecialEmail @usernames
   Scenario Outline: Verify deleting an account release a username
@@ -258,3 +258,4 @@ Feature: Usernames
     Examples:
       | Email      | Password      | NameAlias | Name    |
       | user1Email | user1Password | user1Name | 😼      |
+      | user1Email | user1Password | user1Name | 明麗    |
