@@ -21,16 +21,12 @@ Feature: Unique Usernames
       | Name      | ExpectedUniqueName   |
       | user1Name | @user1UniqueUsername |
 
+
   @C352060 @addressbookStart @forceReset @staging
   Scenario Outline: Verify incoming connection view
     Given There are 7 users where <Name> is me
-    Given <Contact1WithABEmail> sent connection request to Me
-    Given <Contact2WithABPhoneNumber> sent connection request to Me
-    Given <Contact3WithUniqueUserName> sent connection request to Me
     Given User <Contact3WithUniqueUserName> sets the unique username
-    Given <Contact4WithCommonFriends> sent connection request to Me
     Given <Contact4WithCommonFriends> is connected to <Contact6Common>
-    Given <Contact5WithSameNameInAB> sent connection request to Me
     Given <Contact6Common> is connected to me
     Given I minimize Wire
     Given I install Address Book Helper app
@@ -46,44 +42,19 @@ Feature: Unique Usernames
     Given I wait until <Contact3WithUniqueUserName> exists in backend search results
     Given I wait until <Contact4WithCommonFriends> exists in backend search results
     Given I wait until <Contact5WithSameNameInAB> exists in backend search results
-    Given I open search UI
-    Given I accept alert if visible
-    Given I tap input field on Search UI page
-    Given I type "<Contact1WithABEmail>" in Search UI input field
-    When I tap on conversation <Contact1WithABEmail> in search result
+    Given <Contact1WithABEmail> sent connection request to Me
+    When I tap Incoming Pending Requests item in conversations list
     And I see name "<Contact1WithABEmail>" on Single user Pending incoming connection page
     Then I see Address Book name "<Contact1ABName>" on Single user Pending incoming connection page
     And I do not see unique username on Single user Pending incoming connection page
     And I tap Ignore button on Single user Pending incoming connection page
-    When I clear search input on Search UI page
-    And I type "<Contact2WithABPhoneNumber>" in Search UI input field
-    And I tap on conversation <Contact2WithABPhoneNumber> in search result
+    And <Contact2WithABPhoneNumber> sent connection request to Me
+    And I tap Incoming Pending Requests item in conversations list
     Then I see name "<Contact2WithABPhoneNumber>" on Single user Pending incoming connection page
     And I see Address Book name "<Contact2ABName>" on Single user Pending incoming connection page
     And I do not see unique username on Single user Pending incoming connection page
     And I tap Ignore button on Single user Pending incoming connection page
-    When I clear search input on Search UI page
-    And I type "<Contact3WithUniqueUserName>" in Search UI input field
-    And I tap on conversation <Contact3WithUniqueUserName> in search result
-    Then I see name "<Contact3WithUniqueUserName>" on Single user Pending incoming connection page
-    And I see unique username "<Contact3UniqueUserName>" on Single user Pending incoming connection page
-    And I do not see Address Book name on Single user Pending incoming connection page
-    And I tap Ignore button on Single user Pending incoming connection page
-    When I clear search input on Search UI page
-    And I type "<Contact4WithCommonFriends>" in Search UI input field
-    And I tap on conversation <Contact4WithCommonFriends> in search result
-    Then I see name "<Contact4WithCommonFriends>" on Single user Pending incoming connection page
-    And I do not see unique username on Single user Pending incoming connection page
-    And I do not see Address Book name on Single user Pending incoming connection page
-    And I see common friends count "1" on Single user Pending incoming connection page
-    And I tap Ignore button on Single user Pending incoming connection page
-    When I clear search input on Search UI page
-    And I type "<Contact5WithSameNameInAB>" in Search UI input field
-    And I tap on conversation <Contact5WithSameNameInAB> in search result
-    Then I see name "<Contact5WithSameNameInAB>" on Single user Pending incoming connection page
-    And I do not see unique username on Single user Pending incoming connection page
-    And I see Address Book name "" on Single user Pending incoming connection page
-    And I tap Ignore button on Single user Pending incoming connection page
+
 
     Examples:
       | Name      | Contact1WithABEmail | Contact1ABName | Contact1Email | Contact2WithABPhoneNumber | Contact2ABName | Contact2PhoneNumber | Contact3WithUniqueUserName | Contact3UniqueUserName | Contact4WithCommonFriends | Contact5WithSameNameInAB | Contact5Email | Contact6Common |
@@ -116,8 +87,8 @@ Feature: Unique Usernames
       | Name      | Empty | MinChars | MaxChars |
       | user1Name | ""    | 1        | 22       |
 
-  @C352059 @addressbookStart @forceReset @staging
-  Scenario Outline: Verify outgoing connection request view
+  @C352065 @addressbookStart @forceReset @staging
+  Scenario Outline: Verify outgoing connection request view (via search)
     Given There are 7 users where <Name> is me
     Given Myself sent connection request to <Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact5WithSameNameInAB>
     Given User <Contact3WithUniqueUserName> sets the unique username
@@ -235,8 +206,8 @@ Feature: Unique Usernames
       | Name      | MyUniqueUsername    | Contact   | ExpectedText  |
       | user1Name | user1UniqueUsername | user2Name | Already taken |
 
-  @C352058 @addressbookStart @forceReset @staging
-  Scenario Outline: Verify 1-to-1 conversation view
+  @C352064 @addressbookStart @forceReset @staging
+  Scenario Outline: Verify participant view for connected users
     Given There are 7 users where <Name> is me
     Given Myself is connected to <Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact5WithSameNameInAB>,<Contact6Common>
     Given User <Contact3WithUniqueUserName> sets the unique username
