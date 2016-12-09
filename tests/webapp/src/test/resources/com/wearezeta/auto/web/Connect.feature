@@ -153,7 +153,6 @@ Feature: Connect
     And I am signed in properly
     Then I see Contact list with name <Name2>
     And I open conversation with <Name2>
-    And I see connected message for <Name2> in conversation
 
     Examples: 
       | Login      | Login2     | Password      | Password2     | Name      | Name2     | Name2UniqueUsername |
