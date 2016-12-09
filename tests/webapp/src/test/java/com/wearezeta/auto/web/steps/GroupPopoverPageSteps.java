@@ -373,7 +373,6 @@ public class GroupPopoverPageSteps {
 
     @Then("^I( do not)? see Mail of user (.*) on Group Participants popover$")
     public void ISeeMailOfUser(String not, String userAlias) throws Exception {
-        userAlias = userAlias.trim();
         GroupPopoverContainer groupPopoverContainer = context.getPagesCollection()
                 .getPage(GroupPopoverContainer.class);
         if (not == null) {

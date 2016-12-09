@@ -113,7 +113,7 @@ Feature: People View
     And I see an avatar on Group Participants popover
     And I see Remove button on Group Participants popover
     And I see correct remove from group button tool tip on Group Participants popover
-    And I do not see Mail of user <UnknownContactMail> on Group Participants popover
+    And I do not see Mail of user <UnknownContact> on Group Participants popover
     And I see Pending button on Group Participants popover
     And I see correct pending button tool tip on Group Participants popover
     When I click Pending button on Group Participants popover
