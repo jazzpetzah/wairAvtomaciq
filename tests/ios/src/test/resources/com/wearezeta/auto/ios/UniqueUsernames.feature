@@ -9,6 +9,8 @@ Feature: Unique Usernames
     Given I input name <Name> and commit it
     Given I accept alert if visible
     Given I tap Keep This One button
+    # Wait for picture to be applied
+    Given I wait for 3 seconds
     Given I tap Not Now button on Share Contacts overlay
     When I see username <Name> on Unique Username Takeover page
     Then I see unique username <ExpectedUniqueName> on Unique Username Takeover page
