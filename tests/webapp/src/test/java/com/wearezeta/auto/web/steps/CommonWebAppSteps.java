@@ -38,7 +38,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertTrue;
 
 import org.openqa.selenium.logging.LogEntry;
@@ -142,6 +141,12 @@ public class CommonWebAppSteps {
     @When("^User (\\w+) changes? unique username to (.*)")
     public void IChangeUniqueUsername(String userNameAlias, String name) throws Exception {
         context.getCommonSteps().IChangeUniqueUsername(userNameAlias, name);
+    }
+
+    @When("^User (\\w+) changes? his unique username to a random value$")
+    public void IChangeUniqueUsernameRandom(String userNameAlias) throws Exception {
+        String randomUniqueUsername = CommonUtils.generateGUID().replace("-", "").substring(0, 8);
+        context.getCommonSteps().IChangeUniqueUsername(userNameAlias, randomUniqueUsername);
     }
 
     @Given("(.*) (?:has|have) unique usernames?$")
