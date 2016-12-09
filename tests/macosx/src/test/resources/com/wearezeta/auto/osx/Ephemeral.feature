@@ -56,5 +56,5 @@ Feature: Ephemeral
     And I see 1 messages in conversation
 
     Examples:
-      | Login      | Password      | Name      | Contact   | Time | TimeLong    | TimeShortUnit | Link              | LinkInPreview | LinkTitle                                                                            | LinkPreviewImage |
-      | user1Email | user1Password | user1Name | user2Name | 15   | 15 seconds  | s             | https://wire.com/ | wire.com      | Wire · Modern communication, full privacy. For iOS, Android, macOS, Windows and web. | linkpreview0.png |
+      | Login      | Password      | Name      | Contact   | Time | TimeLong    | TimeShortUnit | Link              | LinkInPreview | LinkTitle                                                                                   | LinkPreviewImage |
+      | user1Email | user1Password | user1Name | user2Name | 15   | 15 seconds  | s             | https://wire.com/ | wire.com      | Wire · Modern communication, full privacy. For iOS, Android, macOS, Windows, Linux and web. | linkpreview0.png |
