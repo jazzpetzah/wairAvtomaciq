@@ -19,6 +19,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.IOSDistributable;
 import com.wearezeta.auto.common.driver.device_helpers.IOSSimulatorHelpers;
 import io.appium.java_client.MobileBy;
+import javafx.print.PageOrientation;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
@@ -381,6 +382,13 @@ public abstract class IOSPage extends BasePage {
     }
 
     protected void doubleTapAt(Optional<WebElement> el, int percentX, int percentY) throws Exception {
+        if (getDriver().getOrientation() == ScreenOrientation.LANDSCAPE) {
+            // FIXME: Remove the workaround after landscape orientation is respected by XCTest
+            if (el.isPresent() && el.get() instanceof FBElement) {
+                ((FBElement)(el.get())).doubleTap();
+                return;
+            }
+        }
         final Point tapPoint = calculateTapCoordinates(el, percentX, percentY);
         getDriver().doubleTapScreenAt(tapPoint.getX(), tapPoint.getY());
     }
@@ -391,6 +399,13 @@ public abstract class IOSPage extends BasePage {
 
     protected void longTapAt(Optional<WebElement> el, int percentX, int percentY, double durationSeconds)
             throws Exception {
+        if (getDriver().getOrientation() == ScreenOrientation.LANDSCAPE) {
+            // FIXME: Remove the workaround after landscape orientation is respected by XCTest
+            if (el.isPresent() && el.get() instanceof FBElement) {
+                ((FBElement)(el.get())).longTap();
+                return;
+            }
+        }
         final Point tapPoint = calculateTapCoordinates(el, percentX, percentY);
         getDriver().longTapScreenAt(tapPoint.getX(), tapPoint.getY(), durationSeconds);
     }
