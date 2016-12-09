@@ -142,18 +142,21 @@ Feature: Unique Usernames
     Then I see Address Book name "<Contact1ABName>" on Single user Pending outgoing connection page
     And I do not see unique username on Single user Pending outgoing connection page
     And I tap Cancel Request button on Single user Pending outgoing connection page
+    And I confirm Cancel Request conversation action
     When I type "<Contact2WithABPhoneNumber>" in cleared Search UI input field
     And I tap on conversation <Contact2WithABPhoneNumber> in search result
     Then I see name "<Contact2WithABPhoneNumber>" on Single user Pending outgoing connection page
     And I see Address Book name "<Contact2ABName>" on Single user Pending outgoing connection page
     And I do not see unique username on Single user Pending outgoing connection page
     And I tap Cancel Request button on Single user Pending outgoing connection page
+    And I confirm Cancel Request conversation action
     When I type "<Contact3WithUniqueUserName>" in cleared Search UI input field
     And I tap on conversation <Contact3WithUniqueUserName> in search result
     Then I see name "<Contact3WithUniqueUserName>" on Single user Pending outgoing connection page
     And I see unique username "<Contact3UniqueUserName>" on Single user Pending outgoing connection page
     And I do not see Address Book name on Single user Pending outgoing connection page
     And I tap Cancel Request button on Single user Pending outgoing connection page
+    And I confirm Cancel Request conversation action
     When I type "<Contact4WithCommonFriends>" in cleared Search UI input field
     And I tap on conversation <Contact4WithCommonFriends> in search result
     Then I see name "<Contact4WithCommonFriends>" on Single user Pending outgoing connection page
@@ -161,12 +164,12 @@ Feature: Unique Usernames
     And I do not see Address Book name on Single user Pending outgoing connection page
     And I see common friends count "1" on Single user Pending outgoing connection page
     And I tap Cancel Request button on Single user Pending outgoing connection page
+    And I confirm Cancel Request conversation action
     When I type "<Contact5WithSameNameInAB>" in cleared Search UI input field
     And I tap on conversation <Contact5WithSameNameInAB> in search result
     Then I see name "<Contact5WithSameNameInAB>" on Single user Pending outgoing connection page
     And I do not see unique username on Single user Pending outgoing connection page
     And I see Address Book name "" on Single user Pending outgoing connection page
-    And I tap Cancel Request button on Single user Pending outgoing connection page
 
     Examples:
       | Name      | Contact1WithABEmail | Contact1ABName | Contact1Email | Contact2WithABPhoneNumber | Contact2ABName | Contact2PhoneNumber | Contact3WithUniqueUserName | Contact3UniqueUserName | Contact4WithCommonFriends | Contact5WithSameNameInAB | Contact5Email | Contact6Common |
