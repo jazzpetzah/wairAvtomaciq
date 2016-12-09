@@ -73,7 +73,6 @@ Feature: Unique Usernames
     And I tap on conversation <Contact4WithCommonFriends> in search result
     Then I see name "<Contact4WithCommonFriends>" on Single user Pending incoming connection page
     And I do not see unique username on Single user Pending incoming connection page
-    And I do not see Address Book name on Single user Pending incoming connection page
     And I see common friends count "1" on Single user Pending incoming connection page
     And I tap Ignore button on Single user Pending incoming connection page
     When I type "<Contact5WithSameNameInAB>" in cleared Search UI input field
@@ -164,7 +163,6 @@ Feature: Unique Usernames
     And I tap on conversation <Contact4WithCommonFriends> in search result
     Then I see name "<Contact4WithCommonFriends>" on Single user Pending outgoing connection page
     And I do not see unique username on Single user Pending outgoing connection page
-    And I do not see Address Book name on Single user Pending outgoing connection page
     And I see common friends count "1" on Single user Pending outgoing connection page
     And I tap Cancel Request button on Single user Pending outgoing connection page
     And I confirm Cancel Request conversation action
@@ -278,8 +276,7 @@ Feature: Unique Usernames
     And I open conversation details
     Then I see name "<Contact4WithCommonFriends>" on Single user Pending outgoing connection page
     And I do not see unique username on Single user Pending outgoing connection page
-    And I do not see Address Book name on Single user Pending outgoing connection page
-    And I do not see common friends count on Single user Pending outgoing connection page
+    And I see common friends count "1" on Single user Pending outgoing connection page
     And I tap X button on Single user profile page
     When I navigate back to conversations list
     And I tap on contact name <Contact5WithSameNameInAB>
