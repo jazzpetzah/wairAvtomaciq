@@ -7,7 +7,7 @@ import org.openqa.selenium.By;
 import java.util.concurrent.Future;
 
 public class GroupConnectedUserDetailsOverlayPage extends BaseConnectedUserOverlay {
-    private static final String idStrUserName = "tv__single_participant__toolbar__tile";
+    private static final String idStrUserName = "tv__single_participant__toolbar__title";
     public GroupConnectedUserDetailsOverlayPage(Future<ZetaAndroidDriver> driver) throws Exception {
         super(driver);
     }
@@ -23,6 +23,7 @@ public class GroupConnectedUserDetailsOverlayPage extends BaseConnectedUserOverl
         return super.getButtonLocatorByName(name);
     }
 
+    @Override
     protected String getUserNameId() {
         return idStrUserName;
     }
