@@ -33,7 +33,7 @@ Feature: People View
     When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     And I tap open menu button on Group info page
-    And I tap LEAVE options menu button on Conversation options menu overlay page
+    And I tap LEAVE button on Conversation options menu overlay page
     And I tap LEAVE button on Confirm overlay page
     Then I see Conversations list
 
