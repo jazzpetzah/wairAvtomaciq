@@ -6,7 +6,7 @@ import org.openqa.selenium.By;
 
 import java.util.concurrent.Future;
 
-public abstract class GroupUnconnectedUsersDetailsOverlayPage extends BaseUnconnectedUserOverlay {
+public class GroupUnconnectedUsersDetailsOverlayPage extends BaseUnconnectedUserOverlay {
     public GroupUnconnectedUsersDetailsOverlayPage(Future<ZetaAndroidDriver> driver) throws Exception {
         super(driver);
     }
