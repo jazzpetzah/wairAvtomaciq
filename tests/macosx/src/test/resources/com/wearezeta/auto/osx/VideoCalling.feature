@@ -1,6 +1,6 @@
 Feature: Video Calling
 
-  @C354979 @videocalling @regression
+  @C354979 @videocalling @smoke @WEBAPP-3432
   Scenario Outline: Verify I can put macbook into sleep after video call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
