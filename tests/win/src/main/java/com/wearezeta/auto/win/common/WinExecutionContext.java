@@ -14,15 +14,20 @@ public class WinExecutionContext {
 
     public static final String WINIUM_URL = System.getProperty(
             "com.wire.winium.url", "http://localhost:9999/");
+    
+    public static final String WIRE_APP_VERSION = System.getProperty(
+            "com.wire.app.version", "2.6.2599");
 
     public static final String WIRE_APP_FOLDER = System.getProperty(
-            "com.wire.app.folder", "C:\\Users\\Michael\\AppData\\Local\\wire\\");
+            "com.wire.app.folder", 
+            String.format("%s\\AppData\\Local\\wire\\app-%s\\", System.getProperty("user.home"), WIRE_APP_VERSION));
 
-    public static final String WIRE_APP_PATH = System.getProperty(
-            "com.wire.app.path", "app-2.6.2599\\Wire.exe");
+    public static final String WIRE_APP_EXECUTABLE = System.getProperty(
+            "com.wire.app.executable", "Wire.exe");
 
     public static final String WIRE_APP_CACHE_FOLDER = System.getProperty(
-            "com.wire.app.cache.folder", "C:\\Users\\Michael\\AppData\\Roaming\\Wire\\");
+            "com.wire.app.cache.folder", 
+            String.format("%s\\AppData\\Roaming\\Wire\\", System.getProperty("user.home")));
 
     public static final String OS_NAME = System.getProperty("com.wire.os.name",
             "Win");

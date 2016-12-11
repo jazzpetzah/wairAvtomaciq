@@ -4,7 +4,6 @@ import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWinDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.win.common.WinExecutionContext;
 import com.wearezeta.auto.win.locators.WinLocators;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
@@ -95,10 +94,6 @@ public abstract class WinPage extends BasePage {
     @Override
     public void close() throws Exception {
         super.close();
-    }
-
-    public void startApp() throws Exception {
-        this.getDriver().navigate().to(WinExecutionContext.WIRE_APP_PATH);
     }
 
     public Dimension getDesktopSize() throws Exception {

@@ -17,9 +17,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <skipTests>false</skipTests>
         <defaultEmail>smoketester@wire.com</defaultEmail>
-        <com.wire.app.folder>C:\Users\Michael\AppData\Local\wire\</com.wire.app.folder>
-        <com.wire.app.path>app-2.11.2670\Wire.exe</com.wire.app.path>
-        <com.wire.app.cache.folder>C:\Users\Michael\AppData\Roaming\Wire\</com.wire.app.cache.folder>
+        <com.wire.app.version>2.11.2685</com.wire.app.version>
         <com.wire.winium.url>http://127.0.0.1:9999/</com.wire.winium.url>
         <com.wire.winium.path>TODO</com.wire.winium.path>
         <com.wire.chromedriver.path>C:\Users\Michael\Desktop\selenium\chromedriver.exe</com.wire.chromedriver.path>
@@ -182,9 +180,7 @@
                                 <com.wire.os.version>${com.wire.os.version}</com.wire.os.version>
                                 <com.wire.browser.name>${com.wire.browser.name}</com.wire.browser.name>
                                 <com.wire.browser.version>${com.wire.browser.version}</com.wire.browser.version>
-                                <com.wire.app.folder>${com.wire.app.folder}</com.wire.app.folder>
-                                <com.wire.app.path>${com.wire.app.path}</com.wire.app.path>
-                                <com.wire.app.cache.folder>${com.wire.app.cache.folder}</com.wire.app.cache.folder>
+                                <com.wire.app.version>${com.wire.app.version}</com.wire.app.version>
                                 <com.wire.winium.url>${com.wire.winium.url}</com.wire.winium.url>
                                 <com.wire.winium.path>${com.wire.appium.mac.path}</com.wire.winium.path>
                                 <com.wire.chromedriver.path>${com.wire.chromedriver.path}</com.wire.chromedriver.path>
