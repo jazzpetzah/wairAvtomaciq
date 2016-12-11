@@ -1,6 +1,6 @@
 Feature: Usernames
 
-  @C343171 @usernames @staging
+  @C343171 @usernames @regression
   Scenario Outline: Verify existing user has a take over screen with offered username
     Given There are 2 users where <NameAlias> is me without unique username
     Given User <NameAlias> changes name to <Name>
@@ -22,7 +22,7 @@ Feature: Usernames
       | Email      | Password      | NameAlias | Name         | Contact   | Username    |
       | user1Email | user1Password | user1Name | Jack Johnson | user2Name | jackjohnson |
 
-  @C343172 @usernames @staging @useSpecialEmail
+  @C343172 @usernames @regression @useSpecialEmail
   Scenario Outline: Verify new user has a take over screen with offered username
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
@@ -45,7 +45,7 @@ Feature: Usernames
       | Email      | Password      | NameAlias | Name             | Username        |
       | user1Email | user1Password | user1Name | Marie Antoinette | marieantoinette |
 
-  @C343174 @usernames @staging
+  @C343174 @usernames @regression
   Scenario Outline: Verify take over screen doesn't go away on reload
     Given There are 2 users where <NameAlias> is me without unique username
     Given User <NameAlias> changes name to <Name>
@@ -65,7 +65,7 @@ Feature: Usernames
       | Email      | Password      | NameAlias | Name               | Username         |
       | user1Email | user1Password | user1Name | Hans-Peter Baxxter | hanspeterbaxxter |
 
-  @C343175 @usernames @staging @useSpecialEmail
+  @C343175 @usernames @regression @useSpecialEmail
   Scenario Outline: Verify Settings are opened on choosing generating your own username after registration
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
@@ -111,7 +111,7 @@ Feature: Usernames
       | Email      | Password      | Contact   | Name      | TakenHint     |
       | user1Email | user1Password | user2Name | user1Name | Already taken |
 
-  @C343176 @usernames @staging
+  @C343176 @usernames @regression
   Scenario Outline: Verify Settings are opened on choosing generating your own username for existing user
     Given There are 2 users where <NameAlias> is me without unique username
     Given User <NameAlias> changes name to <Name>
@@ -128,7 +128,7 @@ Feature: Usernames
       | Email      | Password      | NameAlias | Name         | Username    |
       | user1Email | user1Password | user1Name | Jack Johnson | jackjohnson |
 
-  @C343177 @usernames @staging
+  @C343177 @usernames @regression
   Scenario Outline: Verifying impossibility to set username with less than 2 characters
     Given There are 2 users where <NameAlias> is me without unique username
     Given I switch to Sign In page
@@ -154,7 +154,7 @@ Feature: Usernames
       | user1Email | user1Password | user1Name |               | At least 2 characters. a—z, 0—9 and _ only. |
       | user1Email | user1Password | user1Name | a             | At least 2 characters. a—z, 0—9 and _ only. |
 
-  @C352079 @usernames @staging
+  @C352079 @usernames @regression
   Scenario Outline: Verify username is unique
     Given There are 2 users where <Name> is me without unique username
     Given User <SecondUser> changes unique username to <SecondUser>
@@ -180,7 +180,7 @@ Feature: Usernames
       | Email      | Password      | Name      | SecondUser | Error         |
       | user1Email | user1Password | user1Name | user2Name  | Already taken |
 
-  @C352077 @usernames @staging
+  @C352077 @usernames @regression
   Scenario Outline: Verify autogeneration of a username for a user (different scenarios)
     Given There are 2 users where <NameAlias> is me without unique username
     Given User <NameAlias> changes name to <Name>
@@ -239,7 +239,7 @@ Feature: Usernames
       | Email      | Password      | Name      | Error                                     | UserName      | Name2     | Email2     |
       | user1Email | user1Password | user1Name | Please verify your details and try again. | torelease1086 | user2Name | user2Email |
     
-  @C345365 @usernames @staging
+  @C345365 @usernames @regression
   Scenario Outline: Verify new username is synched across the devices
     Given There are 2 users where <NameAlias> is me
     Given I remember unique username of Me
@@ -260,7 +260,7 @@ Feature: Usernames
       | Email      | Password      | NameAlias |
       | user1Email | user1Password | user1Name |
 
-  @C352081 @usernames @staging
+  @C352081 @usernames @regression
   Scenario Outline: Verify autogeneration of a username for a user with emoji in name
     Given There is 1 user where <NameAlias> is me without unique username
     Given User <NameAlias> changes name to <Name>
