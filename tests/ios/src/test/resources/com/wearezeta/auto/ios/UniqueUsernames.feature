@@ -403,7 +403,6 @@ Feature: Unique Usernames
     Given I wait until <Contact1WithABEmail> exists in backend search results
     Given I wait until <Contact1WithABEmail> has 1 common friend on the backend
     Given I wait until <Contact2WithABPhoneNumber> exists in backend search results
-    Given I wait until <Contact2WithABPhoneNumber> has 1 common friend on the backend
     Given I wait until <Contact3WithUniqueUserName> exists in backend search results
     Given I wait until <Contact4WithCommonFriends> exists in backend search results
     Given I wait until <Contact4WithCommonFriends> has 1 common friend on the backend
