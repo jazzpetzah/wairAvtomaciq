@@ -123,7 +123,7 @@ public class WebPage extends BasePage {
      * @throws Exception
      */
     public List<String> getPlaceholders() throws Exception {
-        List<WebElement> inputElements = getDriver().findElements(By.tagName("input"));
+        List<WebElement> inputElements = getDriver().findElements(By.cssSelector("input,textarea"));
         List<String> placeholders = new ArrayList<>();
         for (WebElement element : inputElements) {
             if (element.isDisplayed()) {
