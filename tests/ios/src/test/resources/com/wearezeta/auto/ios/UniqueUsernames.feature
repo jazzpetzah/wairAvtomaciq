@@ -437,3 +437,23 @@ Feature: Unique Usernames
     Examples:
       | Name      |
       | user1Name |
+
+  @C352048 @staging @fastLogin
+  Scenario Outline: Verify last username overwrites the previous one
+    Given There are 2 users where <Name> is me
+    Given User <Contact> sets the unique username
+    Given I sign in using my email or phone number
+    Given I wait until <ContactUsername> exists in backend search results
+    Given I open search UI
+    Given I accept alert if visible
+    Given I tap input field on Search UI page
+    When I type "<ContactUsername>" in Search UI input field
+    Then I see the conversation "<Contact>" exists in Search results
+    When User <Contact> changes the unique username to "<NewContactUsername>"
+    And I wait until <NewContactUsername> exists in backend search results
+    When I type "<NewContactUsername>" in cleared Search UI input field
+    Then I see the conversation "<Contact>" exists in Search results
+
+    Examples:
+      | Name      | Contact   | ContactUsername     | NewContactUsername  |
+      | user1Name | user2Name | user2UniqueUsername | user3UniqueUsername |
