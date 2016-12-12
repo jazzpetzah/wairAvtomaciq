@@ -502,7 +502,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend  |
       | user1Name | user2Name | zcall        |
 
-  @fastLogin @consecutive_call @torun
+  @fastLogin @consecutive_call
   Scenario Outline: I receive 1:1 call loop from AVS <CallBackend>
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -510,7 +510,7 @@ Feature: Calling
     Given I sign in using my email
     Given I see conversations list
     # Will put app into BG in the beginning of every call right now
-    And <Contact> calls to me 10 times for 1 minute
+    And <Contact> calls to me 5 times for 1 minute
 
     Examples:
       | Name      | Contact   | CallBackend  |
