@@ -11,6 +11,7 @@ import com.wearezeta.auto.common.ZetaFormatter;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import com.wearezeta.auto.common.calling2.v1.model.Metrics;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -20,6 +21,7 @@ import com.wearezeta.auto.ios.pages.ConversationViewPage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
@@ -344,9 +346,7 @@ public class CallingSteps {
             LOG.error(i + ": " + t.getMessage());
         });
 
-        failures.forEach((k, v) -> {
-            Throwables.propagate(v);
-        });
+        fail(formatFailuresList(failures));
     }
 
     // this file is needed to report the call stats via jenkins into a read only chat
@@ -366,9 +366,24 @@ public class CallingSteps {
     }
 
     private final class CallIterationError extends Exception {
-        public CallIterationError (int numberofCall, String message){
-            super(String.format("Call s% failed with %s", numberofCall, message));
+        public CallIterationError (int numberOfCall, String message){
+            super(String.format("Call %s failed with %s", numberOfCall, message));
         }
+    }
+
+    private static final String SEPARATOR = "\n--------------------------------------\n";
+    private String formatFailuresList(Map<Integer, Exception> failures){
+        final StringBuilder builder = new StringBuilder();
+        failures.forEach((callIndex, failureException)-> {
+            String header = String.format("Failure summary for call # %s\n",callIndex);
+            builder.append(header);
+            builder.append(failureException.getMessage()).append("\n");
+            if (!(failureException instanceof CallIterationError)) {
+                builder.append(ExceptionUtils.getStackTrace(failureException));
+            }
+            builder.append(SEPARATOR);
+        });
+        return builder.toString();
     }
 
     private static final String CALLINGOVERLAY_LEAVE_BUTTON = "Leave";
@@ -383,7 +398,7 @@ public class CallingSteps {
 
         LOG.info("\n\nSTARTING CALL " + numberOfCall);
         try {
-            if (appState.equals("Background")){
+            if (appState.equals("Background")) {
                 pagesCollection.getCommonPage().pressHomeButton();
                 LOG.info("Put app into background");
             }
@@ -391,8 +406,8 @@ public class CallingSteps {
             commonCallingSteps.callToConversation(calleeList, conversationName);
 
             boolean isVisible = pagesCollection.getPage(CallKitOverlayPage.class).isVisible("Audio");
-            if (!isVisible){
-                failures.put(numberOfCall, new CallIterationError(numberOfCall,"Audio Call Kit overlay should be visible"));
+            if (!isVisible) {
+                failures.put(numberOfCall, new CallIterationError(numberOfCall, "Audio Call Kit overlay should be visible"));
                 return;
             }
             LOG.info("Audio Call Kit overlay is visible");
@@ -411,8 +426,8 @@ public class CallingSteps {
 
             pagesCollection.getPage(CallingOverlayPage.class).tapButtonByName(CALLINGOVERLAY_LEAVE_BUTTON);
             boolean isNotVisible = pagesCollection.getPage(CallingOverlayPage.class).isCallStatusLabelInvisible();
-            if (!isNotVisible){
-                failures.put(numberOfCall, new CallIterationError(numberOfCall,"Audio Call overlay should be invisible"));
+            if (!isNotVisible) {
+                failures.put(numberOfCall, new CallIterationError(numberOfCall, "Audio Call overlay should be invisible"));
                 return;
             }
             LOG.info("Calling overlay is NOT visible");
@@ -420,7 +435,7 @@ public class CallingSteps {
 
             for (Call call : commonCallingSteps.getOutgoingCall(calleeList, conversationName)) {
                 final Metrics metrics = call.getMetrics();
-                if (metrics == null){
+                if (metrics == null) {
                     LOG.info("Could not get metrics for this call.");
                     noMetricsData.add(1);
                     continue;
@@ -431,7 +446,8 @@ public class CallingSteps {
 
             LOG.info(String.format("CALL %s SUCCESSFUL", numberOfCall));
             commonSteps.WaitForTime(timeBetweenCall);
-
+        } catch (InterruptedException ie)  {
+            Throwables.propagate(ie);
         } catch (Exception t) {
             LOG.info(String.format("CALL %s FAILED", numberOfCall));
 
