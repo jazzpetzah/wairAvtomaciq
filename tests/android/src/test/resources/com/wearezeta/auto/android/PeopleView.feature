@@ -234,13 +234,14 @@ Feature: People View
   Scenario Outline: Check contact personal info in one to one conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I tap conversation name from top toolbar
-    Then I see user name of user <Contact> on Group connected user details page
-    And I see unique user name of user <Contact> on Group connected user details page
+    Then I see user name of user <Contact> on Single connected user details page
+    And I see unique user name of user <Contact> on Single connected user details page
 
     Examples:
       | Name      | Contact   |
