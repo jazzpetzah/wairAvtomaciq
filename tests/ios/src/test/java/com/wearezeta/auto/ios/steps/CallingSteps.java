@@ -238,7 +238,7 @@ public class CallingSteps {
         final int timeBetweenCall = 10;
         final List<String> calleeList = commonCallingSteps.getUsersManager().splitAliases(callees);
         final Map<Integer, Exception> failures = new HashMap<>();
-        final List<String> assertionErrorList = new ArrayList<>();
+        //final List<String> assertionErrorList = new ArrayList<>();
         for (int i = 0; i < times; i++) {
             LOG.info("\n\nSTARTING CALL " + i);
             try {
@@ -251,7 +251,8 @@ public class CallingSteps {
 
                 boolean isVisible = pagesCollection.getPage(CallingOverlayPage.class).isCallStatusLabelVisible();
                 if (!isVisible){
-                    assertionErrorList.add("Calling overlay should be visible");
+                    failures.put(i, new CallIterationError(i,"Calling overlay should be visible"));
+                    continue;
                 }
                 LOG.info("Calling overlay is visible");
 
@@ -264,7 +265,8 @@ public class CallingSteps {
 
                 boolean isInvisible = pagesCollection.getPage(CallingOverlayPage.class).isCallStatusLabelInvisible();
                 if (!isInvisible){
-                    assertionErrorList.add("Calling overlay should be invisible");
+                    failures.put(i, new CallIterationError(i,"Calling overlay should be invisible"));
+                    continue;
                 }
                 LOG.info("Calling overlay is NOT visible");
                 LOG.info("CALL " + i + " SUCCESSFUL");
@@ -308,11 +310,12 @@ public class CallingSteps {
      * @param times               number of consecutive calls
      * @param callees             participants which will wait for a call
      * @param conversationName    user to be called
+     * @param appState            if App is in BG or FG
      * @throws Exception
-     * @step. ^(.*) calls me (\d+) times for (\d+) minutes with (.*)$
+     * @step. ^(\w+) calls to (\w+) in (Background|Foreground) (\d+) times? for (\d+) minutes?$
      */
-    @Then("^(\\w+) calls to (\\w+) (\\d+) times? for (\\d+) minutes?$")
-    public void IReceiveCallsXTimes(String callees, String conversationName, int times, int callDurationMinutes)
+    @Then("^(\\w+) calls to (\\w+) in (Background|Foreground) (\\d+) times? for (\\d+) minutes?$")
+    public void IReceiveCallsXTimes(String callees, String conversationName, String appState, int times, int callDurationMinutes)
             throws Exception {
         LOG.info("Call setup_time and estab_time array needs to be emptied");
         arrayCallSetupTime.clear();
@@ -321,7 +324,7 @@ public class CallingSteps {
         final Map<Integer, Exception> failures = new HashMap<>();
         final List<Integer> noMetricsData = new ArrayList<>();
         for (int i = 0; i < times; i++) {
-            receiveSingleCall(callees, i, conversationName, callDurationMinutes, failures, noMetricsData);
+            receiveSingleCall(callees, i, appState, conversationName, callDurationMinutes, failures, noMetricsData);
         }
 
         int sumCallSetupTime = arrayCallSetupTime.stream().reduce(0, Integer::sum);
@@ -362,27 +365,35 @@ public class CallingSteps {
                 message.getBytes());
     }
 
+    private final class CallIterationError extends Exception {
+        public CallIterationError (int numberofCall, String message){
+            super(String.format("Call s% failed with %s", numberofCall, message));
+        }
+    }
+
     private static final String CALLINGOVERLAY_LEAVE_BUTTON = "Leave";
     private static final String CALLKIT_DECLINE_BUTTON = "Decline";
     private static final String CALLKIT_ACCEPT_BUTTON = "Accept";
-    private void receiveSingleCall(String callees, int numberOfCall, String conversationName,
+    private void receiveSingleCall(String callees, int numberOfCall, String appState, String conversationName,
                                                  int callDurationMinutes, final Map<Integer, Exception> failures,
                                    List<Integer> noMetricsData)
             throws Exception {
         final int timeBetweenCall = 10;
         final List<String> calleeList = commonCallingSteps.getUsersManager().splitAliases(callees);
-        final List<String> assertionErrorList = new ArrayList<>();
 
         LOG.info("\n\nSTARTING CALL " + numberOfCall);
         try {
-            pagesCollection.getCommonPage().pressHomeButton();
-            LOG.info("Put app into background");
+            if (appState.equals("Background")){
+                pagesCollection.getCommonPage().pressHomeButton();
+                LOG.info("Put app into background");
+            }
 
             commonCallingSteps.callToConversation(calleeList, conversationName);
 
             boolean isVisible = pagesCollection.getPage(CallKitOverlayPage.class).isVisible("Audio");
             if (!isVisible){
-                assertionErrorList.add("Audio Call Kit overlay should be visible");
+                failures.put(numberOfCall, new CallIterationError(numberOfCall,"Audio Call Kit overlay should be visible"));
+                return;
             }
             LOG.info("Audio Call Kit overlay is visible");
 
@@ -401,7 +412,8 @@ public class CallingSteps {
             pagesCollection.getPage(CallingOverlayPage.class).tapButtonByName(CALLINGOVERLAY_LEAVE_BUTTON);
             boolean isNotVisible = pagesCollection.getPage(CallingOverlayPage.class).isCallStatusLabelInvisible();
             if (!isNotVisible){
-                assertionErrorList.add("Audio Call Kit overlay should be invisible");
+                failures.put(numberOfCall, new CallIterationError(numberOfCall,"Audio Call overlay should be invisible"));
+                return;
             }
             LOG.info("Calling overlay is NOT visible");
 
@@ -442,13 +454,6 @@ public class CallingSteps {
                 }
             }
             failures.put(numberOfCall, t);
-        }
-
-        if (!assertionErrorList.isEmpty()) {
-            if (assertionErrorList.size() == 1) {
-                Assert.fail(assertionErrorList.get(0));
-            }
-            Assert.fail(String.join("\n", assertionErrorList));
         }
     }
 }

@@ -509,8 +509,7 @@ Feature: Calling
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email
     Given I see conversations list
-    # Will put app into BG in the beginning of every call right now
-    And <Contact> calls to me 5 times for 1 minute
+    And <Contact> calls to me in Background 10 times for 1 minute
 
     Examples:
       | Name      | Contact   | CallBackend  |
