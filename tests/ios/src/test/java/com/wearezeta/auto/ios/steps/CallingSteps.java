@@ -237,6 +237,7 @@ public class CallingSteps {
         final int timeBetweenCall = 10;
         final List<String> calleeList = commonCallingSteps.getUsersManager().splitAliases(callees);
         final Map<Integer, Exception> failures = new HashMap<>();
+        final List<String> assertionErrorList = new ArrayList<>();
         for (int i = 0; i < times; i++) {
             LOG.info("\n\nSTARTING CALL " + i);
             try {
@@ -247,8 +248,10 @@ public class CallingSteps {
                 commonCallingSteps.verifyAcceptingCallStatus(calleeList, "active", 20);
                 LOG.info("All instances are active");
 
-                Assert.assertTrue("Calling overlay is not visible",
-                        pagesCollection.getPage(CallingOverlayPage.class).isCallStatusLabelVisible());
+                boolean isVisible = pagesCollection.getPage(CallingOverlayPage.class).isCallStatusLabelVisible();
+                if (!isVisible){
+                    assertionErrorList.add("Calling overlay should be visible");
+                }
                 LOG.info("Calling overlay is visible");
 
                 commonSteps.WaitForTime(callDurationMinutes * 60);
@@ -258,8 +261,10 @@ public class CallingSteps {
                 commonCallingSteps.verifyAcceptingCallStatus(calleeList, "destroyed", 20);
                 LOG.info("All instances are destroyed");
 
-                Assert.assertTrue("Calling overlay is visible",
-                        pagesCollection.getPage(CallingOverlayPage.class).isCallStatusLabelInvisible());
+                boolean isInvisible = pagesCollection.getPage(CallingOverlayPage.class).isCallStatusLabelInvisible();
+                if (!isInvisible){
+                    assertionErrorList.add("Calling overlay should be invisible");
+                }
                 LOG.info("Calling overlay is NOT visible");
                 LOG.info("CALL " + i + " SUCCESSFUL");
                 commonSteps.WaitForTime(timeBetweenCall);
@@ -388,7 +393,7 @@ public class CallingSteps {
             commonSteps.WaitForTime(callDurationMinutes * 60);
 
             pagesCollection.getPage(CallingOverlayPage.class).tapButtonByName(CALLINGOVERLAY_LEAVE_BUTTON);
-            boolean isNotVisible = pagesCollection.getPage(CallingOverlayPage.class).isCallStatusLabelInvisible());
+            boolean isNotVisible = pagesCollection.getPage(CallingOverlayPage.class).isCallStatusLabelInvisible();
             if (!isNotVisible){
                 assertionErrorList.add("Audio Call Kit overlay should be invisible");
             }
