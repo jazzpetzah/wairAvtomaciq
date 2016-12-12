@@ -12,6 +12,7 @@ import com.wearezeta.auto.common.ZetaFormatter;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import com.wearezeta.auto.common.calling2.v1.model.Metrics;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.pages.CallKitOverlayPage;
 import com.wearezeta.auto.ios.pages.CallingOverlayPage;
@@ -318,8 +319,9 @@ public class CallingSteps {
         arrayCallEstabTime.clear();
 
         final Map<Integer, Exception> failures = new HashMap<>();
+        final List<Integer> noMetricsData = new ArrayList<>();
         for (int i = 0; i < times; i++) {
-            receiveSingleCall(callees, i, conversationName, callDurationMinutes, failures);
+            receiveSingleCall(callees, i, conversationName, callDurationMinutes, failures, noMetricsData);
         }
 
         int sumCallSetupTime = arrayCallSetupTime.stream().reduce(0, Integer::sum);
@@ -327,13 +329,13 @@ public class CallingSteps {
 
         int avgCallSetupTime = 0;
         int avgCallEstabTime = 0;
-        int successfulCallsCount = times - failures.size();
+        int successfulCallsCount = times - failures.size() - noMetricsData.size();
         if (successfulCallsCount > 0) {
            avgCallSetupTime = sumCallSetupTime / successfulCallsCount;
            avgCallEstabTime = sumCallEstabTime / successfulCallsCount;
         }
 
-        createCallingReport(times, failures, avgCallSetupTime, avgCallEstabTime);
+        createCallingReport(times, failures, noMetricsData, avgCallSetupTime, avgCallEstabTime);
 
         failures.forEach((Integer i, Throwable t) -> {
             LOG.error(i + ": " + t.getMessage());
@@ -347,11 +349,13 @@ public class CallingSteps {
     // this file is needed to report the call stats via jenkins into a read only chat
     private static final String CALL_STATS_FILENAME = "multi_call_result.txt";
 
-    private void createCallingReport(int timesOfCalls, final Map<Integer, Exception> failures, int avgCallSetupTime,
-                                     int avgCallEstabTime)
+    private void createCallingReport(int timesOfCalls, final Map<Integer, Exception> failures,
+                                     final List<Integer> noMetricsData, int avgCallSetupTime,int avgCallEstabTime)
             throws Exception {
-        String message = String.format("%s/%s calls succeeded, average Call setup_time: %s ms , average Call estab_time:" +
-                " %s ms", timesOfCalls - failures.size(), timesOfCalls, avgCallSetupTime, avgCallEstabTime);
+        String message = String.format("%s/%s calls succeeded. Got no metrics data from %s calls." +
+                " Average calculated from %s calls. average Call setup_time: %s ms , average Call estab_time: %s ms",
+                timesOfCalls - failures.size(), timesOfCalls, noMetricsData.size(),
+                timesOfCalls - failures.size()-noMetricsData.size(), avgCallSetupTime, avgCallEstabTime);
         LOG.info(message);
 
         Files.write(Paths.get(CommonUtils.getBuildPathFromConfig(CallingSteps.class), CALL_STATS_FILENAME),
@@ -362,7 +366,8 @@ public class CallingSteps {
     private static final String CALLKIT_DECLINE_BUTTON = "Decline";
     private static final String CALLKIT_ACCEPT_BUTTON = "Accept";
     private void receiveSingleCall(String callees, int numberOfCall, String conversationName,
-                                                 int callDurationMinutes, final Map<Integer, Exception> failures)
+                                                 int callDurationMinutes, final Map<Integer, Exception> failures,
+                                   List<Integer> noMetricsData)
             throws Exception {
         final int timeBetweenCall = 10;
         final List<String> calleeList = commonCallingSteps.getUsersManager().splitAliases(callees);
@@ -390,6 +395,7 @@ public class CallingSteps {
             commonCallingSteps.verifyCallingStatus(calleeList, conversationName, "active", 20);
             LOG.info("All instances are active");
 
+            LOG.info("Calling for 1 minute");
             commonSteps.WaitForTime(callDurationMinutes * 60);
 
             pagesCollection.getPage(CallingOverlayPage.class).tapButtonByName(CALLINGOVERLAY_LEAVE_BUTTON);
@@ -399,12 +405,16 @@ public class CallingSteps {
             }
             LOG.info("Calling overlay is NOT visible");
 
-            for (String callee : calleeList) {
-                UserXVerifesCallWasSuccessful(callee, conversationName);
-                for (Call call : commonCallingSteps.getOutgoingCall(calleeList, conversationName)) {
-                    arrayCallSetupTime.add(((int) call.getMetrics().getSetupTime()));
-                    arrayCallEstabTime.add(((int) call.getMetrics().getEstabTime()));
+
+            for (Call call : commonCallingSteps.getOutgoingCall(calleeList, conversationName)) {
+                final Metrics metrics = call.getMetrics();
+                if (metrics == null){
+                    LOG.info("Could not get metrics for this call.");
+                    noMetricsData.add(1);
+                    continue;
                 }
+                arrayCallSetupTime.add(((int) metrics.getSetupTime()));
+                arrayCallEstabTime.add(((int) metrics.getEstabTime()));
             }
 
             LOG.info(String.format("CALL %s SUCCESSFUL", numberOfCall));
