@@ -309,7 +309,7 @@ Feature: People View
   @C1714 @regression
   Scenario Outline: Verify the new conversation is created on the other end from 1to1
     Given There are 3 users where <Name> is me
-    Given User <Contact1> changes unique username to <Contact1>
+    Given <Contact1>,<Contact2> have unique usernames
     Given Myself is connected to <Contact1>,<Contact2>
     Given User <Contact1> changes avatar picture to default
     Given I switch to Sign In page
