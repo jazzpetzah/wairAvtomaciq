@@ -64,6 +64,9 @@ public class ConversationActionsPage extends IOSPage {
             case "cancel request":
                 locator = fbXpathYesActionButton;
                 break;
+            case "paste":
+                locator = By.xpath(xpathStrConfirmActionButtonByName.apply("OK"));
+                break;
             case "connect":
                 locator = FBBy.xpath(xpathStrConnectActionButtonByName.apply(actionName));
                 break;
