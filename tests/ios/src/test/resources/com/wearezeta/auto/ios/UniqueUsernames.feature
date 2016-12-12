@@ -14,13 +14,13 @@ Feature: Unique Usernames
     Given I accept alert if visible
     Given I tap Not Now button on Share Contacts overlay
     When I see username <Name> on Unique Username Takeover page
-    Then I see unique username <ExpectedUniqueName> on Unique Username Takeover page
+    Then I see unique username @<Name> on Unique Username Takeover page
     When I tap Keep This One button on Unique Username Takeover page
     Then I see conversations list
 
     Examples:
-      | Name      | ExpectedUniqueName   |
-      | user1Name | @user1UniqueUsername |
+      | Name      |
+      | user1Name |
 
   @C352060 @addressbookStart @forceReset @regression
   Scenario Outline: Verify incoming connection view
