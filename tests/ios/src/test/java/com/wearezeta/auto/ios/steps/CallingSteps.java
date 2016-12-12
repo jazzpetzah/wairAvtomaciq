@@ -361,6 +361,7 @@ public class CallingSteps {
             throws Exception {
         final int timeBetweenCall = 10;
         final List<String> calleeList = commonCallingSteps.getUsersManager().splitAliases(callees);
+        final List<String> assertionErrorList = new ArrayList<>();
 
         LOG.info("\n\nSTARTING CALL " + numberOfCall);
         try {
@@ -369,8 +370,10 @@ public class CallingSteps {
 
             commonCallingSteps.callToConversation(calleeList, conversationName);
 
-            Assert.assertTrue("Audio Call Kit overlay is NOT visible",
-                    pagesCollection.getPage(CallKitOverlayPage.class).isVisible("Audio"));
+            boolean isVisible = pagesCollection.getPage(CallKitOverlayPage.class).isVisible("Audio");
+            if (!isVisible){
+                assertionErrorList.add("Audio Call Kit overlay should be visible");
+            }
             LOG.info("Audio Call Kit overlay is visible");
 
             pagesCollection.getPage(CallKitOverlayPage.class).tapButton(CALLKIT_ACCEPT_BUTTON);
@@ -385,8 +388,10 @@ public class CallingSteps {
             commonSteps.WaitForTime(callDurationMinutes * 60);
 
             pagesCollection.getPage(CallingOverlayPage.class).tapButtonByName(CALLINGOVERLAY_LEAVE_BUTTON);
-            Assert.assertTrue("Audio Call Kit overlay is visible",
-                    pagesCollection.getPage(CallingOverlayPage.class).isCallStatusLabelInvisible());
+            boolean isNotVisible = pagesCollection.getPage(CallingOverlayPage.class).isCallStatusLabelInvisible());
+            if (!isNotVisible){
+                assertionErrorList.add("Audio Call Kit overlay should be invisible");
+            }
             LOG.info("Calling overlay is NOT visible");
 
             for (String callee : calleeList) {
@@ -415,6 +420,13 @@ public class CallingSteps {
                 }
             }
             failures.put(numberOfCall, t);
+        }
+
+        if (!assertionErrorList.isEmpty()) {
+            if (assertionErrorList.size() == 1) {
+                Assert.fail(assertionErrorList.get(0));
+            }
+            Assert.fail(String.join("\n", assertionErrorList));
         }
     }
 }
