@@ -506,15 +506,15 @@ Feature: Calling
   Scenario Outline: I receive 1:1 call loop from AVS <CallBackend>
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given <Contact> starts instance using <CallBackend>
+    Given <Contact> starts instance using <CallBackend2>
     Given I sign in using my email
     Given I see conversations list
     # Will put app into BG in the beginning of every call right now
-    And <Contact> calls to me 2 time for 1 minute
+    And <Contact> calls to me 1 time for 1 minute
 
     Examples:
-      | Name      | Contact   | CallBackend  |
-      | user1Name | user2Name | zcall        |
+      | Name      | Contact   | CallBackend  | CallBackend2 |
+      | user1Name | user2Name | zcall:3.0.85 | chrome       |
 
   @C343168 @regression @calling_basic @fastLogin
   Scenario Outline: Verify you see group call conformation dialog for >5 participants group chat
