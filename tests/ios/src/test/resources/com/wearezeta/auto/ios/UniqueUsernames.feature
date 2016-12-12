@@ -451,7 +451,7 @@ Feature: Unique Usernames
     Then I see the conversation "<Contact>" exists in Search results
     When User <Contact> changes the unique username to "<NewContactUsername>"
     And I wait until <NewContactUsername> exists in backend search results
-    When I type "<NewContactUsername>" in cleared Search UI input field
+    And I type "<NewContactUsername>" in cleared Search UI input field
     Then I see the conversation "<Contact>" exists in Search results
 
     Examples:
