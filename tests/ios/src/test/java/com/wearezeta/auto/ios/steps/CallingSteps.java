@@ -422,6 +422,13 @@ public class CallingSteps {
                     pagesCollection.getPage(CallKitOverlayPage.class).tapButton(CALLKIT_DECLINE_BUTTON);
                 } catch (Exception exe) {
                     LOG.error(String.format("Can not stop call kit %s because %s", numberOfCall, exe));
+
+                    try {
+                        pagesCollection.getCommonPage().pressHomeButton();
+                        LOG.info("Put app into background");
+                    } catch (Exception morexe) {
+                        LOG.error(String.format("Call %s failed because %s", numberOfCall, morexe));
+                    }
                 }
             }
             failures.put(numberOfCall, t);

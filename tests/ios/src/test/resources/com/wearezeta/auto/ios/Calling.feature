@@ -502,7 +502,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend  |
       | user1Name | user2Name | zcall        |
 
-  @fastLogin @consecutive_call
+  @fastLogin @consecutive_call @torun
   Scenario Outline: I receive 1:1 call loop from AVS <CallBackend>
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -510,11 +510,11 @@ Feature: Calling
     Given I sign in using my email
     Given I see conversations list
     # Will put app into BG in the beginning of every call right now
-    And <Contact> calls to me 1 time for 1 minute
+    And <Contact> calls to me 7 times for 1 minute
 
     Examples:
       | Name      | Contact   | CallBackend  |
-      | user1Name | user2Name | zcall:3.0.85 |
+      | user1Name | user2Name | zcall        |
 
   @C343168 @regression @calling_basic @fastLogin
   Scenario Outline: Verify you see group call conformation dialog for >5 participants group chat
