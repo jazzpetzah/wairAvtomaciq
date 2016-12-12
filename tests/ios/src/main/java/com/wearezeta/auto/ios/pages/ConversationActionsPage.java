@@ -30,7 +30,7 @@ public class ConversationActionsPage extends IOSPage {
             FBBy.xpath("//XCUIElementTypeButton[@name='NO']");
 
     private static final Function<String, String> xpathStrMenuTitleByValue = value ->
-            String.format("//XCUIElementTypeStaticText[@name='name' and @value='%s']", value);
+            String.format("//XCUIElementTypeStaticText[@value='%s']", value);
 
     public ConversationActionsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
