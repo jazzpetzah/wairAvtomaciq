@@ -230,10 +230,11 @@ Feature: Unique Username
     When I see username edit field on Settings page
     Then I enter new username on Settings page, according to datatable
       | UsernameTyped             | IsShownAsCorrect |
+      | ab                        | True             |
       | aabbcc1234567890          | True             |
       | aabbccCyrillicМоёИмя      | False            |
       | aabbccArabicاسمي          | False            |
-      | aabbccChinese我的名字         | False            |
+      | aabbccChinese我的名字      | False            |
       | aabbccSpecialChars%^&@#$  | False            |
       | aabbccLong123456789012345 | False            |
 
