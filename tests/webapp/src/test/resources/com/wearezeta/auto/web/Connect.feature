@@ -76,7 +76,7 @@ Feature: Connect
   @C1699 @smoke
   Scenario Outline: Verify sending a connection request to user chosen from search
     Given There are 2 users where <Name> is me
-    Given User <Contact> changes unique username to <Contact>
+    Given <Contact> has unique username
     Given I wait until <Contact> exists in backend search results
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -153,7 +153,6 @@ Feature: Connect
     And I am signed in properly
     Then I see Contact list with name <Name2>
     And I open conversation with <Name2>
-    And I see connected message for <Name2> in conversation
 
     Examples: 
       | Login      | Login2     | Password      | Password2     | Name      | Name2     | Name2UniqueUsername |
@@ -165,7 +164,7 @@ Feature: Connect
     Given <Name2> has unique username
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Given I wait until <Name2UniqueUsername> exists in backend search results
+    Given I wait until <Name2> exists in backend search results
     When I am signed in properly
     Then I open search by clicking the people button
     When I see Search is opened
@@ -248,6 +247,7 @@ Feature: Connect
   @C1696 @regression
   Scenario Outline: Verify you still receive messages from blocked person in a group chat
     Given There are 3 users where <Name> is me
+    Given <Contact1> has unique username
     Given user <Contact2> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>

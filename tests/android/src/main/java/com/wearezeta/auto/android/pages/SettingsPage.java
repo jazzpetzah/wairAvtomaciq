@@ -1,15 +1,16 @@
 package com.wearezeta.auto.android.pages;
 
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
+import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.DummyElement;
+import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
-
-import com.wearezeta.auto.android.common.AndroidCommonUtils;
-import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
-import org.openqa.selenium.By;
-
-import com.wearezeta.auto.common.driver.*;
-import org.openqa.selenium.WebElement;
 
 public class SettingsPage extends AndroidPage {
 

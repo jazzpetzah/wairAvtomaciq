@@ -14,8 +14,9 @@ Feature: People View
     And I see Conversations list with name <Contact2>
     When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
-    And I tap on group chat contact <Contact1NewName>
-    Then I see <Contact1> user name and email
+    And I tap on contact <Contact1NewName> on Group info page
+    Then I see user name of user <Contact1> on Group connected user details page
+    And I see unique user name of user <Contact1> on Group connected user details page
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName   | Picture                      | Contact1NewName   |
@@ -31,9 +32,9 @@ Feature: People View
     Given I see Conversations list with conversations
     When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
-    And I tap options menu button
-    And I tap LEAVE conversation menu button
-    And I confirm leaving
+    And I tap open menu button on Group info page
+    And I tap LEAVE button on Conversation options menu overlay page
+    And I tap LEAVE button on Confirm overlay page
     Then I see Conversations list
 
     Examples:
@@ -52,12 +53,12 @@ Feature: People View
     And I see Conversations list with name <Contact2>
     When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
-    And I tap on group chat contact <Contact2>
-    And I tap Remove
-    And I confirm remove
-    Then I do not see <Contact2> on group chat info page
-    When I close participants page by UI button
-    Then I see message <Message> contact <Contact2> on group page
+    And I tap on contact <Contact2> on Group info page
+    And I tap on remove button on Group connected user details page
+    And I tap REMOVE button on Confirm overlay page
+    Then I do not see participant <Contact2> on Group info page
+    And I tap back button
+    And I see message <Message> contact <Contact2> on group page
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName       | Message     |
@@ -80,13 +81,13 @@ Feature: People View
     And I see Conversations list with name <Contact2>
     When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
-    Then I see that the conversation name is <GroupChatName>
-    And I see the correct number of participants in the title <ParticipantNumber>
-    And I close participants page by UI button
-    When I navigate back from conversation
+    Then I see the conversation name is <GroupChatName> on Group info page
+    And I see "<ParticipantNumber> people" in sub header on Group info page
+    And I tap back button
+    And I navigate back from conversation
     And I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
-    Then I see the correct participant avatars for <Contact1NewName>,<Contact2NewName>
+    Then I see the participant avatars for <Contact1NewName>,<Contact2NewName> on Group info page
 
     Examples:
       | Name      | Contact1  | Contact2  | ParticipantNumber | GroupChatName  | Picture                      | Color1       | Color2       | Contact1NewName   | Contact2NewName      |
@@ -102,7 +103,7 @@ Feature: People View
     Given I see Conversations list with conversations
     When I tap on conversation name <OldGroupChatName>
     And I tap conversation name from top toolbar
-    And I rename group conversation to <NewConversationName>
+    And I rename group conversation to <NewConversationName> on Group info page
     # Clicking X button to close participants view crashes the app
     And I tap back button
     Then I see a message informing me that I renamed the conversation to <NewConversationName>
@@ -122,24 +123,31 @@ Feature: People View
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I tap conversation name from top toolbar
-    And I see <Contact> user profile page
-    And I tap options menu button
-    Then I see correct 1:1 options menu
+    And I see user name of user <Contact> on Single connected user details page
+    And I tap open menu button on Single connected user details page
+    Then I see BLOCK button on Conversation options menu overlay page
+    And I see MUTE button on Conversation options menu overlay page
+    And I see DELETE button on Conversation options menu overlay page
+    And I see ARCHIVE button on Conversation options menu overlay page
     When I tap back button
-    Then I see participant page
-    And I do not see 1:1 options menu
-    When I tap options menu button
+    Then I see Group info page
+    And I do not see Conversation options menu
+    When I tap open menu button on Single connected user details page
     And I swipe down
-    Then I see participant page
-    And I do not see 1:1 options menu
-    When I tap options menu button
-    And I see correct 1:1 options menu
+    Then I see Group info page
+    And I do not see Conversation options menu
+    When I tap open menu button on Single connected user details page
+    Then I see LEAVE button on Conversation options menu overlay page
+    And I see MUTE button on Conversation options menu overlay page
+    And I see DELETE button on Conversation options menu overlay page
+    And I see ARCHIVE button on Conversation options menu overlay page
+    And I see RENAME button on Conversation options menu overlay page
     When I tap on center of screen
-    And I tap options menu button
+    And I tap open menu button on Single connected user details page
     And I swipe left
     And I swipe right
     And I swipe up
-    Then I do not see 1:1 options menu
+    Then I do not see Conversation options menu
 
     Examples:
       | Name      | Contact   |
@@ -148,21 +156,19 @@ Feature: People View
   @C716 @regression @rc
   Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat if the other user is not in your contacts list
     Given There are 3 users where <Name> is me
-    Given <Contact1> is connected to <Name>,<Contact2>
+    Given <Contact1> is connected to myself,<Contact2>
     Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
-    And I tap on group chat contact <Contact2>
-    Then I see user name <Contact2> on non connected user page
-    When I tap Connect button on non connected user page
-    And I tap Connect button on connect to page
-    And I tap on group chat contact <Contact2>
-    Then I see Pending button on pending user page
-    When I tap Pending button on pending user page
-    Then I see Pending button on pending user page
+    And I tap on contact <Contact2> on Group info page
+    Then I see user name of user <Contact2> on Group unconnected user details page
+    When I tap on +connect button on Group unconnected user details page
+    And I tap on connect button on Group unconnected user details page
+    And I tap on contact <Contact2> on Group info page
+    # TODO: Add verification here
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -180,24 +186,22 @@ Feature: People View
     And I see Conversations list with name <Contact2>
     When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
-    Then I see participants page
-    And I see that the conversation name is <GroupChatName>
-    And I see the correct number of participants in the title <ParticipantNumber>
-    When I close participants page by UI button
-    Then I do not see participants page
+    Then I see Group info page
+    And I see the conversation name is <GroupChatName> on Group info page
+    And I see "<ParticipantNumber> people" in sub header on Group info page
+    And I tap back button
     And I see conversation view
-    When I tap conversation name from top toolbar
-    Then I see participants page
+    And I tap conversation name from top toolbar
+    Then I see Group info page
     When I tap back button
-    Then I do not see participants page
     And I see conversation view
-    When I tap conversation name from top toolbar
+    And I tap conversation name from top toolbar
     And I swipe right
     And I swipe up
     And I swipe left
-    Then I see participants page
-    And I see that the conversation name is <GroupChatName>
-    And I see the correct number of participants in the title <ParticipantNumber>
+    Then I see Group info page
+    And I see the conversation name is <GroupChatName> on Group info page
+    And I see "<ParticipantNumber> people" in sub header on Group info page
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName  | ParticipantNumber |
@@ -206,20 +210,21 @@ Feature: People View
   @C397 @regression
   Scenario Outline: Start 1to1 conversation from participants view
     Given There are 3 users where <Name> is me
-    Given <Contact1> is connected to <Name>,<Contact2>
+    Given <Contact1> is connected to myself,<Contact2>
     Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
-    And I tap on group chat contact <Contact1>
-    Then I see <Contact1> user profile page
-    And I tap Open Conversation button on connected user page
-    When I tap conversation name from top toolbar
-    Then I see <Contact1> user name and email
-    When I close participants page by UI button
-    Then I see conversation view
+    And I tap on contact <Contact1> on Group info page
+    Then I see user name of user <Contact1> on Group connected user details page
+    When I tap on open conversation button on Group connected user details page
+    And I tap conversation name from top toolbar
+    Then I see user name of user <Contact1> on Single connected user details page
+    And I see unique user name of user <Contact1> on Single connected user details page
+    And I tap back button
+    And I see conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -234,7 +239,8 @@ Feature: People View
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I tap conversation name from top toolbar
-    Then I see <Contact> user name and email
+    Then I see user name of user <Contact> on Group connected user details page
+    And I see unique user name of user <Contact> on Group connected user details page
 
     Examples:
       | Name      | Contact   |

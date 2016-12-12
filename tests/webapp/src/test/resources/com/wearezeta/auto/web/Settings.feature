@@ -148,7 +148,7 @@ Feature: Settings
       | Email      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @C352073 @localytics @staging
+  @C352073 @localytics @regression
   Scenario Outline: Verify data is never uploaded to Raygun if user opted out
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -183,7 +183,7 @@ Feature: Settings
       | Email      | Password      | Name      | Contact   | UNABLE_TO_DECRYPT |
       | user1Email | user1Password | user1Name | user2Name | WAS NOT RECEIVED  |
 
-  @C352085 @localytics @staging
+  @C352085 @localytics @regression
   Scenario Outline: Verify data is uploaded again to Raygun after user opted-out and opted-in
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

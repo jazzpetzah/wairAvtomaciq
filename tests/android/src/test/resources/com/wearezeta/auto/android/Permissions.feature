@@ -113,6 +113,9 @@ Feature: Permissions
     And I tap Back button
     And I tap Back button
     And I select to keep the current picture
+    And I see Unique Username Takeover page
+    And I see username on Unique Username Takeover page
+    And I tap Keep This One button on Unique Username Takeover page
     Then I see Conversations list with no conversations
 
     Examples:

@@ -17,7 +17,7 @@ Feature: Connect
     And I tap X button on Search UI page
     Then I see first item in contact list named <Contact>
     When I tap on contact name <Contact>
-    Then I see name "<Contact>" on Single user Pending outgoing connection page
+    Then I see the conversation with <Contact>
     And I see Cancel Request button on Single user Pending outgoing connection page
 
     Examples:
@@ -206,10 +206,12 @@ Feature: Connect
     And I tap X button on Search UI page
     And I tap on contact name <Contact>
     And I tap on text input
+    # Wait for sync
+    And I wait for 2 seconds
     And I long tap on text input
     And I tap on Paste badge item
     And I tap Send Message button in conversation view
-    Then I see last message in the conversation view contains expected message MyEmail
+    Then I see link preview container in the conversation view
 
     Examples:
       | Name      | Contact   |
@@ -225,8 +227,6 @@ Feature: Connect
     Given I accept alert if visible
     Given I tap input field on Search UI page
     Given I type "<UnconnectedUser>" in Search UI input field
-    # Wait for animation
-    Given I wait for 3 seconds
     When I tap the instant connect button next to <UnconnectedUser>
     And I tap on conversation <UnconnectedUser> in search result
     Then I see Cancel Request button on Single user Pending outgoing connection page
@@ -290,8 +290,6 @@ Feature: Connect
     And I tap on conversation <Contact1> in search result
     And I tap Cancel Request button on Single user Pending outgoing connection page
     And I confirm Cancel Request conversation action
-    # Wait for animation
-    And I wait for 1 second
     Then I see the conversation "<Contact1>" exists in Search results
 
     Examples:

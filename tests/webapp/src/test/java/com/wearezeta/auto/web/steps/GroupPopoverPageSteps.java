@@ -1,6 +1,7 @@
 package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.common.CommonSteps;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.web.common.TestContext;
@@ -370,29 +371,18 @@ public class GroupPopoverPageSteps {
                 GroupPopoverContainer.class).isAvatarVisible());
     }
 
-    @Then("^I( do not)? see Mail (.*)on Group Participants popover$")
-    public void ISeeMailOfUser(String not, String mailAlias) throws Exception {
-        mailAlias = mailAlias.trim();
-        GroupPopoverContainer groupPopoverPage = context.getPagesCollection()
+    @Then("^I( do not)? see Mail of user (.*) on Group Participants popover$")
+    public void ISeeMailOfUser(String not, String userAlias) throws Exception {
+        GroupPopoverContainer groupPopoverContainer = context.getPagesCollection()
                 .getPage(GroupPopoverContainer.class);
         if (not == null) {
-            if ("".equals(mailAlias)) {
-                // no mail given. just check if any text is in mail field
-                Assert.assertFalse(groupPopoverPage.getUserMail().isEmpty());
-            } else {
-                // mail given. strict check for mail
-                String email = null;
-                try {
-                    email = context.getUserManager().findUserByEmailOrEmailAlias(mailAlias)
-                            .getEmail().toUpperCase();
-                } catch (NoSuchUserException e) {
-                    // Ignore silently
-                }
-                Assert.assertTrue(groupPopoverPage.getUserMail().equals(email));
-            }
+            ClientUser user = context.getUserManager().findUserBy(userAlias, FindBy.NAME_ALIAS);
+            assertThat(groupPopoverContainer.getUserMail().toLowerCase(), equalTo(user.getEmail()));
+
         } else {
-            // check for no mail, ignores the given mail alias
-            Assert.assertTrue(groupPopoverPage.getUserMail().isEmpty());
+            if (groupPopoverContainer.isUserMailVisible()) {
+                assertThat(groupPopoverContainer.getUserMail(), equalTo(""));
+            }
         }
 
     }

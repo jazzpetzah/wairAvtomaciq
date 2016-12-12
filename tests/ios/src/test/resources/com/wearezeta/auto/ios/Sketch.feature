@@ -10,6 +10,8 @@ Feature: Sketch
     And I tap Sketch button from input tools
     And I draw a random sketch
     And I tap Send button on Sketch page
+    # Wait for animation
+    And I wait for 3 seconds
     Then I see 1 photo in the conversation view
 
     Examples:

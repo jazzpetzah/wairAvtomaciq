@@ -16,7 +16,7 @@ Feature: Registration
     When I activate user by URL
     And User <Name> is Me without avatar
     Then I see watermark
-    And I see take over screen page
+    And I see take over screen
     And I see name <Name> on take over screen
     And I see unique username starts with <Name> on take over screen
     And I see ChooseYourOwn button on take over screen
@@ -45,7 +45,7 @@ Feature: Registration
     And I accept the Terms of Use
     And I submit registration form
     And I see watermark
-    And I see take over screen page
+    And I see take over screen
     And I click TakeThisOne button on take over screen
     And I see Contact list with name <Name>
 

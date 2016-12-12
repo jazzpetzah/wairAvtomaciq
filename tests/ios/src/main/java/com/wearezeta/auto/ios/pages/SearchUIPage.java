@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios.pages;
 
 import java.util.Optional;
 import java.util.concurrent.Future;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
@@ -61,6 +62,22 @@ public class SearchUIPage extends IOSPage {
 
     private static final By nameVideoCallButton = MobileBy.AccessibilityId("actionBarVideoCallButton");
 
+    private static final BiFunction<String, String, String> xpathStrFoundUserDetailsByName =
+            (name, expectedDetails) -> {
+                if (expectedDetails.trim().isEmpty()) {
+                    return String.format(
+                            "//XCUIElementTypeCell[ ./XCUIElementTypeStaticText[@name='%s'] and " +
+                                    "not(./XCUIElementTypeStaticText[@name='additionalUserInfo']) ]",
+                            name
+                    );
+                }
+                return String.format(
+                        "//XCUIElementTypeCell[ ./XCUIElementTypeStaticText[@name='%s'] ]" +
+                                "/XCUIElementTypeStaticText[@name='additionalUserInfo' and @value='%s']",
+                        name, expectedDetails
+                );
+            };
+
     public SearchUIPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -79,7 +96,14 @@ public class SearchUIPage extends IOSPage {
     }
 
     public void typeText(String text) throws Exception {
+        typeText(text, false);
+    }
+
+    public void typeText(String text, boolean shoullClearFieldBeforeInput) throws Exception {
         final WebElement searchInput = getElement(xpathSearchInput);
+        if (shoullClearFieldBeforeInput) {
+            searchInput.clear();
+        }
         searchInput.sendKeys(text + " ");
         // Wait for a user to be found
         Thread.sleep(2000);
@@ -221,7 +245,8 @@ public class SearchUIPage extends IOSPage {
         return isLocatorInvisible(locator);
     }
 
-    public void clearSearchInput() throws Exception {
-        getElement(xpathSearchInput).clear();
+    public boolean isSearchResultDetailsVisible(String textToEnter, String expectedDetails) throws Exception {
+        final By locator = By.xpath(xpathStrFoundUserDetailsByName.apply(textToEnter, expectedDetails));
+        return isLocatorDisplayed(locator);
     }
 }

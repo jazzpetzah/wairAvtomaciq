@@ -1,9 +1,10 @@
-Feature: VideoCalling
+Feature: Video Calling
 
-  @videocalling @staging
+  @C354979 @videocalling @smoke @WEBAPP-3432
   Scenario Outline: Verify I can put macbook into sleep after video call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given <Contact> accepts next incoming video call automatically

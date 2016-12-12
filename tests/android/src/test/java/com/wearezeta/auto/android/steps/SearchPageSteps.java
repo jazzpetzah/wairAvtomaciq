@@ -1,32 +1,35 @@
 package com.wearezeta.auto.android.steps;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
+import com.wearezeta.auto.android.pages.ContactListPage;
+import com.wearezeta.auto.android.pages.SearchListPage;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.email.InvitationMessage;
 import com.wearezeta.auto.common.email.MessagingUtils;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
+import com.wearezeta.auto.common.exception.MultipleTestCaseAssertionFaultException;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import org.junit.Assert;
-
-import com.wearezeta.auto.android.pages.*;
-import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.apache.log4j.Logger;
+import org.junit.Assert;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.Future;
 
 public class SearchPageSteps {
+
+    private static final Random random = new Random();
+    private static Logger logger = ZetaLogger.getLog(SearchPageSteps.class.getSimpleName());
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-    private static final Random random = new Random();
+    private ElementState avatarState = null;
+    private Map<ClientUser, Future<String>> invitationMessages = new HashMap<>();
 
     private SearchListPage getSearchListPage() throws Exception {
         return pagesCollection.getPage(SearchListPage.class);
@@ -35,8 +38,6 @@ public class SearchPageSteps {
     private ContactListPage getContactListPage() throws Exception {
         return pagesCollection.getPage(ContactListPage.class);
     }
-
-    private ElementState avatarState = null;
 
     /**
      * Checks to see that the Search page (search view) is visible
@@ -121,19 +122,33 @@ public class SearchPageSteps {
      * @param partialWords if not null, means only type the part of word[Start from index 0]
      * @param text         the text to type
      * @throws Exception
-     * @step. ^I type (the first \d+ chars? of )?(?:user name|user email|user phone number|group name) "(.*)" in search field$
+     * @step. ^I type (the first \d+ chars? of )?(user name|unique user name|user email|user phone number|group name) "(.*)" in search field$
      */
-    @When("^I type (the first \\d+ chars? of )?(?:user name|user email|user phone number|group name) \"(.*)\" in search field$")
-    public void ITypeWordInSearchFiled(String partialWords, String text) throws Exception {
-        text = usrMgr.replaceAliasesOccurences(text, FindBy.EMAIL_ALIAS);
-        text = usrMgr.replaceAliasesOccurences(text, FindBy.NAME_ALIAS);
-        text = usrMgr.replaceAliasesOccurences(text, FindBy.PHONENUMBER_ALIAS);
+    @When("^I type (the first \\d+ chars? of )?(user name|unique user name|user email|user phone number|group name) \"(.*)\" in search field$")
+    public void ITypeWordInSearchFiled(String partialWords, String type, String text) throws Exception {
+        switch (type) {
+            case "user name":
+                text = usrMgr.replaceAliasesOccurences(text, FindBy.NAME_ALIAS);
+                break;
+            case "user email":
+                text = usrMgr.replaceAliasesOccurences(text, FindBy.EMAIL_ALIAS);
+                break;
+            case "user phone number":
+                text = usrMgr.replaceAliasesOccurences(text, FindBy.PHONENUMBER_ALIAS);
+                break;
+            case "unique user name":
+                text = usrMgr.replaceAliasesOccurences(text, FindBy.UNIQUE_USERNAME_ALIAS);
+            case "group name":
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("No such search text type as %s", type));
+        }
         if (partialWords != null) {
             int partialSize = Integer.parseInt(partialWords.replaceAll("[\\D]", ""));
-            text = (partialSize < text.length()) ? text.substring(0, partialSize) : text;
+            int length = text.length();
+            text = (partialSize < length) ? text.substring(0, partialSize) : text;
         }
         getSearchListPage().typeTextInPeopleSearch(text);
-        CommonSteps.getInstance().WaitForTime(2);
     }
 
     /**
@@ -432,8 +447,6 @@ public class SearchPageSteps {
                 new InvitationMessage(receivedMessage).isValid());
     }
 
-    private Map<ClientUser, Future<String>> invitationMessages = new HashMap<>();
-
     /**
      * Start invitation messages listener for the particular user
      *
@@ -469,5 +482,58 @@ public class SearchPageSteps {
         final String invitationLink = new InvitationMessage(receivedMessage).extractInvitationLink();
         final String code = invitationLink.substring(invitationLink.indexOf("/i/") + 3, invitationLink.length());
         AndroidCommonUtils.broadcastInvitationCode(code);
+    }
+
+    /**
+     * Search people in request parameters and assert, that information in searching result is correct
+     *
+     * @param expectedResultParameters cucumber dataTable with columns (name, ABName, CommonFriends)
+     * @throws Exception
+     * @step. ^I verify results in search page, according to datatable$
+     */
+    @Then("^I verify results in search page, according to datatable$")
+    public void searchAndCheckFields(List<ResultParameter> expectedResultParameters) throws Exception {
+        List<AssertionError> assertionErrors = new ArrayList<>();
+        SearchListPage searchListPage = getSearchListPage();
+        for (int i = 0; i < expectedResultParameters.size(); i++) {
+            try {
+                ResultParameter resultParameter = expectedResultParameters.get(i);
+                String contactName = resultParameter.name;
+                logger.debug(String.format("Searching for username: %s", contactName));
+                String contactActualName = usrMgr.replaceAliasesOccurences(contactName, FindBy.NAME_ALIAS);
+
+                if (i > 0) {
+                    searchListPage.clearTextInPeopleSearch();
+                }
+
+                String userInfo = usrMgr.replaceAliasesOccurences(resultParameter.userInfo, FindBy.UNIQUE_USERNAME_ALIAS);
+
+                searchListPage.typeTextInPeopleSearch(contactActualName);
+                Assert.assertTrue(String.format("No user was found with name: %s", contactActualName),
+                        searchListPage.waitUntilNameVisible(false, contactActualName));
+
+                Assert.assertTrue(
+                        String.format("There is no user details '%s' for user %s", userInfo, contactActualName),
+                        searchListPage.waitUntilSearchResultItemDetailsVisible(contactActualName, userInfo));
+            } catch (AssertionError e) {
+                assertionErrors.add(e);
+            }
+        }
+        if (assertionErrors.size() > 0) {
+            if (assertionErrors.size() == 1) {
+                throw assertionErrors.get(0);
+            }
+            throw new MultipleTestCaseAssertionFaultException(assertionErrors);
+        }
+    }
+
+    class ResultParameter {
+        private final String name;
+        private final String userInfo;
+
+        public ResultParameter(String name, String userInfo) {
+            this.name = name;
+            this.userInfo = userInfo;
+        }
     }
 }

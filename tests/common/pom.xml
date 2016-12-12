@@ -30,7 +30,7 @@
         <syncIsAutomated>False</syncIsAutomated>
         <syncIsMuted>False</syncIsMuted>
         <cachedOtrDevicesCount>3</cachedOtrDevicesCount>
-        <zmessaging.actor.version>87.589</zmessaging.actor.version>
+        <zmessaging.actor.version>88.593</zmessaging.actor.version>
         <backendType>staging</backendType>
     </properties>
 

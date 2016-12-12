@@ -154,6 +154,7 @@ Feature: File Transfer
   @C82822 @filetransfer @regression
   Scenario Outline: Verify sender is able to cancel upload
     Given There are 2 users where <Name> is me
+    Given <Contact2> has unique username
     Given <Name> is connected to <Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login2> and password <Password2>

@@ -128,7 +128,8 @@ public class SettingsPageSteps {
      * @step. ^I commit my new (name|email|phone number) "(.*)"( with password (.*))?$
      */
     @And("^I commit my new (name|email|phone number) \"(.*)\"( with password (.*))?$")
-    public void ICommitNewUSerName(String what, String newValue, String withPassword, String password) throws Exception {
+    public void ICommitNewUSerName(String what, String newValue, String withPassword, String password) throws
+            Exception {
         final ClientUser self = usrMgr.getSelfUserOrThrowError();
         password = withPassword != null ?
                 usrMgr.replaceAliasesOccurences(password, ClientUsersManager.FindBy.PASSWORD_ALIAS) : null;

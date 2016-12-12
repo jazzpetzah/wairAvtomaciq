@@ -7,6 +7,7 @@ Feature: Stability
     And I input the verification code
     And I input my name
     And I select to keep the current picture
+    And I tap Keep This One button on Unique Username Takeover page
     Then I see Conversations list with no conversations
 
     Examples:
@@ -24,6 +25,7 @@ Feature: Stability
     And I input the verification code
     And I input my name
     And I select to keep the current picture
+    And I tap Keep This One button on Unique Username Takeover page
     Then I see Conversations list with no conversations
 
     Examples:
@@ -41,6 +43,7 @@ Feature: Stability
     And I input the verification code
     And I input my name
     And I select to keep the current picture
+    And I tap Keep This One button on Unique Username Takeover page
     Then I see Conversations list with no conversations
 
     Examples:
@@ -58,6 +61,7 @@ Feature: Stability
     And I input the verification code
     And I input my name
     And I select to keep the current picture
+    And I tap Keep This One button on Unique Username Takeover page
     Then I see Conversations list with no conversations
 
     Examples:

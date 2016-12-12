@@ -106,7 +106,7 @@ Feature: Search
     And I am signed in properly
     And I open search by clicking the people button
     And I see Search is opened
-    And I type <Login2> in search field of People Picker
+    And I type <Name2> in search field of People Picker
     Then I see user <Name2> found in People Picker
     When I click on not connected user <Name2> found in People Picker
     And I see Connect To popover
@@ -126,7 +126,6 @@ Feature: Search
     And I open the list of incoming connection requests
     When I accept connection request from user <Name>
     Then I see conversation with <Name> is selected in conversations list
-    And I see connected message for <Name> in conversation
     And I open preferences by clicking the gear button
     And I click logout in account preferences
     And I see the clear data dialog
@@ -137,7 +136,6 @@ Feature: Search
     And I am signed in properly
     And I see Contact list with name <Name2>
     And I open conversation with <Name2>
-    And I see connected message for <Name2> in conversation
 
     Examples: 
       | Login      | Password      | Name      | Name2     | Login2     | Password2     |
@@ -214,7 +212,7 @@ Feature: Search
   Scenario Outline: Verify I can start a 1:1 call with search ui buttons
     Given My browser supports calling
     Given There are 3 users where <Name> is me
-    Given User <Contact1> changes unique username to <Contact1>
+    Given <Contact1> has unique username
     Given Myself is connected to <Contact1>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>

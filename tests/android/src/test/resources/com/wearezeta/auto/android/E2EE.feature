@@ -133,15 +133,16 @@ Feature: E2EE
     And User <Contact2> sends encrypted message <Message1> to group conversation <GroupChatName>
     And I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
-    And I select contact <Contact1>
-    And I select single participant tab "Devices"
-    Then I see 1 device is shown in single participant devices tab
-    And I verify all device ids of user <Contact1> are shown in single participant devices tab
-    When I close single participant page by UI button
-    And I select contact <Contact2>
-    And I select single participant tab "Devices"
-    Then I see 1 device is shown in single participant devices tab
-    And I verify all device ids of user <Contact2> are shown in single participant devices tab
+    And I tap on contact <Contact1> on Group info page
+    And I switch tab to "Devices" in Group connected user details page
+    Then I see 1 device is shown on Device list page
+    And I verify all device ids of user <Contact1> are shown on Device list page
+    #When I tap X button on Single connected user details page
+    When I tap back button
+    And I tap on contact <Contact2> on Group info page
+    And I switch tab to "Devices" in Group connected user details page
+    Then I see 1 device is shown on Device list page
+    And I verify all device ids of user <Contact2> are shown on Device list page
 
     Examples:
       | Name      | Contact1  | Contact2  | Message1 | GroupChatName |
@@ -157,9 +158,9 @@ Feature: E2EE
     When User <Contact1> sends encrypted message <Message1> to user Myself
     And I tap on conversation name <Contact1>
     And I tap conversation name from top toolbar
-    And I select single participant tab "Devices"
-    Then I see 1 device is shown in single participant devices tab
-    And I verify all device ids of user <Contact1> are shown in single participant devices tab
+    And I switch tab to "Devices" in Single connected user details page
+    Then I see 1 device is shown on Device list page
+    And I verify all device ids of user <Contact1> are shown on Device list page
 
     Examples:
       | Name      | Contact1  | Message1 |
@@ -259,12 +260,12 @@ Feature: E2EE
     When User <Contact1> sends encrypted message <Message1> to user Myself
     And I tap on conversation name <Contact1>
     And I tap conversation name from top toolbar
-    And I select single participant tab "Devices"
-    Then I see 1 device is shown in single participant devices tab
-    And I remember state of 1st device
-    And I verify 1st device
-    And I see state of 1st device is changed
-    Then I see shield in participant profile
+    And I switch tab to "Devices" in Single connected user details page
+    Then I see 1 device is shown on Device list page
+    And I remember state of 1st device on Device list page
+    And I verify 1st device on Device list page
+    And I see state of 1st device is changed on Device list page
+    Then I see shield icon on Single connected user details page
 
     Examples:
       | Name      | Contact1  | Message1 |
@@ -280,9 +281,9 @@ Feature: E2EE
     When User <Contact1> sends encrypted message "<Message1>" to user Myself
     And I tap on conversation name <Contact1>
     And I tap conversation name from top toolbar
-    And I select single participant tab "Devices"
-    Then I see 1 device is shown in single participant devices tab
-    And I verify 1st device
+    And I switch tab to "Devices" in Single connected user details page
+    Then I see 1 device is shown on Device list page
+    And I verify 1st device on Device list page
     When I tap back button
     Then I see a message informing me conversation is verified
     And User <Contact1> adds new device Device2
@@ -305,15 +306,15 @@ Feature: E2EE
     When User <Contact2> sends encrypted message "<Message1>" to group conversation <GroupChatName>
     And I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
-    And I select contact <Contact1>
-    And I select single participant tab "Devices"
-    Then I see 1 device is shown in single participant devices tab
-    And I verify 1st device
+    And I tap on contact <Contact1> on Group info page
+    And I switch tab to "Devices" in Group connected user details page
+    Then I see 1 device is shown on Device list page
+    And I verify 1st device on Device list page
     And I tap back button
-    And I select contact <Contact2>
-    And I select single participant tab "Devices"
-    Then I see 1 device is shown in single participant devices tab
-    And I verify 1st device
+    And I tap on contact <Contact2> on Group info page
+    And I switch tab to "Devices" in Group connected user details page
+    Then I see 1 device is shown on Device list page
+    And I verify 1st device on Device list page
     And I tap back button
     And I tap back button
     Then I see a message informing me conversation is verified
@@ -336,9 +337,9 @@ Feature: E2EE
     And I tap on conversation name <Contact1>
     And I remember verified conversation shield state
     And I tap conversation name from top toolbar
-    And I select single participant tab "Devices"
-    Then I see 1 device is shown in single participant devices tab
-    And I verify 1st device
+    And I switch tab to "Devices" in Single connected user details page
+    Then I see 1 device is shown on Device list page
+    And I verify 1st device on Device list page
     When I tap back button
     Then I see a message informing me conversation is verified
     And I see verified conversation shield state has changed
@@ -359,19 +360,19 @@ Feature: E2EE
     When User <Contact2> sends encrypted message "<Message1>" to group conversation <GroupChatName>
     And I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
-    And I select contact <Contact1>
-    And I select single participant tab "Devices"
-    Then I see 2 devices is shown in single participant devices tab
-    When I verify 1st device
-    And I select single participant tab "Devices"
-    And I verify 2nd device
+    And I tap on contact <Contact1> on Group info page
+    And I switch tab to "Devices" in Group connected user details page
+    Then I see 2 devices is shown on Device list page
+    When I verify 1st device on Device list page
+    And I switch tab to "Devices" in Group connected user details page
+    And I verify 2nd device on Device list page
     And I tap back button
-    Then I see the verified participant avatar for <Contact1>
-    When I select contact <Contact2>
-    And I select single participant tab "Devices"
-    When I verify 1st device
+    Then I see the verified participant avatar for <Contact1> on Group info page
+    When I tap on contact <Contact2> on Group info page
+    And I switch tab to "Devices" in Group connected user details page
+    When I verify 1st device on Device list page
     And I tap back button
-    Then I see the verified participant avatars for <Contact1>,<Contact2>
+    Then I see the verified participant avatars for <Contact1>,<Contact2> on Group info page
     When I tap back button
     Then I see a message informing me conversation is verified
 
@@ -391,18 +392,20 @@ Feature: E2EE
     And User <Contact2> sends encrypted message <Message1> to group conversation <GroupChatName>
     And I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
-    And I select contact <Contact1>
-    And I select single participant tab "Devices"
-    Then I see 1 device is shown in single participant devices tab
-    And I verify 1st device
-    When I close single participant page by UI button
-    And I select contact <Contact2>
-    And I select single participant tab "Devices"
-    Then I see 1 device is shown in single participant devices tab
-    And I verify 1st device
-    When I close single participant page by UI button
+    And I tap on contact <Contact1> on Group info page
+    And I switch tab to "Devices" in Group connected user details page
+    Then I see 1 device is shown on Device list page
+    And I verify 1st device on Device list page
+    #When I tap X button on Single connected user details page
+    When I tap back button
+    And I tap on contact <Contact2> on Group info page
+    And I switch tab to "Devices" in Group connected user details page
+    Then I see 1 device is shown on Device list page
+    And I verify 1st device on Device list page
+    #When I tap X button on Single connected user details page
+    When I tap back button
     And I tap back button
-    And I see a message informing me conversation is verified
+    Then I see a message informing me conversation is verified
 
     Examples:
       | Name      | Contact1  | Contact2  | Message1 | GroupChatName |
@@ -420,23 +423,22 @@ Feature: E2EE
     And User <Contact2> sends encrypted message <Message1> to group conversation <GroupChatName>
     And I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
-    And I select contact <Contact1>
-    And I select single participant tab "Devices"
-    And I verify 1st device
-    And I close single participant page by UI button
-    And I select contact <Contact2>
-    And I select single participant tab "Devices"
-    And I verify 1st device
-    And I close single participant page by UI button
-    And I tap back button
+    And I tap on contact <Contact1> on Group info page
+    And I switch tab to "Devices" in Group connected user details page
+    And I verify 1st device on Device list page
+    And I tap Back button
+    And I tap on contact <Contact2> on Group info page
+    And I switch tab to "Devices" in Group connected user details page
+    And I verify 1st device on Device list page
+    And I tap Back button 2 times
     Then I see a message informing me conversation is verified
     When User <Contact1> adds new device Device1
     And I tap on text input
     And I type the message "<Message2>" and send it by cursor Send button without hiding keyboard
-    When I see takeover screen from user "<Contact1>"
-    Then I tap send anyway button
-    And I do not see takeover screen
-    Then I see message <Message2> 1 time in the conversation view
+    Then I see E2EE confirm overlay page from user "<Contact1>"
+    When I tap SEND ANYWAY button on E2EE confirm overlay page
+    Then I do not see E2EE confirm overlay page
+    And I see message <Message2> 1 time in the conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  | Message1 | Message2 | GroupChatName |
@@ -451,7 +453,7 @@ Feature: E2EE
     Given I see Conversations list with conversations
     And I tap on conversation name <Contact>
     When I tap conversation name from top toolbar
-    And I select single participant tab "Devices"
+    And I switch tab to "Devices" in Single connected user details page
     Then I see no encrypted device text for user <Contact> in header of device detail page
 
     Examples:
@@ -484,19 +486,19 @@ Feature: E2EE
     When User <Contact1> sends encrypted message "<Message1>" to user Myself
     And I tap on conversation name <Contact1>
     And I tap conversation name from top toolbar
-    And I select single participant tab "Devices"
-    Then I see 1 device is shown in single participant devices tab
-    And I verify 1st device
+    And I switch tab to "Devices" in Single connected user details page
+    Then I see 1 device is shown on Device list page
+    And I verify 1st device on Device list page
     When I tap back button
     Then I see a message informing me conversation is verified
     And User <Contact1> adds new device <Device>
     And I tap on text input
     And I type the message "<Message2>"
     And I tap Send button from cursor toolbar
-    When I see takeover screen from user "<Contact1>"
-    Then I tap send anyway button
-    And I do not see takeover screen
-    Then I see the message "<Message2>" in the conversation view
+    Then I see E2EE confirm overlay page from user "<Contact1>"
+    When I tap SEND ANYWAY button on E2EE confirm overlay page
+    Then I do not see E2EE confirm overlay page
+    And I see the message "<Message2>" in the conversation view
 
     Examples:
       | Name      | Contact1  | Device  | Message1 | Message2        |
@@ -512,23 +514,23 @@ Feature: E2EE
     When User <Contact1> sends encrypted message "<Message1>" to user Myself
     And I tap on conversation name <Contact1>
     And I tap conversation name from top toolbar
-    And I select single participant tab "Devices"
-    Then I see 1 device is shown in single participant devices tab
-    And I verify 1st device
+    And I switch tab to "Devices" in Single connected user details page
+    Then I see 1 device is shown on Device list page
+    And I verify 1st device on Device list page
     When I tap back button
     Then I see a message informing me conversation is verified
     And User <Contact1> adds new device <Device>
     And I tap on text input
     And I type the message "<Message2>"
     And I tap Send button from cursor toolbar
-    When I see takeover screen from user "<Contact1>"
-    Then I tap show device button
-    And I do not see takeover screen
+    When I see E2EE confirm overlay page from user "<Contact1>"
+    And I tap SHOW DEVICE button on E2EE confirm overlay page
+    Then I do not see E2EE confirm overlay page
     # Workaround : tap on devices tab
-    And I select single participant tab "Devices"
+    When I switch tab to "Devices" in Single connected user details page
     #TODO: detect new device and verify it instead of trying to verify each device
-    And I verify 1st device
-    And I verify 2nd device
+    And I verify 1st device on Device list page
+    And I verify 2nd device on Device list page
     When I tap back button
     Then I see a message informing me conversation is verified
 

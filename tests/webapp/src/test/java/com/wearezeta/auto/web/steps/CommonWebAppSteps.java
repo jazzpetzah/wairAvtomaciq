@@ -28,6 +28,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
@@ -38,7 +39,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertTrue;
 
 import org.openqa.selenium.logging.LogEntry;
@@ -142,6 +142,12 @@ public class CommonWebAppSteps {
     @When("^User (\\w+) changes? unique username to (.*)")
     public void IChangeUniqueUsername(String userNameAlias, String name) throws Exception {
         context.getCommonSteps().IChangeUniqueUsername(userNameAlias, name);
+    }
+
+    @When("^User (\\w+) changes? his unique username to a random value$")
+    public void IChangeUniqueUsernameRandom(String userNameAlias) throws Exception {
+        String randomUniqueUsername = CommonUtils.generateGUID().replace("-", "").substring(0, 8);
+        context.getCommonSteps().IChangeUniqueUsername(userNameAlias, randomUniqueUsername);
     }
 
     @Given("(.*) (?:has|have) unique usernames?$")
@@ -692,5 +698,17 @@ public class CommonWebAppSteps {
     @Given("^User (.*) only keeps his (\\d+) most recent OTR clients$")
     public void UserKeepsXOtrClients(String userAs, int clientsCount) throws Exception {
         context.getCommonSteps().UserKeepsXOtrClients(userAs, clientsCount);
+    }
+
+    @Given("^User (.*) updates? the unique user name to \"(.*)\"(?: via device (.*))?")
+    public void UserXUpdateUniqueUserName(String userNameAlias, String uniqueUserName, String deviceName) throws Exception {
+        context.getCommonSteps().UpdateUniqueUsername(userNameAlias, uniqueUserName, deviceName);
+    }
+
+    @Given("^User (.*) updates? the unique user name to the one started with \"(.*)\"(?: via device (.*))?")
+    public void UserXUpdateUniqueUserNameAndRandom(String userNameAlias, String uniqueUserName, String deviceName) throws Exception {
+        Random rand = new Random();
+        String uniqUserName = uniqueUserName + rand.nextInt(5);
+        context.getCommonSteps().UpdateUniqueUsername(userNameAlias, uniqUserName, deviceName);
     }
 }

@@ -46,6 +46,8 @@ Feature: Autoconnect
     When I open search UI
     And I accept alert
     And I tap X button on Search UI page
+    # Let it sync
+    And I wait for 5 seconds
     Then I see conversation <Contact1> in conversations list
     And I see conversation <Contact2> in conversations list
 
@@ -109,28 +111,3 @@ Feature: Autoconnect
     Examples:
       | Contact   | ContactEmail | Name      |
       | user1Name | user1Email   | user2Name |
-
-  @C79 @addressbookStart @regression @forceReset
-  Scenario Outline: Verify name from the address book is shown as a subtitle
-    Given There are 2 users where <Name> is me
-    Given I minimize Wire
-    Given I install Address Book Helper app
-    Given I launch Address Book Helper app
-    Given I delete all contacts from Address Book
-    Given I add name <Contact> and phone <ContactPhone> to Address Book
-    Given I restore Wire
-    Given I remember the name of user <Contact> in Address Book
-    Given User <Contact> changes name to <NewName>
-    Given I sign in using my email or phone number
-    Given I wait until <Contact> exists in backend search results
-    When I open search UI
-    And I accept alert
-    And I tap X button on Search UI page
-    And I tap on contact name <Contact>
-    And I open conversation details
-    Then I see name "<Contact>" on Single user profile page
-    And I verify the previously remembered user name from Address Book is displayed on Single user profile page
-
-    Examples:
-      | Name      | Contact   | ContactPhone     | NewName |
-      | user1Name | user2Name | user2PhoneNumber | Beyonce |

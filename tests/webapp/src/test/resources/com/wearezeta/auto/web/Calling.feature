@@ -128,13 +128,13 @@ Feature: Calling
     And <Contact1> verifies to get audio data from me
     And <Contact1> verify that all audio flows have greater than 0 bytes
 #    And I see conversation <Contact1> is on the top
-    When User <Contact2> pinged in the conversation with <Contact2>
+    When User <Contact2> pinged in the conversation with me
     And I see conversation <Contact1> is on the top
     And Soundfile nw_interruption did not start playing
     And Soundfile call_drop did not start playing
     And I hang up call with conversation <Contact1>
     And Soundfile call_drop did start playing
-    When User <Contact2> pinged in the conversation with <Contact2>
+    When User <Contact2> pinged in the conversation with me
     #And I see conversation <Contact2> is on the top
 
     Examples:

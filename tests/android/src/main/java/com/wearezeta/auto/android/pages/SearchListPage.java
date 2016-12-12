@@ -1,27 +1,32 @@
 package com.wearezeta.auto.android.pages;
 
-import java.util.concurrent.Future;
-import java.util.function.Function;
-
+import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import org.apache.commons.lang3.NotImplementedException;
 import org.openqa.selenium.By;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import java.util.concurrent.Future;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public class SearchListPage extends AbstractPickUserPage {
 
+    private static final String strIdUserName = "ttv__contactlist__user__name";
     public static final By idSuggestionUserName = By.xpath("//*[@id='ttv_pickuser__searchuser_name']");
 
     private static final Function<String, String> xpathStrGroupByName = name -> String
             .format("//*[@id='ttv_pickuser_searchconversation_name' and @value='%s']", name);
 
     public static final Function<String, String> xpathStrUserNameByName = name -> String
-            .format("//*[@id='ttv_pickuser__searchuser_name' and @value='%s']/parent::*/parent::*", name);
+            .format("//*[@id='%s' and @value='%s']/parent::*/parent::*", strIdUserName, name);
 
     public static final Function<String, String> xpathStrUserAvatarByName = name -> String
-            .format("//*[@id='ttv_pickuser__searchuser_name' and @value='%s']"
-                    + "/preceding-sibling::*[@id='cv_pickuser__searchuser_chathead']", name);
+            .format("//*[@id='%s' and @value='%s']"
+                    + "/preceding-sibling::*[@id='cv_pickuser__searchuser_chathead']",  strIdUserName, name);
+
+    public static final BiFunction<String, String, String> xpathStrSearchResultUserNameAndAddressBook = (name, details) -> String
+            .format("//*[@id='%s' and @value='%s']"
+                    + "/../*[@id='ttv__contactlist__user__username_and_address_book' and contains(@value,'%s')]", strIdUserName,  name, details);
 
     public SearchListPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -61,5 +66,10 @@ public class SearchListPage extends AbstractPickUserPage {
     protected By getInviteButtonLocator(String name) {
         // TODO: Fix the the avatar locator
         throw new NotImplementedException("Do not support invite button on search list");
+    }
+
+    public boolean waitUntilSearchResultItemDetailsVisible(String name, String searchResultItemDetails) throws Exception {
+        final By locator = By.xpath(xpathStrSearchResultUserNameAndAddressBook.apply(name, searchResultItemDetails));
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
     }
 }

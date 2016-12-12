@@ -11,7 +11,6 @@ Feature: Ephemeral Messages
     Given I tap Hourglass button in conversation view
     Given I set ephemeral messages expiration timer to <Timeout> seconds
     Given I type the default message and send it
-    Given I see 1 default message in the conversation view
     When I remember the recent message from user Myself in the local database
     And I wait for <Timeout> seconds
     Then I see 0 default messages in the conversation view
@@ -127,7 +126,6 @@ Feature: Ephemeral Messages
     Given I set ephemeral messages expiration timer to <Timer> seconds
     Given I long tap Audio Message button from input tools
     Given I tap Send record control button
-    Given I see audio message container in the conversation view
     When I remember asset container state at cell 1
     And I wait for <Timer> seconds
     Then I see asset container state is changed
@@ -199,8 +197,6 @@ Feature: Ephemeral Messages
     # Wait for transition
     Given I wait for 5 seconds
     Given I tap file transfer menu item <ItemName>
-    # Wait for transition
-    Given I wait for 5 seconds
     When I remember asset container state at cell 1
     And I wait for <Timer> seconds
     Then I see asset container state is changed
@@ -296,14 +292,14 @@ Feature: Ephemeral Messages
     Given Myself is connected to <Contact>
     Given User <Contact> adds new device <DeviceName>
     Given I sign in using my email or phone number
+    Given User <Contact> switches user Myself to ephemeral mode with <EphemeralTimeout> seconds timeout
+    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     Given I see conversations list
     Given I tap on contact name <Contact>
-    Given User <Contact> switches user Myself to ephemeral mode with <EphemeralTimeout> seconds timeout
+    Given I wait for 2 seconds
     # Picture
-    When User <Contact> sends encrypted image <Picture> to single user conversation Myself
-    And I wait for 2 seconds
-    And I see 1 photo in the conversation view
-    And I wait for <EphemeralTimeout> seconds
+    Given I see 1 photo in the conversation view
+    When I wait for <EphemeralTimeout> seconds
     Then I see 0 photos in the conversation view
     # Video
     When User <Contact> sends file <FileName> having MIME type <VideoMIME> to single user conversation <Name> using device <DeviceName>

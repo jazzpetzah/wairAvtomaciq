@@ -1006,10 +1006,24 @@ public class CommonIOSSteps {
         commonSteps.UserXIsMe(nameAlias);
     }
 
-    @Given("^(\\w+) waits? until (.*) exists in backend search results$")
+    @Given("^(\\w+) waits? until (\\w+) exists in backend search results$")
     public void UserWaitsUntilContactExistsInHisSearchResults(
             String searchByNameAlias, String query) throws Exception {
         commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
+    }
+
+    /**
+     * Wait until contact friends are calculated on the backend
+     *
+     * @step. ^(\w+) waits? until (\w+) has (\d+) common friends?$
+     * @param userAsAlias user name/alias who executes the search
+     * @param query user mame/alias who is supposed to have friends
+     * @param expectedFriendsCount the minimum expected friends count
+     * @throws Exception
+     */
+    @Given("^(\\w+) waits? until (\\w+) has (\\d+) common friends? on the backend$")
+    public void UserWaitForCommonFriends(String userAsAlias, String query, int expectedFriendsCount) throws Exception {
+        commonSteps.WaitUntilCommonContactsIsGenerated(userAsAlias, query, expectedFriendsCount);
     }
 
     /**
@@ -1327,6 +1341,26 @@ public class CommonIOSSteps {
         final Path from = srcVideo.toPath();
         final Path to = Paths.get(SIMULATOR_VIDEO_MESSAGE_PATH);
         Files.copy(from, to, StandardCopyOption.REPLACE_EXISTING);
+    }
+
+    /**
+     * Use this step if you have @fastLogin option set and you want the application to log in
+     * under particular user, skipping the whole login flow in UI, which is supposed to be quite faster
+     * in comparison to the "classic" flow
+     *
+     * @param alias user name/alias to sign in as. This user should have his email address registered on the backedn
+     * @throws Exception
+     * @step. ^I prepare Wire to perform fast log in by email as (.*)
+     */
+    @Given("^I prepare Wire to perform fast log in by email as (.*)")
+    public void IDoFastLogin(String alias) throws Exception {
+        final FastLoginContainer flc = FastLoginContainer.getInstance();
+        if (!flc.isEnabled()) {
+            throw new IllegalStateException(
+                    String.format("Fast login should be enabled first in order to call this step." +
+                            "Make sure you have the '%s' tag in your scenario", FastLoginContainer.TAG_NAME));
+        }
+        updateDriver(flc.executeDriverCreation(usrMgr.findUserByNameOrNameAlias(alias)));
     }
 
     /**
