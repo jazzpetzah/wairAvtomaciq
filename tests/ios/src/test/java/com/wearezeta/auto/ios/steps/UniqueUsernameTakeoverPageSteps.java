@@ -45,10 +45,10 @@ public class UniqueUsernameTakeoverPageSteps {
                 ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
         if (isUnique == null) {
             if (shouldNotSee == null) {
-                Assert.assertTrue(String.format("Username '%s' is not visible", expectedUsername),
+                Assert.assertTrue(String.format("Name '%s' is not visible", expectedUsername),
                         getPage().isUsernameVisible(startsWith != null, expectedUsername));
             } else {
-                Assert.assertTrue(String.format("Username '%s' should not be visible", expectedUsername),
+                Assert.assertTrue(String.format("Name '%s' should not be visible", expectedUsername),
                         getPage().isUsernameInvisible(startsWith != null, expectedUsername));
             }
         } else {
@@ -56,7 +56,7 @@ public class UniqueUsernameTakeoverPageSteps {
                 Assert.assertTrue(String.format("Unique username '%s' is not visible", expectedUsername),
                         getPage().isUniqueUsernameVisible(startsWith != null, expectedUsername));
             } else {
-                Assert.assertTrue(String.format("Unique username '%s' is not visible", expectedUsername),
+                Assert.assertTrue(String.format("Unique username '%s' should not be visible", expectedUsername),
                         getPage().isUniqueUsernameInvisible(startsWith != null, expectedUsername));
             }
         }
