@@ -502,7 +502,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend  |
       | user1Name | user2Name | zcall        |
 
-  @fastLogin @consecutive_call @torun
+  @fastLogin @consecutive_call
   Scenario Outline: I receive 1:1 call loop from AVS <CallBackend>
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -513,8 +513,8 @@ Feature: Calling
     And <Contact> calls to me 1 time for 1 minute
 
     Examples:
-      | Name      | Contact   | CallBackend  | CallBackend2 |
-      | user1Name | user2Name | zcall:3.0.85 | chrome       |
+      | Name      | Contact   | CallBackend  |
+      | user1Name | user2Name | zcall:3.0.85 |
 
   @C343168 @regression @calling_basic @fastLogin
   Scenario Outline: Verify you see group call conformation dialog for >5 participants group chat
