@@ -17,6 +17,8 @@ Feature: Autoconnect
     And I input name <Name> and commit it
     And I accept alert
     And I tap Keep This One button
+    # Wait for sync
+    And I wait for 3 seconds
     And I accept alert if visible
     And I tap Share Contacts button on Share Contacts overlay
     And User <Name> is me
