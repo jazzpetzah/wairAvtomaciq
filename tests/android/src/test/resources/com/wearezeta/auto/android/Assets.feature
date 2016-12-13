@@ -1,6 +1,6 @@
 Feature: Assets V2 and V3
 
-  @C345360 @staging
+  @C345360 @regression
   Scenario Outline: Verify I can receive V3 assets
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -37,7 +37,7 @@ Feature: Assets V2 and V3
       | Name      | Contact   | DeviceName | ImageFile      | Url                  | VideoFile   | VideoMIMEType | AudioFile | AudioMIMEType |
       | user1Name | user2Name | device1    | avatarTest.png | https://www.wire.com | testing.mp4 | video/mp4     | test.m4a  | audio/mp4     |
 
-  @C345363 @staging
+  @C345363 @regression
   Scenario Outline: Verify I could see someone change his avatar on v3 build(Update 'picture' and 'asset')
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
