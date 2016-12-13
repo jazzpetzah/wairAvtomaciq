@@ -27,6 +27,7 @@ public class AndroidCommonUtils extends CommonUtils {
 
     public static final String[] STANDARD_WIRE_PERMISSIONS = new String[]{
             "android.permission.WRITE_EXTERNAL_STORAGE",
+            "android.permission.READ_EXTERNAL_STORAGE",
             "android.permission.READ_CONTACTS",
             "android.permission.RECORD_AUDIO",
             "android.permission.CAMERA",
