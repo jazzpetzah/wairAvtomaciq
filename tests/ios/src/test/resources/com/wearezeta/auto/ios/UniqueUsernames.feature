@@ -279,7 +279,7 @@ Feature: Unique Usernames
     And I open conversation details
     Then I see name "<Contact4WithCommonFriends>" on Single user Pending outgoing connection page
     And I do not see unique username on Single user Pending outgoing connection page
-    And I see common friends count "1" on Single user Pending outgoing connection page
+    And I do not see common friends count on Single user Pending outgoing connection page
     And I tap X button on Single user profile page
     When I navigate back to conversations list
     And I tap on contact name <Contact5WithSameNameInAB>
@@ -504,7 +504,7 @@ Feature: Unique Usernames
     And I see Address Book name "" on Conversation actions page
     And I tap Cancel conversation action button
     When I swipe right on a <Contact7Unconnected>
-    Then I see common friends count "1" on Conversation actions page
+    Then I do not see common friends count on Conversation actions page
     And I tap Cancel conversation action button
     When I swipe right on a <GroupChatName>
     Then I do not see Address Book name on Conversation actions page
@@ -534,7 +534,7 @@ Feature: Unique Usernames
       | Name      | Contact   | ContactUniqueUserName | Contact2  | Contact3  |
       | user1Name | user2Name | user2UniqueUsername   | user3Name | user4Name |
 
-  @C352058 @addressbookStart @forceReset @staging
+  @C352062 @addressbookStart @forceReset @staging
   Scenario Outline: (ZIOS-7734) Verify connected user in 1-to-1 conversation view
     Given There are 7 users where <Name> is me
     Given Myself is connected to <Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact5WithSameNameInAB>,<Contact6Common>
