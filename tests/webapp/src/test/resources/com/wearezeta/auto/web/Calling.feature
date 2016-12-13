@@ -430,6 +430,7 @@ Feature: Calling
   Scenario Outline: Verify I can call a group for more than 30 mins with AVS
     Given My browser supports calling
     Given There are 3 users where <Name> is me
+    Given <Contact>,<Contact2> have unique usernames
     Given Myself is connected to <Contact>,<Contact2>
     Given Myself has group chat <ChatName1> with <Contact>,<Contact2>
     Given <Contact>,<Contact2> starts instance using <CallBackend>
