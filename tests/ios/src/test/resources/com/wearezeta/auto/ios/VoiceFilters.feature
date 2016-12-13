@@ -41,65 +41,6 @@ Feature: Voice Filters
       | Name      | Contact   | ButtonsCount |
       | user1Name | user2Name | 2            |
 
-  @C165156 @regression @fastLogin
-  Scenario Outline: ZIOS-6904 Verify voice filter control is not dismissed if audio recording is in progress and other UI event happens
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given User <Contact1> sets the unique username
-    Given <Contact1> starts instance using <CallBackend>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on contact name <Contact1>
-    And I tap Audio Message button from input tools
-    And I tap Start Recording button on Voice Filters overlay
-    And I wait for 10 seconds
-    And I navigate back to conversations list
-    And I tap on contact name <Contact2>
-    And I navigate back to conversations list
-    And I tap on contact name <Contact1>
-    Then I do not see audio message container in the conversation view
-    And I see Confirm button on Voice Filters overlay
-    When I close the app for 5 seconds
-    Then I see Confirm button on Voice Filters overlay
-    When <Contact1> calls me
-    And I tap Ignore button on Calling overlay
-    And I do not see Calling overlay
-    Then I see Confirm button on Voice Filters overlay
-
-    Examples:
-      | Name      | Contact1  | Contact2  | CallBackend |
-      | user1Name | user2Name | user3Name | zcall       |
-
-  @C165155 @regression @fastLogin
-  Scenario Outline: ZIOS-6903 Voice Filters: Verify voice filter control is preserved if one has already recorded something
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given User <Contact1> sets the unique username
-    Given <Contact1> starts instance using <CallBackend>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on contact name <Contact1>
-    And I tap Audio Message button from input tools
-    And I tap Start Recording button on Voice Filters overlay
-    And I wait for 10 seconds
-    And I tap Stop Recording button on Voice Filters overlay
-    And I navigate back to conversations list
-    And I tap on contact name <Contact2>
-    And I navigate back to conversations list
-    And I tap on contact name <Contact1>
-    Then I do not see audio message container in the conversation view
-    And I see Confirm button on Voice Filters overlay
-    When I close the app for 5 seconds
-    Then I see Confirm button on Voice Filters overlay
-    When <Contact1> calls me
-    And I tap Ignore button on Calling overlay
-    And I do not see Calling overlay
-    Then I see Confirm button on Voice Filters overlay
-
-    Examples:
-      | Name      | Contact1  | Contact2  | CallBackend |
-      | user1Name | user2Name | user3Name | zcall       |
-
   @C165140 @regression @fastLogin
   Scenario Outline: Verify you can retry recording of filtered voice message
     Given There are 2 users where <Name> is me
