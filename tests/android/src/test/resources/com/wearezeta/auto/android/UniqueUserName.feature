@@ -224,7 +224,7 @@ Feature: Unique Username
     When I restore the application
     Then I see Unique Username Takeover page
     And I tap Choose Your Own button on Unique Username Takeover page
-    Then I see username edit field on Settings page
+    Then I see unique username edit field on Settings page
 
     Examples:
       | Name      |
@@ -237,8 +237,8 @@ Feature: Unique Username
     Given I accept First Time overlay as soon as it is visible
     Given I see Unique Username Takeover page
     Given I tap Choose Your Own button on Unique Username Takeover page
-    When I see username edit field on Settings page
-    Then I enter new username on Settings page, according to datatable
+    When I see unique username edit field on Settings page
+    Then I enter new unique username on Settings page, according to datatable
       | UsernameTyped             | IsShownAsCorrect |
       | ab                        | True             |
       | aabbcc1234567890          | True             |
@@ -252,6 +252,26 @@ Feature: Unique Username
       | Name      |
       | user1Name |
 
+  @C368528 @staging
+  Scenario Outline: Verify empty or already taken username is impossible to save, but it's possible to save 2 chars unique username
+    Given There is 2 user where <Name> is me without unique user name
+    Given User <User2Name> changes the unique username to "<User2Name>"
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Unique Username Takeover page
+    Given I tap Choose Your Own button on Unique Username Takeover page
+    When I see unique username edit field on Settings page
+    And I set new unique username "" on Settings page
+    Then I see unique username edit field on Settings page
+    When I set new unique username "<User2Name>" on Settings page
+    Then I see unique username edit field on Settings page
+    And I try to set new random 2 chars unique username on Settings page, but change it to "<newUniqueUsername>" then
+
+    Examples:
+      | Name      | User2Name | newUniqueUsername |
+      | user1Name | user2Name | user3UniqueUsername |
+      | Name      | User2Name |
+      | user1Name | user2Name |
 
   @C352693 @staging
   Scenario Outline: Verify search by partial match of a user name (Bam and boleo for bamboleo e.g.) and search is not case-sensitive

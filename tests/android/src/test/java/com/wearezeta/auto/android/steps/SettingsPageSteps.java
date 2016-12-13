@@ -47,6 +47,7 @@ public class SettingsPageSteps {
         name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
         name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.EMAIL_ALIAS);
         name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
+        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
         getSettingsPage().selectMenuItem(name);
     }
 
