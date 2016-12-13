@@ -21,6 +21,7 @@ Feature: Calling
   Scenario Outline: Verify calling from missed call indicator in conversation [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
@@ -41,6 +42,7 @@ Feature: Calling
   Scenario Outline: Verify ignoring of incoming call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
@@ -58,6 +60,7 @@ Feature: Calling
   Scenario Outline: Verify accepting incoming call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
@@ -76,6 +79,7 @@ Feature: Calling
   Scenario Outline: Receiving missed call notification from one user [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
@@ -111,8 +115,10 @@ Feature: Calling
   Scenario Outline: 3rd person tries to call me after I initate a call to somebody [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
+    Given User <Contact1> sets the unique username
     Given <Contact1> starts instance using <CallBackend>
     Given <Contact1> accepts next incoming call automatically
+    Given User <Contact2> sets the unique username
     Given <Contact2> starts instance using <CallBackend2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
@@ -157,6 +163,7 @@ Feature: Calling
   Scenario Outline: I want to accept a call through the incoming voice dialogue (Button) [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I rotate UI to portrait
     Given I Sign in on tablet using my email
@@ -175,6 +182,7 @@ Feature: Calling
   Scenario Outline: I want to accept a call through the incoming voice dialogue (Button) [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
@@ -193,6 +201,7 @@ Feature: Calling
   Scenario Outline: I want to end the call from the ongoing voice overlay [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
@@ -217,6 +226,7 @@ Feature: Calling
   Scenario Outline: Verify putting client to the background during 1-to-1 call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
@@ -256,6 +266,8 @@ Feature: Calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Contact1> sets the unique username
+    Given User <Contact2> sets the unique username
     Given <Contact1>,<Contact2> starts instance using <CallBackend>
     Given <Contact1> accepts next incoming call automatically
     Given <Contact2> accepts next incoming call automatically
@@ -286,6 +298,8 @@ Feature: Calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Contact1> sets the unique username
+    Given User <Contact2> sets the unique username
     Given <Contact1>,<Contact2> starts instance using <CallBackend>
     Given <Contact2> accepts next incoming call automatically
     Given I rotate UI to landscape

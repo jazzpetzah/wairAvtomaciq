@@ -4,6 +4,7 @@ Feature: Calling Matrix
   Scenario Outline: Verify I can make two 1:1 call to <CallBackend> in a row
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
     Given I sign in using my email
@@ -35,6 +36,7 @@ Feature: Calling Matrix
   Scenario Outline: Verify I can receive two 1:1 call from <CallBackend> in a row
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email
     Given I see conversations list
@@ -67,6 +69,8 @@ Feature: Calling Matrix
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Contact1> sets the unique username
+    Given User <Contact2> sets the unique username
     Given <Contact1>,<Contact2> starts instance using <WaitBackend>
     Given <Contact1>,<Contact2> accepts next incoming call automatically
     Given I sign in using my email
@@ -93,6 +97,8 @@ Feature: Calling Matrix
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Contact1> sets the unique username
+    Given User <Contact2> sets the unique username
     Given <Contact1>,<Contact2> starts instance using <Backend>
     Given <Contact2> accepts next incoming call automatically
     Given I sign in using my email
@@ -122,6 +128,7 @@ Feature: Calling Matrix
   Scenario Outline: Put app into background after initiating call with user <WaitBackend>
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <WaitBackend>
     Given <Contact> accepts next incoming call automatically
     Given I sign in using my email or phone number
@@ -141,6 +148,7 @@ Feature: Calling Matrix
   Scenario Outline: Verify putting client to the background during 1-to-1 call <CallBackend> to me
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -164,6 +172,7 @@ Feature: Calling Matrix
   Scenario Outline: Verify I can accept two 1:1 video call from callbackend <CallBackend> in a row
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -191,6 +200,7 @@ Feature: Calling Matrix
   Scenario Outline: Verify I can make two 1:1 video call with <CallBackend> in a row
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
     Given I sign in using my email or phone number
@@ -218,6 +228,7 @@ Feature: Calling Matrix
   Scenario Outline: Accept 1:1 call when app is in background
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -240,6 +251,7 @@ Feature: Calling Matrix
   Scenario Outline: Verify I can receive 1:1 call from AVS <CallBackend>
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email
     Given I see conversations list
@@ -261,6 +273,7 @@ Feature: Calling Matrix
   Scenario Outline: Verify I can make 1:1 call to AVS <CallBackend>
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
     Given I sign in using my email
@@ -281,6 +294,7 @@ Feature: Calling Matrix
   Scenario Outline: AUDIO-1107 Verify application behaviour in case of incoming/outgoing call if there are no permissions to microphone/camera
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email
     Given I see conversations list
