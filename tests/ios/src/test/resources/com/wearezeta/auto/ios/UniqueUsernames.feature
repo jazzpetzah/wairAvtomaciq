@@ -527,9 +527,26 @@ Feature: Unique Usernames
     Given I open search UI
     Given I dismiss alert if visible
     Then I verify correct details are shown for the found users
-      | Name                    | Details                                       |
-      | <Contact>               | @<ContactUniqueUserName> - 2 people in common |
+      | Name      | Details                                       |
+      | <Contact> | @<ContactUniqueUserName> - 2 people in common |
 
     Examples:
       | Name      | Contact   | ContactUniqueUserName | Contact2  | Contact3  |
       | user1Name | user2Name | user2UniqueUsername   | user3Name | user4Name |
+
+  @C352045 @staging @fastLogin
+  Scenario Outline: Verify new username is synced across the devices
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to user2Name
+    Given I sign in using my email or phone number
+    Given User Myself adds a new device <DeviceName> with label <DeviceLabel>
+    Given I accept alert if visible
+    Given User Me changes the unique username to "<NewUniqueUsername>" via device <DeviceName>
+    Given I tap settings gear button
+    Given I accept alert if visible
+    Given I select settings item Account
+    When I see unique username user3UniqueUsername is displayed on Settings Page
+
+    Examples:
+      | Name      | NewUniqueUsername   | DeviceName | DeviceLabel  |
+      | user1Name | user3UniqueUsername | Device1    | DeviceLabel1 |

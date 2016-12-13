@@ -722,8 +722,8 @@ public class CommonIOSSteps {
      * @param uniqUsername unique username or an alias
      * @throws Exception
      */
-    @Given("^User (.*) (sets|changes) the unique username( to \".*\")?$")
-    public void UserSetsUniqueUsername(String userAs, String action, String uniqUsername) throws Exception {
+    @Given("^User (.*) (sets|changes) the unique username( to \".*\")?(?: via device (.*))?$")
+    public void UserSetsUniqueUsername(String userAs, String action, String uniqUsername, String deviceName) throws Exception {
         switch (action.toLowerCase()) {
             case "sets":
                 commonSteps.UsersSetUniqueUsername(userAs);
@@ -736,7 +736,11 @@ public class CommonIOSSteps {
                 uniqUsername = uniqUsername.substring(5, uniqUsername.length() - 1);
                 uniqUsername = usrMgr.replaceAliasesOccurences(uniqUsername,
                         ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
-                commonSteps.IChangeUniqueUsername(userAs, uniqUsername);
+                if (deviceName == null) {
+                    commonSteps.IChangeUniqueUsername(userAs, uniqUsername);
+                } else {
+                    commonSteps.UpdateUniqueUsername(userAs, uniqUsername, deviceName);
+                }
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown action '%s'", action));

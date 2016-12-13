@@ -272,4 +272,11 @@ public class SettingsPageSteps {
         Assert.assertTrue(String.format("New previously set unique username %s is not displayed on Settings Page", newName),
                 getSettingsPage().isUniqueUsernameInSettingsDisplayed(newName));
     }
+
+    @Then("^I see unique username (.*) is displayed on Settings Page$")
+    public void ISeeUniqueUsernameOnSettingsPage(String nameAlias) throws Exception {
+        String name = usrMgr.replaceAliasesOccurences(nameAlias, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
+        Assert.assertTrue(String.format("New previously set unique username %s is not displayed on Settings Page", name),
+                getSettingsPage().isUniqueUsernameInSettingsDisplayed(name));
+    }
 }
