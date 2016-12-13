@@ -344,3 +344,35 @@ Feature: Unique Username
     Examples:
       | Name      | ContactInABEmail | ContactInABPhone | ContactInABSameName | ABNameEmail | ABNamePhone | ContactINABEmailUniqueUsername | ContactInABPhoneUniqueUsername | ContactInABSameNameUniqueUserName | GroupChatName |
       | user1Name | user2Name        | user3Name        | user4Name           | Email       | Phone       | user2UniqueUsername            | user3UniqueUsername            | user4UniqueUsername               | UserNameGroup |
+
+  @C352702 @staging
+  Scenario Outline: Verify usernames in Group Participant view for non-connected user
+    Given I delete all contacts from Address Book
+    Given There are 5 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I add <ContactInABEmail> having custom name "<ABNameEmail>" into Address Book with email
+    Given I add <ContactInABPhone> having custom name "<ABNamePhone>" into Address Book with phone
+    Given I add <ContactInABSameName> into Address Book with email
+    Given User <ContactInABEmail> sets the unique username
+    Given User <ContactInABPhone> sets the unique username
+    Given <Contact> is connected to <ContactInABEmail>,<ContactInABPhone>,<ContactInABSameName>
+    Given <Contact> has group chat <GroupChatName> with Myself,<ContactInABEmail>,<ContactInABPhone>,<ContactInABSameName>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with name <GroupChatName>
+    Given I tap on conversation name <GroupChatName>
+    Given I tap conversation name from top toolbar
+    When I tap on contact <ContactInABEmail> on Group info page
+    Then I see unique user name "<ContactINABEmailUniqueUsername>" on Group unconnected user details page
+    And I see user info "<ABNameEmail> in Address Book" on Group unconnected user details page
+    And I tap Back button
+    When I tap on contact <ContactInABPhone> on Group info page
+    Then I see unique user name "<ContactInABPhoneUniqueUsername>" on Group unconnected user details page
+    And I tap Back button
+    When I tap on contact <ContactInABSameName> on Group info page
+    Then I do not see unique user name "<ContactInABSameNameUniqueUserName>" on Group unconnected user details page
+    And I see user info "in Address Book" on Group unconnected user details page
+
+    Examples:
+      | Name      | ContactInABEmail | ContactInABPhone | ContactInABSameName | ABNameEmail | ABNamePhone | ContactINABEmailUniqueUsername | ContactInABPhoneUniqueUsername | ContactInABSameNameUniqueUserName | Contact   | GroupChatName |
+      | user1Name | user2Name        | user3Name        | user4Name           | Email       | Phone       | user2UniqueUsername            | user3UniqueUsername            | user4UniqueUsername               | user5Name | UserNameGroup |
