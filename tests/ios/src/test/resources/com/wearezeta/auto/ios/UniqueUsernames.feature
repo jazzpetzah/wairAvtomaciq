@@ -509,7 +509,7 @@ Feature: Unique Usernames
       | user1Name | user2Name           | user2ABName    | user2Email    | user3Name                 | user3ABName    | user3PhoneNumber    | user4Name                  | user4UniqueUsername    | user5Name                 | user6Name                | user6Email    | user7Name      | user8Name           | Groupchat     |
 
   @C352053 @staging @fastLogin
-  Scenario Outline: Verify common friends are shown even I don't share the AB
+  Scenario Outline: Verify common friends are shown even if I don't share the AB
     Given There are 4 users where <Name> is me
     Given User <Contact> sets the unique username
     Given <Contact> is connected to <Contact2>, <Contact3>
