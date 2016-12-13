@@ -1285,7 +1285,7 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. ^I see (unique username|Address Book name|common friends count) (".*" |\s*)on Single user profile page$
      */
-    @When("^I (do not )?see (unique username|Address Book name|common friends count) (\".*\" |\\s*)on Conversation view page$")
+    @Then("^I (do not )?see (unique username|Address Book name|common friends count) (\".*\" |\\s*)on Conversation view page$")
     public void ISeeLabel(String shouldNotSee, String fieldType, String value) throws Exception {
         value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.NAME_ALIAS);
         value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
