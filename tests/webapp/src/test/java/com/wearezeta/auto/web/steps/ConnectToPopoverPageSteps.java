@@ -10,10 +10,6 @@ public class ConnectToPopoverPageSteps {
 
     private final TestContext context;
 
-    public ConnectToPopoverPageSteps() {
-        this.context = new TestContext();
-    }
-
     public ConnectToPopoverPageSteps(TestContext context) {
         this.context = context;
     }

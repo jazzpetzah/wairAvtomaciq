@@ -13,10 +13,6 @@ public class DownloadPageSteps {
 
     private final TestContext context;
 
-    public DownloadPageSteps() {
-        this.context = new TestContext();
-    }
-
     public DownloadPageSteps(TestContext context) {
         this.context = context;
     }

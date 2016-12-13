@@ -33,10 +33,6 @@ public class AccountPageSteps {
     private String rememberedUniqueUsername = null;
     private final TestContext context;
 
-    public AccountPageSteps() {
-        this.context = new TestContext();
-    }
-
     public AccountPageSteps(TestContext context) {
         this.context = context;
     }

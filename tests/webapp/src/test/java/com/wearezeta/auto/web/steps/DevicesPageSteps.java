@@ -18,12 +18,7 @@ import static org.hamcrest.Matchers.not;
 public class DevicesPageSteps {
 
     private final TestContext context;
-
     private String currentDeviceId = null;
-
-    public DevicesPageSteps() {
-        this.context = new TestContext();
-    }
 
     public DevicesPageSteps(TestContext context) {
         this.context = context;

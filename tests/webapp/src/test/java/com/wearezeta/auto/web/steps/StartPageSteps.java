@@ -26,10 +26,6 @@ public class StartPageSteps {
 
     private final TestContext context;
 
-    public StartPageSteps() {
-        this.context = new TestContext();
-    }
-
     public StartPageSteps(TestContext context) {
         this.context = context;
     }

@@ -19,10 +19,6 @@ public class PhoneNumberPasswordPageSteps {
 
     private final TestContext context;
 
-    public PhoneNumberPasswordPageSteps() {
-        this.context = new TestContext();
-    }
-
     public PhoneNumberPasswordPageSteps(TestContext context) {
         this.context = context;
     }

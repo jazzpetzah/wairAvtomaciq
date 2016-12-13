@@ -5,7 +5,6 @@ import java.util.List;
 import com.wearezeta.auto.web.pages.ConversationPage;
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.ContactListPage;
@@ -26,10 +25,6 @@ public class StartUIPageSteps {
     private final TestContext context;
 
     private static String rememberedUser;
-
-    public StartUIPageSteps() {
-        this.context = new TestContext();
-    }
 
     public StartUIPageSteps(TestContext context) {
         this.context = context;

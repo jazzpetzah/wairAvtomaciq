@@ -8,10 +8,6 @@ public class PreferencesPageSteps {
 
     private final TestContext context;
 
-    public PreferencesPageSteps() {
-        this.context = new TestContext();
-    }
-
     public PreferencesPageSteps(TestContext context) {
         this.context = context;
     }

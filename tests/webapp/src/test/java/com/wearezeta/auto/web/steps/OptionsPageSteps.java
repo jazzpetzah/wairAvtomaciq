@@ -13,10 +13,6 @@ public class OptionsPageSteps {
 
     private final TestContext context;
 
-    public OptionsPageSteps() {
-        this.context = new TestContext();
-    }
-
     public OptionsPageSteps(TestContext context) {
         this.context = context;
     }

@@ -14,10 +14,6 @@ public class GiphyPageSteps {
 
     private final TestContext context;
 
-    public GiphyPageSteps() {
-        this.context = new TestContext();
-    }
-
     public GiphyPageSteps(TestContext context) {
         this.context = context;
     }

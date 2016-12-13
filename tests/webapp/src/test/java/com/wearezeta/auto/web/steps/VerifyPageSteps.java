@@ -21,10 +21,6 @@ public class VerifyPageSteps {
     private final TestContext context;
     private String phoneVerificationCode;
 
-    public VerifyPageSteps() {
-        this.context = new TestContext();
-    }
-
     public VerifyPageSteps(TestContext context) {
         this.context = context;
     }

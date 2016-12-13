@@ -20,10 +20,6 @@ public class PendingConnectionsPageSteps {
 
     private final TestContext context;
 
-    public PendingConnectionsPageSteps() {
-        this.context = new TestContext();
-    }
-
     public PendingConnectionsPageSteps(TestContext context) {
         this.context = context;
     }

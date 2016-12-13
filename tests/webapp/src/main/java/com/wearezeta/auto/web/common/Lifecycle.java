@@ -1,17 +1,13 @@
 package com.wearezeta.auto.web.common;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.rc.BasicScenarioResultToTestrailTransformer;
 import com.wearezeta.auto.common.testrail.TestrailSyncUtilities;
 import com.wearezeta.auto.web.pages.RegistrationPage;
-import com.wearezeta.auto.web.pages.WebPage;
 import com.wire.picklejar.gherkin.model.Scenario;
 import com.wire.picklejar.gherkin.model.Step;
-import cucumber.api.java.After;
-import cucumber.api.java.Before;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -40,35 +36,16 @@ import org.openqa.selenium.safari.SafariOptions;
 public class Lifecycle {
 
     private static final Logger log = ZetaLogger.getLog(Lifecycle.class.getSimpleName());
-
-    public static final int SAFARI_DRIVER_CREATION_RETRY = 3;
+    private static final int MIN_WEBAPP_WINDOW_WIDTH = 1366;
+    private static final int MIN_WEBAPP_WINDOW_HEIGHT = 768;
+    private static final int SAFARI_DRIVER_CREATION_RETRY = 3;
+    
     private boolean DEBUG = false;
     private TestContext context;
-    private TestContext compatContext;
 
-    /**
-     * The context is fully initialized after setting up the testcase
-     *
-     * @return
-     */
     public TestContext getContext() {
         return context;
     }
-
-    // #### START ############################################################ COMPATIBILITY INSTRUCTIONS
-    @Before("~@performance")
-    public void setUp(cucumber.api.Scenario scenario) throws Exception {
-        String id = scenario.getId().substring(
-                scenario.getId().lastIndexOf(";") + 1);
-        Scenario pjScenario = new Scenario(null, scenario.getName() + "_" + id, 0, "", null, null);
-        setUp(pjScenario);
-    }
-
-    @After
-    public void tearDown(cucumber.api.Scenario scenario) throws Exception {
-        tearDown();
-    }
-    // #### END ############################################################## COMPATIBILITY INSTRUCTIONS
 
     public void setUp(Scenario scenario) throws Exception {
         String[] command = new String[]{"/bin/sh", "-c", String.format("killall %s", "grunt")};
@@ -100,8 +77,7 @@ public class Lifecycle {
             @Override
             public ZetaWebAppDriver call() throws Exception {
                 ZetaWebAppDriver lazyWebDriver = null;
-                URL hubUrl = new URL("http://" + hubHost + ":" + hubPort
-                        + "/wd/hub");
+                URL hubUrl = new URL("http://" + hubHost + ":" + hubPort + "/wd/hub");
                 if (WebAppExecutionContext.getBrowser().equals(Browser.Safari)) {
                     int retries = SAFARI_DRIVER_CREATION_RETRY;
                     boolean failed = false;
@@ -150,9 +126,7 @@ public class Lifecycle {
                             .manage()
                             .window()
                             .setSize(
-                                    new Dimension(
-                                            WebAppConstants.MIN_WEBAPP_WINDOW_WIDTH,
-                                            WebAppConstants.MIN_WEBAPP_WINDOW_HEIGHT));
+                                    new Dimension(MIN_WEBAPP_WINDOW_WIDTH, MIN_WEBAPP_WINDOW_HEIGHT));
                 }
                 return lazyWebDriver;
             }
@@ -160,25 +134,12 @@ public class Lifecycle {
 
         final Future<ZetaWebAppDriver> lazyWebDriver = pool.submit(callableWebAppDriver);
 
-        /**
-         * #### START ############################################################ COMPATIBILITY INSTRUCTIONS
-         */
-        TestContext.COMPAT_WEB_DRIVER = lazyWebDriver;
-        compatContext = new TestContext();
-        compatContext.getDriver().get(url);
-        compatContext.getPagesCollection().setFirstPage(new RegistrationPage(lazyWebDriver, url));
-        /**
-         * #### END ############################################################## COMPATIBILITY INSTRUCTIONS
-         */
-
         context = new TestContext(scenario.getName(), lazyWebDriver);
         context.getDriver().get(url);
         context.getPagesCollection().setFirstPage(new RegistrationPage(lazyWebDriver, url));
-
-        ZetaFormatter.setLazyDriver(lazyWebDriver);
     }
 
-    public void tearDown(com.wire.picklejar.gherkin.model.Scenario scenario) throws Exception {
+    public void tearDown(Scenario scenario) throws Exception {
         try {
             Set<String> tagSet = scenario.getTags().stream()
                     .map((tag) -> tag.getName())
@@ -191,7 +152,7 @@ public class Lifecycle {
         tearDown();
     }
 
-    private Map<String, String> mapScenario(com.wire.picklejar.gherkin.model.Scenario scenario) {
+    private Map<String, String> mapScenario(Scenario scenario) {
         Map<String, String> stepResultMap = new LinkedHashMap<>();
         for (Step step : scenario.getSteps()) {
             stepResultMap.put(step.getName(), step.getResult().getStatus());
@@ -202,7 +163,6 @@ public class Lifecycle {
     public void tearDown() throws Exception {
         try {
             ZetaWebAppDriver driver = (ZetaWebAppDriver) context.getDriver();
-            // save browser console if possible
             if (WebAppExecutionContext.getBrowser().isSupportingConsoleLogManagement()) {
                 context.getLogManager().printBrowserLog();
             }
@@ -215,19 +175,6 @@ public class Lifecycle {
         } catch (Exception e) {
             log.warn(e);
         } finally {
-            /**
-             * #### START ############################################################ COMPATIBILITY INSTRUCTIONS
-             */
-            try {
-                log.debug("COMPAT: Releasing devices");
-                log.debug(compatContext.getUserManager().getCreatedUsers());
-                compatContext.getDeviceManager().releaseDevicesOfUsers(compatContext.getUserManager().getCreatedUsers());
-            } catch (Exception e) {
-                log.warn(e);
-            }
-            /**
-             * #### END ############################################################## COMPATIBILITY INSTRUCTIONS
-             */
             try {
                 log.debug("Releasing devices");
                 log.debug(context.getUserManager().getCreatedUsers());
@@ -244,33 +191,25 @@ public class Lifecycle {
             try {
                 log.debug("Cleaning up calling instances");
                 context.getCallingManager().cleanup();
-                log.debug("COMPAT: Cleaning up calling instances");
-                compatContext.getCallingManager().cleanup();
             } catch (Exception e) {
                 log.warn(e);
             }
             try {
                 log.debug("Clearing pages collection");
                 context.getPagesCollection().clearAllPages();
-                log.debug("COMPAT: Clearing pages collection");
-                compatContext.getPagesCollection().clearAllPages();
-                WebPage.clearPagesCollection();
             } catch (Exception e) {
                 log.warn(e);
             }
             try {
                 log.debug("Resetting users");
                 context.getUserManager().resetUsers();
-                log.debug("COMPAT: Resetting users");
-                compatContext.getUserManager().resetUsers();
             } catch (Exception e) {
                 log.warn(e);
             }
         }
     }
 
-    private static void setCustomChromeProfile(DesiredCapabilities capabilities)
-            throws Exception {
+    private static void setCustomChromeProfile(DesiredCapabilities capabilities) throws Exception {
         ChromeOptions options = new ChromeOptions();
         // simulate a fake webcam and mic for testing
         options.addArguments("use-fake-device-for-media-stream");
@@ -290,8 +229,7 @@ public class Lifecycle {
         capabilities.setCapability(ChromeOptions.CAPABILITY, options);
     }
 
-    private static void setCustomOperaProfile(DesiredCapabilities capabilities)
-            throws Exception {
+    private static void setCustomOperaProfile(DesiredCapabilities capabilities) throws Exception {
         final String userProfileRoot = WebCommonUtils.getOperaProfileRoot();
         ChromeOptions options = new ChromeOptions();
         options.addArguments("user-data-dir=" + userProfileRoot);
@@ -330,8 +268,7 @@ public class Lifecycle {
         String browserVersion = WebAppExecutionContext.getBrowserVersion();
         String platform = WebAppExecutionContext.getPlatform();
 
-        return testname + " on " + platform + " with "
-                + browserName + " " + browserVersion;
+        return testname + " on " + platform + " with " + browserName + " " + browserVersion;
     }
 
     private static DesiredCapabilities getCustomCapabilities(String platform,

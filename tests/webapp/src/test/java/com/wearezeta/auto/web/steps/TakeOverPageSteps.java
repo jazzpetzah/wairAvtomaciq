@@ -3,8 +3,6 @@ package com.wearezeta.auto.web.steps;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -24,16 +22,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class TakeOverPageSteps {
 
-    private static final Logger log = ZetaLogger.getLog(TakeOverPageSteps.class
-            .getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(TakeOverPageSteps.class.getSimpleName());
 
     private final TestContext context;
 
     private String rememberedUsername = null;
-
-    public TakeOverPageSteps() {
-        this.context = new TestContext();
-    }
 
     public TakeOverPageSteps(TestContext context) {
         this.context = context;

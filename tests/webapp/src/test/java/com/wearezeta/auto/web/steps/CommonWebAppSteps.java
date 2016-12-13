@@ -46,22 +46,13 @@ import org.openqa.selenium.logging.LogEntry;
 public class CommonWebAppSteps {
 
     private static final Logger log = ZetaLogger.getLog(CommonWebAppSteps.class.getSimpleName());
-
     private static final int DELETION_RECEIVING_TIMEOUT = 120;
-
-    private String rememberedPage = null;
-
-    private String rememberedMessageId = null;
-
     private static final String DEFAULT_USER_PICTURE = "/images/aqaPictureContact600_800.jpg";
-
-    private final TestContext context;
-
     private static final String VIDEO_MESSAGE_IMAGE = "example.png";
 
-    public CommonWebAppSteps() {
-        this.context = new TestContext();
-    }
+    private final TestContext context;
+    private String rememberedPage = null;
+    private String rememberedMessageId = null;
 
     public CommonWebAppSteps(TestContext context) {
         this.context = context;

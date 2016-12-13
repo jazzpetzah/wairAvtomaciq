@@ -11,10 +11,6 @@ public class WarningPageSteps {
 
     private final TestContext context;
 
-    public WarningPageSteps() {
-        this.context = new TestContext();
-    }
-
     public WarningPageSteps(TestContext context) {
         this.context = context;
     }
