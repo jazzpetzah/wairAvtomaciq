@@ -10,7 +10,7 @@ public class MainMenuAndDockPage extends WinPage {
 
     public MainMenuAndDockPage(Future<ZetaWinDriver> winDriver)
             throws Exception {
-        super(winDriver, WinExecutionContext.WIRE_APP_PATH);
+        super(winDriver, WinExecutionContext.WIRE_APP_EXECUTABLE);
     }
 
 }

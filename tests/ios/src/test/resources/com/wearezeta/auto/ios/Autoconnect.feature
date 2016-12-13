@@ -17,6 +17,8 @@ Feature: Autoconnect
     And I input name <Name> and commit it
     And I accept alert
     And I tap Keep This One button
+    # Wait for sync
+    And I wait for 3 seconds
     And I accept alert if visible
     And I tap Share Contacts button on Share Contacts overlay
     And User <Name> is me
@@ -111,28 +113,3 @@ Feature: Autoconnect
     Examples:
       | Contact   | ContactEmail | Name      |
       | user1Name | user1Email   | user2Name |
-
-  @C79 @addressbookStart @regression @forceReset
-  Scenario Outline: Verify name from the address book is shown as a subtitle
-    Given There are 2 users where <Name> is me
-    Given I minimize Wire
-    Given I install Address Book Helper app
-    Given I launch Address Book Helper app
-    Given I delete all contacts from Address Book
-    Given I add name <Contact> and phone <ContactPhone> to Address Book
-    Given I restore Wire
-    Given I remember the name of user <Contact> in Address Book
-    Given User <Contact> changes name to <NewName>
-    Given I sign in using my email or phone number
-    Given I wait until <Contact> exists in backend search results
-    When I open search UI
-    And I accept alert
-    And I tap X button on Search UI page
-    And I tap on contact name <Contact>
-    And I open conversation details
-    Then I see name "<Contact>" on Single user profile page
-    And I verify the previously remembered user name from Address Book is displayed on Single user profile page
-
-    Examples:
-      | Name      | Contact   | ContactPhone     | NewName |
-      | user1Name | user2Name | user2PhoneNumber | Beyonce |

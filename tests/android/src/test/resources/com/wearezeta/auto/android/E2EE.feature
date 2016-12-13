@@ -137,7 +137,8 @@ Feature: E2EE
     And I switch tab to "Devices" in Group connected user details page
     Then I see 1 device is shown on Device list page
     And I verify all device ids of user <Contact1> are shown on Device list page
-    When I tap X button on Single connected user details page
+    #When I tap X button on Single connected user details page
+    When I tap back button
     And I tap on contact <Contact2> on Group info page
     And I switch tab to "Devices" in Group connected user details page
     Then I see 1 device is shown on Device list page
@@ -395,12 +396,14 @@ Feature: E2EE
     And I switch tab to "Devices" in Group connected user details page
     Then I see 1 device is shown on Device list page
     And I verify 1st device on Device list page
-    When I tap X button on Single connected user details page
+    #When I tap X button on Single connected user details page
+    When I tap back button
     And I tap on contact <Contact2> on Group info page
     And I switch tab to "Devices" in Group connected user details page
     Then I see 1 device is shown on Device list page
     And I verify 1st device on Device list page
-    When I tap X button on Single connected user details page
+    #When I tap X button on Single connected user details page
+    When I tap back button
     And I tap back button
     Then I see a message informing me conversation is verified
 

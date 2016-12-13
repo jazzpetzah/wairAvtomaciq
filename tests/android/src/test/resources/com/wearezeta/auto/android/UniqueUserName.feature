@@ -112,9 +112,9 @@ Feature: Unique Username
       | user1Name | user2Name | user3Name | user4Name | 2             |
 
   @C352072 @staging
-  Scenario Outline: (AN-4760) Verify search works with username and doesn't work with email
+  Scenario Outline: Verify search works with username correctly and last username overwrites the previous one
     Given There are 2 users where <Name> is me
-    Given User <Contact2> sets the unique username
+    Given User <Contact2> changes the unique username to "<Contact2UniqueUsername>"
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list
@@ -123,12 +123,22 @@ Feature: Unique Username
     Then I do not see user <Contact2> in Search result list
     And I tap Clear button
     When I open Search UI
+    And Myself waits 20 seconds until <Contact2UniqueUsername> does not exist in backend search results
     And I type unique user name "<Contact2UniqueUsername>" in search field
     Then I see user <Contact2> in Search result list
+    And I tap Clear button
+    When I open Search UI
+    And User <Contact2> changes the unique username to "<Contact3UniqueUsername>"
+    And Myself waits 20 seconds until <Contact3UniqueUsername> does not exist in backend search results
+    And I type unique user name "<Contact3UniqueUsername>" in search field
+    Then I see user <Contact2> in Search result list
+    And I tap Clear button
+    When I open Search UI
+    And I type unique user name "<Contact3UniqueUsername>" in search field
 
     Examples:
-      | Name      | Contact2  | Contact2Email | Contact2UniqueUsername |
-      | user1Name | user2Name | user2Email    | user2UniqueUsername    |
+      | Name      | Contact2  | Contact2Email | Contact2UniqueUsername |Contact3UniqueUsername |
+      | user1Name | user2Name | user2Email    | user2UniqueUsername    |user3UniqueUsername    |
 
   @C352075 @staging
   Scenario Outline: Verify search shows correct user info for unconnected user
@@ -219,3 +229,53 @@ Feature: Unique Username
     Examples:
       | Name      |
       | user1Name |
+
+  @C352678 @staging
+  Scenario Outline: Verify username settings allows to specify only correct value
+    Given There is 1 user where <Name> is me without unique user name
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Unique Username Takeover page
+    Given I tap Choose Your Own button on Unique Username Takeover page
+    When I see username edit field on Settings page
+    Then I enter new username on Settings page, according to datatable
+      | UsernameTyped             | IsShownAsCorrect |
+      | ab                        | True             |
+      | aabbcc1234567890          | True             |
+      | aabbccCyrillicМоёИмя      | False            |
+      | aabbccArabicاسمي          | False            |
+      | aabbccChinese我的名字      | False            |
+      | aabbccSpecialChars%^&@#$  | False            |
+      | aabbccLong123456789012345 | False            |
+
+    Examples:
+      | Name      |
+      | user1Name |
+
+
+  @C352693 @staging
+  Scenario Outline: Verify search by partial match of a user name (Bam and boleo for bamboleo e.g.) and search is not case-sensitive
+    Given There are 2 users where <Name> is me
+    Given User <Contact2> changes the unique username to "<Contact2UniqueUsername>"
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list
+    When I open Search UI
+    And I type the first <NameFirstPartCount> chars of unique user name "<Contact2UniqueUsername>" in search field
+    Then I see user <Contact2> in Search result list
+    And I tap Clear button
+    When I open Search UI
+    And I type the last <NameLastPartCount> chars of unique user name "<Contact2UniqueUsername>" in search field
+    Then I see user <Contact2> in Search result list
+    And I tap Clear button
+    When I open Search UI
+    And I type unique user name "<Contact2UniqueUsername>" in uppercase in search field
+    Then I see user <Contact2> in Search result list
+    And I tap Clear button
+    When I open Search UI
+    And I type unique user name "<Contact2UniqueUsername>" in lowercase in search field
+    Then I see user <Contact2> in Search result list
+
+    Examples:
+      | Name      | Contact2  | NameFirstPartCount | NameLastPartCount | Contact2UniqueUsername |
+      | user1Name | user2Name | 6                  | 6                 | user2UniqueUsername    |

@@ -107,12 +107,10 @@ Feature: Settings
     Given I tap settings gear button
     Given I select settings item Account
     Given I select settings item Name
-    When I clear Name input field on Settings page
     And I set "<NewUsername>" value to Name input field on Settings page
     And I tap Return button on the keyboard
     Then I verify the value of settings item Name equals to "<NewUsername>"
     When I select settings item Name
-    And I clear Name input field on Settings page
     And I set "<NewUsername1>" value to Name input field on Settings page
     And I tap Return button on the keyboard
     Then I verify the value of settings item Name equals to "<NewUsername1>"
@@ -193,8 +191,7 @@ Feature: Settings
     Given I tap settings gear button
     Given I select settings item Account
     Given I select settings item Name
-    When I clear Name input field on Settings page
-    And I set "<NewUsername>" value to Name input field on Settings page
+    When I set "<NewUsername>" value to Name input field on Settings page
     And I tap Return button on the keyboard
     And I tap Done navigation button on Settings page
     And I see conversations list

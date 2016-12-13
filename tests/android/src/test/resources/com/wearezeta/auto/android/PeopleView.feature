@@ -33,7 +33,7 @@ Feature: People View
     When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     And I tap open menu button on Group info page
-    And I tap LEAVE options menu button on Conversation options menu overlay page
+    And I tap LEAVE button on Conversation options menu overlay page
     And I tap LEAVE button on Confirm overlay page
     Then I see Conversations list
 
@@ -156,7 +156,7 @@ Feature: People View
   @C716 @regression @rc
   Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat if the other user is not in your contacts list
     Given There are 3 users where <Name> is me
-    Given <Contact1> is connected to <Name>,<Contact2>
+    Given <Contact1> is connected to myself,<Contact2>
     Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -210,7 +210,7 @@ Feature: People View
   @C397 @regression
   Scenario Outline: Start 1to1 conversation from participants view
     Given There are 3 users where <Name> is me
-    Given <Contact1> is connected to <Name>,<Contact2>
+    Given <Contact1> is connected to myself,<Contact2>
     Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -221,8 +221,8 @@ Feature: People View
     Then I see user name of user <Contact1> on Group connected user details page
     When I tap on open conversation button on Group connected user details page
     And I tap conversation name from top toolbar
-    Then I see user name of user <Contact1> on Group connected user details page
-    And I see unique user name of user <Contact1> on Group connected user details page
+    Then I see user name of user <Contact1> on Single connected user details page
+    And I see unique user name of user <Contact1> on Single connected user details page
     And I tap back button
     And I see conversation view
 

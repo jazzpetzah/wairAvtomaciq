@@ -407,8 +407,6 @@ Feature: Search
     Given I wait until my Top People list is not empty on the backend
     When I open search UI
     And I accept alert if visible
-    And I see top people list on Search UI page
-    And I tap input field on Search UI page
     And I tap on 1st top connection contact
     And I see Open conversation action button on Search UI page
     And I tap on 2nd top connection contact

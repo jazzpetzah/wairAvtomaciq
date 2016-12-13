@@ -269,8 +269,8 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see conversations list
     Given User <Contact> sends 40 encrypted messages to user Myself
+    Given I see conversations list
     When I tap on contact name <Contact>
     Then I see conversation is scrolled to the end
 

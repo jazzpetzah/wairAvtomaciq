@@ -211,6 +211,8 @@ Feature: Conversation List
     And I tap input field on Search UI page
     And I type "<GroupChatName>" in Search UI input field
     And I tap on conversation <GroupChatName> in search result
+    # Wait for transition
+    And I wait for 3 seconds
     Then I see 0 conversation entries
 
     Examples:

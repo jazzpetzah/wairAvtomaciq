@@ -100,7 +100,7 @@ public abstract class BaseUserDetailsOverlay extends BaseDetailsOverlay {
         return isLocatorInvisible(locator);
     }
 
-    public BufferedImage getProfilePictureScreenshot() throws Exception {
+    protected BufferedImage getProfilePictureScreenshot() throws Exception {
         return getElementScreenshot(getElement(xpathProfilePicture)).orElseThrow(
                 () -> new IllegalStateException("Cannot take a screenshot of profile picture")
         );

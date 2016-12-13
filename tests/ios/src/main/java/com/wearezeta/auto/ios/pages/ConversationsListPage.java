@@ -115,9 +115,11 @@ public class ConversationsListPage extends IOSPage {
                 () -> new IllegalStateException(String.format("Cannot find a conversation named '%s'", name))
         );
         final Dimension elSize = dstElement.getSize();
-        final double y = elSize.getHeight() * 8 / 9;
-        dstElement.dragFromToForDuration(
-                new FBDragArguments(elSize.getWidth() / 10, y, elSize.getWidth() * 3 / 4, y, 1)
+        final Point elLocation = dstElement.getLocation();
+        final double y = elLocation.getY() + elSize.getHeight() * 8 / 9;
+        getDriver().dragFromToForDuration(
+                new FBDragArguments(elLocation.getX() + elSize.getWidth() / 10, y,
+                        elLocation.getX() + elSize.getWidth() * 3 / 4, y, 1)
         );
     }
 

@@ -14,7 +14,6 @@ import static com.wearezeta.auto.win.common.WinCommonUtils.killAllApps;
 import static com.wearezeta.auto.win.common.WinExecutionContext.KEEP_DATABASE;
 import static com.wearezeta.auto.win.common.WinExecutionContext.WINIUM_URL;
 import static com.wearezeta.auto.win.common.WinExecutionContext.WIRE_APP_FOLDER;
-import static com.wearezeta.auto.win.common.WinExecutionContext.WIRE_APP_PATH;
 import com.wearezeta.auto.win.pages.win.MainWirePage;
 import com.wearezeta.auto.win.pages.win.WinPagesCollection;
 import com.wire.picklejar.gherkin.model.Scenario;
@@ -40,6 +39,7 @@ import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import static com.wearezeta.auto.win.common.WinExecutionContext.WIRE_APP_EXECUTABLE;
 
 public class Lifecycle {
     
@@ -69,7 +69,7 @@ public class Lifecycle {
         options.addArguments("disable-web-security");
         options.addArguments("env=" + WinExecutionContext.ENV_URL);
         options.addArguments("enable-logging");
-        options.setBinary(WIRE_APP_FOLDER + WIRE_APP_PATH);
+        options.setBinary(WIRE_APP_FOLDER + WIRE_APP_EXECUTABLE);
         capabilities.setCapability(ChromeOptions.CAPABILITY, options);
         capabilities.setCapability("platformName", WinExecutionContext.CURRENT_SECONDARY_PLATFORM.name());
 
@@ -96,7 +96,7 @@ public class Lifecycle {
         capabilities.setCapability(CapabilityType.BROWSER_NAME, "");
         capabilities.setCapability(CapabilityType.PLATFORM, "WIN");
         capabilities.setCapability("platformName", "Win");
-        capabilities.setCapability("app", WIRE_APP_FOLDER + WIRE_APP_PATH);
+        capabilities.setCapability("app", WIRE_APP_FOLDER + WIRE_APP_EXECUTABLE);
         capabilities.setCapability("debugConnectToRunningApp", "true");
         final ExecutorService pool = Executors.newFixedThreadPool(1);
 

@@ -4,6 +4,7 @@ Feature: Calling
   Scenario Outline: Verify calling from missed call indicator in conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -52,6 +53,7 @@ Feature: Calling
   Scenario Outline: Verify ignoring of incoming call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -68,6 +70,7 @@ Feature: Calling
   Scenario Outline: Verify acepting and ending incoming call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -87,6 +90,7 @@ Feature: Calling
   Scenario Outline: Receiving missed call notification from one user
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -105,6 +109,7 @@ Feature: Calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
     Given User Myself removes his avatar picture
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -129,6 +134,7 @@ Feature: Calling
   Scenario Outline: Screenlock device when in the call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
     Given I sign in using my email or phone number
@@ -147,6 +153,8 @@ Feature: Calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given User Myself removes his avatar picture
+    Given User <Contact1> sets the unique username
+    Given User <Contact2> sets the unique username
     Given <Contact1>,<Contact2> start instance using <CallBackend>
     Given <Contact1> accepts next incoming call automatically
     Given I sign in using my email or phone number
@@ -176,6 +184,7 @@ Feature: Calling
   Scenario Outline: Put app into background after initiating call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
     Given I sign in using my email or phone number
@@ -193,6 +202,7 @@ Feature: Calling
   Scenario Outline: I want to accept a call through the incoming voice dialogue (Button)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -210,6 +220,7 @@ Feature: Calling
   Scenario Outline: Verify starting and ending outgoing call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
     Given I sign in using my email or phone number
@@ -264,6 +275,8 @@ Feature: Calling
   Scenario Outline: Verify call back to third user after ignoring call (during outgoing call from other side)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
+    Given User <Contact> sets the unique username
+    Given User <Contact2> sets the unique username
     Given <Contact>,<Contact2> start instance using <CallBackend>
     Given <Contact2> accepts next incoming call automatically
     Given I sign in using my email or phone number
@@ -286,6 +299,8 @@ Feature: Calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Contact1> sets the unique username
+    Given User <Contact2> sets the unique username
     Given <Contact1>,<Contact2> start instance using <CallBackend>
     Given <Contact2> accepts next incoming call automatically
     Given I sign in using my email or phone number
@@ -305,6 +320,7 @@ Feature: Calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Contact1> sets the unique username
     Given <Contact1> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -323,6 +339,9 @@ Feature: Calling
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>
+    Given User <Contact1> sets the unique username
+    Given User <Contact2> sets the unique username
+    Given User <Contact3> sets the unique username
     Given <Contact1>,<Contact2>,<Contact3> starts instance using <CallBackend>
     Given <Contact3> accepts next incoming call automatically
     Given I sign in using my email or phone number
@@ -344,6 +363,8 @@ Feature: Calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Contact1> sets the unique username
+    Given User <Contact2> sets the unique username
     Given <Contact1>,<Contact2> starts instance using <CallBackend>
     Given <Contact2> accepts next incoming call automatically
     Given I sign in using my email or phone number
@@ -368,6 +389,9 @@ Feature: Calling
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>
+    Given User <Contact1> sets the unique username
+    Given User <Contact2> sets the unique username
+    Given User <Contact3> sets the unique username
     Given <Contact1>,<Contact2>,<Contact3> starts instance using <CallBackend>
     Given <Contact2> accepts next incoming call automatically
     Given I sign in using my email or phone number
@@ -410,6 +434,8 @@ Feature: Calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Contact1> sets the unique username
+    Given User <Contact2> sets the unique username
     Given <Contact1>,<Contact2> starts instance using <CallBackend>
     Given <Contact2> accepts next incoming call automatically
     Given I sign in using my email or phone number
@@ -431,6 +457,7 @@ Feature: Calling
   Scenario Outline: Verify putting client to the background during 1-to-1 call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -452,6 +479,8 @@ Feature: Calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Contact1> sets the unique username
+    Given User <Contact2> sets the unique username
     Given <Contact1>,<Contact2> start instance using <CallBackend>
     Given <Contact1>,<Contact2> accepts next incoming call automatically
     Given I sign in using my email or phone number
