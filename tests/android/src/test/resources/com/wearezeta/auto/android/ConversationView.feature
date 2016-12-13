@@ -82,7 +82,7 @@ Feature: Conversation View
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     And I tap conversation name from top toolbar
-    And I see user name of user <Contact1> on Single connected user details page
+    And I see user name "<Contact1>" on Single connected user details page
     And I tap create group button on Single connected user details page
     And I tap on Search input on Search page
     And I type user name "<Contact2>" in search field
@@ -282,18 +282,18 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
-    And the conversation title should be "<Contact1>"
+    And I see user name "<Contact1>" on Conversation view
     And User <Contact2> sends encrypted message "<Message1>" to user Myself
     And I tap new message notification "<Message1>"
     Then I see the message "<Message1>" in the conversation view
-    And the conversation title should be "<Contact2>"
+    And I see user name "<Contact2>" on Conversation view
     And I tap conversation name from top toolbar
     And I tap back button
     When I tap Back button from top toolbar
     And I tap on conversation name <Contact1>
     And User <Contact2> sends encrypted message "<Message2>" to user Myself
     And I see new message notification "<Message2>"
-    Then the conversation title should be "<Contact1>"
+    Then I see user name "<Contact1>" on Conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  | Message1 | Message2 |

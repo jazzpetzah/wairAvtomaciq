@@ -3,42 +3,55 @@ Feature: Unique Username
   @C352018 @staging
   Scenario Outline: Verify I see Unique User Name and AB name within Incoming Request and Conversation View in different condition
     Given I delete all contacts from Address Book
-    Given There are 5 users where <Name> is me
+    Given There are 4 users where <Name> is me
     Given I add <ContactInABEmail> having custom name "<ABNameEmail>" into Address Book with email
     Given I add <ContactInABPhone> having custom name "<ABNamePhone>" into Address Book with phone
     Given I add <ContactInABSameName> into Address Book with email
     Given User <ContactInABEmail> sets the unique username
     Given User <ContactInABPhone> sets the unique username
-    Given User <Connected> sets the unique username
-    Given Myself is connected to <Connected>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list
     # Connect in AB with Email
     When <ContactInABEmail> sent connection request to me
     And I tap on conversation name <WaitingMess1>
-    Then I see unique user name of user <ContactInABEmail> on Single pending incoming connection page
+    Then I see unique user name "<ContactINABEmailUniqueUsername>" on Single pending incoming connection page
     And I see user info "<ABNameEmail> in Address Book" on Single pending incoming connection page
-    When I tap connect button for user <ContactInABEmail> on Single pending incoming connection page
+    And I tap connect button for user <ContactInABEmail> on Single pending incoming connection page
+    And I see Conversations list with name <ContactInABEmail>
     # Connect in AB with Phone
     When <ContactInABPhone> sent connection request to me
     And I tap on conversation name <WaitingMess1>
-    And I see unique user name of user <ContactInABPhone> on Single pending incoming connection page
-    # And I see user info "<ABNamePhone> in Address Book" on Single pending incoming connection page
+    Then I see unique user name "<ContactInABPhoneUniqueUsername>" on Single pending incoming connection page
     And I tap connect button for user <ContactInABPhone> on Single pending incoming connection page
+    And I see Conversations list with name <ContactInABPhone>
     # Connect in AB with Same Name
     When <ContactInABSameName> sent connection request to me
     And I tap on conversation name <WaitingMess1>
-    Then I do not see unique user name of user <ContactInABSameName> on Single pending incoming connection page
+    Then I do not see unique user name "<ContactInABSameNameUniqueUserName>" on Single pending incoming connection page
     And I see user info "in Address Book" on Single pending incoming connection page
     And I tap connect button for user <ContactInABSameName> on Single pending incoming connection page
+    And I see Conversations list with name <ContactInABSameName>
+    # Conversation for AB with Email
+    When I tap on conversation name <ContactInABEmail>
+    And I see unique user name "<ContactINABEmailUniqueUsername>" on Conversation view
+    And I see user info "<ABNameEmail> in Address Book" on Conversation view
+    Then I navigate back from conversation
+    # Conversation for AB with Phone
+    When I tap on conversation name <ContactInABPhone>
+    And I see unique user name "<ContactInABPhoneUniqueUsername>" on Conversation view
+    Then I navigate back from conversation
+    # Conversation for AB with Same name
+    When I tap on conversation name <ContactInABSameName>
+    And I do not see unique user name "<ContactInABSameNameUniqueUserName>" on Conversation view
+    And I see user info "in Address Book" on Conversation view
 
     Examples:
-      | Name      | ContactInABEmail | ContactInABPhone | ContactInABSameName | Connected | WaitingMess1     | ABNameEmail | ABNamePhone |
-      | user1Name | user2Name        | user3Name        | user4Name           | user5Name | 1 person waiting | Email       | Phone       |
+      | Name      | ContactInABEmail | ContactInABPhone | ContactInABSameName | WaitingMess1     | ABNameEmail | ABNamePhone | ContactINABEmailUniqueUsername | ContactInABPhoneUniqueUsername | ContactInABSameNameUniqueUserName |
+      | user1Name | user2Name        | user3Name        | user4Name           | 1 person waiting | Email       | Phone       | user2UniqueUsername            | user3UniqueUsername            | user4UniqueUsername               |
 
   @C352019 @staging
-  Scenario Outline: (AN-4758) Verify number of common friends is shown on the incoming connection request
+  Scenario Outline: Verify number of common friends is shown on the incoming connection request
     Given I delete all contacts from Address Book
     Given There are 4 users where <Name> is me
     Given <Contact1> is connected to <Contact2>,<Contact3>
@@ -70,27 +83,30 @@ Feature: Unique Username
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
+    # Workaround to use Search to trigger user info update
+    Given I open Search UI
+    Given I tap Clear button
     # Contact In AB with Email
     When I tap on conversation name <ContactInABEmail>
-    Then I see user name of user <ContactInABEmail> on Single pending outgoing connection page
-    And I see unique user name of user <ContactInABEmail> on Single pending outgoing connection page
+    Then I see user name "<ContactInABEmail>" on Single pending outgoing connection page
+    And I see unique user name "<ContactInABEmailUniqueUsername>" on Single pending outgoing connection page
     And I see user info "<ABNameEmail> in Address Book" on Single pending outgoing connection page
     And I tap Back button
     # Contact In AB with Phone
     When I tap on conversation name <ContactInABPhone>
-    Then I see user name of user <ContactInABPhone> on Single pending outgoing connection page
-    And I see unique user name of user <ContactInABPhone> on Single pending outgoing connection page
+    Then I see user name "<ContactInABPhone>" on Single pending outgoing connection page
+    And I see unique user name "<ContactInABPhoneUniqueUsername>" on Single pending outgoing connection page
     # And I see user info "<ABNamePhone> in Address Book" on Single pending outgoing connection page
     And I tap Back button
     # Contact in AB with Same name
     When I tap on conversation name <ContactInABSameName>
-    Then I see user name of user <ContactInABSameName> on Single pending outgoing connection page
-    And I do not see unique user name of user <ContactInABSameName> on Single pending outgoing connection page
+    Then I see user name "<ContactInABSameName>" on Single pending outgoing connection page
+    And I do not see unique user name "<ContactInABSameNameUniqueUsername>" on Single pending outgoing connection page
     And I see user info "in Address Book" on Single pending outgoing connection page
 
     Examples:
-      | Name      | ContactInABEmail | ContactInABPhone | ContactInABSameName | ABNameEmail | ABNamePhone |
-      | user1Name | user2Name        | user3Name        | user4Name           | Email       | Phone       |
+      | Name      | ContactInABEmail | ContactInABPhone | ContactInABSameName | ABNameEmail | ABNamePhone | ContactInABEmailUniqueUsername | ContactInABPhoneUniqueUsername | ContactInABSameNameUniqueUsername |
+      | user1Name | user2Name        | user3Name        | user4Name           | Email       | Phone       | user2UniqueUsername            | user3UniqueUsername            | user4UnqiueUsername               |
 
   @C352021 @staging
   Scenario Outline: Verify number of common friends is shown on the outgoing connection request
@@ -118,27 +134,24 @@ Feature: Unique Username
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list
+    Given I wait until <Contact2> exists in backend search results
     When I open Search UI
     And I type user email "<Contact2Email>" in search field
     Then I do not see user <Contact2> in Search result list
     And I tap Clear button
     When I open Search UI
-    And Myself waits 20 seconds until <Contact2UniqueUsername> does not exist in backend search results
     And I type unique user name "<Contact2UniqueUsername>" in search field
     Then I see user <Contact2> in Search result list
     And I tap Clear button
     When I open Search UI
     And User <Contact2> changes the unique username to "<Contact3UniqueUsername>"
-    And Myself waits 20 seconds until <Contact3UniqueUsername> does not exist in backend search results
+    And I wait until <Contact3UniqueUsername> exists in backend search results
     And I type unique user name "<Contact3UniqueUsername>" in search field
     Then I see user <Contact2> in Search result list
-    And I tap Clear button
-    When I open Search UI
-    And I type unique user name "<Contact3UniqueUsername>" in search field
 
     Examples:
-      | Name      | Contact2  | Contact2Email | Contact2UniqueUsername |Contact3UniqueUsername |
-      | user1Name | user2Name | user2Email    | user2UniqueUsername    |user3UniqueUsername    |
+      | Name      | Contact2  | Contact2Email | Contact2UniqueUsername | Contact3UniqueUsername |
+      | user1Name | user2Name | user2Email    | user2UniqueUsername    | user3UniqueUsername    |
 
   @C352075 @staging
   Scenario Outline: Verify search shows correct user info for unconnected user
@@ -198,6 +211,9 @@ Feature: Unique Username
     Given Myself wait until 2 common contacts with <Contact1InABWithCF> exists in backend
     Given Myself wait until 2 common contacts with <Contact3WithCF> exists in backend
     Given Myself wait until 1 common contacts with <Contact5SameName> exists in backend
+    Given I wait until <Contact1InABWithCF> exists in backend search results
+    Given I wait until <Contact3WithCF> exists in backend search results
+    Given I wait until <Contact5SameName> exists in backend search results
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list
@@ -244,7 +260,7 @@ Feature: Unique Username
       | aabbcc1234567890          | True             |
       | aabbccCyrillicМоёИмя      | False            |
       | aabbccArabicاسمي          | False            |
-      | aabbccChinese我的名字      | False            |
+      | aabbccChinese我的名字         | False            |
       | aabbccSpecialChars%^&@#$  | False            |
       | aabbccLong123456789012345 | False            |
 
@@ -268,7 +284,7 @@ Feature: Unique Username
     And I try to set new random 2 chars unique username on Settings page, but change it to "<newUniqueUsername>" then
 
     Examples:
-      | Name      | User2Name | newUniqueUsername |
+      | Name      | User2Name | newUniqueUsername   |
       | user1Name | user2Name | user3UniqueUsername |
 
   @C352693 @staging
