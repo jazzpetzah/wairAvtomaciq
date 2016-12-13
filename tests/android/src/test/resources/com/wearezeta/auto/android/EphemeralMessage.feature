@@ -276,6 +276,7 @@ Feature: Ephemeral Message
     When I tap Ephemeral button from cursor toolbar
     And I set timeout to <EphemeralTimeout> on Extended cursor ephemeral overlay
     And I tap on text input
+    And I tap Ephemeral button from cursor toolbar
     And I see current ephemeral timeout is "<EphemeralTimeout>"
     And I enable Airplane mode on the device
     And I see No Internet bar in <NetworkTimeout> seconds

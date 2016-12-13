@@ -5,7 +5,9 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -14,6 +16,8 @@ public class BackendSelectPage extends AndroidPage {
 
     private static final By idBackendSelectDialog = By.id("select_dialog_listview");
 
+    private static final int DEFAULT_BACKEND_SELECTION_TIMEOUT_IN_SECONDS = 20;
+    private static final int DEFAULT_BACKEND_SELECTION_INTERVAL_IN_MILLISECONDS = 500;
     private static final Function<String, String> xpathBackendSelectButton = text -> String
             .format("//*[@value='%s']", text.toLowerCase());
 
@@ -30,6 +34,17 @@ public class BackendSelectPage extends AndroidPage {
     private void selectBackend() throws Exception {
         String backEndType = CommonUtils.getBackendType(getClass());
         By locator = By.xpath(xpathBackendSelectButton.apply(backEndType.toLowerCase()));
-        getElement(locator, String.format("Cannot select backend '%s'", backEndType), 10).click();
+        CommonUtils.waitUntilTrue(
+                DEFAULT_BACKEND_SELECTION_TIMEOUT_IN_SECONDS,
+                DEFAULT_BACKEND_SELECTION_INTERVAL_IN_MILLISECONDS,
+                () -> {
+                    Optional<WebElement> element = getElementIfDisplayed(locator, 1);
+                    if(element.isPresent()) {
+                        element.get().click();
+                        return false;
+                    }
+                    return true;
+                }
+        );
     }
 }
