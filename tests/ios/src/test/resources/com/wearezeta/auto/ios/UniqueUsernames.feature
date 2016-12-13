@@ -1,7 +1,7 @@
 Feature: Unique Usernames
 
-  @C352028 @staging
-  Scenario Outline: (ZIOS-7741) Verify autogeneration of a username for a user with latin characters only
+  @C352028 @regression
+  Scenario Outline: Verify autogeneration of a username for a user with latin characters only
     Given I see sign in screen
     Given I enter phone number for <Name>
     Given I enter activation code
@@ -438,7 +438,7 @@ Feature: Unique Usernames
       | Name      |
       | user1Name |
 
-  @C352048 @staging @fastLogin
+  @C352048 @regression @fastLogin
   Scenario Outline: Verify last username overwrites the previous one
     Given There are 2 users where <Name> is me
     Given User <Contact> sets the unique username
