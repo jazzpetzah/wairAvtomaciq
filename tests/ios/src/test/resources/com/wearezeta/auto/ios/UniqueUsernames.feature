@@ -441,3 +441,23 @@ Feature: Unique Usernames
     Examples:
       | Name      |
       | user1Name |
+
+  @C352053 @staging @fastLogin
+  Scenario Outline: Verify common friends are shown even don't share the AB
+    Given There are 4 users where <Name> is me
+    Given User <Contact> sets the unique username
+    Given <Contact> is connected to <Contact2>, <Contact3>
+    Given Myself is connected to <Contact2>, <Contact3>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I wait until <Contact> exists in backend search results
+    Given I wait until <Contact> has 2 common friends on the backend
+    Given I open search UI
+    Given I dismiss alert if visible
+    Then I verify correct details are shown for the found users
+      | Name                    | Details                                       |
+      | <Contact>               | @<ContactUniqueUserName> - 2 people in common |
+
+    Examples:
+      | Name      | Contact   | ContactUniqueUserName | Contact2  | Contact3  |
+      | user1Name | user2Name | user2UniqueUsername   | user3Name | user4Name |
