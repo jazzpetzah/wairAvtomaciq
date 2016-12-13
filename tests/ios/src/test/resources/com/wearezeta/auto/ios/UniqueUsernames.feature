@@ -547,7 +547,7 @@ Feature: Unique Usernames
     Given I add name <Contact2ABName> and phone <Contact2PhoneNumber> to Address Book
     Given I add name <Contact5WithSameNameInAB> and email <Contact5Email> to Address Book
     Given I restore Wire
-    Given I sign in using my email or phone number
+    Given I sign in using my email
     Given I see conversations list
     Given I wait until <Contact4WithCommonFriends> has 1 common friend on the backend
     Given I open search UI
