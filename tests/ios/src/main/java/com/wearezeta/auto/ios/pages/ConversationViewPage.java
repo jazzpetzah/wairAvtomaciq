@@ -16,6 +16,7 @@ import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces.FunctionFor2Parameters;
 import com.wearezeta.auto.common.driver.device_helpers.IOSSimulatorHelpers;
+import com.wearezeta.auto.ios.pages.details_overlay.BaseUserDetailsOverlay;
 import edu.emory.mathcs.backport.java.util.Arrays;
 import io.appium.java_client.MobileBy;
 import org.apache.commons.io.FilenameUtils;
@@ -26,8 +27,7 @@ import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
-
-public class ConversationViewPage extends IOSPage {
+public class ConversationViewPage extends BaseUserDetailsOverlay {
     private static final By nameConversationBackButton =
             MobileBy.AccessibilityId("ConversationBackButton");
 
@@ -229,12 +229,6 @@ public class ConversationViewPage extends IOSPage {
         super(lazyDriver);
     }
 
-    private void tapSendButton() throws Exception {
-        getElement(nameSendButton).click();
-        // Wait for animation
-        Thread.sleep(1000);
-    }
-
     private static String getDomainName(String url) {
         URI uri;
         try {
@@ -262,18 +256,6 @@ public class ConversationViewPage extends IOSPage {
         return isLocatorInvisible(locator);
     }
 
-    public void tapVideoCallButton() throws Exception {
-        getElement(xpathVideoCallButton).click();
-    }
-
-    public boolean isVideoCallButtonOnToolbarVisible() throws Exception {
-        return isLocatorDisplayed(xpathVideoCallButton);
-    }
-
-    public boolean isVideoCallButtonOnToolbarNotVisible() throws Exception {
-        return isLocatorInvisible(xpathVideoCallButton);
-    }
-
     public void returnToConversationsList() throws Exception {
         final Optional<WebElement> backBtn = getElementIfDisplayed(nameConversationBackButton);
         if (backBtn.isPresent()) {
@@ -282,18 +264,6 @@ public class ConversationViewPage extends IOSPage {
         } else {
             log.warn("Back button is not visible. Probably, the conversations list is already visible");
         }
-    }
-
-    public void tapAudioCallButton() throws Exception {
-        getElement(xpathAudioCallButton).click();
-    }
-
-    public boolean isAudioCallButtonOnToolbarVisible() throws Exception {
-        return isLocatorDisplayed(xpathAudioCallButton);
-    }
-
-    public boolean isAudioCallButtonOnToolbarNotVisible() throws Exception {
-        return isLocatorInvisible(xpathAudioCallButton);
     }
 
     public int getNumberOfMessageEntries() throws Exception {
@@ -391,7 +361,9 @@ public class ConversationViewPage extends IOSPage {
         }
         convoInput.sendKeys(message);
         if (shouldSend) {
-            tapSendButton();
+            tapButton("Send");
+            // Wait for animation
+            Thread.sleep(1000);
         }
     }
 
@@ -916,35 +888,26 @@ public class ConversationViewPage extends IOSPage {
         return false;
     }
 
-    private static By getViewButtonLocatorByName(String name) {
-        switch (name) {
-            case "Emoji Keyboard":
-            case "Text Keyboard":
+    @Override
+    protected By getButtonLocatorByName(String name) {
+        switch (name.toLowerCase()) {
+            case "emoji keyboard":
+            case "text keyboard":
                 return nameEmojiKeyboardButton;
-            case "Send Message":
+            case "send message":
+            case "send":
                 return nameSendButton;
-            case "Hourglass":
+            case "hourglass":
                 return nameHourglassButton;
-            case "Time Indicator":
+            case "time indicator":
                 return nameTimeIndicatorButton;
+            case "audio call":
+                return xpathAudioCallButton;
+            case "video call":
+                return xpathVideoCallButton;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", name));
         }
-    }
-
-    public boolean isViewButtonVisible(String name) throws Exception {
-        final By locator = getViewButtonLocatorByName(name);
-        return isLocatorDisplayed(locator);
-    }
-
-    public boolean isViewButtonInvisible(String name) throws Exception {
-        final By locator = getViewButtonLocatorByName(name);
-        return isLocatorInvisible(locator);
-    }
-
-    public void tapViewButton(String name) throws Exception {
-        final By locator = getViewButtonLocatorByName(name);
-        getElement(locator).click();
     }
 
     public void tapThisDeviceLink() throws Exception {

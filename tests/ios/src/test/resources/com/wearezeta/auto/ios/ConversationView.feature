@@ -426,7 +426,8 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact1>
     Then I see Upper Toolbar in the conversation view
-    And I do not see Calling buttons on Upper Toolbar
+    And I do not see Audio Call button on Upper Toolbar
+    And I do not see Video Call button on Upper Toolbar
 
     Examples:
       | Name      | Contact1  |
