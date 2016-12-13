@@ -23,6 +23,7 @@ Feature: Video Calling
   Scenario Outline: Verify accepting video call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
@@ -43,6 +44,7 @@ Feature: Video Calling
   Scenario Outline: Verify ignoring Video call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email

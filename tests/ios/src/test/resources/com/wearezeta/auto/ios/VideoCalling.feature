@@ -37,6 +37,7 @@ Feature: Video Calling
   Scenario Outline: Verify accepting video call
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -60,6 +61,7 @@ Feature: Video Calling
   Scenario Outline: Verify ignoring Video call
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -76,6 +78,7 @@ Feature: Video Calling
   Scenario Outline: Verify getting missed call indication when someone called
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -96,7 +99,9 @@ Feature: Video Calling
   Scenario Outline: Verify I can switch to another incoming audio call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given User <Contact1> sets the unique username
     Given <Contact1> starts instance using <VideoCallBackend>
+    Given User <Contact2> sets the unique username
     Given <Contact2> starts instance using <AudioCallBackend>
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -120,6 +125,7 @@ Feature: Video Calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given User Myself blocks user <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     And I do not see conversation <Contact> in conversations list
@@ -155,6 +161,8 @@ Feature: Video Calling
   Scenario Outline: Verify I can switch to another video call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
+    Given User <Contact> sets the unique username
+    Given User <Contact2> sets the unique username
     Given <Contact>,<Contact2> start instance using <VideoCallBackend>
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -178,6 +186,8 @@ Feature: Video Calling
   Scenario Outline: Verify video call continues after rejecting 2nd incoming video call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
+    Given User <Contact> sets the unique username
+    Given User <Contact2> sets the unique username
     Given <Contact>,<Contact2> starts instance using <VideoCallBackend>
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -239,6 +249,7 @@ Feature: Video Calling
   Scenario Outline: Verify finishing video call
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given <Contact> accepts next incoming video call automatically
     Given I sign in using my email or phone number

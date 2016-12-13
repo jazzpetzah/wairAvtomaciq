@@ -45,6 +45,7 @@ Feature: Voice Filters
   Scenario Outline: ZIOS-6904 Verify voice filter control is not dismissed if audio recording is in progress and other UI event happens
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given User <Contact1> sets the unique username
     Given <Contact1> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -73,6 +74,7 @@ Feature: Voice Filters
   Scenario Outline: ZIOS-6903 Voice Filters: Verify voice filter control is preserved if one has already recorded something
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given User <Contact1> sets the unique username
     Given <Contact1> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I see conversations list
