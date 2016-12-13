@@ -125,7 +125,6 @@ Feature: Settings
     And I tap Return button on the keyboard if visible
     Then I see alert contains text <ExpectedAlertText>
     And I accept alert
-    When I clear Name input field on Settings page
     And I set "<OneCharName>" value to Name input field on Settings page
     And I tap Return button on the keyboard
     Then I see alert contains text <ExpectedAlertText>
