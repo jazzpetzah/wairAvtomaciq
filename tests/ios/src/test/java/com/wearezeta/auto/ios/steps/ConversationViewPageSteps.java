@@ -3,7 +3,6 @@ package com.wearezeta.auto.ios.steps;
 import java.util.List;
 import java.util.Optional;
 
-import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.misc.ElementState;
 import cucumber.api.java.en.And;
@@ -118,7 +117,7 @@ public class ConversationViewPageSteps {
      */
     @And("^I tap (Send Message|Emoji Keyboard|Text Keyboard|Hourglass|Time Indicator) button in conversation view$")
     public void ITapConvoButton(String btnName) throws Exception {
-        getConversationViewPage().tapViewButton(btnName);
+        getConversationViewPage().tapButton(btnName);
     }
 
     /**
@@ -133,9 +132,9 @@ public class ConversationViewPageSteps {
     public void ISeeSendMessageButton(String shouldNotSee, String btnName) throws Exception {
         boolean result;
         if (shouldNotSee == null) {
-            result = getConversationViewPage().isViewButtonVisible(btnName);
+            result = getConversationViewPage().isButtonVisible(btnName);
         } else {
-            result = getConversationViewPage().isViewButtonInvisible(btnName);
+            result = getConversationViewPage().isButtonInvisible(btnName);
         }
         Assert.assertTrue(
                 String.format("'%s' button should be %s", btnName, (shouldNotSee == null) ? "visible" : "not visible"),
@@ -276,17 +275,13 @@ public class ConversationViewPageSteps {
     /**
      * Click call button to start an audio or video call
      *
-     * @param btnType either Audio or Video
+     * @param btnName either Audio or Video
      * @throws Exception
-     * @step. ^I tap (Audio|Video) Call button$
+     * @step. ^I tap (Audio Call|Video Call) button$$
      */
-    @When("^I tap (Audio|Video) Call button$")
-    public void ITapCallButton(String btnType) throws Exception {
-        if (btnType.equals("Audio")) {
-            getConversationViewPage().tapAudioCallButton();
-        } else {
-            getConversationViewPage().tapVideoCallButton();
-        }
+    @When("^I tap (Audio Call|Video Call) button$")
+    public void ITapCallButton(String btnName) throws Exception {
+        getConversationViewPage().tapButton(btnName);
     }
 
     /**
@@ -670,44 +665,16 @@ public class ConversationViewPageSteps {
      *
      * @param shouldNotSee equals to null if the shield should be visible
      * @param buttonName   Audio call, Video call or Calling for both buttons verification
-     * @step. ^I (do not )?see ([Aa]udio call|[Vv]ideo call|[Cc]alling) buttons? on [Uu]pper [Tt]oolbar$
+     * @step. ^I (do not )?see ([Aa]udio [Cc]all|[Vv]ideo [Cc]all) button on [Uu]pper [Tt]oolbar$$
      */
-    @Then("^I (do not )?see ([Aa]udio call|[Vv]ideo call|[Cc]alling) buttons? on [Uu]pper [Tt]oolbar$")
+    @Then("^I (do not )?see ([Aa]udio [Cc]all|[Vv]ideo [Cc]all) button on [Uu]pper [Tt]oolbar$")
     public void IDonotSeeCallingButtonsOnUpperToolbar(String shouldNotSee, String buttonName) throws Exception {
         if (shouldNotSee == null) {
-            switch (buttonName) {
-                case "Audio call":
-                    Assert.assertTrue("Audio call button is not visible on Upper Toolbar",
-                            getConversationViewPage().isAudioCallButtonOnToolbarVisible());
-                    break;
-                case "Video call":
-                    Assert.assertTrue("Video call button is not visible on Upper Toolbar",
-                            getConversationViewPage().isVideoCallButtonOnToolbarVisible());
-                    break;
-                case "Calling":
-                    Assert.assertTrue("Audio call button is not visible on Upper Toolbar",
-                            getConversationViewPage().isAudioCallButtonOnToolbarVisible());
-                    Assert.assertTrue("Video call button is not visible on Upper Toolbar",
-                            getConversationViewPage().isVideoCallButtonOnToolbarVisible());
-                    break;
-            }
+            Assert.assertTrue("'%s' button is not visible on Upper Toolbar",
+                    getConversationViewPage().isButtonVisible(buttonName));
         } else {
-            switch (buttonName) {
-                case "Audio call":
-                    Assert.assertTrue("Audio call button is visible on Upper Toolbar",
-                            getConversationViewPage().isAudioCallButtonOnToolbarNotVisible());
-                    break;
-                case "Video call":
-                    Assert.assertTrue("Video call button is visible on Upper Toolbar",
-                            getConversationViewPage().isVideoCallButtonOnToolbarNotVisible());
-                    break;
-                case "Calling":
-                    Assert.assertTrue("Audio call button is visible on Upper Toolbar",
-                            getConversationViewPage().isAudioCallButtonOnToolbarNotVisible());
-                    Assert.assertTrue("Video call button is visible on Upper Toolbar",
-                            getConversationViewPage().isVideoCallButtonOnToolbarNotVisible());
-                    break;
-            }
+            Assert.assertTrue("'%s' button should not be visible on Upper Toolbar",
+                    getConversationViewPage().isButtonInvisible(buttonName));
         }
     }
 
@@ -1294,9 +1261,9 @@ public class ConversationViewPageSteps {
     /**
      * Verify whether conversation view with particular participant(s) is visible
      *
-     * @step. ^I see (?:group |\s*)conversation with users? (.*)
      * @param participantNameAliases user names/aliases separated with comma
      * @throws Exception
+     * @step. ^I see (?:group |\s*)conversation with users? (.*)
      */
     @Then("^I see (?:group |\\s*)conversation with users? (.*)")
     public void ISeeConversationPageWithUsers(String participantNameAliases) throws Exception {
@@ -1307,6 +1274,40 @@ public class ConversationViewPageSteps {
                 String.format("Users '%s' are not displayed on Upper Toolbar", participantNameAliases),
                 getConversationViewPage().isUpperToolbarContainNames(participantNames)
         );
+    }
+
+    /**
+     * Verify user details on Conversation view page
+     *
+     * @param shouldNotSee equals to null if the corresponding details should be visible
+     * @param value        unique username or Address Book name
+     * @param fieldType    either name or email
+     * @throws Exception
+     * @step. ^I see (unique username|Address Book name|common friends count) (".*" |\s*)on Single user profile page$
+     */
+    @When("^I (do not )?see (unique username|Address Book name|common friends count) (\".*\" |\\s*)on Conversation view page$")
+    public void ISeeLabel(String shouldNotSee, String fieldType, String value) throws Exception {
+        value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.NAME_ALIAS);
+        value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
+        if (shouldNotSee == null) {
+            if (value.startsWith("\"")) {
+                value = value.trim().replaceAll("^\"|\"$", "");
+                Assert.assertTrue(String.format("'%s' field is expected to be visible", value),
+                        getConversationViewPage().isUserDetailVisible(fieldType, value));
+            } else {
+                Assert.assertTrue(String.format("'%s' field is expected to be visible", fieldType),
+                        getConversationViewPage().isUserDetailVisible(fieldType));
+            }
+        } else {
+            if (value.startsWith("\"")) {
+                value = value.trim().replaceAll("^\"|\"$", "");
+                Assert.assertTrue(String.format("'%s' field is expected to be invisible", value),
+                        getConversationViewPage().isUserDetailInvisible(fieldType, value));
+            } else {
+                Assert.assertTrue(String.format("'%s' field is expected to be invisible", fieldType),
+                        getConversationViewPage().isUserDetailInvisible(fieldType));
+            }
+        }
     }
 }
 

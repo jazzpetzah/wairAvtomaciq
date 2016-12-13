@@ -534,8 +534,8 @@ Feature: Unique Usernames
       | Name      | Contact   | ContactUniqueUserName | Contact2  | Contact3  |
       | user1Name | user2Name | user2UniqueUsername   | user3Name | user4Name |
 
-  @C352058 @addressbookStart @forceReset @torun
-  Scenario Outline: Verify connected user in 1-to-1 conversation view
+  @C352058 @addressbookStart @forceReset @staging
+  Scenario Outline: (ZIOS-7734) Verify connected user in 1-to-1 conversation view
     Given There are 7 users where <Name> is me
     Given Myself is connected to <Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact5WithSameNameInAB>,<Contact6Common>
     Given User <Contact3WithUniqueUserName> sets the unique username
@@ -550,30 +550,34 @@ Feature: Unique Usernames
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I wait until <Contact4WithCommonFriends> has 1 common friend on the backend
+    Given I open search UI
+    Given I accept alert if visible
+    Given I tap X button on Search UI page
     When I tap on contact name <Contact1WithABEmail>
-    And I see name "<Contact1WithABEmail>" on Single user profile page
-    Then I see Address Book name "<Contact1ABName>" on Single user profile page
-    And I do not see unique username on Single user profile page
+    # TODO: Remove this workaround after ZIOS-7734 is fixed
+    And I scroll to the top of the conversation
+    Then I see Address Book name "<Contact1ABName>" on Conversation view page
+    And I do not see unique username on Conversation view page
     When I navigate back to conversations list
     And I tap on contact name <Contact2WithABPhoneNumber>
-    Then I see name "<Contact2WithABPhoneNumber>" on Single user profile page
-    And I see Address Book name "<Contact2ABName>" on Single user profile page
+    And I scroll to the top of the conversation
+    Then I see Address Book name "<Contact2ABName>" on Conversation view page
     And I do not see unique username on Single user profile page
     When I navigate back to conversations list
     And I tap on contact name <Contact3WithUniqueUserName>
-    Then I see name "<Contact3WithUniqueUserName>" on Single user Pending outgoing connection page
-    And I see unique username "<Contact3UniqueUserName>" on Single user Pending outgoing connection page
+    And I scroll to the top of the conversation
+    Then I see unique username "<Contact3UniqueUserName>" on Conversation view page
     And I do not see Address Book name on Single user Pending outgoing connection page
     When I navigate back to conversations list
     And I tap on contact name <Contact4WithCommonFriends>
-    Then I see name "<Contact4WithCommonFriends>" on Single user Pending outgoing connection page
-    And I do not see unique username on Single user Pending outgoing connection page
-    And I see common friends count "1" on Single user Pending outgoing connection page
+    And I scroll to the top of the conversation
+    Then I do not see unique username on Conversation view page
+    And I do not see common friends count on Conversation view page
     When I navigate back to conversations list
     And I tap on contact name <Contact5WithSameNameInAB>
-    Then I see name "<Contact5WithSameNameInAB>" on Single user Pending outgoing connection page
-    And I do not see unique username on Single user Pending outgoing connection page
-    And I see Address Book name "" on Single user Pending outgoing connection page
+    And I scroll to the top of the conversation
+    Then I do not see unique username on Conversation view page
+    And I see Address Book name "" on Conversation view page
 
     Examples:
       | Name      | Contact1WithABEmail | Contact1ABName | Contact1Email | Contact2WithABPhoneNumber | Contact2ABName | Contact2PhoneNumber | Contact3WithUniqueUserName | Contact3UniqueUserName | Contact4WithCommonFriends | Contact5WithSameNameInAB | Contact5Email | Contact6Common |
