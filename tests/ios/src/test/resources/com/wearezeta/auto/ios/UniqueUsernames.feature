@@ -40,7 +40,7 @@ Feature: Unique Usernames
     Given I add name <Contact2ABName> and phone <Contact2PhoneNumber> to Address Book
     Given I add name <Contact5WithSameNameInAB> and email <Contact5Email> to Address Book
     Given I restore Wire
-    Given I sign in using my email or phone number
+    Given I sign in using my email
     Given I see conversations list
     Given I wait until <Contact1WithABEmail> exists in backend search results
     Given I wait until <Contact2WithABPhoneNumber> exists in backend search results
@@ -127,7 +127,7 @@ Feature: Unique Usernames
     Given I add name <Contact2ABName> and phone <Contact2PhoneNumber> to Address Book
     Given I add name <Contact5WithSameNameInAB> and email <Contact5Email> to Address Book
     Given I restore Wire
-    Given I sign in using my email or phone number
+    Given I sign in using my email
     Given I see conversations list
     Given I wait until <Contact1WithABEmail> exists in backend search results
     Given I wait until <Contact2WithABPhoneNumber> exists in backend search results
@@ -248,9 +248,12 @@ Feature: Unique Usernames
     Given I add name <Contact2ABName> and phone <Contact2PhoneNumber> to Address Book
     Given I add name <Contact5WithSameNameInAB> and email <Contact5Email> to Address Book
     Given I restore Wire
-    Given I sign in using my email or phone number
+    Given I sign in using my email
     Given I see conversations list
     Given I wait until <Contact4WithCommonFriends> has 1 common friend on the backend
+    Given I open search UI
+    Given I accept alert if visible
+    Given I tap X button on Search UI page
     When I tap on contact name <Contact1WithABEmail>
     And I open conversation details
     And I see name "<Contact1WithABEmail>" on Single user profile page
@@ -340,7 +343,7 @@ Feature: Unique Usernames
     Given I add name <Contact2ABName> and phone <Contact2PhoneNumber> to Address Book
     Given I add name <Contact5WithSameNameInAB> and email <Contact5Email> to Address Book
     Given I restore Wire
-    Given I sign in using my email or phone number
+    Given I sign in using my email
     Given I see conversations list
     Given I wait until <Contact1WithABEmail> exists in backend search results
     Given I wait until <Contact1WithABEmail> has 1 common friend on the backend
@@ -398,7 +401,7 @@ Feature: Unique Usernames
     Given I add name <Contact2ABName> and phone <Contact2PhoneNumber> to Address Book
     Given I add name <Contact5WithSameNameInAB> and email <Contact5Email> to Address Book
     Given I restore Wire
-    Given I sign in using my email or phone number
+    Given I sign in using my email
     Given I see conversations list
     Given I wait until <Contact1WithABEmail> exists in backend search results
     Given I wait until <Contact1WithABEmail> has 1 common friend on the backend
@@ -473,10 +476,13 @@ Feature: Unique Usernames
     Given I add name <Contact2ABName> and phone <Contact2PhoneNumber> to Address Book
     Given I add name <Contact5WithSameNameInAB> and email <Contact5Email> to Address Book
     Given I restore Wire
-    Given I sign in using my email or phone number
+    Given I sign in using my email
     Given I see conversations list
     Given I wait until <Contact4WithCommonFriends> has 1 common friend on the backend
     Given I wait until <Contact7Unconnected> has 1 common friend on the backend
+    Given I open search UI
+    Given I accept alert if visible
+    Given I tap X button on Search UI page
     When I swipe right on a <Contact1WithABEmail>
     Then I see Address Book name "<Contact1ABName>" on Conversation actions page
     And I do not see unique username on Conversation actions page
