@@ -270,8 +270,6 @@ Feature: Unique Username
     Examples:
       | Name      | User2Name | newUniqueUsername |
       | user1Name | user2Name | user3UniqueUsername |
-      | Name      | User2Name |
-      | user1Name | user2Name |
 
   @C352693 @staging
   Scenario Outline: Verify search by partial match of a user name (Bam and boleo for bamboleo e.g.) and search is not case-sensitive
