@@ -457,3 +457,53 @@ Feature: Unique Usernames
     Examples:
       | Name      | Contact   | ContactUsername     | NewContactUsername  |
       | user1Name | user2Name | user2UniqueUsername | user3UniqueUsername |
+
+  @C352061 @addressbookStart @forceReset @staging
+  Scenario Outline: Verify user info from Contact List->Options (swipe)
+    Given There are 8 users where <Name> is me
+    Given Myself is connected to <Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact5WithSameNameInAB>,<Contact6Common>
+    Given Myself sent connection request to <Contact7Unconnected>
+    Given User <Contact3WithUniqueUserName> sets the unique username
+    Given <Contact6Common> is connected to <Contact4WithCommonFriends>,<Contact7Unconnected>
+    Given Myself has group chat <GroupChatName> with <Contact1WithABEmail>,<Contact2WithABPhoneNumber>
+    Given I minimize Wire
+    Given I install Address Book Helper app
+    Given I launch Address Book Helper app
+    Given I add name <Contact1ABName> and email <Contact1Email> to Address Book
+    Given I add name <Contact2ABName> and phone <Contact2PhoneNumber> to Address Book
+    Given I add name <Contact5WithSameNameInAB> and email <Contact5Email> to Address Book
+    Given I restore Wire
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I wait until <Contact4WithCommonFriends> has 1 common friend on the backend
+    Given I wait until <Contact7Unconnected> has 1 common friend on the backend
+    When I swipe right on a <Contact1WithABEmail>
+    Then I see Address Book name "<Contact1ABName>" on Conversation actions page
+    And I do not see unique username on Conversation actions page
+    And I tap Cancel conversation action button
+    When I swipe right on a <Contact2WithABPhoneNumber>
+    Then I see Address Book name "<Contact2ABName>" on Conversation actions page
+    And I do not see unique username on Conversation actions page
+    And I tap Cancel conversation action button
+    When I swipe right on a <Contact3WithUniqueUserName>
+    Then I see unique username "<Contact3UniqueUserName>" on Conversation actions page
+    And I do not see Address Book name on Conversation actions page
+    And I tap Cancel conversation action button
+    When I swipe right on a <Contact4WithCommonFriends>
+    Then I do not see unique username on Conversation actions page
+    And I see common friends count "1" on Conversation actions page
+    And I tap Cancel conversation action button
+    When I swipe right on a <Contact5WithSameNameInAB>
+    Then I do not see unique username on Conversation actions page
+    And I see Address Book name "" on Conversation actions page
+    And I tap Cancel conversation action button
+    When I swipe right on a <Contact7Unconnected>
+    Then I see common friends count "1" on Conversation actions page
+    And I tap Cancel conversation action button
+    When I swipe right on a <GroupChatName>
+    Then I do not see Address Book name on Conversation actions page
+    And I do not see unique username on Conversation actions page
+
+    Examples:
+      | Name      | Contact1WithABEmail | Contact1ABName | Contact1Email | Contact2WithABPhoneNumber | Contact2ABName | Contact2PhoneNumber | Contact3WithUniqueUserName | Contact3UniqueUserName | Contact4WithCommonFriends | Contact5WithSameNameInAB | Contact5Email | Contact6Common | Contact7Unconnected | GroupChatName |
+      | user1Name | user2Name           | user2ABName    | user2Email    | user3Name                 | user3ABName    | user3PhoneNumber    | user4Name                  | user4UniqueUsername    | user5Name                 | user6Name                | user6Email    | user7Name      | user8Name           | Groupchat     |

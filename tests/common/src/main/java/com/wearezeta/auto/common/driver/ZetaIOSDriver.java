@@ -411,4 +411,12 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
             throw new WebDriverException(e);
         }
     }
+
+    public void dragFromToForDuration(FBDragArguments FBDragArguments) {
+        try {
+            fbDriverAPI.dragFromToForDuration("0", FBDragArguments);
+        } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
+            throw new WebDriverException(e);
+        }
+    }
 }

@@ -28,21 +28,22 @@ public class SketchPage extends IOSPage {
     private static final Random rand = new Random();
 
     public void sketchRandomLines() throws Exception {
-        final int startX = 10;
-        final int startY = 20;
+        final double startXPercent = 10.0;
+        final double startYPercent = 20.0;
         for (int i = 0; i < 2; i++) {
-            final int endX = startX + rand.nextInt(80);
-            final int endY = startY + rand.nextInt(30);
+            final double endXPercent = startXPercent + rand.nextInt(80);
+            final double endYPercent = startYPercent + rand.nextInt(30);
             if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-                IOSSimulatorHelpers.swipe(startX / 100.0, startY / 100.0, endX / 100.0, endY / 100.0);
+                IOSSimulatorHelpers.swipe(startXPercent / 100.0, startYPercent / 100.0,
+                        endXPercent / 100.0, endYPercent / 100.0);
             } else {
                 final Dimension screenSize = getDriver().manage().window().getSize();
-                ((FBElement)getElement(FBBy.AccessibilityId(nameStrMainWindow))).dragFromToForDuration(
+                getDriver().dragFromToForDuration(
                         new FBDragArguments(
-                                startX * screenSize.getWidth() / 100,
-                                startY * screenSize.getHeight() / 100,
-                                endX * screenSize.getWidth() / 100,
-                                endY * screenSize.getHeight() / 100,
+                                startXPercent * screenSize.getWidth() / 100,
+                                startYPercent * screenSize.getHeight() / 100,
+                                endXPercent * screenSize.getWidth() / 100,
+                                endYPercent * screenSize.getHeight() / 100,
                                 3)
                 );
             }
