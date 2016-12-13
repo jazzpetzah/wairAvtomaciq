@@ -4,9 +4,11 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
+import java.awt.image.BufferedImage;
 import java.util.concurrent.Future;
 
-public abstract class BasePendingOutgoingConnectionPage extends BaseUserDetailsOverlay {
+public abstract class BasePendingOutgoingConnectionPage extends BaseUserDetailsOverlay
+        implements IContainsProfilePicture {
     protected static final By xpathConnectOtherUserButton =
             By.xpath("(//XCUIElementTypeButton[@label='CONNECT'])[last()]");
 
@@ -25,5 +27,10 @@ public abstract class BasePendingOutgoingConnectionPage extends BaseUserDetailsO
         super.tapButton(name);
         // Wait for animation
         Thread.sleep(2000);
+    }
+
+    @Override
+    public BufferedImage getProfilePictureScreenshot() throws Exception {
+        return super.getProfilePictureScreenshot();
     }
 }

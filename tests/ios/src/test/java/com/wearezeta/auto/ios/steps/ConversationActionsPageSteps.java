@@ -84,4 +84,38 @@ public class ConversationActionsPageSteps {
         Assert.assertTrue(String.format("There is no conversation name %s in opened action menu.",
                 conversation), getPage().isVisibleForConversation(conversation));
     }
+
+    /**
+     * Verify user details on Single user profile page
+     *
+     * @param shouldNotSee equals to null if the corresponding details should be visible
+     * @param value        user unique username or Address Book name or common friends count
+     * @param fieldType    either name or email
+     * @throws Exception
+     * @step. I (do not )?see (unique username|Address Book name|common friends count) (".*" |\s*)on Conversation actions page
+     */
+    @When("^I (do not )?see (unique username|Address Book name|common friends count) (\".*\" |\\s*)on Conversation actions page$")
+    public void ISeeLabel(String shouldNotSee, String fieldType, String value) throws Exception {
+        value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.NAME_ALIAS);
+        value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
+        if (shouldNotSee == null) {
+            if (value.startsWith("\"")) {
+                value = value.trim().replaceAll("^\"|\"$", "");
+                Assert.assertTrue(String.format("'%s' field is expected to be visible", value),
+                        getPage().isUserDetailVisible(fieldType, value));
+            } else {
+                Assert.assertTrue(String.format("'%s' field is expected to be visible", fieldType),
+                        getPage().isUserDetailVisible(fieldType));
+            }
+        } else {
+            if (value.startsWith("\"")) {
+                value = value.trim().replaceAll("^\"|\"$", "");
+                Assert.assertTrue(String.format("'%s' field is expected to be invisible", value),
+                        getPage().isUserDetailInvisible(fieldType, value));
+            } else {
+                Assert.assertTrue(String.format("'%s' field is expected to be invisible", fieldType),
+                        getPage().isUserDetailInvisible(fieldType));
+            }
+        }
+    }
 }
