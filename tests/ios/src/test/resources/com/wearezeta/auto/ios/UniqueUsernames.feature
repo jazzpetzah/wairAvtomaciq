@@ -443,7 +443,7 @@ Feature: Unique Usernames
       | user1Name |
 
   @C352053 @staging @fastLogin
-  Scenario Outline: Verify common friends are shown even don't share the AB
+  Scenario Outline: Verify common friends are shown even I don't share the AB
     Given There are 4 users where <Name> is me
     Given User <Contact> sets the unique username
     Given <Contact> is connected to <Contact2>, <Contact3>
