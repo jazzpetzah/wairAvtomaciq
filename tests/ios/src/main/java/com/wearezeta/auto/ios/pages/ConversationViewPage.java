@@ -27,7 +27,6 @@ import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
-
 public class ConversationViewPage extends BaseUserDetailsOverlay {
     private static final By nameConversationBackButton =
             MobileBy.AccessibilityId("ConversationBackButton");
