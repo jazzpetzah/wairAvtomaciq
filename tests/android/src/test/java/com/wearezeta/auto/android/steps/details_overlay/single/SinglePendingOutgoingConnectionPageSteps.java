@@ -37,7 +37,7 @@ public class SinglePendingOutgoingConnectionPageSteps {
      * @step.^I( do not)? see (user name|unique user name|user info) \"(.*)\" on Single pending outgoing connection page$
      */
     @Then("^I( do not)? see (user name|unique user name|user info) \"(.*)\" on Single pending outgoing connection page$")
-    public void ISeeUserDat(String shouldNotSee, String type, String text) throws Exception {
+    public void ISeeUserData(String shouldNotSee, String type, String text) throws Exception {
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("%s should be visible", type),
                     getSinglePendingOutgoingConnectionPage().waitUntilUserDataVisible(type, text));

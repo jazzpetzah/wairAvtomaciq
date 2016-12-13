@@ -20,7 +20,7 @@ public class TabletOutgoingPendingConnectionPage extends AndroidTabletPage {
         return getAndroidOPCPage().waitUntilPageVisible();
     }
 
-    public boolean waitUntilNameVisible(ClientUser client) throws Exception {
-        return getAndroidOPCPage().waitUntilUserDataVisible("user name", client);
+    public boolean waitUntilNameVisible(String userNameAlias) throws Exception {
+        return getAndroidOPCPage().waitUntilUserDataVisible("user name", userNameAlias);
     }
 }
