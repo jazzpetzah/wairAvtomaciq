@@ -120,8 +120,9 @@ public class SearchPageSteps {
      * Support type partial words
      *
      * @param partialWords if not null, means only type the part of word[Start from index 0]
-     * @param firstOrLast if not null, has ("first" or "last"), what means what side of word will be used to take a part
-     * @param modifyString if not null, means that string should be modified
+     * @param firstOrLast non-null value defines whether character matches for the input should be counted in
+     *                    left-to-right direction or vice-versa
+     * @param modifyString  non-null value means that the string should be modified
      * @param whichCase has values "uppercase" or "lowercase" and means, what modification is need to be made
      * @param text         the text to type
      * @throws Exception
@@ -159,10 +160,9 @@ public class SearchPageSteps {
             }
         }
         if (modifyString != null) {
+            text = text.toLowerCase();
             if (whichCase.equals("uppercase")) {
                 text = text.toUpperCase();
-            } else {
-                text = text.toLowerCase();
             }
         }
         getSearchListPage().typeTextInPeopleSearch(text);
