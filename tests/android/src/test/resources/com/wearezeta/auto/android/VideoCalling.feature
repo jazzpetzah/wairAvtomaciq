@@ -4,6 +4,7 @@ Feature: VideoCalling
   Scenario Outline: Verify I can accept Video call with the app in the foreground
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -26,6 +27,7 @@ Feature: VideoCalling
   Scenario Outline: Verify I can decline Video call with the app in the foreground
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -44,6 +46,7 @@ Feature: VideoCalling
   Scenario Outline: Verify I can accept Video call from locked device
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -67,6 +70,7 @@ Feature: VideoCalling
   Scenario Outline: Verify I can accept video call after another incoming call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given Users <Contact1>,<Contact2> set the unique username
     Given <Contact1>,<Contact2> start instances using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -103,6 +107,7 @@ Feature: VideoCalling
   Scenario Outline: Verify I can decline Video call from the locked device
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -122,6 +127,7 @@ Feature: VideoCalling
   Scenario Outline: Verify I can start Video call from the conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -145,6 +151,7 @@ Feature: VideoCalling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given User Myself blocks user <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -161,6 +168,7 @@ Feature: VideoCalling
   Scenario Outline: Verify I can make a Video call one after another
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -190,6 +198,7 @@ Feature: VideoCalling
   Scenario Outline: Verify I can start Video call from Start UI
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -217,6 +226,7 @@ Feature: VideoCalling
   Scenario Outline: Verify I get missed call indication when someone called
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -237,6 +247,7 @@ Feature: VideoCalling
   Scenario Outline: Verify I can mute Video call
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -260,6 +271,7 @@ Feature: VideoCalling
   Scenario Outline: (AN-4545) Verify you cannot make audio call to user A while he makes video call
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -283,6 +295,7 @@ Feature: VideoCalling
   Scenario Outline: Verify I can start video call after another my call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given Users <Contact1>,<Contact2> set the unique username
     Given <Contact1>,<Contact2> start instances using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -323,6 +336,7 @@ Feature: VideoCalling
   Scenario Outline: Verify you cannot make video call to user A while he makes audio call
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -344,6 +358,7 @@ Feature: VideoCalling
   Scenario Outline: Verify I can disable video in Video call and enable it back
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -370,6 +385,7 @@ Feature: VideoCalling
   Scenario Outline: Verify that receiving ping, message or picture have not affect to ongoing call
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -395,6 +411,7 @@ Feature: VideoCalling
   Scenario Outline: Verify I can accept Video call from background
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -417,6 +434,7 @@ Feature: VideoCalling
   Scenario Outline: Verify video call is not terminated after putting client to background and restore
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -439,6 +457,7 @@ Feature: VideoCalling
   Scenario Outline: Verify video call is not terminated if I lock and unlock device
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -461,6 +480,7 @@ Feature: VideoCalling
   Scenario Outline: Verify video call is terminated after 1 minute if nobody responds
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -480,6 +500,7 @@ Feature: VideoCalling
   Scenario Outline: Verify I can decline Video call from background
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
