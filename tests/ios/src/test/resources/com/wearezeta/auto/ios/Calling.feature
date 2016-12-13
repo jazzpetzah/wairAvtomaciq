@@ -517,7 +517,7 @@ Feature: Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @fastLogin @consecutive_call
+  @fastLogin
   Scenario Outline: Make 1:1 call loop to AVS <CallBackend>
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -531,7 +531,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend  |
       | user1Name | user2Name | zcall        |
 
-  @fastLogin @consecutive_call @torun
+  @fastLogin @consecutive_call
   Scenario Outline: I receive 1:1 call loop from AVS <CallBackend>
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
