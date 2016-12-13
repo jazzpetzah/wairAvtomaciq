@@ -11,7 +11,6 @@ import com.wearezeta.auto.common.ZetaFormatter;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import com.wearezeta.auto.common.calling2.v1.model.Metrics;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -237,68 +236,107 @@ public class CallingSteps {
     @Then("^I call (\\d+) times for (\\d+) minutes with (.*)$")
     public void ICallXTimes(int times, int callDurationMinutes, String callees)
             throws Exception {
-        final int timeBetweenCall = 10;
-        final List<String> calleeList = commonCallingSteps.getUsersManager().splitAliases(callees);
         final Map<Integer, Exception> failures = new HashMap<>();
-        //final List<String> assertionErrorList = new ArrayList<>();
+        final List<Integer> callsWithoutMetricsData = new ArrayList<>();
+        arrayCallSetupTime.clear();
+        arrayCallEstabTime.clear();
         for (int i = 0; i < times; i++) {
-            LOG.info("\n\nSTARTING CALL " + i);
-            try {
-                pagesCollection.getPage(ConversationViewPage.class).tapAudioCallButton();
-                LOG.info("Pressing Audio button to start call");
-
-                commonCallingSteps.acceptNextCall(calleeList);
-                commonCallingSteps.verifyAcceptingCallStatus(calleeList, "active", 20);
-                LOG.info("All instances are active");
-
-                boolean isVisible = pagesCollection.getPage(CallingOverlayPage.class).isCallStatusLabelVisible();
-                if (!isVisible){
-                    failures.put(i, new CallIterationError(i,"Calling overlay should be visible"));
-                    continue;
-                }
-                LOG.info("Calling overlay is visible");
-
-                commonSteps.WaitForTime(callDurationMinutes * 60);
-
-                pagesCollection.getPage(CallingOverlayPage.class).tapButtonByName("Leave");
-
-                commonCallingSteps.verifyAcceptingCallStatus(calleeList, "destroyed", 20);
-                LOG.info("All instances are destroyed");
-
-                boolean isInvisible = pagesCollection.getPage(CallingOverlayPage.class).isCallStatusLabelInvisible();
-                if (!isInvisible){
-                    failures.put(i, new CallIterationError(i,"Calling overlay should be invisible"));
-                    continue;
-                }
-                LOG.info("Calling overlay is NOT visible");
-                LOG.info("CALL " + i + " SUCCESSFUL");
-                commonSteps.WaitForTime(timeBetweenCall);
-
-            } catch (Exception t) {
-                LOG.info("CALL " + i + " FAILED");
-                LOG.error("Can not stop waiting call " + i + " " + t);
-                try {
-                    pagesCollection.getPage(CallingOverlayPage.class).tapButtonByName("Leave");
-                    pagesCollection.getPage(ConversationViewPage.class).isAudioCallButtonOnToolbarVisible();
-                } catch (InterruptedException ex) {
-                    LOG.error("Can not stop call " + i + " " + ex);
-                }
-                failures.put(i, t);
-            }
-
+            makeSingleCall(callees,i,callDurationMinutes,failures, callsWithoutMetricsData);
         }
 
-        LOG.info(failures.size() + " failures happened during " + times
-                + " calls");
+        int sumCallSetupTime = arrayCallSetupTime.stream().reduce(0, Integer::sum);
+        int sumCallEstabTime = arrayCallEstabTime.stream().reduce(0, Integer::sum);
+
+        int avgCallSetupTime = 0;
+        int avgCallEstabTime = 0;
+        int successfulCallsCount = times - failures.size() - callsWithoutMetricsData.size();
+        if (successfulCallsCount > 0) {
+            avgCallSetupTime = sumCallSetupTime / successfulCallsCount;
+            avgCallEstabTime = sumCallEstabTime / successfulCallsCount;
+        }
+
+        createCallingReport(times, failures, callsWithoutMetricsData, avgCallSetupTime, avgCallEstabTime);
+
         failures.forEach((Integer i, Throwable t) -> {
             LOG.error(i + ": " + t.getMessage());
         });
 
-        for (Map.Entry<Integer, Exception> entrySet : failures.entrySet()) {
-            // will just throw the first exception to indicate failed calls in
-            // test results
-            throw entrySet.getValue();
+        if (!failures.isEmpty()) {
+            Assert.fail(formatFailuresList(failures));
         }
+    }
+
+    private void makeSingleCall(String callees, int numberOfCalls,int callDurationMinutes,
+                                final Map<Integer, Exception> failures, List<Integer> callsWithoutMetricsData) throws Exception {
+        final int timeBetweenCall = 10;
+        final List<String> calleeList = commonCallingSteps.getUsersManager().splitAliases(callees);
+
+        LOG.info("\n\nSTARTING CALL " + numberOfCalls);
+        try {
+            pagesCollection.getPage(ConversationViewPage.class).tapAudioCallButton();
+            LOG.info("Pressing Audio button to start call");
+
+            if (numberOfCalls == 0) {
+                pagesCollection.getCommonPage().acceptAlert();
+            }
+
+            commonCallingSteps.acceptNextCall(calleeList);
+            commonCallingSteps.verifyAcceptingCallStatus(calleeList, "active", 20);
+            LOG.info("All instances are active");
+
+            boolean isVisible = pagesCollection.getPage(CallingOverlayPage.class).isCallStatusLabelVisible();
+            if (!isVisible){
+                throw new CallIterationError(numberOfCalls,"Calling overlay should be visible");
+            }
+            LOG.info("Calling overlay is visible");
+
+            commonSteps.WaitForTime(callDurationMinutes * 60);
+
+            pagesCollection.getPage(CallingOverlayPage.class).tapButtonByName(CALLINGOVERLAY_LEAVE_BUTTON);
+
+            boolean isInvisible = pagesCollection.getPage(CallingOverlayPage.class).isCallStatusLabelInvisible();
+            if (!isInvisible){
+                throw new CallIterationError(numberOfCalls,"Calling overlay should be invisible");
+            }
+            LOG.info("Calling overlay is NOT visible");
+
+            commonCallingSteps.verifyAcceptingCallStatus(calleeList, "destroyed", 20);
+            LOG.info("All instances are destroyed");
+
+            for (Call call : commonCallingSteps.getIncomingCall(calleeList)) {
+                final Metrics metrics = call.getMetrics();
+                if (metrics == null) {
+                    LOG.info("Could not get metrics for this call.");
+                    callsWithoutMetricsData.add(numberOfCalls);
+                } else {
+                    arrayCallSetupTime.add(((int) metrics.getSetupTime()));
+                    arrayCallEstabTime.add(((int) metrics.getEstabTime()));
+                }
+            }
+            LOG.info(String.format("CALL %s SUCCESSFUL", numberOfCalls));
+            commonSteps.WaitForTime(timeBetweenCall);
+
+        } catch (InterruptedException ie)  {
+            Throwables.propagate(ie);
+        } catch (Exception t) {
+            LOG.info(String.format("CALL %s FAILED", numberOfCalls));
+            LOG.error(String.format("Can not stop waiting call %s because %s", numberOfCalls, t.getMessage()));
+            try {
+                pagesCollection.getPage(CallingOverlayPage.class).tapButtonByName(CALLINGOVERLAY_LEAVE_BUTTON);
+            }catch (Exception ex){
+                LOG.error(String.format("Can not stop call kit %s because %s", numberOfCalls, ex));
+                try{
+                   boolean callButtonVisible = pagesCollection.getPage(ConversationViewPage.class).isAudioCallButtonOnToolbarVisible();
+                    if (!callButtonVisible){
+                        throw new CallIterationError(numberOfCalls,"Calling button is not visible");
+                    }
+                } catch (Exception exe){
+                    LOG.error(String.format("Can not start a new call because %s", ex));
+                }
+            }
+            failures.put(numberOfCalls, t);
+        }
+
     }
 
     //save the setup time and estab time for every call to calculate the average time
@@ -324,9 +362,9 @@ public class CallingSteps {
         arrayCallEstabTime.clear();
 
         final Map<Integer, Exception> failures = new HashMap<>();
-        final List<Integer> noMetricsData = new ArrayList<>();
+        final List<Integer> callsWithoutMetricsData = new ArrayList<>();
         for (int i = 0; i < times; i++) {
-            receiveSingleCall(callees, i, appState, conversationName, callDurationMinutes, failures, noMetricsData);
+            receiveSingleCall(callees, i, appState, conversationName, callDurationMinutes, failures, callsWithoutMetricsData);
         }
 
         int sumCallSetupTime = arrayCallSetupTime.stream().reduce(0, Integer::sum);
@@ -334,31 +372,33 @@ public class CallingSteps {
 
         int avgCallSetupTime = 0;
         int avgCallEstabTime = 0;
-        int successfulCallsCount = times - failures.size() - noMetricsData.size();
+        int successfulCallsCount = times - failures.size() - callsWithoutMetricsData.size();
         if (successfulCallsCount > 0) {
            avgCallSetupTime = sumCallSetupTime / successfulCallsCount;
            avgCallEstabTime = sumCallEstabTime / successfulCallsCount;
         }
 
-        createCallingReport(times, failures, noMetricsData, avgCallSetupTime, avgCallEstabTime);
+        createCallingReport(times, failures, callsWithoutMetricsData, avgCallSetupTime, avgCallEstabTime);
 
         failures.forEach((Integer i, Throwable t) -> {
             LOG.error(i + ": " + t.getMessage());
         });
 
-        fail(formatFailuresList(failures));
+        if (!failures.isEmpty()) {
+            Assert.fail(formatFailuresList(failures));
+        }
     }
 
     // this file is needed to report the call stats via jenkins into a read only chat
     private static final String CALL_STATS_FILENAME = "multi_call_result.txt";
 
     private void createCallingReport(int timesOfCalls, final Map<Integer, Exception> failures,
-                                     final List<Integer> noMetricsData, int avgCallSetupTime,int avgCallEstabTime)
+                                     final List<Integer> callsWithoutMetricsData, int avgCallSetupTime,int avgCallEstabTime)
             throws Exception {
         String message = String.format("%s/%s calls succeeded. Got no metrics data from %s calls." +
                 " Average calculated from %s calls. average Call setup_time: %s ms , average Call estab_time: %s ms",
-                timesOfCalls - failures.size(), timesOfCalls, noMetricsData.size(),
-                timesOfCalls - failures.size()-noMetricsData.size(), avgCallSetupTime, avgCallEstabTime);
+                timesOfCalls - failures.size(), timesOfCalls, callsWithoutMetricsData.size(),
+                timesOfCalls - failures.size()-callsWithoutMetricsData.size(), avgCallSetupTime, avgCallEstabTime);
         LOG.info(message);
 
         Files.write(Paths.get(CommonUtils.getBuildPathFromConfig(CallingSteps.class), CALL_STATS_FILENAME),
@@ -391,7 +431,7 @@ public class CallingSteps {
     private static final String CALLKIT_ACCEPT_BUTTON = "Accept";
     private void receiveSingleCall(String callees, int numberOfCall, String appState, String conversationName,
                                                  int callDurationMinutes, final Map<Integer, Exception> failures,
-                                   List<Integer> noMetricsData)
+                                   List<Integer> callsWithoutMetricsData)
             throws Exception {
         final int timeBetweenCall = 10;
         final List<String> calleeList = commonCallingSteps.getUsersManager().splitAliases(callees);
@@ -407,8 +447,7 @@ public class CallingSteps {
 
             boolean isVisible = pagesCollection.getPage(CallKitOverlayPage.class).isVisible("Audio");
             if (!isVisible) {
-                failures.put(numberOfCall, new CallIterationError(numberOfCall, "Audio Call Kit overlay should be visible"));
-                return;
+                throw new CallIterationError(numberOfCall, "Audio Call Kit overlay should be visible");
             }
             LOG.info("Audio Call Kit overlay is visible");
 
@@ -427,8 +466,7 @@ public class CallingSteps {
             pagesCollection.getPage(CallingOverlayPage.class).tapButtonByName(CALLINGOVERLAY_LEAVE_BUTTON);
             boolean isNotVisible = pagesCollection.getPage(CallingOverlayPage.class).isCallStatusLabelInvisible();
             if (!isNotVisible) {
-                failures.put(numberOfCall, new CallIterationError(numberOfCall, "Audio Call overlay should be invisible"));
-                return;
+                throw new CallIterationError(numberOfCall, "Audio Call overlay should be invisible");
             }
             LOG.info("Calling overlay is NOT visible");
 
@@ -437,7 +475,7 @@ public class CallingSteps {
                 final Metrics metrics = call.getMetrics();
                 if (metrics == null) {
                     LOG.info("Could not get metrics for this call.");
-                    noMetricsData.add(1);
+                    callsWithoutMetricsData.add(numberOfCall);
                     continue;
                 }
                 arrayCallSetupTime.add(((int) metrics.getSetupTime()));
