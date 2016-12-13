@@ -5,6 +5,7 @@ Feature: Archive
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
     Given User Myself archives single user conversation <ArchivedUser>
+    Given User <ArchivedUser> sets the unique username
     Given <ArchivedUser> starts instance using <CallBackend>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
@@ -37,6 +38,7 @@ Feature: Archive
     Given Myself is connected to <ArchivedUser>
     Given User Myself silences single user conversation <ArchivedUser>
     Given User Myself archives single user conversation <ArchivedUser>
+    Given User <ArchivedUser> sets the unique username
     Given <ArchivedUser> starts instance using <CallBackend>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email

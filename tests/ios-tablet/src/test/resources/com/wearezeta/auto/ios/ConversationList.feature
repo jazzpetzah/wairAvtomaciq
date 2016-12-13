@@ -127,6 +127,7 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
     Given User Myself removes his avatar picture
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I rotate UI to portrait
     Given I Sign in on tablet using my email

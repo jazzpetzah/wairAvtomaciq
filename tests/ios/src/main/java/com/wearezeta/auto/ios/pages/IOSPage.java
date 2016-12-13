@@ -677,8 +677,7 @@ public abstract class IOSPage extends BasePage {
             }
             Thread.sleep((long) (MAX_EXISTENCE_DELAY_MS / iterationNumber));
             iterationNumber++;
-        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000 ||
-                iterationNumber <= MIN_EXISTENCE_ITERATIONS_COUNT);
+        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000);
         return Optional.empty();
     }
 
@@ -704,8 +703,7 @@ public abstract class IOSPage extends BasePage {
             }
             Thread.sleep((long) (MAX_EXISTENCE_DELAY_MS / iterationNumber));
             iterationNumber++;
-        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000 ||
-                iterationNumber <= MIN_EXISTENCE_ITERATIONS_COUNT);
+        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000);
         return Optional.empty();
     }
 
@@ -729,8 +727,7 @@ public abstract class IOSPage extends BasePage {
             }
             Thread.sleep((long) (MAX_EXISTENCE_DELAY_MS / iterationNumber));
             iterationNumber++;
-        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000 ||
-                iterationNumber <= MIN_EXISTENCE_ITERATIONS_COUNT);
+        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000);
         return result;
     }
 

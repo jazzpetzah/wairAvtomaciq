@@ -1026,7 +1026,10 @@ public class ConversationPage extends WebPage {
             if (!message.findElements(By.cssSelector(".text")).isEmpty()) {
                 String text = message.findElement(By.cssSelector(".text")).getText();
                 String time = message.findElement(By.cssSelector(".time")).getAttribute("data-timestamp");
-                String senderId = message.findElement(By.cssSelector("user-avatar")).getAttribute("user-id");
+                String senderId = "";
+                if(message.findElements(By.cssSelector("user-avatar")).size() > 0 ) {
+                    senderId = message.findElement(By.cssSelector("user-avatar")).getAttribute("user-id");
+                }
                 mappedMessages.add(new Message(text, senderId, Instant.ofEpochMilli(Long.parseLong(time))));
             }
         }

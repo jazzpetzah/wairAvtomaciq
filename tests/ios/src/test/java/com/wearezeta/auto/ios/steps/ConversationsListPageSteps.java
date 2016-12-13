@@ -9,7 +9,6 @@ import org.junit.Assert;
 
 import cucumber.api.java.en.*;
 
-import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.ios.pages.*;

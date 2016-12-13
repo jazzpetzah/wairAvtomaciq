@@ -42,7 +42,7 @@ Feature: Localization
     Given I am signed in properly
     When I switch language to <Language>
     And I see Contact list with name <Contact>
-    And I see a string <ConversationViewText> on the page
+    And I see a placeholder <InputAreaText> on the page
     When I open search by clicking the people button
     Then I see a placeholder <SearchPlaceHolder> on the page
     When I close People Picker
@@ -53,8 +53,8 @@ Feature: Localization
     And I see a conversation option <ConvOption4> on the page
 
     Examples:
-      | Login      | Password      | Name      | Contact   | Language | ConversationViewText | SearchPlaceHolder                | ConvOption1   | ConvOption2 | ConvOption3 | ConvOption4 |
-      | user1Email | user1Password | user1Name | user2Name | de       | HINZUGEFÜGT          | Namen oder E-Mail-Adresse suchen | Stummschalten | Archivieren | Löschen     | Blockieren  |
+      | Login      | Password      | Name      | Contact   | Language | InputAreaText           | SearchPlaceHolder                | ConvOption1   | ConvOption2 | ConvOption3 | ConvOption4 |
+      | user1Email | user1Password | user1Name | user2Name | de       | Schreibe eine Nachricht | Namen oder E-Mail-Adresse suchen | Stummschalten | Archivieren | Löschen     | Blockieren  |
 
   @C136458 @regression
   Scenario Outline: Verify support pages are opened in language <Language>

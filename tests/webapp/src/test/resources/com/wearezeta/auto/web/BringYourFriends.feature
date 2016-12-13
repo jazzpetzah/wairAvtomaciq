@@ -3,6 +3,7 @@ Feature: Bring Your Friends
   @C1727 @regression
   Scenario Outline: Invite people when you have no contacts
     Given There is 1 user where <Name> is me
+    Given User me changes unique username to <Name>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When I am signed in properly
@@ -44,6 +45,7 @@ Feature: Bring Your Friends
   @C1774 @regression
   Scenario Outline: Show invitation button when Gmail import has no suggestions
     Given There is 1 user where <Name> is me
+    Given User me changes unique username to <Name>
     Given I switch to sign in page
     Given I see Sign In page
     Given I Sign in using login <Email> and password <Password>

@@ -4,6 +4,7 @@ Feature: Archive
   Scenario Outline: Verify unarchive by receiving data
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
+    Given User <ArchivedUser> sets the unique username
     Given <ArchivedUser> starts instance using <CallBackend>
     Given User Myself archives single user conversation <ArchivedUser>
     Given I sign in using my email or phone number
@@ -34,6 +35,7 @@ Feature: Archive
   Scenario Outline: Verify unarchiving silenced conversation only by call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
+    Given User <ArchivedUser> sets the unique username
     Given <ArchivedUser> starts instance using <CallBackend>
     Given User Myself silences single user conversation <ArchivedUser>
     Given User Myself archives single user conversation <ArchivedUser>

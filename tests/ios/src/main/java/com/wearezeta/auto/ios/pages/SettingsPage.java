@@ -19,7 +19,7 @@ public class SettingsPage extends IOSPage {
 
     private static final By fbClassNameOptionsRoot = FBBy.className("XCUIElementTypeTable");
 
-    public static final By xpathSettingsPage = By.xpath("//XCUIElementTypeNavigationBar[@name='Settings']");
+    private static final By xpathSettingsPage = By.xpath("//XCUIElementTypeNavigationBar[@name='Settings']");
 
     private static final FunctionFor2Parameters<String, String, String> xpathStrSettingsValue =
             (itemName, expectedValue) -> String.format("%s/*[@value='%s']",
@@ -117,13 +117,14 @@ public class SettingsPage extends IOSPage {
 
     public void clearSelfName() throws Exception {
         final WebElement selfName = getElement(fbXpathSelfNameEditField);
-        this.tapByPercentOfElementSize((FBElement) selfName, 98, 50);
+        selfName.click();
         selfName.clear();
     }
 
     public void setSelfName(String newName) throws Exception {
         final WebElement selfName = getElement(fbXpathSelfNameEditField);
-        this.tapByPercentOfElementSize((FBElement) selfName, 98, 50);
+        selfName.click();
+        selfName.clear();
         selfName.sendKeys(newName);
     }
 

@@ -3,13 +3,14 @@ package com.wearezeta.auto.ios.pages;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
+import com.wearezeta.auto.ios.pages.details_overlay.BaseUserDetailsOverlay;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
-public class ConversationActionsPage extends IOSPage {
+public class ConversationActionsPage extends BaseUserDetailsOverlay {
     private static final By xpathActionsMenu = By.xpath("//XCUIElementTypeButton[@name='CANCEL']");
 
     private static final Function<String, String> xpathStrConfirmActionButtonByName = name ->
@@ -30,28 +31,29 @@ public class ConversationActionsPage extends IOSPage {
             FBBy.xpath("//XCUIElementTypeButton[@name='NO']");
 
     private static final Function<String, String> xpathStrMenuTitleByValue = value ->
-            String.format("//XCUIElementTypeStaticText[@name='name' and @value='%s']", value);
+            String.format("//XCUIElementTypeStaticText[@value='%s']", value);
 
     public ConversationActionsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
+    }
+
+    @Override
+    protected By getButtonLocatorByName(String name) {
+        return MobileBy.AccessibilityId(name.toUpperCase());
     }
 
     public boolean isMenuVisible() throws Exception {
         return isLocatorDisplayed(xpathActionsMenu);
     }
 
-    private static By getActionButtonByName(String buttonTitle) {
-        return MobileBy.AccessibilityId(buttonTitle.toUpperCase());
-    }
-
     public boolean isItemVisible(String buttonTitle) throws Exception {
-        return isLocatorDisplayed(getActionButtonByName(buttonTitle));
+        return isLocatorDisplayed(getButtonLocatorByName(buttonTitle));
     }
 
     public void tapMenuItem(String buttonTitle) throws Exception {
         // Wait for animation
         Thread.sleep(2000);
-        getElement(getActionButtonByName(buttonTitle)).click();
+        getElement(getButtonLocatorByName(buttonTitle)).click();
     }
 
     private static final long TRANSITION_DURATION_MS = 4500;
@@ -63,6 +65,9 @@ public class ConversationActionsPage extends IOSPage {
         switch (actionName.toLowerCase()) {
             case "cancel request":
                 locator = fbXpathYesActionButton;
+                break;
+            case "paste":
+                locator = By.xpath(xpathStrConfirmActionButtonByName.apply("OK"));
                 break;
             case "connect":
                 locator = FBBy.xpath(xpathStrConnectActionButtonByName.apply(actionName));

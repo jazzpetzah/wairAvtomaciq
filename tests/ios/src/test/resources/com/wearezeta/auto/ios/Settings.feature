@@ -125,7 +125,6 @@ Feature: Settings
     And I tap Return button on the keyboard if visible
     Then I see alert contains text <ExpectedAlertText>
     And I accept alert
-    When I clear Name input field on Settings page
     And I set "<OneCharName>" value to Name input field on Settings page
     And I tap Return button on the keyboard
     Then I see alert contains text <ExpectedAlertText>
@@ -265,6 +264,8 @@ Feature: Settings
     Given I input name <Name> and commit it
     Given I accept alert if visible
     Given I tap Keep This One button
+    # Wait for sync
+    Given I wait for 3 seconds
     Given I accept alert if visible
     Given User <Name> sets the unique username
     Given I tap Share Contacts button on Share Contacts overlay
