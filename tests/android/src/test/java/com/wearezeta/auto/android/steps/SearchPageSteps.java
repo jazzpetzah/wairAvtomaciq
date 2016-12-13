@@ -120,12 +120,18 @@ public class SearchPageSteps {
      * Support type partial words
      *
      * @param partialWords if not null, means only type the part of word[Start from index 0]
+     * @param firstOrLast if not null, has ("first" or "last"), what means what side of word will be used to take a part
+     * @param modifyString if not null, means that string should be modified
+     * @param whichCase has values "uppercase" or "lowercase" and means, what modification is need to be made
      * @param text         the text to type
      * @throws Exception
      * @step. ^I type (the first \d+ chars? of )?(user name|unique user name|user email|user phone number|group name) "(.*)" in search field$
      */
-    @When("^I type (the first \\d+ chars? of )?(user name|unique user name|user email|user phone number|group name) \"(.*)\" in search field$")
-    public void ITypeWordInSearchFiled(String partialWords, String type, String text) throws Exception {
+    @When("^I type (the (first|last) \\d+ chars? of )?(user name|unique user name|user email|user phone number|group " +
+            "name) \"(.*)\" (in (uppercase|lowercase) )?in search field$")
+    public void ITypeWordInSearchFiled(String partialWords, String firstOrLast, String type, String text, String
+            modifyString, String whichCase) throws
+            Exception {
         switch (type) {
             case "user name":
                 text = usrMgr.replaceAliasesOccurences(text, FindBy.NAME_ALIAS);
@@ -146,7 +152,18 @@ public class SearchPageSteps {
         if (partialWords != null) {
             int partialSize = Integer.parseInt(partialWords.replaceAll("[\\D]", ""));
             int length = text.length();
-            text = (partialSize < length) ? text.substring(0, partialSize) : text;
+            if (firstOrLast.equals("first")) {
+                text = (partialSize < length) ? text.substring(0, partialSize) : text;
+            } else {
+                text = (partialSize < length) ? text.substring(length - partialSize, length) : text;
+            }
+        }
+        if (modifyString != null) {
+            if (whichCase.equals("uppercase")) {
+                text = text.toUpperCase();
+            } else {
+                text = text.toLowerCase();
+            }
         }
         getSearchListPage().typeTextInPeopleSearch(text);
     }
