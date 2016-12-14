@@ -235,7 +235,7 @@ Feature: Unique Usernames
       | Name      | MyUniqueUsername    | Contact   | ExpectedText  |
       | user1Name | user1UniqueUsername | user2Name | Already taken |
 
-  @C352058 @addressbookStart @forceReset @staging
+  @C352058 @addressbookStart @forceReset @regression
   Scenario Outline: Verify 1-to-1 conversation details
     Given There are 7 users where <Name> is me
     Given Myself is connected to <Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact5WithSameNameInAB>,<Contact6Common>
@@ -329,8 +329,8 @@ Feature: Unique Usernames
       | Name      | Contact   | ContactWithUniqueUserName |
       | user1Name | user2Name | user2UniqueUsername       |
 
-  @C352052 @addressbookStart @forceReset @staging
-  Scenario Outline: (ZIOS-7756) Verify search for connected users returns proper results
+  @C352052 @addressbookStart @forceReset @regression
+  Scenario Outline: Verify search for connected users returns proper results
     Given There are 8 users where <Name> is me
     Given Myself is connected to <Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact5WithSameNameInAB>,<Contact6Common>,<Contact7WoCF>
     Given User <Contact3WithUniqueUserName> sets the unique username
@@ -514,7 +514,7 @@ Feature: Unique Usernames
       | Name      | Contact1WithABEmail | Contact1ABName | Contact1Email | Contact2WithABPhoneNumber | Contact2ABName | Contact2PhoneNumber | Contact3WithUniqueUserName | Contact3UniqueUserName | Contact4WithCommonFriends | Contact5WithSameNameInAB | Contact5Email | Contact6Common | Contact7Unconnected | GroupChatName |
       | user1Name | user2Name           | user2ABName    | user2Email    | user3Name                 | user3ABName    | user3PhoneNumber    | user4Name                  | user4UniqueUsername    | user5Name                 | user6Name                | user6Email    | user7Name      | user8Name           | Groupchat     |
 
-  @C352053 @staging @fastLogin
+  @C352053 @regression @fastLogin
   Scenario Outline: Verify common friends are shown even if I don't share the AB
     Given There are 4 users where <Name> is me
     Given User <Contact> sets the unique username
@@ -534,8 +534,8 @@ Feature: Unique Usernames
       | Name      | Contact   | ContactUniqueUserName | Contact2  | Contact3  |
       | user1Name | user2Name | user2UniqueUsername   | user3Name | user4Name |
 
-  @C352062 @addressbookStart @forceReset @staging
-  Scenario Outline: (ZIOS-7734) Verify connected user in 1-to-1 conversation view
+  @C352062 @regression @forceReset @staging
+  Scenario Outline: Verify connected user in 1-to-1 conversation view
     Given There are 7 users where <Name> is me
     Given Myself is connected to <Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact5WithSameNameInAB>,<Contact6Common>
     Given User <Contact3WithUniqueUserName> sets the unique username
