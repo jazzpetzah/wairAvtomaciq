@@ -85,7 +85,7 @@ Feature: Usernames
       | Email      | Password      | NameAlias | Name         | Username    |
       | user1Email | user1Password | user1Name | Jack Johnson | jackjohnson |
 
-  @C352242 @usernames @staging
+  @C352242 @usernames @mute
   Scenario Outline: Verify it's possible to take over previously released username
     Given There are 2 users where <Name> is me without unique username
     Given <Contact> has unique username
@@ -99,8 +99,7 @@ Feature: Usernames
     When I click ChooseYourOwn button on take over screen
     Then I see unique username starts with <Name> in account preferences
     When I change my unique username to previously remembered unique username
-    Then I see hint message for unique username saying <TakenHint>
-    When I open account in preferences
+    And I open account in preferences
     Then I do not see unique username is the remembered one in account preferences
     When User <Contact> changes his unique username to a random value
     And I change my unique username to previously remembered unique username
@@ -108,8 +107,8 @@ Feature: Usernames
     Then I see unique username is the remembered one in account preferences
 
     Examples:
-      | Email      | Password      | Contact   | Name      | TakenHint     |
-      | user1Email | user1Password | user2Name | user1Name | Already taken |
+      | Email      | Password      | Contact   | Name      |
+      | user1Email | user1Password | user2Name | user1Name |
 
   @C343176 @usernames @regression
   Scenario Outline: Verify Settings are opened on choosing generating your own username for existing user
@@ -153,6 +152,26 @@ Feature: Usernames
       | Email      | Password      | NameAlias | IncorrectName | Hint                                        |
       | user1Email | user1Password | user1Name |               | At least 2 characters. a—z, 0—9 and _ only. |
       | user1Email | user1Password | user1Name | a             | At least 2 characters. a—z, 0—9 and _ only. |
+
+  @C352078 @usernames @staging
+  Scenario Outline: Verifying impossibility to set username with more than 21 characters or illegal characters
+    Given There are 1 users where <NameAlias> is me
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+    And I am signed in properly
+    And I open preferences by clicking the gear button
+    Then I see unique username is <UniqueUsername> in account preferences
+    When I type <UniqueUsername> <IllegalCharacters> <LegalCharacters> into unique username field
+    When I change unique username to <UniqueUsername> <IllegalCharacters> <LegalCharacters>
+    And I see unique username is <UniqueUsername> <RemainingCharacters> in account preferences
+    When I refresh page
+    And I am signed in properly
+    And I open preferences by clicking the gear button
+    And I see unique username is <UniqueUsername> <RemainingCharacters> in account preferences
+
+    Examples:
+      | Email      | Password      | NameAlias | UniqueUsername      | IllegalCharacters    | LegalCharacters        | RemainingCharacters |
+      | user1Email | user1Password | user1Name | user1UniqueUsername | ÆéÿüíøšłźçñДаша 明麗 | 901234567890abcdefghij | 901234567890a       |
 
   @C352079 @usernames @regression
   Scenario Outline: Verify username is unique
