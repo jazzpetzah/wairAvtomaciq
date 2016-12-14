@@ -186,7 +186,7 @@ public class CommonIOSSteps {
                 "--disable-autocorrection",
                 // https://wearezeta.atlassian.net/browse/ZIOS-5259
                 "-AnalyticsUserDefaultsDisabledKey", "0"
-                //,"--debug-log-network"
+                // ,"--debug-log-network"
         ));
 
         if (additionalCaps.isPresent()) {
@@ -305,8 +305,8 @@ public class CommonIOSSteps {
         for (File dstFolder : dstFolders) {
             List<File> attachmentFolders = new ArrayList<>();
             findFolders(WDA_ATTACHMENTS_FOLDER_NAME, dstFolder, attachmentFolders);
-            attachmentFolders.stream().forEach(CommonIOSSteps::deleteFolderContents);
-            attachmentFolders.stream().forEach(CommonIOSSteps::setReadOnlyPermissions);
+            attachmentFolders.forEach(CommonIOSSteps::deleteFolderContents);
+            attachmentFolders.forEach(CommonIOSSteps::setReadOnlyPermissions);
         }
     }
 
