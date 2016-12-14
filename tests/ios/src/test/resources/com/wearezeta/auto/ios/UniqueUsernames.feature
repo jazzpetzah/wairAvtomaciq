@@ -186,15 +186,15 @@ Feature: Unique Usernames
     Given I select settings item Username
     When I attempt to enter <RegularLength> random latin alphanumeric chars as name on Unique Username page
     And I tap Save button on Unique Username page
-    Then I see new previously set unique username is displayed on Settings Page
+    Then I see previously set unique username is displayed on Settings Page
     When I select settings item Username
     And I attempt to enter <MinLength> random latin alphanumeric chars as name on Unique Username page
     And I tap Save button on Unique Username page
-    Then I see new previously set unique username is displayed on Settings Page
+    Then I see previously set unique username is displayed on Settings Page
     When I select settings item Username
     And I attempt to enter <MaxLength> random latin alphanumeric chars as name on Unique Username page
     And I tap Save button on Unique Username page
-    Then I see new previously set unique username is displayed on Settings Page
+    Then I see previously set unique username is displayed on Settings Page
 
     Examples:
       | Name      | RegularLength | MinLength | MaxLength |
@@ -213,7 +213,7 @@ Feature: Unique Usernames
     And I tap Save button on Unique Username page
     And I tap settings gear button
     And I select settings item Account
-    Then I see new previously set unique username is displayed on Settings Page
+    Then I see previously set unique username is displayed on Settings Page
 
     Examples:
       | Name      | NewNameLength |
@@ -591,14 +591,17 @@ Feature: Unique Usernames
     Given There are 2 users where <Name> is me
     Given Myself is connected to user2Name
     Given I sign in using my email or phone number
-    Given User Myself adds a new device <DeviceName> with label <DeviceLabel>
+    Given User Myself adds new device <DeviceName>
     Given I accept alert if visible
-    Given User Me changes the unique username to "<NewUniqueUsername>" via device <DeviceName>
     Given I tap settings gear button
     Given I accept alert if visible
-    Given I select settings item Account
-    When I see unique username user3UniqueUsername is displayed on Settings Page
+    When I select settings item Account
+    Then I see "<UniqueUsername>" unique username is displayed on Settings Page
+    And I tap Back navigation button on Settings page
+    When User Me changes the unique username to "<NewUniqueUsername>" via device <DeviceName>
+    And I select settings item Account
+    Then I see "<NewUniqueUsername>" unique username is displayed on Settings Page
 
     Examples:
-      | Name      | NewUniqueUsername   | DeviceName | DeviceLabel  |
-      | user1Name | user3UniqueUsername | Device1    | DeviceLabel1 |
+      | Name      | UniqueUsername      | NewUniqueUsername   | DeviceName |
+      | user1Name | user1UniqueUsername | user3UniqueUsername | Device1    |
