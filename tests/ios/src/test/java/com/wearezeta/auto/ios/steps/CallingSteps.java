@@ -255,7 +255,7 @@ public class CallingSteps {
             avgCallEstabTime = sumCallEstabTime / successfulCallsCount;
         }
 
-        createCallingReport(times, failures, callsWithoutMetricsData, avgCallSetupTime, avgCallEstabTime);
+        createCallingReport(times, failures, callsWithoutMetricsData, avgCallSetupTime, avgCallEstabTime, "MAKE");
 
         failures.forEach((Integer i, Throwable t) -> {
             LOG.error(i + ": " + t.getMessage());
@@ -378,7 +378,7 @@ public class CallingSteps {
            avgCallEstabTime = sumCallEstabTime / successfulCallsCount;
         }
 
-        createCallingReport(times, failures, callsWithoutMetricsData, avgCallSetupTime, avgCallEstabTime);
+        createCallingReport(times, failures, callsWithoutMetricsData, avgCallSetupTime, avgCallEstabTime,"RECEIVE");
 
         failures.forEach((Integer i, Throwable t) -> {
             LOG.error(i + ": " + t.getMessage());
@@ -393,11 +393,12 @@ public class CallingSteps {
     private static final String CALL_STATS_FILENAME = "multi_call_result.txt";
 
     private void createCallingReport(int timesOfCalls, final Map<Integer, Exception> failures,
-                                     final List<Integer> callsWithoutMetricsData, int avgCallSetupTime,int avgCallEstabTime)
+                                     final List<Integer> callsWithoutMetricsData, int avgCallSetupTime,
+                                     int avgCallEstabTime, String typeOfCall)
             throws Exception {
-        String message = String.format("%s/%s calls succeeded. Got no metrics data from %s calls." +
+        String message = String.format("%s CALL LOOP! %s/%s calls succeeded. Got no metrics data from %s calls." +
                 " Average calculated from %s calls. average Call setup_time: %s ms , average Call estab_time: %s ms",
-                timesOfCalls - failures.size(), timesOfCalls, callsWithoutMetricsData.size(),
+                typeOfCall, timesOfCalls - failures.size(), timesOfCalls, callsWithoutMetricsData.size(),
                 timesOfCalls - failures.size()-callsWithoutMetricsData.size(), avgCallSetupTime, avgCallEstabTime);
         LOG.info(message);
 
