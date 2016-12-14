@@ -310,11 +310,11 @@ Feature: Ephemeral Messages
     # Link Preview
     When User <Contact> switches user Myself to ephemeral mode with 15 seconds timeout
     And User <Contact> sends encrypted message "<Link>" to user Myself
-    And I wait for 8 seconds
+    And I wait for 12 seconds
     Then I do not see link preview container in the conversation view
     # Location
     When User <Contact> shares the default location to user Myself via device <DeviceName>
-    And I wait for 8 seconds
+    And I wait for 12 seconds
     Then I do not see location map container in the conversation view
 
     Examples:
