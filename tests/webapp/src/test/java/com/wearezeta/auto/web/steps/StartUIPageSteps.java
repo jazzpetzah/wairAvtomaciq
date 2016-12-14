@@ -103,6 +103,18 @@ public class StartUIPageSteps {
         }
     }
 
+    @When("^I( do not)? see user (.*) with username (.*) found in People Picker$")
+    public void ISeeUserFoundInStartUI(String donot, String name, String uniqueUsername) throws Exception {
+        name = context.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        uniqueUsername = context.getUserManager().replaceAliasesOccurences(uniqueUsername, FindBy.UNIQUE_USERNAME_ALIAS);
+
+        if (donot == null) {
+            Assert.assertTrue(context.getPagesCollection().getPage(StartUIPage.class).isUserFound(name, uniqueUsername));
+        } else {
+            Assert.assertTrue(context.getPagesCollection().getPage(StartUIPage.class).isUserNotFound(name, uniqueUsername));
+        }
+    }
+
     @When("^I remove user (.*) from suggestions in People Picker$")
     public void IClickRemoveButton(String contact) throws Exception {
         contact = context.getUserManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
