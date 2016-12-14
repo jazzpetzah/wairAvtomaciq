@@ -517,7 +517,7 @@ Feature: Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @fastLogin
+  @fastLogin @consecutive_call
   Scenario Outline: Make 1:1 call loop to AVS <CallBackend>
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
