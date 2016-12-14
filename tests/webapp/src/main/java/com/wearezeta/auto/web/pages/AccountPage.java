@@ -8,6 +8,10 @@ import java.util.Optional;
 import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
+import org.openqa.selenium.InvalidElementStateException;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
@@ -19,8 +23,11 @@ import com.wearezeta.auto.web.locators.WebAppLocators;
 
 import java.io.File;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
 
 public class AccountPage extends WebPage {
 
@@ -141,7 +148,7 @@ public class AccountPage extends WebPage {
         return uniqueUsernameError.getText();
     }
 
-    public String getUniqueUsernameHint() {
+    public String getUniqueUsernameHint() throws Exception {
         return uniqueUsernameHint.getText();
     }
 
