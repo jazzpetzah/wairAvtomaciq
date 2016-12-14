@@ -142,6 +142,13 @@ public class StartUIPage extends WebPage {
         searchInput.sendKeys(name);
     }
 
+    public void clearSearch() throws Exception {
+        if (!WebCommonUtils.isElementFocused(this.getDriver(), searchInput)) {
+            WebCommonUtils.setFocusToElement(this.getDriver(), searchInput);
+        }
+        searchInput.clear();
+    }
+
     public boolean isVisible() throws Exception {
         return DriverUtils
                 .waitUntilLocatorIsDisplayed(
