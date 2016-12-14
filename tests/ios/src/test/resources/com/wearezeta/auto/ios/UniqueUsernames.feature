@@ -360,7 +360,7 @@ Feature: Unique Usernames
       | <Contact1WithABEmail>        | @<Contact1UniqueUsername> - <Contact1ABName> in Address Book |
       | <Contact2WithABPhoneNumber>  | <Contact2ABName> in Address Book                             |
       | <Contact3WithUniqueUserName> | @<Contact3UniqueUserName>                                    |
-      | <Contact4WithCommonFriends>  | 1 person in common                                           |
+      | <Contact4WithCommonFriends>  |                                                              |
       | <Contact5WithSameNameInAB>   | in Address Book                                              |
       | <Contact7WoCF>               |                                                              |
 
@@ -527,8 +527,8 @@ Feature: Unique Usernames
     Given I open search UI
     Given I dismiss alert if visible
     Then I verify correct details are shown for the found users
-      | Name                    | Details                                       |
-      | <Contact>               | @<ContactUniqueUserName> - 2 people in common |
+      | Name      | Details                                       |
+      | <Contact> | @<ContactUniqueUserName> - 2 people in common |
 
     Examples:
       | Name      | Contact   | ContactUniqueUserName | Contact2  | Contact3  |
