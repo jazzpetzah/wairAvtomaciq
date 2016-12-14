@@ -461,7 +461,7 @@ Feature: Unique Usernames
       | Name      | Contact   | ContactUsername     | NewContactUsername  |
       | user1Name | user2Name | user2UniqueUsername | user3UniqueUsername |
 
-  @C352061 @addressbookStart @forceReset @staging
+  @C352061 @addressbookStart @forceReset @regression
   Scenario Outline: Verify user info from Contact List->Options (swipe)
     Given There are 8 users where <Name> is me
     Given Myself is connected to <Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact5WithSameNameInAB>,<Contact6Common>
@@ -497,7 +497,7 @@ Feature: Unique Usernames
     And I tap Cancel conversation action button
     When I swipe right on a <Contact4WithCommonFriends>
     Then I do not see unique username on Conversation actions page
-    And I see common friends count "1" on Conversation actions page
+    And I do not see common friends count on Conversation actions page
     And I tap Cancel conversation action button
     When I swipe right on a <Contact5WithSameNameInAB>
     Then I do not see unique username on Conversation actions page
