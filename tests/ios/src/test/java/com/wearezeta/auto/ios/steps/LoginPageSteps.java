@@ -146,7 +146,7 @@ public class LoginPageSteps {
                 getLoginPage().isSetEmailPasswordSuggestionVisible());
     }
 
-    private static final int BY_PHONE_NUMBER_LOGIN_PROBABILITY = 15;
+    private static final int BY_PHONE_NUMBER_LOGIN_PROBABILITY = 5;
     private static final Random rand = new Random();
 
     /**
