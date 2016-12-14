@@ -2,7 +2,6 @@ package com.wearezeta.auto.android.steps.details_overlay.group;
 
 import com.wearezeta.auto.android.pages.details_overlay.group.GroupInfoPage;
 import com.wearezeta.auto.android.steps.AndroidPagesCollection;
-import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import cucumber.api.java.en.Then;
@@ -114,6 +113,7 @@ public class GroupInfoPageSteps {
      */
     @Then("^I( do not)? see participant (.*) on Group info page$")
     public void ISeeContact(String shouldNotSee, String userName) throws Exception {
+        userName = usrMgr.findUserByNameOrNameAlias(userName).getName();
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("Participant %s is invisible", userName),
                     getGroupInfoPage().waitUntilParticipantVisible(userName));

@@ -41,6 +41,11 @@ public class ConversationOptionsMenuPage extends BaseUserDetailsOverlay {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
+    public boolean waitUntilConversationOptionsMenuItemInvisible(String itemName) throws Exception {
+        final By locator = getButtonLocator(itemName);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
     private By getButtonLocator(String itemName) throws Exception {
         switch (itemName.toUpperCase()) {
             case "CANCEL":

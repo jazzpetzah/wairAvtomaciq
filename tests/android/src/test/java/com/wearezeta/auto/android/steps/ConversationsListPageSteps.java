@@ -453,44 +453,6 @@ public class ConversationsListPageSteps {
     }
 
     /**
-     * Tap Delete on the delete confirmation alert
-     *
-     * @throws Exception
-     * @step. ^I tap DELETE on the confirm alert$
-     */
-    @When("^I tap DELETE on the confirm alert$")
-    public void ITapDELETEOnTheConfirmAlert() throws Exception {
-        getConversationsListPage().confirmDeleteConversationAlert();
-    }
-
-    /**
-     * Tap the leave as well during delete checkbox
-     *
-     * @throws Exception
-     * @step. ^I tap the Leave check box$
-     */
-    @When("^I tap the Leave check box$")
-    public void ITapLeave() throws Exception {
-        getConversationsListPage().checkLeaveWhileDeleteCheckbox();
-    }
-
-    /**
-     * Verifies if Leave check box is visible or not
-     *
-     * @param shouldNotSee equals to null if "do not" part does not exist
-     * @throws Exception
-     * @step. ^I( do not)? see the Leave check box$
-     */
-    @Then("^I( do not)? see the Leave check box$")
-    public void ISeeTheLeaveCheckBox(String shouldNotSee) throws Exception {
-        if (shouldNotSee == null) {
-            Assert.assertTrue(getConversationsListPage().isLeaveCheckBoxVisible());
-        } else {
-            Assert.assertFalse(getConversationsListPage().isLeaveCheckBoxVisible());
-        }
-    }
-
-    /**
      * Verifies that the three dot button to open the option menu is visible
      *
      * @throws Exception
