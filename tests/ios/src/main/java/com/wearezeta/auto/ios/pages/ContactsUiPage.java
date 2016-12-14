@@ -63,11 +63,7 @@ public class ContactsUiPage extends IOSPage {
 
     public void tapButton(String btnName) throws Exception {
         final By locator = getButtonByName(btnName);
-        if (locator.equals(nameXButton)) {
-            this.tapElementWithRetryIfStillDisplayed(locator);
-        } else {
-            getElement(locator).click();
-        }
+        getElement(locator).click();
     }
 
     public boolean isButtonVisible(String btnName) throws Exception {

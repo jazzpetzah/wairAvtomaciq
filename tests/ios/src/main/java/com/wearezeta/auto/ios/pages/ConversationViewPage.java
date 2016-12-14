@@ -288,6 +288,8 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
         final FBElement inputField = (FBElement) getElement(fbNameConversationInput);
         if (isLongTap) {
             inputField.longTap();
+            // Wait for animation
+            Thread.sleep(2000);
         } else {
             inputField.click();
         }
