@@ -323,7 +323,7 @@ Feature: Unique Usernames
     When I type "<ContactWithUniqueUserName>" in Search UI input field
     Then I see the conversation "<Contact>" exists in Search results
     When I type first 6 letter of user name "<ContactWithUniqueUserName>" into cleared Search UI input field
-    And I see the conversation "<Contact>" exists in Search results
+    And I see the conversation "<Contact>" does not exist in Search results
 
     Examples:
       | Name      | Contact   | ContactWithUniqueUserName |
