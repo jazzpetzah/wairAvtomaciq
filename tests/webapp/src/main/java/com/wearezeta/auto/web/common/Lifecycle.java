@@ -250,7 +250,6 @@ public class Lifecycle {
         profile.setPreference("signon.rememberSignons", false);
         profile.setPreference("signon.storeWhenAutocompleteOff", false);
         capabilities.setCapability("firefox_profile", profile);
-        capabilities.setCapability("marionette", true);
     }
 
     private static void setCustomSafariProfile(DesiredCapabilities capabilities) {
