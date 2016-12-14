@@ -387,7 +387,7 @@ Feature: Unique Usernames
       | user1Name | داريا       | @darya     |
       | user1Name | 明麗          | @mingli    |
 
-  @C352049 @addressbookStart @forceReset @staging
+  @C352049 @addressbookStart @forceReset @regression
   Scenario Outline: Verify search for unconnected users returns proper results
     Given There are 8 users where <Name> is me
     Given Myself is connected to <Contact6Common>
