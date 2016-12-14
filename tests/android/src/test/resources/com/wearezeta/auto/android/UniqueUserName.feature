@@ -313,3 +313,34 @@ Feature: Unique Username
     Examples:
       | Name      | Contact2  | NameFirstPartCount | NameLastPartCount | Contact2UniqueUsername |
       | user1Name | user2Name | 6                  | 6                 | user2UniqueUsername    |
+
+  @C352707 @staging
+  Scenario Outline: Verify usernames in Group Participant view for connected user
+    Given I delete all contacts from Address Book
+    Given There are 4 users where <Name> is me
+    Given I add <ContactInABEmail> having custom name "<ABNameEmail>" into Address Book with email
+    Given I add <ContactInABPhone> having custom name "<ABNamePhone>" into Address Book with phone
+    Given I add <ContactInABSameName> into Address Book with email
+    Given User <ContactInABEmail> sets the unique username
+    Given User <ContactInABPhone> sets the unique username
+    Given Myself is connected to <ContactInABEmail>,<ContactInABPhone>,<ContactInABSameName>
+    Given Myself has group chat <GroupChatName> with <ContactInABEmail>,<ContactInABPhone>,<ContactInABSameName>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with name <GroupChatName>
+    Given I tap on conversation name <GroupChatName>
+    Given I tap conversation name from top toolbar
+    When I tap on contact <ContactInABEmail> on Group info page
+    Then I see unique user name "<ContactINABEmailUniqueUsername>" on Group connected user details page
+    And I see user info "<ABNameEmail> in Address Book" on Group connected user details page
+    And I tap Back button
+    When I tap on contact <ContactInABPhone> on Group info page
+    Then I see unique user name "<ContactInABPhoneUniqueUsername>" on Group connected user details page
+    And I tap Back button
+    When I tap on contact <ContactInABSameName> on Group info page
+    Then I do not see unique user name "<ContactInABSameNameUniqueUserName>" on Group connected user details page
+    And I see user info "in Address Book" on Group connected user details page
+
+    Examples:
+      | Name      | ContactInABEmail | ContactInABPhone | ContactInABSameName | ABNameEmail | ABNamePhone | ContactINABEmailUniqueUsername | ContactInABPhoneUniqueUsername | ContactInABSameNameUniqueUserName | GroupChatName |
+      | user1Name | user2Name        | user3Name        | user4Name           | Email       | Phone       | user2UniqueUsername            | user3UniqueUsername            | user4UniqueUsername               | UserNameGroup |
