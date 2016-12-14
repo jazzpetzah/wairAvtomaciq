@@ -19,14 +19,9 @@ public class PasswordChangeSteps {
 
     @SuppressWarnings("unused")
     private static final Logger log = ZetaLogger.getLog(PasswordChangeSteps.class.getSimpleName());
-
     private static final int VISIBILITY_TIMEOUT_SECONDS = 15;
-
+    
     private final TestContext context;
-
-    public PasswordChangeSteps() {
-        this.context = new TestContext();
-    }
 
     public PasswordChangeSteps(TestContext context) {
         this.context = context;

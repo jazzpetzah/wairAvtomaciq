@@ -67,11 +67,7 @@ public class VoiceFiltersOverlay extends IOSPage {
 
     public void tapButton(String name) throws Exception {
         final By locator = getButtonLocatorByName(name);
-        if (locator.equals(nameConfirmRecordButton)) {
-            this.tapAtTheCenterOfElement((FBElement) getElement(fbNameConfirmRecordButton));
-        } else {
-            getElement(locator).click();
-        }
+        getElement(locator).click();
     }
 
     public boolean isButtonVisible(String name) throws Exception {

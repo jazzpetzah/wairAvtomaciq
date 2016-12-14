@@ -18,10 +18,6 @@ public class BringYourFriendsPopoverPageSteps {
     private String invitationLink = null;
     private final TestContext context;
 
-    public BringYourFriendsPopoverPageSteps() {
-        this.context = new TestContext();
-    }
-
     public BringYourFriendsPopoverPageSteps(TestContext context) {
         this.context = context;
     }

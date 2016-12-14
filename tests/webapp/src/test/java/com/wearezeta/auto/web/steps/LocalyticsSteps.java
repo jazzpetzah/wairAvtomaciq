@@ -24,10 +24,6 @@ public class LocalyticsSteps {
 
     private int rememberedEvents = -1;
 
-    public LocalyticsSteps() {
-        this.context = new TestContext();
-    }
-
     public LocalyticsSteps(TestContext context) {
         this.context = context;
     }

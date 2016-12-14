@@ -42,10 +42,6 @@ public class ContactListPageSteps {
 
     private final TestContext context;
 
-    public ContactListPageSteps() {
-        this.context = new TestContext();
-    }
-
     public ContactListPageSteps(TestContext context) {
         this.context = context;
     }

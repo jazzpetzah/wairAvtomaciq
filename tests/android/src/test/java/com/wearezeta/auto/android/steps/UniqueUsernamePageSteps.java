@@ -1,15 +1,21 @@
 package com.wearezeta.auto.android.steps;
 
 import com.wearezeta.auto.android.pages.UniqueUsernamePage;
-import cucumber.api.java.en.And;
+import com.wearezeta.auto.common.CommonSteps;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import cucumber.api.java.en.Then;
 import org.junit.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+
 public class UniqueUsernamePageSteps {
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
+
+    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+    private final CommonSteps commonSteps = CommonSteps.getInstance();
 
     private UniqueUsernamePage getUniqueUsernamePage() throws Exception {
         return pagesCollection.getPage(UniqueUsernamePage.class);
@@ -21,8 +27,9 @@ public class UniqueUsernamePageSteps {
      * @param shouldNotSee null if should see
      * @return true if visible
      * @throws Exception
+     * @step. ^I( do not)? see [Uu]nique [Uu]sername edit field on Settings page$
      */
-    @Then("^I(do not)? see username edit field on Settings page$")
+    @Then("^I( do not)? see [Uu]nique [Uu]sername edit field on Settings page$")
     public void iSeeUsernameEdit(String shouldNotSee) throws Exception {
         if (shouldNotSee == null) {
             Assert.assertTrue("Username edit is not visible", getUniqueUsernamePage().isUsernameEditVisible());
@@ -32,13 +39,13 @@ public class UniqueUsernamePageSteps {
     }
 
     /**
-     * Enter username and check if there is error with specific message
+     * Enter unique username and check if there is error with specific message
      *
      * @param usernameDatatable datatable (| UsernameTyped | DisplayedUsername |), that provides testing data
      * @throws Exception
-     * @step. ^I enter new username on Settings page, according to datatable$
+     * @step. ^I enter new [Uu]nique [Uu]sername on Settings page, according to datatable$
      */
-    @Then("^I enter new username on Settings page, according to datatable$")
+    @Then("^I enter new [Uu]nique [Uu]sername on Settings page, according to datatable$")
     public void iEnterNewUsernameOnSettingsPageAccordingToDatatable(List<UsernameDatatable> usernameDatatable) throws
             Exception {
         final List<String> assertionErrorList = new ArrayList<>();
@@ -59,6 +66,47 @@ public class UniqueUsernamePageSteps {
                 Assert.fail(assertionErrorList.get(0));
             }
             Assert.fail(String.join("\n", assertionErrorList));
+        }
+    }
+
+    /**
+     * Enter username and try to save it
+     *
+     * @param username username to type
+     * @throws Exception
+     * @step. ^I set new [Uu]nique [Uu]sername "(.*)" on Settings page$
+     */
+    @Then("^I set new [Uu]nique [Uu]sername \"(.*)\" on Settings page$")
+    public void iEnterNewUsernameOnSettingsPage(String username) throws Exception {
+        username = usrMgr.replaceAliasesOccurences(username, FindBy.NAME_ALIAS);
+        username = usrMgr.replaceAliasesOccurences(username, FindBy.UNIQUE_USERNAME_ALIAS);
+        UniqueUsernamePage uniqueUsernamePage = getUniqueUsernamePage();
+        uniqueUsernamePage.enterNewUsername(username);
+        uniqueUsernamePage.tapOkButton();
+    }
+
+
+    /**
+     * Enter random username and try to save it
+     *
+     * @param usernameSize amount of chars, that new username should have
+     * @throws Exception
+     * @step. ^I try to set new random (\d+) chars [Uu]nique [Uu]sername on Settings page, but change it to "(.*)
+     *          then$"
+     */
+    @Then("^I try to set new random (\\d+) chars [Uu]nique [Uu]sername on Settings page, but change it to \"(.*)\" " +
+            "then$")
+    public void iTryToEnterNewRandomUsernameOnSettingsPageButSaveAnotherOne(int usernameSize, String uniqueUsername)
+            throws Exception {
+        try {
+            UniqueUsernamePage uniqueUsernamePage = getUniqueUsernamePage();
+            uniqueUsernamePage.enterNewRandomUsername(usernameSize);
+            uniqueUsernamePage.tapOkButton();
+            Assert.assertTrue("Username edit is visible", getUniqueUsernamePage().isUsernameEditInvisible());
+        } finally {
+            uniqueUsername = usrMgr.replaceAliasesOccurences(uniqueUsername,
+                    FindBy.UNIQUE_USERNAME_ALIAS);
+            commonSteps.IChangeUniqueUsername("Myself", uniqueUsername);
         }
     }
 

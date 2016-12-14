@@ -7,6 +7,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given <Contact1> has a name <Contact1NewName>
+    Given User <Contact1> sets the unique username
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -15,12 +16,12 @@ Feature: People View
     When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     And I tap on contact <Contact1NewName> on Group info page
-    Then I see user name of user <Contact1> on Group connected user details page
-    And I see unique user name of user <Contact1> on Group connected user details page
+    Then I see user name "<Contact1>" on Group connected user details page
+    And I see unique user name "<Contact1UniqueUsername>" on Group connected user details page
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName   | Picture                      | Contact1NewName   |
-      | user1Name | user2Name | user3Name | GroupInfoCheck2 | aqaPictureContact600_800.jpg | aqaPictureContact |
+      | Name      | Contact1  | Contact2  | GroupChatName   | Picture                      | Contact1NewName   | Contact1UniqueUsername |
+      | user1Name | user2Name | user3Name | GroupInfoCheck2 | aqaPictureContact600_800.jpg | aqaPictureContact | user2UniqueUsername    |
 
   @C685 @regression @rc @legacy
   Scenario Outline: Leave group conversation
@@ -123,7 +124,7 @@ Feature: People View
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I tap conversation name from top toolbar
-    And I see user name of user <Contact> on Single connected user details page
+    And I see user name "<Contact>" on Single connected user details page
     And I tap open menu button on Single connected user details page
     Then I see BLOCK button on Conversation options menu overlay page
     And I see MUTE button on Conversation options menu overlay page
@@ -164,7 +165,7 @@ Feature: People View
     When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     And I tap on contact <Contact2> on Group info page
-    Then I see user name of user <Contact2> on Group unconnected user details page
+    Then I see user name "<Contact2>" on Group unconnected user details page
     When I tap on +connect button on Group unconnected user details page
     And I tap on connect button on Group unconnected user details page
     And I tap on contact <Contact2> on Group info page
@@ -211,6 +212,7 @@ Feature: People View
   Scenario Outline: Start 1to1 conversation from participants view
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to myself,<Contact2>
+    Given User <Contact1> sets the unique username
     Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -218,30 +220,31 @@ Feature: People View
     When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     And I tap on contact <Contact1> on Group info page
-    Then I see user name of user <Contact1> on Group connected user details page
+    Then I see user name "<Contact1>" on Group connected user details page
     When I tap on open conversation button on Group connected user details page
     And I tap conversation name from top toolbar
-    Then I see user name of user <Contact1> on Single connected user details page
-    And I see unique user name of user <Contact1> on Single connected user details page
+    Then I see user name "<Contact1>" on Single connected user details page
+    And I see unique user name "<Contact1UniqueUsername>" on Single connected user details page
     And I tap back button
     And I see conversation view
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName |
-      | user1Name | user2Name | user3Name | GroupChat     |
+      | Name      | Contact1  | Contact2  | GroupChatName | Contact1UniqueUsername |
+      | user1Name | user2Name | user3Name | GroupChat     | user2UniqueUsername    |
 
   @C689 @regression @rc
   Scenario Outline: Check contact personal info in one to one conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I tap conversation name from top toolbar
-    Then I see user name of user <Contact> on Group connected user details page
-    And I see unique user name of user <Contact> on Group connected user details page
+    Then I see user name "<Contact>" on Single connected user details page
+    And I see unique user name "<ContactUniqueUsername>" on Single connected user details page
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact   | ContactUniqueUsername |
+      | user1Name | user2Name | user2UniqueUsername   |

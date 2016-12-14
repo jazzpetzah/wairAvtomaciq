@@ -12,10 +12,6 @@ public class DeviceDetailPopoverPageSteps {
 
     private final TestContext context;
 
-    public DeviceDetailPopoverPageSteps() {
-        this.context = new TestContext();
-    }
-
     public DeviceDetailPopoverPageSteps(TestContext context) {
         this.context = context;
     }

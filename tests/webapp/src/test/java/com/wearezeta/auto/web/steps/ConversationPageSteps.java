@@ -40,27 +40,19 @@ import static org.junit.Assert.assertTrue;
 
 public class ConversationPageSteps {
 
+    @SuppressWarnings("unused")
+    private static final Logger log = ZetaLogger.getLog(ConversationPageSteps.class.getSimpleName());
     private static final double MIN_ACCEPTABLE_IMAGE_SCORE = 0.69;
-
     private static final String TOOLTIP_PING = "Ping";
     private static final String SHORTCUT_PING_WIN = "(Ctrl + Alt + K)";
     private static final String SHORTCUT_PING_MAC = "(⌘⌥K)";
     private static final String TOOLTIP_CALL = "Call";
     private static final String TOOLTIP_VIDEO_CALL = "Video Call";
-
-    @SuppressWarnings("unused")
-    private static final Logger log = ZetaLogger.getLog(ConversationPageSteps.class.getSimpleName());
     private static final String VIDEO_MESSAGE_IMAGE = "example.png";
 
     private String randomMessage;
-
     private String rememberedEditTimeStamp;
-
     private final TestContext context;
-
-    public ConversationPageSteps() {
-        this.context = new TestContext();
-    }
 
     public ConversationPageSteps(TestContext context) {
         this.context = context;

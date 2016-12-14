@@ -22,10 +22,6 @@ public class SoundSteps {
     private long lastSoundCheckMillis = 0;
     private final TestContext context;
 
-    public SoundSteps() {
-        this.context = new TestContext();
-    }
-
     public SoundSteps(TestContext context) {
         this.context = context;
     }

@@ -170,6 +170,8 @@ Feature: Group Ephemeral Messages
     Given User <Contact1> switches group conversation <GroupChatName> to ephemeral mode with <Timeout> seconds timeout
     Given User <Contact1> sends encrypted message "<Message>" to group conversation <GroupChatName>
     Given User <Contact1> remembers the recent message from group conversation <GroupChatName> via device <DeviceName1>
+    # Wait for sync
+    Given I wait for 3 seconds
     Given User <Contact2> remembers the recent message from group conversation <GroupChatName> via device <DeviceName2>
     Given User <Contact2> reads the recent message from group conversation <GroupChatName>
     Given I wait for <Timeout> seconds
@@ -180,4 +182,4 @@ Feature: Group Ephemeral Messages
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Timeout | Message | DeviceName1 | DeviceName2 |
-      | user1Name | user2Name | user3Name | Epheme grp    | 5       | m1      | DeviceName1 | DeviceName2 |
+      | user1Name | user2Name | user3Name | Epheme grp    | 15      | m1      | DeviceName1 | DeviceName2 |

@@ -39,10 +39,6 @@ public class GroupPopoverPageSteps {
 
     private final TestContext context;
 
-    public GroupPopoverPageSteps() {
-        this.context = new TestContext();
-    }
-
     public GroupPopoverPageSteps(TestContext context) {
         this.context = context;
     }

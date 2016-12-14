@@ -10,10 +10,6 @@ public class HistoryInfoPageSteps {
 
     private final TestContext context;
 
-    public HistoryInfoPageSteps() {
-        this.context = new TestContext();
-    }
-
     public HistoryInfoPageSteps(TestContext context) {
         this.context = context;
     }

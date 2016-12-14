@@ -5,8 +5,6 @@ import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonCallingSteps2;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.Platform;
-import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
-import com.wearezeta.auto.common.driver.ZetaWinDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -25,9 +23,6 @@ public class TestContext {
 
     // IDLE_TIMEOUT 90s https://www.browserstack.com/automate/timeouts
     private static final long DRIVER_INIT_TIMEOUT = 360; //seconds
-
-    public static Future<ZetaWebAppDriver> COMPAT_WEB_DRIVER;
-    public static Future<ZetaWinDriver> COMPAT_WIN_DRIVER;
 
     private final Platform currentPlatform = Platform.Web;
     private final Pinger pinger;
@@ -55,24 +50,6 @@ public class TestContext {
         this.callingManager = new CommonCallingSteps2(userManager);
         this.pagesCollection = new WebappPagesCollection();
 
-        this.logManager = new LogManager(this);
-        this.conversationStates = new ConversationStates();
-        this.pinger = new Pinger(this);
-    }
-
-    /**
-     * Constructor for downward compatibility with cucumber execution mechanisms
-     */
-    public TestContext() {
-        this.testname = "";
-        this.driver = COMPAT_WEB_DRIVER;
-        this.childContext = null;
-        this.userManager = ClientUsersManager.getInstance();
-        this.deviceManager = SEBridge.getInstance();
-        this.commonSteps = CommonSteps.getInstance();
-        this.callingManager = CommonCallingSteps2.getInstance();
-        this.pagesCollection = WebappPagesCollection.getInstance();
-        
         this.logManager = new LogManager(this);
         this.conversationStates = new ConversationStates();
         this.pinger = new Pinger(this);

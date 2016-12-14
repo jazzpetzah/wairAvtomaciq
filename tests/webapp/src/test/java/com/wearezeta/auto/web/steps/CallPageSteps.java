@@ -12,10 +12,6 @@ public class CallPageSteps {
 
     private final TestContext context;
 
-    public CallPageSteps() {
-        this.context = new TestContext();
-    }
-
     public CallPageSteps(TestContext context) {
         this.context = context;
     }

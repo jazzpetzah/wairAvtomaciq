@@ -50,12 +50,12 @@ Feature: File Transfer
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     And <Contact1> sends local file named "<FileName>.<FileExtension>" and MIME type "<MimeType>" via device Device1 to user Myself
-    Then I see new message notification "Shared a file"
-    And I see the result of <FileSize> file received having name "<FileName>.<FileExtension>" and extension "<FileExtension>"
+    Then I see new message notification "Shared a photo"
+    And I see a picture in the conversation view
 
     Examples:
-      | Name      | Contact1  | FileName   | FileSize | FileExtension | MimeType  |
-      | user1Name | user2Name | avatarTest | 5.68KB   | png           | image/png |
+      | Name      | Contact1  | FileName   | FileExtension | MimeType  |
+      | user1Name | user2Name | avatarTest | png           | image/png |
 
   @C87639 @rc @regression
   Scenario Outline: Verify retry sending a file

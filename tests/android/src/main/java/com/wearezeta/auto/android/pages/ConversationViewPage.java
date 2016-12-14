@@ -9,6 +9,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
+import com.wearezeta.auto.android.pages.details_overlay.BaseUserDetailsOverlay;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -22,7 +23,9 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.touch.TouchActions;
 
-public class ConversationViewPage extends AndroidPage {
+import javax.ws.rs.NotSupportedException;
+
+public class ConversationViewPage extends BaseUserDetailsOverlay {
 
     public static final By xpathConfirmOKButton = By.xpath("//*[@id='ttv__confirmation__confirm' and @value='OK']");
     private static final By idClickedImageSendingIndicator = By.id("v__row_conversation__pending");
@@ -182,11 +185,9 @@ public class ConversationViewPage extends AndroidPage {
     public static final By idConversationRoot = By.id(idStrConversationRoot);
     private static final By xpathConversationContent = By.xpath("//*[@id='" + idStrConversationRoot + "']/*/*/*");
 
+    private static final String strIdUserName = "tv__conversation_toolbar__title";
     private static final Function<String, String> xpathMessageNotificationByValue = value -> String
             .format("//*[starts-with(@id,'ttv_message_notification_chathead__label') and @value='%s']", value);
-
-    private static final Function<String, String> xpathConversationTitleByValue = value -> String
-            .format("//*[@id='tv__conversation_toolbar__title' and @value='%s']", value);
 
     private static final Function<String, String> xpathFileNamePlaceHolderByValue = value -> String
             .format("//*[@id='ttv__row_conversation__file__filename' and @value='%s']", value);
@@ -286,6 +287,16 @@ public class ConversationViewPage extends AndroidPage {
 
     public ConversationViewPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
+    }
+
+    @Override
+    protected String getUserNameId() {
+        return strIdUserName;
+    }
+
+    @Override
+    protected By getAvatarLocator() {
+        throw new NotSupportedException("Getting the avatar is not supported");
     }
 
     // region Screeshot buffer
@@ -694,11 +705,6 @@ public class ConversationViewPage extends AndroidPage {
     public boolean isImageVisible() throws Exception {
         return DriverUtils.waitUntilLocatorAppears(this.getDriver(), idConversationImageContainer) &&
                 DriverUtils.waitUntilLocatorDissapears(getDriver(), idClickedImageSendingIndicator, 20);
-    }
-
-    public boolean isConversationTitleVisible(String conversationTitle) throws Exception {
-        final By locator = By.xpath(xpathConversationTitleByValue.apply(conversationTitle));
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
     }
 
     public void confirm() throws Exception {

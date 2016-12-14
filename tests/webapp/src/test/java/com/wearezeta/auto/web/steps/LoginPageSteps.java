@@ -21,10 +21,6 @@ public class LoginPageSteps {
 
     private final TestContext context;
 
-    public LoginPageSteps() {
-        this.context = new TestContext();
-    }
-
     public LoginPageSteps(TestContext context) {
         this.context = context;
     }

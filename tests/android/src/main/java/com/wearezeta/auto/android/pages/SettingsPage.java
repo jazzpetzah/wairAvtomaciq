@@ -19,7 +19,10 @@ public class SettingsPage extends AndroidPage {
     private static final By xpathSettingsTitle = By.xpath("//*[@id='toolbar' and .//*[@value='Settings']]");
 
     private static final Function<String, String> xpathStrSettingsMenuItemByText = text -> String
-            .format("//*[@id='title' and @value='%s']", text);
+            .format("//*[(@id='title' or @id='summary') and @value='%s']", text);
+
+    private static final By xpathUsernameSettingsMenuItemByText = By.xpath(
+            "//*[@id='summary' and @value='Username']");
 
     private static final Function<String, String> xpathStrConfirmBtnByName = name -> String
             .format("//*[starts-with(@id, 'button') and @value='%s']", name);

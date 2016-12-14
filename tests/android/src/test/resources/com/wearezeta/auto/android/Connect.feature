@@ -12,11 +12,11 @@ Feature: Connect
     When I open Search UI
     And I type user name "<Contact>" in search field
     And I tap on user name found on Search page <Contact>
-    Then I see user name of user <Contact> on Single unconnected user details page
+    Then I see user name "<Contact>" on Single unconnected user details page
     And I tap back button
     And I see Search page
     And I tap on user name found on Search page <Contact>
-    Then I see user name of user <Contact> on Single unconnected user details page
+    Then I see user name "<Contact>" on Single unconnected user details page
     When I tap connect button on Single unconnected user details page
     #wait UI animation to finish
     And I wait for 1 second
@@ -99,7 +99,7 @@ Feature: Connect
     When I open Search UI
     And I type user name "<Contact>" in search field
     And I tap on user name found on Search page <Contact>
-    Then I see user name of user <Contact> on Single unconnected user details page
+    Then I see user name "<Contact>" on Single unconnected user details page
     When I tap connect button on Single pending incoming connection page
     And I wait for 5 seconds
     Then I see conversation view
@@ -120,7 +120,7 @@ Feature: Connect
     When I open Search UI
     And I type user name "<Contact>" in search field
     And I tap on user name found on Search page <Contact>
-    Then I see user name of user <Contact> on Single unconnected user details page
+    Then I see user name "<Contact>" on Single unconnected user details page
     When I tap connect button on Single unconnected user details page
     And <Contact> ignore all requests
     And I tap Clear button
@@ -146,7 +146,7 @@ Feature: Connect
     And I see Conversations list
     Then I see Conversations list with name <WaitingMess>
     When I tap on conversation name <WaitingMess>
-    Then I see user name of user <Contact> on Single pending incoming connection page
+    Then I see user name "<Contact>" on Single pending incoming connection page
     And I see connect button on Single pending incoming connection page
     And I see ignore button on Single pending incoming connection page
     And I tap ignore button on Single pending incoming connection page
@@ -167,7 +167,7 @@ Feature: Connect
     And I wait until <Contact> exists in backend search results
     And I type user name "<Contact>" in search field
     And I tap on user name found on Search page <Contact>
-    Then I see user name of user <Contact> on Single unconnected user details page
+    Then I see user name "<Contact>" on Single unconnected user details page
     When I tap connect button on Single unconnected user details page
     And I wait for 2 seconds
     And <Contact> accept all requests
@@ -193,7 +193,7 @@ Feature: Connect
     And I tap conversation name from top toolbar
     #Sometimes here only one user visible (backend issue)
     And I tap on contact <Contact2> on Group info page
-    Then I see user name of user <Contact2> on Single unconnected user details page
+    Then I see user name "<Contact2>" on Single unconnected user details page
     When I tap connect button on Single unconnected user details page
     And I tap connect button on Single unconnected user details page
     And I tap back button
@@ -245,7 +245,7 @@ Feature: Connect
     And I tap conversation name from top toolbar
     #Sometimes here only one user visible (backend issue)
     And I tap on contact <Contact2> on Group info page
-    Then I see user name of user <Contact2> on Group unconnected user details page
+    Then I see user name "<Contact2>" on Group unconnected user details page
     When I tap on +connect button on Group unconnected user details page
     And I tap on connect button on Group unconnected user details page
     And I tap back button
@@ -322,7 +322,7 @@ Feature: Connect
     And I wait until <Contact> exists in backend search results
     And I type user name "<Contact>" in search field
     And I tap on user name found on Search page <Contact>
-    Then I see user name of user <Contact> on Single unconnected user details page
+    Then I see user name "<Contact>" on Single unconnected user details page
     When I tap connect button on Single unconnected user details page
     Then I see Search page
     And I see user <Contact> in Search result list

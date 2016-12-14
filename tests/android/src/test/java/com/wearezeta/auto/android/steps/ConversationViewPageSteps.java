@@ -14,6 +14,7 @@ import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import cucumber.api.java.en.And;
@@ -453,14 +454,14 @@ public class ConversationViewPageSteps {
      * Verify the sketch buttons and fullscreen button is visible in Image Container
      *
      * @param shouldNotSee equals null means the button should be visible
-     * @param buttonName the name of button
+     * @param buttonName   the name of button
      * @throws Exception
      * @step. ^I( do not)? see (Sketch|Sketch Emoji|Sketch Text|Fullscreen) button on the recent (?:image|picture) in the conversation view$
      */
     @Then("^I( do not)? see (Sketch|Sketch Emoji|Sketch Text|Fullscreen) button on the recent (?:image|picture)" +
             " in the conversation view$")
     public void ISeeImageContainerButton(String shouldNotSee, String buttonName) throws Exception {
-        if(shouldNotSee == null) {
+        if (shouldNotSee == null) {
             Assert.assertTrue(String.format("The %s button in Image container is not visible", buttonName),
                     getConversationViewPage().waitUntilImageContainerButtonVisible(buttonName));
         } else {
@@ -1049,18 +1050,23 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Checks the conversation title should be <conversationNameAliases>
+     * Verify user data (User name, Unique user name)
      *
-     * @param conversationNameAliases The expected conversation name aliases
+     * @param shouldNotSee equals null means the item should be visible
+     * @param type         which could be user name, unique user name
+     * @param text         the name or unique username alias or user name alias
      * @throws Exception
-     * @step. ^the conversation title should be "(.*)"$
+     * @step.^I( do not)? see (user name|unique user name|user info) \"(.*)\" on Conversation view$
      */
-    @Then("^the conversation title should be \"(.*)\"$")
-    public void TheConversationTitleShouldBe(String conversationNameAliases) throws Exception {
-        String expectedConversationNames = usrMgr.replaceAliasesOccurences(conversationNameAliases, FindBy.NAME_ALIAS)
-                .replaceAll(",", ", ");
-        Assert.assertTrue(String.format("The conversation title should be %s", expectedConversationNames),
-                getConversationViewPage().isConversationTitleVisible(expectedConversationNames));
+    @Then("^I( do not)? see (user name|unique user name|user info) \"(.*)\" on Conversation view")
+    public void ISeeUserData(String shouldNotSee, String type, String text) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("%s should be visible", type),
+                    getConversationViewPage().waitUntilUserDataVisible(type, text));
+        } else {
+            Assert.assertTrue(String.format("%s should be invisible", type),
+                    getConversationViewPage().waitUntilUserDataInvisible(type, text));
+        }
     }
 
     /**

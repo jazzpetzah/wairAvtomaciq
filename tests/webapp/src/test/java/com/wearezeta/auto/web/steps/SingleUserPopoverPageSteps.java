@@ -38,10 +38,6 @@ public class SingleUserPopoverPageSteps {
 
     private final TestContext context;
 
-    public SingleUserPopoverPageSteps() {
-        this.context = new TestContext();
-    }
-
     public SingleUserPopoverPageSteps(TestContext context) {
         this.context = context;
     }

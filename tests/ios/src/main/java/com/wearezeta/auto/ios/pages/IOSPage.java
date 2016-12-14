@@ -138,15 +138,11 @@ public abstract class IOSPage extends BasePage {
         }
     }
 
-    private static final int MAX_BADGE_VISIBILITY_TIMEOUT = 10; // seconds
-
     public void tapBadgeItem(String name) throws Exception {
         final By locator = getBadgeLocatorByName(name);
         getElement(locator).click();
-        if (!isLocatorInvisible(locator, MAX_BADGE_VISIBILITY_TIMEOUT)) {
-            log.warn(String.format("%s badge still appears to be visible after %s seconds timeout", name,
-                    MAX_BADGE_VISIBILITY_TIMEOUT));
-        }
+        // Wait for animation
+        Thread.sleep(2000);
     }
 
     public boolean isBadgeItemVisible(String name) throws Exception {
@@ -369,16 +365,22 @@ public abstract class IOSPage extends BasePage {
     }
 
     private Point calculateTapCoordinates(Optional<WebElement> el, int percentX, int percentY) throws Exception {
-        final Dimension screenSize = getDriver().manage().window().getSize();
-        int tapX = screenSize.getWidth() * percentX / 100;
-        int tapY = screenSize.getHeight() * percentY / 100;
+        int tapX, tapY;
         if (el.isPresent()) {
             final Point elLocation = el.get().getLocation();
             final Dimension elSize = el.get().getSize();
             tapX = elLocation.getX() + elSize.getWidth() * percentX / 100;
             tapY = elLocation.getY() + elSize.getHeight() * percentY / 100;
+        } else {
+            final Dimension screenSize = getDriver().manage().window().getSize();
+            tapX = screenSize.getWidth() * percentX / 100;
+            tapY = screenSize.getHeight() * percentY / 100;
         }
         return new Point(tapX, tapY);
+    }
+
+    protected void doubleTapAt(WebElement el, int percentX, int percentY) throws Exception {
+        this.doubleTapAt(Optional.of(el), percentX, percentY);
     }
 
     protected void doubleTapAt(Optional<WebElement> el, int percentX, int percentY) throws Exception {

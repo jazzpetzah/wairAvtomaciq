@@ -14,10 +14,6 @@ public class DeviceLimitPageSteps {
 
     private final TestContext context;
 
-    public DeviceLimitPageSteps() {
-        this.context = new TestContext();
-    }
-
     public DeviceLimitPageSteps(TestContext context) {
         this.context = context;
     }

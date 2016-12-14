@@ -24,6 +24,7 @@ Feature: Calling
   Scenario Outline: I can start 1:1 call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -135,6 +136,7 @@ Feature: Calling
   Scenario Outline: I can start group call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given Users <Contact1>,<Contact2> set the unique username
     Given <Contact1>,<Contact2> start instance using <CallBackend>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
@@ -158,6 +160,7 @@ Feature: Calling
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given <Contact1> starts instance using <CallBackend2>
+    Given Users <Contact2>,<Contact3>,<Contact4> set the unique username
     Given <Contact2>,<Contact3>,<Contact4> start instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible

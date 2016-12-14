@@ -5,7 +5,6 @@ import java.util.List;
 import com.wearezeta.auto.web.pages.ConversationPage;
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.ContactListPage;
@@ -26,10 +25,6 @@ public class StartUIPageSteps {
     private final TestContext context;
 
     private static String rememberedUser;
-
-    public StartUIPageSteps() {
-        this.context = new TestContext();
-    }
 
     public StartUIPageSteps(TestContext context) {
         this.context = context;
@@ -64,6 +59,36 @@ public class StartUIPageSteps {
                 FindBy.UNIQUE_USERNAME_ALIAS);
         // adding spaces to ensure trimming of input
         context.getPagesCollection().getPage(StartUIPage.class).searchForUser(" " + nameOrEmailOrUniqueUsername + " ");
+    }
+
+    @When("^I type (.*) in search field of People Picker in uppercase$")
+    public void ISearchForUserInUppercase(String nameOrEmailOrUniqueUsername) throws Exception {
+        nameOrEmailOrUniqueUsername = context.getUserManager().replaceAliasesOccurences(nameOrEmailOrUniqueUsername,
+                FindBy.NAME_ALIAS);
+        nameOrEmailOrUniqueUsername = context.getUserManager().replaceAliasesOccurences(nameOrEmailOrUniqueUsername,
+                FindBy.EMAIL_ALIAS);
+        nameOrEmailOrUniqueUsername = context.getUserManager().replaceAliasesOccurences(nameOrEmailOrUniqueUsername,
+                FindBy.UNIQUE_USERNAME_ALIAS);
+        // adding spaces to ensure trimming of input
+        context.getPagesCollection().getPage(StartUIPage.class).searchForUser(" " + nameOrEmailOrUniqueUsername.toUpperCase() + " ");
+    }
+
+    @When("^I type (.*) in search field of People Picker only partially$")
+    public void ISearchForUserOnlyPartially(String nameOrEmailOrUniqueUsername) throws Exception {
+        nameOrEmailOrUniqueUsername = context.getUserManager().replaceAliasesOccurences(nameOrEmailOrUniqueUsername,
+                FindBy.NAME_ALIAS);
+        nameOrEmailOrUniqueUsername = context.getUserManager().replaceAliasesOccurences(nameOrEmailOrUniqueUsername,
+                FindBy.EMAIL_ALIAS);
+        nameOrEmailOrUniqueUsername = context.getUserManager().replaceAliasesOccurences(nameOrEmailOrUniqueUsername,
+                FindBy.UNIQUE_USERNAME_ALIAS);
+        // adding spaces to ensure trimming of input
+        context.getPagesCollection().getPage(StartUIPage.class).searchForUser(" " + nameOrEmailOrUniqueUsername.substring(0,
+                nameOrEmailOrUniqueUsername.length() - 2) + " ");
+    }
+
+    @When("^I clear the search field of People Picker$")
+    public void IClearSearch() throws Exception {
+        context.getPagesCollection().getPage(StartUIPage.class).clearSearch();
     }
 
     @When("^I( do not)? see user (.*) found in People Picker$")

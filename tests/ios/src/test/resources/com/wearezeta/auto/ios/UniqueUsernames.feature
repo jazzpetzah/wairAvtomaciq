@@ -49,7 +49,7 @@ Feature: Unique Usernames
     Given I wait until <Contact4WithCommonFriends> has 1 common friend on the backend
     Given I wait until <Contact5WithSameNameInAB> exists in backend search results
     Given I open search UI
-    Given I accept alert if visible
+    Given I accept alert
     Given I tap input field on Search UI page
     Given I type "<Contact1WithABEmail>" in Search UI input field
     When I tap on conversation <Contact1WithABEmail> in search result
@@ -136,7 +136,7 @@ Feature: Unique Usernames
     Given I wait until <Contact4WithCommonFriends> has 1 common friend on the backend
     Given I wait until <Contact5WithSameNameInAB> exists in backend search results
     Given I open search UI
-    Given I accept alert if visible
+    Given I accept alert
     Given I tap input field on Search UI page
     Given I type "<Contact1WithABEmail>" in Search UI input field
     When I tap on conversation <Contact1WithABEmail> in search result
@@ -235,8 +235,8 @@ Feature: Unique Usernames
       | Name      | MyUniqueUsername    | Contact   | ExpectedText  |
       | user1Name | user1UniqueUsername | user2Name | Already taken |
 
-  @C352058 @addressbookStart @forceReset @staging
-  Scenario Outline: Verify 1-to-1 conversation view
+  @C352058 @addressbookStart @forceReset @regression
+  Scenario Outline: Verify 1-to-1 conversation details
     Given There are 7 users where <Name> is me
     Given Myself is connected to <Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact5WithSameNameInAB>,<Contact6Common>
     Given User <Contact3WithUniqueUserName> sets the unique username
@@ -252,7 +252,7 @@ Feature: Unique Usernames
     Given I see conversations list
     Given I wait until <Contact4WithCommonFriends> has 1 common friend on the backend
     Given I open search UI
-    Given I accept alert if visible
+    Given I accept alert
     Given I tap X button on Search UI page
     When I tap on contact name <Contact1WithABEmail>
     And I open conversation details
@@ -279,7 +279,7 @@ Feature: Unique Usernames
     And I open conversation details
     Then I see name "<Contact4WithCommonFriends>" on Single user Pending outgoing connection page
     And I do not see unique username on Single user Pending outgoing connection page
-    And I see common friends count "1" on Single user Pending outgoing connection page
+    And I do not see common friends count on Single user Pending outgoing connection page
     And I tap X button on Single user profile page
     When I navigate back to conversations list
     And I tap on contact name <Contact5WithSameNameInAB>
@@ -329,8 +329,8 @@ Feature: Unique Usernames
       | Name      | Contact   | ContactWithUniqueUserName |
       | user1Name | user2Name | user2UniqueUsername       |
 
-  @C352052 @addressbookStart @forceReset @staging
-  Scenario Outline: (ZIOS-7756) Verify search for connected users returns proper results
+  @C352052 @addressbookStart @forceReset @regression
+  Scenario Outline: Verify search for connected users returns proper results
     Given There are 8 users where <Name> is me
     Given Myself is connected to <Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact5WithSameNameInAB>,<Contact6Common>,<Contact7WoCF>
     Given User <Contact3WithUniqueUserName> sets the unique username
@@ -354,13 +354,13 @@ Feature: Unique Usernames
     Given I wait until <Contact5WithSameNameInAB> exists in backend search results
     Given I wait until <Contact7WoCF> exists in backend search results
     When I open search UI
-    And I accept alert if visible
+    And I accept alert
     Then I verify correct details are shown for the found users
       | Name                         | Details                                                      |
       | <Contact1WithABEmail>        | @<Contact1UniqueUsername> - <Contact1ABName> in Address Book |
       | <Contact2WithABPhoneNumber>  | <Contact2ABName> in Address Book                             |
       | <Contact3WithUniqueUserName> | @<Contact3UniqueUserName>                                    |
-      | <Contact4WithCommonFriends>  | 1 person in common                                           |
+      | <Contact4WithCommonFriends>  |                                                              |
       | <Contact5WithSameNameInAB>   | in Address Book                                              |
       | <Contact7WoCF>               |                                                              |
 
@@ -387,7 +387,7 @@ Feature: Unique Usernames
       | user1Name | داريا       | @darya     |
       | user1Name | 明麗          | @mingli    |
 
-  @C352049 @addressbookStart @forceReset @staging
+  @C352049 @addressbookStart @forceReset @regression
   Scenario Outline: Verify search for unconnected users returns proper results
     Given There are 8 users where <Name> is me
     Given Myself is connected to <Contact6Common>
@@ -403,6 +403,9 @@ Feature: Unique Usernames
     Given I restore Wire
     Given I sign in using my email
     Given I see conversations list
+    Given I open search UI
+    Given I accept alert
+    Given I tap X button on Search UI page
     Given I wait until <Contact1WithABEmail> exists in backend search results
     Given I wait until <Contact1WithABEmail> has 1 common friend on the backend
     Given I wait until <Contact2WithABPhoneNumber> exists in backend search results
@@ -411,8 +414,8 @@ Feature: Unique Usernames
     Given I wait until <Contact4WithCommonFriends> has 1 common friend on the backend
     Given I wait until <Contact5WithSameNameInAB> exists in backend search results
     Given I wait until <Contact7WoCF> exists in backend search results
+    Given I see conversation <Contact2WithABPhoneNumber> in conversations list
     When I open search UI
-    And I accept alert if visible
     Then I verify correct details are shown for the found users
       | Name                         | Details                                                      |
       | <Contact1WithABEmail>        | @<Contact1UniqueUsername> - <Contact1ABName> in Address Book |
@@ -461,7 +464,7 @@ Feature: Unique Usernames
       | Name      | Contact   | ContactUsername     | NewContactUsername  |
       | user1Name | user2Name | user2UniqueUsername | user3UniqueUsername |
 
-  @C352061 @addressbookStart @forceReset @staging
+  @C352061 @addressbookStart @forceReset @regression
   Scenario Outline: Verify user info from Contact List->Options (swipe)
     Given There are 8 users where <Name> is me
     Given Myself is connected to <Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact5WithSameNameInAB>,<Contact6Common>
@@ -481,7 +484,7 @@ Feature: Unique Usernames
     Given I wait until <Contact4WithCommonFriends> has 1 common friend on the backend
     Given I wait until <Contact7Unconnected> has 1 common friend on the backend
     Given I open search UI
-    Given I accept alert if visible
+    Given I accept alert
     Given I tap X button on Search UI page
     When I swipe right on a <Contact1WithABEmail>
     Then I see Address Book name "<Contact1ABName>" on Conversation actions page
@@ -497,14 +500,14 @@ Feature: Unique Usernames
     And I tap Cancel conversation action button
     When I swipe right on a <Contact4WithCommonFriends>
     Then I do not see unique username on Conversation actions page
-    And I see common friends count "1" on Conversation actions page
+    And I do not see common friends count on Conversation actions page
     And I tap Cancel conversation action button
     When I swipe right on a <Contact5WithSameNameInAB>
     Then I do not see unique username on Conversation actions page
     And I see Address Book name "" on Conversation actions page
     And I tap Cancel conversation action button
     When I swipe right on a <Contact7Unconnected>
-    Then I see common friends count "1" on Conversation actions page
+    Then I do not see common friends count on Conversation actions page
     And I tap Cancel conversation action button
     When I swipe right on a <GroupChatName>
     Then I do not see Address Book name on Conversation actions page
@@ -514,7 +517,7 @@ Feature: Unique Usernames
       | Name      | Contact1WithABEmail | Contact1ABName | Contact1Email | Contact2WithABPhoneNumber | Contact2ABName | Contact2PhoneNumber | Contact3WithUniqueUserName | Contact3UniqueUserName | Contact4WithCommonFriends | Contact5WithSameNameInAB | Contact5Email | Contact6Common | Contact7Unconnected | GroupChatName |
       | user1Name | user2Name           | user2ABName    | user2Email    | user3Name                 | user3ABName    | user3PhoneNumber    | user4Name                  | user4UniqueUsername    | user5Name                 | user6Name                | user6Email    | user7Name      | user8Name           | Groupchat     |
 
-  @C352053 @staging @fastLogin
+  @C352053 @regression @fastLogin
   Scenario Outline: Verify common friends are shown even if I don't share the AB
     Given There are 4 users where <Name> is me
     Given User <Contact> sets the unique username
@@ -533,6 +536,55 @@ Feature: Unique Usernames
     Examples:
       | Name      | Contact   | ContactUniqueUserName | Contact2  | Contact3  |
       | user1Name | user2Name | user2UniqueUsername   | user3Name | user4Name |
+
+  @C352062 @regression @forceReset @staging
+  Scenario Outline: Verify connected user in 1-to-1 conversation view
+    Given There are 7 users where <Name> is me
+    Given Myself is connected to <Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact5WithSameNameInAB>,<Contact6Common>
+    Given User <Contact3WithUniqueUserName> sets the unique username
+    Given <Contact4WithCommonFriends> is connected to <Contact6Common>
+    Given I minimize Wire
+    Given I install Address Book Helper app
+    Given I launch Address Book Helper app
+    Given I add name <Contact1ABName> and email <Contact1Email> to Address Book
+    Given I add name <Contact2ABName> and phone <Contact2PhoneNumber> to Address Book
+    Given I add name <Contact5WithSameNameInAB> and email <Contact5Email> to Address Book
+    Given I restore Wire
+    Given I sign in using my email
+    Given I see conversations list
+    Given I wait until <Contact4WithCommonFriends> has 1 common friend on the backend
+    Given I open search UI
+    Given I accept alert
+    Given I tap X button on Search UI page
+    When I tap on contact name <Contact1WithABEmail>
+    # TODO: Remove this workaround after ZIOS-7734 is fixed
+    And I scroll to the top of the conversation
+    Then I see Address Book name "<Contact1ABName>" on Conversation view page
+    And I do not see unique username on Conversation view page
+    When I navigate back to conversations list
+    And I tap on contact name <Contact2WithABPhoneNumber>
+    And I scroll to the top of the conversation
+    Then I see Address Book name "<Contact2ABName>" on Conversation view page
+    And I do not see unique username on Single user profile page
+    When I navigate back to conversations list
+    And I tap on contact name <Contact3WithUniqueUserName>
+    And I scroll to the top of the conversation
+    Then I see unique username "<Contact3UniqueUserName>" on Conversation view page
+    And I do not see Address Book name on Single user Pending outgoing connection page
+    When I navigate back to conversations list
+    And I tap on contact name <Contact4WithCommonFriends>
+    And I scroll to the top of the conversation
+    Then I do not see unique username on Conversation view page
+    And I do not see common friends count on Conversation view page
+    When I navigate back to conversations list
+    And I tap on contact name <Contact5WithSameNameInAB>
+    And I scroll to the top of the conversation
+    Then I do not see unique username on Conversation view page
+    And I see Address Book name "" on Conversation view page
+
+    Examples:
+      | Name      | Contact1WithABEmail | Contact1ABName | Contact1Email | Contact2WithABPhoneNumber | Contact2ABName | Contact2PhoneNumber | Contact3WithUniqueUserName | Contact3UniqueUserName | Contact4WithCommonFriends | Contact5WithSameNameInAB | Contact5Email | Contact6Common |
+      | user1Name | user2Name           | user2ABName    | user2Email    | user3Name                 | user3ABName    | user3PhoneNumber    | user4Name                  | user4UniqueUsername    | user5Name                 | user6Name                | user6Email    | user7Name      |
 
   @C352045 @staging @fastLogin
   Scenario Outline: Verify new username is synced across the devices

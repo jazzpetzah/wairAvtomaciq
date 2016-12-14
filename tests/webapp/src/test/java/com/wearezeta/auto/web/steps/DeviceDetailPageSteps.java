@@ -14,10 +14,6 @@ public class DeviceDetailPageSteps {
 
     private final TestContext context;
 
-    public DeviceDetailPageSteps() {
-        this.context = new TestContext();
-    }
-
     public DeviceDetailPageSteps(TestContext context) {
         this.context = context;
     }
