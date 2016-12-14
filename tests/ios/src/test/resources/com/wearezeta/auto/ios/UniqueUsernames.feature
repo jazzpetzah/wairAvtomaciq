@@ -49,7 +49,7 @@ Feature: Unique Usernames
     Given I wait until <Contact4WithCommonFriends> has 1 common friend on the backend
     Given I wait until <Contact5WithSameNameInAB> exists in backend search results
     Given I open search UI
-    Given I accept alert if visible
+    Given I accept alert
     Given I tap input field on Search UI page
     Given I type "<Contact1WithABEmail>" in Search UI input field
     When I tap on conversation <Contact1WithABEmail> in search result
@@ -136,7 +136,7 @@ Feature: Unique Usernames
     Given I wait until <Contact4WithCommonFriends> has 1 common friend on the backend
     Given I wait until <Contact5WithSameNameInAB> exists in backend search results
     Given I open search UI
-    Given I accept alert if visible
+    Given I accept alert
     Given I tap input field on Search UI page
     Given I type "<Contact1WithABEmail>" in Search UI input field
     When I tap on conversation <Contact1WithABEmail> in search result
@@ -252,7 +252,7 @@ Feature: Unique Usernames
     Given I see conversations list
     Given I wait until <Contact4WithCommonFriends> has 1 common friend on the backend
     Given I open search UI
-    Given I accept alert if visible
+    Given I accept alert
     Given I tap X button on Search UI page
     When I tap on contact name <Contact1WithABEmail>
     And I open conversation details
@@ -354,7 +354,7 @@ Feature: Unique Usernames
     Given I wait until <Contact5WithSameNameInAB> exists in backend search results
     Given I wait until <Contact7WoCF> exists in backend search results
     When I open search UI
-    And I accept alert if visible
+    And I accept alert
     Then I verify correct details are shown for the found users
       | Name                         | Details                                                      |
       | <Contact1WithABEmail>        | @<Contact1UniqueUsername> - <Contact1ABName> in Address Book |
@@ -404,7 +404,7 @@ Feature: Unique Usernames
     Given I sign in using my email
     Given I see conversations list
     Given I open search UI
-    Given I accept alert if visible
+    Given I accept alert
     Given I tap X button on Search UI page
     Given I wait until <Contact1WithABEmail> exists in backend search results
     Given I wait until <Contact1WithABEmail> has 1 common friend on the backend
@@ -484,7 +484,7 @@ Feature: Unique Usernames
     Given I wait until <Contact4WithCommonFriends> has 1 common friend on the backend
     Given I wait until <Contact7Unconnected> has 1 common friend on the backend
     Given I open search UI
-    Given I accept alert if visible
+    Given I accept alert
     Given I tap X button on Search UI page
     When I swipe right on a <Contact1WithABEmail>
     Then I see Address Book name "<Contact1ABName>" on Conversation actions page
@@ -554,7 +554,7 @@ Feature: Unique Usernames
     Given I see conversations list
     Given I wait until <Contact4WithCommonFriends> has 1 common friend on the backend
     Given I open search UI
-    Given I accept alert if visible
+    Given I accept alert
     Given I tap X button on Search UI page
     When I tap on contact name <Contact1WithABEmail>
     # TODO: Remove this workaround after ZIOS-7734 is fixed
