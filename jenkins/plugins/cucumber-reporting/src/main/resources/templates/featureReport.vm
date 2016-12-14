@@ -79,7 +79,8 @@
 .passed{background-color:#C5D88A;}
 .failed{background-color:#D88A8A;}
 .skipped{background-color:#2DEAEC;}
-.undefined{background-color: #ebcc81;}
+.undefined{background-color: #D3D3D3;}
+.pending{background-color: #EBCC81;}
 
 table.stats-table {
 color:black;
@@ -217,15 +218,14 @@ table.data-table td {
                         <td id="stats-number-steps-failed-$sf">$feature.getNumberOfFailures()</td>
                         <td id="stats-number-steps-skipped-$sf">$feature.getNumberOfSkipped()</td>
                         <td id="stats-number-steps-pending-$sf">$feature.getNumberOfPending()</td>
+                        <td id="stats-number-steps-pending-$sf">$feature.getNumberOfUndefined()</td>
                         <td id="stats-duration-$sf">$feature.getDurationOfSteps()</td>
                         <td id="stats-status-$sf" style="background-color: $report_status_colour;">$feature.getRawStatus()</td></tr>
-
                 </table>
-
             </div>
 
 		<div style="color:black;">
-		
+
 			$feature.getTagsList()
             $feature.getName()
             <!--$feature.getDescription()-->

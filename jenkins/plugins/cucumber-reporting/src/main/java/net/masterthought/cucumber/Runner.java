@@ -9,17 +9,21 @@ import java.util.List;
 public class Runner {
 
     public static void main(String[] args) throws Exception {
-        File rd = new File("/Project/report");
         List<String> list = new ArrayList<String>();
+
+        File rd = new File("/Project/report");
 //        list.add("/Users/kings/.jenkins/jobs/cucumber-jvm/builds/7/cucumber-html-reports/project1.json");
 //        list.add("/Users/kings/.jenkins/jobs/cucumber-jvm/builds/7/cucumber-html-reports/project2.json");
 //        list.add("/Users/kings/.jenkins/jobs/cucumber-jvm/builds/7/cucumber-html-reports/project3.json");
         list.add("/Project/report/report.json");
-//        list.add("/Users/kings/.jenkins/jobs/cucumber-jvm/builds/7/cucumber-html-reports/project4.json");
-//        list.add("/Users/kings/.jenkins/jobs/cucumber-jvm/builds/7/cucumber-html-reports/project5.json");
-//        list.add("/Users/kings/.jenkins/jobs/cucumber-jvm/builds/7/cucumber-html-reports/project6.json");
+
         System.out.println("Running report builder...");
-        ReportBuilder reportBuilder = new ReportBuilder(list, rd, "", "", "", "", "1", "cucumber-jvm", false, false, false, true, false, "Account has sufficient funds again~the account balance is 300~account~scenario1_psp_auth_request.xml~xml\nAccount has sufficient funds again~the card is valid~card~scenario1_psp_auth_response.xml~xml", false);
+        ReportBuilder reportBuilder = new ReportBuilder(
+            list, rd, "", "", "", "", "1",
+            "cucumber-jvm", false, false, false,
+            false, true,true, false,
+            "Account has sufficient funds again~the account balance is 300~account~scenario1_psp_auth_request" +
+            ".xml~xml\nAccount has sufficient funds again~the card is valid~card~scenario1_psp_auth_response.xml~xml");
         HashMap<String, String> headers = new HashMap<String, String>();
         headers.put("@TC-V2-1491", "Verify that a visit for none suggestion account is created successfully");
         headers.put("@TC-V2-1275", "Verify that agenda items can be deleted successfully");
@@ -38,10 +42,7 @@ public class Runner {
 
         reportBuilder.setCustomHeader(headers);
         reportBuilder.generateReports();
-        System.out.println("Reports are generated.");
-//               boolean result = featureReportGenerator.getBuildStatus();
-//               System.out.println("status: " + result);
-
+        System.out.println("Runner: Reports are generated.");
     }
 
 }
