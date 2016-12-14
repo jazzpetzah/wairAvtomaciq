@@ -13,12 +13,12 @@ Feature: Archive
     Given I tap Clear button
     And I see Conversations list with name <Contact1>
     When I swipe right on a <Contact1>
-    And I select ARCHIVE from conversation settings menu
+    And I tap ARCHIVE button on single Conversation option menu
     Then I do not see Conversations list with name <Contact1>
     When I swipe up Conversations list
     Then I see Conversations list with name <Contact1>
     When I swipe right on a <Contact1>
-    And I select UNARCHIVE from conversation settings menu
+    And I tap UNARCHIVE button on single Conversation option menu
     Then I see conversation view
 
     Examples:
@@ -38,13 +38,13 @@ Feature: Archive
     Given I tap Clear button
     Then I see Conversations list with name <GroupChatName>
     When I swipe right on a <GroupChatName>
-    And I select ARCHIVE from conversation settings menu
+    And I tap ARCHIVE button on single Conversation option menu
     And I navigate back from conversation
     Then I do not see Conversations list with name <GroupChatName>
     Then I swipe up Conversations list
     When I see Conversations list with name <GroupChatName>
     And I swipe right on a <GroupChatName>
-    And I select UNARCHIVE from conversation settings menu
+    And I tap UNARCHIVE button on single Conversation option menu
     Then I see conversation view
 
     Examples:

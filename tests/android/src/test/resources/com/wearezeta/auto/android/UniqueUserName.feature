@@ -260,7 +260,7 @@ Feature: Unique Username
       | aabbcc1234567890          | True             |
       | aabbccCyrillicМоёИмя      | False            |
       | aabbccArabicاسمي          | False            |
-      | aabbccChinese我的名字         | False            |
+      | aabbccChinese我的名字      | False            |
       | aabbccSpecialChars%^&@#$  | False            |
       | aabbccLong123456789012345 | False            |
 
@@ -376,3 +376,49 @@ Feature: Unique Username
     Examples:
       | Name      | ContactInABEmail | ContactInABPhone | ContactInABSameName | ABNameEmail | ABNamePhone | ContactINABEmailUniqueUsername | ContactInABPhoneUniqueUsername | ContactInABSameNameUniqueUserName | Contact   | GroupChatName |
       | user1Name | user2Name        | user3Name        | user4Name           | Email       | Phone       | user2UniqueUsername            | user3UniqueUsername            | user4UniqueUsername               | user5Name | UserNameGroup |
+
+
+  @C352696 @staging
+  Scenario Outline: (AN-4784) Verify AB name is shown in the option menu if contact with this email exists in the AB
+    Given I delete all contacts from Address Book
+    Given There are 5 users where <Name> is me
+    Given I add <AName> having custom name "<ABName>" into Address Book with email
+    Given I add name <APhoneName> and phone <A2Phone> with prefix <PhonePrefix> to Address Book
+    Given I add name <A3Name> and phone <A3Phone> with prefix <PhonePrefix> to Address Book
+    Given I add <A4Name> into Address Book with email
+    Given User <A4Name> sets the unique username
+    Given <A5Name> is connected to <CF1>
+    Given Myself is connected to <AName>,<A4Name>,<CF1>
+    Given Myself sent connection request to <A5Name>
+    Given Myself has group chat <GroupName> with <AName>,<A4Name>
+    Given Myself wait until 1 common contacts with <A5Name> exists in backend
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I open options menu of <A4Name> on conversation list page
+    Then I see unique username "<A4UName>" on single Conversation option menu
+    And I see user info "in Address Book" on single Conversation option menu
+    And I tap back button
+    When I open options menu of <AName> on conversation list page
+    And I see user info "<ABName> in Address Book" on single Conversation option menu
+    Then I tap back button
+    When I open options menu of <A4Name> on conversation list page
+    Then I see user info "in Address Book" on single Conversation option menu
+    And I tap back button
+    When I open options menu of <A2Name> on conversation list page
+    Then I see user info "<APhoneName> in Address Book" on single Conversation option menu
+    And I tap back button
+    When I open options menu of <A3Name> on conversation list page
+    Then I see user info "in Address Book" on single Conversation option menu
+    And I tap back button
+    When I open options menu of <A5Name> on conversation list page
+    Then I do not see unique username on single Conversation option menu
+    And I see user info "1 person in common" on single Conversation option menu
+    When I open options menu of <GroupName> on conversation list page
+    Then I do not see unique username on group Conversation option menu
+    And I do not see user info on group Conversation option menu
+
+    Examples:
+      | Name      | A2Name           | A2Phone    | PhonePrefix | APhoneName | A3Name           | A3Phone    | AName     | ABName          | A4Name    | CF1       | A5Name    | GroupName | A4UName             |
+      | user1Name | AutoconnectUser2 | 1722036230 | +49         | User123    | AutoconnectUser3 | 1622360109 | user2Name | user2CustomName | user3Name | user4Name | user5Name | group1    | user3UniqueUsername |
+
