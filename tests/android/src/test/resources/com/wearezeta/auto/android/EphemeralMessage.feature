@@ -31,7 +31,7 @@ Feature: Ephemeral Message
       | Name      | Contact   | EphemeralTimeout | Message | EphemeralStatus | Message2 | Mydevice |
       | user1Name | user2Name | 15 seconds       | test5s  | left            | ok       | d1       |
 
-  @C261705 @staging
+  @C261705 @regression
   Scenario Outline: Verify double tap ephemeral icon will turn on/off the ephemeral mode
     Given There is 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -354,8 +354,8 @@ Feature: Ephemeral Message
       | Name      | Contact   | ContactDevice | EphemeralTimeout | FileName    | MIMEType  | SyncTimeout | Picture     | AudioFileName | AudioMIMEType | URL                     | SoundCloud                                       | Youtube                                     |
       | user1Name | user2Name | d1            | 5                | testing.mp4 | video/mp4 | 1           | testing.jpg | test.m4a      | audio/mp4     | http://www.facebook.com | https://soundcloud.com/sodab/256-ra-robag-wruhme | https://www.youtube.com/watch?v=wTcNtgA6gHs |
 
-  @C318631 @staging
-  Scenario Outline: (AN-4591) Verify ephemeral icon is not missed from cursor after I edit message
+  @C318631 @regression
+  Scenario Outline: Verify ephemeral icon is not missed from cursor after I edit message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number

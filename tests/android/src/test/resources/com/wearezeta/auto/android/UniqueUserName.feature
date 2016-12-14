@@ -1,6 +1,6 @@
 Feature: Unique Username
 
-  @C352018 @staging
+  @C352018 @regression
   Scenario Outline: Verify I see Unique User Name and AB name within Incoming Request and Conversation View in different condition
     Given I delete all contacts from Address Book
     Given There are 4 users where <Name> is me
@@ -50,7 +50,7 @@ Feature: Unique Username
       | Name      | ContactInABEmail | ContactInABPhone | ContactInABSameName | WaitingMess1     | ABNameEmail | ABNamePhone | ContactINABEmailUniqueUsername | ContactInABPhoneUniqueUsername | ContactInABSameNameUniqueUserName |
       | user1Name | user2Name        | user3Name        | user4Name           | 1 person waiting | Email       | Phone       | user2UniqueUsername            | user3UniqueUsername            | user4UniqueUsername               |
 
-  @C352019 @staging
+  @C352019 @regression
   Scenario Outline: Verify number of common friends is shown on the incoming connection request
     Given I delete all contacts from Address Book
     Given There are 4 users where <Name> is me
@@ -68,7 +68,7 @@ Feature: Unique Username
       | Name      | Contact1  | Contact2  | Contact3  | WaitingMess1     | CommonContact |
       | user1Name | user2Name | user3Name | user4Name | 1 person waiting | 2             |
 
-  @C352020 @staging
+  @C352020 @regression
   Scenario Outline: Verify I see Unique User Name and AB name within outgoing Request in different condition
     Given I delete all contacts from Address Book
     Given There are 4 users where <Name> is me
@@ -108,7 +108,7 @@ Feature: Unique Username
       | Name      | ContactInABEmail | ContactInABPhone | ContactInABSameName | ABNameEmail | ABNamePhone | ContactInABEmailUniqueUsername | ContactInABPhoneUniqueUsername | ContactInABSameNameUniqueUsername |
       | user1Name | user2Name        | user3Name        | user4Name           | Email       | Phone       | user2UniqueUsername            | user3UniqueUsername            | user4UnqiueUsername               |
 
-  @C352021 @staging
+  @C352021 @regression
   Scenario Outline: Verify number of common friends is shown on the outgoing connection request
     Given There are 4 users where <Name> is me
     Given <Contact1> is connected to <Contact2>,<Contact3>
@@ -127,7 +127,7 @@ Feature: Unique Username
       | Name      | Contact1  | Contact2  | Contact3  | CommonContact |
       | user1Name | user2Name | user3Name | user4Name | 2             |
 
-  @C352072 @staging
+  @C352072 @regression
   Scenario Outline: Verify search works with username correctly and last username overwrites the previous one
     Given There are 2 users where <Name> is me
     Given User <Contact2> changes the unique username to "<Contact2UniqueUsername>"
@@ -153,7 +153,7 @@ Feature: Unique Username
       | Name      | Contact2  | Contact2Email | Contact2UniqueUsername | Contact3UniqueUsername |
       | user1Name | user2Name | user2Email    | user2UniqueUsername    | user3UniqueUsername    |
 
-  @C352075 @staging
+  @C352075 @regression
   Scenario Outline: Verify search shows correct user info for unconnected user
     Given There are 9 users where <Name> is me
     Given I add <Contact1InABWithCF> having custom name "<Contact1NameInAB>" into Address Book with email
@@ -182,7 +182,7 @@ Feature: Unique Username
       | Name      | Contact1InABWithCF | Contact1NameInAB | Contact2InABWoCF | Contact2NameInAB | Contact3WithCF | Contact4WoCF | Contact5SameName | CF1       | CF2       | CF3       |
       | user1Name | user2Name          | user2ABName      | user3Name        | user3ABName      | user4Name      | user5Name    | user6Name        | user7Name | user8Name | user9Name |
 
-  @C352086 @staging
+  @C352086 @regression
   Scenario Outline: Verify I can see unregistered person from AB in Contacts UI
     Given There is 1 user where <Name> is me
     Given I add <Contact1InABWithCF> having custom name "<Contact1NameInAB>" into Address Book with email
@@ -196,7 +196,7 @@ Feature: Unique Username
       | Name      | Contact1InABWithCF | Contact1NameInAB |
       | user1Name | user2Name          | user2ABName      |
 
-  @C352076 @staging
+  @C352076 @regression
   Scenario Outline: Verify search shows correct user info for connected user
     Given There are 9 users where <Name> is me
     Given I add <Contact1InABWithCF> having custom name "<Contact1NameInAB>" into Address Book with email
@@ -230,7 +230,7 @@ Feature: Unique Username
       | Name      | Contact1InABWithCF | Contact1NameInAB | Contact2InABWoCF | Contact2NameInAB | Contact3WithCF | Contact3UniqueUsername | Contact4WoCF | Contact5SameName | Contact2UniqueUsername | CF1       | CF2       | CF3       |
       | user1Name | user2Name          | user2ABName      | user3Name        | user3ABName      | user4Name      | user4UniqueUsername    | user5Name    | user6Name        | user3UniqueUsername    | user7Name | user8Name | user9Name |
 
-  @C352714 @staging
+  @C352714 @regression
   Scenario Outline: Verify existing user has a take over screen with offered username after reloading the app and Settings are opened on choosing generating your own username
     Given There is 1 user where <Name> is me without unique user name
     Given I sign in using my email or phone number
@@ -246,7 +246,7 @@ Feature: Unique Username
       | Name      |
       | user1Name |
 
-  @C352678 @staging
+  @C352678 @regression
   Scenario Outline: Verify username settings allows to specify only correct value
     Given There is 1 user where <Name> is me without unique user name
     Given I sign in using my email or phone number
@@ -268,7 +268,7 @@ Feature: Unique Username
       | Name      |
       | user1Name |
 
-  @C368528 @staging
+  @C368528 @regression
   Scenario Outline: Verify empty or already taken username is impossible to save, but it's possible to save 2 chars unique username
     Given There is 2 user where <Name> is me without unique user name
     Given User <User2Name> changes the unique username to "<User2Name>"
@@ -287,7 +287,7 @@ Feature: Unique Username
       | Name      | User2Name | newUniqueUsername   |
       | user1Name | user2Name | user3UniqueUsername |
 
-  @C352693 @staging
+  @C352693 @regression
   Scenario Outline: Verify search by partial match of a user name (Bam and boleo for bamboleo e.g.) and search is not case-sensitive
     Given There are 2 users where <Name> is me
     Given User <Contact2> changes the unique username to "<Contact2UniqueUsername>"
@@ -313,3 +313,34 @@ Feature: Unique Username
     Examples:
       | Name      | Contact2  | NameFirstPartCount | NameLastPartCount | Contact2UniqueUsername |
       | user1Name | user2Name | 6                  | 6                 | user2UniqueUsername    |
+
+  @C352707 @staging
+  Scenario Outline: Verify usernames in Group Participant view for connected user
+    Given I delete all contacts from Address Book
+    Given There are 4 users where <Name> is me
+    Given I add <ContactInABEmail> having custom name "<ABNameEmail>" into Address Book with email
+    Given I add <ContactInABPhone> having custom name "<ABNamePhone>" into Address Book with phone
+    Given I add <ContactInABSameName> into Address Book with email
+    Given User <ContactInABEmail> sets the unique username
+    Given User <ContactInABPhone> sets the unique username
+    Given Myself is connected to <ContactInABEmail>,<ContactInABPhone>,<ContactInABSameName>
+    Given Myself has group chat <GroupChatName> with <ContactInABEmail>,<ContactInABPhone>,<ContactInABSameName>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with name <GroupChatName>
+    Given I tap on conversation name <GroupChatName>
+    Given I tap conversation name from top toolbar
+    When I tap on contact <ContactInABEmail> on Group info page
+    Then I see unique user name "<ContactINABEmailUniqueUsername>" on Group connected user details page
+    And I see user info "<ABNameEmail> in Address Book" on Group connected user details page
+    And I tap Back button
+    When I tap on contact <ContactInABPhone> on Group info page
+    Then I see unique user name "<ContactInABPhoneUniqueUsername>" on Group connected user details page
+    And I tap Back button
+    When I tap on contact <ContactInABSameName> on Group info page
+    Then I do not see unique user name "<ContactInABSameNameUniqueUserName>" on Group connected user details page
+    And I see user info "in Address Book" on Group connected user details page
+
+    Examples:
+      | Name      | ContactInABEmail | ContactInABPhone | ContactInABSameName | ABNameEmail | ABNamePhone | ContactINABEmailUniqueUsername | ContactInABPhoneUniqueUsername | ContactInABSameNameUniqueUserName | GroupChatName |
+      | user1Name | user2Name        | user3Name        | user4Name           | Email       | Phone       | user2UniqueUsername            | user3UniqueUsername            | user4UniqueUsername               | UserNameGroup |
