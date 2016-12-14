@@ -60,11 +60,12 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
             String.format("%s[%d]", xpathStrAllEntries, index);
 
     private static final String xpathStrAllTextMessages = xpathStrAllEntries +
-            "/XCUIElementTypeTextView[boolean(string(@value))]";
+            "/XCUIElementTypeTextView[@name='Message']";
     private static final By xpathAllTextMessages = By.xpath(xpathStrAllTextMessages);
 
     private static final Function<String, String> xpathStrRecentMessageByTextPart = text ->
-            String.format("%s[1]/XCUIElementTypeTextView[contains(@value, '%s')]", xpathStrAllEntries, text);
+            String.format("%s[1]/XCUIElementTypeTextView[@name='Message' and contains(@value, '%s')]",
+                    xpathStrAllEntries, text);
 
     private static final Function<String, String> xpathStrRecentMessageByExactText = text ->
             String.format("%s[1][@value='%s']", xpathStrAllTextMessages, text);
@@ -588,10 +589,12 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
 
     public void tapMessageByText(boolean isLongTap, boolean isDoubleTap, String msg) throws Exception {
         final FBElement el = (FBElement) getElement(FBBy.xpath(xpathStrMessageByTextPart.apply(msg)));
+        final int tapPercentX = 8;
+        final int tapPercentY = 50;
         if (isDoubleTap) {
-            el.doubleTap();
+            this.doubleTapAt(el, tapPercentX, tapPercentY);
         } else if (isLongTap) {
-            el.longTap();
+            this.longTapAt(el, tapPercentX, tapPercentY);
         } else {
             el.click();
         }
