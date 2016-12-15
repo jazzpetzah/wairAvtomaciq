@@ -435,6 +435,7 @@ Feature: People View
     Given User Myself sends 1 encrypted message to user <Contact1>
     Given User <Contact1> sends 1 encrypted message to user Myself
     Given User <Contact1> sends encrypted image <Image> to single user conversation Myself
+    Given I wait until <Contact1> exists in backend search results
     Given I see conversations list
     # Wait for delivery
     Given I wait for 5 seconds
