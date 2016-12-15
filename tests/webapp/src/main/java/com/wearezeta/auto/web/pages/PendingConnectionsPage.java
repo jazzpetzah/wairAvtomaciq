@@ -148,5 +148,4 @@ public class PendingConnectionsPage extends WebPage {
                 .apply(userId);
         return getDriver().findElement(By.cssSelector(css)).getText();
     }
-
 }

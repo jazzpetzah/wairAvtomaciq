@@ -35,6 +35,8 @@ public class AccountPage extends WebPage {
     @SuppressWarnings("unused")
     private static final Logger log = ZetaLogger.getLog(AccountPage.class.getSimpleName());
 
+    private String rememberedUniqueUsername;
+
     @FindBy(css = WebAppLocators.AccountPage.cssLogoutButton)
     private WebElement logoutButton;
 
@@ -87,10 +89,10 @@ public class AccountPage extends WebPage {
     public void logout() throws Exception {
         logoutButton.click();
     }
-    
+
     // Wrapper only
     public boolean isLogoutInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), 
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
                 By.cssSelector(WebAppLocators.AccountPage.cssLogoutButton));
     }
 
@@ -154,7 +156,7 @@ public class AccountPage extends WebPage {
         return uniqueUsernameHint.getText();
     }
 
-    public String getUniqueUsername() throws Exception{
+    public String getUniqueUsername() throws Exception {
         DriverUtils.waitUntilElementClickable(getDriver(), uniqueUsernameInput);
         return uniqueUsernameInput.getAttribute("value");
     }
@@ -263,5 +265,13 @@ public class AccountPage extends WebPage {
     public void clickConfirmDeleteAccountButton() throws Exception {
         DriverUtils.waitUntilElementClickable(getDriver(), confirmDeleteAccountButton);
         confirmDeleteAccountButton.click();
+    }
+
+    public String getRememberedUniqueUsername() {
+        return rememberedUniqueUsername;
+    }
+
+    public void setRememberedUniqueUsername(String rememberedUniqueUsername) {
+        this.rememberedUniqueUsername = rememberedUniqueUsername;
     }
 }

@@ -13,6 +13,9 @@ import java.util.concurrent.Future;
 
 public class OutgoingConnectionRequestPage extends WebPage {
 
+    @FindBy(css = WebAppLocators.OutgoingRequestPage.cssUniqueUsernameOutgoing)
+    private WebElement uniqueUsernameOutgoing;
+
     @FindBy(css = WebAppLocators.OutgoingRequestPage.cssCancelRequestButton)
     private WebElement cancelRequestButton;
 
@@ -27,6 +30,11 @@ public class OutgoingConnectionRequestPage extends WebPage {
 
     public void clickCancelPendingRequestButton() throws Exception {
         cancelRequestButton.click();
+    }
+
+    public String getUniqueUsernameOutgoing() throws Exception {
+        DriverUtils.waitUntilElementClickable(getDriver(), uniqueUsernameOutgoing);
+        return uniqueUsernameOutgoing.getText();
     }
 
     public String getCommonFriends() throws Exception {

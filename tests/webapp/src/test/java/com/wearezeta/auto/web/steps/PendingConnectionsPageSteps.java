@@ -4,6 +4,7 @@ import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.pages.AccountPage;
 import com.wearezeta.auto.web.pages.PendingConnectionsPage;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -41,10 +42,10 @@ public class PendingConnectionsPageSteps {
             throws Exception {
         ClientUser user = context.getUserManager().findUserBy(userAlias, FindBy.NAME_ALIAS);
         String email = user.getEmail();
-            assertThat(
-                    context.getPagesCollection().getPage(PendingConnectionsPage.class)
-                            .getAllTextOfRequestById(user.getId()).toLowerCase(),
-                    not(containsString(email)));
+        assertThat(
+                context.getPagesCollection().getPage(PendingConnectionsPage.class)
+                        .getAllTextOfRequestById(user.getId()).toLowerCase(),
+                not(containsString(email)));
     }
 
     @Then("^I see connection message \"(.*)\" in connection request from user (.*)$")
@@ -90,7 +91,7 @@ public class PendingConnectionsPageSteps {
         ClientUser user = context.getUserManager().findUserBy(userAlias, FindBy.NAME_ALIAS);
         AccentColor accentColor = context.getUserManager().getSelfUserOrThrowError().getAccentColor();
         assertThat(context.getPagesCollection().getPage(PendingConnectionsPage.class)
-                .getAcceptRequestButtonBgColor(user.getId()),
+                        .getAcceptRequestButtonBgColor(user.getId()),
                 equalTo(accentColor));
     }
 
@@ -110,7 +111,7 @@ public class PendingConnectionsPageSteps {
             throws Throwable {
         ClientUser user = context.getUserManager().findUserBy(nameAlias, FindBy.NAME_ALIAS);
         assertThat(context.getPagesCollection().getPage(PendingConnectionsPage.class)
-                .getAmountOfKnownConnectionAvatars(user.getId()),
+                        .getAmountOfKnownConnectionAvatars(user.getId()),
                 equalTo(amount));
     }
 
@@ -138,5 +139,4 @@ public class PendingConnectionsPageSteps {
         context.getPagesCollection().getPage(PendingConnectionsPage.class)
                 .ignoreRequestFromUser(user.getId());
     }
-
 }

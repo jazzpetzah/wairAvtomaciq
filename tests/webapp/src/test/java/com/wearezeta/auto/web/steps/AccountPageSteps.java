@@ -5,8 +5,8 @@ import java.util.concurrent.TimeUnit;
 
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.backend.AccentColor;
+
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.web.common.TestContext;
@@ -35,7 +35,6 @@ public class AccountPageSteps {
     private static final Logger LOG = ZetaLogger.getLog(AccountPageSteps.class.getSimpleName());
 
     private BufferedImage profileImage = null;
-    private String rememberedUniqueUsername = null;
     private final TestContext context;
 
     public AccountPageSteps(TestContext context) {
@@ -97,10 +96,10 @@ public class AccountPageSteps {
     public void ISeeRememberedUniqueUsernameOnSelfProfilePage(String not) throws Exception {
         if (not == null) {
             Assert.assertThat("Remembered username is NOT in settings",
-                context.getPagesCollection().getPage(AccountPage.class).getUniqueUsername(), equalTo(rememberedUniqueUsername));
+                context.getPagesCollection().getPage(AccountPage.class).getUniqueUsername(), equalTo(context.getPagesCollection().getPage(AccountPage.class).getRememberedUniqueUsername()));
         }else{
             Assert.assertThat("Remembered username is in settings",
-                context.getPagesCollection().getPage(AccountPage.class).getUniqueUsername(), not(equalTo(rememberedUniqueUsername)));
+                context.getPagesCollection().getPage(AccountPage.class).getUniqueUsername(), not(equalTo(context.getPagesCollection().getPage(AccountPage.class).getRememberedUniqueUsername())));
         }
     }
 
@@ -164,14 +163,9 @@ public class AccountPageSteps {
         context.getPagesCollection().getPage(AccountPage.class).setUniqueUsername(name);
     }
     
-    @Then("I remember unique username of (.*)$")
-    public void RememberUniqueUsername(String nameAlias) throws Exception {
-        ClientUser user = context.getUserManager().findUserByNameOrNameAlias(nameAlias);
-        rememberedUniqueUsername = user.getUniqueUsername();
-    }
-    
     @And("^I change my unique username to previously remembered unique username$")
     public void IChangeUniqueUserNameToRemembered() throws Exception {
+        String rememberedUniqueUsername = context.getPagesCollection().getPage(AccountPage.class).getRememberedUniqueUsername();
         context.getPagesCollection().getPage(AccountPage.class).setUniqueUsername(rememberedUniqueUsername);
     }
 

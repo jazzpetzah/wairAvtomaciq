@@ -3,6 +3,7 @@ Feature: Connect
   @C1756 @smoke
   Scenario Outline: Accept connection request
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given <Contact> sent connection request to <Name>
     Given User me change accent color to VividRed
     Given I switch to Sign In page
@@ -10,13 +11,18 @@ Feature: Connect
     And I am signed in properly
     When I see connection request from one user
     And I open the list of incoming connection requests
+    And I see avatar in connection request from user <Contact>
     And I see correct color for accept button in connection request from user <Contact>
+    Then I see unique username in connection request from user <Contact>
     And I accept connection request from user <Contact>
     Then I see Contact list with name <Contact>
+    When I write message <Message>
+    And I send message
+    Then I see text message <Message>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      | Contact   | Message |
+      | user1Email | user1Password | user1Name | user2Name | message |
 
   @C1691 @regression
   Scenario Outline: Verify pending user profiles contain all the info required by spec
@@ -89,6 +95,7 @@ Feature: Connect
     And I see Connect To popover
     And I click Connect button on Connect To popover
     Then I see Contact list with name <Contact>
+    And I see unique username in outgoing connection request to user <Contact>
 
     Examples: 
       | Login      | Password      | Name      | Contact   | ContactUniqueUsername |
@@ -97,6 +104,7 @@ Feature: Connect
   @C1817 @regression
   Scenario Outline: Verify sending a connection request to user from conversation view
     Given There are 3 users where <Name> is me
+    Given <Contact2> has unique username
     Given Myself is connected to <Contact1>
     Given <Contact1> is connected to <Contact2>
     Given <Contact1> has group chat <ChatName> with <Name>,<Contact2>
@@ -108,6 +116,7 @@ Feature: Connect
     And I see Connect To popover
     And I click Connect button on Connect To popover
     Then I see Contact list with name <Contact2>
+    And I see unique username in outgoing connection request to user <Contact2>
     And I see cancel pending request button in the conversation view
     And I verify that conversation input and buttons are not visible
 
@@ -131,6 +140,7 @@ Feature: Connect
     And I click Connect button on Connect To popover
     And I see Contact list with name <Name2>
     And I open conversation with <Name2>
+    And I see unique username in outgoing connection request to user <Name2>
     And I open preferences by clicking the gear button
     And I click logout in account preferences
     And I see the clear data dialog
@@ -141,6 +151,7 @@ Feature: Connect
     And I am signed in properly
     And I see connection request from one user
     And I open the list of incoming connection requests
+    And I see unique username in connection request from user <Name>
     And I accept connection request from user <Name>
     And I see Contact list with name <Name>
     And I open preferences by clicking the gear button
@@ -175,6 +186,7 @@ Feature: Connect
     And I see Connect To popover
     And I click Connect button on Connect To popover
     And I see Contact list with name <Name2>
+    And I see unique username in outgoing connection request to user <Name2>
     And I open conversation with <Name2>
     And I open preferences by clicking the gear button
     And I click logout in account preferences
@@ -186,6 +198,7 @@ Feature: Connect
     And I am signed in properly
     And I see connection request from one user
     And I open the list of incoming connection requests
+    And I see unique username in connection request from user <Name>
     And I ignore connection request from user <Name>
     And I do not see Contact list with name <Name>
     And I open preferences by clicking the gear button
@@ -456,6 +469,7 @@ Feature: Connect
     Then I see user <Contact1> found in People Picker
     When I click on pending user <Contact1> found in People Picker
     And I see Pending Outgoing Connection popover
+    And I see unique username in outgoing connection request to user <Contact1>
     When I click Cancel request on Pending Outgoing Connection popover
     Then I see Cancel request confirmation popover
     When I click No button on Cancel request confirmation popover
@@ -484,11 +498,13 @@ Feature: Connect
   Scenario Outline: I want to cancel a pending request from conversation list
     Given There are 3 users where <Name> is me
     Given I sent connection request to <Contact1>
+    Given <Contact1> has unique username
     Given Myself is connected to <Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly
     And I open conversation with <Contact1>
+    And I see unique username in outgoing connection request to user <Contact1>
     When I click on options button for conversation <Contact1>
     Then I see a conversation option <ConvOption1> on the page
     And I see a conversation option <ConvOption2> on the page
@@ -534,12 +550,14 @@ Feature: Connect
   @C147863 @regression
   Scenario Outline: Verify you can cancel a pending request from conversation view
     Given There are 3 users where <Name> is me
+    Given <Contact1> has unique username
     Given I sent connection request to <Contact1>
     Given Myself is connected to <Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly
     When I open conversation with <Contact1>
+    And I see unique username in outgoing connection request to user <string>
     Then I see cancel pending request button in the conversation view
     When I click cancel pending request button in the conversation view
     Then I do not see connection request from one user

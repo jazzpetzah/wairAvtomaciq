@@ -30,6 +30,9 @@ abstract class AbstractUserInfoPopoverPage extends AbstractPopoverPage {
 	@FindBy(how = How.XPATH, using = PopoverLocators.GroupPopover.ParticipantInfoPage.xpathUserName)
 	private WebElement username;
 
+	@FindBy(how = How.XPATH, using = PopoverLocators.GroupPopover.ParticipantInfoPage.xpathUniqueUserName)
+	private WebElement uniqueUsername;
+
 	public AbstractUserInfoPopoverPage(Future<ZetaWebAppDriver> lazyDriver,
 			PeoplePopoverContainer container) throws Exception {
 		super(lazyDriver, container);
@@ -94,5 +97,9 @@ abstract class AbstractUserInfoPopoverPage extends AbstractPopoverPage {
 
 	public String getMailHref() {
 		return mail.getAttribute(HREF_ATTRIBUTE_LOCATOR);
+	}
+
+	public String getUniqueUsername() {
+		return uniqueUsername.getText();
 	}
 }
