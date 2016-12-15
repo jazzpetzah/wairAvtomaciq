@@ -9,6 +9,7 @@ import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.InvalidElementStateException;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
@@ -125,7 +126,8 @@ public class AccountPage extends WebPage {
         nameInput.click();
         Thread.sleep(1000);
         nameInput.clear();
-        nameInput.sendKeys(name + "\n");
+        nameInput.sendKeys(name);
+        nameInput.sendKeys(Keys.ENTER);
     }
 
     public void typeUniqueUsername(String name) throws InterruptedException {
@@ -136,7 +138,7 @@ public class AccountPage extends WebPage {
     }
 
     public void submitUniqueUsername() throws InterruptedException {
-        uniqueUsernameInput.sendKeys("\n");
+        uniqueUsernameInput.sendKeys(Keys.ENTER);
     }
 
     public void setUniqueUsername(String name) throws InterruptedException {
