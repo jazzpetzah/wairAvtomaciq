@@ -125,6 +125,8 @@ Feature: Ephemeral Messages
     Given I set ephemeral messages expiration timer to <Timer> seconds
     Given I long tap Audio Message button from input tools
     Given I tap Send record control button
+    # Wait for sync
+    Given I wait for 3 seconds
     When I remember asset container state at cell 1
     And I wait for <Timer> seconds
     Then I see asset container state is changed
