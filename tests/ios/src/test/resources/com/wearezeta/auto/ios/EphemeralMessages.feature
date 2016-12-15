@@ -239,6 +239,8 @@ Feature: Ephemeral Messages
     Given I tap Hourglass button in conversation view
     Given I set ephemeral messages expiration timer to <Timer> seconds
     Given I type the "<SoundCloudLink>" message and send it
+    # Wait for preview generation
+    Given I wait for 5 seconds
     Given I see media container in the conversation view
     When I remember the recent message from user Myself in the local database
     And I wait for <Timer> seconds
