@@ -84,8 +84,6 @@ public final class WebAppLocators {
 
         public static final String cssLeaveButton = "[data-uie-name='do-leave']";
 
-        public static final String cssCancelRequestButton = "#actions-bubble [data-uie-name='do-cancel-request']";
-
         public static final Function<String, String> cssContactListEntryByName = (
                 name) -> String
                 .format("%s div[data-uie-name='item-conversation'][data-uie-value='%s'], %s " +
@@ -358,8 +356,6 @@ public final class WebAppLocators {
         public static final String cssUserAvatar = ".user-avatar and .pending";
 
         public static final String cssWatermark = "[data-uie-name='no-conversation']";
-        
-        public static final String cssCancelRequestButton = "#"+idConversation+" [data-uie-name='do-cancel-request']";
 
         public static final String cssUsername = ".message-connected-username.label-username";
 
@@ -705,6 +701,15 @@ public final class WebAppLocators {
                         uid);
 
         public static final String cssCommonFriends = ".message-connected-contacts";
+    }
+
+    public static final class OutgoingRequestPage {
+
+        public static final String idConversation = "conversation";
+
+        public static final String cssCancelRequestBubbleButton = "#actions-bubble [data-uie-name='do-cancel-request']";
+
+        public static final String cssCancelRequestButton = "#"+idConversation+" [data-uie-name='do-cancel-request']";
     }
 
     public static final class StartUIPage {

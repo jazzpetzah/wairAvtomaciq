@@ -83,9 +83,6 @@ public class ContactListPage extends WebPage {
     @FindBy(css = WebAppLocators.ContactListPage.cssDeleteButton)
     private WebElement deleteButton;
 
-    @FindBy(css = WebAppLocators.ContactListPage.cssCancelRequestButton)
-    private WebElement cancelRequestButton;
-
     // leave warning
     @FindBy(css = WebAppLocators.ContactListPage.cssLeaveModalCancelButton)
     private WebElement leaveModalCancelButton;
@@ -310,11 +307,6 @@ public class ContactListPage extends WebPage {
     public boolean isBlockButtonClickable() throws Exception {
         return DriverUtils.waitUntilElementClickable(this.getDriver(),
                 blockButton);
-    }
-
-    public boolean isCancelRequestButtonClickable() throws Exception {
-        return DriverUtils.waitUntilElementClickable(this.getDriver(),
-                cancelRequestButton);
     }
 
     public boolean isConversationMuted(String conversationName)
@@ -636,10 +628,6 @@ public class ContactListPage extends WebPage {
 
     public void clickCancelOnDeleteWarningSingle() {
         deleteModalCancelButtonSingle.click();
-    }
-
-    public void clickCancelRequest() throws Exception {
-        cancelRequestButton.click();
     }
 
     public void clickBlockButton() throws Exception {

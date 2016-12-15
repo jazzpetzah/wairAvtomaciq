@@ -8,7 +8,6 @@ import com.wearezeta.auto.web.pages.PendingConnectionsPage;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 
@@ -138,12 +137,6 @@ public class PendingConnectionsPageSteps {
         ClientUser user = context.getUserManager().findUserBy(userAlias, FindBy.NAME_ALIAS);
         context.getPagesCollection().getPage(PendingConnectionsPage.class)
                 .ignoreRequestFromUser(user.getId());
-    }
-
-    @Then("^I see (\\d+) common friends$")
-    public void ISeeCommonFriends(int count) throws Exception {
-        String commonFriends = context.getPagesCollection().getPage(PendingConnectionsPage.class).getCommonFriends();
-        Assert.assertThat("Wrong amount of common friends", commonFriends, startsWith(Integer.toString(count)));
     }
 
 }

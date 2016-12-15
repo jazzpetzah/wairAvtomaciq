@@ -64,9 +64,6 @@ public class ConversationPage extends WebPage {
     @FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idConversationInput)
     private WebElement conversationInput;
 
-    @FindBy(css = WebAppLocators.ConversationPage.cssCancelRequestButton)
-    private WebElement cancelRequestButton;
-
     @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssShowParticipantsButton)
     private WebElement showParticipants;
 
@@ -536,11 +533,6 @@ public class ConversationPage extends WebPage {
         assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
                 locator, 2) : "Ping button has not been shown after 2 seconds";
         pingButton.click();
-    }
-
-    public boolean isCancelRequestButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(
-                WebAppLocators.ConversationPage.cssCancelRequestButton));
     }
 
     public boolean isConversationInputVisible() throws Exception {
@@ -1269,10 +1261,6 @@ public class ConversationPage extends WebPage {
 
     public String getTitlebarLabel() {
         return titlebarLabel.getText();
-    }
-
-    public void clickCancelPendingRequestButton() throws Exception {
-        cancelRequestButton.click();
     }
 
     public boolean isImageInvisible() throws Exception {
