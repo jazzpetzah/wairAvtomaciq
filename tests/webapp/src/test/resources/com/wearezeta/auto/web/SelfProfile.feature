@@ -11,6 +11,10 @@ Feature: Self Profile
     And I see name <Name> in account preferences
     And I change name to <NewName>
     Then I see name <NewName> in account preferences
+    When I refresh page
+    And I am signed in properly
+    And I open preferences by clicking the gear button
+    Then I see name <NewName> in account preferences
 
     Examples: 
       | Login      | Password      | Name      | NewName     | Contact   |
