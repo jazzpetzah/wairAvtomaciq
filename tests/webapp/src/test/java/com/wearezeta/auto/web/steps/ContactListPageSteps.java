@@ -538,6 +538,14 @@ public class ContactListPageSteps {
                 .clickCancelOnDeleteWarningSingle();
     }
 
+    @When("^I click cancel request in the options popover$")
+    public void IClickCancelRequestButton() throws Exception {
+        Assert.assertTrue("Cancel request button is not shown in the option popover",
+                context.getPagesCollection().getPage(ContactListPage.class).isCancelRequestButtonClickable());
+        context.getPagesCollection().getPage(ContactListPage.class)
+                .clickCancelRequest();
+    }
+
     @When("^I click archive in the options popover$")
     public void IClickArchiveButton() throws Exception {
         Assert.assertTrue("Archive button is not shown in the option popover",

@@ -20,16 +20,6 @@ public class OutgoingConnectionRequestSteps {
         this.context = context;
     }
 
-    /* Conversation list */
-
-    @When("^I click cancel request in the options popover$")
-    public void IClickCancelRequestButton() throws Exception {
-        Assert.assertTrue("Cancel request button is not shown in the option popover",
-                context.getPagesCollection().getPage(OutgoingConnectionRequestPage.class).isCancelRequestButtonClickable());
-        context.getPagesCollection().getPage(OutgoingConnectionRequestPage.class)
-                .clickCancelRequest();
-    }
-
     /* Conversation view */
 
     @Then("^I see cancel pending request button in the conversation view$")
