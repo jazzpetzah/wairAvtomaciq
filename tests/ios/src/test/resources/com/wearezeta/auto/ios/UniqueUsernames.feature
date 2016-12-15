@@ -206,6 +206,9 @@ Feature: Unique Usernames
     Given User <Name> is me
     Given I prepare Wire to perform fast log in by email as <Name>
     Given I sign in using my email or phone number
+    Given I open search UI
+    Given I accept alert if visible
+    Given I tap X button on Search UI page
     When I tap Choose Yours button on Unique Username Takeover page
     Then I see Unique Username page
     And I see unique username input is prefilled with <Name> on Unique Username page
@@ -226,6 +229,9 @@ Feature: Unique Usernames
     Given User <Contact> changes the unique username to "<MyUniqueUsername>"
     Given I prepare Wire to perform fast log in by email as <Name>
     Given I sign in using my email or phone number
+    Given I open search UI
+    Given I accept alert if visible
+    Given I tap X button on Search UI page
     When I tap Choose Yours button on Unique Username Takeover page
     And I enter "<MyUniqueUsername>" name on Unique Username page
     Then I see Save button state is Disabled on Unique Username page
@@ -375,6 +381,9 @@ Feature: Unique Usernames
     Given User <NameAlias> changes name to <Name>
     Given I prepare Wire to perform fast log in by email as <Name>
     Given I sign in using my email or phone number
+    Given I open search UI
+    Given I accept alert if visible
+    Given I tap X button on Search UI page
     When I see username <NameAlias> on Unique Username Takeover page
     Then I see unique username starts with <UniqueName> on Unique Username Takeover page
 
@@ -435,6 +444,9 @@ Feature: Unique Usernames
     Given User <Name> is me
     Given I prepare Wire to perform fast log in by email as <Name>
     Given I sign in using my email or phone number
+    Given I open search UI
+    Given I accept alert if visible
+    Given I tap X button on Search UI page
     Given I see username <Name> on Unique Username Takeover page
     When I restart Wire
     And I accept alert if visible
