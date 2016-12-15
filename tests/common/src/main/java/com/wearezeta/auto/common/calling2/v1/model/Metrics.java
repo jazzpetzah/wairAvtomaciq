@@ -10,13 +10,18 @@ public class Metrics {
     private final boolean success;
     private final long estabTime;
     private final long setupTime;
+    private final long avgRateU;
+    private final long avgRateD;
 
     @JsonCreator
     public Metrics(@JsonProperty("success") boolean success, @JsonProperty("estab_time") long estabTime,
-                   @JsonProperty("setup_time") long setupTime) {
+                   @JsonProperty("setup_time") long setupTime, @JsonProperty("avg_rate_u") long avgRateU,
+                   @JsonProperty("avg_rate_d") long avgRateD) {
         this.success = success;
         this.estabTime = estabTime;
         this.setupTime = setupTime;
+        this.avgRateU = avgRateU;
+        this.avgRateD = avgRateD;
     }
 
     public boolean isSuccess() {
@@ -31,12 +36,22 @@ public class Metrics {
         return setupTime;
     }
 
+    public long getAvgRateU() {
+        return avgRateU;
+    }
+
+    public long getAvgRateD() {
+        return avgRateD;
+    }
+
     @Override
     public String toString() {
         return "Metrics{" +
                 "success=" + success +
-                ", estabTime='" + estabTime + '\'' +
-                ", setupTime='" + setupTime + '\'' +
+                ", estabTime=" + estabTime +
+                ", setupTime=" + setupTime +
+                ", avgRateU=" + avgRateU +
+                ", avgRateD=" + avgRateD +
                 '}';
     }
 }

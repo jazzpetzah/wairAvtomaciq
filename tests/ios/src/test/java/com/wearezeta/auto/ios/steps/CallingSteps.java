@@ -238,10 +238,11 @@ public class CallingSteps {
             throws Exception {
         final Map<Integer, Exception> failures = new HashMap<>();
         final List<Integer> callsWithoutMetricsData = new ArrayList<>();
+        final List<Integer> callsWithoutByteFlowData = new ArrayList<>();
         arrayCallSetupTime.clear();
         arrayCallEstabTime.clear();
         for (int i = 0; i < times; i++) {
-            makeSingleCall(callees,i,callDurationMinutes,failures, callsWithoutMetricsData);
+            makeSingleCall(callees,i,callDurationMinutes,failures, callsWithoutMetricsData, callsWithoutByteFlowData);
         }
 
         int sumCallSetupTime = arrayCallSetupTime.stream().reduce(0, Integer::sum);
@@ -255,7 +256,7 @@ public class CallingSteps {
             avgCallEstabTime = sumCallEstabTime / successfulCallsCount;
         }
 
-        createCallingReport(times, failures, callsWithoutMetricsData, avgCallSetupTime, avgCallEstabTime, "MAKE");
+        createCallingReport(times, failures, callsWithoutMetricsData, callsWithoutByteFlowData, avgCallSetupTime, avgCallEstabTime, "MAKE");
 
         failures.forEach((Integer i, Throwable t) -> {
             LOG.error(i + ": " + t.getMessage());
@@ -267,7 +268,8 @@ public class CallingSteps {
     }
 
     private void makeSingleCall(String callees, int numberOfCalls,int callDurationMinutes,
-                                final Map<Integer, Exception> failures, List<Integer> callsWithoutMetricsData) throws Exception {
+                                final Map<Integer, Exception> failures, List<Integer> callsWithoutMetricsData,
+                                List<Integer> callsWithoutByteFlowData) throws Exception {
         final int timeBetweenCall = 10;
         final List<String> calleeList = commonCallingSteps.getUsersManager().splitAliases(callees);
 
@@ -309,6 +311,11 @@ public class CallingSteps {
                     LOG.info("Could not get metrics for this call.");
                     callsWithoutMetricsData.add(numberOfCalls);
                 } else {
+                    final int avgRateU = (int)metrics.getAvgRateU();
+                    final int avgRateD = (int)metrics.getAvgRateD();
+                    if(avgRateU == -1 || avgRateD == -1){
+                        callsWithoutByteFlowData.add(numberOfCalls);
+                    }
                     arrayCallSetupTime.add(((int) metrics.getSetupTime()));
                     arrayCallEstabTime.add(((int) metrics.getEstabTime()));
                 }
@@ -363,8 +370,9 @@ public class CallingSteps {
 
         final Map<Integer, Exception> failures = new HashMap<>();
         final List<Integer> callsWithoutMetricsData = new ArrayList<>();
+        final List<Integer> callsWithoutByteFlowData = new ArrayList<>();
         for (int i = 0; i < times; i++) {
-            receiveSingleCall(callees, i, appState, conversationName, callDurationMinutes, failures, callsWithoutMetricsData);
+            receiveSingleCall(callees, i, appState, conversationName, callDurationMinutes, failures, callsWithoutMetricsData, callsWithoutByteFlowData);
         }
 
         int sumCallSetupTime = arrayCallSetupTime.stream().reduce(0, Integer::sum);
@@ -378,7 +386,7 @@ public class CallingSteps {
            avgCallEstabTime = sumCallEstabTime / successfulCallsCount;
         }
 
-        createCallingReport(times, failures, callsWithoutMetricsData, avgCallSetupTime, avgCallEstabTime,"RECEIVE");
+        createCallingReport(times, failures, callsWithoutMetricsData, callsWithoutByteFlowData, avgCallSetupTime, avgCallEstabTime,"RECEIVE");
 
         failures.forEach((Integer i, Throwable t) -> {
             LOG.error(i + ": " + t.getMessage());
@@ -393,13 +401,15 @@ public class CallingSteps {
     private static final String CALL_STATS_FILENAME = "multi_call_result.txt";
 
     private void createCallingReport(int timesOfCalls, final Map<Integer, Exception> failures,
-                                     final List<Integer> callsWithoutMetricsData, int avgCallSetupTime,
-                                     int avgCallEstabTime, String typeOfCall)
+                                     final List<Integer> callsWithoutMetricsData,final List<Integer> callsWithoutByteFlowData,
+                                     int avgCallSetupTime, int avgCallEstabTime, String typeOfCall)
             throws Exception {
         String message = String.format("%s CALL LOOP! %s/%s calls succeeded. Got no metrics data from %s calls." +
-                " Average calculated from %s calls. average Call setup_time: %s ms , average Call estab_time: %s ms",
+                " Average calculated from %s calls. average Call setup_time: %s ms , average Call estab_time: %s ms." +
+                "%s/%s calls had no byte flow during the call.",
                 typeOfCall, timesOfCalls - failures.size(), timesOfCalls, callsWithoutMetricsData.size(),
-                timesOfCalls - failures.size()-callsWithoutMetricsData.size(), avgCallSetupTime, avgCallEstabTime);
+                timesOfCalls - failures.size()-callsWithoutMetricsData.size(), avgCallSetupTime, avgCallEstabTime,
+                callsWithoutByteFlowData.size(),timesOfCalls);
         LOG.info(message);
 
         Files.write(Paths.get(CommonUtils.getBuildPathFromConfig(CallingSteps.class), CALL_STATS_FILENAME),
@@ -432,7 +442,7 @@ public class CallingSteps {
     private static final String CALLKIT_ACCEPT_BUTTON = "Accept";
     private void receiveSingleCall(String callees, int numberOfCall, String appState, String conversationName,
                                                  int callDurationMinutes, final Map<Integer, Exception> failures,
-                                   List<Integer> callsWithoutMetricsData)
+                                   List<Integer> callsWithoutMetricsData, List<Integer> callsWithoutByteFlowData)
             throws Exception {
         final int timeBetweenCall = 10;
         final List<String> calleeList = commonCallingSteps.getUsersManager().splitAliases(callees);
@@ -478,6 +488,11 @@ public class CallingSteps {
                     LOG.info("Could not get metrics for this call.");
                     callsWithoutMetricsData.add(numberOfCall);
                     continue;
+                }
+                final int avgRateU = (int)metrics.getAvgRateU();
+                final int avgRateD = (int)metrics.getAvgRateD();
+                if(avgRateU == -1 || avgRateD == -1){
+                    callsWithoutByteFlowData.add(numberOfCall);
                 }
                 arrayCallSetupTime.add(((int) metrics.getSetupTime()));
                 arrayCallEstabTime.add(((int) metrics.getEstabTime()));
