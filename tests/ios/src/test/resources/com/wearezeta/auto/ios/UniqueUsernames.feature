@@ -549,7 +549,7 @@ Feature: Unique Usernames
       | Name      | Contact   | ContactUniqueUserName | Contact2  | Contact3  |
       | user1Name | user2Name | user2UniqueUsername   | user3Name | user4Name |
 
-  @C352062 @regression @forceReset @staging
+  @C352062 @addressbookStart @forceReset @regression
   Scenario Outline: Verify connected user in 1-to-1 conversation view
     Given There are 7 users where <Name> is me
     Given Myself is connected to <Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact5WithSameNameInAB>,<Contact6Common>

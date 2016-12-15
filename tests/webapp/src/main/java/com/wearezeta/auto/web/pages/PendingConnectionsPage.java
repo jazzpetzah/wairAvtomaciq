@@ -148,4 +148,9 @@ public class PendingConnectionsPage extends WebPage {
                 .apply(userId);
         return getDriver().findElement(By.cssSelector(css)).getText();
     }
+
+    public String getCommonFriends() throws Exception {
+        String css = WebAppLocators.ConnectToPage.cssCommonFriends;
+        return getDriver().findElement(By.cssSelector(css)).getText();
+    }
 }
