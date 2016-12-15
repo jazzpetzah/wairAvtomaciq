@@ -21,7 +21,7 @@ public class Runner {
         ReportBuilder reportBuilder = new ReportBuilder(
             list, rd, "", "", "", "", "1",
             "cucumber-jvm", false, false, false,
-            false, true,true, false,
+            false, false, true, false,
             "Account has sufficient funds again~the account balance is 300~account~scenario1_psp_auth_request" +
             ".xml~xml\nAccount has sufficient funds again~the card is valid~card~scenario1_psp_auth_response.xml~xml");
         HashMap<String, String> headers = new HashMap<String, String>();

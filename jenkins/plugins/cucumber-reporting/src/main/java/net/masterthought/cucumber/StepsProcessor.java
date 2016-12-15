@@ -14,10 +14,7 @@ import net.masterthought.cucumber.util.Util;
 
 public class StepsProcessor {
 
-    //feature <~> scenario dependency
-    LinkedHashMap scenariosMap = new LinkedHashMap<String, String>();
-    //scenario <~> steps dependency
-    LinkedHashMap stepsMap = new LinkedHashMap<String, ArrayList<Step>>();
+    LinkedHashMap reportMap = new LinkedHashMap<LinkedHashMap<String, String>, ArrayList<Step>>();
 
     private ReportInformation ri;
 
@@ -25,36 +22,35 @@ public class StepsProcessor {
         this.ri = ri;
     }
 
-    void loadSteps() {
+    void loadReportInformationToMap() {
         List<Feature> features = ri.getFeatures();
         for (Feature feature : features) {
             Sequence<Element> scenarios = feature.getElements();
             if (Util.itemExists(scenarios)) {
                 for (Element scenario : scenarios) {
-                    String scenarioName = scenario.getRawName();
-                    scenariosMap.put(scenarioName, feature.getRawName());
                     ArrayList<Step> stepsList = new ArrayList<Step>();
+                    LinkedHashMap key = new LinkedHashMap<String, String>();
                     if (Util.hasSteps(scenario)) {
-                        Sequence<Step> steps = scenario.getSteps();
-                        if (stepsMap.get(scenarioName) != null) {
-                            stepsList.addAll((ArrayList<Step>) stepsMap.get(scenarioName));
+                        key.put(feature.getRawName(), scenario.getRawName());
+                        if (reportMap.get(key) != null) {
+                            stepsList.addAll((ArrayList<Step>) reportMap.get(key));
                         }
-                        stepsList.addAll(steps.toList());
+                        stepsList.addAll(scenario.getSteps().toList());
                     }
-                    stepsMap.put(scenarioName, stepsList);
+                    reportMap.put(key, stepsList);
                 }
             }
         }
     }
 
-    void preprareStepsIndex(boolean skippedHaveScreenshots) {
-        for (Object key : stepsMap.keySet()) {
-            ArrayList<Step> steps = (ArrayList<Step>) stepsMap.get(key);
+    void preprareStepsIndexes(boolean skippedHaveScreenshots) {
+        for (Object key : reportMap.keySet()) {
+            ArrayList<Step> steps = (ArrayList<Step>) reportMap.get(key);
             //Set default index
             for (Step step : steps) {
                 step.setIndex(1);
             }
-            //Find duplicate steps and test index
+            //Find duplicate steps and set index
             for (int i = 0; i < steps.size(); i++) {
                 if (skippedHaveScreenshots) {
                     int index = steps.get(i).getIndex();
@@ -81,22 +77,24 @@ public class StepsProcessor {
         }
     }
 
-    Feature updateIndexesInFeature(Feature feature) {
+    Feature updateStepsIndexesInFeature(Feature feature) {
         Sequence<Element> scenarios = feature.getElements();
         if (Util.itemExists(scenarios)) {
-            scenarios = updateIndexesInScenario(scenarios);
+            scenarios = updateStepIndexesInScenario(feature.getRawName(), scenarios);
         }
         feature.setElements(scenarios);
         return feature;
     }
 
-    Sequence<Element> updateIndexesInScenario(Sequence<Element> scenarios) {
+    private Sequence<Element> updateStepIndexesInScenario(String feature, Sequence<Element> scenarios) {
         if (Util.itemExists(scenarios)) {
             for (Element scenario : scenarios) {
                 if (Util.hasSteps(scenario)) {
                     Sequence<Step> steps = scenario.getSteps();
+                    LinkedHashMap key = new LinkedHashMap<String, String>();
                     Iterator iterator = steps.iterator();
-                    ArrayList<Step> indexedSteps = (ArrayList<Step>) stepsMap.get(scenario.getRawName());
+                    key.put(feature, scenario.getRawName());
+                    ArrayList<Step> indexedSteps = (ArrayList<Step>) reportMap.get(key);
                     for (int i = 0; i < steps.size(); i++) {
                         if (iterator.hasNext()) {
                             Step step = (Step) iterator.next();

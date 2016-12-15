@@ -121,10 +121,10 @@ public class ReportInformation {
 
     private void processFeatures() {
         StepsProcessor stepsProcessor = new StepsProcessor(this);
-        stepsProcessor.loadSteps();
-        stepsProcessor.preprareStepsIndex(skippedHaveScreenshots);
+        stepsProcessor.loadReportInformationToMap();
+        stepsProcessor.preprareStepsIndexes(skippedHaveScreenshots);
         for (Feature feature : features) {
-            stepsProcessor.updateIndexesInFeature(feature);
+            stepsProcessor.updateStepsIndexesInFeature(feature);
             Sequence<Element> scenarios = feature.getElements();
             if (Util.itemExists(scenarios)) {
                 numberOfScenarios = getNumberOfScenarios(scenarios);
