@@ -242,24 +242,15 @@ public class CallingSteps {
         arrayCallSetupTime.clear();
         arrayCallEstabTime.clear();
         for (int i = 0; i < times; i++) {
-            makeSingleCall(callees,i,callDurationMinutes,failures, callsWithoutMetricsData, callsWithoutByteFlowData);
+            makeSingleCall(callees, i, callDurationMinutes, failures, callsWithoutMetricsData, callsWithoutByteFlowData);
         }
 
-        int sumCallSetupTime = arrayCallSetupTime.stream().reduce(0, Integer::sum);
-        int sumCallEstabTime = arrayCallEstabTime.stream().reduce(0, Integer::sum);
-
-        int avgCallSetupTime = 0;
-        int avgCallEstabTime = 0;
-        int successfulCallsCount = times - failures.size() - callsWithoutMetricsData.size();
-        if (successfulCallsCount > 0) {
-            avgCallSetupTime = sumCallSetupTime / successfulCallsCount;
-            avgCallEstabTime = sumCallEstabTime / successfulCallsCount;
-        }
-
-        createCallingReport(times, failures, callsWithoutMetricsData, callsWithoutByteFlowData, avgCallSetupTime, avgCallEstabTime, "MAKE");
+        int avgCallSetupTime = calculateCallStatistics(arrayCallSetupTime, times,failures,callsWithoutMetricsData);
+        int avgCallEstabTime = calculateCallStatistics(arrayCallEstabTime, times,failures,callsWithoutMetricsData);
+        createCallingReport(times, failures, callsWithoutMetricsData, callsWithoutByteFlowData, avgCallSetupTime, avgCallEstabTime, CallLoopType.Make);
 
         failures.forEach((Integer i, Throwable t) -> {
-            LOG.error(i + ": " + t.getMessage());
+            LOG.error(String.format("Failure %s: %s",i,t.getMessage()));
         });
 
         if (!failures.isEmpty()) {
@@ -267,83 +258,82 @@ public class CallingSteps {
         }
     }
 
-    private void makeSingleCall(String callees, int numberOfCalls,int callDurationMinutes,
+    private static final String CALL_STATUS_DESTROYED = "destroyed";
+    private static final String CALL_STATUS_ACTIVE = "active";
+
+    private void makeSingleCall(String callees, int callIndex, int callDurationMinutes,
                                 final Map<Integer, Exception> failures, List<Integer> callsWithoutMetricsData,
                                 List<Integer> callsWithoutByteFlowData) throws Exception {
         final int timeBetweenCall = 10;
         final List<String> calleeList = commonCallingSteps.getUsersManager().splitAliases(callees);
 
-        LOG.info("\n\nSTARTING CALL " + numberOfCalls);
+        LOG.info("\n\nSTARTING CALL " + callIndex);
         try {
             pagesCollection.getPage(ConversationViewPage.class).tapAudioCallButton();
             LOG.info("Pressing Audio button to start call");
 
-            if (numberOfCalls == 0) {
+            if (callIndex == 0) {
                 pagesCollection.getCommonPage().acceptAlert();
             }
 
             commonCallingSteps.acceptNextCall(calleeList);
-            commonCallingSteps.verifyAcceptingCallStatus(calleeList, "active", 20);
+            commonCallingSteps.verifyAcceptingCallStatus(calleeList, CALL_STATUS_ACTIVE, 20);
             LOG.info("All instances are active");
 
             boolean isVisible = pagesCollection.getPage(CallingOverlayPage.class).isCallStatusLabelVisible();
-            if (!isVisible){
-                throw new CallIterationError(numberOfCalls,"Calling overlay should be visible");
+            if (!isVisible) {
+                throw new CallIterationError(callIndex, "Calling overlay should be visible");
             }
             LOG.info("Calling overlay is visible");
 
             commonSteps.WaitForTime(callDurationMinutes * 60);
-
             pagesCollection.getPage(CallingOverlayPage.class).tapButtonByName(CALLINGOVERLAY_LEAVE_BUTTON);
-
             boolean isInvisible = pagesCollection.getPage(CallingOverlayPage.class).isCallStatusLabelInvisible();
-            if (!isInvisible){
-                throw new CallIterationError(numberOfCalls,"Calling overlay should be invisible");
+            if (!isInvisible) {
+                throw new CallIterationError(callIndex, "Calling overlay should be invisible");
             }
             LOG.info("Calling overlay is NOT visible");
-
-            commonCallingSteps.verifyAcceptingCallStatus(calleeList, "destroyed", 20);
+            commonCallingSteps.verifyAcceptingCallStatus(calleeList, CALL_STATUS_DESTROYED, 20);
             LOG.info("All instances are destroyed");
 
             for (Call call : commonCallingSteps.getIncomingCall(calleeList)) {
                 final Metrics metrics = call.getMetrics();
                 if (metrics == null) {
                     LOG.info("Could not get metrics for this call.");
-                    callsWithoutMetricsData.add(numberOfCalls);
+                    callsWithoutMetricsData.add(callIndex);
                 } else {
-                    final int avgRateU = (int)metrics.getAvgRateU();
-                    final int avgRateD = (int)metrics.getAvgRateD();
-                    if(avgRateU == -1 || avgRateD == -1){
-                        callsWithoutByteFlowData.add(numberOfCalls);
+                    final int avgRateU = (int) metrics.getAvgRateU();
+                    final int avgRateD = (int) metrics.getAvgRateD();
+                    if (avgRateU == -1 || avgRateD == -1) {
+                        callsWithoutByteFlowData.add(callIndex);
                     }
                     arrayCallSetupTime.add(((int) metrics.getSetupTime()));
                     arrayCallEstabTime.add(((int) metrics.getEstabTime()));
                 }
             }
-            LOG.info(String.format("CALL %s SUCCESSFUL", numberOfCalls));
+            LOG.info(String.format("CALL %s SUCCESSFUL", callIndex));
             commonSteps.WaitForTime(timeBetweenCall);
 
-        } catch (InterruptedException ie)  {
+        } catch (InterruptedException ie) {
             Throwables.propagate(ie);
         } catch (Exception t) {
-            LOG.info(String.format("CALL %s FAILED", numberOfCalls));
-            LOG.error(String.format("Can not stop waiting call %s because %s", numberOfCalls, t.getMessage()));
+            LOG.info(String.format("CALL %s FAILED", callIndex));
+            LOG.error(String.format("Can not stop waiting call %s because %s", callIndex, t.getMessage()));
             try {
                 pagesCollection.getPage(CallingOverlayPage.class).tapButtonByName(CALLINGOVERLAY_LEAVE_BUTTON);
-            }catch (Exception ex){
-                LOG.error(String.format("Can not stop call kit %s because %s", numberOfCalls, ex));
-                try{
-                   boolean callButtonVisible = pagesCollection.getPage(ConversationViewPage.class).isAudioCallButtonOnToolbarVisible();
-                    if (!callButtonVisible){
-                        throw new CallIterationError(numberOfCalls,"Calling button is not visible");
+            } catch (Exception ex) {
+                LOG.error(String.format("Can not stop call kit %s because %s", callIndex, ex));
+                try {
+                    boolean callButtonVisible = pagesCollection.getPage(ConversationViewPage.class).isAudioCallButtonOnToolbarVisible();
+                    if (!callButtonVisible) {
+                        throw new CallIterationError(callIndex, "Calling button is not visible");
                     }
-                } catch (Exception exe){
+                } catch (Exception exe) {
                     LOG.error(String.format("Can not start a new call because %s", ex));
                 }
             }
-            failures.put(numberOfCalls, t);
+            failures.put(callIndex, t);
         }
-
     }
 
     //save the setup time and estab time for every call to calculate the average time
@@ -375,25 +365,41 @@ public class CallingSteps {
             receiveSingleCall(callees, i, appState, conversationName, callDurationMinutes, failures, callsWithoutMetricsData, callsWithoutByteFlowData);
         }
 
-        int sumCallSetupTime = arrayCallSetupTime.stream().reduce(0, Integer::sum);
-        int sumCallEstabTime = arrayCallEstabTime.stream().reduce(0, Integer::sum);
-
-        int avgCallSetupTime = 0;
-        int avgCallEstabTime = 0;
-        int successfulCallsCount = times - failures.size() - callsWithoutMetricsData.size();
-        if (successfulCallsCount > 0) {
-           avgCallSetupTime = sumCallSetupTime / successfulCallsCount;
-           avgCallEstabTime = sumCallEstabTime / successfulCallsCount;
-        }
-
-        createCallingReport(times, failures, callsWithoutMetricsData, callsWithoutByteFlowData, avgCallSetupTime, avgCallEstabTime,"RECEIVE");
+        int avgCallSetupTime = calculateCallStatistics(arrayCallSetupTime, times,failures,callsWithoutMetricsData);
+        int avgCallEstabTime = calculateCallStatistics(arrayCallEstabTime, times,failures,callsWithoutMetricsData);
+        createCallingReport(times, failures, callsWithoutMetricsData, callsWithoutByteFlowData, avgCallSetupTime, avgCallEstabTime, CallLoopType.Receive);
 
         failures.forEach((Integer i, Throwable t) -> {
-            LOG.error(i + ": " + t.getMessage());
+            LOG.error(String.format("Failure %s: %s",i,t.getMessage()));
         });
-
         if (!failures.isEmpty()) {
             Assert.fail(formatFailuresList(failures));
+        }
+    }
+
+    private int calculateCallStatistics(List<Integer> arrayCallStatisticTime, int numberOfCalls,
+                                        final Map<Integer, Exception> failures,
+                                        List<Integer> callsWithoutMetricsData){
+        int sumCallSetupTime = arrayCallStatisticTime.stream().reduce(0, Integer::sum);
+        int avgCallStatistic = 0;
+        int successfulCallsCount = numberOfCalls - failures.size() - callsWithoutMetricsData.size();
+        if (successfulCallsCount > 0) {
+            avgCallStatistic = sumCallSetupTime / successfulCallsCount;
+        }
+        return avgCallStatistic;
+    }
+
+    public enum CallLoopType {
+        Receive("RECEIVE"), Make("MAKE");
+
+        private final String name;
+        CallLoopType(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
         }
     }
 
@@ -401,15 +407,15 @@ public class CallingSteps {
     private static final String CALL_STATS_FILENAME = "multi_call_result.txt";
 
     private void createCallingReport(int timesOfCalls, final Map<Integer, Exception> failures,
-                                     final List<Integer> callsWithoutMetricsData,final List<Integer> callsWithoutByteFlowData,
-                                     int avgCallSetupTime, int avgCallEstabTime, String typeOfCall)
+                                     final List<Integer> callsWithoutMetricsData, final List<Integer> callsWithoutByteFlowData,
+                                     int avgCallSetupTime, int avgCallEstabTime, CallLoopType typeOfCall)
             throws Exception {
         String message = String.format("%s CALL LOOP! %s/%s calls succeeded. Got no metrics data from %s calls." +
-                " Average calculated from %s calls. average Call setup_time: %s ms , average Call estab_time: %s ms." +
-                "%s/%s calls had no byte flow during the call.",
+                        " Average calculated from %s calls. average Call setup_time: %s ms , average Call estab_time: %s ms." +
+                        "%s/%s calls had no byte flow during the call.",
                 typeOfCall, timesOfCalls - failures.size(), timesOfCalls, callsWithoutMetricsData.size(),
-                timesOfCalls - failures.size()-callsWithoutMetricsData.size(), avgCallSetupTime, avgCallEstabTime,
-                callsWithoutByteFlowData.size(),timesOfCalls);
+                timesOfCalls - failures.size() - callsWithoutMetricsData.size(), avgCallSetupTime, avgCallEstabTime,
+                callsWithoutByteFlowData.size(), timesOfCalls);
         LOG.info(message);
 
         Files.write(Paths.get(CommonUtils.getBuildPathFromConfig(CallingSteps.class), CALL_STATS_FILENAME),
@@ -417,16 +423,17 @@ public class CallingSteps {
     }
 
     private final class CallIterationError extends Exception {
-        public CallIterationError (int numberOfCall, String message){
+        public CallIterationError(int numberOfCall, String message) {
             super(String.format("Call %s failed with %s", numberOfCall, message));
         }
     }
 
     private static final String SEPARATOR = "\n--------------------------------------\n";
-    private String formatFailuresList(Map<Integer, Exception> failures){
+
+    private String formatFailuresList(Map<Integer, Exception> failures) {
         final StringBuilder builder = new StringBuilder();
-        failures.forEach((callIndex, failureException)-> {
-            String header = String.format("Failure summary for call # %s\n",callIndex);
+        failures.forEach((callIndex, failureException) -> {
+            String header = String.format("Failure summary for call # %s\n", callIndex);
             builder.append(header);
             builder.append(failureException.getMessage()).append("\n");
             if (!(failureException instanceof CallIterationError)) {
@@ -440,35 +447,33 @@ public class CallingSteps {
     private static final String CALLINGOVERLAY_LEAVE_BUTTON = "Leave";
     private static final String CALLKIT_DECLINE_BUTTON = "Decline";
     private static final String CALLKIT_ACCEPT_BUTTON = "Accept";
-    private void receiveSingleCall(String callees, int numberOfCall, String appState, String conversationName,
-                                                 int callDurationMinutes, final Map<Integer, Exception> failures,
-                                   List<Integer> callsWithoutMetricsData, List<Integer> callsWithoutByteFlowData)
-            throws Exception {
+
+    private void receiveSingleCall(String callees, int callIndex, String appState, String conversationName,
+                                   int callDurationMinutes, final Map<Integer, Exception> failures,
+                                   List<Integer> callsWithoutMetricsData,
+                                   List<Integer> callsWithoutByteFlowData) throws Exception {
         final int timeBetweenCall = 10;
         final List<String> calleeList = commonCallingSteps.getUsersManager().splitAliases(callees);
 
-        LOG.info("\n\nSTARTING CALL " + numberOfCall);
+        LOG.info("\n\nSTARTING CALL " + callIndex);
         try {
             if (appState.equals("Background")) {
                 pagesCollection.getCommonPage().pressHomeButton();
                 LOG.info("Put app into background");
             }
-
             commonCallingSteps.callToConversation(calleeList, conversationName);
 
             boolean isVisible = pagesCollection.getPage(CallKitOverlayPage.class).isVisible("Audio");
             if (!isVisible) {
-                throw new CallIterationError(numberOfCall, "Audio Call Kit overlay should be visible");
+                throw new CallIterationError(callIndex, "Audio Call Kit overlay should be visible");
             }
             LOG.info("Audio Call Kit overlay is visible");
-
             pagesCollection.getPage(CallKitOverlayPage.class).tapButton(CALLKIT_ACCEPT_BUTTON);
-
-            if (numberOfCall == 0) {
+            if (callIndex == 0) {
                 pagesCollection.getCommonPage().acceptAlert();
             }
 
-            commonCallingSteps.verifyCallingStatus(calleeList, conversationName, "active", 20);
+            commonCallingSteps.verifyCallingStatus(calleeList, conversationName, CALL_STATUS_ACTIVE, 20);
             LOG.info("All instances are active");
 
             LOG.info("Calling for 1 minute");
@@ -477,53 +482,49 @@ public class CallingSteps {
             pagesCollection.getPage(CallingOverlayPage.class).tapButtonByName(CALLINGOVERLAY_LEAVE_BUTTON);
             boolean isNotVisible = pagesCollection.getPage(CallingOverlayPage.class).isCallStatusLabelInvisible();
             if (!isNotVisible) {
-                throw new CallIterationError(numberOfCall, "Audio Call overlay should be invisible");
+                throw new CallIterationError(callIndex, "Audio Call overlay should be invisible");
             }
             LOG.info("Calling overlay is NOT visible");
-
 
             for (Call call : commonCallingSteps.getOutgoingCall(calleeList, conversationName)) {
                 final Metrics metrics = call.getMetrics();
                 if (metrics == null) {
                     LOG.info("Could not get metrics for this call.");
-                    callsWithoutMetricsData.add(numberOfCall);
+                    callsWithoutMetricsData.add(callIndex);
                     continue;
                 }
-                final int avgRateU = (int)metrics.getAvgRateU();
-                final int avgRateD = (int)metrics.getAvgRateD();
-                if(avgRateU == -1 || avgRateD == -1){
-                    callsWithoutByteFlowData.add(numberOfCall);
+                final int avgRateU = (int) metrics.getAvgRateU();
+                final int avgRateD = (int) metrics.getAvgRateD();
+                if (avgRateU == -1 || avgRateD == -1) {
+                    callsWithoutByteFlowData.add(callIndex);
                 }
                 arrayCallSetupTime.add(((int) metrics.getSetupTime()));
                 arrayCallEstabTime.add(((int) metrics.getEstabTime()));
             }
 
-            LOG.info(String.format("CALL %s SUCCESSFUL", numberOfCall));
+            LOG.info(String.format("CALL %s SUCCESSFUL", callIndex));
             commonSteps.WaitForTime(timeBetweenCall);
-        } catch (InterruptedException ie)  {
+        } catch (InterruptedException ie) {
             Throwables.propagate(ie);
         } catch (Exception t) {
-            LOG.info(String.format("CALL %s FAILED", numberOfCall));
-
+            LOG.info(String.format("CALL %s FAILED", callIndex));
             try {
                 pagesCollection.getPage(CallingOverlayPage.class).tapButtonByName(CALLINGOVERLAY_LEAVE_BUTTON);
             } catch (Exception ex) {
-                LOG.error(String.format("Can not stop call %s because %s", numberOfCall, ex));
-
+                LOG.error(String.format("Can not stop call %s because %s", callIndex, ex));
                 try {
                     pagesCollection.getPage(CallKitOverlayPage.class).tapButton(CALLKIT_DECLINE_BUTTON);
                 } catch (Exception exe) {
-                    LOG.error(String.format("Can not stop call kit %s because %s", numberOfCall, exe));
-
+                    LOG.error(String.format("Can not stop call kit %s because %s", callIndex, exe));
                     try {
                         pagesCollection.getCommonPage().pressHomeButton();
                         LOG.info("Put app into background");
                     } catch (Exception morexe) {
-                        LOG.error(String.format("Call %s failed because %s", numberOfCall, morexe));
+                        LOG.error(String.format("Call %s failed because %s", callIndex, morexe));
                     }
                 }
             }
-            failures.put(numberOfCall, t);
+            failures.put(callIndex, t);
         }
     }
 }
