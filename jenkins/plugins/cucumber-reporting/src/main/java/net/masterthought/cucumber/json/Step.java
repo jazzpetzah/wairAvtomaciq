@@ -16,6 +16,7 @@ import static org.apache.commons.lang.StringUtils.EMPTY;
 public class Step {
 
     private String name;
+    private Integer index;
     private String keyword;
     private String line;
     private Result result;
@@ -32,7 +33,6 @@ public class Step {
     }
 
     public Step() {
-
     }
 
     public DocString getDocString() {
@@ -108,6 +108,12 @@ public class Step {
     public String getRawName() {
         return name;
     }
+
+    public Integer getIndex() {
+        return this.index;
+    }
+
+    public void setIndex(int index) { this.index = index; }
 
     public String getName() {
         String content = "";
@@ -299,5 +305,10 @@ public class Step {
     
     private static String getFinalName (String name) {
     	return (name.substring(name.length()-2, name.length()).matches("\\s[0-9]"))? name.substring(0, name.length()-2) : name;
+    }
+
+    @Override
+    public String toString(){
+        return name;
     }
 }

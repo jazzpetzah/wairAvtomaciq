@@ -31,7 +31,6 @@ public class ReportParser {
                 featureResults.put(jsonFile, Arrays.asList(features));
             }
         }
-
         return featureResults;
     }
 }

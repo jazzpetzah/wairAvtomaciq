@@ -23,12 +23,13 @@ public class Feature {
 
 
     public Feature() {
-
     }
 
     public Sequence<Element> getElements() {
         return Sequences.sequence(elements).realise();
     }
+
+    public void setElements(Sequence<Element> elements) { elements.toArray(this.elements); }
 
     public String getFileName() {
         List<String> matches = new ArrayList<String>();
@@ -49,13 +50,14 @@ public class Feature {
         return Util.itemExists(tags);
     }
 
+    public Sequence<Tag> getTags() {
+        return Sequences.sequence(tags).realise();
+    }
+
     public Sequence<String> getTagList() {
         return getTags().map(Tag.functions.getName());
     }
 
-    public Sequence<Tag> getTags() {
-        return Sequences.sequence(tags).realise();
-    }
 
     public String getTagsList() {
         String result = "<div class=\"feature-tags\"></div>";
@@ -65,6 +67,7 @@ public class Feature {
         }
         return result;
     }
+
 
     public Util.Status getStatus() {
         Sequence<Util.Status> results = getElements().map(Element.functions.status());
@@ -121,20 +124,20 @@ public class Feature {
         return stepResults.getNumberOfFailures();
     }
 
-    public int getNumberOfPending() {
-        return stepResults.getNumberOfPending();
-    }
-
     public int getNumberOfSkipped() {
         return stepResults.getNumberOfSkipped();
     }
 
-    public int getNumberOfMissing() {
-        return stepResults.getNumberOfMissing();
+    public int getNumberOfPending() {
+        return stepResults.getNumberOfPending();
     }
 
     public int getNumberOfUndefined() {
         return stepResults.getNumberOfUndefined();
+    }
+
+    public int getNumberOfMissing() {
+        return stepResults.getNumberOfMissing();
     }
 
     public String getDurationOfSteps() {
@@ -154,8 +157,8 @@ public class Feature {
         List<Step> passedSteps = new ArrayList<Step>();
         List<Step> failedSteps = new ArrayList<Step>();
         List<Step> skippedSteps = new ArrayList<Step>();
-        List<Step> undefinedSteps = new ArrayList<Step>();
         List<Step> pendingSteps = new ArrayList<Step>();
+        List<Step> undefinedSteps = new ArrayList<Step>();
         List<Step> missingSteps = new ArrayList<Step>();
         List<Element> passedScenarios = new ArrayList<Element>();
         List<Element> failedScenarios = new ArrayList<Element>();
@@ -171,8 +174,8 @@ public class Feature {
                         passedSteps = Util.setStepStatus(passedSteps, step, stepStatus, Util.Status.PASSED);
                         failedSteps = Util.setStepStatus(failedSteps, step, stepStatus, Util.Status.FAILED);
                         skippedSteps = Util.setStepStatus(skippedSteps, step, stepStatus, Util.Status.SKIPPED);
-                        undefinedSteps = Util.setStepStatus(undefinedSteps, step, stepStatus, Util.Status.UNDEFINED);
                         pendingSteps = Util.setStepStatus(pendingSteps, step, stepStatus, Util.Status.PENDING);
+                        undefinedSteps = Util.setStepStatus(undefinedSteps, step, stepStatus, Util.Status.UNDEFINED);
                         missingSteps = Util.setStepStatus(missingSteps, step, stepStatus, Util.Status.MISSING);
                         totalDuration = totalDuration + step.getDuration();
                     }
@@ -204,13 +207,13 @@ public class Feature {
         List<Step> missingSteps;
         Long totalDuration;
 
-        public StepResults(List<Step> allSteps, List<Step> passedSteps, List<Step> failedSteps, List<Step> skippedSteps, List<Step> pendingSteps, List<Step> missingSteps, List<Step> undefinedSteps, Long totalDuration) {
+        public StepResults(List<Step> allSteps, List<Step> passedSteps, List<Step> failedSteps, List<Step> skippedSteps, List<Step> pendingSteps, List<Step> undefinedSteps, List<Step> missingSteps, Long totalDuration) {
             this.allSteps = allSteps;
             this.passedSteps = passedSteps;
             this.failedSteps = failedSteps;
             this.skippedSteps = skippedSteps;
-            this.undefinedSteps = undefinedSteps;
             this.pendingSteps = pendingSteps;
+            this.undefinedSteps = undefinedSteps;
             this.missingSteps = missingSteps;
             this.totalDuration = totalDuration;
         }
@@ -227,16 +230,16 @@ public class Feature {
             return failedSteps.size();
         }
 
-        public int getNumberOfUndefined() {
-            return undefinedSteps.size();
+        public int getNumberOfSkipped() {
+            return skippedSteps.size();
         }
 
         public int getNumberOfPending() {
             return pendingSteps.size();
         }
 
-        public int getNumberOfSkipped() {
-            return skippedSteps.size();
+        public int getNumberOfUndefined() {
+            return undefinedSteps.size();
         }
 
         public int getNumberOfMissing() {
@@ -268,8 +271,5 @@ public class Feature {
         public int getNumberOfScenariosFailed() {
             return failedScenarios.size();
         }
-
     }
-
-
 }

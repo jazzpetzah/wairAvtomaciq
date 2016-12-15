@@ -9,33 +9,33 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import net.masterthought.cucumber.TagObject;
-
 public class JsChartUtil {
 
     private static Logger logger = Logger.getLogger("net.masterthought.cucumber.charts.jschartutil");
 
-    public List<String> orderStepsByValue(int numberTotalPassed, int numberTotalFailed, int numberTotalSkipped, int numberTotalPending) {
+    public List<String> orderStepsByValue(int numberTotalPassed, int numberTotalFailed, int numberTotalSkipped,
+                                          int numberTotalPending, int numberTotalUndefined) {
         Map<String, Integer> map = new HashMap<String, Integer>();
 
-        map.put("#88dd11", numberTotalPassed);
-        map.put("#cc1134", numberTotalFailed);
-        map.put("#88aaff", numberTotalSkipped);
-        map.put("#FBB917", numberTotalPending);
+        map.put("#B4D684", numberTotalPassed);
+        map.put("#D68181", numberTotalFailed);
+        map.put("#30ECEE", numberTotalSkipped);
+        map.put("#F2C968", numberTotalPending);
+        map.put("#D3D3D3", numberTotalUndefined);
 
         return getKeysSortedByValue(map);
     }
 
     public List<String> orderScenariosByValue(int numberTotalPassed, int numberTotalFailed) {
         HashMap<String, Integer> map = new HashMap<String, Integer>();
-        map.put("#88dd11", numberTotalPassed);
-        map.put("#cc1134", numberTotalFailed);
+        map.put("#88DD11", numberTotalPassed);
+        map.put("#CC0000", numberTotalFailed);
 
         return getKeysSortedByValue(map);
     }
 
     private List<String> getKeysSortedByValue(Map<String, Integer> map) {
-        List<Map.Entry<String,Integer>> list = new LinkedList<Map.Entry<String, Integer>>(map.entrySet());
+        List<Map.Entry<String, Integer>> list = new LinkedList<Map.Entry<String, Integer>>(map.entrySet());
         Collections.sort(list, new Comparator() {
             @Override
             public int compare(Object o1, Object o2) {
@@ -50,42 +50,4 @@ public class JsChartUtil {
         }
         return keys;
     }
-
-    public static String generateTagChartData(List<TagObject> tagObjectList) {
-    	StringBuilder buffer = new StringBuilder();
-        for (TagObject tag : tagObjectList) {
-           buffer.append("[[" + tag.getNumberOfPasses() + "," + tag.getNumberOfFailures() + "," + tag.getNumberOfSkipped() + "," + tag.getNumberOfPending() + "],{label:'" + tag.getTagName() + "'}],");
-        }
-        return buffer.toString();
-    }
-
-    public static String getTags(List<TagObject> tagObjectList) {
-        StringBuilder tags = new StringBuilder();
-
-        if (!tagObjectList.isEmpty()) {
-	        for (TagObject tag : tagObjectList) {
-	            tags.append("'").append(tag.getTagName()).append("',");
-	        }
-	
-	        tags.setLength(tags.length() - 1);
-        }
-        return "[" + tags.toString() + "]";
-    }
-
-    public static String generateTagChartDataForHighCharts(List<TagObject> tagObjectList) {
-    	StringBuilder buffer = new StringBuilder();
-
-        if (!tagObjectList.isEmpty()) {
-	        for (TagObject tag : tagObjectList) {
-	            buffer.append("[" + tag.getNumberOfPasses() + "," + tag.getNumberOfFailures() + "," + tag.getNumberOfSkipped() + "," + tag.getNumberOfPending() + "]").append(",");
-	        }
-	
-	        buffer.setLength(buffer.length() - 1);
-        }
-
-        return "[" + buffer.toString() + "]";
-    }
-
-
-
 }

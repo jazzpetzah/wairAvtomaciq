@@ -1,13 +1,19 @@
 package net.masterthought.cucumber.json;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 
 import com.googlecode.totallylazy.Function1;
 import com.googlecode.totallylazy.Sequence;
 import com.googlecode.totallylazy.Sequences;
+import com.sun.org.apache.xerces.internal.xs.StringList;
 import net.masterthought.cucumber.ConfigurationOptions;
+import net.masterthought.cucumber.ReportBuilder;
 import net.masterthought.cucumber.util.Util;
 import org.apache.commons.lang.StringUtils;
 
@@ -21,36 +27,34 @@ public class Element {
     private Step[] steps;
     private Tag[] tags;
 
-    public Element() {
 
+    public Element() {
+    }
+
+    public List<String> getStepsList() {
+        List<String> stepsList = new ArrayList<String>();
+        for (Step step:steps) {
+            stepsList.add(step.getRawName());
+        }
+        return stepsList;
     }
 
     public Sequence<Step> getSteps() {
-        return getSteps(false, 0);
+        return getSteps(false);
     }
 
-	public Sequence<Step> getSteps(Boolean update, int index) {
+    public void setSteps(Sequence<Step> steps) { steps.toArray(this.steps); }
+
+	public Sequence<Step> getSteps(Boolean update) {
         if (update) {
             LinkedHashMap<String, Integer> stepNames = new LinkedHashMap<String, Integer>();
             for (Step step : steps) {
-                String oldName = step.getRawName();
-                Integer count = stepNames.get(oldName);
-                if (count == null) {
-                    count = 0;
+                String stepName = step.getRawName();
+                Integer index = step.getIndex();
+                if (index == null) {
+                    index = 1;
                 }
-                if (count > 0) {
-                    for (Step step1 : steps) {
-                        for (int i = count; i > 0; i--) {
-                            if (step1.getRawName().equals(oldName + " " + i)) {
-                                step1.setName(oldName + " " + (i + index));
-                                break;
-                            }
-                        }
-                    }
-                }
-                count = count + index;
-                step.setName(oldName + " " + (++count));
-                stepNames.put(oldName, count);
+                step.setName(stepName + " " + index);
             }
         }
         return Sequences.sequence(option(steps).getOrElse(new Step[]{})).realise();
@@ -61,20 +65,30 @@ public class Element {
     }
 
     public Util.Status getStatus() {
-    	// can be optimized to retrieve only the count of elements and not the all list
+        //Set scenario status here
         int failedSteps = getSteps().filter(Step.predicates.hasStatus(Util.Status.FAILED)).size();
-        int passedSteps = getSteps().filter(Step.predicates.hasStatus(Util.Status.PASSED)).size();
+        int skippedSteps = getSteps().filter(Step.predicates.hasStatus(Util.Status.SKIPPED)).size();
         int pendingSteps = getSteps().filter(Step.predicates.hasStatus(Util.Status.PENDING)).size();
-        
-        if (failedSteps == 0 && ConfigurationOptions.skippedFailsBuild()) {
-            failedSteps = getSteps().filter(Step.predicates.hasStatus(Util.Status.SKIPPED)).size();
+        int undefinedSteps = getSteps().filter(Step.predicates.hasStatus(Util.Status.UNDEFINED)).size();
+        int totalSteps = getSteps().number().intValue();
+
+        if (ConfigurationOptions.skippedFailsBuild()) {
+            failedSteps += skippedSteps;
         }
 
-        if (failedSteps == 0 && ConfigurationOptions.undefinedFailsBuild()) {
-            failedSteps = getSteps().filter(Step.predicates.hasStatus(Util.Status.UNDEFINED)).size();
+        if (!ConfigurationOptions.skippedFailsBuild() && ConfigurationOptions.allSkippedFailsBuild()
+                && (skippedSteps == totalSteps)) {
+            failedSteps += skippedSteps;
         }
-        
-        return (failedSteps == 0) && ((passedSteps > 0) || (pendingSteps > 0)) ? Util.Status.PASSED : Util.Status.FAILED;
+
+        if (ConfigurationOptions.pendingFailsBuild()) {
+            failedSteps += pendingSteps;
+        }
+
+        if (ConfigurationOptions.undefinedFailsBuild()) {
+            failedSteps += undefinedSteps;
+        }
+        return failedSteps == 0 ? Util.Status.PASSED : Util.Status.FAILED;
     }
 
     public String getRawName() {
@@ -140,5 +154,4 @@ public class Element {
             };
         }
     }
-
 }
