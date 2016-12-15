@@ -400,7 +400,7 @@ Feature: Edit
       | Login      | Password      | Name      | Contact   | OriginalMessage | OriginalMessage2 | IntermediateMessage | EditedMessage |
       | user1Email | user1Password | user1Name | user2Name | edit me         | edit me 2        | abort edit          | edited1       |
 
-  @WEBAPP-3422 @edit @staging
+  @C368976 @edit @regression @WEBAPP-3422
   Scenario Outline: Verify I do not loose messages when someone edits a message from a long time ago
     Given There are 3 users where <Name> is me
     Given user <Contact1> adds a new device Device1 with label Label1

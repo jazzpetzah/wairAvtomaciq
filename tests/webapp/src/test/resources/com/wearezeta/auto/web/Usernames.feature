@@ -153,7 +153,7 @@ Feature: Usernames
       | user1Email | user1Password | user1Name |               | At least 2 characters. a—z, 0—9 and _ only. |
       | user1Email | user1Password | user1Name | a             | At least 2 characters. a—z, 0—9 and _ only. |
 
-  @C352078 @usernames @staging
+  @C352078 @usernames @regression
   Scenario Outline: Verifying impossibility to set username with more than 21 characters or illegal characters
     Given There are 1 users where <NameAlias> is me
     Given I switch to Sign In page
@@ -300,3 +300,17 @@ Feature: Usernames
       | user1Email | user1Password | user1Name | 😼      |
       | user1Email | user1Password | user1Name | 明麗    |
 
+  @C352245 @usernames @staging
+  Scenario Outline: Verify autogeneration of a username works for a user with a blacklisted name
+    Given There are 1 users where <NameAlias> is me without unique username
+    Given User <NameAlias> changes name to <Name>
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+    Then I see watermark
+    And I see take over screen
+    And I see name <NameAlias> on take over screen
+    And I see unique username starts with <Username> on take over screen
+
+    Examples:
+      | Email      | Password      | NameAlias | Name  | Username |
+      | user1Email | user1Password | user1Name | admin | admin    |

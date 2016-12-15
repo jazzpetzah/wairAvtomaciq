@@ -2,9 +2,6 @@ package net.masterthought.cucumber;
 
 import net.masterthought.cucumber.util.Util;
 
-/**
- * Created by JALASOFT\paolo^lizarazu on 09-01-14.
- */
 public class Background {
     private int totalScenarios;
     private int totalScenariosPassed;
@@ -14,6 +11,7 @@ public class Background {
     private int totalStepsFailed;
     private int totalStepsSkipped;
     private int totalStepsPending;
+    private int totalStepsUndefined;
     private long totalDuration;
 
     public Background() {
@@ -25,6 +23,7 @@ public class Background {
         totalStepsFailed = 0;
         totalStepsSkipped = 0;
         totalStepsPending = 0;
+        totalStepsUndefined = 0;
         totalDuration = 0;
     }
 
@@ -87,9 +86,11 @@ public class Background {
         return totalStepsPending;
     }
 
-    public void addTotalStepsPending(int totalStepsPending) {
-        this.totalStepsPending += totalStepsPending;
-    }
+    public void addTotalStepsPending(int totalStepsPending) { this.totalStepsPending += totalStepsPending; }
+
+    public int getTotalStepsUndefined() { return totalStepsUndefined; }
+
+    public void addTotalStepsUndefined(int totalStepsUndefined) { this.totalStepsUndefined += totalStepsUndefined; }
 
     public String getTotalFormattedDuration() {
         return Util.formatDuration(totalDuration);

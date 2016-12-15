@@ -1,6 +1,6 @@
 Feature: Search
 
-  @C352243 @staging
+  @C352243 @smoke
   Scenario Outline: Verify search by username for unconnected user
     Given There are 2 users where <Name> is me
     Given <Contact> has unique username
@@ -22,7 +22,7 @@ Feature: Search
       | Login      | Password      | Name      | Contact   | ContactUniqueUsername |
       | user1Email | user1Password | user1Name | user2Name | user2UniqueUsername   |
 
-  @C352241 @staging
+  @C352241 @regression
   Scenario Outline: Verify search by username for connected user
     Given There are 2 users where <Name> is me
     Given <Contact> has unique username
@@ -44,7 +44,7 @@ Feature: Search
       | Login      | Password      | Name      | Contact   | ContactUniqueUsername |
       | user1Email | user1Password | user1Name | user2Name | user2UniqueUsername   |
 
-  @C352244 @staging
+  @C352244 @smoke
   Scenario Outline: Verify you cannot search by partial username of unconnected user
     Given There are 2 users where <Name> is me
     Given <Contact> has unique username
