@@ -84,11 +84,7 @@ public class SearchUIPage extends IOSPage {
 
     public void tapSearchInput() throws Exception {
         getElement(xpathSearchInput).click();
-        if (!this.isKeyboardVisible()) {
-            throw new IllegalStateException(
-                    "On-screen keyboard is expected to be shown after click on search input field"
-            );
-        }
+        this.isKeyboardVisible();
     }
 
     public boolean isVisible() throws Exception {
