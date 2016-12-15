@@ -380,11 +380,11 @@ public class CallingSteps {
     private int calculateCallStatistics(List<Integer> arrayCallStatisticTime, int numberOfCalls,
                                         final Map<Integer, Exception> failures,
                                         List<Integer> callsWithoutMetricsData){
-        int sumCallSetupTime = arrayCallStatisticTime.stream().reduce(0, Integer::sum);
+        int sumCallStatisticTime = arrayCallStatisticTime.stream().reduce(0, Integer::sum);
         int avgCallStatistic = 0;
         int successfulCallsCount = numberOfCalls - failures.size() - callsWithoutMetricsData.size();
         if (successfulCallsCount > 0) {
-            avgCallStatistic = sumCallSetupTime / successfulCallsCount;
+            avgCallStatistic = sumCallStatisticTime / successfulCallsCount;
         }
         return avgCallStatistic;
     }
@@ -418,8 +418,9 @@ public class CallingSteps {
                 callsWithoutByteFlowData.size(), timesOfCalls);
         LOG.info(message);
 
+        final String reportContent = String.format("%s=%s", "MULTI_CALL_RESULT", message);
         Files.write(Paths.get(CommonUtils.getBuildPathFromConfig(CallingSteps.class), CALL_STATS_FILENAME),
-                message.getBytes());
+                reportContent.getBytes());
     }
 
     private final class CallIterationError extends Exception {
