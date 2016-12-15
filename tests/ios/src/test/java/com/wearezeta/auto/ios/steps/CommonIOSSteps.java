@@ -695,12 +695,12 @@ public class CommonIOSSteps {
         commonSteps.UserIsConnectedTo(userFromNameAlias, usersToNameAliases);
     }
 
-    @Given("^There \\w+ (\\d+) user[s]*$")
+    @Given("^There (?:is|are) (\\d+) users?$")
     public void ThereAreNUsers(int count) throws Exception {
         commonSteps.ThereAreNUsers(CURRENT_PLATFORM, count);
     }
 
-    @Given("^There \\w+ (\\d+) user[s]* where (.*) is me$")
+    @Given("^There (?:is|are) (\\d+) users? where (.*) is me$")
     public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias) throws Exception {
         commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count, myNameAlias);
         IChangeUserAvatarPicture(myNameAlias, "", "default");
