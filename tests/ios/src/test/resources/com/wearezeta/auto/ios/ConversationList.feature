@@ -228,6 +228,7 @@ Feature: Conversation List
     Given User <Contact1> sends encrypted image <Picture> to single user conversation Myself
     Given User <Contact1> sends 1 encrypted message to user <Name>
     Given User Myself sends 1 encrypted message to user <Contact1>
+    Given I wait until <Contact1> exists in backend search results
     When I tap on contact name <Contact1>
     Then I see 1 photo in the conversation view
     When I navigate back to conversations list
