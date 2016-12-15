@@ -186,15 +186,15 @@ Feature: Unique Usernames
     Given I select settings item Username
     When I attempt to enter <RegularLength> random latin alphanumeric chars as name on Unique Username page
     And I tap Save button on Unique Username page
-    Then I see new previously set unique username is displayed on Settings Page
+    Then I see previously set unique username is displayed on Settings Page
     When I select settings item Username
     And I attempt to enter <MinLength> random latin alphanumeric chars as name on Unique Username page
     And I tap Save button on Unique Username page
-    Then I see new previously set unique username is displayed on Settings Page
+    Then I see previously set unique username is displayed on Settings Page
     When I select settings item Username
     And I attempt to enter <MaxLength> random latin alphanumeric chars as name on Unique Username page
     And I tap Save button on Unique Username page
-    Then I see new previously set unique username is displayed on Settings Page
+    Then I see previously set unique username is displayed on Settings Page
 
     Examples:
       | Name      | RegularLength | MinLength | MaxLength |
@@ -213,7 +213,7 @@ Feature: Unique Usernames
     And I tap Save button on Unique Username page
     And I tap settings gear button
     And I select settings item Account
-    Then I see new previously set unique username is displayed on Settings Page
+    Then I see previously set unique username is displayed on Settings Page
 
     Examples:
       | Name      | NewNameLength |
@@ -585,3 +585,23 @@ Feature: Unique Usernames
     Examples:
       | Name      | Contact1WithABEmail | Contact1ABName | Contact1Email | Contact2WithABPhoneNumber | Contact2ABName | Contact2PhoneNumber | Contact3WithUniqueUserName | Contact3UniqueUserName | Contact4WithCommonFriends | Contact5WithSameNameInAB | Contact5Email | Contact6Common |
       | user1Name | user2Name           | user2ABName    | user2Email    | user3Name                 | user3ABName    | user3PhoneNumber    | user4Name                  | user4UniqueUsername    | user5Name                 | user6Name                | user6Email    | user7Name      |
+
+  @C352045 @staging @fastLogin
+  Scenario Outline: Verify new username is synced across the devices
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to user2Name
+    Given I sign in using my email or phone number
+    Given User Myself adds new device <DeviceName>
+    Given I accept alert if visible
+    Given I tap settings gear button
+    Given I accept alert if visible
+    When I select settings item Account
+    Then I see "<UniqueUsername>" unique username is displayed on Settings Page
+    And I tap Back navigation button on Settings page
+    When User Me changes the unique username to "<NewUniqueUsername>" via device <DeviceName>
+    And I select settings item Account
+    Then I see "<NewUniqueUsername>" unique username is displayed on Settings Page
+
+    Examples:
+      | Name      | UniqueUsername      | NewUniqueUsername   | DeviceName |
+      | user1Name | user1UniqueUsername | user3UniqueUsername | Device1    |
