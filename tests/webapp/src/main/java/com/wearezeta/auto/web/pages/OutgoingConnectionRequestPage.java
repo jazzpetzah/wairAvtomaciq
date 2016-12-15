@@ -19,7 +19,7 @@ public class OutgoingConnectionRequestPage extends WebPage {
     public OutgoingConnectionRequestPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
-    
+
     public boolean isCancelRequestButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(
                 WebAppLocators.OutgoingRequestPage.cssCancelRequestButton));
@@ -27,5 +27,10 @@ public class OutgoingConnectionRequestPage extends WebPage {
 
     public void clickCancelPendingRequestButton() throws Exception {
         cancelRequestButton.click();
+    }
+
+    public String getCommonFriends() throws Exception {
+        String css = WebAppLocators.OutgoingRequestPage.cssCommonFriends;
+        return getDriver().findElement(By.cssSelector(css)).getText();
     }
 }

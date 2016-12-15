@@ -2,10 +2,8 @@ package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.OutgoingConnectionRequestPage;
-import com.wearezeta.auto.web.pages.PendingConnectionsPage;
 
 import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
 
 import org.junit.Assert;
 
@@ -35,7 +33,7 @@ public class OutgoingConnectionRequestSteps {
 
     @Then("^I see (\\d+) common friends$")
     public void ISeeCommonFriends(int count) throws Exception {
-        String commonFriends = context.getPagesCollection().getPage(PendingConnectionsPage.class).getCommonFriends();
+        String commonFriends = context.getPagesCollection().getPage(OutgoingConnectionRequestPage.class).getCommonFriends();
         Assert.assertThat("Wrong amount of common friends", commonFriends, startsWith(Integer.toString(count)));
     }
 }
