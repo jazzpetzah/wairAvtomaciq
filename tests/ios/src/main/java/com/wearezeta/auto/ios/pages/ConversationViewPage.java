@@ -639,12 +639,8 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     }
 
     public void tapRecordControlButton(String buttonName) throws Exception {
-        By button = getRecordControlButtonByName(buttonName);
-        if (button.equals(namePlayAudioRecorderButton)) {
-            getElement(button).click();
-        } else {
-            tapElementWithRetryIfStillDisplayed(button);
-        }
+        final By locator = getRecordControlButtonByName(buttonName);
+        getElement(locator).click();
     }
 
     public void tapPlayAudioMessageButton(int placeholderIndex) throws Exception {

@@ -69,16 +69,14 @@ Feature: Edit Message
     And I tap on Edit badge item
     And I type the "<Text>" message
     And I tap Cancel button on Edit control
-    Then I do not see Confirm button on Edit Message control
-    And I see 1 default message in the conversation view
+    Then I see 1 default message in the conversation view
     And I see Standard input placeholder text
     When I long tap default message in conversation view
     And I tap on Edit badge item
     And I type the "<Text>" message
     And I tap Audio Call button
     And I tap Leave button on Calling overlay
-    Then I do not see Confirm button on Edit Message control
-    And I see 1 default message in the conversation view
+    Then I see 1 default message in the conversation view
     And I see Standard input placeholder text
 
     Examples:
