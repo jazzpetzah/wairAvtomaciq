@@ -702,6 +702,8 @@ public final class WebAppLocators {
         public static final Function<String, String> cssKnownConnectionOthersTextById = uid -> String
                 .format("[data-uie-name='connect-request'][data-uie-uid='%s'] [data-uie-value='others']",
                         uid);
+
+        public static final String cssCommonFriends = ".message-connected-contacts";
     }
 
     public static final class StartUIPage {

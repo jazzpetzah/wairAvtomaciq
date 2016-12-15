@@ -571,3 +571,22 @@ Feature: Connect
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ConvOption1 | ConvOption2    | ConvOption3 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | Archive     | Cancel request | Block       |
+
+  @C352248 @staging
+  Scenario Outline: Verify number of common friends is shown on the outgoing connection request
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given <Contact1> is connected to <Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+#    Wait for Graph generation
+    When I wait for 75 seconds
+    And I sent connection request to <Contact2>
+    And I open conversation with <Contact2>
+    Then I see conversation with <Contact2> is selected in conversations list
+    And I see 1 common friends
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name |
