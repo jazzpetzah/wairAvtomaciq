@@ -153,7 +153,7 @@ Feature: Usernames
       | user1Email | user1Password | user1Name |               | At least 2 characters. a—z, 0—9 and _ only. |
       | user1Email | user1Password | user1Name | a             | At least 2 characters. a—z, 0—9 and _ only. |
 
-  @C352078 @usernames @staging
+  @C352078 @usernames @regression
   Scenario Outline: Verifying impossibility to set username with more than 21 characters or illegal characters
     Given There are 1 users where <NameAlias> is me
     Given I switch to Sign In page
