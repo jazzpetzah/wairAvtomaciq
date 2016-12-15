@@ -667,15 +667,15 @@ public final class BackendAPIWrappers {
         srcImgData.setNonce(srcImgData.getCorrelationId());
         ImageAssetProcessor imgProcessor = new SelfImageProcessor(srcImgData);
         ImageAssetRequestBuilder reqBuilder = new ImageAssetRequestBuilder(imgProcessor);
-        Map<JSONObject, AssetData> sentPictures = BackendREST.sendPicture(
-                receiveAuthToken(user), convId, reqBuilder);
-        Map<String, AssetData> processedAssets = new LinkedHashMap<>();
-        for (Map.Entry<JSONObject, AssetData> entry : sentPictures.entrySet()) {
-            final String postedImageId = entry.getKey().getJSONObject("data").getString("id");
-            processedAssets.put(postedImageId, entry.getValue());
-        }
         retryOnBackendFailure(2,
                 () -> {
+                    final Map<JSONObject, AssetData> sentPictures = BackendREST.sendPicture(
+                            receiveAuthToken(user), convId, reqBuilder);
+                    final Map<String, AssetData> processedAssets = new LinkedHashMap<>();
+                    for (Map.Entry<JSONObject, AssetData> entry : sentPictures.entrySet()) {
+                        final String postedImageId = entry.getKey().getJSONObject("data").getString("id");
+                        processedAssets.put(postedImageId, entry.getValue());
+                    }
                     BackendREST.updateSelfInfo(receiveAuthToken(user),
                             Optional.empty(), Optional.of(processedAssets), Optional.empty());
                     return null;
