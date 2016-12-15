@@ -358,8 +358,6 @@ public final class WebAppLocators {
         public static final String cssUserAvatar = ".user-avatar and .pending";
 
         public static final String cssWatermark = "[data-uie-name='no-conversation']";
-        
-        public static final String cssCancelRequestButton = "#"+idConversation+" [data-uie-name='do-cancel-request']";
 
         public static final String cssUsername = ".message-connected-username.label-username";
 
@@ -704,7 +702,16 @@ public final class WebAppLocators {
                 .format("[data-uie-name='connect-request'][data-uie-uid='%s'] [data-uie-value='others']",
                         uid);
 
+    }
+
+    public static final class OutgoingRequestPage {
+
+        public static final String idConversation = "conversation";
+
+        public static final String cssCancelRequestButton = "#"+idConversation+" [data-uie-name='do-cancel-request']";
+
         public static final String cssCommonFriends = ".message-connected-contacts";
+
     }
 
     public static final class StartUIPage {
