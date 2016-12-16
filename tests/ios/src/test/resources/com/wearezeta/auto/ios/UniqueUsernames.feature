@@ -613,3 +613,20 @@ Feature: Unique Usernames
     Examples:
       | Name      | UniqueUsername      | NewUniqueUsername   | DeviceName |
       | user1Name | user1UniqueUsername | user3UniqueUsername | Device1    |
+
+  @C352032 @staging @fastLogin
+  Scenario Outline: Verify autogeneration of a username for a user with emoji in a name
+    Given There is 1 user
+    Given User <NameAlias> is me
+    Given User <NameAlias> changes name to <Name>
+    Given I prepare Wire to perform fast log in by email as <Name>
+    Given I sign in using my email or phone number
+    Given I open search UI
+    Given I accept alert if visible
+    Given I tap X button on Search UI page
+    When I see username <NameAlias> on Unique Username Takeover page
+    Then I see unique username on Unique Username Takeover page is a letters only string
+
+    Examples:
+      | NameAlias | Name |
+      | user1Name | 😼   |

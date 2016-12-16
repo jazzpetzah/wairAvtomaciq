@@ -14,22 +14,24 @@ public class UniqueUsernameTakeoverPage extends IOSPage {
     private static final String nameStrTitleLabel = "Usernames are here.";
     private static final By nameTitleLabel = MobileBy.AccessibilityId(nameStrTitleLabel);
 
-    private static final Function<String, String> xpathStrUsernameByStartsWithName = name ->
-            String.format("//XCUIElementTypeStaticText[@name='%s']/preceding::" +
-                            "XCUIElementTypeStaticText[1][starts-with(@name='%s')]",
-                    nameStrTitleLabel, name);
+    private static final String xpathStrUniqueTakeoverLabels = String.format(
+            "//XCUIElementTypeStaticText[@name='%s']/preceding::XCUIElementTypeStaticText", nameStrTitleLabel);
+
+    private static final String xpathStrUniqueNameLabel = String.format("%s[1]", xpathStrUniqueTakeoverLabels);
+
+    private static final String xpathStrNameLabel = String.format("%s[2]", xpathStrUniqueTakeoverLabels);
+
     private static final Function<String, String> xpathStrUniqueUsernameByName = name ->
-            String.format("//XCUIElementTypeStaticText[@name='%s']/preceding::XCUIElementTypeStaticText[1][@name='%s']",
-                    nameStrTitleLabel, name);
+            String.format("%s[@name='%s']", xpathStrUniqueNameLabel, name);
 
     private static final Function<String, String> xpathStrUniqueUsernameByStartsWithName = name ->
-            String.format(
-                    "//XCUIElementTypeStaticText[@name='%s']/preceding::" +
-                            "XCUIElementTypeStaticText[1][starts-with(@name,'%s')]",
-                    nameStrTitleLabel, name.startsWith("@") ? name : "@" + name);
+            String.format("%s[starts-with(@name,'%s')]", xpathStrUniqueNameLabel, name.startsWith("@") ? name : "@" + name);
+
     private static final Function<String, String> xpathStrUsernameByName = name ->
-            String.format("//XCUIElementTypeStaticText[@name='%s']/preceding::XCUIElementTypeStaticText[2][@name='%s']",
-                    nameStrTitleLabel, name);
+            String.format("%s[@name='%s']", xpathStrNameLabel, name);
+
+    private static final Function<String, String> xpathStrUsernameByStartsWithName = name ->
+            String.format("%s[starts-with(@name='%s')]", xpathStrNameLabel, name);
 
     public UniqueUsernameTakeoverPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -77,5 +79,14 @@ public class UniqueUsernameTakeoverPage extends IOSPage {
         final By locator = By.xpath((startsWith ? xpathStrUsernameByStartsWithName : xpathStrUsernameByName)
                 .apply(expectedUsername));
         return isLocatorInvisible(locator);
+    }
+
+    private String getUniqueNameValue() throws Exception {
+        final By locator = By.xpath(xpathStrUniqueNameLabel);
+        return getElement(locator).getText();
+    }
+
+    public boolean isUniqueUserNameAlphaString() throws Exception {
+        return getUniqueNameValue().substring(1).chars().allMatch(Character::isLetter);
     }
 }

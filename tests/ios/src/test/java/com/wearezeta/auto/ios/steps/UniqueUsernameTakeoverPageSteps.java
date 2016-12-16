@@ -61,4 +61,15 @@ public class UniqueUsernameTakeoverPageSteps {
             }
         }
     }
+
+    /**
+     * Verify that Unique Username is a string with only letters
+     *
+     * @throws Exception
+     * @step. ^I see unique username on Unique Username Takeover page is a letters only string$
+     */
+    @Then("^I see unique username on Unique Username Takeover page is a letters only string$")
+    public void ISeeUniqueNameIsRandomString() throws Exception {
+        Assert.assertTrue("Unique Username contains non-alpha values", getPage().isUniqueUserNameAlphaString());
+    }
 }
