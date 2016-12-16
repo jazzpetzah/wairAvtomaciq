@@ -215,7 +215,7 @@ Feature: Connect
     When I tap on conversation name <Contact1>
     And I tap conversation name from top toolbar
     And I tap open menu button on Single connected user details page
-    And I tap BLOCK button on Conversation options menu overlay page
+    And I tap BLOCK button on Single conversation options menu
     And I tap BLOCK button on Confirm overlay page
     Then I do not see Conversations list with name <Contact1>
     And I wait until <Contact1> exists in backend search results

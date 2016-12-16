@@ -10,7 +10,7 @@ Feature: Conversation View
     When I tap on conversation name <Contact1>
     And I tap conversation name from top toolbar
     And I tap open menu button on Single connected user details page
-    And I tap MUTE button on Conversation options menu overlay page
+    And I tap MUTE button on Single conversation options menu
     And I tap back button
     And I tap back button
     Then Conversation <Contact1> is muted
@@ -31,7 +31,7 @@ Feature: Conversation View
     When I tap on conversation name <Contact1>
     And I tap conversation name from top toolbar
     And I tap open menu button on Single connected user details page
-    And I tap UNMUTE button on Conversation options menu overlay page
+    And I tap UNMUTE button on Single conversation options menu
     And I tap back button
     And I navigate back from conversation
     Then Conversation <Contact1> is not muted
@@ -344,7 +344,7 @@ Feature: Conversation View
     When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     And I tap open menu button on Group info page
-    And I tap LEAVE button on Conversation options menu overlay page
+    And I tap LEAVE button on Group conversation options menu
     And I tap LEAVE button on Confirm overlay page
     And I see Conversations list
     And I open Search UI

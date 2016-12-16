@@ -8,13 +8,15 @@ import javax.ws.rs.NotSupportedException;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
-public abstract class BaseConversationOptionsMenuPage extends BaseUserDetailsOverlay {
+public class ConversationOptionsMenuPage extends BaseUserDetailsOverlay {
+    private static final By idSettingsContainer = By.id("ll__settings_box__container");
+    private static final By idCancelButton = By.id("ttv__settings_box__cancel_button");
     private static final Function<String, String> xpathStrConvoSettingsMenuItemByName = name -> String
             .format("//*[@id='ttv__settings_box__item' and @value='%s']" +
                     "/parent::*//*[@id='fl_options_menu_button']", name.toUpperCase());
     private static String idUsername = "ttv__settings_box__title";
 
-    public BaseConversationOptionsMenuPage(Future<ZetaAndroidDriver> driver) throws Exception {
+    public ConversationOptionsMenuPage(Future<ZetaAndroidDriver> driver) throws Exception {
         super(driver);
     }
 
@@ -25,27 +27,34 @@ public abstract class BaseConversationOptionsMenuPage extends BaseUserDetailsOve
 
     @Override
     protected By getAvatarLocator() {
-        throw new NotSupportedException("No avatar locator on single conversation list option menu");
+        throw new NotSupportedException("No avatar on conversation options menu");
     }
 
-    public void tapConversationSettingsMenuItem(String itemName) throws Exception {
-        final By locator = By.xpath(xpathStrConvoSettingsMenuItemByName.apply(itemName));
+    public void tapConversationOptionsMenuItem(String itemName) throws Exception {
+        final By locator = getButtonLocator(itemName);
         getElement(locator, String
                 .format("Conversation menu item '%s' could not be found on the current screen", itemName)).click();
     }
 
-    public boolean isConversationSettingsMenuItemVisible(String name) throws Exception {
-        final By locator = By.xpath(xpathStrConvoSettingsMenuItemByName.apply(name));
+    public boolean waitUntilConversationOptionsMenuItemVisible(String itemName) throws Exception {
+        final By locator = getButtonLocator(itemName);
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    //TODO: Add real test
-    public boolean waitUntilOptionMenuVisible() throws Exception {
-        return true;
+    private By getButtonLocator(String itemName) throws Exception {
+        switch (itemName.toUpperCase()) {
+            case "CANCEL":
+                return idCancelButton;
+            default:
+                return By.xpath(xpathStrConvoSettingsMenuItemByName.apply(itemName));
+        }
     }
 
-    //TODO: Add real test
+    public boolean waitUntilOptionMenuVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idSettingsContainer);
+    }
+
     public boolean waitUntilOptionMenuInvisible() throws Exception {
-        return true;
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idSettingsContainer);
     }
 }
