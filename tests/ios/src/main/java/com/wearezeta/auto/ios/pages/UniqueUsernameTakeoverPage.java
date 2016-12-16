@@ -87,8 +87,10 @@ public class UniqueUsernameTakeoverPage extends IOSPage {
     }
 
     public boolean isUniqueUserNameAlphaString() throws Exception {
-        //get unique name and extract first "@" char from it
-        String uniqueName = getUniqueNameValue().substring(1);
+        String uniqueName = getUniqueNameValue();
+        if (uniqueName.startsWith("@")) {
+            uniqueName = uniqueName.substring(1);
+        }
         return uniqueName.chars().allMatch(Character::isLetter);
     }
 }
