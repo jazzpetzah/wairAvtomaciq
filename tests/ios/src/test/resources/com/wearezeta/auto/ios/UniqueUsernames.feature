@@ -50,11 +50,15 @@ Feature: Unique Usernames
     Given I wait until <Contact5WithSameNameInAB> exists in backend search results
     Given I open search UI
     Given I accept alert
-    # Let it match the AB
-    Given I wait for 10 seconds
     Given I tap input field on Search UI page
-    Given I type "<Contact1WithABEmail>" in Search UI input field
-    When I tap on conversation <Contact1WithABEmail> in search result
+    When I type "<Contact3WithUniqueUserName>" in cleared Search UI input field
+    And I tap on conversation <Contact3WithUniqueUserName> in search result
+    Then I see name "<Contact3WithUniqueUserName>" on Single user Pending incoming connection page
+    And I see unique username "<Contact3UniqueUserName>" on Single user Pending incoming connection page
+    And I do not see Address Book name on Single user Pending incoming connection page
+    And I tap Ignore button on Single user Pending incoming connection page
+    When I type "<Contact1WithABEmail>" in Search UI input field
+    And I tap on conversation <Contact1WithABEmail> in search result
     And I see name "<Contact1WithABEmail>" on Single user Pending incoming connection page
     Then I see Address Book name "<Contact1ABName>" on Single user Pending incoming connection page
     And I do not see unique username on Single user Pending incoming connection page
@@ -64,12 +68,6 @@ Feature: Unique Usernames
     Then I see name "<Contact2WithABPhoneNumber>" on Single user Pending incoming connection page
     And I see Address Book name "<Contact2ABName>" on Single user Pending incoming connection page
     And I do not see unique username on Single user Pending incoming connection page
-    And I tap Ignore button on Single user Pending incoming connection page
-    When I type "<Contact3WithUniqueUserName>" in cleared Search UI input field
-    And I tap on conversation <Contact3WithUniqueUserName> in search result
-    Then I see name "<Contact3WithUniqueUserName>" on Single user Pending incoming connection page
-    And I see unique username "<Contact3UniqueUserName>" on Single user Pending incoming connection page
-    And I do not see Address Book name on Single user Pending incoming connection page
     And I tap Ignore button on Single user Pending incoming connection page
     When I type "<Contact4WithCommonFriends>" in cleared Search UI input field
     And I tap on conversation <Contact4WithCommonFriends> in search result
@@ -139,11 +137,16 @@ Feature: Unique Usernames
     Given I wait until <Contact5WithSameNameInAB> exists in backend search results
     Given I open search UI
     Given I accept alert
-    # Let it match the AB
-    Given I wait for 10 seconds
     Given I tap input field on Search UI page
-    Given I type "<Contact1WithABEmail>" in Search UI input field
-    When I tap on conversation <Contact1WithABEmail> in search result
+    When I type "<Contact3WithUniqueUserName>" in cleared Search UI input field
+    And I tap on conversation <Contact3WithUniqueUserName> in search result
+    Then I see name "<Contact3WithUniqueUserName>" on Single user Pending outgoing connection page
+    And I see unique username "<Contact3UniqueUserName>" on Single user Pending outgoing connection page
+    And I do not see Address Book name on Single user Pending outgoing connection page
+    And I tap Cancel Request button on Single user Pending outgoing connection page
+    And I confirm Cancel Request conversation action
+    When I type "<Contact1WithABEmail>" in Search UI input field
+    And I tap on conversation <Contact1WithABEmail> in search result
     And I see name "<Contact1WithABEmail>" on Single user Pending outgoing connection page
     Then I see Address Book name "<Contact1ABName>" on Single user Pending outgoing connection page
     And I do not see unique username on Single user Pending outgoing connection page
@@ -154,13 +157,6 @@ Feature: Unique Usernames
     Then I see name "<Contact2WithABPhoneNumber>" on Single user Pending outgoing connection page
     And I see Address Book name "<Contact2ABName>" on Single user Pending outgoing connection page
     And I do not see unique username on Single user Pending outgoing connection page
-    And I tap Cancel Request button on Single user Pending outgoing connection page
-    And I confirm Cancel Request conversation action
-    When I type "<Contact3WithUniqueUserName>" in cleared Search UI input field
-    And I tap on conversation <Contact3WithUniqueUserName> in search result
-    Then I see name "<Contact3WithUniqueUserName>" on Single user Pending outgoing connection page
-    And I see unique username "<Contact3UniqueUserName>" on Single user Pending outgoing connection page
-    And I do not see Address Book name on Single user Pending outgoing connection page
     And I tap Cancel Request button on Single user Pending outgoing connection page
     And I confirm Cancel Request conversation action
     When I type "<Contact4WithCommonFriends>" in cleared Search UI input field
@@ -264,7 +260,14 @@ Feature: Unique Usernames
     Given I open search UI
     Given I accept alert
     Given I tap X button on Search UI page
-    When I tap on contact name <Contact1WithABEmail>
+    When I tap on contact name <Contact3WithUniqueUserName>
+    And I open conversation details
+    Then I see name "<Contact3WithUniqueUserName>" on Single user Pending outgoing connection page
+    And I see unique username "<Contact3UniqueUserName>" on Single user Pending outgoing connection page
+    And I do not see Address Book name on Single user Pending outgoing connection page
+    And I tap X button on Single user profile page
+    When I navigate back to conversations list
+    And I tap on contact name <Contact1WithABEmail>
     And I open conversation details
     And I see name "<Contact1WithABEmail>" on Single user profile page
     Then I see Address Book name "<Contact1ABName>" on Single user profile page
@@ -276,13 +279,6 @@ Feature: Unique Usernames
     Then I see name "<Contact2WithABPhoneNumber>" on Single user profile page
     And I see Address Book name "<Contact2ABName>" on Single user profile page
     And I do not see unique username on Single user profile page
-    And I tap X button on Single user profile page
-    When I navigate back to conversations list
-    And I tap on contact name <Contact3WithUniqueUserName>
-    And I open conversation details
-    Then I see name "<Contact3WithUniqueUserName>" on Single user Pending outgoing connection page
-    And I see unique username "<Contact3UniqueUserName>" on Single user Pending outgoing connection page
-    And I do not see Address Book name on Single user Pending outgoing connection page
     And I tap X button on Single user profile page
     When I navigate back to conversations list
     And I tap on contact name <Contact4WithCommonFriends>
@@ -365,16 +361,14 @@ Feature: Unique Usernames
     Given I wait until <Contact7WoCF> exists in backend search results
     When I open search UI
     And I accept alert
-    # Let it match the AB
-    And I wait for 10 seconds
     Then I verify correct details are shown for the found users
       | Name                         | Details                                                      |
+      | <Contact7WoCF>               |                                                              |
+      | <Contact4WithCommonFriends>  |                                                              |
       | <Contact1WithABEmail>        | @<Contact1UniqueUsername> - <Contact1ABName> in Address Book |
       | <Contact2WithABPhoneNumber>  | <Contact2ABName> in Address Book                             |
       | <Contact3WithUniqueUserName> | @<Contact3UniqueUserName>                                    |
-      | <Contact4WithCommonFriends>  |                                                              |
       | <Contact5WithSameNameInAB>   | in Address Book                                              |
-      | <Contact7WoCF>               |                                                              |
 
     Examples:
       | Name      | Contact1WithABEmail | Contact1ABName | Contact1UniqueUsername | Contact1Email | Contact2WithABPhoneNumber | Contact2ABName | Contact2PhoneNumber | Contact3WithUniqueUserName | Contact3UniqueUserName | Contact4WithCommonFriends | Contact5WithSameNameInAB | Contact5Email | Contact6Common | Contact7WoCF |
@@ -431,16 +425,14 @@ Feature: Unique Usernames
     Given I wait until <Contact7WoCF> exists in backend search results
     Given I see conversation <Contact2WithABPhoneNumber> in conversations list
     When I open search UI
-    # Let it match the AB
-    And I wait for 10 seconds
     Then I verify correct details are shown for the found users
       | Name                         | Details                                                      |
+      | <Contact7WoCF>               |                                                              |
       | <Contact1WithABEmail>        | @<Contact1UniqueUsername> - <Contact1ABName> in Address Book |
       | <Contact2WithABPhoneNumber>  | <Contact2ABName> in Address Book                             |
       | <Contact3WithUniqueUserName> | @<Contact3UniqueUserName>                                    |
       | <Contact4WithCommonFriends>  | 1 person in common                                           |
       | <Contact5WithSameNameInAB>   | in Address Book                                              |
-      | <Contact7WoCF>               |                                                              |
 
     Examples:
       | Name      | Contact1WithABEmail | Contact1ABName | Contact1UniqueUsername | Contact1Email | Contact2WithABPhoneNumber | Contact2ABName | Contact2PhoneNumber | Contact3WithUniqueUserName | Contact3UniqueUserName | Contact4WithCommonFriends | Contact5WithSameNameInAB | Contact5Email | Contact6Common | Contact7WoCF |
@@ -506,6 +498,9 @@ Feature: Unique Usernames
     Given I open search UI
     Given I accept alert
     Given I tap X button on Search UI page
+    When I swipe right on a <Contact7Unconnected>
+    Then I do not see common friends count on Conversation actions page
+    And I tap Cancel conversation action button
     When I swipe right on a <Contact1WithABEmail>
     Then I see Address Book name "<Contact1ABName>" on Conversation actions page
     And I do not see unique username on Conversation actions page
@@ -525,9 +520,6 @@ Feature: Unique Usernames
     When I swipe right on a <Contact5WithSameNameInAB>
     Then I do not see unique username on Conversation actions page
     And I see Address Book name "" on Conversation actions page
-    And I tap Cancel conversation action button
-    When I swipe right on a <Contact7Unconnected>
-    Then I do not see common friends count on Conversation actions page
     And I tap Cancel conversation action button
     When I swipe right on a <GroupChatName>
     Then I do not see Address Book name on Conversation actions page
@@ -578,29 +570,23 @@ Feature: Unique Usernames
     Given I open search UI
     Given I accept alert
     Given I tap X button on Search UI page
-    When I tap on contact name <Contact1WithABEmail>
-    # TODO: Remove this workaround after ZIOS-7734 is fixed
-    And I scroll to the top of the conversation
+    When I tap on contact name <Contact3WithUniqueUserName>
+    Then I see unique username "<Contact3UniqueUserName>" on Conversation view page
+    And I do not see Address Book name on Single user Pending outgoing connection page
+    When I navigate back to conversations list
+    And I tap on contact name <Contact1WithABEmail>
     Then I see Address Book name "<Contact1ABName>" on Conversation view page
     And I do not see unique username on Conversation view page
     When I navigate back to conversations list
     And I tap on contact name <Contact2WithABPhoneNumber>
-    And I scroll to the top of the conversation
     Then I see Address Book name "<Contact2ABName>" on Conversation view page
     And I do not see unique username on Single user profile page
     When I navigate back to conversations list
-    And I tap on contact name <Contact3WithUniqueUserName>
-    And I scroll to the top of the conversation
-    Then I see unique username "<Contact3UniqueUserName>" on Conversation view page
-    And I do not see Address Book name on Single user Pending outgoing connection page
-    When I navigate back to conversations list
     And I tap on contact name <Contact4WithCommonFriends>
-    And I scroll to the top of the conversation
     Then I do not see unique username on Conversation view page
     And I do not see common friends count on Conversation view page
     When I navigate back to conversations list
     And I tap on contact name <Contact5WithSameNameInAB>
-    And I scroll to the top of the conversation
     Then I do not see unique username on Conversation view page
     And I see Address Book name "" on Conversation view page
 
