@@ -18,6 +18,8 @@ public class UniqueUsernamePage extends AndroidPage {
 
     private static final By idOkButton = By.id("tv__ok_button");
 
+    private static final By idCancelButton = By.id("tv__back_button");
+
     public UniqueUsernamePage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -48,5 +50,9 @@ public class UniqueUsernamePage extends AndroidPage {
 
     public void tapOkButton() throws Exception {
         getElement(idOkButton).click();
+    }
+
+    public void tapCancelButton() throws Exception {
+        getElement(idCancelButton).click();
     }
 }

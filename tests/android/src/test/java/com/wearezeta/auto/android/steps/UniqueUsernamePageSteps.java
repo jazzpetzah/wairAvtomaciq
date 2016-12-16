@@ -25,16 +25,33 @@ public class UniqueUsernamePageSteps {
      * Checks if username edit is visible or not on Settings page
      *
      * @param shouldNotSee null if should see
-     * @return true if visible
+     * @param uniqueUsernameExpected non-null if uniqueUsername check should be activated
+     * @param uniqueUsername value of uniqueUsername to check
+     * @param in does nothing
      * @throws Exception
-     * @step. ^I( do not)? see [Uu]nique [Uu]sername edit field on Settings page$
+     * @step. ^I( do not)? see [Uu]nique [Uu]sername ("(.*)")?( in )?edit field on Settings page$
      */
-    @Then("^I( do not)? see [Uu]nique [Uu]sername edit field on Settings page$")
-    public void iSeeUsernameEdit(String shouldNotSee) throws Exception {
+    @Then("^I( do not)? see [Uu]nique [Uu]sername (\"(.*)\")?( in )?edit field on Settings page$")
+    public void iSeeUsernameEdit(String shouldNotSee, String uniqueUsernameExpected, String uniqueUsername, String
+            in) throws Exception {
         if (shouldNotSee == null) {
-            Assert.assertTrue("Username edit is not visible", getUniqueUsernamePage().isUsernameEditVisible());
+            if (uniqueUsernameExpected == null) {
+                Assert.assertTrue("Username edit should be visible", getUniqueUsernamePage()
+                        .isUsernameEditVisible());
+                return;
+            }
+            uniqueUsername = usrMgr.replaceAliasesOccurences(uniqueUsername, FindBy.UNIQUE_USERNAME_ALIAS);
+            Assert.assertTrue(String.format("Username edit should be visible with value %s", uniqueUsername),
+                    getUniqueUsernamePage().isUsernameEditVisible(uniqueUsername));
         } else {
-            Assert.assertTrue("Username edit is visible", getUniqueUsernamePage().isUsernameEditInvisible());
+            if (uniqueUsernameExpected == null) {
+                Assert.assertTrue("Username edit should not be visible", getUniqueUsernamePage()
+                        .isUsernameEditInvisible());
+                return;
+            }
+            uniqueUsername = usrMgr.replaceAliasesOccurences(uniqueUsername, FindBy.UNIQUE_USERNAME_ALIAS);
+            Assert.assertTrue(String.format("Username edit should not be visible with value %s", uniqueUsername),
+                    getUniqueUsernamePage().isUsernameEditVisible(uniqueUsername));
         }
     }
 
@@ -85,6 +102,21 @@ public class UniqueUsernamePageSteps {
         uniqueUsernamePage.tapOkButton();
     }
 
+    /**
+     * Tap OK or Cancel button on unique username settings page
+     * @param buttonName OK or Cancel
+     * @throws Exception
+     */
+    @Then("^I tap (OK|Cancel) on [Uu]nique [Uu]sername Settings page$")
+    public void iTapOkOnUniqueUsernameSettingsPage(String buttonName) throws Exception {
+        UniqueUsernamePage uniqueUsernamePage = getUniqueUsernamePage();
+        if (buttonName.equals("OK")) {
+            uniqueUsernamePage.tapOkButton();
+            return;
+        }
+        uniqueUsernamePage.tapCancelButton();
+    }
+
 
     /**
      * Enter random username and try to save it
@@ -92,7 +124,7 @@ public class UniqueUsernamePageSteps {
      * @param usernameSize amount of chars, that new username should have
      * @throws Exception
      * @step. ^I try to set new random (\d+) chars [Uu]nique [Uu]sername on Settings page, but change it to "(.*)
-     *          then$"
+     * then$"
      */
     @Then("^I try to set new random (\\d+) chars [Uu]nique [Uu]sername on Settings page, but change it to \"(.*)\" " +
             "then$")
