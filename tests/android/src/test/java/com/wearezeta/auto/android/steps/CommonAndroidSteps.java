@@ -1815,9 +1815,9 @@ public class CommonAndroidSteps {
      *                     as 'user%dUniqueUsername' alias
      * @param uniqUsername unique username or an alias
      * @throws Exception
-     * @step. User (.*) (sets|changes) the unique username( to ".*")?(?: via device (.*))?$
+     * @step. Users? (.*) (sets?|changes?) the unique username( to ".*")?(?: via device (.*))?$
      */
-    @Given("^User (.*) (sets|changes) the unique username( to \".*\")?(?: via device (.*))?$")
+    @Given("^Users? (.*) (sets?|changes?) the unique username( to \".*\")?(?: via device (.*))?$")
     public void UserSetsUniqueUsername(String userAs, String action, String uniqUsername, String deviceName) throws Exception {
         switch (action.toLowerCase()) {
             case "sets":

@@ -48,11 +48,19 @@ public class UniqueUsernamePage extends AndroidPage {
         return newUniqueName;
     }
 
-    public void tapOkButton() throws Exception {
-        getElement(idOkButton).click();
+    public void tapButton(String buttonName) throws Exception {
+        getElement(getButtonLocator(buttonName)).click();
     }
 
-    public void tapCancelButton() throws Exception {
-        getElement(idCancelButton).click();
+    private By getButtonLocator(String buttonName) {
+        buttonName = buttonName.toUpperCase();
+        if (buttonName.equals("OK")) {
+            return idOkButton;
+        }
+        if (buttonName.equals("CANCEL")) {
+            return idCancelButton;
+        }
+        throw new IllegalArgumentException(String.format("No such button %s on Unique Username Settings page",
+                buttonName));
     }
 }

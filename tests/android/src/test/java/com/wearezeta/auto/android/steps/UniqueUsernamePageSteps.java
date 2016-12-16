@@ -99,7 +99,7 @@ public class UniqueUsernamePageSteps {
         username = usrMgr.replaceAliasesOccurences(username, FindBy.UNIQUE_USERNAME_ALIAS);
         UniqueUsernamePage uniqueUsernamePage = getUniqueUsernamePage();
         uniqueUsernamePage.enterNewUsername(username);
-        uniqueUsernamePage.tapOkButton();
+        uniqueUsernamePage.tapButton("OK");
     }
 
     /**
@@ -109,12 +109,7 @@ public class UniqueUsernamePageSteps {
      */
     @Then("^I tap (OK|Cancel) on [Uu]nique [Uu]sername Settings page$")
     public void iTapOkOnUniqueUsernameSettingsPage(String buttonName) throws Exception {
-        UniqueUsernamePage uniqueUsernamePage = getUniqueUsernamePage();
-        if (buttonName.equals("OK")) {
-            uniqueUsernamePage.tapOkButton();
-            return;
-        }
-        uniqueUsernamePage.tapCancelButton();
+        getUniqueUsernamePage().tapButton(buttonName);
     }
 
 
@@ -133,7 +128,7 @@ public class UniqueUsernamePageSteps {
         try {
             UniqueUsernamePage uniqueUsernamePage = getUniqueUsernamePage();
             uniqueUsernamePage.enterNewRandomUsername(usernameSize);
-            uniqueUsernamePage.tapOkButton();
+            uniqueUsernamePage.tapButton("OK");
             Assert.assertTrue("Username edit is visible", getUniqueUsernamePage().isUsernameEditInvisible());
         } finally {
             uniqueUsername = usrMgr.replaceAliasesOccurences(uniqueUsername,
