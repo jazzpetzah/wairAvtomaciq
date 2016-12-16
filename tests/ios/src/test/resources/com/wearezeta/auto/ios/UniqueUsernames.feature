@@ -50,6 +50,8 @@ Feature: Unique Usernames
     Given I wait until <Contact5WithSameNameInAB> exists in backend search results
     Given I open search UI
     Given I accept alert
+    # Let it match the AB
+    Given I wait for 10 seconds
     Given I tap input field on Search UI page
     Given I type "<Contact1WithABEmail>" in Search UI input field
     When I tap on conversation <Contact1WithABEmail> in search result
@@ -137,6 +139,8 @@ Feature: Unique Usernames
     Given I wait until <Contact5WithSameNameInAB> exists in backend search results
     Given I open search UI
     Given I accept alert
+    # Let it match the AB
+    Given I wait for 10 seconds
     Given I tap input field on Search UI page
     Given I type "<Contact1WithABEmail>" in Search UI input field
     When I tap on conversation <Contact1WithABEmail> in search result
@@ -361,6 +365,8 @@ Feature: Unique Usernames
     Given I wait until <Contact7WoCF> exists in backend search results
     When I open search UI
     And I accept alert
+    # Let it match the AB
+    And I wait for 10 seconds
     Then I verify correct details are shown for the found users
       | Name                         | Details                                                      |
       | <Contact1WithABEmail>        | @<Contact1UniqueUsername> - <Contact1ABName> in Address Book |
@@ -425,6 +431,8 @@ Feature: Unique Usernames
     Given I wait until <Contact7WoCF> exists in backend search results
     Given I see conversation <Contact2WithABPhoneNumber> in conversations list
     When I open search UI
+    # Let it match the AB
+    And I wait for 10 seconds
     Then I verify correct details are shown for the found users
       | Name                         | Details                                                      |
       | <Contact1WithABEmail>        | @<Contact1UniqueUsername> - <Contact1ABName> in Address Book |
@@ -541,6 +549,8 @@ Feature: Unique Usernames
     Given I wait until <Contact> has 2 common friends on the backend
     Given I open search UI
     Given I dismiss alert if visible
+    # Let it match the AB
+    When I wait for 10 seconds
     Then I verify correct details are shown for the found users
       | Name      | Details                                       |
       | <Contact> | @<ContactUniqueUserName> - 2 people in common |
