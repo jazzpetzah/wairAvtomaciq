@@ -598,7 +598,7 @@ Feature: Unique Usernames
       | Name      | Contact1WithABEmail | Contact1ABName | Contact1Email | Contact2WithABPhoneNumber | Contact2ABName | Contact2PhoneNumber | Contact3WithUniqueUserName | Contact3UniqueUserName | Contact4WithCommonFriends | Contact5WithSameNameInAB | Contact5Email | Contact6Common |
       | user1Name | user2Name           | user2ABName    | user2Email    | user3Name                 | user3ABName    | user3PhoneNumber    | user4Name                  | user4UniqueUsername    | user5Name                 | user6Name                | user6Email    | user7Name      |
 
-  @C352045 @staging @fastLogin
+  @C352045 @regression @fastLogin
   Scenario Outline: Verify new username is synced across the devices
     Given There are 2 users where <Name> is me
     Given Myself is connected to user2Name
