@@ -63,13 +63,13 @@ public class UniqueUsernameTakeoverPageSteps {
     }
 
     /**
-     * Verify that Unique Username is a string with only letters
+     * Verify that Unique Username is a string with only latin letters
      *
      * @throws Exception
-     * @step. ^I see unique username on Unique Username Takeover page is a letters only string$
+     * @step. ^I see unique username on Unique Username Takeover page contains latin characters only$
      */
-    @Then("^I see unique username on Unique Username Takeover page is a letters only string$")
-    public void ISeeUniqueNameIsRandomString() throws Exception {
+    @Then("^I see unique username on Unique Username Takeover page contains latin characters only$")
+    public void ISeeUniqueNameIsLatingCharsString() throws Exception {
         Assert.assertTrue("Unique Username contains non-alpha values", getPage().isUniqueUserNameAlphaString());
     }
 }

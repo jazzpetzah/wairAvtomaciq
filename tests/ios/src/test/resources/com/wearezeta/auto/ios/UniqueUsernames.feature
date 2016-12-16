@@ -625,7 +625,7 @@ Feature: Unique Usernames
     Given I accept alert if visible
     Given I tap X button on Search UI page
     When I see username <NameAlias> on Unique Username Takeover page
-    Then I see unique username on Unique Username Takeover page is a letters only string
+    Then I see unique username on Unique Username Takeover page contains latin characters only
 
     Examples:
       | NameAlias | Name |
