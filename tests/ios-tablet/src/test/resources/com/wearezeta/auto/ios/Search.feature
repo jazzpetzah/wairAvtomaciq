@@ -397,32 +397,6 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @C2816 @regression @fastLogin
-  Scenario Outline: Verify action buttons disappear by deleting token from a search field [LANDSCAPE]
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to all other users
-    Given I rotate UI to landscape
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    Given I wait until my Top People list is not empty on the backend
-    When I open search UI
-    And I accept alert if visible
-    And I tap on 1st top connection contact
-    And I see Open conversation action button on Search UI page
-    And I tap on 2nd top connection contact
-    Then I see Create conversation action button on Search UI page
-    When I tap input field on Search UI page
-    And I press Backspace button in search field
-    And I press Backspace button in search field
-    Then I do not see Create conversation action button on Search UI page
-    When I press Backspace button in search field
-    And I press Backspace button in search field
-    Then I do not see Open conversation action button on Search UI page
-
-    Examples:
-      | Name      |
-      | user1Name |
-
   @C2817 @regression @fastLogin
   Scenario Outline: Verify opening conversation with action button [PORTRAIT]
     Given There are 3 users where <Name> is me
