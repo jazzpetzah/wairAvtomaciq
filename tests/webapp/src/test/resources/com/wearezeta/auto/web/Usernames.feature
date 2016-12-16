@@ -315,3 +315,29 @@ Feature: Usernames
     Examples:
       | Email      | Password      | NameAlias | Name  | Username |
       | user1Email | user1Password | user1Name | admin | admin    |
+
+  @C352084 @usernames @staging
+  Scenario Outline: Verify top people are shown without usernames
+    Given There are 2 users where <NameAlias> is me
+    Given <NameAlias>,<Contact> have unique usernames
+#    Given User <Contact> changes unique username to <ContactName>
+    Given Myself is connected to <Contact>
+    Given Contact Me sends message QUESTION to user <Contact>
+    Given Contact <Contact> sends message ANSWER to user <NameAlias>
+    Given I switch to Sign In page
+    Given I Sign in using login <Email> and password <Password>
+    Given I see the history info page
+    Given I click confirm on history info page
+    When I am signed in properly
+    And Myself waits until 1 people in backend top people results
+    And I open search by clicking the people button
+    And I wait till Top People list appears
+    Then I see 1 people in Top people list
+    And I see user <Contact> found in People Picker
+    And I see user <Contact> found in Top People
+#    And I do not see username <ContactName> of user <Contact> in Top People
+    And I do not see user <Contact> with username <ContactName> found in People Picker
+
+    Examples:
+      | Email      | Password      | NameAlias | Contact   | ContactName |
+      | user1Email | user1Password | user1Name | user2Name | visible     |

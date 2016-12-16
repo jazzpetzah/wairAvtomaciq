@@ -98,6 +98,15 @@ public class StartUIPage extends WebPage {
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), By.xpath(xpath));
     }
 
+    public boolean isUserFoundInTopPeople(String name) throws Exception {
+        String foundUserXpath = WebAppLocators.StartUIPage.xpathTopPeopleList.apply(name);
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.xpath(foundUserXpath));
+    }
+
+    public boolean isUsernameNotVisible(String name, String username) throws Exception {
+        return false;
+    }
+
     public void closeStartUI() throws Exception {
         closeStartUIButton.click();
     }

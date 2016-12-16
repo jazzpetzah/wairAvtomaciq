@@ -719,6 +719,8 @@ public final class WebAppLocators {
 
         public static final String xpathRoot = "//div[@id='start-ui']";
 
+        public static final String xpathTopPeopleRoot = "//div[@class='start-ui-list-top-conversations']";
+
         public static final String cssNameSearchInput = "[data-uie-name='enter-users']";
 
         public static final String cssOpenOrCreateConversationButton = "[data-uie-name='do-add-create']," +
@@ -741,6 +743,11 @@ public final class WebAppLocators {
                 name) -> String.format(
                 "%s//*[@data-uie-name='item-group' and .//*[text()='%s']]",
                 xpathRoot, name);
+
+        public static final Function<String, String> xpathTopPeopleList = (
+                name) -> String.format(
+                "%s//*[@data-uie-name='item-user' and .//*[contains(@class,'search-list-item-content-name') and text()='%s']]",
+                xpathTopPeopleRoot, name);
 
         public static final String cssCloseStartUIButton = ".start-ui-header [data-uie-name='do-close']";
 
