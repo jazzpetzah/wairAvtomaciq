@@ -22,6 +22,7 @@ Feature: Search
     Given <Contact2> is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
+    Given I wait until <Contact> exists in backend search results
     When I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
