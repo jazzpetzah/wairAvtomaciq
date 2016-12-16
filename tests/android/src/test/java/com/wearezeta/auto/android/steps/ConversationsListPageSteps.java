@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.wearezeta.auto.android.pages.ConversationOptionsMenuPage;
+import com.wearezeta.auto.android.pages.details_overlay.ConversationOptionsMenuPage;
 import com.wearezeta.auto.android.pages.ConversationsListPage;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;

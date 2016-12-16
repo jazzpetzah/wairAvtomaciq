@@ -34,7 +34,7 @@ Feature: People View
     When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     And I tap open menu button on Group info page
-    And I tap LEAVE button on Conversation options menu overlay page
+    And I tap LEAVE button on Group conversation options menu
     And I tap LEAVE button on Confirm overlay page
     Then I see Conversations list
 
@@ -126,29 +126,26 @@ Feature: People View
     And I tap conversation name from top toolbar
     And I see user name "<Contact>" on Single connected user details page
     And I tap open menu button on Single connected user details page
-    Then I see BLOCK button on Conversation options menu overlay page
-    And I see MUTE button on Conversation options menu overlay page
-    And I see DELETE button on Conversation options menu overlay page
-    And I see ARCHIVE button on Conversation options menu overlay page
+    Then I see BLOCK button on Single conversation options menu
+    And I see MUTE button on Single conversation options menu
+    And I see DELETE button on Single conversation options menu
+    And I see ARCHIVE button on Single conversation options menu
     When I tap back button
-    Then I see Group info page
-    And I do not see Conversation options menu
+    Then I do not see Single conversation options menu
     When I tap open menu button on Single connected user details page
     And I swipe down
-    Then I see Group info page
-    And I do not see Conversation options menu
+    And I do not see Single conversation options menu
     When I tap open menu button on Single connected user details page
-    Then I see LEAVE button on Conversation options menu overlay page
-    And I see MUTE button on Conversation options menu overlay page
-    And I see DELETE button on Conversation options menu overlay page
-    And I see ARCHIVE button on Conversation options menu overlay page
-    And I see RENAME button on Conversation options menu overlay page
+    Then I see BLOCK button on Single conversation options menu
+    And I see MUTE button on Single conversation options menu
+    And I see DELETE button on Single conversation options menu
+    And I see ARCHIVE button on Single conversation options menu
     When I tap on center of screen
     And I tap open menu button on Single connected user details page
     And I swipe left
     And I swipe right
     And I swipe up
-    Then I do not see Conversation options menu
+    Then I do not see Single conversation options menu
 
     Examples:
       | Name      | Contact   |
