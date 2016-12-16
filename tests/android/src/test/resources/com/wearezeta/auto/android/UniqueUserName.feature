@@ -432,11 +432,11 @@ Feature: Unique Username
     Given I see unique username edit field on Settings page
     Given I tap OK on Unique Username Settings page
     Given I tap OK on Unique Username Settings page
-    Given User Myself adds a new device <D1> with label <D1>
-    When User Myself changes the unique username to "<UUN1>" via device <D1>
+    Given User Myself adds a new device <Device1> with label <Device1>
+    When User Myself changes the unique username to "<UniqueUsername1>" via device <Device1>
     Then I select "Username" settings menu item
-    And I see Unique Username "<UUN1>" in edit field on Settings page
+    And I see Unique Username "<UniqueUsername1>" in edit field on Settings page
 
     Examples:
-      | Name      | D1      | UUN1                |
+      | Name      | Device1 | UniqueUsername1     |
       | user1Name | Device1 | user1UniqueUsername |
