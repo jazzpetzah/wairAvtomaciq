@@ -1,21 +1,22 @@
 package com.wearezeta.auto.android.pages;
 
+import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
+import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import com.wearezeta.auto.common.log.ZetaLogger;
+import io.appium.java_client.android.AndroidElement;
+import org.apache.log4j.Logger;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.WebElement;
+
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
-import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import com.wearezeta.auto.common.log.ZetaLogger;
-import org.apache.log4j.Logger;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.WebElement;
 
 public class ConversationsListPage extends AndroidPage {
 
@@ -66,10 +67,6 @@ public class ConversationsListPage extends AndroidPage {
 
     private static final By xpathLeaveCheckbox = By.xpath("//*[@id='gtv__checkbox_icon']");
 
-    private static final Function<String, String> xpathStrConvoSettingsMenuItemByName = name -> String
-            .format("//*[@id='ttv__settings_box__item' and @value='%s']" +
-                    "/parent::*//*[@id='fl_options_menu_button']", name.toUpperCase());
-
     private static final String xpathSpinnerConversationsListLoadingIndicator =
             "//*[@id='liv__conversations__loading_indicator']/*";
 
@@ -92,6 +89,14 @@ public class ConversationsListPage extends AndroidPage {
                 () -> new IllegalStateException(String.format(
                         "The conversation '%s' does not exist in the conversations list", name))
         ).click();
+    }
+
+    public void longTapOnName(final String name, int durationMilliseconds) throws Exception {
+        WebElement webElement = findConversationInList(name).orElseThrow(
+                () -> new IllegalStateException(String.format(
+                        "The conversation '%s' does not exist in the conversations list", name))
+        );
+        getDriver().longTap(200, ((AndroidElement)webElement).getCenter().y, durationMilliseconds);
     }
 
     public void doLongSwipeUp() throws Exception {
@@ -178,7 +183,8 @@ public class ConversationsListPage extends AndroidPage {
                 CONTACT_LIST_LOAD_TIMEOUT_SECONDS)) {
             throw new IllegalStateException(
                     String.format(
-                            "It seems that conversations list has not been loaded within %s seconds (login button is still visible)",
+                            "It seems that conversations list has not been loaded within %s seconds (login button is " +
+                                    "still visible)",
                             CONTACT_LIST_LOAD_TIMEOUT_SECONDS));
         }
 
@@ -191,7 +197,8 @@ public class ConversationsListPage extends AndroidPage {
                 spinnerConvoListLoadingProgressLocator,
                 CONTACT_LIST_LOAD_TIMEOUT_SECONDS / 2)) {
             log.warn(String
-                    .format("It seems that conversations list has not been loaded within %s seconds (the spinner is still visible)",
+                    .format("It seems that conversations list has not been loaded within %s seconds (the spinner is " +
+                                    "still visible)",
                             CONTACT_LIST_LOAD_TIMEOUT_SECONDS / 2));
         }
 
@@ -220,11 +227,6 @@ public class ConversationsListPage extends AndroidPage {
         return !DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathValidContact, 3);
     }
 
-    public void selectConvoSettingsMenuItem(String itemName) throws Exception {
-        final By locator = By.xpath(xpathStrConvoSettingsMenuItemByName.apply(itemName));
-        getElement(locator, String
-                .format("Conversation menu item '%s' could not be found on the current screen", itemName)).click();
-    }
 
     public boolean waitUntilMissedCallNotificationVisible(String convoName) throws Exception {
         final By locator = By.xpath(xpathStrMissedCallNotificationByConvoName.apply(convoName));
@@ -269,11 +271,6 @@ public class ConversationsListPage extends AndroidPage {
 
     public void checkLeaveWhileDeleteCheckbox() throws Exception {
         getElement(xpathLeaveCheckbox).click();
-    }
-
-    public boolean isConvSettingsMenuItemVisible(String name) throws Exception {
-        final By locator = By.xpath(xpathStrConvoSettingsMenuItemByName.apply(name));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean isLeaveCheckBoxVisible() throws Exception {

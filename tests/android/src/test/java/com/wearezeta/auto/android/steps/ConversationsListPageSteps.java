@@ -5,14 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.wearezeta.auto.android.pages.ConversationOptionsMenuPage;
 import com.wearezeta.auto.android.pages.ConversationsListPage;
-import com.wearezeta.auto.android.pages.SearchListPage;
-import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -32,8 +30,8 @@ public class ConversationsListPageSteps {
         return pagesCollection.getPage(ConversationsListPage.class);
     }
 
-    private SearchListPage getSearchListPage() throws Exception {
-        return pagesCollection.getPage(SearchListPage.class);
+    private ConversationOptionsMenuPage getConversationListOptionMenuPage() throws Exception {
+        return pagesCollection.getPage(ConversationOptionsMenuPage.class);
     }
 
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
@@ -159,6 +157,30 @@ public class ConversationsListPageSteps {
     public void IShortSwipeRightOnAUser(String contact) throws Exception {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         getConversationsListPage().swipeShortRightOnConversation(1000, contact);
+    }
+
+    /**
+     * Make long press on contact to open option menu
+     *
+     * @param contact to press on
+     * @throws Exception
+     * @step. ^I long press on a (.*) on conversation list page$
+     */
+    @When("^I open options menu of (.*) on conversation list page$")
+    public void iLongPressOnAUser(String contact) throws Exception {
+        contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+        int nTies = 3;
+        //Just because it is not stable
+        while (nTies > 0) {
+            getConversationsListPage().longTapOnName(contact, 2000);
+            if (getConversationListOptionMenuPage().waitUntilUserDataVisible("user name",contact)) {
+                return;
+            }
+            nTies--;
+        }
+        Assert.assertTrue(
+                String.format("The conversation settings menu is not visible for contact list item %s", contact),
+                getConversationListOptionMenuPage().waitUntilUserDataVisible("user name",contact));
     }
 
     /**
@@ -373,18 +395,6 @@ public class ConversationsListPageSteps {
         getConversationsListPage().tapPlayPauseMediaButton(convoName);
     }
 
-    /**
-     * Tap the corresponding item in conversation settings menu
-     *
-     * @param itemName menu item name
-     * @throws Exception
-     * @step. ^I select (.*) From conversation settings menu$
-     */
-    @And("^I select (.*) from conversation settings menu$")
-    public void ISelectConvoSettingsMenuItem(String itemName) throws Exception {
-        getConversationsListPage().selectConvoSettingsMenuItem(itemName);
-    }
-
     private Map<String, ElementState> previousUnreadIndicatorState = new HashMap<>();
 
     /**
@@ -457,19 +467,6 @@ public class ConversationsListPageSteps {
     @When("^I tap the Leave check box$")
     public void ITapLeave() throws Exception {
         getConversationsListPage().checkLeaveWhileDeleteCheckbox();
-    }
-
-    /**
-     * Verifies that specific items are visible in the conversation settings menu
-     *
-     * @param name name of item to check in the menu (ARCHIVE, BLOCK, CANCEL,...)
-     * @throws Exception
-     * @step. ^I see (.*) button in conversation settings menu$
-     */
-    @Then("^I see (.*) button in conversation settings menu$")
-    public void ISeeButtonInConversationSettingsMenuAtPosition(String name) throws Exception {
-        Assert.assertTrue("The converastion settings menu item is not visible",
-                getConversationsListPage().isConvSettingsMenuItemVisible(name));
     }
 
     /**

@@ -28,7 +28,7 @@ public abstract class BaseUserDetailsOverlay extends BaseDetailsOverlay {
     private static final Function<String, String> xpathStrUniqueUserName = text -> String.format
             ("//*[@id='%s' and @value='@%s']", strIdUniqueName, text);
     private static final Function<String, String> xpathStrUserInfo = text -> String.format
-            ("//*[@id='%s' and contains(@value,'%s')]", strIdUserInfo, text);
+            ("//*[@id='%s' and normalize-space(@value)='%s']", strIdUserInfo, text);
     private final Function<String, String> xpathStrUserName = userName -> String.format
             ("//*[@id='%s' and @value='%s']", getUserNameId(), userName);
     private final Function<String, String> xpathStrAcceptButtonByUserName = userName -> String.format
@@ -72,6 +72,7 @@ public abstract class BaseUserDetailsOverlay extends BaseDetailsOverlay {
                 text = usrMgr.replaceAliasesOccurences(text, ClientUsersManager.FindBy.NAME_ALIAS);
                 return By.xpath(xpathStrUserName.apply(text));
             case "unique user name":
+            case "unique username":
                 text = usrMgr.replaceAliasesOccurences(text, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
                 return By.xpath(xpathStrUniqueUserName.apply(text));
             case "user info":
@@ -87,6 +88,7 @@ public abstract class BaseUserDetailsOverlay extends BaseDetailsOverlay {
             case "user name":
                 return By.id(getUserNameId());
             case "unique user name":
+            case "unique username":
                 return idUniqueUserName;
             case "user info":
                 return idUserInfo;
