@@ -34,13 +34,13 @@ public class UniqueUsernamePageSteps {
     @Then("^I( do not)? see [Uu]nique [Uu]sername (\"(.*)\")?( in )?edit field on Settings page$")
     public void iSeeUsernameEdit(String shouldNotSee, String uniqueUsernameExpected, String uniqueUsername, String
             in) throws Exception {
+        uniqueUsername = usrMgr.replaceAliasesOccurences(uniqueUsername, FindBy.UNIQUE_USERNAME_ALIAS);
         if (shouldNotSee == null) {
             if (uniqueUsernameExpected == null) {
                 Assert.assertTrue("Username edit should be visible", getUniqueUsernamePage()
                         .isUsernameEditVisible());
                 return;
             }
-            uniqueUsername = usrMgr.replaceAliasesOccurences(uniqueUsername, FindBy.UNIQUE_USERNAME_ALIAS);
             Assert.assertTrue(String.format("Username edit should be visible with value %s", uniqueUsername),
                     getUniqueUsernamePage().isUsernameEditVisible(uniqueUsername));
         } else {
@@ -49,9 +49,8 @@ public class UniqueUsernamePageSteps {
                         .isUsernameEditInvisible());
                 return;
             }
-            uniqueUsername = usrMgr.replaceAliasesOccurences(uniqueUsername, FindBy.UNIQUE_USERNAME_ALIAS);
             Assert.assertTrue(String.format("Username edit should not be visible with value %s", uniqueUsername),
-                    getUniqueUsernamePage().isUsernameEditVisible(uniqueUsername));
+                    getUniqueUsernamePage().isUsernameEditInvisible(uniqueUsername));
         }
     }
 
@@ -119,7 +118,7 @@ public class UniqueUsernamePageSteps {
      * @param usernameSize amount of chars, that new username should have
      * @throws Exception
      * @step. ^I try to set new random (\d+) chars [Uu]nique [Uu]sername on Settings page, but change it to "(.*)
-     * then$"
+     *          then$"
      */
     @Then("^I try to set new random (\\d+) chars [Uu]nique [Uu]sername on Settings page, but change it to \"(.*)\" " +
             "then$")

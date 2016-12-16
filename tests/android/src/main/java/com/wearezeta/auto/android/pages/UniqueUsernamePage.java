@@ -36,6 +36,10 @@ public class UniqueUsernamePage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), usernameEditWithValue.apply(expectedValue));
     }
 
+    public boolean isUsernameEditInvisible(String expectedValue) throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), usernameEditWithValue.apply(expectedValue));
+    }
+
     public void enterNewUsername(String username) throws Exception {
         WebElement edit = getElement(idUsernameEdit);
         edit.clear();
@@ -53,14 +57,15 @@ public class UniqueUsernamePage extends AndroidPage {
     }
 
     private By getButtonLocator(String buttonName) {
-        buttonName = buttonName.toUpperCase();
-        if (buttonName.equals("OK")) {
-            return idOkButton;
+        switch (buttonName.toUpperCase()) {
+            case "OK":
+                return idOkButton;
+            case "CANCEL":
+                return idCancelButton;
+            default:
+                throw new IllegalArgumentException(String.format("No such button %s on Unique Username Settings page",
+                        buttonName));
         }
-        if (buttonName.equals("CANCEL")) {
-            return idCancelButton;
-        }
-        throw new IllegalArgumentException(String.format("No such button %s on Unique Username Settings page",
-                buttonName));
+
     }
 }
