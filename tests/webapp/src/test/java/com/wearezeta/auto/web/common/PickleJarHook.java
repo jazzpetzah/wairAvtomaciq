@@ -162,6 +162,9 @@ public class PickleJarHook implements PickleJarTestHook {
                     // filter ignored hot knocks
                     .filter((entry)
                             -> !entry.getMessage().contains("Ignored hot knock"))
+                    // filter e2ee error (breaking session)
+                    .filter((entry)
+                            -> !entry.getMessage().contains("Received message is for client"))
                     // filter youtube cast_sender
                     .filter((entry)
                             -> !entry.getMessage().contains("cast_sender.js"))
