@@ -203,8 +203,6 @@ Feature: Connect
     And I tap Invite Others button on Contacts UI page
     And I tap Copy Invite button on Search UI page
     And I tap X button on Contacts UI page
-    # Wait for animation
-    And I wait for 2 seconds
     And I tap X button on Search UI page
     And I tap on contact name <Contact>
     And I tap on text input

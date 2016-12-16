@@ -64,6 +64,10 @@ public class ContactsUiPage extends IOSPage {
     public void tapButton(String btnName) throws Exception {
         final By locator = getButtonByName(btnName);
         getElement(locator).click();
+        if (locator.equals(nameXButton)) {
+            // Wait for animation
+            Thread.sleep(1500);
+        }
     }
 
     public boolean isButtonVisible(String btnName) throws Exception {
