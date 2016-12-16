@@ -557,7 +557,7 @@ Feature: Connect
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly
     When I open conversation with <Contact1>
-    And I see unique username in outgoing connection request to user <string>
+    And I see unique username in outgoing connection request to user <Contact1>
     Then I see cancel pending request button in the conversation view
     When I click cancel pending request button in the conversation view
     Then I do not see connection request from one user
