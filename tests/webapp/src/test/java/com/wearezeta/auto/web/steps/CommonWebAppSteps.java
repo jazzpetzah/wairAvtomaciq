@@ -704,4 +704,10 @@ public class CommonWebAppSteps {
         String uniqUserName = uniqueUserName + rand.nextInt(5);
         context.getCommonSteps().UpdateUniqueUsername(userNameAlias, uniqUserName, deviceName);
     }
+
+    @Given("^User (.*) updates? the unique user name to random value(?: via device (.*))?")
+    public void UserXUpdateUniqueUserName(String userNameAlias, String deviceName) throws Exception {
+        String randomUniqueUsername = CommonUtils.generateGUID().replace("-", "").substring(0, 8);
+        context.getCommonSteps().UpdateUniqueUsername(userNameAlias, randomUniqueUsername, deviceName);
+    }
 }

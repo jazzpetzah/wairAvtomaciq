@@ -261,20 +261,19 @@ Feature: Usernames
   @C345365 @usernames @regression
   Scenario Outline: Verify new username is synched across the devices
     Given There are 2 users where <NameAlias> is me
-    #TODO
-    #Given I remember unique username of Me
-    Given user <NameAlias> adds a new device Device1 with label Label1
+    Given I remember unique username of Me
+    Given user Me adds a new device Device1 with label Label1
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
     When I see the history info page
     Then I click confirm on history info page
     And I am signed in properly
     And I open preferences by clicking the gear button
-    Then I see unique username is the remembered one in account preferences
-    When User Me changes his unique username to a random value
+    Then I see unique username for <NameAlias> in account preferences
+    When User Me updates the unique user name to random value via device Device1
     Then I do not see unique username is the remembered one in account preferences
-    #When I remember unique username of Me
-    Then I see unique username is the remembered one in account preferences
+    When I remember unique username of Me
+    #And I see unique username is the remembered one in account preferences
 
     Examples:
       | Email      | Password      | NameAlias |
