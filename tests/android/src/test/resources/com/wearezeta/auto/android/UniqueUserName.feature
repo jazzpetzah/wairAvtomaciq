@@ -422,3 +422,21 @@ Feature: Unique Username
       | Name      | A2Name           | A2Phone    | PhonePrefix | APhoneName | A3Name           | A3Phone    | AName     | ABName          | A4Name    | CF1       | A5Name    | GroupName | A4UName             |
       | user1Name | AutoconnectUser2 | 1722036230 | +49         | User123    | AutoconnectUser3 | 1622360109 | user2Name | user2CustomName | user3Name | user4Name | user5Name | group1    | user3UniqueUsername |
 
+
+  @C352687 @staging
+  Scenario Outline: Verify new username is synched across the devices
+    Given There are 1 users where <Name> is me without unique user name
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I tap Choose Your Own button on Unique Username Takeover page
+    Given I see unique username edit field on Settings page
+    Given I tap OK on Unique Username Settings page
+    Given I tap OK on Unique Username Settings page
+    Given User Myself adds a new device <Device1> with label <Device1>
+    When User Myself changes the unique username to "<UniqueUsername1>" via device <Device1>
+    Then I select "Username" settings menu item
+    And I see Unique Username "<UniqueUsername1>" in edit field on Settings page
+
+    Examples:
+      | Name      | Device1 | UniqueUsername1     |
+      | user1Name | Device1 | user1UniqueUsername |
