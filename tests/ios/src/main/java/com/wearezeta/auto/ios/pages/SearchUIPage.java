@@ -126,6 +126,10 @@ public class SearchUIPage extends IOSPage {
     public void tapButton(String name) throws Exception {
         final By locator = getButtonLocatorByName(name);
         getElement(locator).click();
+        if (locator.equals(fbNameXButton)) {
+            // Wait for animation
+            Thread.sleep(1500);
+        }
     }
 
     public boolean isButtonVisible(String name) throws Exception {
