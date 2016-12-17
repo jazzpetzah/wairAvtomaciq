@@ -272,8 +272,6 @@ Feature: Usernames
     Then I see unique username for <NameAlias> in account preferences
     When User Me updates the unique user name to random value via device Device1
     Then I do not see unique username is the remembered one in account preferences
-    When I remember unique username of Me
-    #And I see unique username is the remembered one in account preferences
 
     Examples:
       | Email      | Password      | NameAlias |
