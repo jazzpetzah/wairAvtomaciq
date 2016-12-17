@@ -63,11 +63,11 @@ Feature: Conversations list
     Given User <Contact1> sends encrypted message <Message> to user Myself
     # Wait for all messages are syned
     Given I wait for 10 seconds
-    And I scroll to the bottom of conversation view
-    And I see the most recent conversation message is "<Message>"
-    And I navigate back from conversation
-    And I swipe right on a <Contact1>
-    And I tap DELETE button on single Conversation option menu
+    Given I scroll to the bottom of conversation view
+    Given I see the most recent conversation message is "<Message>"
+    Given I navigate back from conversation
+    When I swipe right on a <Contact1>
+    And I tap DELETE button on Single conversation options menu
     And I tap DELETE on the confirm alert
     Then I see Conversations list with no conversations
     When I wait until <Contact1> exists in backend search results
@@ -116,7 +116,7 @@ Feature: Conversations list
     And I see the most recent conversation message is "<Message>"
     And I navigate back from conversation
     And I swipe right on a <GroupChatName>
-    And I tap DELETE button on group Conversation option menu
+    And I tap DELETE button on Group conversation options menu
     And I tap DELETE on the confirm alert
     Then I do not see Conversations list with name <GroupChatName>
     And I open Search UI
@@ -140,8 +140,8 @@ Feature: Conversations list
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
-    And I swipe right on a <GroupChatName>
-    And I tap DELETE button on group Conversation option menu
+    When I swipe right on a <GroupChatName>
+    And I tap DELETE button on Group conversation options menu
     And I tap the Leave check box
     And I tap DELETE on the confirm alert
     Then I do not see Conversations list with name <GroupChatName>
@@ -168,19 +168,19 @@ Feature: Conversations list
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I swipe right on a <GroupChatName>
-    And I tap DELETE button on group Conversation option menu
+    And I tap DELETE button on Group conversation options menu
     And I tap DELETE on the confirm alert
     Then I do not see Conversations list with name <GroupChatName>
     When User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
     Then I see Conversations list with name <GroupChatName>
     When I swipe right on a <GroupChatName>
-    And I tap DELETE button on group Conversation option menu
+    And I tap DELETE button on Group conversation options menu
     And I tap DELETE on the confirm alert
     Then I do not see Conversations list with name <GroupChatName>
     When User <Contact1> securely pings conversation <GroupChatName>
     Then I see Conversations list with name <GroupChatName>
     When I swipe right on a <GroupChatName>
-    And I tap DELETE button on group Conversation option menu
+    And I tap DELETE button on Group conversation options menu
     And I tap DELETE on the confirm alert
     Then I do not see Conversations list with name <GroupChatName>
     When <Contact1> calls <GroupChatName>
@@ -200,7 +200,7 @@ Feature: Conversations list
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     And I swipe right on a <Contact1>
-    And I tap MUTE button on single Conversation option menu
+    And I tap MUTE button on Single conversation options menu
     Then Conversation <Contact1> is muted
 
     Examples:
@@ -215,9 +215,9 @@ Feature: Conversations list
     Given <Contact1> is silenced to user <Name>
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
-    And Conversation <Contact1> is muted
-    And I swipe right on a <Contact1>
-    And I tap UNMUTE button on single Conversation option menu
+    Given Conversation <Contact1> is muted
+    When I swipe right on a <Contact1>
+    And I tap UNMUTE button on Single conversation options menu
     Then Conversation <Contact1> is not muted
 
     Examples:
@@ -233,7 +233,7 @@ Feature: Conversations list
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     And I swipe right on a <GroupChatName>
-    And I tap MUTE button on single Conversation option menu
+    And I tap MUTE button on Single conversation options menu
     Then Conversation <GroupChatName> is muted
 
     Examples:
@@ -251,7 +251,7 @@ Feature: Conversations list
     Given I see Conversations list with conversations
     And Conversation <GroupChatName> is muted
     And I swipe right on a <GroupChatName>
-    And I tap UNMUTE button on group Conversation option menu
+    And I tap UNMUTE button on Group conversation options menu
     Then Conversation <GroupChatName> is not muted
 
     Examples:
@@ -266,8 +266,8 @@ Feature: Conversations list
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I swipe right on a <Contact>
-    Then I see ARCHIVE button on single Conversation option menu
-    And I see BLOCK button on single Conversation option menu
+    Then I see ARCHIVE button on Single conversation options menu
+    And I see BLOCK button on Single conversation options menu
 
     Examples:
       | Name      | Contact   |
@@ -295,18 +295,18 @@ Feature: Conversations list
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I swipe right on a <Contact1>
-    Then I see MUTE button on single Conversation option menu
-    And I see ARCHIVE button on single Conversation option menu
-    And I see DELETE button on single Conversation option menu
-    And I see BLOCK button on single Conversation option menu
+    Then I see MUTE button on Single conversation options menu
+    And I see ARCHIVE button on Single conversation options menu
+    And I see DELETE button on Single conversation options menu
+    And I see BLOCK button on Single conversation options menu
     And I tap back button
     When I tap on conversation name <Contact1>
     And I tap conversation name from top toolbar
     And I tap open menu button on Single connected user details page
-    Then I see MUTE button on Conversation options menu overlay page
-    And I see ARCHIVE button on Conversation options menu overlay page
-    And I see DELETE button on Conversation options menu overlay page
-    And I see BLOCK button on Conversation options menu overlay page
+    Then I see MUTE button on Single conversation options menu
+    And I see ARCHIVE button on Single conversation options menu
+    And I see DELETE button on Single conversation options menu
+    And I see BLOCK button on Single conversation options menu
 
     Examples:
       | Name      | Contact1  |
@@ -321,19 +321,19 @@ Feature: Conversations list
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I swipe right on a <GroupChatName>
-    Then I see MUTE button on group Conversation option menu
-    And I see ARCHIVE button on group Conversation option menu
-    And I see DELETE button on group Conversation option menu
-    And I see LEAVE button on group Conversation option menu
+    Then I see MUTE button on Group conversation options menu
+    And I see ARCHIVE button on Group conversation options menu
+    And I see DELETE button on Group conversation options menu
+    And I see LEAVE button on Group conversation options menu
     And I tap back button
     When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     And I tap open menu button on Group info page
-    Then I see MUTE button on Conversation options menu overlay page
-    And I see RENAME button on Conversation options menu overlay page
-    And I see ARCHIVE button on Conversation options menu overlay page
-    And I see DELETE button on Conversation options menu overlay page
-    And I see LEAVE button on Conversation options menu overlay page
+    Then I see MUTE button on Group conversation options menu
+    And I see RENAME button on Group conversation options menu
+    And I see ARCHIVE button on Group conversation options menu
+    And I see DELETE button on Group conversation options menu
+    And I see LEAVE button on Group conversation options menu
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -349,7 +349,7 @@ Feature: Conversations list
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I swipe right on a <GroupChatName>
-    And I tap DELETE button on group Conversation option menu
+    And I tap DELETE button on Group conversation options menu
     Then I do not see the Leave check box
 
     Examples:
@@ -366,7 +366,7 @@ Feature: Conversations list
     When I short swipe right on a <Contact1>
     And I see three dots option menu button
     And I tap the three dots option menu button
-    Then I see MUTE button on single Conversation option menu
+    Then I see MUTE button on Single conversation options menu
 
     Examples:
       | Name      | Contact1  |

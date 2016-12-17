@@ -396,29 +396,47 @@ Feature: Unique Username
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I open options menu of <A4Name> on conversation list page
-    Then I see unique username "<A4UName>" on single Conversation option menu
-    And I see user info "in Address Book" on single Conversation option menu
+    Then I see unique username "<A4UName>" on Single conversation options menu
+    And I see user info "in Address Book" on Single conversation options menu
     And I tap back button
     When I open options menu of <AName> on conversation list page
-    And I see user info "<ABName> in Address Book" on single Conversation option menu
+    And I see user info "<ABName> in Address Book" on Single conversation options menu
     Then I tap back button
     When I open options menu of <A4Name> on conversation list page
-    Then I see user info "in Address Book" on single Conversation option menu
+    Then I see user info "in Address Book" on Single conversation options menu
     And I tap back button
     When I open options menu of <A2Name> on conversation list page
-    Then I see user info "<APhoneName> in Address Book" on single Conversation option menu
+    Then I see user info "<APhoneName> in Address Book" on Single conversation options menu
     And I tap back button
     When I open options menu of <A3Name> on conversation list page
-    Then I see user info "in Address Book" on single Conversation option menu
+    Then I see user info "in Address Book" on Single conversation options menu
     And I tap back button
     When I open options menu of <A5Name> on conversation list page
-    Then I do not see unique username on single Conversation option menu
-    And I see user info "1 person in common" on single Conversation option menu
+    Then I do not see unique username on Single conversation options menu
+    And I see user info "1 person in common" on Single conversation options menu
     When I open options menu of <GroupName> on conversation list page
-    Then I do not see unique username on group Conversation option menu
-    And I do not see user info on group Conversation option menu
+    Then I do not see unique username on Group conversation options menu
+    And I do not see user info on Group conversation options menu
 
     Examples:
       | Name      | A2Name           | A2Phone    | PhonePrefix | APhoneName | A3Name           | A3Phone    | AName     | ABName          | A4Name    | CF1       | A5Name    | GroupName | A4UName             |
       | user1Name | AutoconnectUser2 | 1722036230 | +49         | User123    | AutoconnectUser3 | 1622360109 | user2Name | user2CustomName | user3Name | user4Name | user5Name | group1    | user3UniqueUsername |
 
+
+  @C352687 @staging
+  Scenario Outline: Verify new username is synched across the devices
+    Given There are 1 users where <Name> is me without unique user name
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I tap Choose Your Own button on Unique Username Takeover page
+    Given I see unique username edit field on Settings page
+    Given I tap OK on Unique Username Settings page
+    Given I tap OK on Unique Username Settings page
+    Given User Myself adds a new device <Device1> with label <Device1>
+    When User Myself changes the unique username to "<UniqueUsername1>" via device <Device1>
+    Then I select "Username" settings menu item
+    And I see Unique Username "<UniqueUsername1>" in edit field on Settings page
+
+    Examples:
+      | Name      | Device1 | UniqueUsername1     |
+      | user1Name | Device1 | user1UniqueUsername |
