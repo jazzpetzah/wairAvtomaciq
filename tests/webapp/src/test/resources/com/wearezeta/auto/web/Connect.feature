@@ -602,8 +602,7 @@ Feature: Connect
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
-#    Wait for Graph generation
-    When I wait for 75 seconds
+    Given I wait until <Contact2> has 1 common friends on the backend
     And I sent connection request to <Contact2>
     And I open conversation with <Contact2>
     Then I see conversation with <Contact2> is selected in conversations list
