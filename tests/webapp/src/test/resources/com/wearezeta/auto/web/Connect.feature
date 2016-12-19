@@ -16,6 +16,7 @@ Feature: Connect
     Then I see unique username in connection request from user <Contact>
     And I accept connection request from user <Contact>
     Then I see Contact list with name <Contact>
+    And I see unique username of <Contact> in conversation
     When I write message <Message>
     And I send message
     Then I see text message <Message>
