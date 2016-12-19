@@ -298,7 +298,7 @@ Feature: Usernames
       | user1Email | user1Password | user1Name | 😼      |
       | user1Email | user1Password | user1Name | 明麗    |
 
-  @C352245 @usernames @staging
+  @C352245 @usernames @regression
   Scenario Outline: Verify autogeneration of a username works for a user with a blacklisted name
     Given There are 1 users where <NameAlias> is me without unique username
     Given User <NameAlias> changes name to <Name>
