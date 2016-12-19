@@ -594,7 +594,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact1  | Contact2  | ConvOption1 | ConvOption2    | ConvOption3 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | Archive     | Cancel request | Block       |
 
-  @C352248 @staging
+  @C352248 @regression
   Scenario Outline: Verify number of common friends is shown on the outgoing connection request
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
