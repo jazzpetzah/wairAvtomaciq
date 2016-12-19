@@ -40,12 +40,24 @@ public class LocalyticsSteps {
         }
     }
 
+    @Then("^I( do not)? see localytics event (.*) without attributes$")
+    public void ISeeLocalyticsEvent(String doNot, String event) throws Exception {
+        if (WebAppExecutionContext.getBrowser().isSupportingConsoleLogManagement()) {
+            List<String> localyticsEvents = this.getLoggedEvents("localytics");
+            if (doNot == null) {
+                assertThat("Did not find localytics event " + event + " in browser console", localyticsEvents,
+                        hasItem("Localytics event '" + event + "' without attributes\""));
+            } else {
+                assertThat("Found localytics event " + event + " in browser console", localyticsEvents,
+                        not(hasItem("Localytics event '" + event + "' without attributes\"")));
+            }
+        }
+    }
+
     @Then("^I( do not)? see localytics event (.*) with attributes (.*)$")
     public void ISeeLocalyticsEvent(String doNot, String event, String attributes) throws Exception {
         if (WebAppExecutionContext.getBrowser().isSupportingConsoleLogManagement()) {
             List<String> localyticsEvents = this.getLoggedEvents("localytics");
-            assertThat("Did not find any localytics events in browser console", not(localyticsEvents.isEmpty()));
-
             if (doNot == null) {
                 assertThat("Did not find localytics event " + event + " in browser console", localyticsEvents,
                         hasItem("Localytics event '" + event + "' with attributes: " + attributes));

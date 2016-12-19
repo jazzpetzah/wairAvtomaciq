@@ -5,22 +5,25 @@ Feature: Usernames
     Given There are 2 users where <NameAlias> is me without unique username
     Given User <NameAlias> changes name to <Name>
     Given Myself is connected to <Contact>
+    Given I enable localytics via URL parameter
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
     Then I see watermark
     And I see take over screen
     And I see name <NameAlias> on take over screen
     And I see unique username starts with <Username> on take over screen
+    And I see localytics event <Event1> without attributes
     And I see ChooseYourOwn button on take over screen
     And I see TakeThisOne button on take over screen
     When I click TakeThisOne button on take over screen
     Then I see conversation with <Contact> is selected in conversations list
+    And I see localytics event <Event2> with attributes <Attributes2>
     When I open preferences by clicking the gear button
     Then I see unique username starts with <Username> in account preferences
 
     Examples:
-      | Email      | Password      | NameAlias | Name         | Contact   | Username    |
-      | user1Email | user1Password | user1Name | Jack Johnson | user2Name | jackjohnson |
+      | Email      | Password      | NameAlias | Name         | Contact   | Username    | Event1                          | Event2                             | Attributes2                |
+      | user1Email | user1Password | user1Name | Jack Johnson | user2Name | jackjohnson | onboarding.seen_username_screen | onboarding.kept_generated_username | {\"outcome\":\"success\"}" |
 
   @C343172 @usernames @regression @useSpecialEmail
   Scenario Outline: Verify new user has a take over screen with offered username
@@ -114,6 +117,7 @@ Feature: Usernames
   Scenario Outline: Verify Settings are opened on choosing generating your own username for existing user
     Given There are 2 users where <NameAlias> is me without unique username
     Given User <NameAlias> changes name to <Name>
+    Given I enable localytics via URL parameter
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
     Then I see watermark
@@ -122,10 +126,11 @@ Feature: Usernames
     And I see unique username starts with <Username> on take over screen
     When I click ChooseYourOwn button on take over screen
     Then I see unique username starts with <Username> in account preferences
+    And I see localytics event <Event> without attributes
 
     Examples:
-      | Email      | Password      | NameAlias | Name         | Username    |
-      | user1Email | user1Password | user1Name | Jack Johnson | jackjohnson |
+      | Email      | Password      | NameAlias | Name         | Username    | Event                               |
+      | user1Email | user1Password | user1Name | Jack Johnson | jackjohnson | onboarding.opened_username_settings |
 
   @C343177 @usernames @regression
   Scenario Outline: Verifying impossibility to set username with less than 2 characters
