@@ -272,9 +272,9 @@ public class CallingSteps {
             pagesCollection.getPage(ConversationViewPage.class).tapAudioCallButton();
             LOG.info("Pressing Audio button to start call");
 
-//            if (callIndex == 0) {
-                pagesCollection.getCommonPage().acceptAlertIfVisible();
-//            }
+            if (callIndex == 0) {
+                pagesCollection.getCommonPage().acceptAlert();
+            }
 
             commonCallingSteps.acceptNextCall(calleeList);
             commonCallingSteps.verifyAcceptingCallStatus(calleeList, CALL_STATUS_ACTIVE, 20);
@@ -474,9 +474,9 @@ public class CallingSteps {
             }
             LOG.info("Audio Call Kit overlay is visible");
             pagesCollection.getPage(CallKitOverlayPage.class).tapButton(CALLKIT_ACCEPT_BUTTON);
-//            if (callIndex == 0) {
-                pagesCollection.getCommonPage().acceptAlertIfVisible();
-//            }
+            if (callIndex == 0) {
+                pagesCollection.getCommonPage().acceptAlert();
+            }
 
             commonCallingSteps.verifyCallingStatus(calleeList, conversationName, CALL_STATUS_ACTIVE, 20);
             LOG.info("All instances are active");
