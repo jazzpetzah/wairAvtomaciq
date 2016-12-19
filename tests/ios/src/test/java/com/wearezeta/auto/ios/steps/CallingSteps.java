@@ -245,12 +245,12 @@ public class CallingSteps {
             makeSingleCall(callees, i, callDurationMinutes, failures, callsWithoutMetricsData, callsWithoutByteFlowData);
         }
 
-        int avgCallSetupTime = calculateCallStatistics(arrayCallSetupTime, times,failures,callsWithoutMetricsData);
-        int avgCallEstabTime = calculateCallStatistics(arrayCallEstabTime, times,failures,callsWithoutMetricsData);
+        int avgCallSetupTime = calculateCallStatistics(arrayCallSetupTime, times, failures, callsWithoutMetricsData);
+        int avgCallEstabTime = calculateCallStatistics(arrayCallEstabTime, times, failures, callsWithoutMetricsData);
         createCallingReport(times, failures, callsWithoutMetricsData, callsWithoutByteFlowData, avgCallSetupTime, avgCallEstabTime, CallLoopType.Make);
 
         failures.forEach((Integer i, Throwable t) -> {
-            LOG.error(String.format("Failure %s: %s",i,t.getMessage()));
+            LOG.error(String.format("Failure %s: %s", i, t.getMessage()));
         });
 
         if (!failures.isEmpty()) {
@@ -272,9 +272,9 @@ public class CallingSteps {
             pagesCollection.getPage(ConversationViewPage.class).tapAudioCallButton();
             LOG.info("Pressing Audio button to start call");
 
-            if (callIndex == 0) {
-                pagesCollection.getCommonPage().acceptAlert();
-            }
+//            if (callIndex == 0) {
+                pagesCollection.getCommonPage().acceptAlertIfVisible();
+//            }
 
             commonCallingSteps.acceptNextCall(calleeList);
             commonCallingSteps.verifyAcceptingCallStatus(calleeList, CALL_STATUS_ACTIVE, 20);
@@ -302,9 +302,9 @@ public class CallingSteps {
                     LOG.info("Could not get metrics for this call.");
                     callsWithoutMetricsData.add(callIndex);
                 } else {
-                    final int avgRateU = (int) metrics.getAvgRateU();
-                    final int avgRateD = (int) metrics.getAvgRateD();
-                    if (avgRateU == -1 || avgRateD == -1) {
+                    final long avgRateU = metrics.getAvgRateU();
+                    final long avgRateD = metrics.getAvgRateD();
+                    if (avgRateU < 0 || avgRateD < 0) {
                         callsWithoutByteFlowData.add(callIndex);
                     }
                     arrayCallSetupTime.add(((int) metrics.getSetupTime()));
@@ -320,7 +320,9 @@ public class CallingSteps {
             LOG.info(String.format("CALL %s FAILED", callIndex));
             LOG.error(String.format("Can not stop waiting call %s because %s", callIndex, t.getMessage()));
             try {
-                pagesCollection.getPage(CallingOverlayPage.class).tapButtonByName(CALLINGOVERLAY_LEAVE_BUTTON);
+                if (pagesCollection.getPage(CallingOverlayPage.class).isButtonVisible(CALLINGOVERLAY_LEAVE_BUTTON)) {
+                    pagesCollection.getPage(CallingOverlayPage.class).tapButtonByName(CALLINGOVERLAY_LEAVE_BUTTON);
+                }
             } catch (Exception ex) {
                 LOG.error(String.format("Can not stop call kit %s because %s", callIndex, ex));
                 try {
@@ -365,22 +367,22 @@ public class CallingSteps {
             receiveSingleCall(callees, i, appState, conversationName, callDurationMinutes, failures, callsWithoutMetricsData, callsWithoutByteFlowData);
         }
 
-        int avgCallSetupTime = calculateCallStatistics(arrayCallSetupTime, times,failures,callsWithoutMetricsData);
-        int avgCallEstabTime = calculateCallStatistics(arrayCallEstabTime, times,failures,callsWithoutMetricsData);
+        int avgCallSetupTime = calculateCallStatistics(arrayCallSetupTime, times, failures, callsWithoutMetricsData);
+        int avgCallEstabTime = calculateCallStatistics(arrayCallEstabTime, times, failures, callsWithoutMetricsData);
         createCallingReport(times, failures, callsWithoutMetricsData, callsWithoutByteFlowData, avgCallSetupTime, avgCallEstabTime, CallLoopType.Receive);
 
         failures.forEach((Integer i, Throwable t) -> {
-            LOG.error(String.format("Failure %s: %s",i,t.getMessage()));
+            LOG.error(String.format("Failure %s: %s", i, t.getMessage()));
         });
         if (!failures.isEmpty()) {
             Assert.fail(formatFailuresList(failures));
         }
     }
 
-    private int calculateCallStatistics(List<Integer> arrayCallStatisticTime, int numberOfCalls,
+    private int calculateCallStatistics(List<Integer> callStatisticTime, int numberOfCalls,
                                         final Map<Integer, Exception> failures,
-                                        List<Integer> callsWithoutMetricsData){
-        int sumCallStatisticTime = arrayCallStatisticTime.stream().reduce(0, Integer::sum);
+                                        List<Integer> callsWithoutMetricsData) {
+        int sumCallStatisticTime = callStatisticTime.stream().reduce(0, Integer::sum);
         int avgCallStatistic = 0;
         int successfulCallsCount = numberOfCalls - failures.size() - callsWithoutMetricsData.size();
         if (successfulCallsCount > 0) {
@@ -393,6 +395,7 @@ public class CallingSteps {
         Receive("RECEIVE"), Make("MAKE");
 
         private final String name;
+
         CallLoopType(String name) {
             this.name = name;
         }
@@ -405,6 +408,7 @@ public class CallingSteps {
 
     // this file is needed to report the call stats via jenkins into a read only chat
     private static final String CALL_STATS_FILENAME = "multi_call_result.txt";
+    private static final String CALL_STATS_JENKINS_ENV_VARIABLE = "MULTI_CALL_RESULT";
 
     private void createCallingReport(int timesOfCalls, final Map<Integer, Exception> failures,
                                      final List<Integer> callsWithoutMetricsData, final List<Integer> callsWithoutByteFlowData,
@@ -418,7 +422,7 @@ public class CallingSteps {
                 callsWithoutByteFlowData.size(), timesOfCalls);
         LOG.info(message);
 
-        final String reportContent = String.format("%s=%s", "MULTI_CALL_RESULT", message);
+        final String reportContent = String.format("%s=%s", CALL_STATS_JENKINS_ENV_VARIABLE, message);
         Files.write(Paths.get(CommonUtils.getBuildPathFromConfig(CallingSteps.class), CALL_STATS_FILENAME),
                 reportContent.getBytes());
     }
@@ -470,9 +474,9 @@ public class CallingSteps {
             }
             LOG.info("Audio Call Kit overlay is visible");
             pagesCollection.getPage(CallKitOverlayPage.class).tapButton(CALLKIT_ACCEPT_BUTTON);
-            if (callIndex == 0) {
-                pagesCollection.getCommonPage().acceptAlert();
-            }
+//            if (callIndex == 0) {
+                pagesCollection.getCommonPage().acceptAlertIfVisible();
+//            }
 
             commonCallingSteps.verifyCallingStatus(calleeList, conversationName, CALL_STATUS_ACTIVE, 20);
             LOG.info("All instances are active");
@@ -494,9 +498,9 @@ public class CallingSteps {
                     callsWithoutMetricsData.add(callIndex);
                     continue;
                 }
-                final int avgRateU = (int) metrics.getAvgRateU();
-                final int avgRateD = (int) metrics.getAvgRateD();
-                if (avgRateU == -1 || avgRateD == -1) {
+                final long avgRateU = metrics.getAvgRateU();
+                final long avgRateD = metrics.getAvgRateD();
+                if (avgRateU < 0 || avgRateD < 0) {
                     callsWithoutByteFlowData.add(callIndex);
                 }
                 arrayCallSetupTime.add(((int) metrics.getSetupTime()));
@@ -510,11 +514,15 @@ public class CallingSteps {
         } catch (Exception t) {
             LOG.info(String.format("CALL %s FAILED", callIndex));
             try {
-                pagesCollection.getPage(CallingOverlayPage.class).tapButtonByName(CALLINGOVERLAY_LEAVE_BUTTON);
+                if (pagesCollection.getPage(CallingOverlayPage.class).isButtonVisible(CALLINGOVERLAY_LEAVE_BUTTON)) {
+                    pagesCollection.getPage(CallingOverlayPage.class).tapButtonByName(CALLINGOVERLAY_LEAVE_BUTTON);
+                }
             } catch (Exception ex) {
                 LOG.error(String.format("Can not stop call %s because %s", callIndex, ex));
                 try {
-                    pagesCollection.getPage(CallKitOverlayPage.class).tapButton(CALLKIT_DECLINE_BUTTON);
+                    if (pagesCollection.getPage(CallKitOverlayPage.class).isButtonVisible(CALLKIT_DECLINE_BUTTON)) {
+                        pagesCollection.getPage(CallKitOverlayPage.class).tapButton(CALLKIT_DECLINE_BUTTON);
+                    }
                 } catch (Exception exe) {
                     LOG.error(String.format("Can not stop call kit %s because %s", callIndex, exe));
                     try {
