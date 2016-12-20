@@ -237,7 +237,6 @@ Feature: Unique Usernames
     Then I see Save button state is Disabled on Unique Username page
     And I see "<ExpectedText>" error label on Unique Username page
     When I enter "<ReservedUniqueUsername>" name on Unique Username page
-    And I see Save button state is Enabled on Unique Username page
     And I tap Save button on Unique Username page
     Then I see alert contains text <ReservedText>
 
