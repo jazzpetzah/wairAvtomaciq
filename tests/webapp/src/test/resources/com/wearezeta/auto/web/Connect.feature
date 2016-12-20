@@ -612,7 +612,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @C1815 @staging @torun
+  @C1815 @staging
   Scenario Outline: Verify number of common friends is shown on the incoming connection request
     Given There are 11 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>

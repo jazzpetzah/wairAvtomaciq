@@ -703,7 +703,7 @@ public final class WebAppLocators {
                         uid);
 
         public static final Function<String, String> cssCommonFriendsById = uid -> String
-                .format("[data-uie-name='connect-request'][data-uie-uid='%s'] user-avatar",
+                .format("[data-uie-name='connect-request'][data-uie-uid='%s'] common-contacts",
                         uid);
     }
 
