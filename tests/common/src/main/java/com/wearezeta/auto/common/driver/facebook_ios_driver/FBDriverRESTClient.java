@@ -229,7 +229,6 @@ final class FBDriverRESTClient {
     }
 
     public JSONObject doubleTap(String sessionId, double x, double y) throws RESTError {
-        // TODO: available since Appium 1.6.1+
         final Builder webResource = buildDefaultRequest("doubleTap", sessionId);
         final JSONObject body = new JSONObject();
         body.put("x", x);

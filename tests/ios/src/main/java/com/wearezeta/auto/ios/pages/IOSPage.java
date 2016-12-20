@@ -812,12 +812,6 @@ public abstract class IOSPage extends BasePage {
         getElement(locator).click();
     }
 
-    /**
-     * fixes taking tablet simulator screenshots via simshot
-     *
-     * @return Optinal screenshot image
-     * @throws Exception
-     */
     @Override
     public Optional<BufferedImage> takeScreenshot() throws Exception {
         Optional<BufferedImage> screenshotImage = super.takeScreenshot();

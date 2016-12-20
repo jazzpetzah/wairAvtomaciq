@@ -1,5 +1,6 @@
 package com.wearezeta.auto.common;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -13,6 +14,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.DefaultElementLocatorFactory;
@@ -81,9 +84,17 @@ public abstract class BasePage {
         if (screenshot.isPresent()) {
             return Optional.of(screenshot.get().getSubimage(
                     elementLocation.x, elementLocation.y, elementSize.width, elementSize.height));
-        } else {
-            return Optional.empty();
         }
+        return Optional.empty();
+    }
+
+    public Optional<BufferedImage> getElementScreenshot(Rectangle elementRect) throws Exception {
+        final Optional<BufferedImage> screenshot = takeScreenshot();
+        if (screenshot.isPresent()) {
+            return Optional.of(screenshot.get().getSubimage(
+                    elementRect.x, elementRect.y, elementRect.width, elementRect.height));
+        }
+        return Optional.empty();
     }
 
     protected List<WebElement> getElements(By locator) throws Exception {
@@ -135,7 +146,6 @@ public abstract class BasePage {
     }
 
     /**
-     *
      * @deprecated use pagesCollection.clearAllPages() instead
      */
     @Deprecated
