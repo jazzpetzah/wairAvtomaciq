@@ -614,7 +614,7 @@ Feature: Unique Usernames
       | Name      | UniqueUsername      | NewUniqueUsername   | DeviceName |
       | user1Name | user1UniqueUsername | user3UniqueUsername | Device1    |
 
-  @C352032 @staging @fastLogin
+  @C352032 @regression @fastLogin
   Scenario Outline: Verify autogeneration of a username for a user with emoji in a name
     Given There is 1 user
     Given User <NameAlias> is me
