@@ -47,7 +47,7 @@ public class SettingsPage extends IOSPage {
             String.format("%s/XCUIElementTypeCell[%s]", xpathStrColorPicker, idx);
 
     private static final Function<String, String> xpathStrUniqueUsernameInSettings = name ->
-            String.format("//XCUIElementTypeStaticText[@name='@%s']", name);
+            String.format("//XCUIElementTypeStaticText[@name='%s']", name.startsWith("@") ? name : "@" + name);
 
     public SettingsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
