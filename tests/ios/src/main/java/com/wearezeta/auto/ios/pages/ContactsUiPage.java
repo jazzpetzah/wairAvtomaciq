@@ -66,7 +66,7 @@ public class ContactsUiPage extends IOSPage {
         getElement(locator).click();
         if (locator.equals(nameXButton)) {
             // Wait for animation
-            Thread.sleep(1500);
+            Thread.sleep(2000);
         }
     }
 
