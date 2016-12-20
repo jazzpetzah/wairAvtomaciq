@@ -701,6 +701,10 @@ public final class WebAppLocators {
         public static final Function<String, String> cssKnownConnectionOthersTextById = uid -> String
                 .format("[data-uie-name='connect-request'][data-uie-uid='%s'] [data-uie-value='others']",
                         uid);
+
+        public static final Function<String, String> cssCommonFriendsById = uid -> String
+                .format("[data-uie-name='connect-request'][data-uie-uid='%s'] common-contacts",
+                        uid);
     }
 
     public static final class OutgoingRequestPage {
