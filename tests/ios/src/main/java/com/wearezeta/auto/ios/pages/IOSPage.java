@@ -383,13 +383,6 @@ public abstract class IOSPage extends BasePage {
     }
 
     protected void doubleTapAt(Optional<FBElement> el, int percentX, int percentY) throws Exception {
-        if (getDriver().getOrientation() == ScreenOrientation.LANDSCAPE) {
-            // FIXME: Remove the workaround after landscape orientation is respected by XCTest
-            if (el.isPresent()) {
-                el.get().doubleTap();
-                return;
-            }
-        }
         final Point tapPoint = calculateTapCoordinates(el, percentX, percentY);
         getDriver().doubleTapScreenAt(tapPoint.getX(), tapPoint.getY());
     }
@@ -400,13 +393,6 @@ public abstract class IOSPage extends BasePage {
 
     protected void longTapAt(Optional<FBElement> el, int percentX, int percentY, double durationSeconds)
             throws Exception {
-        if (getDriver().getOrientation() == ScreenOrientation.LANDSCAPE) {
-            // FIXME: Remove the workaround after landscape orientation is respected by XCTest
-            if (el.isPresent()) {
-                el.get().longTap();
-                return;
-            }
-        }
         final Point tapPoint = calculateTapCoordinates(el, percentX, percentY);
         getDriver().longTapScreenAt(tapPoint.getX(), tapPoint.getY(), durationSeconds);
     }
