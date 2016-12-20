@@ -343,19 +343,10 @@ Feature: Ephemeral Messages
     And I do not see Like badge item
     And I do not see Copy badge item
     And I do not see Forward badge item
-    When User <Contact> sends encrypted message "<Message2>" to user Myself
-    # Wait for sync
-    And I wait for 3 seconds
-    And I long tap "<Message2>" message in conversation view
-    Then I do not see Edit badge item
-    And I do not see Delete badge item
-    And I do not see Like badge item
-    And I do not see Copy badge item
-    And I do not see Forward badge item
 
     Examples:
-      | Name      | Contact   | Message1    | Message2    | DeviceName | DeviceLabel | EphemeralTimeout |
-      | user1Name | user2Name | message one | message two | ContactDev | DevLabel    | 15               |
+      | Name      | Contact   | Message1    | DeviceName | DeviceLabel | EphemeralTimeout |
+      | user1Name | user2Name | message one | ContactDev | DevLabel    | 15               |
 
   @C259587 @rc @regression @fastLogin
   Scenario Outline: Verify ephemeral messages are not sent to my other devices
