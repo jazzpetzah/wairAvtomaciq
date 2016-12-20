@@ -81,7 +81,7 @@ public class UniqueUsernameTakeoverPage extends IOSPage {
         return isLocatorInvisible(locator);
     }
 
-    private String getUniqueNameValue() throws Exception {
+    public String getUniqueNameValue() throws Exception {
         final By locator = By.xpath(xpathStrUniqueNameLabel);
         return getElement(locator).getText();
     }
