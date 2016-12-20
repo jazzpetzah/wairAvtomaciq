@@ -611,3 +611,36 @@ Feature: Connect
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
+
+  @C1815 @staging @torun
+  Scenario Outline: Verify number of common friends is shown on the incoming connection request
+    Given There are 11 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
+    Given <UnknownContact1>, <UnknownContact2>, <UnknownContact3>, <UnknownContact4>, <UnknownContact5> have unique username
+    Given <UnknownContact1> is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
+    Given <UnknownContact2> is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <UnknownContact3> is connected to <Contact1>,<Contact2>,<Contact3>
+    Given <UnknownContact4> is connected to <Contact1>,<Contact2>
+    Given <UnknownContact5> is connected to <Contact1>
+    Given <UnknownContact1> sent connection request to me
+    Given <UnknownContact2> sent connection request to me
+    Given <UnknownContact3> sent connection request to me
+    Given <UnknownContact4> sent connection request to me
+    Given <UnknownContact5> sent connection request to me
+ # We need to wait for the backend
+    Given I wait until <UnknownContact1> has 5 common friends on the backend
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    Then I see connection request from 5 user
+    When I open the list of incoming connection requests
+    And I see 5 common friends in connection request from user <UnknownContact1>
+    And I see 4 common friends in connection request from user <UnknownContact2>
+    And I see 3 common friends in connection request from user <UnknownContact3>
+    And I see 2 common friends in connection request from user <UnknownContact4>
+    And I see 1 common friend in connection request from user <UnknownContact5>
+
+    Examples:
+      | Login      | Password      | Name      | UnknownContact1 | UnknownContact2 | UnknownContact3 | UnknownContact4 | UnknownContact5 | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  |
+      | user1Email | user1Password | user1Name | user2Name       | user3Name       | user4Name       | user5Name       | user6Name       | user7Name | user8Name | user9Name | user10Name | user11Name |
+
