@@ -709,7 +709,7 @@ public final class WebAppLocators {
 
         public static final String cssCancelRequestButton = "#" + idConversation + " [data-uie-name='do-cancel-request']";
 
-        public static final String cssUniqueUsernameOutgoing = ".username.popover-meta.label-username";
+        public static final String cssUniqueUsernameOutgoing = ".message-connected-username.label-username";
 
         public static final String cssCommonFriends = ".message-connected-contacts";
 
