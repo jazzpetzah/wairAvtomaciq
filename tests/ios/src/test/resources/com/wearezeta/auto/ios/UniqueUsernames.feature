@@ -365,7 +365,7 @@ Feature: Unique Usernames
       | Name                         | Details                                                      |
       | <Contact7WoCF>               |                                                              |
       | <Contact4WithCommonFriends>  |                                                              |
-      | <Contact1WithABEmail>        | @<Contact1UniqueUsername> - <Contact1ABName> in Address Book |
+      | <Contact1WithABEmail>        | @<Contact1UniqueUsername> · <Contact1ABName> in Address Book |
       | <Contact2WithABPhoneNumber>  | <Contact2ABName> in Address Book                             |
       | <Contact3WithUniqueUserName> | @<Contact3UniqueUserName>                                    |
       | <Contact5WithSameNameInAB>   | in Address Book                                              |
@@ -428,7 +428,7 @@ Feature: Unique Usernames
     Then I verify correct details are shown for the found users
       | Name                         | Details                                                      |
       | <Contact7WoCF>               |                                                              |
-      | <Contact1WithABEmail>        | @<Contact1UniqueUsername> - <Contact1ABName> in Address Book |
+      | <Contact1WithABEmail>        | @<Contact1UniqueUsername> · <Contact1ABName> in Address Book |
       | <Contact2WithABPhoneNumber>  | <Contact2ABName> in Address Book                             |
       | <Contact3WithUniqueUserName> | @<Contact3UniqueUserName>                                    |
       | <Contact4WithCommonFriends>  | 1 person in common                                           |
@@ -540,12 +540,10 @@ Feature: Unique Usernames
     Given I wait until <Contact> exists in backend search results
     Given I wait until <Contact> has 2 common friends on the backend
     Given I open search UI
-    Given I dismiss alert if visible
-    # Let it match the AB
-    When I wait for 10 seconds
+    When I dismiss alert if visible
     Then I verify correct details are shown for the found users
       | Name      | Details                                       |
-      | <Contact> | @<ContactUniqueUserName> - 2 people in common |
+      | <Contact> | @<ContactUniqueUserName> · 2 people in common |
 
     Examples:
       | Name      | Contact   | ContactUniqueUserName | Contact2  | Contact3  |
