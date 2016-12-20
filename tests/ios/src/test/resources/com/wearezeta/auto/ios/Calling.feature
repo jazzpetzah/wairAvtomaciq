@@ -539,7 +539,7 @@ Feature: Calling
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email
     Given I see conversations list
-    And <Contact> calls to me in Background 10 times for 1 minute
+    And <Contact> calls to me in Background 50 times for 1 minute
 
     Examples:
       | Name      | Contact   | CallBackend  |
