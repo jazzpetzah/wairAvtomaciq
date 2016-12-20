@@ -223,7 +223,7 @@ Feature: Unique Usernames
       | user1Name | 8             |
 
   @C352042 @regression @fastLogin
-  Scenario Outline: Verify username is unique
+  Scenario Outline: Verify username is unique and not a reserved name
     Given There are 2 users
     Given User <Name> is me
     Given User <Contact> changes the unique username to "<MyUniqueUsername>"
@@ -236,10 +236,14 @@ Feature: Unique Usernames
     And I enter "<MyUniqueUsername>" name on Unique Username page
     Then I see Save button state is Disabled on Unique Username page
     And I see "<ExpectedText>" error label on Unique Username page
+    When I enter "<ReservedUniqueUsername>" name on Unique Username page
+    And I see Save button state is Enabled on Unique Username page
+    And I tap Save button on Unique Username page
+    Then I see alert contains text <ReservedText>
 
     Examples:
-      | Name      | MyUniqueUsername    | Contact   | ExpectedText  |
-      | user1Name | user1UniqueUsername | user2Name | Already taken |
+      | Name      | MyUniqueUsername    | Contact   | ExpectedText  | ReservedUniqueUsername | ReservedText           |
+      | user1Name | user1UniqueUsername | user2Name | Already taken | admin                  | Unable to set username |
 
   @C352058 @addressbookStart @forceReset @regression
   Scenario Outline: Verify 1-to-1 conversation details
