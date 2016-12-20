@@ -1030,19 +1030,6 @@ public class CommonIOSSteps {
         commonSteps.WaitUntilCommonContactsIsGenerated(userAsAlias, query, expectedFriendsCount);
     }
 
-    /**
-     * Waits until user becomes first search result
-     *
-     * @param searchByNameAlias user to search for
-     * @param query             to send to the BE
-     * @throws Exception
-     * @step. ^(\w+) waits? until (.*) is first search result on backend$
-     */
-    @Given("^(\\w+) waits? until (.*) is first search result on backend$")
-    public void UserWaitsUntilContactIsFirstSearchResult(String searchByNameAlias, String query) throws Exception {
-        commonSteps.WaitUntilContactIsSuggestedInSearchResult(searchByNameAlias, query);
-    }
-
     @Given("^User (.*) sends (encrypted )?image (.*) to (single user|group) conversation (.*)")
     public void ContactSendImageToConversation(String imageSenderUserNameAlias,
                                                String isEncrypted,
