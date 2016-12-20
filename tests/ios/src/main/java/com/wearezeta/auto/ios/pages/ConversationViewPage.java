@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -400,8 +401,9 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     }
 
     public BufferedImage getAssetContainerStateScreenshot(int index) throws Exception {
-        final By locator = By.xpath(xpathStrAssetContainerByIndex.apply(index));
-        final BufferedImage containerScreen = this.getElementScreenshot(getElement(locator)).orElseThrow(() ->
+        final By locator = FBBy.xpath(xpathStrAssetContainerByIndex.apply(index));
+        final Rectangle elementRect = ((FBElement)getElement(locator)).getRect();
+        final BufferedImage containerScreen = this.getElementScreenshot(elementRect).orElseThrow(() ->
                 new IllegalStateException("Cannot take a screenshot of asset container"));
         //javax.imageio.ImageIO.write(containerScreen, "png", new java.io.File("/Users/guest/Desktop/" + System.currentTimeMillis() + ".png"));
         return containerScreen;
@@ -594,7 +596,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
         final int tapPercentX = 8;
         final int tapPercentY = 50;
         if (isDoubleTap) {
-            this.doubleTapAt(el, tapPercentX, tapPercentY);
+            el.doubleTap();
         } else if (isLongTap) {
             this.longTapAt(el, tapPercentX, tapPercentY);
         } else {
