@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
+import com.wearezeta.auto.common.log.ZetaLogger;
 import java.util.List;
 
 import com.wearezeta.auto.web.pages.ConversationPage;
@@ -15,12 +16,15 @@ import com.wearezeta.auto.web.pages.popovers.BringYourFriendsPopoverPage;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.apache.log4j.Logger;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class StartUIPageSteps {
+    
+    private static final Logger LOG = ZetaLogger.getLog(StartUIPageSteps.class.getSimpleName());
 
     private final TestContext context;
 
@@ -92,10 +96,10 @@ public class StartUIPageSteps {
     }
 
     @When("^I( do not)? see user (.*) found in People Picker$")
-    public void ISeeUserFoundInStartUI(String donot, String name)
-            throws Exception {
-        name = context.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-
+    public void ISeeUserFoundInStartUI(String donot, String name) throws Exception {
+        LOG.debug("NAME: "+name);
+        name = context.getUserManager().findUserByNameOrNameAlias(name).getName();
+        LOG.debug("MODIFIED NAME: "+name);
         if (donot == null) {
             Assert.assertTrue(context.getPagesCollection().getPage(StartUIPage.class).isUserFound(name));
         } else {
@@ -112,6 +116,16 @@ public class StartUIPageSteps {
             Assert.assertTrue(context.getPagesCollection().getPage(StartUIPage.class).isUserFound(name, uniqueUsername));
         } else {
             Assert.assertTrue(context.getPagesCollection().getPage(StartUIPage.class).isUserNotFound(name, uniqueUsername));
+        }
+    }
+    
+    @When("^I( do not)? see user (.*) with (\\d+) common friends found in People Picker$")
+    public void ISeeUserFoundWithFriendsInStartUI(String donot, String name, int friends) throws Exception {
+        name = context.getUserManager().findUserByNameOrNameAlias(name).getName();
+        if (donot == null) {
+            Assert.assertTrue(context.getPagesCollection().getPage(StartUIPage.class).isUserFound(name, friends));
+        } else {
+            Assert.assertTrue(context.getPagesCollection().getPage(StartUIPage.class).isUserNotFound(name, friends));
         }
     }
 
@@ -135,9 +149,8 @@ public class StartUIPageSteps {
     }
 
     @When("^I click on (not connected|pending) user (.*) found in People Picker$")
-    public void IClickNotConnecteUserFoundInStartUI(String userType,
-            String name) throws Exception {
-        name = context.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+    public void IClickNotConnecteUserFoundInStartUI(String userType, String name) throws Exception {
+        name = context.getUserManager().findUserByNameOrNameAlias(name).getName();
         if (userType.equalsIgnoreCase("not connected")) {
             context.getPagesCollection().getPage(StartUIPage.class)
                     .clickNotConnectedUserName(name);

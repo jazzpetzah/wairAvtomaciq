@@ -80,6 +80,11 @@ public class StartUIPage extends WebPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
                 By.xpath(foundUserXpath));
     }
+    
+    public boolean isUserFound(String name, int friends) throws Exception {
+        String xpath = String.format(WebAppLocators.StartUIPage.xpathSearchResultByNameAndFriends, name, friends);
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.xpath(xpath));
+    }
 
     public boolean isUserFound(String name, String username) throws Exception {
         String xpath = String.format(WebAppLocators.StartUIPage.xpathSearchResultByNameAndUniqueUsername, name, username);
@@ -95,6 +100,11 @@ public class StartUIPage extends WebPage {
 
     public boolean isUserNotFound(String name, String username) throws Exception {
         String xpath = String.format(WebAppLocators.StartUIPage.xpathSearchResultByNameAndUniqueUsername, name, username);
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), By.xpath(xpath));
+    }
+    
+    public boolean isUserNotFound(String name, int friends) throws Exception {
+        String xpath = String.format(WebAppLocators.StartUIPage.xpathSearchResultByNameAndFriends, name, friends);
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), By.xpath(xpath));
     }
 

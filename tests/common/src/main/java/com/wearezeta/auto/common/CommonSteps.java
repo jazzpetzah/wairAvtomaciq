@@ -725,8 +725,8 @@ public final class CommonSteps {
 
     public void WaitUntilCommonContactsIsGenerated(String searchByNameAlias, String contactAlias,
                                                    int expectCountOfCommonContacts) throws Exception {
-        ClientUser searchByUser = usrMgr.findUserBy(searchByNameAlias, FindBy.NAME_ALIAS);
-        ClientUser destUser = usrMgr.findUserBy(contactAlias, FindBy.NAME_ALIAS);
+        ClientUser searchByUser = usrMgr.findUserByNameOrNameAlias(searchByNameAlias);
+        ClientUser destUser = usrMgr.findUserByNameOrNameAlias(contactAlias);
         BackendAPIWrappers.waitUntilCommonContactsFound(searchByUser, destUser, expectCountOfCommonContacts,
                 true, BACKEND_COMMON_CONTACTS_SYNC_TIMEOUT);
     }

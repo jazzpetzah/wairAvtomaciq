@@ -112,16 +112,20 @@ Feature: Bring Your Friends
     Then I see Invite People popover
     And I see Share Contacts button
     When I click Share Contacts button
-    Then I click Invite People button
+    Then I click Invite People but ton
     And I click Share Contacts button
 
     Examples: 
       | Login      | Password      | Name      | Contact   | Message |
       | user1Email | user1Password | user1Name | user2Name | Hello   |
 
-  @C80773 @regression
+  @C80773 @regression @torun
   Scenario Outline: Use Gmail contacts import from settings
-    Given There is 1 user where <Name> is me
+    Given There is 2 user where <Name> is me
+    Given There is a known user <ABContact> with email smoketester+8949c541@wire.com and password aqa123456!
+    Given Myself is connected to <Contact>
+    Given <Contact> is connected to <ABContact>
+    Given I wait until <ABContact> has 1 common friends on the backend
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
@@ -131,8 +135,12 @@ Feature: Bring Your Friends
     And I see Google login popup
     And I sign up at Google with email smoketester.wire@gmail.com and password aqa123456!
     Then I see Search is opened
-    And I see more than 5 suggestions in people picker
+    And I see user <ABContact> found in People Picker
+    When I click on not connected user <ABContact> found in People Picker
+    And I see user <ABContact> with 1 common friends found in People Picker
+    And I see unique username <ABContact> on Single User popover
+    #And I see unique username in outgoing connection request to user <ABContact>
 
     Examples:
-      | Login      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+      | Login      | Password      | Name      | Contact   | ABContact |
+      | user1Email | user1Password | user1Name | user2Name | 8949c541  |

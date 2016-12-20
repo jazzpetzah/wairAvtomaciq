@@ -1,11 +1,9 @@
 package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.OutgoingConnectionRequestPage;
 
-import com.wearezeta.auto.web.pages.PendingConnectionsPage;
 import cucumber.api.java.en.Then;
 
 import org.junit.Assert;
@@ -38,7 +36,7 @@ public class OutgoingConnectionRequestSteps {
 
     @Then("^I see unique username in outgoing connection request to user (.*)$")
     public void ICanSeeUniqueUsernameToUser(String userAlias) throws Exception {
-        ClientUser user = context.getUserManager().findUserBy(userAlias, ClientUsersManager.FindBy.NAME_ALIAS);
+        ClientUser user = context.getUserManager().findUserByNameOrNameAlias(userAlias);
         // username given. strict check for username
         String uniqueUsername = user.getUniqueUsername();
         assertThat(context.getPagesCollection().getPage(OutgoingConnectionRequestPage.class).getUniqueUsernameOutgoing(),

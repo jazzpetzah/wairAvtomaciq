@@ -730,12 +730,16 @@ public final class WebAppLocators {
 
         public static final Function<String, String> xpathSearchResultByName = (
                 name) -> String.format(
-                "%s//*[@data-uie-name='item-user' and .//*[contains(@class,'search-list-item-content-name') and text()='%s']]",
+                "%s//*[@data-uie-name='item-user' and @data-uie-value='%s']",
                 xpathRoot, name);
 
         public static final String xpathSearchResultByNameAndUniqueUsername = xpathRoot + "//*[@data-uie-name='item-user' and "
                 + ".//*[contains(@class,'search-list-item-content-name') and text()='%s']"
-                + "/parent::*//*[contains(@class,'search-list-item-content-username') and text()='%s']]";
+                + "/parent::*//*[contains(@class,'search-list-item-content-username') and contains(text(),'%s']]";
+        
+        public static final String xpathSearchResultByNameAndFriends = xpathRoot + "//*[@data-uie-name='item-user' and "
+                + ".//*[contains(@class,'search-list-item-content-name') and text()='%s']"
+                + "/parent::*//*[contains(@class,'search-list-item-content-info') and text()='%s']]";
 
         public static final Function<String, String> xpathSearchResultGroupByName = (
                 name) -> String.format(
