@@ -5,7 +5,10 @@ import com.wearezeta.auto.common.rest.RESTError;
 import org.apache.commons.lang3.NotImplementedException;
 import org.json.JSONObject;
 import org.openqa.selenium.*;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 
+import java.awt.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -337,5 +340,13 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
         } catch (RESTError e) {
             throw new WebDriverException(e);
         }
+    }
+
+    public Rectangle getRect() {
+        final JSONObject wdRect = new JSONObject(getAttribute("wdRect"));
+        return new Rectangle((int) wdRect.getDouble("x"),
+                (int) wdRect.getDouble("y"),
+                (int) wdRect.getDouble("width"),
+                (int) wdRect.getDouble("height"));
     }
 }
