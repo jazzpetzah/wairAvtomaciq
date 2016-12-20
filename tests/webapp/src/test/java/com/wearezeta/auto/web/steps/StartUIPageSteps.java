@@ -2,6 +2,7 @@ package com.wearezeta.auto.web.steps;
 
 import java.util.List;
 
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.web.pages.ConversationPage;
 import org.junit.Assert;
 
@@ -350,6 +351,13 @@ public class StartUIPageSteps {
                     context.getPagesCollection().getPage(StartUIPage.class)
                             .isVideoCallButtonNotVisible());
         }
+    }
 
+    @When("^I see (\\d+) common friends on search list for user (.*) found in People Picker$")
+    public void ISeeCommonFriendsForUserFoundInStartUI(int amount, String nameAlias) throws Exception {
+        ClientUser user = context.getUserManager().findUserBy(nameAlias, FindBy.NAME_ALIAS);
+        assertThat(context.getPagesCollection().getPage(StartUIPage.class)
+                        .getCommonFriendsForUser(user.getId()),
+                equalTo(amount));
     }
 }

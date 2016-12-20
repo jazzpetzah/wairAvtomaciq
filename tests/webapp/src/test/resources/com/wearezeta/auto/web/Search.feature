@@ -369,10 +369,7 @@ Feature: Search
     Then I do not see user <UnknownContact1> found in People Picker
     When I type <ContactUniqueUsername> in search field of People Picker
     Then I see user <UnknownContact1> with username <ContactUniqueUsername> found in People Picker
-    And I see 4 common friends on search list for user <UnknownContact1>
-    And I see unique username in connection request from user <string>
-    And I see unique username on search list for user <UnknownContact1>
-    
+    And I see 4 common friends on search list for user <UnknownContact1> found in People Picker
 
     Examples:
       | Login      | Password      | Name      | UnknownContact1 | ContactUniqueUsername | Contact1  | Contact2  | Contact3  | Contact4  |

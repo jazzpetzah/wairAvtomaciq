@@ -347,4 +347,10 @@ public class StartUIPage extends WebPage {
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
                 By.cssSelector(WebAppLocators.StartUIPage.cssVideoCallButton));
     }
+
+    public String getCommonFriendsForUser(String userId) throws Exception {
+        String css = WebAppLocators.StartUIPage.cssCommonFriendsById
+                .apply(userId);
+        return getDriver().findElement(By.cssSelector(css)).getText();
+    }
 }
