@@ -51,13 +51,13 @@ Feature: Unique Usernames
     Given I open search UI
     Given I accept alert
     Given I tap input field on Search UI page
-    When I type "<Contact3WithUniqueUserName>" in cleared Search UI input field
+    When I type "<Contact3WithUniqueUserName>" in Search UI input field
     And I tap on conversation <Contact3WithUniqueUserName> in search result
     Then I see name "<Contact3WithUniqueUserName>" on Single user Pending incoming connection page
     And I see unique username "<Contact3UniqueUserName>" on Single user Pending incoming connection page
     And I do not see Address Book name on Single user Pending incoming connection page
     And I tap Ignore button on Single user Pending incoming connection page
-    When I type "<Contact1WithABEmail>" in Search UI input field
+    When I type "<Contact1WithABEmail>" in cleared Search UI input field
     And I tap on conversation <Contact1WithABEmail> in search result
     And I see name "<Contact1WithABEmail>" on Single user Pending incoming connection page
     Then I see Address Book name "<Contact1ABName>" on Single user Pending incoming connection page
@@ -138,14 +138,14 @@ Feature: Unique Usernames
     Given I open search UI
     Given I accept alert
     Given I tap input field on Search UI page
-    When I type "<Contact3WithUniqueUserName>" in cleared Search UI input field
+    When I type "<Contact3WithUniqueUserName>" in Search UI input field
     And I tap on conversation <Contact3WithUniqueUserName> in search result
     Then I see name "<Contact3WithUniqueUserName>" on Single user Pending outgoing connection page
     And I see unique username "<Contact3UniqueUserName>" on Single user Pending outgoing connection page
     And I do not see Address Book name on Single user Pending outgoing connection page
     And I tap Cancel Request button on Single user Pending outgoing connection page
     And I confirm Cancel Request conversation action
-    When I type "<Contact1WithABEmail>" in Search UI input field
+    When I type "<Contact1WithABEmail>" in cleared Search UI input field
     And I tap on conversation <Contact1WithABEmail> in search result
     And I see name "<Contact1WithABEmail>" on Single user Pending outgoing connection page
     Then I see Address Book name "<Contact1ABName>" on Single user Pending outgoing connection page
