@@ -203,10 +203,14 @@ Feature: Connect
     And I tap Invite Others button on Contacts UI page
     And I tap Copy Invite button on Search UI page
     And I tap X button on Contacts UI page
+    # Wait for animation
+    And I wait for 3 seconds
     And I tap X button on Search UI page
+    # Wait for animation
+    And I wait for 3 seconds
     And I tap on contact name <Contact>
     And I tap on text input
-    # Wait for sync
+    # Wait for animation
     And I wait for 4 seconds
     And I long tap on text input
     And I tap on Paste badge item

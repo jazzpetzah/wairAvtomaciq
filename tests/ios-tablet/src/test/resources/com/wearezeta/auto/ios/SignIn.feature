@@ -78,8 +78,7 @@ Feature: Sign In
     When I enter phone number for Myself
     And I enter login verification code for Myself
     And I accept alert if visible
-    Then I see set email/password suggestion page
-    When I have entered login <Email>
+    And I have entered login <Email>
     And I start activation email monitoring
     And I have entered password <Password>
     When I tap Login button
@@ -147,7 +146,6 @@ Feature: Sign In
     When I enter phone number for Myself
     And I enter login verification code for Myself
     And I accept alert if visible
-    And I see set email/password suggestion page
     And I have entered login <Email>
     And I start activation email monitoring
     And I have entered password <Password>
@@ -175,7 +173,6 @@ Feature: Sign In
     When I enter phone number for Myself
     And I enter login verification code for Myself
     And I accept alert if visible
-    And I see set email/password suggestion page
     And I have entered login <Email>
     And I have entered password <Password>
     And I tap Login button

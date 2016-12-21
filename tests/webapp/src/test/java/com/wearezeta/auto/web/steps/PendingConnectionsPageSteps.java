@@ -145,6 +145,6 @@ public class PendingConnectionsPageSteps {
         ClientUser user = context.getUserManager().findUserBy(nameAlias, FindBy.NAME_ALIAS);
         assertThat(context.getPagesCollection().getPage(PendingConnectionsPage.class)
                         .getCommonFriendsForUser(user.getId()),
-                equalTo(amount));
+                containsString(String.valueOf(amount)));
     }
 }

@@ -703,7 +703,7 @@ public final class WebAppLocators {
                         uid);
 
         public static final Function<String, String> cssCommonFriendsById = uid -> String
-                .format("[data-uie-name='connect-request'][data-uie-uid='%s'] user-avatar",
+                .format("[data-uie-name='connect-request'][data-uie-uid='%s'] common-contacts",
                         uid);
     }
 
@@ -713,7 +713,7 @@ public final class WebAppLocators {
 
         public static final String cssCancelRequestButton = "#" + idConversation + " [data-uie-name='do-cancel-request']";
 
-        public static final String cssUniqueUsernameOutgoing = ".username.popover-meta.label-username";
+        public static final String cssUniqueUsernameOutgoing = ".message-connected-username.label-username";
 
         public static final String cssCommonFriends = ".message-connected-contacts";
 
