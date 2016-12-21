@@ -45,6 +45,6 @@ public class OutgoingPendingConnectionPageSteps {
     public void ISeeNamel(String userNameAlias) throws Exception {
         ClientUser user = usrMgr.findUserByNameOrNameAlias(userNameAlias);
         Assert.assertTrue(String.format("The user name '%s' is still invisible", user.getName()),
-                getOutgoingPendingConnectionPage().waitUntilNameVisible(user));
+                getOutgoingPendingConnectionPage().waitUntilNameVisible(userNameAlias));
     }
 }

@@ -30,10 +30,6 @@ public class CallingSteps {
 
     private final TestContext context;
 
-    public CallingSteps() {
-        this.context = new TestContext();
-    }
-
     public CallingSteps(TestContext context) {
         this.context = context;
     }

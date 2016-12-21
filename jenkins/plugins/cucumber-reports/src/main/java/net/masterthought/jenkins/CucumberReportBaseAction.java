@@ -13,17 +13,14 @@ import org.kohsuke.stapler.StaplerResponse;
 
 public abstract class CucumberReportBaseAction implements Action {
 
-    @Override
     public String getUrlName(){
         return "cucumber-html-reports";
     }
 
-    @Override
     public String getDisplayName(){
         return "Cucumber Reports";
     }
 
-    @Override
     public String getIconFileName(){
             return "/plugin/cucumber-reports/cuke.png";
     }

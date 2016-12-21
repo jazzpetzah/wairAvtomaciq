@@ -6,6 +6,7 @@ import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.lessThan;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.Is.is;
 
 import java.awt.image.BufferedImage;
@@ -17,6 +18,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
+import com.wearezeta.auto.web.pages.AccountPage;
 import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
 
 import cucumber.api.java.en.And;
@@ -37,10 +39,6 @@ public class SingleUserPopoverPageSteps {
     private static final String TOOLTIP_OPEN_CONVERSATION = "Open conversation";
 
     private final TestContext context;
-
-    public SingleUserPopoverPageSteps() {
-        this.context = new TestContext();
-    }
 
     public SingleUserPopoverPageSteps(TestContext context) {
         this.context = context;
@@ -230,7 +228,6 @@ public class SingleUserPopoverPageSteps {
         Assert.assertTrue(context.getPagesCollection()
                 .getPage(SingleUserPopoverContainer.class).getMailHref()
                 .contains(MAILTO));
-
     }
 
     @Then("^I see correct pending button tool tip on Single Participant popover$")
@@ -290,4 +287,14 @@ public class SingleUserPopoverPageSteps {
         context.getPagesCollection().getPage(SingleUserPopoverContainer.class).clickDevice(id);
     }
 
+    @When("^I see unique username (.*) on Single User popover$")
+    public void ISeeUniqueUsernameOnSingleUserPopover(String userAlias) throws Exception {
+        ClientUser user = context.getUserManager().findUserBy(userAlias, FindBy.NAME_ALIAS);
+        // username given. strict check for username
+        String uniqueUsername = user.getUniqueUsername();
+
+            Assert.assertThat("Unique username is NOT on Single User popover",
+                    context.getPagesCollection().getPage(SingleUserPopoverContainer.class).getUniqueUsername(),
+                    equalTo(uniqueUsername));
+    }
 }

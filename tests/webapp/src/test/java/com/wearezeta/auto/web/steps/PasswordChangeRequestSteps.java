@@ -33,12 +33,7 @@ public class PasswordChangeRequestSteps {
     private static final Logger log = ZetaLogger.getLog(PasswordChangeRequestSteps.class.getSimpleName());
 
     private Future<String> passwordChangeMessage = null;
-
     private final TestContext context;
-
-    public PasswordChangeRequestSteps() {
-        this.context = new TestContext();
-    }
 
     public PasswordChangeRequestSteps(TestContext context) {
         this.context = context;

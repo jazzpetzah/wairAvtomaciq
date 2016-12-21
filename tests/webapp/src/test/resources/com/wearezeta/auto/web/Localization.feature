@@ -53,8 +53,8 @@ Feature: Localization
     And I see a conversation option <ConvOption4> on the page
 
     Examples:
-      | Login      | Password      | Name      | Contact   | Language | InputAreaText           | SearchPlaceHolder                | ConvOption1   | ConvOption2 | ConvOption3 | ConvOption4 |
-      | user1Email | user1Password | user1Name | user2Name | de       | Schreibe eine Nachricht | Namen oder E-Mail-Adresse suchen | Stummschalten | Archivieren | Löschen     | Blockieren  |
+      | Login      | Password      | Name      | Contact   | Language | InputAreaText           | SearchPlaceHolder             | ConvOption1   | ConvOption2 | ConvOption3 | ConvOption4 |
+      | user1Email | user1Password | user1Name | user2Name | de       | Schreibe eine Nachricht | Name oder Benutzername suchen | Stummschalten | Archivieren | Löschen     | Blockieren  |
 
   @C136458 @regression
   Scenario Outline: Verify support pages are opened in language <Language>

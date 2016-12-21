@@ -28,6 +28,15 @@ import java.util.concurrent.TimeUnit;
 public class WebCommonUtils extends CommonUtils {
 
     private static final Logger log = ZetaLogger.getLog(WebCommonUtils.class.getSimpleName());
+    public static final String TMP_ROOT = "/tmp";
+
+    public static final class Scripts {
+        public static final String SAFARI_SEND_PICTURE_SCRIPT = "safari_choose_image.txt";
+        public static final String SAFARI_OPEN_TAB_SCRIPT = "safari_open_tab.txt";
+        public static final String SAFARI_CLOSE_ALL_ADDITIONAL_TABS_SCRIPT = "safari_close_all_additional_tabs.txt";
+        public static final String SAFARI_CLEAR_HISTORY_SCRIPT = "safari_clear_history.txt";
+        public static final String RESOURCES_SCRIPTS_ROOT = "scripts";
+    }
 
     public static String getHubHostFromConfig(Class<?> c) throws Exception {
         return getValueFromConfig(c, "hubHost");
@@ -180,13 +189,13 @@ public class WebCommonUtils extends CommonUtils {
             return String
                     .format("C:\\Users\\%s\\AppData\\Roaming\\Opera Software\\Opera Stable\\",
                             CommonUtils
-                            .getJenkinsSuperUserLogin(WebCommonUtils.class));
+                                    .getJenkinsSuperUserLogin(WebCommonUtils.class));
         } else {
             // Should be Mac OS otherwise ;)
             return String
                     .format("/Users/%s/Library/Application Support/Opera Software/Opera Stable/",
                             CommonUtils
-                            .getJenkinsSuperUserLogin(WebCommonUtils.class));
+                                    .getJenkinsSuperUserLogin(WebCommonUtils.class));
         }
     }
 
@@ -205,11 +214,11 @@ public class WebCommonUtils extends CommonUtils {
         final ClassLoader classLoader = WebCommonUtils.class.getClassLoader();
         final InputStream scriptStream = classLoader.getResourceAsStream(String
                 .format("%s/%s",
-                        WebAppConstants.Scripts.RESOURCES_SCRIPTS_ROOT,
-                        WebAppConstants.Scripts.SAFARI_OPEN_TAB_SCRIPT));
+                        Scripts.RESOURCES_SCRIPTS_ROOT,
+                        Scripts.SAFARI_OPEN_TAB_SCRIPT));
         final String srcScriptPath = String.format("%s/%s",
-                WebAppConstants.TMP_ROOT,
-                WebAppConstants.Scripts.SAFARI_OPEN_TAB_SCRIPT);
+                TMP_ROOT,
+                Scripts.SAFARI_OPEN_TAB_SCRIPT);
         URI uri = new URI(WebCommonUtils.class.getResource(srcScriptPath)
                 .toString());
         File srcScript = new File(uri.getPath());
@@ -295,8 +304,8 @@ public class WebCommonUtils extends CommonUtils {
 
         // check if script is really there
         String genericScriptPath = String.format("/%s/%s",
-                WebAppConstants.Scripts.RESOURCES_SCRIPTS_ROOT,
-                WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT);
+                Scripts.RESOURCES_SCRIPTS_ROOT,
+                Scripts.SAFARI_SEND_PICTURE_SCRIPT);
         InputStream genericScript = null;
         try {
             genericScript = WebCommonUtils.class
@@ -311,7 +320,7 @@ public class WebCommonUtils extends CommonUtils {
                 + ".txt";
         File individualScript = new File(individualScriptName);
         final File dstPicture = new File(String.format("%s/%s",
-                WebAppConstants.TMP_ROOT, srcPicture.getName()));
+                TMP_ROOT, srcPicture.getName()));
         try {
             formatTextInFileAndSave(
                     genericScript,
@@ -346,11 +355,11 @@ public class WebCommonUtils extends CommonUtils {
 
     public static void clearHistoryInSafari(String nodeIp) throws Exception {
         final String srcScriptPath = String.format("/%s/%s",
-                WebAppConstants.Scripts.RESOURCES_SCRIPTS_ROOT,
-                WebAppConstants.Scripts.SAFARI_CLEAR_HISTORY_SCRIPT);
+                Scripts.RESOURCES_SCRIPTS_ROOT,
+                Scripts.SAFARI_CLEAR_HISTORY_SCRIPT);
         final String dstScriptPath = String.format("%s/%s",
-                WebAppConstants.TMP_ROOT,
-                WebAppConstants.Scripts.SAFARI_CLEAR_HISTORY_SCRIPT);
+                TMP_ROOT,
+                Scripts.SAFARI_CLEAR_HISTORY_SCRIPT);
         // get file via resources
         URL url = WebCommonUtils.class.getResource(srcScriptPath);
         assert url != null : "There's no file by path " + srcScriptPath
@@ -364,12 +373,12 @@ public class WebCommonUtils extends CommonUtils {
             throws Exception {
         final String srcScriptPath = String
                 .format("/%s/%s",
-                        WebAppConstants.Scripts.RESOURCES_SCRIPTS_ROOT,
-                        WebAppConstants.Scripts.SAFARI_CLOSE_ALL_ADDITIONAL_TABS_SCRIPT);
+                        Scripts.RESOURCES_SCRIPTS_ROOT,
+                        Scripts.SAFARI_CLOSE_ALL_ADDITIONAL_TABS_SCRIPT);
         final String dstScriptPath = String
                 .format("%s/%s",
-                        WebAppConstants.TMP_ROOT,
-                        WebAppConstants.Scripts.SAFARI_CLOSE_ALL_ADDITIONAL_TABS_SCRIPT);
+                        TMP_ROOT,
+                        Scripts.SAFARI_CLOSE_ALL_ADDITIONAL_TABS_SCRIPT);
         // get file via resources
         URL url = WebCommonUtils.class.getResource(srcScriptPath);
         assert url != null : "There's no file by path " + srcScriptPath
@@ -388,7 +397,7 @@ public class WebCommonUtils extends CommonUtils {
                     + "arguments[0].dispatchEvent(evt);", element);
         }
     }
-    
+
     public static void highlightElement(RemoteWebDriver driver, WebElement element, int duration, TimeUnit unit) {
         if (WebAppExecutionContext.getBrowser().isSupportingAccessToJavascriptContext()) {
             String original_style = element.getAttribute("style");

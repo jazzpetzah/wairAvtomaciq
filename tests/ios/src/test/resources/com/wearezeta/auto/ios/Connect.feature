@@ -139,9 +139,9 @@ Feature: Connect
   Scenario Outline: Verify you don't receive any messages from blocked person in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Myself
-    Given User Myself blocks user <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
+    Given User Myself blocks user <Contact>
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     Given User <Contact> securely pings conversation Myself
     Given User <Contact> sends 1 encrypted message to user Myself
@@ -203,10 +203,14 @@ Feature: Connect
     And I tap Invite Others button on Contacts UI page
     And I tap Copy Invite button on Search UI page
     And I tap X button on Contacts UI page
+    # Wait for animation
+    And I wait for 3 seconds
     And I tap X button on Search UI page
+    # Wait for animation
+    And I wait for 3 seconds
     And I tap on contact name <Contact>
     And I tap on text input
-    # Wait for sync
+    # Wait for animation
     And I wait for 4 seconds
     And I long tap on text input
     And I tap on Paste badge item

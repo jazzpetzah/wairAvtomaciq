@@ -15,11 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import net.masterthought.cucumber.charts.FlashChartBuilder;
 import net.masterthought.cucumber.charts.JsChartUtil;
 import net.masterthought.cucumber.json.Feature;
 import net.masterthought.cucumber.util.UnzipUtils;
-import net.masterthought.cucumber.util.Util;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.velocity.Template;
@@ -34,18 +32,14 @@ public class ReportBuilder {
     private String buildNumber;
     private String buildProject;
     private String pluginUrlPath;
-    private boolean flashCharts;
     private boolean runWithJenkins;
     private boolean artifactsEnabled;
-    private boolean highCharts;
     private boolean parsingError;
-    private String realBuildNumber;
     private String coverage;
     private String customDescription;
+    private String realBuildNumber;
 
-    public Map<String, String> getCustomHeader() {
-        return customHeader;
-    }
+    public Map<String, String> getCustomHeader() { return customHeader; }
 
     public void setCustomHeader(Map<String, String> customHeader) {
         this.customHeader = customHeader;
@@ -53,25 +47,28 @@ public class ReportBuilder {
 
     private Map<String, String> customHeader;
 
-    private final String VERSION = "cucumber-reporting-0.0.26";
+    private final String VERSION = "cucumber-reporting-0.0.28";
 
-    public ReportBuilder(List<String> jsonReports, File reportDirectory, String customDescription, String coverage, String realBuildNumber, String pluginUrlPath, String buildNumber, String buildProject, boolean skippedFails, boolean undefinedFails, boolean flashCharts, boolean runWithJenkins, boolean artifactsEnabled, String artifactConfig, boolean highCharts) throws Exception {
-
+    public ReportBuilder(List<String> jsonReports, File reportDirectory, String customDescription, String coverage,
+                         String realBuildNumber, String pluginUrlPath, String buildNumber, String buildProject,
+                         boolean skippedFails, boolean pendingFails, boolean undefinedFails, boolean allSkippedFails,
+                         boolean skippedHaveScreenshots, boolean runWithJenkins, boolean artifactsEnabled,
+                         String artifactConfig) throws Exception {
         try {
             this.reportDirectory = reportDirectory;
+            this.customDescription = customDescription;
+            this.coverage = coverage;
+            this.realBuildNumber = realBuildNumber;
+            this.pluginUrlPath = getPluginUrlPath(pluginUrlPath);
             this.buildNumber = buildNumber;
             this.buildProject = buildProject;
-            this.pluginUrlPath = getPluginUrlPath(pluginUrlPath);
-            this.flashCharts = flashCharts;
+            ConfigurationOptions.setSkippedFailsBuild(skippedFails);
+            ConfigurationOptions.setPendingFailsBuild(pendingFails);
+            ConfigurationOptions.setUndefinedFailsBuild(undefinedFails);
+            ConfigurationOptions.setAllSkippedFailsBuild(allSkippedFails);
             this.runWithJenkins = runWithJenkins;
             this.artifactsEnabled = artifactsEnabled;
-            this.highCharts = highCharts;
-            this.realBuildNumber = realBuildNumber;
-            this.coverage = coverage;
-            this.customDescription = customDescription;
 
-            ConfigurationOptions.setSkippedFailsBuild(skippedFails);
-            ConfigurationOptions.setUndefinedFailsBuild(undefinedFails);
             ConfigurationOptions.setArtifactsEnabled(artifactsEnabled);
             if (artifactsEnabled) {
                 ArtifactProcessor artifactProcessor = new ArtifactProcessor(artifactConfig);
@@ -79,8 +76,7 @@ public class ReportBuilder {
             }
 
             ReportParser reportParser = new ReportParser(jsonReports);
-            this.ri = new ReportInformation(reportParser.getFeatures());
-
+            this.ri = new ReportInformation(reportParser.getFeatures(), skippedHaveScreenshots);
         } catch (Exception exception) {
             parsingError = true;
             generateErrorPage(exception);
@@ -89,24 +85,20 @@ public class ReportBuilder {
     }
 
     public boolean getBuildStatus() {
-        return (ri.getTotalNumberOfSteps() > 0) && (ri.getTotalScenariosFailed() == 0);
+        return (ri.getTotalScenariosFailed() == 0);
     }
+
+    public int getTotalNumberOfSteps() { return ri.getTotalNumberOfSteps(); }
 
     public void generateReports() throws Exception {
         try {
             copyResource("themes", "blue.zip");
-            if (flashCharts) {
-                copyResource("charts", "flash_charts.zip");
-            } else {
-                copyResource("charts", "js.zip");
-            }
+            copyResource("charts", "js.zip");
             if (artifactsEnabled) {
                 copyResource("charts", "codemirror.zip");
             }
             generateFeatureOverview();
             generateFeatureReports();
-//            generateTagReports();
-//            generateTagOverview();
         } catch (Exception exception) {
             if (!parsingError) {
                 generateErrorPage(exception);
@@ -153,85 +145,18 @@ public class ReportBuilder {
         contextMap.put("total_fails", ri.getTotalNumberFailingSteps());
         contextMap.put("total_skipped", ri.getTotalNumberSkippedSteps());
         contextMap.put("total_pending", ri.getTotalNumberPendingSteps());
+        contextMap.put("total_undefined", ri.getTotalNumberUndefinedSteps());
         contextMap.put("scenarios_passed", ri.getTotalScenariosPassed());
         contextMap.put("scenarios_failed", ri.getTotalScenariosFailed());
-        if (flashCharts) {
-            contextMap.put("step_data", FlashChartBuilder.donutChart(ri.getTotalNumberPassingSteps(), ri.getTotalNumberFailingSteps(), ri.getTotalNumberSkippedSteps(), ri.getTotalNumberPendingSteps()));
-            contextMap.put("scenario_data", FlashChartBuilder.pieChart(ri.getTotalScenariosPassed(), ri.getTotalScenariosFailed()));
-        } else {
-            JsChartUtil pie = new JsChartUtil();
-            List<String> stepColours = pie.orderStepsByValue(ri.getTotalNumberPassingSteps(), ri.getTotalNumberFailingSteps(), ri.getTotalNumberSkippedSteps(), ri.getTotalNumberPendingSteps());
-            contextMap.put("step_data", stepColours);
-            List<String> scenarioColours = pie.orderScenariosByValue(ri.getTotalScenariosPassed(), ri.getTotalScenariosFailed());
-            contextMap.put("scenario_data", scenarioColours);
-        }
+        JsChartUtil pie = new JsChartUtil();
+        List<String> stepColours = pie.orderStepsByValue(ri.getTotalNumberPassingSteps(), ri.getTotalNumberFailingSteps(),
+                ri.getTotalNumberSkippedSteps(), ri.getTotalNumberPendingSteps(), ri.getTotalNumberUndefinedSteps());
+        contextMap.put("step_data", stepColours);
+        List<String> scenarioColours = pie.orderScenariosByValue(ri.getTotalScenariosPassed(), ri.getTotalScenariosFailed());
+        contextMap.put("scenario_data", scenarioColours);
         contextMap.put("time_stamp", ri.timeStamp());
         contextMap.put("total_duration", ri.getTotalDurationAsString());
-        contextMap.put("flashCharts", flashCharts);
-        contextMap.put("highCharts", highCharts);
         generateReport("feature-overview.html", featureOverview, contextMap.getVelocityContext());
-    }
-
-
-    public void generateTagReports() throws Exception {
-        for (TagObject tagObject : ri.getTags()) {
-            VelocityEngine ve = new VelocityEngine();
-            ve.init(getProperties());
-            Template featureResult = ve.getTemplate("templates/tagReport.vm");
-            VelocityContextMap contextMap = VelocityContextMap.of(new VelocityContext());
-            contextMap.putAll(getGeneralParameters());
-            contextMap.put("tag", tagObject);
-            contextMap.put("time_stamp", ri.timeStamp());
-            contextMap.put("report_status_colour", ri.getTagReportStatusColour(tagObject));
-            generateReport(tagObject.getTagName().replace("@", "").trim() + ".html", featureResult, contextMap.getVelocityContext());
-            contextMap.put("hasCustomHeader", false);
-            if (customHeader != null && customHeader.get(tagObject.getTagName()) != null) {
-                contextMap.put("hasCustomHeader", true);
-                contextMap.put("customHeader", customHeader.get(tagObject.getTagName()));
-            }
-        }
-    }
-
-    public void generateTagOverview() throws Exception {
-        VelocityEngine ve = new VelocityEngine();
-        ve.init(getProperties());
-        Template featureOverview = ve.getTemplate("templates/tagOverview.vm");
-        VelocityContextMap contextMap = VelocityContextMap.of(new VelocityContext());
-        contextMap.putAll(getGeneralParameters());
-        contextMap.put("tags", ri.getTags());
-        contextMap.put("total_tags", ri.getTotalTags());
-        contextMap.put("total_scenarios", ri.getTotalTagScenarios());
-        contextMap.put("total_passed_scenarios", ri.getTotalPassingTagScenarios());
-        contextMap.put("total_failed_scenarios", ri.getTotalFailingTagScenarios());
-        contextMap.put("total_steps", ri.getTotalTagSteps());
-        contextMap.put("total_passes", ri.getTotalTagPasses());
-        contextMap.put("total_fails", ri.getTotalTagFails());
-        contextMap.put("total_skipped", ri.getTotalTagSkipped());
-        contextMap.put("total_pending", ri.getTotalTagPending());
-        contextMap.put("hasCustomHeaders", false);
-        if (customHeader != null) {
-            contextMap.put("hasCustomHeaders", true);
-            contextMap.put("customHeaders", customHeader);
-        }
-        contextMap.put("backgrounds", ri.getBackgroundInfo());
-        if (flashCharts) {
-            contextMap.put("chart_data", FlashChartBuilder.StackedColumnChart(ri.tagMap));
-        } else {
-            if (highCharts) {
-                contextMap.put("chart_categories", JsChartUtil.getTags(ri.tagMap));
-                contextMap.put("chart_data", JsChartUtil.generateTagChartDataForHighCharts(ri.tagMap));
-            } else {
-                contextMap.put("chart_rows", JsChartUtil.generateTagChartData(ri.tagMap));
-            }
-        }
-        contextMap.put("total_duration", ri.getTotalTagDuration());
-        contextMap.put("time_stamp", ri.timeStamp());
-        contextMap.put("flashCharts", flashCharts);
-        contextMap.put("highCharts", highCharts);
-        long durationl = ri.getBackgroundInfo().getTotalDuration() + ri.getLongTotalTagDuration();
-        String duration = Util.formatDuration(durationl);
-        contextMap.put("total_duration", duration);
-        generateReport("tag-overview.html", featureOverview, contextMap.getVelocityContext());
     }
 
     public void generateErrorPage(Exception exception) throws Exception {

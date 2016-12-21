@@ -1,4 +1,5 @@
-<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson"
+xmlns:f="/lib/form">
   <!--
     This jelly script is used for per-project configuration.
 
@@ -25,18 +26,28 @@
     <f:entry title="Plugin Url Path" field="pluginUrlPath" description="The path to the jenkins user content url e.g. http://host:port[/jenkins/]plugin - leave empty if jenkins url root is host:port">
         <f:textbox />
 	</f:entry>
-	<f:entry title="Skipped Steps Fail the Build" field="skippedFails" description="Tick this if you want skipped steps to cause the build to fail">
+	<f:entry title="Any Skipped Step Fail the Build" field="skippedFails" description="Tick this if you want skipped steps to cause the build to fail">
         <f:checkbox />
     </f:entry>
-    <f:entry title="Pending Steps Fail the Build" field="undefinedFails" description="Tick this if you want pending steps to cause the build to fail">
+    <f:entry title="Any Pending Step Fail the Build" field="pendingFails" description="Tick this if you want pending steps to cause the build to fail">
         <f:checkbox />
     </f:entry>
-    <f:entry title="Turn Off Flash Charts" field="noFlashCharts" description="Tick this if you want to use javascript charts instead of flash charts">
+    <f:entry title="Any Undefined Step Fail the Build" field="undefinedFails" description="Tick this if you want undefined steps to cause the build to fail">
         <f:checkbox />
-    </f:entry>	
+    </f:entry>
+	<f:entry title="The All Skipped Steps Fail the Build" field="allSkippedFails" description="Tick this if you want to fail build when the all steps are skipped">
+        <f:checkbox />
+    </f:entry>
+    <f:entry title="On Empty Results Set Run Status - Not Built" field="markNotBuiltIfNoResults" description="Tick this if you
+    want to mark report as 'Not built' if input json report contains no results">
+        <f:checkbox />
+    </f:entry>
 	<f:entry title="Ignore failed tests" field="ignoreFailedTests" description="Tick this if you don't want the entire build to fail when these tests fail. If so, build becomes unstable">
 		<f:checkbox />
 	</f:entry>
+	<f:entry title="Skipped steps have screenshots" field="skippedHaveScreenshots" description="Tick this if your tests generate screenshot files for skipped tests">
+    		<f:checkbox />
+    	</f:entry>
   </f:advanced>
 </j:jelly>
 

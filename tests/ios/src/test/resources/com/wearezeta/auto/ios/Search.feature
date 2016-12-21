@@ -22,6 +22,7 @@ Feature: Search
     Given <Contact2> is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
+    Given I wait until <Contact> exists in backend search results
     When I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
@@ -174,7 +175,7 @@ Feature: Search
       | user1Name | user2Name |
 
   @C1053 @rc @regression @fastLogin
-  Scenario Outline: (ZIOS-7744) Verify sharing a photo to a newly created group conversation with action button
+  Scenario Outline: (ZIOS-7762) Verify sharing a photo to a newly created group conversation with action button
     Given There are 4 users where <Name> is me
     Given Myself is connected to all other users
     Given I sign in using my email or phone number
@@ -192,6 +193,8 @@ Feature: Search
     And I accept alert if visible
     And I select the first picture from Camera Roll
     And I tap Confirm button on Picture preview page
+    # Workaround for ZIOS-7762. Next step should be removed once bug is fixed
+    And I tap Close button on Camera page
     Then I see group conversation with users <Contact1>,<Contact2>,<Contact3>
     And I see 1 photo in the conversation view
     When I navigate back to conversations list

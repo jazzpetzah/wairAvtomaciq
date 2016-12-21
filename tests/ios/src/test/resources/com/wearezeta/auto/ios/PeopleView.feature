@@ -435,6 +435,7 @@ Feature: People View
     Given User Myself sends 1 encrypted message to user <Contact1>
     Given User <Contact1> sends 1 encrypted message to user Myself
     Given User <Contact1> sends encrypted image <Image> to single user conversation Myself
+    Given I wait until <Contact1> exists in backend search results
     Given I see conversations list
     # Wait for delivery
     Given I wait for 5 seconds
@@ -466,15 +467,13 @@ Feature: People View
     Given User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     Given I see conversations list
-    When I tap on group chat with name <GroupChatName>
-    And I open group conversation details
-    And I tap Open Menu button on Group info page
-    And I tap Leave conversation action button
-    And I confirm Leave conversation action
-    And I open archived conversations
-    And I see conversation <GroupChatName> in conversations list
-    And I tap on group chat with name <GroupChatName>
-    Then I see 4 conversation entries
+    Given I tap on group chat with name <GroupChatName>
+    Given I open group conversation details
+    Given I tap Open Menu button on Group info page
+    Given I tap Leave conversation action button
+    Given I confirm Leave conversation action
+    When I open archived conversations
+    Then I see conversation <GroupChatName> in conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Image       |

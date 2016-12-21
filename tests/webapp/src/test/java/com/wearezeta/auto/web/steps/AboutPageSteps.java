@@ -8,10 +8,6 @@ public class AboutPageSteps {
 
     private final TestContext context;
 
-    public AboutPageSteps() {
-        this.context = new TestContext();
-    }
-
     public AboutPageSteps(TestContext context) {
         this.context = context;
     }

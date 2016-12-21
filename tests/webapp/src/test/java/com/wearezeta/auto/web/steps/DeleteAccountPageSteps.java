@@ -22,16 +22,10 @@ import cucumber.api.java.en.Then;
 public class DeleteAccountPageSteps {
 
     private static final Logger log = ZetaLogger.getLog(CommonWebAppSteps.class.getSimpleName());
-
     private static final int DELETION_RECEIVING_TIMEOUT = 120;
 
     private String deleteLink = null;
-
     private final TestContext context;
-
-    public DeleteAccountPageSteps() {
-        this.context = new TestContext();
-    }
 
     public DeleteAccountPageSteps(TestContext context) {
         this.context = context;

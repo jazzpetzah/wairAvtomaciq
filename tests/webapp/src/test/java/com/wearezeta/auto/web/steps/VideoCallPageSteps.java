@@ -20,10 +20,6 @@ public class VideoCallPageSteps {
 
     private final TestContext context;
 
-    public VideoCallPageSteps() {
-        this.context = new TestContext();
-    }
-
     public VideoCallPageSteps(TestContext context) {
         this.context = context;
     }

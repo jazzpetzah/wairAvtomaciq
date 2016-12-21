@@ -70,7 +70,6 @@ Feature: Autoconnect
     And I wait until <Contact> exists in backend search results
     When I open search UI
     And I accept alert
-    And I wait until <Contact> is first search result on backend
     And I tap input field on Search UI page
     And I type first 1 letter of user name "<Contact>" into Search UI input field
     Then I see the first item in Search result is <Contact>
@@ -105,7 +104,6 @@ Feature: Autoconnect
     And I see conversations list
     And I wait until <Contact> exists in backend search results
     When I open search UI
-    And I wait until <Contact> is first search result on backend
     And I tap input field on Search UI page
     And I type first 1 letter of user name "<Contact>" into Search UI input field
     Then I see the first item in Search result is <Contact>

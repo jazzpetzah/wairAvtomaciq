@@ -40,27 +40,19 @@ import static org.junit.Assert.assertTrue;
 
 public class ConversationPageSteps {
 
+    @SuppressWarnings("unused")
+    private static final Logger log = ZetaLogger.getLog(ConversationPageSteps.class.getSimpleName());
     private static final double MIN_ACCEPTABLE_IMAGE_SCORE = 0.69;
-
     private static final String TOOLTIP_PING = "Ping";
     private static final String SHORTCUT_PING_WIN = "(Ctrl + Alt + K)";
     private static final String SHORTCUT_PING_MAC = "(⌘⌥K)";
     private static final String TOOLTIP_CALL = "Call";
     private static final String TOOLTIP_VIDEO_CALL = "Video Call";
-
-    @SuppressWarnings("unused")
-    private static final Logger log = ZetaLogger.getLog(ConversationPageSteps.class.getSimpleName());
     private static final String VIDEO_MESSAGE_IMAGE = "example.png";
 
     private String randomMessage;
-
     private String rememberedEditTimeStamp;
-
     private final TestContext context;
-
-    public ConversationPageSteps() {
-        this.context = new TestContext();
-    }
 
     public ConversationPageSteps(TestContext context) {
         this.context = context;
@@ -831,11 +823,11 @@ public class ConversationPageSteps {
         }
     }
 
-    @And("^I see unique username starts with (.*) in conversation$")
-    public void ISeeUniqueUsernameOnSelfProfilePage(String name) throws Exception {
-        name = context.getUserManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+    @And("^I see unique username of (.*) in conversation$")
+    public void ISeeUniqueUsernameOnSelfProfilePage(String nameAlias) throws Exception {
+        String username = context.getUserManager().findUserByNameOrNameAlias(nameAlias).getUniqueUsername();
         Assert.assertThat("Username in conversation",
-                context.getPagesCollection().getPage(ConversationPage.class).getUniqueUsername(), startsWith(name));
+                context.getPagesCollection().getPage(ConversationPage.class).getUniqueUsername(), equalTo(username));
     }
 
     @Then("^I see (.*) action (\\d+) times for (.*) in conversation$")
@@ -1145,17 +1137,6 @@ public class ConversationPageSteps {
     @And("^I click on pending user avatar$")
     public void IClickOnPendingUserAvatar() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickUserAvatar();
-    }
-
-    @Then("^I see cancel pending request button in the conversation view$")
-    public void ISeeCancelRequestButton() throws Exception {
-        assertTrue("Cancel request is NOT visible in conversation list", context.getPagesCollection().getPage(
-                ConversationPage.class).isCancelRequestButtonVisible());
-    }
-
-    @Then("^I click cancel pending request button in the conversation view$")
-    public void IClickOnCancelRequestButton() throws Exception {
-        context.getPagesCollection().getPage(ConversationPage.class).clickCancelPendingRequestButton();
     }
 
     @And("^I click on avatar of user (.*) in conversation view$")

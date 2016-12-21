@@ -378,7 +378,7 @@ Feature: Recall Message
     Given User <Contact1> send encrypted message "<Message>" via device <ContactDevice> to user Myself
     Given I see Conversations list with conversations
     Given I swipe right on a <Contact1>
-    Given I select ARCHIVE from conversation settings menu
+    Given I tap ARCHIVE button on Single conversation options menu
     Given I do not see Conversations list with name <Contact1>
     # C226039
     When User <Contact1> likes the recent message from user Myself via device <ContactDevice>

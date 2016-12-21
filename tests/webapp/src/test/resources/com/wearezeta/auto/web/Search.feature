@@ -1,5 +1,67 @@
 Feature: Search
 
+  @C352243 @smoke
+  Scenario Outline: Verify search by username for unconnected user
+    Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I wait until <Contact> exists in backend search results
+    Given I am signed in properly
+    When I open search by clicking the people button
+    And I see Search is opened
+    And I see Bring Your Friends or Invite People button
+    And I type <ContactUniqueUsername> in search field of People Picker
+    Then I see user <Contact> found in People Picker
+    When I clear the search field of People Picker
+    Then I do not see user <Contact> found in People Picker
+    When I type <ContactUniqueUsername> in search field of People Picker in uppercase
+    Then I see user <Contact> found in People Picker
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | ContactUniqueUsername |
+      | user1Email | user1Password | user1Name | user2Name | user2UniqueUsername   |
+
+  @C352241 @regression
+  Scenario Outline: Verify search by username for connected user
+    Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I wait until <Contact> exists in backend search results
+    Given I am signed in properly
+    When I open search by clicking the people button
+    And I see Search is opened
+    And I see Bring Your Friends or Invite People button
+    And I type <Contact> in search field of People Picker
+    Then I see user <Contact> with username <ContactUniqueUsername> found in People Picker
+    When I clear the search field of People Picker
+    Then I do not see user <Contact> found in People Picker
+    When I type <ContactUniqueUsername> in search field of People Picker
+    Then I see user <Contact> with username <ContactUniqueUsername> found in People Picker
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | ContactUniqueUsername |
+      | user1Email | user1Password | user1Name | user2Name | user2UniqueUsername   |
+
+  @C352244 @smoke
+  Scenario Outline: Verify you cannot search by partial username of unconnected user
+    Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I wait until <Contact> exists in backend search results
+    Given I am signed in properly
+    When I open search by clicking the people button
+    And I see Search is opened
+    And I see Bring Your Friends or Invite People button
+    When I type <ContactUniqueUsername> in search field of People Picker only partially
+    Then I do not see user <Contact> found in People Picker
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | ContactUniqueUsername |
+      | user1Email | user1Password | user1Name | user2Name | user2UniqueUsername   |
+
   @C1711 @smoke
   Scenario Outline: Start group chat with users from contact list
     Given There are 3 users where <Name> is me

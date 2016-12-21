@@ -8,6 +8,11 @@ import java.util.Optional;
 import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
+import org.openqa.selenium.InvalidElementStateException;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
@@ -19,13 +24,18 @@ import com.wearezeta.auto.web.locators.WebAppLocators;
 
 import java.io.File;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
 
 public class AccountPage extends WebPage {
 
     @SuppressWarnings("unused")
     private static final Logger log = ZetaLogger.getLog(AccountPage.class.getSimpleName());
+
+    private String rememberedUniqueUsername;
 
     @FindBy(css = WebAppLocators.AccountPage.cssLogoutButton)
     private WebElement logoutButton;
@@ -79,10 +89,10 @@ public class AccountPage extends WebPage {
     public void logout() throws Exception {
         logoutButton.click();
     }
-    
+
     // Wrapper only
     public boolean isLogoutInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), 
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
                 By.cssSelector(WebAppLocators.AccountPage.cssLogoutButton));
     }
 
@@ -118,7 +128,8 @@ public class AccountPage extends WebPage {
         nameInput.click();
         Thread.sleep(1000);
         nameInput.clear();
-        nameInput.sendKeys(name + "\n");
+        nameInput.sendKeys(name);
+        nameInput.sendKeys(Keys.ENTER);
     }
 
     public void typeUniqueUsername(String name) throws InterruptedException {
@@ -129,7 +140,7 @@ public class AccountPage extends WebPage {
     }
 
     public void submitUniqueUsername() throws InterruptedException {
-        uniqueUsernameInput.sendKeys("\n");
+        uniqueUsernameInput.sendKeys(Keys.ENTER);
     }
 
     public void setUniqueUsername(String name) throws InterruptedException {
@@ -141,11 +152,11 @@ public class AccountPage extends WebPage {
         return uniqueUsernameError.getText();
     }
 
-    public String getUniqueUsernameHint() {
+    public String getUniqueUsernameHint() throws Exception {
         return uniqueUsernameHint.getText();
     }
 
-    public String getUniqueUsername() throws Exception{
+    public String getUniqueUsername() throws Exception {
         DriverUtils.waitUntilElementClickable(getDriver(), uniqueUsernameInput);
         return uniqueUsernameInput.getAttribute("value");
     }
@@ -254,5 +265,13 @@ public class AccountPage extends WebPage {
     public void clickConfirmDeleteAccountButton() throws Exception {
         DriverUtils.waitUntilElementClickable(getDriver(), confirmDeleteAccountButton);
         confirmDeleteAccountButton.click();
+    }
+
+    public String getRememberedUniqueUsername() {
+        return rememberedUniqueUsername;
+    }
+
+    public void setRememberedUniqueUsername(String rememberedUniqueUsername) {
+        this.rememberedUniqueUsername = rememberedUniqueUsername;
     }
 }

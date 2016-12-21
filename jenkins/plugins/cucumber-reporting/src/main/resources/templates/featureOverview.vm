@@ -10,28 +10,10 @@
 	<link rel="stylesheet" href="blue/css/reset.css" type="text/css" media="screen" />
 	<link rel="stylesheet" href="blue/css/text.css" type="text/css" media="screen" />
 	<link rel="shortcut icon" href="blue/favicon.ico" />
-    #if($flashCharts)
-        <script language="javascript">AC_FL_RunContent = 0;</script>
-        <script language="javascript"> DetectFlashVer = 0; </script>
-        <script src="charts/AC_RunActiveContent.js" language="javascript"></script>
-        <script language="JavaScript" type="text/javascript">
-        <!--
-        var requiredMajorVersion = 10;
-        var requiredMinorVersion = 0;
-        var requiredRevision = 45;
-        -->
-        </script>
-    #else
-        #if ($highCharts)
-            <script type="text/javascript" src="js/jquery.min.js"></script>
-            <script src="js/highcharts.js"></script>
-        #else
-            <script src="js/raphael.js"></script>
-            <script src="js/g.raphael-min.js"></script>
-            <script src="js/g.pie-min.js"></script>
-            <script src="js/g.bar-min.js"></script>
-        #end
-    #end
+    <script src="js/raphael.js"></script>
+    <script src="js/g.raphael-min.js"></script>
+    <script src="js/g.pie-min.js"></script>
+    <script src="js/g.bar-min.js"></script>
 <style>
 .feature-keyword{font-weight:bold;}
 .feature-description{padding-left:15px;font-style:italic;background-color:beige;}
@@ -46,7 +28,8 @@
 .passed{background-color:#C5D88A;}
 .failed{background-color:#D88A8A;}
 .skipped{background-color:#2DEAEC;}
-.undefined{background-color: #ebcc81;}
+.pending{background-color: #EBCC81;}
+.undefined{background-color: #D3D3D3;}
 
 table.stats-table {
 	color:black;
@@ -104,7 +87,6 @@ text.build {
                     #if($fromJenkins)
                         <li><a href="${jenkins_base}job/$build_project/$build_number">Back To Jenkins</a></li>
                     #end
-				<!--<li><a href="tag-overview.html">Tag Overview</a></li>-->
 				</ul>
 			</div>
 		</div>
@@ -120,239 +102,32 @@ text.build {
 
 	<div class="container_12">
 		<div class="grid_12">
-
-
-#if($flashCharts)
-	 <div id="flash-charts" style="text-align:center;">
-
-         <table>
-             <tr>
-                 <td>
-         <script language="JavaScript" type="text/javascript">
-<!--
-if (AC_FL_RunContent == 0 || DetectFlashVer == 0) {
-	alert("This page requires AC_RunActiveContent.js.");
-} else {
-	var hasRightVersion = DetectFlashVer(requiredMajorVersion, requiredMinorVersion, requiredRevision);
-	if(hasRightVersion) {
-		AC_FL_RunContent(
-			'codebase', 'http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,45,2',
-			'width', '480',
-			'height', '300',
-			'scale', 'noscale',
-			'salign', 'TL',
-			'bgcolor', '#bbccff',
-			'wmode', 'opaque',
-			'movie', 'charts/charts',
-			'src', 'charts/charts',
-			'FlashVars', "library_path=charts/charts_library&xml_data=$step_data",
-			'id', 'my_chart',
-			'name', 'my_chart',
-			'menu', 'true',
-			'allowFullScreen', 'true',
-			'allowScriptAccess','sameDomain',
-			'quality', 'high',
-			'align', 'middle',
-			'pluginspage', 'http://www.macromedia.com/go/getflashplayer',
-			'play', 'true',
-			'devicefont', 'false'
-			);
-	} else {
-		var alternateContent = 'This content requires the Adobe Flash Player. '
-		+ '<u><a href=http://www.macromedia.com/go/getflash/>Get Flash</a></u>.';
-		document.write(alternateContent);
-	}
-}
-// -->
-</script>
-<noscript>
-	<P>This content requires JavaScript.</P>
-</noscript>
- </td>
- <td width="10">&nbsp;</td>
-                 <td>
-     <script language="JavaScript" type="text/javascript">
-   <!--
-   if (AC_FL_RunContent == 0 || DetectFlashVer == 0) {
-   	alert("This page requires AC_RunActiveContent.js.");
-   } else {
-   	var hasRightVersion = DetectFlashVer(requiredMajorVersion, requiredMinorVersion, requiredRevision);
-   	if(hasRightVersion) {
-   		AC_FL_RunContent(
-   			'codebase', 'http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,45,2',
-   			'width', '480',
-   			'height', '300',
-   			'scale', 'noscale',
-   			'salign', 'TL',
-   			'bgcolor', '#bbccff',
-   			'wmode', 'opaque',
-   			'movie', 'charts/charts',
-   			'src', 'charts/charts',
-   			'FlashVars', "library_path=charts/charts_library&xml_data=$scenario_data",
-   			'id', 'my_chart',
-   			'name', 'my_chart',
-   			'menu', 'true',
-   			'allowFullScreen', 'true',
-   			'allowScriptAccess','sameDomain',
-   			'quality', 'high',
-   			'align', 'middle',
-   			'pluginspage', 'http://www.macromedia.com/go/getflashplayer',
-   			'play', 'true',
-   			'devicefont', 'false'
-   			);
-   	} else {
-   		var alternateContent = 'This content requires the Adobe Flash Player. '
-   		+ '<u><a href=http://www.macromedia.com/go/getflash/>Get Flash</a></u>.';
-   		document.write(alternateContent);
-   	}
-   }
-   // -->
-   </script>
-   <noscript>
-   	<P>This content requires JavaScript.</P>
-   </noscript>
-
- </td>
- </tr>
- </table>
-</div>
-#else
-    #if ($highCharts)
-        <script>
-            jQuery(document).ready(function() {
-                jQuery('#steps_chart').highcharts({
-                    chart: {
-                        plotBackgroundColor: null,
-                        plotBorderWidth: null,
-                        plotShadow: false
-                    },
-                    title: {
-                        text: 'Steps'
-                    },
-                    tooltip: {
-                        pointFormat: '{series.name}: <b>{point.percentage}%</b>',
-                        percentageDecimals: 1
-                    },
-                    plotOptions: {
-                        pie: {
-                            allowPointSelect: true,
-                            cursor: 'pointer',
-                            dataLabels: {
-                                enabled: true,
-                                color: '#000000',
-                                connectorColor: '#000000',
-                                formatter: function() {
-                                    return '<b>'+ this.point.name +'</b>: '+ this.percentage +' %';
-                                }
-                            }
-                        }
-                    },
-                    series: [{
-                        type: 'pie',
-                        name: 'Steps',
-                        data: [
-                            {
-                                name: 'Passed',
-                                color: "$step_data.get(0)",
-                                y: $total_passes,
-                                sliced: true,
-                                selected: true
-                            },
-                            {
-                                name: 'Failed',
-                                color: "$step_data.get(2)",
-                                y: $total_fails
-                            },
-                            {
-                                name: 'Skipped',
-                                color: "$step_data.get(3)",
-                                y: $total_skipped
-                            },
-                            {
-                                name: 'Pending',
-                                color: "$step_data.get(1)",
-                                y: $total_pending
-                            }
-                        ]
-                    }]
-                });
-
-                $('#scenarios_chart').highcharts({
-                    chart: {
-                        plotBackgroundColor: null,
-                        plotBorderWidth: null,
-                        plotShadow: false
-                    },
-                    title: {
-                        text: 'Scenarios'
-                    },
-                    tooltip: {
-                        pointFormat: '{series.name}: <b>{point.percentage}%</b>',
-                        percentageDecimals: 1
-                    },
-                    plotOptions: {
-                        pie: {
-                            allowPointSelect: true,
-                            cursor: 'pointer',
-                            dataLabels: {
-                                enabled: true,
-                                color: '#000000',
-                                connectorColor: '#000000',
-                                formatter: function() {
-                                    return '<b>'+ this.point.name +'</b>: '+ this.percentage +' %';
-                                }
-                            }
-                        }
-                    },
-                    series: [{
-                        type: 'pie',
-                        name: 'Scenarios',
-                        data: [
-                            {
-                                name: 'Passed',
-                                y: $scenarios_passed,
-                                color: "$step_data.get(0)",
-                                sliced: true,
-                                selected: true
-                            },
-                            {
-                                name: 'Failed',
-                                y: $scenarios_failed,
-                                color: "$step_data.get(2)"
-                            }
-                        ]
-                    }]
-                });
-            });
-        </script>
-    #else
-        <script>
+            <script>
             window.onload = function () {
-                var steps = Raphael("steps_chart");
-                steps.text(45, 280, "Steps").attr({ font: "30px sans-serif" });
-                steps.piechart(200, 150, 120, [#if( $total_passes == 0) 0.000001 #{else} $total_passes #end, #if( $total_fails == 0) 0.000001 #{else} $total_fails #end, #if( $total_skipped == 0) 0.000001 #{else} $total_skipped #end, #if( $total_pending == 0) 0.000001 #{else} $total_pending #end], { legend: ["%%.%% - Passed", "%%.%% - Failed", "%%.%% - Skipped", "%%.%% - Pending"], legendpos: "east", colors: ["$step_data.get(0)","$step_data.get(1)","$step_data.get(2)","$step_data.get(3)"]});
-
-
                 var scenarios = Raphael("scenarios_chart");
-                scenarios.text(75, 280, "Scenarios").attr({ font: "30px sans-serif", fill: "white" });
-                scenarios.piechart(200, 150, 120, [#if( $scenarios_passed == 0) 0.000001 #{else} $scenarios_passed #end,#if( $scenarios_failed == 0) 0.000001 #{else} $scenarios_failed #end], { legend: ["%%.%% - Passed", "%%.%% - Failed"], legendpos: "east", colors: ["$scenario_data.get(0)","$scenario_data.get(1)"], legendcolor: "white"});
+                scenarios.text(75, 20, "Scenarios").attr({ font: "30px sans-serif", fill: "white" });
+                scenarios.piechart(200, 170, 120, [#if( $scenarios_passed == 0) 0.000001 #{else} $scenarios_passed #end,#if(
+                $scenarios_failed == 0) 0.000001 #{else} $scenarios_failed #end], { legend: ["%%.%% - Passed", "%%.%% - Failed"], legendpos: "east", colors: ["$scenario_data.get(0)","$scenario_data.get(1)"], legendcolor: "white"});
+
+                var steps = Raphael("steps_chart");
+                steps.text(40, 25, "Steps").attr({ font: "22px sans-serif" });
+                steps.piechart(180, 170, 120, [#if( $total_passes == 0) 0.000001 #{else} $total_passes #end, #if(
+                $total_fails == 0) 0.000001 #{else} $total_fails #end, #if( $total_skipped == 0) 0.000001 #{else} $total_skipped #end, #if( $total_pending == 0) 0.000001 #{else} $total_pending #end, #if( $total_undefined == 0) 0.000001 #{else} $total_undefined #end], { legend: ["%%.%% - Passed", "%%.%% - Failed", "%%.%% - Skipped", "%%.%% - Pending", "%%.%% - Undefined"], legendpos: "east", colors: ["$step_data.get(0)","$step_data.get(1)","$step_data.get(2)","$step_data.get(3)","$step_data.get(4)"]});
             };
-        </script>
-    #end
-    <noscript>
-        <P>This content requires JavaScript.</P>
-    </noscript>
+            </script>
+            <noscript>
+                <P>This content requires JavaScript.</P>
+            </noscript>
 
-    <table id="js-charts">
-           <tr>
-               <td> <div style="background-color: #E6FCFF;width:480px;height:300px;border: 1px solid gray;" id="steps_chart"></div></td>
-               <td width="10">&nbsp;</td>
-               <td> <div style="background-color: #006699;width:480px;height:300px;border: 1px solid gray;" id="scenarios_chart"></div></td>
-           </tr>
-       </table>
+            <table id="js-charts">
+                    <tr>
+                        <td> <div style="background-color: #006699;width:480px;height:300px;border: 1px solid gray;" id="scenarios_chart"></div></td>
+                        <td width="10">&nbsp;</td>
+                        <td> <div style="background-color: #E6FCFF;width:480px;height:300px;border: 1px solid gray;" id="steps_chart"></div></td>
+                    </tr>
+            </table>
+        </div>
 
-  </div>
-#end
 	<br/>
 		<div class="grid_12 hr"></div>
 
@@ -384,6 +159,7 @@ if (AC_FL_RunContent == 0 || DetectFlashVer == 0) {
           <td id="stats-number-steps-failed-$sf">$feature.getNumberOfFailures()</td>
           <td id="stats-number-steps-skipped-$sf">$feature.getNumberOfSkipped()</td>
           <td id="stats-number-steps-pending-$sf">$feature.getNumberOfPending()</td>
+          <td id="stats-number-steps-undefined-$sf">$feature.getNumberOfUndefined()</td>
           <td id="stats-duration-$sf">$feature.getDurationOfSteps()</td>
           <td id="stats-status-$sf" style="background-color: $bgcolour;">$feature.getRawStatus()</td>
           </tr>
@@ -399,11 +175,11 @@ if (AC_FL_RunContent == 0 || DetectFlashVer == 0) {
 <td id="stats-total-steps-failed" style="background-color:lightgray;font-weight:bold;">$total_fails</td>
 <td id="stats-total-steps-skipped" style="background-color:lightgray;font-weight:bold;">$total_skipped</td>
 <td id="stats-total-steps-pending" style="background-color:lightgray;font-weight:bold;">$total_pending</td>
+<td id="stats-total-steps-undefined" style="background-color:lightgray;font-weight:bold;">$total_undefined</td>
 <td id="stats-total-duration" style="background-color:lightgray;font-weight:bold;">$total_duration</td>
 <td id="stats-total-totals" style="background-color:lightgray;font-weight:bold;">Totals</td>
 </tr></table>
 	</div>
-
 	</div>
 	</div>
 

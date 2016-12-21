@@ -13,10 +13,6 @@ public class AddEmailAddressPageSteps {
 
     private final TestContext context;
 
-    public AddEmailAddressPageSteps() {
-        this.context = new TestContext();
-    }
-
     public AddEmailAddressPageSteps(TestContext context) {
         this.context = context;
     }

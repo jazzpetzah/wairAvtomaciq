@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
@@ -19,7 +20,6 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.IOSDistributable;
 import com.wearezeta.auto.common.driver.device_helpers.IOSSimulatorHelpers;
 import io.appium.java_client.MobileBy;
-import javafx.print.PageOrientation;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
@@ -138,15 +138,11 @@ public abstract class IOSPage extends BasePage {
         }
     }
 
-    private static final int MAX_BADGE_VISIBILITY_TIMEOUT = 10; // seconds
-
     public void tapBadgeItem(String name) throws Exception {
         final By locator = getBadgeLocatorByName(name);
         getElement(locator).click();
-        if (!isLocatorInvisible(locator, MAX_BADGE_VISIBILITY_TIMEOUT)) {
-            log.warn(String.format("%s badge still appears to be visible after %s seconds timeout", name,
-                    MAX_BADGE_VISIBILITY_TIMEOUT));
-        }
+        // Wait for animation
+        Thread.sleep(2000);
     }
 
     public boolean isBadgeItemVisible(String name) throws Exception {
@@ -368,44 +364,35 @@ public abstract class IOSPage extends BasePage {
                 String.format("%.3f", durationSeconds));
     }
 
-    private Point calculateTapCoordinates(Optional<WebElement> el, int percentX, int percentY) throws Exception {
-        final Dimension screenSize = getDriver().manage().window().getSize();
-        int tapX = screenSize.getWidth() * percentX / 100;
-        int tapY = screenSize.getHeight() * percentY / 100;
+    private Point calculateTapCoordinates(Optional<FBElement> el, int percentX, int percentY) throws Exception {
+        int tapX, tapY;
         if (el.isPresent()) {
-            final Point elLocation = el.get().getLocation();
-            final Dimension elSize = el.get().getSize();
-            tapX = elLocation.getX() + elSize.getWidth() * percentX / 100;
-            tapY = elLocation.getY() + elSize.getHeight() * percentY / 100;
+            final Rectangle elRect = el.get().getRect();
+            tapX = elRect.x + elRect.width * percentX / 100;
+            tapY = elRect.y + elRect.height * percentY / 100;
+        } else {
+            final Dimension screenSize = getDriver().manage().window().getSize();
+            tapX = screenSize.getWidth() * percentX / 100;
+            tapY = screenSize.getHeight() * percentY / 100;
         }
         return new Point(tapX, tapY);
     }
 
-    protected void doubleTapAt(Optional<WebElement> el, int percentX, int percentY) throws Exception {
-        if (getDriver().getOrientation() == ScreenOrientation.LANDSCAPE) {
-            // FIXME: Remove the workaround after landscape orientation is respected by XCTest
-            if (el.isPresent() && el.get() instanceof FBElement) {
-                ((FBElement)(el.get())).doubleTap();
-                return;
-            }
-        }
+    protected void doubleTapAt(FBElement el, int percentX, int percentY) throws Exception {
+        this.doubleTapAt(Optional.of(el), percentX, percentY);
+    }
+
+    protected void doubleTapAt(Optional<FBElement> el, int percentX, int percentY) throws Exception {
         final Point tapPoint = calculateTapCoordinates(el, percentX, percentY);
         getDriver().doubleTapScreenAt(tapPoint.getX(), tapPoint.getY());
     }
 
-    protected void longTapAt(WebElement el, int percentX, int percentY) throws Exception {
+    protected void longTapAt(FBElement el, int percentX, int percentY) throws Exception {
         this.longTapAt(Optional.of(el), percentX, percentY, DriverUtils.LONG_TAP_DURATION / 1000.0);
     }
 
-    protected void longTapAt(Optional<WebElement> el, int percentX, int percentY, double durationSeconds)
+    protected void longTapAt(Optional<FBElement> el, int percentX, int percentY, double durationSeconds)
             throws Exception {
-        if (getDriver().getOrientation() == ScreenOrientation.LANDSCAPE) {
-            // FIXME: Remove the workaround after landscape orientation is respected by XCTest
-            if (el.isPresent() && el.get() instanceof FBElement) {
-                ((FBElement)(el.get())).longTap();
-                return;
-            }
-        }
         final Point tapPoint = calculateTapCoordinates(el, percentX, percentY);
         getDriver().longTapScreenAt(tapPoint.getX(), tapPoint.getY(), durationSeconds);
     }
@@ -660,6 +647,30 @@ public abstract class IOSPage extends BasePage {
         return false;
     }
 
+    protected boolean isElementVisible(WebElement element) throws Exception {
+        return this.isElementVisible(element, DriverUtils.getDefaultLookupTimeoutSeconds());
+    }
+
+    protected boolean isElementVisible(WebElement el, int timeoutSeconds) throws Exception {
+        final long msStarted = System.currentTimeMillis();
+        int iterationNumber = 1;
+        do {
+            try {
+                if (el.isDisplayed()) {
+                    return true;
+                }
+                log.debug(String.format("The element '%s' is still invisible after %s ms",
+                        el, System.currentTimeMillis() - msStarted));
+            } catch (WebDriverException e) {
+                return false;
+            }
+            Thread.sleep((long) (MAX_EXISTENCE_DELAY_MS / iterationNumber));
+            iterationNumber++;
+        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000 ||
+                iterationNumber <= MIN_EXISTENCE_ITERATIONS_COUNT);
+        return false;
+    }
+
     @Override
     protected Optional<WebElement> getElementIfDisplayed(By locator, int timeoutSeconds) throws Exception {
         final long msStarted = System.currentTimeMillis();
@@ -811,12 +822,6 @@ public abstract class IOSPage extends BasePage {
         getElement(locator).click();
     }
 
-    /**
-     * fixes taking tablet simulator screenshots via simshot
-     *
-     * @return Optinal screenshot image
-     * @throws Exception
-     */
     @Override
     public Optional<BufferedImage> takeScreenshot() throws Exception {
         Optional<BufferedImage> screenshotImage = super.takeScreenshot();

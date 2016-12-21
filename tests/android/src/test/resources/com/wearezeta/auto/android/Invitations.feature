@@ -90,7 +90,7 @@ Feature: Invitations
     And I tap Clear button
     Then I see Conversations list with name <Contact>
     When I tap on conversation name <Contact>
-    Then I see user name of user <Contact> on Single pending outgoing connection page
+    Then I see user name "<Contact>" on Single pending outgoing connection page
 
     Examples:
       | Name      | Contact   |

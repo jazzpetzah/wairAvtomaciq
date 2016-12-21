@@ -30,31 +30,37 @@ import org.kohsuke.stapler.QueryParameter;
 
 public class CucumberReportPublisher extends Recorder {
 
-	public final String jsonReportDirectory;
-	public final String pluginUrlPath;
-	public final boolean skippedFails;
-	public final boolean undefinedFails;
-	public final boolean noFlashCharts;
-	public final boolean ignoreFailedTests;
-	public String realBuildNumber;
-	public String coverage;
-	public String customDescription;
+    public final String customDescription;
+    public final String coverage;
+    public final String realBuildNumber;
+    public final String jsonReportDirectory;
+    public final String pluginUrlPath;
+    public final boolean skippedFails;
+    public final boolean pendingFails;
+    public final boolean undefinedFails;
+    public final boolean allSkippedFails;
+	public final boolean markNotBuiltIfNoResults;
+    public final boolean ignoreFailedTests;
+    public final boolean skippedHaveScreenshots;
 
 	@DataBoundConstructor
-	public CucumberReportPublisher(String jsonReportDirectory,
-			String pluginUrlPath, boolean skippedFails, boolean undefinedFails,
-			boolean noFlashCharts, boolean ignoreFailedTests,
-			String realBuildNumber, String coverage, String customDescription) {
-		this.jsonReportDirectory = jsonReportDirectory;
-		this.pluginUrlPath = pluginUrlPath;
-		this.skippedFails = skippedFails;
-		this.undefinedFails = undefinedFails;
-		this.noFlashCharts = noFlashCharts;
-		this.ignoreFailedTests = ignoreFailedTests;
-		this.realBuildNumber = realBuildNumber;
-		this.coverage = coverage;
-		this.customDescription = customDescription;
-	}
+	public CucumberReportPublisher(String customDescription, String coverage, String realBuildNumber,
+                                   String jsonReportDirectory, String pluginUrlPath, boolean skippedFails,
+                                   boolean pendingFails, boolean undefinedFails, boolean allSkippedFails,
+                                   boolean markNotBuiltIfNoResults, boolean ignoreFailedTests, boolean skippedHaveScreenshots) {
+        this.customDescription = customDescription;
+        this.coverage = coverage;
+        this.realBuildNumber = realBuildNumber;
+        this.jsonReportDirectory = jsonReportDirectory;
+        this.pluginUrlPath = pluginUrlPath;
+        this.skippedFails = skippedFails;
+        this.undefinedFails = undefinedFails;
+        this.pendingFails = pendingFails;
+        this.allSkippedFails = allSkippedFails;
+        this.markNotBuiltIfNoResults = markNotBuiltIfNoResults;
+        this.ignoreFailedTests = ignoreFailedTests;
+        this.skippedHaveScreenshots = skippedHaveScreenshots;
+    }
 
 	private String[] findJsonFiles(File targetDirectory) {
 		DirectoryScanner scanner = new DirectoryScanner();
@@ -68,15 +74,13 @@ public class CucumberReportPublisher extends Recorder {
     public boolean perform(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener)
             throws IOException, InterruptedException {
 
-        listener.getLogger().println("[CucumberReportPublisher] Compiling Cucumber Html Reports ...");
+        listener.getLogger().println("[CucumberReportPublisher] Compiling Cucumber Reports ...");
 
         // source directory (possibly on slave)
         FilePath workspaceJsonReportDirectory;
-        if (jsonReportDirectory.isEmpty()) {
-            workspaceJsonReportDirectory = build.getWorkspace();
-        } else {
-            workspaceJsonReportDirectory = new FilePath(build.getWorkspace(), jsonReportDirectory);
-        }
+
+        workspaceJsonReportDirectory = (jsonReportDirectory.isEmpty()) ? build.getWorkspace() :
+                new FilePath(build.getWorkspace(), jsonReportDirectory);
 
         // target directory (always on master)
         File targetBuildDirectory = new File(build.getRootDir(), "cucumber-html-reports");
@@ -84,15 +88,15 @@ public class CucumberReportPublisher extends Recorder {
             targetBuildDirectory.mkdirs();
         }
 
-        String	buildNumber = Integer.toString(build.getNumber());
-        
+        String buildNumber = String.valueOf(build.getNumber());
         String buildProject = build.getProject().getName();
 
-        if (Computer.currentComputer() instanceof SlaveComputer) {
-            listener.getLogger().println("[CucumberReportPublisher] copying all json files from slave: " + workspaceJsonReportDirectory.getRemote() + " to master reports directory: " + targetBuildDirectory);
-        } else {
-            listener.getLogger().println("[CucumberReportPublisher] copying all json files from: " + workspaceJsonReportDirectory.getRemote() + " to reports directory: " + targetBuildDirectory);
-        }
+        listener.getLogger().println((Computer.currentComputer() instanceof SlaveComputer) ?
+                ("[CucumberReportPublisher] " + "copying all json files from slave: "
+                        + workspaceJsonReportDirectory.getRemote() + " to master reports directory: " + targetBuildDirectory) :
+                ("[CucumberReportPublisher] copying all json files from: "
+                        + workspaceJsonReportDirectory.getRemote() + " to reports directory: " + targetBuildDirectory));
+
         workspaceJsonReportDirectory.copyRecursiveTo("**/*.json", new FilePath(targetBuildDirectory));
 
         // generate the reports from the targetBuildDirectory
@@ -100,66 +104,56 @@ public class CucumberReportPublisher extends Recorder {
         String[] jsonReportFiles = findJsonFiles(targetBuildDirectory);
         if (jsonReportFiles.length != 0) {
 
-            listener.getLogger().println("[CucumberReportPublisher] Found the following number of json files: " + jsonReportFiles.length);
+            listener.getLogger().println("[CucumberReportPublisher] Found the following number of json files: "
+                    + jsonReportFiles.length);
             int jsonIndex = 0;
             for (String jsonReportFile : jsonReportFiles) {
-                listener.getLogger().println("[CucumberReportPublisher] " + jsonIndex + ". Found a json file: " + jsonReportFile);
+                listener.getLogger().println("[CucumberReportPublisher] " + jsonIndex + ". Found a json file: "
+                        + jsonReportFile);
                 jsonIndex++;
             }
-            listener.getLogger().println("[CucumberReportPublisher] Generating HTML reports");
 
             String parsedCoverage = null;
             String parsedCustomDescription = null;
             String parsedRealBuildNumber = "";
             
             // Parse parameters
-            listener.getLogger().println("given.coverage=" + coverage);
-            listener.getLogger().println("given.customDescription=" + customDescription);
-            listener.getLogger().println("given.realBuildNumber=" + realBuildNumber);
-            listener.getLogger().println("envVars=" + build.getEnvironment(listener));
-            
-            if (build.getEnvironment(listener).get(customDescription) != null)
-                parsedCustomDescription = build.getEnvironment(listener).get(customDescription);
-            else
-                parsedCustomDescription = customDescription;
-            
-            if (build.getEnvironment(listener).get(coverage) != null)
-                parsedCoverage = build.getEnvironment(listener).get(coverage);
-            else
-                parsedCoverage = coverage;
-            
-            String separator = null;
-            String separator2 = null;
+            listener.getLogger().println("[CucumberReportPublisher] given.coverage=" + coverage);
+            listener.getLogger().println("[CucumberReportPublisher] given.customDescription=" + customDescription);
+            listener.getLogger().println("[CucumberReportPublisher] given.realBuildNumber=" + realBuildNumber);
+            listener.getLogger().println("[CucumberReportPublisher] envVars=" + build.getEnvironment(listener));
+
+            parsedCustomDescription = (build.getEnvironment(listener).get(customDescription) == null) ? customDescription :
+                    build.getEnvironment(listener).get(customDescription);
+            parsedCoverage = (build.getEnvironment(listener).get(coverage) == null) ? coverage :
+                    build.getEnvironment(listener).get(coverage);
+
+            String buildSeparator = null;
             if (realBuildNumber.contains(".")) {
-                separator = "\\.";
-                separator2 = ".";
+                buildSeparator = ".";
             }
             if (realBuildNumber.contains(" ")) {
-                separator = " ";
-                separator2 = " ";
+                buildSeparator = " ";
+            }
+            if (buildSeparator != null) {
+                listener.getLogger().println("[CucumberReportPublisher] Build separator detected, it is '" + buildSeparator + "'");
+                String[] buildArray = null;
+                buildArray = realBuildNumber.split("\\" + buildSeparator);
+                for (String s : buildArray) {
+                    parsedRealBuildNumber = (build.getEnvironment(listener).get(s) == null) ?
+                            parsedRealBuildNumber.concat(s).concat(buildSeparator) :
+                            parsedRealBuildNumber.concat(build.getEnvironment(listener).get(s)).concat(buildSeparator);
+                }
+                parsedRealBuildNumber = parsedRealBuildNumber.substring(0, parsedRealBuildNumber.length() - 1);
+            } else {
+                parsedRealBuildNumber = (build.getEnvironment(listener).get(realBuildNumber) == null) ? realBuildNumber :
+                        build.getEnvironment(listener).get(realBuildNumber);
             }
             
-            if (separator != null) {
-                listener.getLogger().println("Build separator detected, it is '" + separator2 + "'");
-                String[] buildArray = null;
-                buildArray = realBuildNumber.split(separator);
-                for (int i = 0; i < buildArray.length; i++) {
-                    if (build.getEnvironment(listener).get(buildArray[i]) != null)
-                        parsedRealBuildNumber = parsedRealBuildNumber
-                        .concat(build.getEnvironment(listener).get(buildArray[i])).concat(separator2);
-                    else
-                        parsedRealBuildNumber = parsedRealBuildNumber.concat(buildArray[i]).concat(separator2);
-                }
-            parsedRealBuildNumber = parsedRealBuildNumber.substring(0, parsedRealBuildNumber.length() - 1);
-            } else if (build.getEnvironment(listener).get(realBuildNumber) != null)
-                parsedRealBuildNumber = build.getEnvironment(listener).get(realBuildNumber);
-            else
-                parsedRealBuildNumber = realBuildNumber;
-            
-            listener.getLogger().println("parsed.coverage=" + parsedCoverage);
-            listener.getLogger().println("parsed.customDescription=" + parsedCustomDescription);
-            listener.getLogger().println("parsed.realBuildNumber=" + parsedRealBuildNumber);
-            
+            listener.getLogger().println("[CucumberReportPublisher] Parsed coverage:" + parsedCoverage);
+            listener.getLogger().println("[CucumberReportPublisher] Parsed customDescription:" + parsedCustomDescription);
+            listener.getLogger().println("[CucumberReportPublisher] Parsed realBuildNumber:" + parsedRealBuildNumber);
+            listener.getLogger().println("[CucumberReportPublisher] Read json report...");
             try {
                 ReportBuilder reportBuilder = new ReportBuilder(
                         fullPathToJsonFiles(jsonReportFiles, targetBuildDirectory),
@@ -171,22 +165,23 @@ public class CucumberReportPublisher extends Recorder {
                         buildNumber,
                         buildProject,
                         skippedFails,
+                        pendingFails,
                         undefinedFails,
-                        !noFlashCharts,
+                        allSkippedFails,
+                        skippedHaveScreenshots,
                         true,
                         false,
-                        "",
-                        false);
+                        "");
+                listener.getLogger().println("[CucumberReportPublisher] Generating HTML reports");
                 reportBuilder.generateReports();
 
 				boolean buildSuccess = reportBuilder.getBuildStatus();
 
-				if (buildSuccess)
-				{
-					result = Result.SUCCESS;
-				}
-				else
-				{
+
+				if (buildSuccess) {
+                    result = (markNotBuiltIfNoResults && reportBuilder.getTotalNumberOfSteps() == 0) ? Result.NOT_BUILT :
+                            Result.SUCCESS;
+                } else {
 					result = ignoreFailedTests ? Result.UNSTABLE : Result.FAILURE;
 				}
 				
@@ -246,7 +241,6 @@ public class CucumberReportPublisher extends Recorder {
 		}
 	}
 
-    @Override
 	public BuildStepMonitor getRequiredMonitorService() {
 		return BuildStepMonitor.NONE;
 	}

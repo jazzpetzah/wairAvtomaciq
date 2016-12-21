@@ -134,19 +134,7 @@ public class LoginPageSteps {
         getLoginPage().switchToPhoneLogin();
     }
 
-    /**
-     * Verify set email/password suggesstion page is shown
-     *
-     * @throws Exception
-     * @step. ^I see set email/password suggestion page$
-     */
-    @When("^I see set email/password suggestion page$")
-    public void ISeeSetEmailPassSuggestionPage() throws Exception {
-        Assert.assertTrue("Email/password suggestion page is not visible",
-                getLoginPage().isSetEmailPasswordSuggestionVisible());
-    }
-
-    private static final int BY_PHONE_NUMBER_LOGIN_PROBABILITY = 15;
+    private static final int BY_PHONE_NUMBER_LOGIN_PROBABILITY = 5;
     private static final Random rand = new Random();
 
     /**
@@ -209,11 +197,7 @@ public class LoginPageSteps {
      */
     @When("^I have entered login (.*)")
     public void WhenIHaveEnteredLogin(String login) throws Exception {
-        try {
-            login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
-        } catch (NoSuchUserException e) {
-            // Ignore silently
-        }
+        login = usrMgr.replaceAliasesOccurences(login, ClientUsersManager.FindBy.EMAIL_ALIAS);
         getLoginPage().setLogin(login);
     }
 
@@ -226,11 +210,7 @@ public class LoginPageSteps {
      */
     @When("^I have entered password (.*)")
     public void WhenIHaveEnteredPassword(String password) throws Exception {
-        try {
-            password = usrMgr.findUserByPasswordAlias(password).getPassword();
-        } catch (NoSuchUserException e) {
-            // Ignore silently
-        }
+        password = usrMgr.replaceAliasesOccurences(password, ClientUsersManager.FindBy.PASSWORD_ALIAS);
         getLoginPage().setPassword(password);
     }
 

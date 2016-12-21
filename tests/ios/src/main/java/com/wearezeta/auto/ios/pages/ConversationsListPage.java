@@ -85,35 +85,32 @@ public class ConversationsListPage extends IOSPage {
     }
 
     public void tapOnName(String name) throws Exception {
-        findNameInContactList(name).orElseThrow(
-                () -> new IllegalStateException(String.format("The conversation '%s' is not visible in the list", name))
-        ).click();
+        getConversationsListItem(name).click();
         // Wait for transition animation
         Thread.sleep(1500);
     }
 
-    protected Optional<WebElement> findNameInContactList(String name, int timeoutSeconds) throws Exception {
+    private WebElement getConversationsListItem(String name, int timeoutSeconds) throws Exception {
         final By locator = FBBy.xpath(xpathStrConvoListEntryByName.apply(name));
-        return getElementIfDisplayed(locator, timeoutSeconds);
+        return getElement(locator, String.format("The conversation '%s' is not visible in the list after %s seconds",
+                name, timeoutSeconds), timeoutSeconds);
     }
 
-    protected Optional<WebElement> findNameInContactList(String name) throws Exception {
-        return findNameInContactList(name,
-                Integer.parseInt(CommonUtils.getDriverTimeoutFromConfig(getClass())));
+    protected WebElement getConversationsListItem(String name) throws Exception {
+        return getConversationsListItem(name, Integer.parseInt(CommonUtils.getDriverTimeoutFromConfig(getClass())));
     }
 
     public boolean isConversationInList(String name) throws Exception {
-        return findNameInContactList(name).isPresent();
+        return this.isConversationInList(name, Integer.parseInt(CommonUtils.getDriverTimeoutFromConfig(getClass())));
     }
 
     public boolean isConversationInList(String name, int timeoutSeconds) throws Exception {
-        return findNameInContactList(name, timeoutSeconds).isPresent();
+        final By locator = FBBy.xpath(xpathStrConvoListEntryByName.apply(name));
+        return isLocatorDisplayed(locator, timeoutSeconds);
     }
 
     private void swipeRightOnContact(String name) throws Exception {
-        final FBElement dstElement = (FBElement) findNameInContactList(name).orElseThrow(
-                () -> new IllegalStateException(String.format("Cannot find a conversation named '%s'", name))
-        );
+        final FBElement dstElement = (FBElement) getConversationsListItem(name);
         final Dimension elSize = dstElement.getSize();
         final Point elLocation = dstElement.getLocation();
         final double y = elLocation.getY() + elSize.getHeight() * 8 / 9;

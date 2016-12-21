@@ -98,7 +98,7 @@ Feature: Notifications
     Given I see Conversations list with conversations
     Given User <Contact> sends encrypted message <Message> to user Myself
     Given I swipe right on a <Contact>
-    Given I select MUTE from conversation settings menu
+    Given I tap MUTE button on Single conversation options menu
     Given Conversation <Contact> is muted
     When I minimize the application
     And User <Contact> sends encrypted message <Message> to user Myself
@@ -148,7 +148,7 @@ Feature: Notifications
     Then I see the message "<Notification>" in push notifications list
     When I restore the application
     And I swipe right on a <Contact>
-    And I select MUTE from conversation settings menu
+    And I tap MUTE button on Single conversation options menu
     And Conversation <Contact> is muted
     # Wait for animation
     And I wait for 2 seconds

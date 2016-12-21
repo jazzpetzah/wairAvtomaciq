@@ -6,6 +6,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
+import com.wearezeta.auto.web.pages.AccountPage;
 import com.wearezeta.auto.web.pages.popovers.GroupPopoverContainer;
 
 import cucumber.api.java.en.Then;
@@ -17,6 +18,7 @@ import org.junit.Assert;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.Matchers.not;
 
 public class GroupPopoverPageSteps {
 
@@ -38,10 +40,6 @@ public class GroupPopoverPageSteps {
     private static final String TOOLTIP_OPEN_YOUR_PROFILE = "Open your profile";
 
     private final TestContext context;
-
-    public GroupPopoverPageSteps() {
-        this.context = new TestContext();
-    }
 
     public GroupPopoverPageSteps(TestContext context) {
         this.context = context;
@@ -282,7 +280,7 @@ public class GroupPopoverPageSteps {
                         .getPeopleCountInfo(), equalTo(String.valueOf(amount)
                         + " PEOPLE"));
         assertThat("Actual amount of people in popover", context.getPagesCollection()
-                .getPage(GroupPopoverContainer.class).getPeopleCount(),
+                        .getPage(GroupPopoverContainer.class).getPeopleCount(),
                 equalTo(amount));
     }
 
@@ -411,5 +409,16 @@ public class GroupPopoverPageSteps {
                 context.getPagesCollection().getPage(GroupPopoverContainer.class)
                         .getOpenConvButtonCaption().trim()
                         .equals(CAPTION_OPEN_CONVERSATION));
+    }
+
+    @When("^I see unique username (.*) on Group Participants popover$")
+    public void ISeeUniqueUsernameOnGroupParticipants(String userAlias) throws Exception {
+        ClientUser user = context.getUserManager().findUserBy(userAlias, FindBy.NAME_ALIAS);
+        // username given. strict check for username
+        String uniqueUsername = user.getUniqueUsername();
+        Assert.assertThat("Unique username is NOT on Group Participants popover",
+                context.getPagesCollection().getPage(GroupPopoverContainer.class).getUniqueUsername(),
+                equalTo(uniqueUsername));
+
     }
 }

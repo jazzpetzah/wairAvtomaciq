@@ -57,9 +57,7 @@ public class TabletConversationsListPage extends ConversationsListPage {
     @Override
     public void swipeRightConversationToRevealActionButtons(String conversation) throws Exception {
         // FIXME: perform swipe via standard driver methods
-        final FBElement dstElement = (FBElement) findNameInContactList(conversation).orElseThrow(
-                () -> new IllegalStateException(String.format("Cannot find a conversation named '%s'", conversation))
-        );
+        final FBElement dstElement = (FBElement) getConversationsListItem(conversation);
         swipeAtElement(dstElement, 20, 60, 65, 60, 1.5);
     }
 }

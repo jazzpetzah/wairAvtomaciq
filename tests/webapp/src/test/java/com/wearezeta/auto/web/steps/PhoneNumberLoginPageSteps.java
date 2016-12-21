@@ -21,10 +21,6 @@ public class PhoneNumberLoginPageSteps {
 
     private final TestContext context;
 
-    public PhoneNumberLoginPageSteps() {
-        this.context = new TestContext();
-    }
-
     public PhoneNumberLoginPageSteps(TestContext context) {
         this.context = context;
     }

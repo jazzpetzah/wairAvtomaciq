@@ -84,11 +84,7 @@ public class SearchUIPage extends IOSPage {
 
     public void tapSearchInput() throws Exception {
         getElement(xpathSearchInput).click();
-        if (!this.isKeyboardVisible()) {
-            throw new IllegalStateException(
-                    "On-screen keyboard is expected to be shown after click on search input field"
-            );
-        }
+        this.isKeyboardVisible();
     }
 
     public boolean isVisible() throws Exception {
@@ -130,6 +126,10 @@ public class SearchUIPage extends IOSPage {
     public void tapButton(String name) throws Exception {
         final By locator = getButtonLocatorByName(name);
         getElement(locator).click();
+        if (locator.equals(fbNameXButton)) {
+            // Wait for animation
+            Thread.sleep(1500);
+        }
     }
 
     public boolean isButtonVisible(String name) throws Exception {

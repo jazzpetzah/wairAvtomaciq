@@ -18,11 +18,11 @@ public class ContactListPage extends AbstractPickUserPage {
             -> String.format("//*[@id='ttv__contactlist__user__name' and @value='%s']", name);
 
     private static final Function<String, String> xpathStrAvatarByUserName = name
-            -> String.format("%s/parent::*/parent::*/*[@id='cv__contactlist__user__chathead']",
+            -> String.format("%s/parent::*/parent::*/parent::*/*[@id='cv__contactlist__user__chathead']",
             xpathStrUserByName.apply(name));
 
     private static final Function<String, String> xpathStrInviteButtonByUserName = name
-            -> String.format("%s/parent::*/parent::*/*[@id='zb__contactlist__user_selected_button']",
+            -> String.format("%s/parent::*/parent::*/parent::*/*[@id='zb__contactlist__user_selected_button']",
             xpathStrUserByName.apply(name));
 
     public ContactListPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {

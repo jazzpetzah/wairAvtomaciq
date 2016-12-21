@@ -35,7 +35,7 @@ Feature: Conversation View
   @C1703 @smoke @localytics
   Scenario Outline: Send message in 1on1
     Given There are 2 users where <Name> is me
-    Given User <Contact> changes unique username to <Contact>
+    Given <Contact> has unique username
     Given user <Contact> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact>
     Given I enable localytics via URL parameter
@@ -43,7 +43,7 @@ Feature: Conversation View
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
     And I open conversation with <Contact>
-    And I see unique username starts with <Contact> in conversation
+    And I see unique username of <Contact> in conversation
     When I write random message
     And I send message
     Then I see random message in conversation

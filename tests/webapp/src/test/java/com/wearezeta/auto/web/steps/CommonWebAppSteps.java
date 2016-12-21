@@ -15,6 +15,8 @@ import com.wearezeta.auto.web.common.Message;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
+import com.wearezeta.auto.web.locators.WebAppLocators;
+import com.wearezeta.auto.web.pages.AccountPage;
 import com.wearezeta.auto.web.pages.ConversationPage;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.pages.WebPage;
@@ -46,22 +48,13 @@ import org.openqa.selenium.logging.LogEntry;
 public class CommonWebAppSteps {
 
     private static final Logger log = ZetaLogger.getLog(CommonWebAppSteps.class.getSimpleName());
-
     private static final int DELETION_RECEIVING_TIMEOUT = 120;
-
-    private String rememberedPage = null;
-
-    private String rememberedMessageId = null;
-
     private static final String DEFAULT_USER_PICTURE = "/images/aqaPictureContact600_800.jpg";
-
-    private final TestContext context;
-
     private static final String VIDEO_MESSAGE_IMAGE = "example.png";
 
-    public CommonWebAppSteps() {
-        this.context = new TestContext();
-    }
+    private final TestContext context;
+    private String rememberedPage = null;
+    private String rememberedMessageId = null;
 
     public CommonWebAppSteps(TestContext context) {
         this.context = context;
@@ -251,6 +244,11 @@ public class CommonWebAppSteps {
         context.startPinging();
         context.getCommonSteps().WaitUntilTopPeopleContactsIsFoundInSearch(searchByNameAlias, size);
         context.stopPinging();
+    }
+
+    @Given("^(\\w+) waits? until (\\w+) has (\\d+) common friends? on the backend$")
+    public void UserWaitsForCommonFriends(String usrAsAlias, String query, int expectedFriendsCount) throws Exception {
+        context.getCommonSteps().WaitUntilCommonContactsIsGenerated(usrAsAlias, query, expectedFriendsCount);
     }
 
     @When("^I wait for (\\d+) seconds?$")
@@ -710,5 +708,11 @@ public class CommonWebAppSteps {
         Random rand = new Random();
         String uniqUserName = uniqueUserName + rand.nextInt(5);
         context.getCommonSteps().UpdateUniqueUsername(userNameAlias, uniqUserName, deviceName);
+    }
+
+    @Given("^User (.*) updates? the unique user name to random value(?: via device (.*))?")
+    public void UserXUpdateUniqueUserName(String userNameAlias, String deviceName) throws Exception {
+        String randomUniqueUsername = CommonUtils.generateGUID().replace("-", "").substring(0, 8);
+        context.getCommonSteps().UpdateUniqueUsername(userNameAlias, randomUniqueUsername, deviceName);
     }
 }

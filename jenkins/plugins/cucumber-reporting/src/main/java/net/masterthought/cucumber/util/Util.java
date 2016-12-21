@@ -18,15 +18,15 @@ import java.util.regex.Pattern;
 public class Util {
 
     public static enum Status {
-        PASSED, FAILED, SKIPPED, UNDEFINED, MISSING, PENDING
+        PASSED, FAILED, SKIPPED, PENDING, UNDEFINED, MISSING
     }
 
     public static Map<String, Status> resultMap = new HashMap<String, Status>() {{
         put("passed", Util.Status.PASSED);
         put("failed", Util.Status.FAILED);
         put("skipped", Util.Status.SKIPPED);
-        put("undefined", Util.Status.UNDEFINED);
         put("pending", Util.Status.PENDING);
+        put("undefined", Util.Status.UNDEFINED);
         put("missing", Util.Status.MISSING);
     }};
 
@@ -38,12 +38,12 @@ public class Util {
             result = "<div class=\"failed\">";
         } else if (status == Status.SKIPPED) {
             result = "<div class=\"skipped\">";
+        } else if (status == Status.PENDING) {
+            result = "<div class=\"pending\">";
         } else if (status == Status.UNDEFINED) {
             result = "<div class=\"undefined\">";
         } else if (status == Status.MISSING) {
             result = "<div class=\"missing\">";
-        } else if (status == Status.PENDING) {
-            result = "<div class=\"undefined\">";
         }
         return result;
     }
@@ -81,14 +81,6 @@ public class Util {
 
     public static boolean itemExists(Sequence<Element> sequence) {
         return sequence.size() != 0;
-    }
-
-    public static boolean itemExists(Tag[] tags) {
-        boolean result = false;
-        if (tags != null) {
-            result = tags.length != 0;
-        }
-        return result;
     }
 
     public static String passed(boolean value) {
@@ -162,14 +154,6 @@ public class Util {
         boolean result = element.getSteps() == null || element.getSteps().size() == 0;
         if (result) {
             System.out.println("[WARNING] scenario has no steps:  " + element.getRawName());
-        }
-        return !result;
-    }
-
-    public static boolean hasSteps(ScenarioTag scenario) {
-        boolean result = scenario.getScenario().getSteps() == null || scenario.getScenario().getSteps().size() == 0;
-        if (result) {
-            System.out.println("[WARNING] scenario tag has no steps:  " + scenario.getScenario().getRawName());
         }
         return !result;
     }

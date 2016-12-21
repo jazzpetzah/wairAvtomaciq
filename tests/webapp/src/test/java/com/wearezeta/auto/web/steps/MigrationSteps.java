@@ -18,25 +18,19 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.log4j.Logger;
 
 public class MigrationSteps {
-
-    private TestContext context;
-
-    public MigrationSteps() {
-        this.context = new TestContext();
-    }
-
-    public MigrationSteps(TestContext context) {
-        this.context = context;
-    }
-
+    
     private static final Logger log = ZetaLogger.getLog(MigrationSteps.class.getSimpleName());
-
     private static final int IS_RUNNING_CHECK_INTERVAL = 20; // milliseconds
     private static final int MAX_RETRY = 3;
     private static final int RETRY_TIMEOUT = 10000; // milliseconds
 
     private Path temp;
     private Process gruntProcess;
+    private TestContext context;
+
+    public MigrationSteps(TestContext context) {
+        this.context = context;
+    }
 
     private void createProcessLogger(Process process) {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {

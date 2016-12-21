@@ -298,7 +298,7 @@ Feature: Search
       | user1Name | user2Name | user3Name | user4Name |
 
   @C2806 @rc @regression @fastLogin
-  Scenario Outline: Verify sharing a photo to a newly created group conversation with action button [LANDSAPE]
+  Scenario Outline: (ZIOS-7762) Verify sharing a photo to a newly created group conversation with action button [LANDSAPE]
     Given There are 4 users where <Name> is me
     Given Myself is connected to all other users
     Given I rotate UI to landscape
@@ -314,6 +314,8 @@ Feature: Search
     And I accept alert if visible
     And I select the first picture from Camera Roll
     And I tap Confirm button on Picture preview page
+    # Workaround for ZIOS-7762. Next step should be removed once bug is fixed
+    And I tap Close button on Camera page
     Then I see group conversation with users <Contact1>,<Contact2>,<Contact3>
     And I see 1 photo in the conversation view
     And I see in conversations list group chat with <Contact1>,<Contact2>,<Contact3>
@@ -391,32 +393,6 @@ Feature: Search
     When I tap on 1st top connection contact
     Then I see Open conversation action button on Search UI page
     When I tap on 1st top connection contact
-    Then I do not see Open conversation action button on Search UI page
-
-    Examples:
-      | Name      |
-      | user1Name |
-
-  @C2816 @regression @fastLogin
-  Scenario Outline: Verify action buttons disappear by deleting token from a search field [LANDSCAPE]
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to all other users
-    Given I rotate UI to landscape
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    Given I wait until my Top People list is not empty on the backend
-    When I open search UI
-    And I accept alert if visible
-    And I tap on 1st top connection contact
-    And I see Open conversation action button on Search UI page
-    And I tap on 2nd top connection contact
-    Then I see Create conversation action button on Search UI page
-    When I tap input field on Search UI page
-    And I press Backspace button in search field
-    And I press Backspace button in search field
-    Then I do not see Create conversation action button on Search UI page
-    When I press Backspace button in search field
-    And I press Backspace button in search field
     Then I do not see Open conversation action button on Search UI page
 
     Examples:

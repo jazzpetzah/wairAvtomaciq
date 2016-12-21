@@ -4,6 +4,7 @@ Feature: Calling Matrix
   Scenario Outline: Verify I can make 1:1 call to <CallBackend>
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -22,11 +23,11 @@ Feature: Calling Matrix
 
     Examples:
       | Name      | Contact   | CallBackend          | Timeout |
+      | user1Name | user2Name | chrome:55.0.2883.75  | 20      |
+      | user1Name | user2Name | chrome:54.0.2840.100 | 20      |
       | user1Name | user2Name | chrome:53.0.2785.116 | 20      |
-      | user1Name | user2Name | chrome:52.0.2743.82  | 20      |
-      | user1Name | user2Name | chrome:51.0.2704.106 | 20      |
-      | user1Name | user2Name | firefox:46.0.1       | 20      |
-      | user1Name | user2Name | firefox:45.0.1       | 20      |
+      | user1Name | user2Name | firefox:50.0.2       | 20      |
+      | user1Name | user2Name | firefox:50.0         | 20      |
 
   @calling_matrix
   Scenario Outline: Verify I can make 1:1 call to AVS <CallBackend>
@@ -47,15 +48,16 @@ Feature: Calling Matrix
     And I do not see ongoing call
 
     Examples:
-      | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | zcall:2.8.6 | 20      |
-      | user1Name | user2Name | zcall:2.8.8 | 20      |
-      | user1Name | user2Name | zcall:2.9.3 | 20      |
+      | Name      | Contact   | CallBackend  | Timeout |
+      | user1Name | user2Name | zcall:2.9.14 | 20      |
+      | user1Name | user2Name | zcall:2.8.8  | 20      |
+      | user1Name | user2Name | zcall:2.9.3  | 20      |
 
   @calling_matrix
   Scenario Outline: Verify I can receive 1:1 call from <CallBackend>
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given User <Contact1> sets the unique username
     Given <Contact1> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -74,11 +76,11 @@ Feature: Calling Matrix
 
     Examples:
       | Name      | Contact1  | CallBackend          | Timeout |
+      | user1Name | user2Name | chrome:55.0.2883.75  | 20      |
+      | user1Name | user2Name | chrome:54.0.2840.100 | 20      |
       | user1Name | user2Name | chrome:53.0.2785.116 | 20      |
-      | user1Name | user2Name | chrome:52.0.2743.82  | 20      |
-      | user1Name | user2Name | chrome:51.0.2704.106 | 20      |
-      | user1Name | user2Name | firefox:46.0.1       | 20      |
-      | user1Name | user2Name | firefox:45.0.1       | 20      |
+      | user1Name | user2Name | firefox:50.0.2       | 20      |
+      | user1Name | user2Name | firefox:50.0         | 20      |
 
   @calling_matrix
   Scenario Outline: Verify I can receive 1:1 call from AVS <CallBackend>
@@ -101,15 +103,16 @@ Feature: Calling Matrix
     #And <Contact1> verifies that call to conversation <Name> was successful
 
     Examples:
-      | Name      | Contact1  | CallBackend | Timeout |
-      | user1Name | user2Name | zcall:2.8.6 | 60      |
-      | user1Name | user2Name | zcall:2.8.8 | 60      |
-      | user1Name | user2Name | zcall:2.9.3 | 60      |
+      | Name      | Contact1  | CallBackend  | Timeout |
+      | user1Name | user2Name | zcall:2.9.14 | 60      |
+      | user1Name | user2Name | zcall:2.8.8  | 60      |
+      | user1Name | user2Name | zcall:2.9.3  | 60      |
 
   @calling_matrix
   Scenario Outline: Verify I can make group call with multiple <WaitBackend>
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given Users <Contact1>,<Contact2> set the unique username
     Given <Contact1>,<Contact2> start instance using <WaitBackend>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
@@ -129,11 +132,11 @@ Feature: Calling Matrix
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | WaitBackend          | Timeout |
+      | user1Name | user2Name | user3Name | GroupCall     | chrome:55.0.2883.75  | 20      |
+      | user1Name | user2Name | user3Name | GroupCall     | chrome:54.0.2840.100 | 20      |
       | user1Name | user2Name | user3Name | GroupCall     | chrome:53.0.2785.116 | 20      |
-      | user1Name | user2Name | user3Name | GroupCall     | chrome:52.0.2743.82  | 20      |
-      | user1Name | user2Name | user3Name | GroupCall     | chrome:51.0.2704.106 | 20      |
-      | user1Name | user2Name | user3Name | GroupCall     | firefox:46.0.1       | 20      |
-      | user1Name | user2Name | user3Name | GroupCall     | firefox:45.0.1       | 20      |
+      | user1Name | user2Name | user3Name | GroupCall     | firefox:50.0.2       | 20      |
+      | user1Name | user2Name | user3Name | GroupCall     | firefox:50.0         | 20      |
 
   @calling_matrix
   Scenario Outline: Verify I can make group call with multiple AVS <WaitBackend>
@@ -153,16 +156,17 @@ Feature: Calling Matrix
     Then I do not see ongoing call
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName | WaitBackend | Timeout |
-      | user1Name | user2Name | user3Name | GroupCall     | zcall:2.8.6 | 20      |
-      | user1Name | user2Name | user3Name | GroupCall     | zcall:2.8.8 | 20      |
-      | user1Name | user2Name | user3Name | GroupCall     | zcall:2.9.3 | 20      |
+      | Name      | Contact1  | Contact2  | GroupChatName | WaitBackend  | Timeout |
+      | user1Name | user2Name | user3Name | GroupCall     | zcall:2.9.14 | 20      |
+      | user1Name | user2Name | user3Name | GroupCall     | zcall:2.8.8  | 20      |
+      | user1Name | user2Name | user3Name | GroupCall     | zcall:2.9.3  | 20      |
 
   @calling_matrix
   Scenario Outline: Verify I can join group call with multiple <Backend>
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given Users <Contact1>,<Contact2> set the unique username
     Given <Contact2>,<Contact1> start instance using <Backend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -183,17 +187,18 @@ Feature: Calling Matrix
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Backend              | Timeout |
+      | user1Name | user2Name | user3Name | GroupCall     | chrome:55.0.2883.75  | 20      |
+      | user1Name | user2Name | user3Name | GroupCall     | chrome:54.0.2840.100 | 20      |
       | user1Name | user2Name | user3Name | GroupCall     | chrome:53.0.2785.116 | 20      |
-      | user1Name | user2Name | user3Name | GroupCall     | chrome:52.0.2743.82  | 20      |
-      | user1Name | user2Name | user3Name | GroupCall     | chrome:51.0.2704.106 | 20      |
-      | user1Name | user2Name | user3Name | GroupCall     | firefox:46.0.1       | 20      |
-      | user1Name | user2Name | user3Name | GroupCall     | firefox:45.0.1       | 20      |
+      | user1Name | user2Name | user3Name | GroupCall     | firefox:50.0.2       | 20      |
+      | user1Name | user2Name | user3Name | GroupCall     | firefox:50.0         | 20      |
 
   @calling_matrix
   Scenario Outline: Verify I can join group call with AVS <CallBackend> and <WaitBackend>
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given Users <Contact1>,<Contact2> set the unique username
     Given <Contact1> start instance using <CallBackend>
     Given <Contact2> start instance using <WaitBackend>
     Given I sign in using my email or phone number
@@ -211,10 +216,10 @@ Feature: Calling Matrix
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | WaitBackend          | Timeout | CallBackend |
+      | user1Name | user2Name | user3Name | GroupCall     | chrome:55.0.2883.75  | 20      | zcall:2.8.8 |
+      | user1Name | user2Name | user3Name | GroupCall     | chrome:54.0.2840.100 | 20      | zcall:2.8.8 |
       | user1Name | user2Name | user3Name | GroupCall     | chrome:53.0.2785.116 | 20      | zcall:2.8.8 |
-      | user1Name | user2Name | user3Name | GroupCall     | chrome:52.0.2743.82  | 20      | zcall:2.8.8 |
-      | user1Name | user2Name | user3Name | GroupCall     | chrome:51.0.2704.106 | 20      | zcall:2.8.8 |
-      | user1Name | user2Name | user3Name | GroupCall     | firefox:46.0.1       | 20      | zcall:2.8.8 |
+      | user1Name | user2Name | user3Name | GroupCall     | firefox:50.0.2       | 20      | zcall:2.8.8 |
 
   @calling_matrix
   Scenario Outline: Verify I can join group call with ZCall <WaitBackend> and <CallBackend>
@@ -237,12 +242,12 @@ Feature: Calling Matrix
     Then I do not see ongoing call
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName | CallBackend | Timeout | WaitBackend |
-      | user1Name | user2Name | user3Name | GroupCall     | zcall:2.8.6 | 20      | zcall:2.8.6 |
-      | user1Name | user2Name | user3Name | GroupCall     | zcall:2.8.6 | 20      | zcall:2.8.8 |
-      | user1Name | user2Name | user3Name | GroupCall     | zcall:2.8.8 | 20      | zcall:2.8.8 |
-      | user1Name | user2Name | user3Name | GroupCall     | zcall:2.9.3 | 20      | zcall:2.9.3 |
-      | user1Name | user2Name | user3Name | GroupCall     | zcall:2.8.8 | 20      | zcall:2.9.3 |
+      | Name      | Contact1  | Contact2  | GroupChatName | CallBackend  | Timeout | WaitBackend  |
+      | user1Name | user2Name | user3Name | GroupCall     | zcall:2.9.14 | 20      | zcall:2.9.14 |
+      | user1Name | user2Name | user3Name | GroupCall     | zcall:2.9.14 | 20      | zcall:2.8.8  |
+      | user1Name | user2Name | user3Name | GroupCall     | zcall:2.8.8  | 20      | zcall:2.8.8  |
+      | user1Name | user2Name | user3Name | GroupCall     | zcall:2.9.3  | 20      | zcall:2.9.3  |
+      | user1Name | user2Name | user3Name | GroupCall     | zcall:2.8.8  | 20      | zcall:2.9.3  |
 
   @calling_matrix
   Scenario Outline: Verify putting client to the background during 1-to-1 call <CallBackend> to me
@@ -262,15 +267,16 @@ Feature: Calling Matrix
     And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
 
     Examples:
-      | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | zcall:2.8.6 | 20      |
-      | user1Name | user2Name | zcall:2.8.8 | 20      |
-      | user1Name | user2Name | zcall:2.9.3 | 20      |
+      | Name      | Contact   | CallBackend  | Timeout |
+      | user1Name | user2Name | zcall:2.9.14 | 20      |
+      | user1Name | user2Name | zcall:2.8.8  | 20      |
+      | user1Name | user2Name | zcall:2.9.3  | 20      |
 
   @calling_matrix
   Scenario Outline: Put app into background after initiating call with user <WaitBackend>
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <WaitBackend>
     Given <Contact> accepts next incoming call automatically
     Given I sign in using my email or phone number
@@ -285,14 +291,15 @@ Feature: Calling Matrix
 
     Examples:
       | Name      | Contact   | WaitBackend          | Timeout |
+      | user1Name | user2Name | chrome:55.0.2883.75  | 20      |
+      | user1Name | user2Name | chrome:54.0.2840.100 | 20      |
       | user1Name | user2Name | chrome:53.0.2785.116 | 20      |
-      | user1Name | user2Name | chrome:52.0.2743.82  | 20      |
-      | user1Name | user2Name | chrome:51.0.2704.106 | 20      |
 
   @calling_matrix
   Scenario Outline: Lock device screen when in call with user <WaitBackend>
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <WaitBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -310,9 +317,9 @@ Feature: Calling Matrix
 
     Examples:
       | Name      | Contact   | WaitBackend          | Timeout |
+      | user1Name | user2Name | chrome:55.0.2883.75  | 20      |
+      | user1Name | user2Name | chrome:54.0.2840.100 | 20      |
       | user1Name | user2Name | chrome:53.0.2785.116 | 20      |
-      | user1Name | user2Name | chrome:52.0.2743.82  | 20      |
-      | user1Name | user2Name | chrome:51.0.2704.106 | 20      |
 
   @calling_matrix
   Scenario Outline: Answer 1-to-1 call <CallBackend> from GCM
@@ -330,7 +337,7 @@ Feature: Calling Matrix
     And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
 
     Examples:
-      | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | zcall:2.8.6 | 20      |
-      | user1Name | user2Name | zcall:2.8.8 | 20      |
-      | user1Name | user2Name | zcall:2.9.3 | 20      |
+      | Name      | Contact   | CallBackend  | Timeout |
+      | user1Name | user2Name | zcall:2.9.14 | 20      |
+      | user1Name | user2Name | zcall:2.8.8  | 20      |
+      | user1Name | user2Name | zcall:2.9.3  | 20      |

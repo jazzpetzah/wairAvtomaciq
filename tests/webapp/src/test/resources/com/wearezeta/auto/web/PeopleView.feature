@@ -4,6 +4,7 @@ Feature: People View
   Scenario Outline: Verify you can access proﬁle information for the other participant in a 1to1 conversation
     Given There are 2 users where <Name> is me
     Given User <Contact> changes avatar picture to <Avatar>
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -71,6 +72,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <KnownContact>
     Given <KnownContact> is connected to <UnknownContact>
+    Given <KnownContact> has unique username
     Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
     Given I sent connection request to <UnknownContact>
     Given I switch to Sign In page
@@ -98,8 +100,10 @@ Feature: People View
   Scenario Outline: Verify I can see participant profile of user who has requested to connect with you in a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <KnownContact>
+    Given <UnknownContact> has unique username
     Given <KnownContact> is connected to <UnknownContact>
     Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
+    Given <UnknownContact> has unique username
     Given <UnknownContact> sent connection request to Myself
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -109,7 +113,8 @@ Feature: People View
     Then I see Group Participants popover
     Then I see correct add people button tool tip
     When I click on participant <UnknownContact> on Group Participants popover
-    Then I see username <UnknownContact> on Group Participants popover
+    Then I see unique username <UnknownContact> on Group Participants popover
+    And I see username <UnknownContact> on Group Participants popover
     And I see an avatar on Group Participants popover
     And I see Remove button on Group Participants popover
     And I see correct remove from group button tool tip on Group Participants popover
@@ -128,6 +133,7 @@ Feature: People View
   Scenario Outline: Verify I can see participant profile of connected user in a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <KnownContact>
+    Given <KnownContact> has unique username
     Given <KnownContact> is connected to <UnknownContact>
     Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
     Given I switch to Sign In page
@@ -138,19 +144,21 @@ Feature: People View
     Then I see Group Participants popover
     When I click on participant <KnownContact> on Group Participants popover
     Then I see username <KnownContact> on Group Participants popover
+    And I see unique username <KnownContact> on Group Participants popover
     And I do not see Mail of user <KnownContact> on Group Participants popover
     And I see open conversation button on Group Participants popover
     When I click open conversation from Group Participants popover
     Then I see conversation with <KnownContact> is selected in conversations list
 
     Examples: 
-      | Login      | Password      | Name      | KnownContact | KnownContactMail | UnknownContact | ChatName               |
-      | user1Email | user1Password | user1Name | user2Name    | user2Email       | user3Name      | PeoplePopoverGroupChat |
+      | Login      | Password      | Name      | KnownContact | UnknownContact | ChatName               |
+      | user1Email | user1Password | user1Name | user2Name    | user3Name      | PeoplePopoverGroupChat |
 
   @C1780 @regression
   Scenario Outline: Verify I can see participant profile of user I blocked in a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <KnownContact>
+    Given <KnownContact> has unique username
     Given <KnownContact> is connected to <UnknownContact>
     Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
     Given Myself blocked <KnownContact>
@@ -163,6 +171,7 @@ Feature: People View
     Then I see Group Participants popover
     When I click on participant <KnownContact> on Group Participants popover
     Then I see username <KnownContact> on Group Participants popover
+    And I see unique username <KnownContact> on Group Participants popover
     And I see an avatar on Group Participants popover
     And I see Remove button on Group Participants popover
     And I see Unblock button on Group Participants popover
@@ -181,6 +190,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <KnownContact>
     Given <KnownContact> is connected to <UnknownContact>
+    Given <UnknownContact> has unique username
     Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
     Given <UnknownContact> sent connection request to me
     Given I switch to Sign In page
@@ -192,6 +202,7 @@ Feature: People View
     When I click on participant <UnknownContact> on Group Participants popover
     Then I see correct remove from group button tool tip on Group Participants popover
     And I see username <UnknownContact> on Group Participants popover
+    And I see unique username <UnknownContact> on Group Participants popover
     And I do not see Mail of user <UnknownContact> on Group Participants popover
     And I see Pending button on Group Participants popover
     When I click Pending button on Group Participants popover

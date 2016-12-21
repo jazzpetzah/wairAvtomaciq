@@ -228,6 +228,7 @@ Feature: Conversation List
     Given User <Contact1> sends encrypted image <Picture> to single user conversation Myself
     Given User <Contact1> sends 1 encrypted message to user <Name>
     Given User Myself sends 1 encrypted message to user <Contact1>
+    Given I wait until <Contact1> exists in backend search results
     When I tap on contact name <Contact1>
     Then I see 1 photo in the conversation view
     When I navigate back to conversations list
@@ -321,7 +322,7 @@ Feature: Conversation List
       | user1Name | user2Name |
 
   @C844 @regression @fastLogin
-  Scenario Outline: (ZIOS-7745) Verify deleting 1-to-1 conversation from archive
+  Scenario Outline: Verify deleting 1-to-1 conversation from archive
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number

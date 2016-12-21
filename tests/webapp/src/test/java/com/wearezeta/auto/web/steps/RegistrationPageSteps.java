@@ -33,21 +33,13 @@ import org.junit.Assert;
 
 public class RegistrationPageSteps {
 
-    private ClientUser userToRegister = null;
-
-    private Future<String> activationMessage;
-
-    private Future<String> newDeviceMessage;
-
-    public static final int maxCheckCnt = 2;
-
     private static final Logger LOG = ZetaLogger.getLog(RegistrationPageSteps.class.getName());
+    public static final int MAX_CHECK_COUNT = 2;
 
+    private ClientUser userToRegister = null;
+    private Future<String> activationMessage;
+    private Future<String> newDeviceMessage;
     private final TestContext context;
-
-    public RegistrationPageSteps() {
-        this.context = new TestContext();
-    }
 
     public RegistrationPageSteps(TestContext context) {
         this.context = context;
@@ -218,29 +210,28 @@ public class RegistrationPageSteps {
                         .isEnvelopeShown());
     }
 
-	/**
-	 * Activate newly registered user on the backend. Don't forget to call the
-	 * 'I start activation email monitoring' step before this one
-	 * 
-	 * @step. ^I verify registration email$
-	 * 
-	 * @throws Exception
-	 */
+    /**
+     * Activate newly registered user on the backend. Don't forget to call the 'I start activation email monitoring' step before
+     * this one
+     *
+     * @step. ^I verify registration email$
+     *
+     * @throws Exception
+     */
     @Then("^I verify registration email$")
     public void IVerifyRegistrationEmail() throws Exception {
         BackendAPIWrappers
                 .activateRegisteredUserByEmail(this.activationMessage);
     }
 
-	/**
-	 * Activates user using browser URL from activation email and sign him in to
-	 * the app if the activation was successful. Don't forget to call the 'I
-	 * start activation email monitoring' step before this one
-	 * 
-	 * @step. ^I activate user by URL$
-	 * 
-	 * @throws Exception
-	 */
+    /**
+     * Activates user using browser URL from activation email and sign him in to the app if the activation was successful. Don't
+     * forget to call the 'I start activation email monitoring' step before this one
+     *
+     * @step. ^I activate user by URL$
+     *
+     * @throws Exception
+     */
     @Then("^I activate user by URL$")
     public void WhenIActivateUserByUrl() throws Exception {
         final String link = BackendAPIWrappers.getUserActivationLink(this.activationMessage);

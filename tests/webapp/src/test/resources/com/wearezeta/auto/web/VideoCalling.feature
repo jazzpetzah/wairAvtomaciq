@@ -162,6 +162,7 @@ Feature: VideoCalling
   Scenario Outline: Verify I can have video call more than 30 mins
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given <Contact> accepts next incoming video call automatically

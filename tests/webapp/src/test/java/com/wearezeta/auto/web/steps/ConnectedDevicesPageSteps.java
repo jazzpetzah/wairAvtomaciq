@@ -12,10 +12,6 @@ public class ConnectedDevicesPageSteps {
 
     private final TestContext context;
 
-    public ConnectedDevicesPageSteps() {
-        this.context = new TestContext();
-    }
-
     public ConnectedDevicesPageSteps(TestContext context) {
         this.context = context;
     }

@@ -11,7 +11,7 @@ import com.wearezeta.auto.web.pages.WebPage;
 
 public class PasswordChangeRequestSuccessfullPage extends WebPage {
 	private static final String CONFIRMATION_TEXT = "Check your email";
-	private static final String UnusedMailText = "This is email is not in use.";
+	private static final String UnusedMailText = "This email is not in use.";
 
 	public PasswordChangeRequestSuccessfullPage(
 			Future<ZetaWebAppDriver> lazyDriver) throws Exception {

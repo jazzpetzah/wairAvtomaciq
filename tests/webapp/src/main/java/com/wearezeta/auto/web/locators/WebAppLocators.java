@@ -358,8 +358,6 @@ public final class WebAppLocators {
         public static final String cssUserAvatar = ".user-avatar and .pending";
 
         public static final String cssWatermark = "[data-uie-name='no-conversation']";
-        
-        public static final String cssCancelRequestButton = "#"+idConversation+" [data-uie-name='do-cancel-request']";
 
         public static final String cssUsername = ".message-connected-username.label-username";
 
@@ -703,6 +701,22 @@ public final class WebAppLocators {
         public static final Function<String, String> cssKnownConnectionOthersTextById = uid -> String
                 .format("[data-uie-name='connect-request'][data-uie-uid='%s'] [data-uie-value='others']",
                         uid);
+
+        public static final Function<String, String> cssCommonFriendsById = uid -> String
+                .format("[data-uie-name='connect-request'][data-uie-uid='%s'] common-contacts",
+                        uid);
+    }
+
+    public static final class OutgoingRequestPage {
+
+        public static final String idConversation = "conversation";
+
+        public static final String cssCancelRequestButton = "#" + idConversation + " [data-uie-name='do-cancel-request']";
+
+        public static final String cssUniqueUsernameOutgoing = ".message-connected-username.label-username";
+
+        public static final String cssCommonFriends = ".message-connected-contacts";
+
     }
 
     public static final class StartUIPage {
@@ -720,8 +734,12 @@ public final class WebAppLocators {
 
         public static final Function<String, String> xpathSearchResultByName = (
                 name) -> String.format(
-                "%s//*[@data-uie-name='item-user' and .//*[text()='%s']]",
+                "%s//*[@data-uie-name='item-user' and .//*[contains(@class,'search-list-item-content-name') and text()='%s']]",
                 xpathRoot, name);
+
+        public static final String xpathSearchResultByNameAndUniqueUsername = xpathRoot + "//*[@data-uie-name='item-user' and "
+                + ".//*[contains(@class,'search-list-item-content-name') and text()='%s']"
+                + "/parent::*//*[contains(@class,'search-list-item-content-username') and text()='%s']]";
 
         public static final Function<String, String> xpathSearchResultGroupByName = (
                 name) -> String.format(
