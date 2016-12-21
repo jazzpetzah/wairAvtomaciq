@@ -647,6 +647,30 @@ public abstract class IOSPage extends BasePage {
         return false;
     }
 
+    protected boolean isElementVisible(WebElement element) throws Exception {
+        return this.isElementVisible(element, DriverUtils.getDefaultLookupTimeoutSeconds());
+    }
+
+    protected boolean isElementVisible(WebElement el, int timeoutSeconds) throws Exception {
+        final long msStarted = System.currentTimeMillis();
+        int iterationNumber = 1;
+        do {
+            try {
+                if (el.isDisplayed()) {
+                    return true;
+                }
+                log.debug(String.format("The element '%s' is still invisible after %s ms",
+                        el, System.currentTimeMillis() - msStarted));
+            } catch (WebDriverException e) {
+                return true;
+            }
+            Thread.sleep((long) (MAX_EXISTENCE_DELAY_MS / iterationNumber));
+            iterationNumber++;
+        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000 ||
+                iterationNumber <= MIN_EXISTENCE_ITERATIONS_COUNT);
+        return false;
+    }
+
     @Override
     protected Optional<WebElement> getElementIfDisplayed(By locator, int timeoutSeconds) throws Exception {
         final long msStarted = System.currentTimeMillis();
