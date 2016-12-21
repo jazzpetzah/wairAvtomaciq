@@ -32,10 +32,6 @@ public class LoginPage extends IOSPage {
 
     private static final By nameMaybeLater = MobileBy.AccessibilityId("MAYBE LATER");
 
-    private static final By xpathSetEmailPasswordSuggestionLabel = By.xpath(
-            "//XCUIElementTypeStaticText[contains(@name, 'Add your email and password.')]");
-
-
     public static final By nameResentIn10min = MobileBy.AccessibilityId(
             "We already sent you a code via SMS. Tap Resend after 10 minutes to get a new one.");
 
@@ -132,10 +128,6 @@ public class LoginPage extends IOSPage {
 
     public boolean wrongCredentialsNotificationIsShown() throws Exception {
         return isLocatorDisplayed(nameWrongCredentialsNotification, 30);
-    }
-
-    public boolean isSetEmailPasswordSuggestionVisible() throws Exception {
-        return isLocatorDisplayed(xpathSetEmailPasswordSuggestionLabel);
     }
 
     public boolean isResendIn10minAlertVisible() throws Exception {
