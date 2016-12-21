@@ -208,6 +208,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     private static final By nameEmojiKeyboardButton = MobileBy.AccessibilityId("emojiButton");
     private static final By nameTimeIndicatorButton = MobileBy.AccessibilityId("ephemeralTimeIndicatorButton");
     private static final By nameEpheTextInputPlaceholder = MobileBy.AccessibilityId("TIMED MESSAGE");
+    private static final By nameCollectionButton = MobileBy.AccessibilityId("collection");
 
     private static final By fbClassPickerWheel = FBBy.className("XCUIElementTypePickerWheel");
 
@@ -908,6 +909,8 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
                 return xpathAudioCallButton;
             case "video call":
                 return xpathVideoCallButton;
+            case "collection":
+                return nameCollectionButton;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", name));
         }

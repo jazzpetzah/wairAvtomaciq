@@ -115,7 +115,7 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. I tap (Send Message|Emoji Keyboard|Text Keyboard|Hourglass) button in conversation view
      */
-    @And("^I tap (Send Message|Emoji Keyboard|Text Keyboard|Hourglass|Time Indicator) button in conversation view$")
+    @And("^I tap (Send Message|Emoji Keyboard|Text Keyboard|Hourglass|Time Indicator|Collection) button in conversation view$")
     public void ITapConvoButton(String btnName) throws Exception {
         getConversationViewPage().tapButton(btnName);
     }
