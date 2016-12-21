@@ -662,7 +662,7 @@ public abstract class IOSPage extends BasePage {
                 log.debug(String.format("The element '%s' is still invisible after %s ms",
                         el, System.currentTimeMillis() - msStarted));
             } catch (WebDriverException e) {
-                return true;
+                return false;
             }
             Thread.sleep((long) (MAX_EXISTENCE_DELAY_MS / iterationNumber));
             iterationNumber++;
