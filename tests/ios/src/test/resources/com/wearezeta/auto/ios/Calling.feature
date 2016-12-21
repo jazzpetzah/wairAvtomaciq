@@ -525,7 +525,7 @@ Feature: Calling
     Given I sign in using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I call 3 times for 1 minutes with <Contact>
+    And I call 1 times for 1 minutes with <Contact>
 
     Examples:
       | Name      | Contact   | CallBackend  |

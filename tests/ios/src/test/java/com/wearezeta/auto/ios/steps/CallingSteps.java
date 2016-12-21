@@ -269,7 +269,7 @@ public class CallingSteps {
 
         LOG.info("\n\nSTARTING CALL " + callIndex);
         try {
-            pagesCollection.getPage(ConversationViewPage.class).tapAudioCallButton();
+            pagesCollection.getPage(ConversationViewPage.class).tapButton("Audio Call");
             LOG.info("Pressing Audio button to start call");
 
             if (callIndex == 0) {
@@ -326,7 +326,7 @@ public class CallingSteps {
             } catch (Exception ex) {
                 LOG.error(String.format("Can not stop call kit %s because %s", callIndex, ex));
                 try {
-                    boolean callButtonVisible = pagesCollection.getPage(ConversationViewPage.class).isAudioCallButtonOnToolbarVisible();
+                    boolean callButtonVisible = pagesCollection.getPage(ConversationViewPage.class).isButtonVisible("Audio Call");
                     if (!callButtonVisible) {
                         throw new CallIterationError(callIndex, "Calling button is not visible");
                     }
