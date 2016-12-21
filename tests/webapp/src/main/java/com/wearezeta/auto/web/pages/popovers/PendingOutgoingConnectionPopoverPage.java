@@ -3,7 +3,6 @@ package com.wearezeta.auto.web.pages.popovers;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.web.locators.WebAppLocators;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
