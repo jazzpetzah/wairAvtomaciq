@@ -7,9 +7,8 @@ import com.wearezeta.auto.web.pages.popovers.ConnectToPopoverContainer;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
-import org.junit.Assert;
 
-import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ConnectToPopoverPageSteps {
@@ -77,6 +76,6 @@ public class ConnectToPopoverPageSteps {
         // username given. strict check for username
         String uniqueUsername = user.getUniqueUsername();
         assertThat(context.getPagesCollection().getPage(ConnectToPopoverContainer.class).getUniqueUsernameOutgoing(),
-                equalTo(uniqueUsername));
+                containsString(uniqueUsername));
     }
 }
