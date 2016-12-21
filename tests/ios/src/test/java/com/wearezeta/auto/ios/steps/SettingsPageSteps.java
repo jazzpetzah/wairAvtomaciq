@@ -263,30 +263,21 @@ public class SettingsPageSteps {
     /**
      * Verify expected unique username is displayed on Settings page
      *
-     * @param nameSource define method to get unique username
-     * @param name       unique name or name alias
+     * @param wasSet detect if unique name was previously set
+     * @param name   unique name or name alias
      * @throws Exception
-     * @step. ^I see (previously set|remembered|"(.*)") unique username is displayed on Settings Page$
+     * @step. ^I see (previously set|"(.*)") unique username is displayed on Settings Page$
      */
-    @Then("^I see (previously set|remembered|\"(.*)\") unique username is displayed on Settings Page$")
-    public void ISeeUniqueUsernameOnSettingsPage(String nameSource, String name) throws Exception {
-        switch (nameSource) {
-            case "previously set":
-                name = UniqueUsernamePageSteps.getNewUniqueName();
-                Assert.assertTrue(String.format("New previously set unique username %s is not displayed on Settings Page",
-                        name),
-                        getSettingsPage().isUniqueUsernameInSettingsDisplayed(name));
-                break;
-            case "remembered":
-                name = UniqueUsernameTakeoverPageSteps.getAutoUniqueName();
-                Assert.assertTrue(String.format("Remembered unique username %s is not displayed on Settings Page", name),
-                        getSettingsPage().isUniqueUsernameInSettingsDisplayed(name));
-                break;
-            default:
-                name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
-                Assert.assertTrue(String.format("Unique username %s is not displayed on Settings Page", name),
-                        getSettingsPage().isUniqueUsernameInSettingsDisplayed(name));
-                break;
+    @Then("^I see (previously set|\"(.*)\") unique username is displayed on Settings Page$")
+    public void ISeeUniqueUsernameOnSettingsPage(String wasSet, String name) throws Exception {
+        if (wasSet.equals("previously set")) {
+            name = UniqueUsernamePageSteps.getNewUniqueName();
+            Assert.assertTrue(String.format("New previously set unique username %s is not displayed on Settings Page", name),
+                    getSettingsPage().isUniqueUsernameInSettingsDisplayed(name));
+        } else {
+            name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
+            Assert.assertTrue(String.format("New previously set unique username %s is not displayed on Settings Page", name),
+                    getSettingsPage().isUniqueUsernameInSettingsDisplayed(name));
         }
     }
 }
