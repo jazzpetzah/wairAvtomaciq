@@ -10,8 +10,8 @@ Feature: Collections
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     Given I see conversations list
     Given User Myself sends encrypted message "<Link>" to user <Contact>
-    When I tap on contact name <Contact>
-    And I tap Collection button in conversation view
+    Given I tap on contact name <Contact>
+    When I tap Collection button in conversation view
     Then I see collection category PICTURES
     And I see collection category FILES
     And I see collection category LINKS

@@ -17,16 +17,16 @@ public class CollectionPageSteps {
      *
      * @param shouldNotBeVisible equals to null if the category should be visible
      * @param categoryName       name of the collectin category
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I (do not )?see collection category (PICTURES|LINKS|FILES)$
      */
     @Then("^I (do not )?see collection category (PICTURES|LINKS|FILES)$")
-    public void ISeeCollectionCategory(String shouldNotBeVisible, String categoryName) throws Throwable {
+    public void ISeeCollectionCategory(String shouldNotBeVisible, String categoryName) throws Exception {
         if (shouldNotBeVisible == null) {
-            Assert.assertTrue("Collection category is not visible",
+            Assert.assertTrue(String.format("Collection category %s is not visible", categoryName),
                     getCollectionPage().isCollectionCategoryVisible(categoryName));
         } else {
-            Assert.assertTrue("Collection category is visible, but should not be there",
+            Assert.assertTrue(String.format("Collection category %s is visible, but should not be there",categoryName),
                     getCollectionPage().isCollectioncategoryInvisible(categoryName));
         }
 

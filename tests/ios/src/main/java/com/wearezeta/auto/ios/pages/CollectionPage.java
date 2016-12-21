@@ -1,26 +1,29 @@
 package com.wearezeta.auto.ios.pages;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import java.util.concurrent.Future;
-import java.util.function.Function;
 
 public class CollectionPage extends IOSPage {
-    private static final Function<String, String> xpathStrCollectionCategoryHeaderByName = categoryName ->
-            String.format("//XCUIElementTypeCollectionView/XCUIElementTypeOther/XCUIElementTypeStaticText[@name='%s']", categoryName);
+
+    private static final By classCollectionViewRoot = By.className("XCUIElementTypeCollectionView");
 
     public CollectionPage(Future<ZetaIOSDriver> driver) throws Exception {
         super(driver);
     }
 
     public boolean isCollectionCategoryVisible(String categoryName) throws Exception {
-        final By locator = By.xpath(xpathStrCollectionCategoryHeaderByName.apply(categoryName));
-        return isLocatorDisplayed(locator);
+        final WebElement category = getElement(classCollectionViewRoot).findElement(
+                MobileBy.AccessibilityId(categoryName));
+        return isElementVisible(category);
     }
 
     public boolean isCollectioncategoryInvisible(String categoryName) throws Exception {
-        final By locator = By.xpath(xpathStrCollectionCategoryHeaderByName.apply(categoryName));
-        return isLocatorInvisible(locator);
+        final WebElement category = getElement(classCollectionViewRoot).findElement(
+                MobileBy.AccessibilityId(categoryName));
+        return isElementInvisible(category);
     }
 }
