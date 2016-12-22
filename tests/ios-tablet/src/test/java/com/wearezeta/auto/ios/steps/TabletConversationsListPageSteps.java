@@ -33,7 +33,8 @@ public class TabletConversationsListPageSteps {
     @When("^I remember the (left|right) side state of (.*) conversation item on iPad$")
     public void IRememberConvoItemState(String side, String nameAlias) throws Exception {
         final String name = usrMgr.replaceAliasesOccurences(nameAlias, ClientUsersManager.FindBy.NAME_ALIAS);
-        final TabletConversationsListPage.EntrySide entrySide = TabletConversationsListPage.EntrySide.valueOf(side.toUpperCase());
+        final TabletConversationsListPage.EntrySide entrySide =
+                TabletConversationsListPage.EntrySide.valueOf(side.toUpperCase());
         this.savedConvoItemStates.put(name,
                 new ElementState(
                         () -> getTabletConversationsListPage().getConversationEntryScreenshot(entrySide, name)

@@ -431,4 +431,14 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
         );
         return new Point(original.y, screenSize.height - original.x);
     }
+
+    @Override
+    public <X> X getScreenshotAs(OutputType<X> outputType) throws WebDriverException {
+        try {
+            return outputType.convertFromBase64Png(getFbDriverAPI().getScreenshot());
+        } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
+            throw new WebDriverException(e);
+        }
+    }
+
 }
