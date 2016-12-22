@@ -878,9 +878,9 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
             return result;
         } else {
             if (result) {
-                final long msStarted = System.currentTimeMillis();
-                while (System.currentTimeMillis() - msStarted <=
-                        Integer.parseInt(CommonUtils.getDriverTimeoutFromConfig(getClass()))) {
+                final Timedelta started = Timedelta.now();
+                while (Timedelta.now().isDiffLessOrEqual(started,
+                        Timedelta.fromSeconds(Integer.parseInt(CommonUtils.getDriverTimeoutFromConfig(getClass()))))) {
                     if (selectVisibleElements(locator).size() >= times) {
                         return true;
                     }

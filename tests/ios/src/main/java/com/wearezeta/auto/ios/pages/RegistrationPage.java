@@ -83,7 +83,7 @@ public class RegistrationPage extends IOSPage {
     private void selectWirestan() throws Exception {
         final WebElement countryPickerBtn = getElement(nameCountryPickerButton);
         countryPickerBtn.click();
-        if (!isLocatorInvisible(nameCountryPickerButton, 5)) {
+        if (!isLocatorInvisible(nameCountryPickerButton, Timedelta.fromSeconds(5))) {
             countryPickerBtn.click();
         }
         final WebElement searchInput = getElement(nameSearchField);
@@ -208,18 +208,18 @@ public class RegistrationPage extends IOSPage {
 
     public void waitRegistrationToFinish() throws Exception {
         final By locator = By.xpath(xpathStrConfirmationByMessage.apply(getEmail()));
-        if (!isLocatorInvisible(locator, 40)) {
+        if (!isLocatorInvisible(locator, Timedelta.fromSeconds(40))) {
             throw new IllegalStateException("Verification page is still visible after the timeout");
         }
     }
 
-    private static final int SELF_PICTURE_LOAD_TIMEOUT_SECONDS = 30;
+    private static final Timedelta SELF_PICTURE_LOAD_TIMEOUT = Timedelta.fromSeconds(30);
 
     public void tapKeepThisOneButton() throws Exception {
         getElement(nameKeepThisOneButton).click();
-        if (!isLocatorInvisible(nameKeepThisOneButton, SELF_PICTURE_LOAD_TIMEOUT_SECONDS)) {
-            log.warn(String.format("The self picture has not been loaded within %s seconds timeout",
-                    SELF_PICTURE_LOAD_TIMEOUT_SECONDS));
+        if (!isLocatorInvisible(nameKeepThisOneButton, SELF_PICTURE_LOAD_TIMEOUT)) {
+            log.warn(String.format("The self picture has not been loaded within %s timeout",
+                    SELF_PICTURE_LOAD_TIMEOUT.toString()));
         }
     }
 
@@ -249,7 +249,7 @@ public class RegistrationPage extends IOSPage {
         this.tapAtTheCenterOfElement(phoneNumberField);
         Thread.sleep(2000);
         phoneNumberField.sendKeys(phoneNumber.withoutPrefix());
-        if (isLocatorDisplayed(nameConfirmButton, 3)) {
+        if (isLocatorDisplayed(nameConfirmButton, Timedelta.fromSeconds(3))) {
             throw new IllegalStateException("Confirm button is visible, but should be hidden");
         }
     }

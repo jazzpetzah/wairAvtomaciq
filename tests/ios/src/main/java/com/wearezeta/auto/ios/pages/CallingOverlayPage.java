@@ -35,7 +35,7 @@ public class CallingOverlayPage extends IOSPage {
 
     private static final Function<Integer, String> xpathStrGroupCallAvatarsByCount = count ->
             String.format("//XCUIElementTypeStaticText[@name='%s']/" +
-                    "following::XCUIElementTypeCollectionView[count(XCUIElementTypeCell)=%s]",
+                            "following::XCUIElementTypeCollectionView[count(XCUIElementTypeCell)=%s]",
                     nameStrCallStatusLabel, count);
 
     private static final By xpathCallerAvatar = By.xpath(String.format(
@@ -87,7 +87,7 @@ public class CallingOverlayPage extends IOSPage {
 
     public boolean isCallingMessageContainingVisible(String text) throws Exception {
         // XPath locators are bloody slow here
-        final long msStarted = System.currentTimeMillis();
+        final Timedelta started = Timedelta.now();
         final WebElement el = getElement(nameCallingMessage,
                 "No calling overlay is visible after the timeout", Timedelta.fromSeconds(15));
         do {
@@ -95,7 +95,7 @@ public class CallingOverlayPage extends IOSPage {
                 return true;
             }
             Thread.sleep(500);
-        } while (System.currentTimeMillis() - msStarted <= 5000);
+        } while (Timedelta.now().isDiffLessOrEqual(started, Timedelta.fromMilliSeconds(5000)));
         return false;
     }
 
@@ -113,7 +113,7 @@ public class CallingOverlayPage extends IOSPage {
         );
     }
 
-    public boolean isCountOfAvatarsEqualTo(int expectedNumberOfAvatars, int timeoutSeconds) throws Exception {
+    public boolean isCountOfAvatarsEqualTo(int expectedNumberOfAvatars, Timedelta timeout) throws Exception {
         assert expectedNumberOfAvatars > 0 : "The expected number of avatar should be greater than zero";
         By locator;
         if (expectedNumberOfAvatars == 1) {
@@ -121,6 +121,6 @@ public class CallingOverlayPage extends IOSPage {
         } else {
             locator = By.xpath(xpathStrGroupCallAvatarsByCount.apply(expectedNumberOfAvatars));
         }
-        return isLocatorDisplayed(locator, timeoutSeconds);
+        return isLocatorDisplayed(locator, timeout);
     }
 }

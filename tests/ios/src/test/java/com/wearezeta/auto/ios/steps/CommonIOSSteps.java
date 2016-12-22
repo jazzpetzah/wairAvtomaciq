@@ -23,6 +23,7 @@ import com.wearezeta.auto.common.driver.device_helpers.IOSRealDeviceHelpers;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBDriverAPI;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.IOSDistributable;
+import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.sync_engine_bridge.AssetProtocol;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
@@ -633,7 +634,7 @@ public class CommonIOSSteps {
      */
     @When("^I lock screen for (\\d+) seconds$")
     public void ILockScreen(int seconds) throws Exception {
-        pagesCollection.getCommonPage().lockScreen(seconds);
+        pagesCollection.getCommonPage().lockScreen(Timedelta.fromSeconds(seconds));
     }
 
     @Given("^(.*) sent connection request to (.*)$")

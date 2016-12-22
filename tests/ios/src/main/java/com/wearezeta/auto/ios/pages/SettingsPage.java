@@ -108,7 +108,7 @@ public class SettingsPage extends IOSPage {
     }
 
     public boolean isSupportWebPageVisible() throws Exception {
-        return isLocatorExist(classSupportSearchField, 15);
+        return isLocatorExist(classSupportSearchField, Timedelta.fromSeconds(15));
     }
 
     public boolean isSettingItemValueEqualTo(String itemName, String expectedValue) throws Exception {

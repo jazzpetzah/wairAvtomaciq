@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.Timedelta;
 import org.junit.Assert;
 
 import cucumber.api.java.en.*;
@@ -177,7 +178,7 @@ public class ConversationsListPageSteps {
         getConversationsListPage().tapContactsButton();
     }
 
-    private final static long CONVO_LIST_UPDATE_TIMEOUT = 10000; // milliseconds
+    private final static Timedelta CONVO_LIST_UPDATE_TIMEOUT = Timedelta.fromSeconds(10);
 
     /**
      * Verify whether the first items in conversations list is the given item
@@ -189,16 +190,16 @@ public class ConversationsListPageSteps {
     @Then("^I see first item in contact list named (.*)")
     public void ISeeUserNameFirstInContactList(String convoName) throws Exception {
         convoName = usrMgr.replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
-        final long millisecondsStarted = System.currentTimeMillis();
+        final Timedelta started = Timedelta.now();
         do {
             Thread.sleep(500);
             if (getConversationsListPage().isFirstConversationName(convoName)) {
                 return;
             }
-        } while (System.currentTimeMillis() - millisecondsStarted <= CONVO_LIST_UPDATE_TIMEOUT);
+        } while (Timedelta.now().isDiffLessOrEqual(started, CONVO_LIST_UPDATE_TIMEOUT));
         throw new AssertionError(
                 String.format("The conversation '%s' is not the first conversation in the list after " +
-                        "%s seconds timeout", convoName, CONVO_LIST_UPDATE_TIMEOUT / 1000));
+                        "%s timeout", convoName, CONVO_LIST_UPDATE_TIMEOUT.toString()));
 
     }
 
@@ -237,11 +238,13 @@ public class ConversationsListPageSteps {
         convoName = usrMgr.replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
         if (expectedState.equals("appears in")) {
             Assert.assertTrue(String.format("The conversation '%s' is not visible in the conversation list",
-                    convoName), getConversationsListPage().isConversationInList(convoName, timeoutSeconds));
+                    convoName), getConversationsListPage().isConversationInList(convoName,
+                    Timedelta.fromSeconds(timeoutSeconds)));
         } else {
             Assert.assertTrue(
                     String.format("The conversation '%s' is still visible in the conversation list, but should be hidden",
-                            convoName), getConversationsListPage().isConversationNotInList(convoName, timeoutSeconds));
+                            convoName), getConversationsListPage().isConversationNotInList(convoName,
+                            Timedelta.fromSeconds(timeoutSeconds)));
         }
     }
 
@@ -345,10 +348,12 @@ public class ConversationsListPageSteps {
         final List<String> participantNames = usrMgr.splitAliases(participantNameAliases);
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("There is no conversation with '%s' in the list", participantNames),
-                    getConversationsListPage().isConversationWithUsersExist(participantNames, 5));
+                    getConversationsListPage().isConversationWithUsersExist(participantNames,
+                            Timedelta.fromSeconds(5)));
         } else {
             Assert.assertFalse(String.format("There is conversation with '%s' in the list, which should be hidden",
-                    participantNames), getConversationsListPage().isConversationWithUsersExist(participantNames, 2));
+                    participantNames), getConversationsListPage().isConversationWithUsersExist(participantNames,
+                    Timedelta.fromSeconds(2)));
         }
     }
 

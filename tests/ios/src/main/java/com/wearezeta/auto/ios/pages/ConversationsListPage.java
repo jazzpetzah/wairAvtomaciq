@@ -130,7 +130,7 @@ public class ConversationsListPage extends IOSPage {
     }
 
     public boolean isPendingRequestInContactList() throws Exception {
-        return isLocatorDisplayed(xpathPendingRequest, 5);
+        return isLocatorDisplayed(xpathPendingRequest, Timedelta.fromSeconds(5));
     }
 
     public boolean pendingRequestInContactListIsNotShown() throws Exception {
@@ -143,21 +143,21 @@ public class ConversationsListPage extends IOSPage {
         Thread.sleep(2000);
     }
 
-    public boolean isConversationNotInList(String name, int timeoutSeconds) throws Exception {
+    public boolean isConversationNotInList(String name, Timedelta timeout) throws Exception {
         final By locator = FBBy.xpath(xpathStrConvoListEntryByName.apply(name));
-        return isLocatorInvisible(locator, timeoutSeconds);
+        return isLocatorInvisible(locator, timeout);
     }
 
     public boolean isConversationNotInList(String name) throws Exception {
-        return isConversationNotInList(name, 5);
+        return isConversationNotInList(name, Timedelta.fromSeconds(5));
     }
 
-    public boolean isConversationWithUsersExist(List<String> names, int timeoutSeconds) throws Exception {
+    public boolean isConversationWithUsersExist(List<String> names, Timedelta timeout) throws Exception {
         final String xpathExpr = String.join(" and ", names.stream().
                 map(x -> String.format("contains(@name, '%s')", x)).
                 collect(Collectors.toList()));
         final By locator = By.xpath(xpathStrContactListItemByExpr.apply(xpathExpr));
-        return isLocatorDisplayed(locator, timeoutSeconds);
+        return isLocatorDisplayed(locator, timeout);
     }
 
     public BufferedImage getConversationEntryScreenshot(int idx) throws Exception {

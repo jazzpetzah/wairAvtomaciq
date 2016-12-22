@@ -104,7 +104,7 @@ public class LoginPage extends IOSPage {
         final WebElement maybeLaterBtn = getElement(nameMaybeLater, "MAYBE LATER link is not visible",
                 LOGIN_TIMEOUT);
         maybeLaterBtn.click();
-        if (!isLocatorInvisible(nameMaybeLater, 3)) {
+        if (!isLocatorInvisible(nameMaybeLater, Timedelta.fromSeconds(3))) {
             maybeLaterBtn.click();
         }
     }
@@ -128,7 +128,7 @@ public class LoginPage extends IOSPage {
     }
 
     public boolean wrongCredentialsNotificationIsShown() throws Exception {
-        return isLocatorDisplayed(nameWrongCredentialsNotification, 30);
+        return isLocatorDisplayed(nameWrongCredentialsNotification, Timedelta.fromSeconds(30));
     }
 
     public boolean isResendIn10minAlertVisible() throws Exception {
@@ -166,6 +166,7 @@ public class LoginPage extends IOSPage {
                 "Login code input is not visible");
         final String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(forNumber);
         codeInput.sendKeys(code);
-        getElement(RegistrationPage.nameConfirmButton, "Confirm button is not visible", 2).click();
+        getElement(RegistrationPage.nameConfirmButton, "Confirm button is not visible",
+                Timedelta.fromSeconds(2)).click();
     }
 }

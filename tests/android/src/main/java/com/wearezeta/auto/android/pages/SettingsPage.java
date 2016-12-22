@@ -66,7 +66,7 @@ public class SettingsPage extends AndroidPage {
                     return true;
                 }
             }
-            this.swipeUpCoordinates(500, 50);
+            this.swipeUpCoordinates(Timedelta.fromMilliSeconds(500), 50);
             nScrolls++;
         }
         return false;

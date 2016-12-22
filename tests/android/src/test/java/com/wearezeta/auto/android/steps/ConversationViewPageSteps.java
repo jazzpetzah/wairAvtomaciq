@@ -14,7 +14,7 @@ import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces;
-import com.wearezeta.auto.common.usrmgmt.ClientUser;
+import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import cucumber.api.java.en.And;
@@ -49,7 +49,7 @@ public class ConversationViewPageSteps {
     private static final String ANDROID_LONG_MESSAGE = CommonUtils.generateRandomString(300);
     private static final String LONG_MESSAGE_ALIAS = "LONG_MESSAGE";
     private static final String ANY_MESSAGE = "*ANY MESSAGE*";
-    private static final int SWIPE_DURATION_MILLISECONDS = 1300;
+    private static final Timedelta SWIPE_DURATION = Timedelta.fromMilliSeconds(1300);
     private static final int MAX_SWIPES = 5;
     private static final int MEDIA_BUTTON_STATE_CHANGE_TIMEOUT = 15;
     private static final double MEDIA_BUTTON_MIN_SIMILARITY_SCORE = 0.97;
@@ -482,10 +482,10 @@ public class ConversationViewPageSteps {
     public void IScroll(String swipeDirection) throws Exception {
         switch (swipeDirection.toLowerCase()) {
             case "up":
-                getConversationViewPage().dialogsPagesSwipeUp(SWIPE_DURATION_MILLISECONDS);
+                getConversationViewPage().dialogsPagesSwipeUp(SWIPE_DURATION);
                 break;
             case "down":
-                getConversationViewPage().dialogsPagesSwipeDown(SWIPE_DURATION_MILLISECONDS);
+                getConversationViewPage().dialogsPagesSwipeDown(SWIPE_DURATION);
                 break;
             default:
                 throw new IllegalArgumentException((String.format("Unknonwn swipe direction '%s'", swipeDirection)));
@@ -511,7 +511,7 @@ public class ConversationViewPageSteps {
      */
     @When("^I navigate back from conversation$")
     public void INavigateBackFromConversation() throws Exception {
-        getConversationViewPage().navigateBack(1000);
+        getConversationViewPage().navigateBack(Timedelta.fromMilliSeconds(1000));
     }
 
     /**

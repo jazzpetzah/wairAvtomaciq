@@ -30,7 +30,7 @@ public class VideoCallingOverlayPage extends CallingOverlayPage {
     @Override
     public void tapButtonByName(String buttonName) throws Exception {
         final By locator = MobileBy.AccessibilityId(getButtonAccessibilityIdByName(buttonName));
-        final Optional<WebElement> dstBtn = getElementIfDisplayed(locator, 1);
+        final Optional<WebElement> dstBtn = getElementIfDisplayed(locator, Timedelta.fromSeconds(1));
         if (dstBtn.isPresent()) {
             dstBtn.get().click();
             return;

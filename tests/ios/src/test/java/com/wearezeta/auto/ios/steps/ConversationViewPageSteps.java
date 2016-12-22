@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.Timedelta;
 import cucumber.api.java.en.And;
 import org.apache.commons.lang3.text.WordUtils;
 import org.junit.Assert;
@@ -780,7 +781,7 @@ public class ConversationViewPageSteps {
                 "Cannot detect the Download Finished placeholder for a file '%s' in the conversation view after %s seconds",
                 expectedFileName, timeoutSeconds),
                 getConversationViewPage().waitUntilDownloadReadyPlaceholderVisible(expectedFileName, expectedSize,
-                        timeoutSeconds));
+                        Timedelta.fromSeconds(timeoutSeconds)));
     }
 
     /**
@@ -795,7 +796,8 @@ public class ConversationViewPageSteps {
     public void IWaitForFilePreview(int secondsTimeout, String expectedFileName) throws Exception {
         Assert.assertTrue(String.format("The preview was not shown for '%s' after %s seconds timeout", expectedFileName,
                 secondsTimeout),
-                getConversationViewPage().waitUntilFilePreviewIsVisible(secondsTimeout, expectedFileName));
+                getConversationViewPage().waitUntilFilePreviewIsVisible(Timedelta.fromSeconds(secondsTimeout),
+                        expectedFileName));
     }
 
     /**
@@ -821,7 +823,7 @@ public class ConversationViewPageSteps {
     @Then("^I wait up to (\\d+) seconds until I see generic file share menu$")
     public void ISeeGenericFileShareMenu(int timeoutSeconds) throws Exception {
         Assert.assertTrue("Generic file share menu has not been shown",
-                getConversationViewPage().isGenericFileShareMenuVisible(timeoutSeconds));
+                getConversationViewPage().isGenericFileShareMenuVisible(Timedelta.fromSeconds(timeoutSeconds)));
     }
 
     /**

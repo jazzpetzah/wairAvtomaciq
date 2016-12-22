@@ -433,14 +433,14 @@ public abstract class IOSPage extends BasePage {
         this.getDriver().rotate(ScreenOrientation.PORTRAIT);
     }
 
-    public void lockScreen(int timeSeconds) throws Exception {
+    public void lockScreen(Timedelta duration) throws Exception {
         assert getDriver() != null : "WebDriver is not ready";
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            final long millisecondsStarted = System.currentTimeMillis();
+            final Timedelta started = Timedelta.now();
             IOSSimulatorHelpers.lock();
-            final long lockDuration = (System.currentTimeMillis() - millisecondsStarted) / 1000;
-            if (timeSeconds > lockDuration + 1) {
-                Thread.sleep((timeSeconds - lockDuration) * 1000);
+            final Timedelta lockDuration = Timedelta.now().diff(started);
+            if (duration.isDiffGreater(lockDuration, Timedelta.fromSeconds(1))) {
+                Thread.sleep(duration.diff(lockDuration).asMilliSeconds());
             } else {
                 Thread.sleep(2000);
             }
@@ -453,7 +453,7 @@ public abstract class IOSPage extends BasePage {
             }
             Thread.sleep(2000);
         } else {
-            this.getDriver().lockDevice(timeSeconds);
+            this.getDriver().lockDevice(duration.asSeconds());
         }
     }
 
@@ -551,11 +551,11 @@ public abstract class IOSPage extends BasePage {
     }
 
     protected boolean isLocatorExist(By locator) throws Exception {
-        return this.isLocatorExist(locator, DriverUtils.getDefaultLookupTimeoutSeconds());
+        return this.isLocatorExist(locator, Timedelta.fromSeconds(DriverUtils.getDefaultLookupTimeoutSeconds()));
     }
 
-    protected boolean isLocatorExist(By locator, int timeoutSeconds) throws Exception {
-        final long msStarted = System.currentTimeMillis();
+    protected boolean isLocatorExist(By locator, Timedelta timeout) throws Exception {
+        final Timedelta started = Timedelta.now();
         int iterationNumber = 1;
         do {
             try {
@@ -563,14 +563,14 @@ public abstract class IOSPage extends BasePage {
                 if (el != null) {
                     return true;
                 }
-                throw new WebDriverException(String.format("The element '%s' is still not present after %s ms",
-                        locator, System.currentTimeMillis() - msStarted));
+                throw new WebDriverException(String.format("The element '%s' is still not present after %s",
+                        locator, Timedelta.now().diff(started).toString()));
             } catch (WebDriverException e) {
                 log.debug(e.getMessage());
             }
             Thread.sleep((long) (MAX_EXISTENCE_DELAY_MS / iterationNumber));
             iterationNumber++;
-        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000 ||
+        } while (Timedelta.now().isDiffLessOrEqual(started, timeout) ||
                 iterationNumber <= MIN_EXISTENCE_ITERATIONS_COUNT);
         return false;
     }

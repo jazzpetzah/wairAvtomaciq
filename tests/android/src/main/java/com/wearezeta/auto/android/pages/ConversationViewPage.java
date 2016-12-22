@@ -1176,7 +1176,8 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
                     el.get().getLocation().getY() + el.get().getSize().getHeight() - offset <= screenHeight) {
                 return true;
             }
-            swipeByCoordinates(500, 50, 95, 50, endHeightPercentage);
+            swipeByCoordinates(Timedelta.fromMilliSeconds(500),
+                    50, 95, 50, endHeightPercentage);
             nScrolls++;
         }
         return false;

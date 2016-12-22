@@ -469,7 +469,7 @@ public class CommonAndroidSteps {
         } else {
             AndroidCommonUtils.switchToApplication(getPackageName());
         }
-        WaitForTime(UI_DELAY_TIME);
+        WaitForTime(UI_DELAY_TIME.asSeconds());
     }
 
     /**
@@ -484,11 +484,11 @@ public class CommonAndroidSteps {
         if (shouldUnlock == null) {
             AndroidCommonUtils.lockScreen();
             //UI need time to react action
-            WaitForTime(UI_DELAY_TIME);
+            WaitForTime(UI_DELAY_TIME.asSeconds());
         } else {
             AndroidCommonUtils.unlockDevice();
             //UI need time to react action
-            WaitForTime(UI_DELAY_TIME);
+            WaitForTime(UI_DELAY_TIME.asSeconds());
             // FIXME: Unlock selendroid app does not restore the previously active application
             AndroidCommonUtils.switchToApplication(getPackageName());
         }
