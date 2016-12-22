@@ -1,52 +1,5 @@
 package com.wearezeta.auto.common;
 
-import java.awt.image.BufferedImage;
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.RandomAccessFile;
-import java.io.Writer;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.security.MessageDigest;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Properties;
-import java.util.Random;
-import java.util.UUID;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-
-import javax.activation.MimetypesFileTypeMap;
-import javax.imageio.ImageIO;
-import javax.sound.sampled.AudioFileFormat;
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver.SurfaceOrientation;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -58,6 +11,26 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.jcodec.common.model.Picture;
+
+import javax.activation.MimetypesFileTypeMap;
+import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.security.MessageDigest;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import static com.wearezeta.auto.common.driver.ZetaAndroidDriver.ADB_PREFIX;
 
@@ -165,7 +138,8 @@ public class CommonUtils {
     private final static Semaphore sem = new Semaphore(1);
     private final static Map<String, Optional<String>> cachedConfig = new HashMap<>();
 
-    private static Optional<String> getValueFromConfigFile(Class<?> c, String key, String resourcePath) throws Exception {
+    private static Optional<String> getValueFromConfigFile(Class<?> c, String key, String resourcePath) throws
+            Exception {
         final String configKey = String.format("%s:%s", resourcePath, key);
         if (cachedConfig.containsKey(configKey)) {
             return cachedConfig.get(configKey);
@@ -230,7 +204,8 @@ public class CommonUtils {
             return value.get();
         } else {
             throw new RuntimeException(
-                    String.format("There is no '%s' property in the '%s' common configuration file", key, COMMON_CONFIG));
+                    String.format("There is no '%s' property in the '%s' common configuration file", key,
+                            COMMON_CONFIG));
         }
     }
 
@@ -617,7 +592,8 @@ public class CommonUtils {
     }
 
     /**
-     * It is highly recommended to use these methods if it is necessary to interact with UI from a script. Otherwise it will be
+     * It is highly recommended to use these methods if it is necessary to interact with UI from a script. Otherwise
+     * it will be
      * blocked by Mac OS as unsecure, because only Terminal.app is explicitly authorized to interact with UI.
      *
      * @param content the full script content, WITHOUT shebang

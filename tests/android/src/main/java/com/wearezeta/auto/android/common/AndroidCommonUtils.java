@@ -3,6 +3,7 @@ package com.wearezeta.auto.android.common;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.email.MessagingUtils;
+import com.wearezeta.auto.common.image_send.ImageGenerator;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.ClientDeviceInfo;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
@@ -15,10 +16,11 @@ import org.openqa.selenium.ScreenOrientation;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import static com.wearezeta.auto.common.driver.ZetaAndroidDriver.ADB_PREFIX;
@@ -36,6 +38,8 @@ public class AndroidCommonUtils extends CommonUtils {
     };
     private static final Logger log = ZetaLogger.getLog(AndroidCommonUtils.class.getSimpleName());
     private static final String FILE_TRANSFER_SOURCE_LOCATION = "/mnt/sdcard/Download/";
+    private static final String TEST_IMAGES_LOCATION = "/sdcard/Pictures/WireTest/";
+    private static final String TEST_IMAGES_NAME_FORMAT = "yyyyMMddHHmmss";
     private static final String IMAGE_FOR_VIDEO_GENERATION = "about_page_logo_iPad.png";
 
     public static void executeAdb(final String cmdline) throws Exception {
@@ -815,6 +819,25 @@ public class AndroidCommonUtils extends CommonUtils {
         String output = AndroidCommonUtils.getAdbOutput("shell dumpsys input_method | grep mInputShown");
         final Pattern pattern = Pattern.compile("\\b" + Pattern.quote("mInputShown=true") + "\\b");
         return pattern.matcher(output).find();
+    }
+
+    public static void addTestImageToGallery(String text) throws Exception {
+        File testPictureFile = ImageGenerator.getTestPictureFile(text);
+        executeAdb(String.format("shell mkdir %s", TEST_IMAGES_LOCATION));
+        String testPictureFileAbsolutePath = testPictureFile.getAbsolutePath();
+        executeAdb(String.format("push %s %s%s.%s",
+                testPictureFileAbsolutePath,
+                TEST_IMAGES_LOCATION,
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern(TEST_IMAGES_NAME_FORMAT)),
+                FilenameUtils.getExtension(testPictureFileAbsolutePath)));
+        if (!testPictureFile.delete()) {
+            testPictureFile.deleteOnExit();
+        }
+        executeAdb("shell am broadcast -a android.intent.action.MEDIA_MOUNTED -d file://" + TEST_IMAGES_LOCATION);
+    }
+
+    public static void removeTestingGalery() throws Exception {
+        executeAdb("shell rm -rf " + TEST_IMAGES_LOCATION);
     }
 
     public enum PadButton {
