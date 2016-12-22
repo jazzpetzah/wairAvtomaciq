@@ -1,6 +1,6 @@
 Feature: Unique Usernames
 
-  @C352028 @regression
+  @C352028 @regression @rc
   Scenario Outline: Verify autogeneration of a username for a user with latin characters only
     Given I see sign in screen
     Given I enter phone number for <Name>
@@ -176,7 +176,7 @@ Feature: Unique Usernames
       | Name      | Contact1WithABEmail | Contact1ABName | Contact1Email | Contact2WithABPhoneNumber | Contact2ABName | Contact2PhoneNumber | Contact3WithUniqueUserName | Contact3UniqueUserName | Contact4WithCommonFriends | Contact5WithSameNameInAB | Contact5Email | Contact6Common |
       | user1Name | user2Name           | user2ABName    | user2Email    | user3Name                 | user3ABName    | user3PhoneNumber    | user4Name                  | user4UniqueUsername    | user5Name                 | user6Name                | user6Email    | user7Name      |
 
-  @C352036 @regression @fastLogin
+  @C352036 @regression @fastLogin @rc
   Scenario Outline: Verify setting correct user name
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -200,7 +200,7 @@ Feature: Unique Usernames
       | Name      | RegularLength | MinLength | MaxLength |
       | user1Name | 6             | 2         | 21        |
 
-  @C352027 @regression @fastLogin
+  @C352027 @regression @fastLogin @rc
   Scenario Outline: Verify Settings are opened on choosing generating your own username
     Given There is 1 user
     Given User <Name> is me
@@ -319,7 +319,7 @@ Feature: Unique Usernames
       | Name      | Contact   | ContactUniqueUserName |
       | user1Name | user2Name | user2UniqueUsername   |
 
-  @C352054 @regression @fastLogin
+  @C352054 @regression @fastLogin @rc
   Scenario Outline: Verify search by full and partial user name
     Given There are 2 users where <Name> is me
     Given User <Contact> sets the unique username
