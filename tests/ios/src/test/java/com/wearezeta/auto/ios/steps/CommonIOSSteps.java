@@ -140,7 +140,7 @@ public class CommonIOSSteps {
         final boolean isRealDevice = !CommonUtils.getIsSimulatorFromConfig(getClass());
 
         final DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("newCommandTimeout", AppiumServer.DEFAULT_COMMAND_TIMEOUT);
+        capabilities.setCapability("newCommandTimeout", AppiumServer.DEFAULT_COMMAND_TIMEOUT.asSeconds());
         capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
         capabilities.setCapability(ZetaIOSDriver.AUTOMATION_NAME_CAPABILITY_NAME,
                 ZetaIOSDriver.AUTOMATION_MODE_XCUITEST);

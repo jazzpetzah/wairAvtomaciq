@@ -68,8 +68,8 @@ public class Timedelta implements Comparable<Timedelta> {
         return new Timedelta(this.milliSeconds - other.milliSeconds);
     }
 
-    public boolean isInRange(Timedelta minInclude, Timedelta maxExclude) {
-        return this.compareTo(minInclude) >= 0 && this.compareTo(maxExclude) < 0;
+    public boolean isInRange(Timedelta minIncluding, Timedelta maxExcluding) {
+        return this.compareTo(minIncluding) >= 0 && this.compareTo(maxExcluding) < 0;
     }
 
     public static Timedelta now() {
@@ -103,12 +103,15 @@ public class Timedelta implements Comparable<Timedelta> {
         final int minutes = this.asMinutes() % MINUTES_IN_HOUR;
         final int seconds = this.asSeconds() % SECONDS_IN_MINUTE;
         final long milliSeconds = this.asMilliSeconds() % MILLISECONDS_IN_SECOND;
-        if (hours > 0) {
-            return String.format("%02d:%02d:%02d::%d", hours, minutes, seconds, milliSeconds);
-        } else if (minutes > 0) {
-            return String.format("%02d:%02d::%d", minutes, seconds, milliSeconds);
-        } else if (seconds > 0) {
-            return String.format("%02d::%d", seconds, milliSeconds);
+        if (hours != 0) {
+            return String.format((this.milliSeconds < 0 ? "- " : "") + "%02d h:%02d m:%02d s::%d ms",
+                    Math.abs(hours), Math.abs(minutes), Math.abs(seconds), Math.abs(milliSeconds));
+        } else if (minutes != 0) {
+            return String.format((this.milliSeconds < 0 ? "- " : "") + "%02d m:%02d s::%d ms",
+                    Math.abs(minutes), Math.abs(seconds), Math.abs(milliSeconds));
+        } else if (seconds != 0) {
+            return String.format((this.milliSeconds < 0 ? "- " : "") + "%02d s::%d ms",
+                    Math.abs(seconds), Math.abs(milliSeconds));
         }
         return String.format("%d ms", milliSeconds);
     }

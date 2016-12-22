@@ -52,7 +52,7 @@ public class AppiumServer {
 
     private static final String APPIUM_SCRIPT_PATH = "/usr/local/bin/appium";
     private static final String NODE_EXECUTABLE_PATH = "/usr/local/bin/node";
-    public static final int DEFAULT_COMMAND_TIMEOUT = 500; // in seconds
+    public static final Timedelta DEFAULT_COMMAND_TIMEOUT = Timedelta.fromMinutes(10);
     private static final String LOG_PATH = "/usr/local/var/log/appium/appium.log";
 
     private static final String[] DEFAULT_CMDLINE = new String[]{
