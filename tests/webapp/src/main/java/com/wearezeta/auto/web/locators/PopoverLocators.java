@@ -36,6 +36,8 @@ public final class PopoverLocators {
 
 			public static final String xpathCancelRequestButton = xpathRootLocator
 					+ "//*[@data-uie-name='go-cancel']";
+
+			public static final String cssUniqueUsernameOutgoing = "#start-ui-user-bubble,#participants-bubble [data-uie-name='status-username']";
 		}
 
 		public static final class CancelRequestConfirmationPage {

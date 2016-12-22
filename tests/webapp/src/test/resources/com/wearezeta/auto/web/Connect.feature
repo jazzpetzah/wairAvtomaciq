@@ -470,7 +470,7 @@ Feature: Connect
     Then I see user <Contact1> found in People Picker
     When I click on pending user <Contact1> found in People Picker
     And I see Pending Outgoing Connection popover
-    And I see unique username in outgoing connection request to user <Contact1>
+    And I see unique username on Pending Outgoing Connection popover to user <Contact1>
     When I click Cancel request on Pending Outgoing Connection popover
     Then I see Cancel request confirmation popover
     When I click No button on Cancel request confirmation popover
