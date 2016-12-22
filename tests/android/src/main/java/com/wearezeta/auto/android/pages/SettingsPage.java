@@ -4,6 +4,7 @@ import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.DummyElement;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -146,7 +147,7 @@ public class SettingsPage extends AndroidPage {
         getElement(xpathOKButton).click();
         // Confirm the alert
         Thread.sleep(1000);
-        getElementIfDisplayed(xpathOKButton, 3).orElseGet(DummyElement::new).click();
+        getElementIfDisplayed(xpathOKButton, Timedelta.fromSeconds(3)).orElseGet(DummyElement::new).click();
     }
 
     public void commitPhoneNumberVerificationCode(String activationCode) throws Exception {

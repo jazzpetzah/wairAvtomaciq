@@ -1,62 +1,59 @@
 package com.wearezeta.auto.common.misc;
 
-public class Timedelta implements Comparable<Timedelta>{
+import java.util.HashMap;
+import java.util.Map;
+
+public class Timedelta implements Comparable<Timedelta> {
     private static final int MILLISECONDS_IN_SECOND = 1000;
     private static final int SECONDS_IN_MINUTE = 60;
     private static final int MINUTES_IN_HOUR = 60;
 
-    private double milliSeconds;
+    private long milliSeconds;
+
+    private static final Map<Long, Timedelta> cache = new HashMap<>();
 
     private Timedelta(double milliSeconds) {
-        this.milliSeconds = milliSeconds;
+        this.milliSeconds = (long) milliSeconds;
+    }
+
+    private static Timedelta getInstance(double milliSeconds) {
+        final long milliSecondsLong = (long) milliSeconds;
+        if (!cache.containsKey(milliSecondsLong)) {
+            cache.put(milliSecondsLong, new Timedelta(milliSeconds));
+        }
+        return cache.get(milliSecondsLong);
     }
 
     public static Timedelta fromSeconds(double seconds) {
-        return new Timedelta(seconds * MILLISECONDS_IN_SECOND);
+        return getInstance(seconds * MILLISECONDS_IN_SECOND);
     }
 
     public int asSeconds() {
-        return (int) this.asFloatSeconds();
-    }
-
-    public double asFloatSeconds() {
-        return this.milliSeconds / MILLISECONDS_IN_SECOND;
+        return (int) (this.milliSeconds / MILLISECONDS_IN_SECOND);
     }
 
     public static Timedelta fromMilliSeconds(double milliSeconds) {
-        return new Timedelta(milliSeconds);
+        return getInstance(milliSeconds);
     }
 
     public long asMilliSeconds() {
-        return (long) this.asFloatMilliSeconds();
-    }
-
-    public double asFloatMilliSeconds() {
         return this.milliSeconds;
     }
 
     public static Timedelta fromMinutes(double minutes) {
-        return new Timedelta(minutes * SECONDS_IN_MINUTE * MILLISECONDS_IN_SECOND);
+        return getInstance(minutes * SECONDS_IN_MINUTE * MILLISECONDS_IN_SECOND);
     }
 
     public int asMinutes() {
-        return (int) this.asFloatMinutes();
-    }
-
-    public double asFloatMinutes() {
-        return this.milliSeconds / SECONDS_IN_MINUTE / MILLISECONDS_IN_SECOND;
+        return (int) (this.milliSeconds / SECONDS_IN_MINUTE / MILLISECONDS_IN_SECOND);
     }
 
     public static Timedelta fromHours(double hours) {
-        return new Timedelta(hours * MINUTES_IN_HOUR * SECONDS_IN_MINUTE * MILLISECONDS_IN_SECOND);
+        return getInstance(hours * MINUTES_IN_HOUR * SECONDS_IN_MINUTE * MILLISECONDS_IN_SECOND);
     }
 
     public int asHours() {
-        return (int) this.asFloatHours();
-    }
-
-    public double asFloatHours() {
-        return this.milliSeconds / MINUTES_IN_HOUR / SECONDS_IN_MINUTE / MILLISECONDS_IN_SECOND;
+        return (int) (this.milliSeconds / MINUTES_IN_HOUR / SECONDS_IN_MINUTE / MILLISECONDS_IN_SECOND);
     }
 
     public Timedelta sum(Timedelta other) {
@@ -65,6 +62,10 @@ public class Timedelta implements Comparable<Timedelta>{
 
     public Timedelta diff(Timedelta other) {
         return new Timedelta(this.milliSeconds - other.milliSeconds);
+    }
+
+    public boolean isInRange(Timedelta minInclude, Timedelta maxExclude) {
+        return this.compareTo(minInclude) >= 0 && this.compareTo(maxExclude) < 0;
     }
 
     public static Timedelta now() {

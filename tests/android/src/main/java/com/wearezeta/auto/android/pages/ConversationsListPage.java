@@ -4,6 +4,7 @@ import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.misc.Timedelta;
 import io.appium.java_client.android.AndroidElement;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -108,8 +109,8 @@ public class ConversationsListPage extends AndroidPage {
         return getElementIfDisplayed(By.xpath(xpathStrContactByName.apply(name)));
     }
 
-    public Optional<WebElement> findConversationInList(String name, int timeoutSeconds) throws Exception {
-        return getElementIfDisplayed(By.xpath(xpathStrContactByName.apply(name)), timeoutSeconds);
+    public Optional<WebElement> findConversationInList(String name, Timedelta timeout) throws Exception {
+        return getElementIfDisplayed(By.xpath(xpathStrContactByName.apply(name)), timeout);
     }
 
     public void swipeRightOnConversation(int durationMilliseconds, String name)
@@ -142,8 +143,8 @@ public class ConversationsListPage extends AndroidPage {
         getElement(idListActionsAvatar).click();
     }
 
-    public boolean isConversationVisible(String name, int timeoutSeconds) throws Exception {
-        return findConversationInList(name, timeoutSeconds).isPresent();
+    public boolean isConversationVisible(String name, Timedelta timeout) throws Exception {
+        return findConversationInList(name, timeout).isPresent();
     }
 
     public boolean isConversationVisible(String name) throws Exception {
@@ -155,9 +156,9 @@ public class ConversationsListPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
-    public boolean waitUntilConversationDisappears(String name, int timeoutSeconds) throws Exception {
+    public boolean waitUntilConversationDisappears(String name, Timedelta timeout) throws Exception {
         final By locator = By.xpath(xpathStrContactByName.apply(name));
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, timeoutSeconds);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, timeout.asSeconds());
     }
 
     public boolean isPlayPauseMediaButtonVisible(String convoName) throws Exception {

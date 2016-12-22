@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.pages;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import com.wearezeta.auto.common.misc.Timedelta;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
@@ -55,7 +56,7 @@ public class CallKitOverlayPage extends IOSPage {
 
     public boolean isVisible(String overlayType) throws Exception {
         final By locator = MobileBy.AccessibilityId(nameStrCallLabelByType.apply(overlayType));
-        return isLocatorDisplayed(locator, 15);
+        return isLocatorDisplayed(locator, Timedelta.fromSeconds(15));
     }
 
     public boolean isInvisible(String overlayType) throws Exception {

@@ -4,6 +4,7 @@ package com.wearezeta.auto.android.pages.details_overlay.single;
 import com.wearezeta.auto.android.pages.details_overlay.BasePendingIncomingConnectionOverlay;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import com.wearezeta.auto.common.misc.Timedelta;
 import org.openqa.selenium.By;
 
 import java.util.concurrent.Future;
@@ -32,7 +33,8 @@ public class SinglePendingIncomingConnectionPage extends BasePendingIncomingConn
             if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 1)) {
                 return;
             }
-            this.swipeByCoordinates(500, 50, SCROLL_POS_END, 50, SCROLL_POS_START);
+            this.swipeByCoordinates(Timedelta.fromMilliSeconds(500),
+                    50, SCROLL_POS_END, 50, SCROLL_POS_START);
             ntry++;
         } while (ntry <= maxScrolls);
         throw new RuntimeException(String.format("Failed to find user %s in the inbox after scrolling %s times!", userName, maxScrolls));

@@ -31,6 +31,7 @@ import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.sync_engine_bridge.AssetProtocol;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
@@ -73,9 +74,9 @@ public class CommonAndroidSteps {
     public static final Platform CURRENT_PLATFORM = Platform.Android;
 
     public static final String PATH_ON_DEVICE = "/mnt/sdcard/DCIM/Camera/userpicture.jpg";
-    public static final int DEFAULT_SWIPE_TIME = 1500;
-    public static final int FIRST_TIME_OVERLAY_TIMEOUT = 3; // seconds
-    public static final int UI_DELAY_TIME = 2; // seconds
+    public static final Timedelta DEFAULT_SWIPE_TIME = Timedelta.fromMilliSeconds(1500);
+    public static final Timedelta FIRST_TIME_OVERLAY_TIMEOUT = Timedelta.fromSeconds(3);
+    public static final Timedelta UI_DELAY_TIME = Timedelta.fromSeconds(2);
     private static final String DEFAULT_USER_AVATAR = "aqaPictureContact600_800.jpg";
     private static final String GCM_TOKEN_PATTERN = "token:\\s+(.*)$";
     //TODO: should I move this list to configuration file?

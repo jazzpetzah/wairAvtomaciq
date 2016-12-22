@@ -5,6 +5,7 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import com.wearezeta.auto.common.misc.Timedelta;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -87,7 +88,8 @@ public class CallingOverlayPage extends IOSPage {
     public boolean isCallingMessageContainingVisible(String text) throws Exception {
         // XPath locators are bloody slow here
         final long msStarted = System.currentTimeMillis();
-        final WebElement el = getElement(nameCallingMessage, "No calling overlay is visible after the timeout", 15);
+        final WebElement el = getElement(nameCallingMessage,
+                "No calling overlay is visible after the timeout", Timedelta.fromSeconds(15));
         do {
             if (el.getText().contains(text)) {
                 return true;
@@ -98,7 +100,7 @@ public class CallingOverlayPage extends IOSPage {
     }
 
     public boolean isButtonVisible(String name) throws Exception {
-        return isLocatorDisplayed(getButtonLocatorByName(name), 20);
+        return isLocatorDisplayed(getButtonLocatorByName(name), Timedelta.fromSeconds(20));
     }
 
     public boolean isButtonInvisible(String name) throws Exception {

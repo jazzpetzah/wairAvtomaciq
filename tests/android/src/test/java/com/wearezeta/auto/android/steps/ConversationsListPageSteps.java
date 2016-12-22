@@ -8,6 +8,7 @@ import java.util.Map;
 import com.wearezeta.auto.android.pages.details_overlay.ConversationOptionsMenuPage;
 import com.wearezeta.auto.android.pages.ConversationsListPage;
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
@@ -290,10 +291,12 @@ public class ConversationsListPageSteps {
         convoName = usrMgr.replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
         if (expectedAction.equals("appears in")) {
             Assert.assertTrue(String.format("The conversation '%s' is not visible in the list",
-                    convoName), getConversationsListPage().isConversationVisible(convoName, timeoutSeconds));
+                    convoName), getConversationsListPage().isConversationVisible(convoName,
+                    Timedelta.fromSeconds(timeoutSeconds)));
         } else {
             Assert.assertTrue(String.format("The conversation '%s' is  visible in the list, but should be hidden",
-                    convoName), getConversationsListPage().waitUntilConversationDisappears(convoName, timeoutSeconds));
+                    convoName), getConversationsListPage().waitUntilConversationDisappears(convoName,
+                    Timedelta.fromSeconds(timeoutSeconds)));
         }
     }
 

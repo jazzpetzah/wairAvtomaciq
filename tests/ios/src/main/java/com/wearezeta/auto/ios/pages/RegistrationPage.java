@@ -5,6 +5,7 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import io.appium.java_client.MobileBy;
 import org.apache.log4j.Logger;
@@ -113,14 +114,14 @@ public class RegistrationPage extends IOSPage {
         final WebElement codeInput = getElement(nameVerificationCodeInput, "Activation code input is not visible");
         final String code = BackendAPIWrappers.getActivationCodeByPhoneNumber(forNumber);
         codeInput.sendKeys(code);
-        getElement(nameConfirmButton, "Confirm button is not visible", 2).click();
+        getElement(nameConfirmButton, "Confirm button is not visible", Timedelta.fromSeconds(2)).click();
     }
 
     private static final Random rand = new Random();
 
     public void inputRandomConfirmationCode() throws Exception {
         getElement(nameVerificationCodeInput).sendKeys(Integer.toString(100000 + rand.nextInt(900000)));
-        getElement(nameConfirmButton, "Confirm button is not visible", 2).click();
+        getElement(nameConfirmButton, "Confirm button is not visible", Timedelta.fromSeconds(2)).click();
     }
 
     public void clickResendCodeButton() throws Exception {

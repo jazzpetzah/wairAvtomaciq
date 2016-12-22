@@ -5,6 +5,7 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces.FunctionFor2Parameters;
+import com.wearezeta.auto.common.misc.Timedelta;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.*;
 
@@ -64,7 +65,7 @@ public class SettingsPage extends IOSPage {
         FBElement optionsRoot = null;
         int nScrolls = 0;
         do {
-            final Optional<WebElement> dstElement = getElementIfDisplayed(locator, 2);
+            final Optional<WebElement> dstElement = getElementIfDisplayed(locator, Timedelta.fromSeconds(2));
             if (dstElement.isPresent()) {
                 return (FBElement) dstElement.get();
             }

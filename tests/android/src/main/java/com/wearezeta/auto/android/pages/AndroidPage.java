@@ -19,6 +19,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces;
+import com.wearezeta.auto.common.misc.Timedelta;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
@@ -122,16 +123,16 @@ public abstract class AndroidPage extends BasePage {
         this.getDriver().rotate(ScreenOrientation.PORTRAIT);
     }
 
-    public void dialogsPagesSwipeUp(int durationMilliseconds) throws Exception {
-        swipeByCoordinates(durationMilliseconds, 50, 70, 50, 30);
+    public void dialogsPagesSwipeUp(Timedelta duration) throws Exception {
+        swipeByCoordinates(duration, 50, 70, 50, 30);
     }
 
-    public void dialogsPagesSwipeDown(int durationMilliseconds)
+    public void dialogsPagesSwipeDown(Timedelta duration)
             throws Exception {
-        swipeByCoordinates(durationMilliseconds, 50, 30, 50, 70);
+        swipeByCoordinates(duration, 50, 30, 50, 70);
     }
 
-    public void swipeByCoordinates(int durationMilliseconds,
+    public void swipeByCoordinates(Timedelta duration,
                                    int widthStartPercent, int heightStartPercent, int widthEndPercent,
                                    int heightEndPercent) throws Exception {
         final Dimension screenDimension = getDriver().manage().window().getSize();
@@ -139,7 +140,7 @@ public abstract class AndroidPage extends BasePage {
                 screenDimension.height * heightStartPercent / 100,
                 screenDimension.width * widthEndPercent / 100,
                 screenDimension.height * heightEndPercent / 100,
-                durationMilliseconds);
+                (int) duration.asMilliSeconds());
     }
 
     public static final int SWIPE_DEFAULT_PERCENTAGE_START = 10;
@@ -149,15 +150,15 @@ public abstract class AndroidPage extends BasePage {
     /**
      * Swipe from x = 90% of width to x = 10% of width. y = height/2
      */
-    public void swipeRightCoordinates(int durationMilliseconds) throws Exception {
-        swipeRightCoordinates(durationMilliseconds, SWIPE_DEFAULT_PERCENTAGE);
+    public void swipeRightCoordinates(Timedelta duration) throws Exception {
+        swipeRightCoordinates(duration, SWIPE_DEFAULT_PERCENTAGE);
     }
 
     /**
      * Swipe from x = 10% of width to x = 90% of width. y = heightPercent
      */
-    public void swipeRightCoordinates(int durationMilliseconds, int heightPercent) throws Exception {
-        swipeByCoordinates(durationMilliseconds,
+    public void swipeRightCoordinates(Timedelta duration, int heightPercent) throws Exception {
+        swipeByCoordinates(duration,
                 SWIPE_DEFAULT_PERCENTAGE_START, heightPercent,
                 SWIPE_DEFAULT_PERCENTAGE_END, heightPercent);
     }
@@ -165,30 +166,30 @@ public abstract class AndroidPage extends BasePage {
     /**
      * Swipe from x = 90% of width to x = 10% of width. y = height/2
      */
-    public void swipeLeftCoordinates(int durationMilliseconds) throws Exception {
-        swipeLeftCoordinates(durationMilliseconds, SWIPE_DEFAULT_PERCENTAGE);
+    public void swipeLeftCoordinates(Timedelta duration) throws Exception {
+        swipeLeftCoordinates(duration, SWIPE_DEFAULT_PERCENTAGE);
     }
 
     /**
      * Swipe from x = 90% of width to x = 10% of width. y = heightPercent
      */
-    public void swipeLeftCoordinates(int durationMilliseconds, int heightPercent) throws Exception {
-        swipeByCoordinates(durationMilliseconds, SWIPE_DEFAULT_PERCENTAGE_END,
+    public void swipeLeftCoordinates(Timedelta duration, int heightPercent) throws Exception {
+        swipeByCoordinates(duration, SWIPE_DEFAULT_PERCENTAGE_END,
                 heightPercent, SWIPE_DEFAULT_PERCENTAGE_START, heightPercent);
     }
 
     /**
      * Swipe from y = 90% of height to y = 10% of height. x = width/2
      */
-    public void swipeUpCoordinates(int durationMilliseconds) throws Exception {
-        swipeUpCoordinates(durationMilliseconds, SWIPE_DEFAULT_PERCENTAGE);
+    public void swipeUpCoordinates(Timedelta duration) throws Exception {
+        swipeUpCoordinates(duration, SWIPE_DEFAULT_PERCENTAGE);
     }
 
     /**
      * Swipe from y = 90% of height to y = 10% of height. x = widthPercent
      */
-    public void swipeUpCoordinates(int durationMilliseconds, int widthPercent) throws Exception {
-        swipeByCoordinates(durationMilliseconds, widthPercent,
+    public void swipeUpCoordinates(Timedelta duration, int widthPercent) throws Exception {
+        swipeByCoordinates(duration, widthPercent,
                 SWIPE_DEFAULT_PERCENTAGE_END, widthPercent,
                 SWIPE_DEFAULT_PERCENTAGE_START);
     }
@@ -196,15 +197,15 @@ public abstract class AndroidPage extends BasePage {
     /**
      * Swipe from y = 10% of height to y = 90% of height. x = width/2
      */
-    public void swipeDownCoordinates(int durationMilliseconds) throws Exception {
-        swipeDownCoordinates(durationMilliseconds, SWIPE_DEFAULT_PERCENTAGE);
+    public void swipeDownCoordinates(Timedelta duration) throws Exception {
+        swipeDownCoordinates(duration, SWIPE_DEFAULT_PERCENTAGE);
     }
 
     /**
      * Swipe from y = 10% of height to y = 90% of height. x = widthPercent
      */
-    public void swipeDownCoordinates(int durationMilliseconds, int widthPercent) throws Exception {
-        swipeByCoordinates(durationMilliseconds, widthPercent,
+    public void swipeDownCoordinates(Timedelta duration, int widthPercent) throws Exception {
+        swipeByCoordinates(duration, widthPercent,
                 SWIPE_DEFAULT_PERCENTAGE_START, widthPercent,
                 SWIPE_DEFAULT_PERCENTAGE_END);
     }
@@ -232,7 +233,7 @@ public abstract class AndroidPage extends BasePage {
         final By locator = idChatheadNotification;
         final long millisecondsStarted = System.currentTimeMillis();
         while (System.currentTimeMillis() - millisecondsStarted < CHATHEAD_VISIBILITY_TIMEOUT_MS) {
-            final Optional<WebElement> chatheadNotification = getElementIfDisplayed(locator, 1);
+            final Optional<WebElement> chatheadNotification = getElementIfDisplayed(locator, Timedelta.fromSeconds(1));
             if (chatheadNotification.isPresent()) {
                 if (chatheadNotification.get().getSize().width > 0) {
                     return chatheadNotification;
@@ -247,7 +248,7 @@ public abstract class AndroidPage extends BasePage {
         final By locator = idChatheadNotification;
         final long millisecondsStarted = System.currentTimeMillis();
         while (System.currentTimeMillis() - millisecondsStarted < CHATHEAD_VISIBILITY_TIMEOUT_MS) {
-            final Optional<WebElement> chatheadNotification = getElementIfDisplayed(locator, 1);
+            final Optional<WebElement> chatheadNotification = getElementIfDisplayed(locator, Timedelta.fromSeconds(1));
             if (chatheadNotification.isPresent()) {
                 if (chatheadNotification.get().getSize().width == 0) {
                     return true;
@@ -442,9 +443,9 @@ public abstract class AndroidPage extends BasePage {
     }
 
     @Override
-    protected WebElement getElement(By locator, String message, int timeoutSeconds) throws Exception {
+    protected WebElement getElement(By locator, String message, Timedelta timeout) throws Exception {
         try {
-            return super.getElement(locator, message, timeoutSeconds);
+            return super.getElement(locator, message, timeout);
         } catch (Exception e) {
             log.debug(getDriver().getPageSource());
             throw e;
