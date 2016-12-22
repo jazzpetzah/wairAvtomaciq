@@ -51,25 +51,25 @@ public class ConversationViewPageSteps {
     private static final String ANY_MESSAGE = "*ANY MESSAGE*";
     private static final Timedelta SWIPE_DURATION = Timedelta.fromMilliSeconds(1300);
     private static final int MAX_SWIPES = 5;
-    private static final int MEDIA_BUTTON_STATE_CHANGE_TIMEOUT = 15;
+    private static final Timedelta MEDIA_BUTTON_STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(15);
     private static final double MEDIA_BUTTON_MIN_SIMILARITY_SCORE = 0.97;
     private static final double MAX_SIMILARITY_THRESHOLD = 0.97;
-    private static final int CONVO_VIEW_STATE_CHANGE_TIMEOUT = 15;
+    private static final Timedelta CONVO_VIEW_STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(15);
     private static final double CONVO_VIEW_MIN_SIMILARITY_SCORE = 0.5;
-    private static final int SHIELD_STATE_CHANGE_TIMEOUT = 15;
+    private static final Timedelta SHIELD_STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(15);
     private static final double SHIELD_MIN_SIMILARITY_SCORE = 0.97;
-    private static final int TOP_TOOLBAR_STATE_CHANGE_TIMEOUT = 15;
+    private static final Timedelta TOP_TOOLBAR_STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(15);
     private static final double TOP_TOOLBAR_MIN_SIMILARITY_SCORE = 0.97;
-    private static final int LIKE_BUTTON_CHANGE_TIMEOUT = 15;
+    private static final Timedelta LIKE_BUTTON_CHANGE_TIMEOUT = Timedelta.fromSeconds(15);
     private static final double LIKE_BUTTON_MIN_SIMILARITY_SCORE = 0.6;
     private static final double LIKE_BUTTON_NOT_CHANGED_MIN_SCORE = -0.5;
     private static final double FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE = 0.4;
-    private static final int MESSAGE_CONTAINER_CHANGE_TIMEOUT = 15;
+    private static final Timedelta MESSAGE_CONTAINER_CHANGE_TIMEOUT = Timedelta.fromSeconds(15);
     private static final double MESSAGE_CONTAINER_MIN_SIMILARITY_SCORE = 0.6;
     private static final double MESSAGE_CONTAINER_NOT_CHANGED_MIN_SCORE = -0.5;
     private static final double MIN_UPLOAD_TO_PLAY_SCORE = 0.75;
     private static final double MIN_PLAY_BUTTON_SCORE = 0.82;
-    private static final int PLAY_BUTTON_STATE_CHANGE_TIMEOUT = 20; //seconds
+    private static final Timedelta PLAY_BUTTON_STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(20);
 
     private static String expandMessage(String message) {
         final Map<String, String> specialStrings = new HashMap<>();
@@ -759,11 +759,11 @@ public class ConversationViewPageSteps {
     public void IWaitFileTransferActionButtonChanged(int timeout, String shouldNotBeChanged) throws Exception {
         if (shouldNotBeChanged == null) {
             Assert.assertTrue(String.format("State of file transfer action button has not been changed after %s seconds",
-                    timeout), filePlaceHolderActionButtonState.isChanged(timeout,
+                    timeout), filePlaceHolderActionButtonState.isChanged(Timedelta.fromSeconds(timeout),
                     FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE));
         } else {
             Assert.assertTrue(String.format("State of file transfer action button has been changed after %s seconds",
-                    timeout), filePlaceHolderActionButtonState.isNotChanged(timeout,
+                    timeout), filePlaceHolderActionButtonState.isNotChanged(Timedelta.fromSeconds(timeout),
                     FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE));
         }
     }
@@ -1401,14 +1401,15 @@ public class ConversationViewPageSteps {
     @Then("^I wait up to (\\d+) seconds? until (video message|audio message) (?:download|upload) is completed$")
     public void IWaitUntilMessageUploaded(int timeoutSeconds, String buttonType) throws Exception {
         FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
+        final Timedelta timeout = Timedelta.fromSeconds(timeoutSeconds);
         switch (buttonType.toLowerCase()) {
             case "video message":
-                verificationFunc = () -> videoMessagePlayButtonState.isChanged(timeoutSeconds,
+                verificationFunc = () -> videoMessagePlayButtonState.isChanged(timeout,
                         MIN_PLAY_BUTTON_SCORE);
                 videoMessagePlayButtonState.remember();
                 break;
             case "audio message":
-                verificationFunc = () -> audioMessagePlayButtonState.isChanged(timeoutSeconds,
+                verificationFunc = () -> audioMessagePlayButtonState.isChanged(timeout,
                         MIN_UPLOAD_TO_PLAY_SCORE);
                 final BufferedImage cancelBntInitialState = ImageUtil.readImageFromFile(
                         AndroidCommonUtils.getImagesPathFromConfig(AndroidCommonUtils.class)
@@ -1436,7 +1437,7 @@ public class ConversationViewPageSteps {
                         + "android_audio_msg_pause_btn.png");
         audioMessagePlayButtonState.remember(pauseBntInitialState);
         Assert.assertTrue("Audio message pause button is not visible",
-                audioMessagePlayButtonState.isNotChanged(timeoutSeconds, MIN_PLAY_BUTTON_SCORE));
+                audioMessagePlayButtonState.isNotChanged(Timedelta.fromSeconds(timeoutSeconds), MIN_PLAY_BUTTON_SCORE));
     }
 
     /**
@@ -1476,7 +1477,7 @@ public class ConversationViewPageSteps {
     }
 
     private static final double MIN_AUDIOMESSAGE_SEEKBAR_SCORE = 0.8;
-    private static final int AUDIOMESSAGE_SEEKBAR_STATE_CHANGE_TIMEOUT = 20; //seconds
+    private static final Timedelta AUDIOMESSAGE_SEEKBAR_STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(20);
 
     /**
      * Verify whether current audio message seekbar differs from the previous one
@@ -1505,7 +1506,7 @@ public class ConversationViewPageSteps {
     }
 
     private static final double MIN_AUDIOMESSAGE_MICROPHONE_SCORE = 0.9;
-    private static final int AUDIOMESSAGE_MICROPHONE_STATE_CHANGE_TIMEOUT = 10; //seconds
+    private static final Timedelta AUDIOMESSAGE_MICROPHONE_STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(10);
 
     /**
      * Verify whether current audio message microphone button differs from the previous one

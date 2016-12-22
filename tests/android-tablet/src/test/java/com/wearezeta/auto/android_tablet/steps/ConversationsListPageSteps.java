@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.Timedelta;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android_tablet.pages.TabletConversationsListPage;
@@ -269,7 +270,7 @@ public class ConversationsListPageSteps {
     }
 
     private final static double MAX_SIMILARITY_THRESHOLD = 0.6;
-    private final static int STATE_CHANGE_TIMEOUT_SECONDS = 5;
+    private final static Timedelta STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(5);
 
     /**
      * Verify whether the current screenshot of PlayPause button is different
@@ -289,8 +290,8 @@ public class ConversationsListPageSteps {
         }
         Assert.assertTrue(String.format(
                 "The current and previous states of PlayPause button for '%s' conversation seems " +
-                        "to be very similar after %d seconds", convoName, STATE_CHANGE_TIMEOUT_SECONDS),
-                playPauseBtnStates.get(convoName).isChanged(STATE_CHANGE_TIMEOUT_SECONDS,
+                        "to be very similar after %s", convoName, STATE_CHANGE_TIMEOUT.toString()),
+                playPauseBtnStates.get(convoName).isChanged(STATE_CHANGE_TIMEOUT,
                         MAX_SIMILARITY_THRESHOLD));
     }
 

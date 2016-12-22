@@ -248,7 +248,7 @@ public class ConversationViewPageSteps {
                 getConversationViewPage().longTapInputToolButtonByName(btnName);
             } else {
                 getConversationViewPage().longTapWithDurationInputToolButtonByName(btnName,
-                        Integer.parseInt(durationSeconds.replaceAll("[\\D]", "")));
+                        Timedelta.fromSeconds(Integer.parseInt(durationSeconds.replaceAll("[\\D]", ""))));
             }
         }
     }
@@ -374,20 +374,20 @@ public class ConversationViewPageSteps {
         if (shouldNotChange == null) {
             Assert.assertTrue(
                     String.format("The current asset container state is not different from the expected one after " +
-                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT_SECONDS),
-                    previousAssetsContainerState.isChanged(MEDIA_STATE_CHANGE_TIMEOUT_SECONDS,
+                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT),
+                    previousAssetsContainerState.isChanged(MEDIA_STATE_CHANGE_TIMEOUT,
                             CONTAINER_COMPARE_MIN_SCORE));
         } else {
             Assert.assertTrue(
                     String.format("The current asset container state is different from the expected one after " +
-                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT_SECONDS),
-                    previousAssetsContainerState.isNotChanged(MEDIA_STATE_CHANGE_TIMEOUT_SECONDS,
+                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT),
+                    previousAssetsContainerState.isNotChanged(MEDIA_STATE_CHANGE_TIMEOUT,
                             CONTAINER_COMPARE_MIN_SCORE));
         }
     }
 
     private static final double CONTAINER_COMPARE_MIN_SCORE = 0.9;
-    private static final int MEDIA_STATE_CHANGE_TIMEOUT_SECONDS = 10;
+    private static final Timedelta MEDIA_STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(10);
 
     /**
      * Verify whether the state of a media container is changed - soundclound play button
@@ -404,13 +404,13 @@ public class ConversationViewPageSteps {
         if (shouldNotChange == null) {
             Assert.assertTrue(
                     String.format("The current media state is not different from the expected one after " +
-                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT_SECONDS),
-                    previousMediaContainerState.isChanged(MEDIA_STATE_CHANGE_TIMEOUT_SECONDS,
+                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT),
+                    previousMediaContainerState.isChanged(MEDIA_STATE_CHANGE_TIMEOUT,
                             CONTAINER_COMPARE_MIN_SCORE));
         } else {
             Assert.assertTrue(String.format("The current media state is different from the expected one after " +
-                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT_SECONDS),
-                    previousMediaContainerState.isNotChanged(MEDIA_STATE_CHANGE_TIMEOUT_SECONDS,
+                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT),
+                    previousMediaContainerState.isNotChanged(MEDIA_STATE_CHANGE_TIMEOUT,
                             CONTAINER_COMPARE_MIN_SCORE));
         }
     }
@@ -926,7 +926,7 @@ public class ConversationViewPageSteps {
         playButtonState.remember();
     }
 
-    private static final int PLAY_BUTTON_STATE_CHANGE_TIMEOUT = 7;
+    private static final Timedelta PLAY_BUTTON_STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(7);
     private static final double PLAY_BUTTON_MIN_SIMILARITY = 0.95;
 
     /**
@@ -1122,7 +1122,7 @@ public class ConversationViewPageSteps {
                 getConversationViewPage().isMessageByPositionDisplayed(message, position));
     }
 
-    private static final int LIKE_ICON_STATE_CHANGE_TIMEOUT = 7; //seconds
+    private static final Timedelta LIKE_ICON_STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(7); //seconds
     private static final double LIKE_ICON_MIN_SIMILARITY = 0.9;
     private ElementState likeIconState = new ElementState(
             () -> getConversationViewPage().getLikeIconState()

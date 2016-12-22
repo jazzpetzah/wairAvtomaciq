@@ -32,6 +32,10 @@ public class Timedelta implements Comparable<Timedelta> {
         return (int) (this.milliSeconds / MILLISECONDS_IN_SECOND);
     }
 
+    public double asFloatSeconds() {
+        return this.milliSeconds * 1.0 / MILLISECONDS_IN_SECOND;
+    }
+
     public static Timedelta fromMilliSeconds(double milliSeconds) {
         return getInstance(milliSeconds);
     }

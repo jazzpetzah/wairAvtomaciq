@@ -1,6 +1,7 @@
 package com.wearezeta.auto.common.driver.facebook_ios_driver;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.rest.RESTError;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
@@ -148,8 +149,8 @@ public class FBDriverAPI {
         parseResponseWithStatus(client.clear(getSessionId(), uuid));
     }
 
-    public void deactivateApp(double durationSeconds) throws RESTError, StatusNotZeroError {
-        parseResponseWithStatus(client.deactivateApp(getSessionId(), durationSeconds));
+    public void deactivateApp(Timedelta duration) throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.deactivateApp(getSessionId(), duration));
     }
 
     public static class StatusNotZeroError extends Exception {
@@ -198,13 +199,13 @@ public class FBDriverAPI {
         parseResponseWithStatus(client.doubleTap(getSessionId(), x, y));
     }
 
-    public void touchAndHold(String uuid, double durationSeconds) throws RESTError, StatusNotZeroError {
-        parseResponseWithStatus(client.touchAndHold(getSessionId(), uuid, durationSeconds));
+    public void touchAndHold(String uuid, Timedelta duration) throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.touchAndHold(getSessionId(), uuid, duration));
     }
 
-    public void touchAndHold(double x, double y, double durationSeconds)
+    public void touchAndHold(double x, double y, Timedelta duration)
             throws RESTError, StatusNotZeroError {
-        parseResponseWithStatus(client.touchAndHold(getSessionId(), x, y, durationSeconds));
+        parseResponseWithStatus(client.touchAndHold(getSessionId(), x, y, duration));
     }
 
     public void scroll(String uuid, Optional<String> toChildNamed, Optional<ScrollingDirection> direction,

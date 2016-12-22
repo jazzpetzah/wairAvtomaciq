@@ -178,7 +178,7 @@ public class CommonIOSSteps {
             capabilities.setCapability("iosInstallPause", INSTALL_DELAY_MS);
         }
         capabilities.setCapability("platformVersion", getPlatformVersion());
-        capabilities.setCapability("launchTimeout", ZetaIOSDriver.MAX_SESSION_INIT_DURATION_MILLIS);
+        capabilities.setCapability("launchTimeout", ZetaIOSDriver.MAX_SESSION_INIT_DURATION);
         final String backendType = getBackendType(this.getClass());
         final List<String> processArgs = new ArrayList<>(Arrays.asList(
                 "-UseHockey", "0",
@@ -539,7 +539,7 @@ public class CommonIOSSteps {
     public void IRestartWire() throws Exception {
         final RemoteWebDriver currentDriver =
                 PlatformDrivers.getInstance().getDriver(CURRENT_PLATFORM)
-                        .get(ZetaIOSDriver.MAX_COMMAND_DURATION_MILLIS, TimeUnit.MILLISECONDS);
+                        .get(ZetaIOSDriver.MAX_COMMAND_DURATION.asMilliSeconds(), TimeUnit.MILLISECONDS);
         final Map<String, ?> currentCapabilities = currentDriver.getCapabilities().asMap();
         try {
             PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);

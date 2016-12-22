@@ -3,7 +3,6 @@ package com.wearezeta.auto.ios.pages;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -84,8 +83,8 @@ public abstract class IOSPage extends BasePage {
     }
 
     protected long getDriverInitializationTimeout() {
-        return (ZetaIOSDriver.MAX_SESSION_INIT_DURATION_MILLIS + AppiumServer.RESTART_TIMEOUT_MILLIS)
-                * DRIVER_CREATION_RETRIES_COUNT;
+        return (ZetaIOSDriver.MAX_SESSION_INIT_DURATION.asMilliSeconds() +
+                AppiumServer.RESTART_TIMEOUT.asMilliSeconds()) * DRIVER_CREATION_RETRIES_COUNT;
     }
 
     public IOSPage(Future<ZetaIOSDriver> driver) throws Exception {
@@ -338,14 +337,14 @@ public abstract class IOSPage extends BasePage {
     /**
      * Perform click on Simulator using Python script
      *
-     * @param el              optional element to click. Absolute screen size will be calculated if Optional.empty()
-     *                        is provided
-     * @param percentX        should be between 0 and 100
-     * @param percentY        should be between 0 and 100
-     * @param durationSeconds click duration in seconds
+     * @param el       optional element to click. Absolute screen size will be calculated if Optional.empty()
+     *                 is provided
+     * @param percentX should be between 0 and 100
+     * @param percentY should be between 0 and 100
+     * @param duration click duration
      * @throws Exception
      */
-    protected void clickAt(Optional<WebElement> el, int percentX, int percentY, double durationSeconds) throws Exception {
+    protected void clickAt(Optional<WebElement> el, int percentX, int percentY, Timedelta duration) throws Exception {
         if (!CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
             throw new IllegalStateException("This method works for iOS Simulator only");
         }
@@ -363,7 +362,7 @@ public abstract class IOSPage extends BasePage {
         }
         IOSSimulatorHelpers.clickAt(String.format("%.2f", px),
                 String.format("%.2f", py),
-                String.format("%.3f", durationSeconds));
+                String.format("%.3f", duration.asFloatSeconds()));
     }
 
     private Point calculateTapCoordinates(Optional<FBElement> el, int percentX, int percentY) throws Exception {
@@ -390,25 +389,25 @@ public abstract class IOSPage extends BasePage {
     }
 
     protected void longTapAt(FBElement el, int percentX, int percentY) throws Exception {
-        this.longTapAt(Optional.of(el), percentX, percentY, DriverUtils.LONG_TAP_DURATION / 1000.0);
+        this.longTapAt(Optional.of(el), percentX, percentY, Timedelta.fromMilliSeconds(DriverUtils.LONG_TAP_DURATION));
     }
 
-    protected void longTapAt(Optional<FBElement> el, int percentX, int percentY, double durationSeconds)
+    protected void longTapAt(Optional<FBElement> el, int percentX, int percentY, Timedelta duration)
             throws Exception {
         final Point tapPoint = calculateTapCoordinates(el, percentX, percentY);
-        getDriver().longTapScreenAt(tapPoint.getX(), tapPoint.getY(), durationSeconds);
+        getDriver().longTapScreenAt(tapPoint.getX(), tapPoint.getY(), duration);
     }
 
     protected void longClickAt(WebElement el, int percentX, int percentY) throws Exception {
-        this.clickAt(Optional.of(el), percentX, percentY, DriverUtils.LONG_TAP_DURATION / 1000.0);
+        this.clickAt(Optional.of(el), percentX, percentY, Timedelta.fromMilliSeconds(DriverUtils.LONG_TAP_DURATION));
     }
 
     protected void longClickAt(int percentX, int percentY) throws Exception {
-        this.clickAt(Optional.empty(), percentX, percentY, DriverUtils.LONG_TAP_DURATION / 1000.0);
+        this.clickAt(Optional.empty(), percentX, percentY, Timedelta.fromMilliSeconds(DriverUtils.LONG_TAP_DURATION));
     }
 
     protected void clickAt(int percentX, int percentY) throws Exception {
-        this.clickAt(Optional.empty(), percentX, percentY, DriverUtils.SINGLE_TAP_DURATION / 1000.0);
+        this.clickAt(Optional.empty(), percentX, percentY, Timedelta.fromMilliSeconds(DriverUtils.SINGLE_TAP_DURATION));
     }
 
     public void rotateScreen(ScreenOrientation orientation) throws Exception {

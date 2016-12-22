@@ -1,6 +1,7 @@
 package com.wearezeta.auto.common.driver;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.process.UnixProcessHelpers;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriverException;
@@ -36,13 +37,13 @@ public class AppiumServer {
 
     private static final int PORT = 4723;
     private static final int SELENDROID_PORT = 4444;
-    public static final int RESTART_TIMEOUT_MILLIS = 90000; // milliseconds
+    public static final Timedelta RESTART_TIMEOUT = Timedelta.fromSeconds(90);
     private static final String SERVER_URL = String.format("http://127.0.0.1:%d/wd/hub", PORT);
 
-    private boolean waitUntilIsRunning(long millisecondsTimeout) throws Exception {
+    private boolean waitUntilIsRunning(Timedelta timeout) throws Exception {
         final URL status = new URL(SERVER_URL + "/sessions");
         try {
-            new UrlChecker().waitUntilAvailable(millisecondsTimeout, TimeUnit.MILLISECONDS, status);
+            new UrlChecker().waitUntilAvailable(timeout.asMilliSeconds(), TimeUnit.MILLISECONDS, status);
             return true;
         } catch (UrlChecker.TimeoutException e) {
             return false;
@@ -101,26 +102,26 @@ public class AppiumServer {
                 output.write(String.join("\n", scriptContent));
             }
             log.info(String.format("Waiting for Appium to be (re)started on %s:%s...", hostname, PORT));
-            final long msStarted = System.currentTimeMillis();
+            final Timedelta started = Timedelta.now();
             new ProcessBuilder("/bin/bash", scriptFile.getCanonicalPath()).
-                    redirectErrorStream(true).start().waitFor(RESTART_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
-            if (!waitUntilIsRunning(RESTART_TIMEOUT_MILLIS)) {
+                    redirectErrorStream(true).start().waitFor(RESTART_TIMEOUT.asMilliSeconds(), TimeUnit.MILLISECONDS);
+            if (!waitUntilIsRunning(RESTART_TIMEOUT)) {
                 throw new WebDriverException(
-                        String.format("Appium server has failed to start after %s seconds timeout on server '%s'.\n"
+                        String.format("Appium server has failed to start after %s timeout on server '%s'.\n"
                                 + "Please make sure that NodeJS and Appium packages are installed properly on this machine.\n"
-                                + "Appium logs:\n\n%s\n\n\n", RESTART_TIMEOUT_MILLIS / 1000, hostname, getLog().orElse(""))
+                                + "Appium logs:\n\n%s\n\n\n", RESTART_TIMEOUT, hostname, getLog().orElse(""))
                 );
             }
 
-            log.info(String.format("Appium server has been successfully (re)started after %.1f seconds " +
-                    "and now is listening on %s:%s", (System.currentTimeMillis() - msStarted) / 1000.0, hostname, PORT));
+            log.info(String.format("Appium server has been successfully (re)started after %s " +
+                    "and now is listening on %s:%s", Timedelta.now().diff(started).toString(), hostname, PORT));
         } finally {
             scriptFile.delete();
         }
     }
 
     public boolean isRunning() throws Exception {
-        return waitUntilIsRunning(1500);
+        return waitUntilIsRunning(Timedelta.fromSeconds(1.5));
     }
 
     public Optional<String> getLog() {

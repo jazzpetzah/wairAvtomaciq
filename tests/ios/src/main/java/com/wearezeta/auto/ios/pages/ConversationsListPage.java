@@ -119,7 +119,7 @@ public class ConversationsListPage extends IOSPage {
         final double y = elLocation.getY() + elSize.getHeight() * 8 / 9;
         getDriver().dragFromToForDuration(
                 new FBDragArguments(elLocation.getX() + elSize.getWidth() / 10, y,
-                        elLocation.getX() + elSize.getWidth() * 3 / 4, y, 1)
+                        elLocation.getX() + elSize.getWidth() * 3 / 4, y, Timedelta.fromSeconds(1))
         );
     }
 

@@ -544,10 +544,12 @@ public class CommonAndroidSteps {
         final int timeoutSeconds = 10;
         if (shouldBeEqual == null) {
             Assert.assertTrue(String.format("The current screen state seems to be similar to the previous one after %s " +
-                    "seconds", timeoutSeconds), screenState.isChanged(timeoutSeconds, SCREEN_MIN_SCORE));
+                    "seconds", timeoutSeconds), screenState.isChanged(Timedelta.fromSeconds(timeoutSeconds),
+                    SCREEN_MIN_SCORE));
         } else {
             Assert.assertTrue(String.format("The current screen state seems to be different to the previous one after %s " +
-                    "seconds", timeoutSeconds), screenState.isNotChanged(timeoutSeconds, SCREEN_MIN_SCORE));
+                    "seconds", timeoutSeconds), screenState.isNotChanged(Timedelta.fromSeconds(timeoutSeconds),
+                    SCREEN_MIN_SCORE));
         }
     }
 

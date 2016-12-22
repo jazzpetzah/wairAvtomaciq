@@ -621,9 +621,9 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
         dstElement.longTap();
     }
 
-    public void longTapWithDurationInputToolButtonByName(String btnName, int durationSeconds) throws Exception {
+    public void longTapWithDurationInputToolButtonByName(String btnName, Timedelta duration) throws Exception {
         final FBElement dstElement = (FBElement) locateCursorToolButton(getInputToolButtonByName(btnName));
-        dstElement.touchAndHold(durationSeconds);
+        dstElement.touchAndHold(duration);
     }
 
     private By getRecordControlButtonByName(String buttonName) {

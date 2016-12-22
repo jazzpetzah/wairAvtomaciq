@@ -68,10 +68,10 @@ public class ConversationsListPageSteps {
         final int timeoutSeconds = 10;
         if (shouldNotBeChanged == null) {
             Assert.assertTrue(String.format("The state of '%s' conversation item seems to be the same", name),
-                    this.savedConvoItemStates.get(name).isChanged(timeoutSeconds, minScore));
+                    this.savedConvoItemStates.get(name).isChanged(Timedelta.fromSeconds(timeoutSeconds), minScore));
         } else {
             Assert.assertTrue(String.format("The state of '%s' conversation item seems to be changed", name),
-                    this.savedConvoItemStates.get(name).isNotChanged(timeoutSeconds, minScore));
+                    this.savedConvoItemStates.get(name).isNotChanged(Timedelta.fromSeconds(timeoutSeconds), minScore));
         }
     }
 
@@ -109,10 +109,12 @@ public class ConversationsListPageSteps {
         final int timeoutSeconds = 10;
         if (shouldNotBeChanged == null) {
             Assert.assertTrue(String.format("The state of conversation item number %s item seems to be the same", convoIdx),
-                    this.savedConvoItemStatesByIdx.get(convoIdx).isChanged(timeoutSeconds, minScore));
+                    this.savedConvoItemStatesByIdx.get(convoIdx).isChanged(Timedelta.fromSeconds(timeoutSeconds),
+                            minScore));
         } else {
             Assert.assertTrue(String.format("The state of conversation item number %s item seems to be changed", convoIdx),
-                    this.savedConvoItemStatesByIdx.get(convoIdx).isNotChanged(timeoutSeconds, minScore));
+                    this.savedConvoItemStatesByIdx.get(convoIdx).isNotChanged(Timedelta.fromSeconds(timeoutSeconds),
+                            minScore));
         }
     }
 
@@ -386,14 +388,15 @@ public class ConversationsListPageSteps {
         }
         final int timeoutSeconds = 10;
         final double minScore = 0.97;
-        if (shouldNotChange == null) {
+        final Timedelta timeout = Timedelta.fromSeconds(timeoutSeconds);
+         if (shouldNotChange == null) {
             Assert.assertTrue(String.format("The previous and the current state of settings gear " +
-                            "icon seems to be equal after %s seconds", timeoutSeconds),
-                    previousSettingsGearState.isChanged(timeoutSeconds, minScore));
+                            "icon seems to be equal after %s", timeout),
+                    previousSettingsGearState.isChanged(timeout, minScore));
         } else {
             Assert.assertTrue(String.format("The previous and the current state of settings gear " +
-                            "icon seems to be different after %s seconds", timeoutSeconds),
-                    previousSettingsGearState.isNotChanged(timeoutSeconds, minScore));
+                            "icon seems to be different after %s", timeout),
+                    previousSettingsGearState.isNotChanged(timeout, minScore));
         }
     }
 
