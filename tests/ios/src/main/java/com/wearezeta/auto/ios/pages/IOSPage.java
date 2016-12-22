@@ -863,8 +863,6 @@ public abstract class IOSPage extends BasePage {
             final Dimension elementSize = element.getSize();
             dstRect = new Rectangle(elementLocation.x, elementLocation.y, elementSize.width, elementSize.height);
         }
-        final Point fixedPos = getDriver().fixCoordinates(new Point(dstRect.x, dstRect.y));
-        dstRect = new Rectangle(fixedPos.x, fixedPos.y, dstRect.width, dstRect.height);
         return this.getElementScreenshot(dstRect);
     }
 }
