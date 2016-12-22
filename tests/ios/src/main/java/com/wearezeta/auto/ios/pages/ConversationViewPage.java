@@ -1,6 +1,5 @@
 package com.wearezeta.auto.ios.pages;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -403,8 +402,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
 
     public BufferedImage getAssetContainerStateScreenshot(int index) throws Exception {
         final By locator = FBBy.xpath(xpathStrAssetContainerByIndex.apply(index));
-        final Rectangle elementRect = ((FBElement)getElement(locator)).getRect();
-        final BufferedImage containerScreen = this.getElementScreenshot(elementRect).orElseThrow(() ->
+        final BufferedImage containerScreen = this.getElementScreenshot(getElement(locator)).orElseThrow(() ->
                 new IllegalStateException("Cannot take a screenshot of asset container"));
         //javax.imageio.ImageIO.write(containerScreen, "png", new java.io.File("/Users/guest/Desktop/" + System.currentTimeMillis() + ".png"));
         return containerScreen;

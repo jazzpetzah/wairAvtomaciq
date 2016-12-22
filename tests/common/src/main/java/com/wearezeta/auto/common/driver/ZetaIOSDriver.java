@@ -419,4 +419,16 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
             throw new WebDriverException(e);
         }
     }
+
+    // TODO: Remove this workaround after the fix for WDA landscape is merged to WDA
+    public Point fixCoordinates(Point original) throws Exception {
+        if (!CommonUtils.getDeviceName(getClass()).toLowerCase().contains("ipad") ||
+                getOrientation() == ScreenOrientation.PORTRAIT) {
+            return original;
+        }
+        final Dimension screenSize = FBElement.apiStringToDimension(
+                getFbDriverAPI().getWindowSize(CommonUtils.generateGUID().toUpperCase())
+        );
+        return new Point(original.y, screenSize.height - original.x);
+    }
 }

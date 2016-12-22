@@ -80,12 +80,9 @@ public abstract class BasePage {
     public Optional<BufferedImage> getElementScreenshot(WebElement element) throws Exception {
         final Point elementLocation = element.getLocation();
         final Dimension elementSize = element.getSize();
-        final Optional<BufferedImage> screenshot = takeScreenshot();
-        if (screenshot.isPresent()) {
-            return Optional.of(screenshot.get().getSubimage(
-                    elementLocation.x, elementLocation.y, elementSize.width, elementSize.height));
-        }
-        return Optional.empty();
+        return this.getElementScreenshot(
+                new Rectangle(elementLocation.x, elementLocation.y, elementSize.width, elementSize.height)
+        );
     }
 
     public Optional<BufferedImage> getElementScreenshot(Rectangle elementRect) throws Exception {

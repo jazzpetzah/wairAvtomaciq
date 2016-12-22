@@ -189,7 +189,7 @@ public abstract class IOSPage extends BasePage {
         try {
             handleAlert(AlertAction.ACCEPT, 3);
         } catch (IllegalStateException e) {
-            log.error("Did not accept the alert",e);
+            log.error("Did not accept the alert", e);
         }
     }
 
@@ -370,11 +370,11 @@ public abstract class IOSPage extends BasePage {
             final Rectangle elRect = el.get().getRect();
             tapX = elRect.x + elRect.width * percentX / 100;
             tapY = elRect.y + elRect.height * percentY / 100;
-        } else {
-            final Dimension screenSize = getDriver().manage().window().getSize();
-            tapX = screenSize.getWidth() * percentX / 100;
-            tapY = screenSize.getHeight() * percentY / 100;
+            return getDriver().fixCoordinates(new Point(tapX, tapY));
         }
+        final Dimension screenSize = getDriver().manage().window().getSize();
+        tapX = screenSize.getWidth() * percentX / 100;
+        tapY = screenSize.getHeight() * percentY / 100;
         return new Point(tapX, tapY);
     }
 
@@ -851,5 +851,20 @@ public abstract class IOSPage extends BasePage {
         } else {
             throw new IllegalArgumentException(String.format("There is no '%s' key on Emoji keyboard", keyName));
         }
+    }
+
+    @Override
+    public Optional<BufferedImage> getElementScreenshot(WebElement element) throws Exception {
+        Rectangle dstRect;
+        if (element instanceof FBElement) {
+            dstRect = ((FBElement) element).getRect();
+        } else {
+            final Point elementLocation = element.getLocation();
+            final Dimension elementSize = element.getSize();
+            dstRect = new Rectangle(elementLocation.x, elementLocation.y, elementSize.width, elementSize.height);
+        }
+        final Point fixedPos = getDriver().fixCoordinates(new Point(dstRect.x, dstRect.y));
+        dstRect = new Rectangle(fixedPos.x, fixedPos.y, dstRect.width, dstRect.height);
+        return this.getElementScreenshot(dstRect);
     }
 }
