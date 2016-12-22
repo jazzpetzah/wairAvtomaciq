@@ -2,21 +2,15 @@ package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
 import java.util.concurrent.Future;
-import java.util.function.Function;
 
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.WebElement;
 
 
 public class TabletConversationsListPage extends ConversationsListPage {
-    private static final Function<String, String> xpathStrConvoListTitleByName = name ->
-            String.format("%s/XCUIElementTypeStaticText[@value='%s']", xpathStrContactListItems, name);
-
     public TabletConversationsListPage(Future<ZetaIOSDriver> lazyDriver)
             throws Exception {
         super(lazyDriver);
@@ -27,37 +21,24 @@ public class TabletConversationsListPage extends ConversationsListPage {
     }
 
     public BufferedImage getConversationEntryScreenshot(EntrySide side, String name) throws Exception {
-        final By entryLocator = By.xpath(xpathStrConvoListEntryByName.apply(name));
-        final WebElement entryElement = getElement(entryLocator,
+        final By entryLocator = FBBy.xpath(xpathStrConvoListEntryByName.apply(name));
+        final FBElement entryElement = (FBElement) getElement(entryLocator,
                 String.format("Conversation list entry '%s' is not visible", name));
-        final Point entryLocation = entryElement.getLocation();
-        final Dimension entryDimension = entryElement.getSize();
         final BufferedImage entryScreenshot =
                 this.getElementScreenshot(entryElement).orElseThrow(IllegalStateException::new);
-        final By titleLocator = By.xpath(xpathStrConvoListTitleByName.apply(name));
-        final WebElement titleElement = getElement(titleLocator);
-        final Point titleLocation = titleElement.getLocation();
-        final Dimension titleDimension = titleElement.getSize();
-//        ImageIO.write(entryScreenshot, "png", new File(System.getProperty("user.home")
-//                + "/Desktop/screen_" + System.currentTimeMillis() + ".png"));
         switch (side) {
             case LEFT:
                 return entryScreenshot.getSubimage(
-                        0, titleLocation.y - entryLocation.y,
-                        entryDimension.width / 4, titleDimension.height);
+                        0, 0,
+                        entryScreenshot.getWidth() / 4, entryScreenshot.getHeight()
+                );
             case RIGHT:
                 return entryScreenshot.getSubimage(
-                        entryDimension.width * 3 / 4, titleLocation.y - entryLocation.y,
-                        entryDimension.width / 4, titleDimension.height);
+                        entryScreenshot.getWidth() * 3 / 4, 0,
+                        entryScreenshot.getWidth() / 4, entryScreenshot.getHeight()
+                );
             default:
                 throw new IllegalArgumentException(String.format("Unsupported side value '%s'", side.name()));
         }
-    }
-
-    @Override
-    public void swipeRightConversationToRevealActionButtons(String conversation) throws Exception {
-        // FIXME: perform swipe via standard driver methods
-        final FBElement dstElement = (FBElement) getConversationsListItem(conversation);
-        swipeAtElement(dstElement, 20, 60, 65, 60, 1.5);
     }
 }
