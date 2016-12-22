@@ -21,8 +21,8 @@ public class Timedelta implements Comparable<Timedelta> {
     }
 
     private static Timedelta getInstance(double milliSeconds) {
-        final long milliSecondsLong = (long) milliSeconds;
         if (-CACHE_RANGE <= milliSeconds && milliSeconds <= CACHE_RANGE) {
+            final long milliSecondsLong = (long) milliSeconds;
             if (!cache.containsKey(milliSecondsLong)) {
                 cache.put(milliSecondsLong, new Timedelta(milliSeconds));
             }
