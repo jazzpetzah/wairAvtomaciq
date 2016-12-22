@@ -7,6 +7,10 @@ public class Timedelta implements Comparable<Timedelta> {
     private static final int MILLISECONDS_IN_SECOND = 1000;
     private static final int SECONDS_IN_MINUTE = 60;
     private static final int MINUTES_IN_HOUR = 60;
+    private static final int HOURS_IN_DAY = 24;
+
+    private static final long CACHE_RANGE =
+            HOURS_IN_DAY * MINUTES_IN_HOUR * SECONDS_IN_MINUTE * MILLISECONDS_IN_SECOND;
 
     private long milliSeconds;
 
@@ -18,10 +22,13 @@ public class Timedelta implements Comparable<Timedelta> {
 
     private static Timedelta getInstance(double milliSeconds) {
         final long milliSecondsLong = (long) milliSeconds;
-        if (!cache.containsKey(milliSecondsLong)) {
-            cache.put(milliSecondsLong, new Timedelta(milliSeconds));
+        if (-CACHE_RANGE <= milliSeconds && milliSeconds <= CACHE_RANGE) {
+            if (!cache.containsKey(milliSecondsLong)) {
+                cache.put(milliSecondsLong, new Timedelta(milliSeconds));
+            }
+            return cache.get(milliSecondsLong);
         }
-        return cache.get(milliSecondsLong);
+        return new Timedelta(milliSeconds);
     }
 
     public static Timedelta fromSeconds(double seconds) {
@@ -49,7 +56,11 @@ public class Timedelta implements Comparable<Timedelta> {
     }
 
     public int asMinutes() {
-        return (int) (this.milliSeconds / SECONDS_IN_MINUTE / MILLISECONDS_IN_SECOND);
+        return (int) this.asFloatMinutes();
+    }
+
+    public double asFloatMinutes() {
+        return this.milliSeconds * 1.0 / SECONDS_IN_MINUTE / MILLISECONDS_IN_SECOND;
     }
 
     public static Timedelta fromHours(double hours) {
@@ -57,7 +68,11 @@ public class Timedelta implements Comparable<Timedelta> {
     }
 
     public int asHours() {
-        return (int) (this.milliSeconds / MINUTES_IN_HOUR / SECONDS_IN_MINUTE / MILLISECONDS_IN_SECOND);
+        return (int) this.asFloatHours();
+    }
+
+    public double asFloatHours() {
+        return this.milliSeconds * 1.0 / MINUTES_IN_HOUR / SECONDS_IN_MINUTE / MILLISECONDS_IN_SECOND;
     }
 
     public Timedelta sum(Timedelta other) {
@@ -94,7 +109,8 @@ public class Timedelta implements Comparable<Timedelta> {
 
     @Override
     public boolean equals(Object other) {
-        return (other instanceof Timedelta) && (((Timedelta) other).asMilliSeconds() == this.asMilliSeconds());
+        return (other instanceof Timedelta) &&
+                (Math.abs(((Timedelta) other).asMilliSeconds()) == Math.abs(this.asMilliSeconds()));
     }
 
     @Override
@@ -118,13 +134,13 @@ public class Timedelta implements Comparable<Timedelta> {
 
     @Override
     public int compareTo(Timedelta o) {
-        if (this.equals(o)) {
-            return 0;
-        }
         if (o == null) {
             throw new NullPointerException("null value is not comparable");
         }
-        if (this.milliSeconds > o.milliSeconds) {
+        if (this.equals(o)) {
+            return 0;
+        }
+        if (Math.abs(this.milliSeconds) > Math.abs(o.milliSeconds)) {
             return 1;
         }
         return -1;
