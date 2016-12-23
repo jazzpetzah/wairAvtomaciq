@@ -39,3 +39,21 @@ Feature: Copy/Delete Message
     Examples:
       | Name      | Contact   | Picture     | MessagesCount |
       | user1Name | user2Name | testing.jpg | 2             |
+
+  @C145957 @regression @rc @fastLogin
+  Scenario Outline: Verify deleting sent text message [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I type the default message and send it
+    When I long tap default message in conversation view
+    And I tap on Delete badge item
+    And I select Delete for Me item from Delete menu
+    Then I see 0 default messages in the conversation view
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
