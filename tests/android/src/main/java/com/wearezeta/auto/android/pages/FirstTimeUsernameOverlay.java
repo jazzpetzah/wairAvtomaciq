@@ -3,6 +3,7 @@ package com.wearezeta.auto.android.pages;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.DummyElement;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import com.wearezeta.auto.common.misc.Timedelta;
 import org.openqa.selenium.By;
 
 import java.util.concurrent.Future;
@@ -38,8 +39,8 @@ public class FirstTimeUsernameOverlay extends AndroidPage {
         getElement(xpathKeepThisOneButton).click();
     }
 
-    public void tapKeepThisOneIfVisible(int timeoutSeconds) throws Exception {
-        getElementIfDisplayed(xpathKeepThisOneButton, timeoutSeconds).orElseGet(DummyElement::new).click();
+    public void tapKeepThisOneIfVisible(Timedelta timeout) throws Exception {
+        getElementIfDisplayed(xpathKeepThisOneButton, timeout).orElseGet(DummyElement::new).click();
     }
 
     public void tapChooseYourOwnButton() throws Exception {

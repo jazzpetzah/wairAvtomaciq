@@ -16,6 +16,7 @@ import com.google.common.collect.ImmutableMap;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.*;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.process.UnixProcessHelpers;
 import com.wearezeta.auto.common.rest.RESTError;
 import org.apache.log4j.Logger;
@@ -32,9 +33,9 @@ import org.openqa.selenium.security.Credentials;
 
 public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, FindsByFBPredicate,
         FindsByFBAccessibilityId, FindsByFBXPath, FindsByFBClassName {
-    public static final long MAX_COMMAND_DURATION_MILLIS = 90000;
-    public static final long MAX_SESSION_INIT_DURATION_MILLIS = 120000;
-    public static final long MAX_GET_SOURCE_DURATION_MILLIS = 15000;
+    public static final Timedelta MAX_COMMAND_DURATION = Timedelta.fromSeconds(90);
+    public static final Timedelta MAX_SESSION_INIT_DURATION = Timedelta.fromSeconds(120);
+    public static final Timedelta MAX_GET_SOURCE_DURATION = Timedelta.fromSeconds(15);
 
     public static final String AUTOMATION_NAME_CAPABILITY_NAME = "automationName";
     public static final String AUTOMATION_MODE_XCUITEST = "XCUITest";
@@ -144,17 +145,17 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
 
         final Callable<Response> task = () -> super.execute(driverCommand, parameters);
         final Future<Response> future = getPool().submit(task);
-        long timeout = MAX_COMMAND_DURATION_MILLIS;
+        Timedelta timeout = MAX_COMMAND_DURATION;
         switch (driverCommand) {
             case DriverCommand.GET_PAGE_SOURCE:
-                timeout = MAX_GET_SOURCE_DURATION_MILLIS;
+                timeout = MAX_GET_SOURCE_DURATION;
                 break;
             case DriverCommand.NEW_SESSION:
-                timeout = MAX_SESSION_INIT_DURATION_MILLIS;
+                timeout = MAX_SESSION_INIT_DURATION;
                 break;
         }
         try {
-            return future.get(timeout, TimeUnit.MILLISECONDS);
+            return future.get(timeout.asMilliSeconds(), TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             if (e instanceof ExecutionException) {
                 if (isSessionLostBecause(e.getCause())) {
@@ -257,7 +258,7 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
     @Override
     public void runAppInBackground(int seconds) {
         try {
-            getFbDriverAPI().deactivateApp(seconds);
+            getFbDriverAPI().deactivateApp(Timedelta.fromSeconds(seconds));
         } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }
@@ -396,9 +397,9 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
         }
     }
 
-    public void longTapScreenAt(int x, int y, double durationSeconds) {
+    public void longTapScreenAt(int x, int y, Timedelta duration) {
         try {
-            getFbDriverAPI().touchAndHold(x, y, durationSeconds);
+            getFbDriverAPI().touchAndHold(x, y, duration);
         } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }

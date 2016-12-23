@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -12,6 +13,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
+import com.wearezeta.auto.common.misc.Timedelta;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.Dimension;
@@ -109,12 +111,12 @@ public abstract class BasePage {
     }
 
     protected List<WebElement> selectVisibleElements(By locator) throws Exception {
-        return this.selectVisibleElements(locator, DriverUtils.getDefaultLookupTimeoutSeconds());
+        return this.selectVisibleElements(locator, Timedelta.fromSeconds(DriverUtils.getDefaultLookupTimeoutSeconds()));
     }
 
-    protected List<WebElement> selectVisibleElements(By locator, int timeoutSeconds) throws Exception {
+    protected List<WebElement> selectVisibleElements(By locator, Timedelta timeout) throws Exception {
         final List<WebElement> result = new ArrayList<>();
-        if (DriverUtils.waitUntilLocatorAppears(getDriver(), locator, timeoutSeconds)) {
+        if (DriverUtils.waitUntilLocatorAppears(getDriver(), locator, timeout.asSeconds())) {
             for (WebElement el : getDriver().findElements(locator)) {
                 if (DriverUtils.isElementPresentAndDisplayed(getDriver(), el)) {
                     result.add(el);
@@ -136,20 +138,20 @@ public abstract class BasePage {
         return DriverUtils.verifyPresence(getDriver(), locator, message);
     }
 
-    protected WebElement getElement(By locator, String message, int timeoutSeconds) throws Exception {
-        return DriverUtils.verifyPresence(getDriver(), locator, message, timeoutSeconds);
+    protected WebElement getElement(By locator, String message, Timedelta timeout) throws Exception {
+        return DriverUtils.verifyPresence(getDriver(), locator, message, timeout.asSeconds());
     }
 
-    protected Optional<WebElement> getElementIfDisplayed(By locator, int timeoutSeconds) throws Exception {
-        return DriverUtils.getElementIfDisplayed(getDriver(), locator, timeoutSeconds);
+    protected Optional<WebElement> getElementIfDisplayed(By locator, Timedelta timeout) throws Exception {
+        return DriverUtils.getElementIfDisplayed(getDriver(), locator, timeout.asSeconds());
     }
 
     protected Optional<WebElement> getElementIfExists(By locator) throws Exception {
         return DriverUtils.getElementIfPresentInDOM(getDriver(), locator);
     }
 
-    protected Optional<WebElement> getElementIfExists(By locator, int timeoutSeconds) throws Exception {
-        return DriverUtils.getElementIfPresentInDOM(getDriver(), locator, timeoutSeconds);
+    protected Optional<WebElement> getElementIfExists(By locator, Timedelta timeout) throws Exception {
+        return DriverUtils.getElementIfPresentInDOM(getDriver(), locator, timeout.asSeconds());
     }
 
     /**

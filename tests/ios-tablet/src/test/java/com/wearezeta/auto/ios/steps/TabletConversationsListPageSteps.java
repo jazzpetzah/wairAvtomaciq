@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import org.junit.Assert;
 
@@ -59,13 +60,13 @@ public class TabletConversationsListPageSteps {
             throw new IllegalStateException(String.format(
                     "Please take a screenshot of '%s' conversation entry first", name));
         }
-        final int timeoutSeconds = 35;
+        final Timedelta timeout = Timedelta.fromSeconds(35);
         if (shouldNotBeChanged == null) {
             Assert.assertTrue(String.format("The state of '%s' conversation item seems to be the same", name),
-                    this.savedConvoItemStates.get(name).isChanged(timeoutSeconds, MIN_CONVO_SIMILARITY_SCORE));
+                    this.savedConvoItemStates.get(name).isChanged(timeout, MIN_CONVO_SIMILARITY_SCORE));
         } else {
             Assert.assertTrue(String.format("The state of '%s' conversation item seems to be changed", name),
-                    this.savedConvoItemStates.get(name).isNotChanged(timeoutSeconds, MIN_CONVO_SIMILARITY_SCORE));
+                    this.savedConvoItemStates.get(name).isNotChanged(timeout, MIN_CONVO_SIMILARITY_SCORE));
         }
     }
 

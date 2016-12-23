@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios.pages;
 
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.misc.Timedelta;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
@@ -21,7 +22,7 @@ public class VideoPlayerPage extends IOSPage {
     }
 
     public boolean isVideoMessagePlayerPageDoneButtonVisible() throws Exception {
-        return isLocatorExist(nameVideoDoneButton, 20);
+        return isLocatorExist(nameVideoDoneButton, Timedelta.fromSeconds(20));
     }
 
     public void tapDoneButton() throws Exception {

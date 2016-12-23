@@ -2,6 +2,7 @@ package com.wearezeta.auto.android_tablet.pages;
 
 import com.wearezeta.auto.android.pages.FirstTimeOverlay;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import com.wearezeta.auto.common.misc.Timedelta;
 
 import java.util.concurrent.Future;
 
@@ -31,7 +32,7 @@ public class TabletFirstTimeOverlay extends AndroidTabletPage {
         return getFirstTimeOverlay().isInvisible();
     }
 
-    public void acceptWhenVisible(int timeoutSeconds) throws Exception {
-        getFirstTimeOverlay().acceptWhenVisible(timeoutSeconds);
+    public void acceptWhenVisible(Timedelta timeout) throws Exception {
+        getFirstTimeOverlay().acceptWhenVisible(timeout);
     }
 }

@@ -11,6 +11,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBDragArguments;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
+import com.wearezeta.auto.common.misc.Timedelta;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.*;
 
@@ -92,23 +93,25 @@ public class ConversationsListPage extends IOSPage {
         Thread.sleep(1500);
     }
 
-    private WebElement getConversationsListItem(String name, int timeoutSeconds) throws Exception {
+    private WebElement getConversationsListItem(String name, Timedelta timeout) throws Exception {
         final By locator = FBBy.xpath(xpathStrConvoListEntryByName.apply(name));
-        return getElement(locator, String.format("The conversation '%s' is not visible in the list after %s seconds",
-                name, timeoutSeconds), timeoutSeconds);
+        return getElement(locator, String.format("The conversation '%s' is not visible in the list after %s",
+                name, timeout.toString()), timeout);
     }
 
     protected WebElement getConversationsListItem(String name) throws Exception {
-        return getConversationsListItem(name, Integer.parseInt(CommonUtils.getDriverTimeoutFromConfig(getClass())));
+        return getConversationsListItem(name,
+                Timedelta.fromSeconds(Integer.parseInt(CommonUtils.getDriverTimeoutFromConfig(getClass()))));
     }
 
     public boolean isConversationInList(String name) throws Exception {
-        return this.isConversationInList(name, Integer.parseInt(CommonUtils.getDriverTimeoutFromConfig(getClass())));
+        return this.isConversationInList(name,
+                Timedelta.fromSeconds(Integer.parseInt(CommonUtils.getDriverTimeoutFromConfig(getClass()))));
     }
 
-    public boolean isConversationInList(String name, int timeoutSeconds) throws Exception {
+    public boolean isConversationInList(String name, Timedelta timeout) throws Exception {
         final By locator = FBBy.xpath(xpathStrConvoListEntryByName.apply(name));
-        return isLocatorDisplayed(locator, timeoutSeconds);
+        return isLocatorDisplayed(locator, timeout);
     }
 
     private void swipeRightOnContact(String name) throws Exception {
@@ -121,7 +124,7 @@ public class ConversationsListPage extends IOSPage {
                 new Point(elRect.x + elRect.width * 3 / 4, elRect.y + elRect.height * 8 / 9)
         );
         getDriver().dragFromToForDuration(
-                new FBDragArguments(startPoint.x, startPoint.y, endPoint.x, endPoint.y, 1)
+                new FBDragArguments(startPoint.x, startPoint.y, endPoint.x, endPoint.y, Timedelta.fromSeconds(1))
         );
     }
 
@@ -132,7 +135,7 @@ public class ConversationsListPage extends IOSPage {
     }
 
     public boolean isPendingRequestInContactList() throws Exception {
-        return isLocatorDisplayed(xpathPendingRequest, 5);
+        return isLocatorDisplayed(xpathPendingRequest, Timedelta.fromSeconds(5));
     }
 
     public boolean pendingRequestInContactListIsNotShown() throws Exception {
@@ -145,21 +148,21 @@ public class ConversationsListPage extends IOSPage {
         Thread.sleep(2000);
     }
 
-    public boolean isConversationNotInList(String name, int timeoutSeconds) throws Exception {
+    public boolean isConversationNotInList(String name, Timedelta timeout) throws Exception {
         final By locator = FBBy.xpath(xpathStrConvoListEntryByName.apply(name));
-        return isLocatorInvisible(locator, timeoutSeconds);
+        return isLocatorInvisible(locator, timeout);
     }
 
     public boolean isConversationNotInList(String name) throws Exception {
-        return isConversationNotInList(name, 5);
+        return isConversationNotInList(name, Timedelta.fromSeconds(5));
     }
 
-    public boolean isConversationWithUsersExist(List<String> names, int timeoutSeconds) throws Exception {
+    public boolean isConversationWithUsersExist(List<String> names, Timedelta timeout) throws Exception {
         final String xpathExpr = String.join(" and ", names.stream().
                 map(x -> String.format("contains(@name, '%s')", x)).
                 collect(Collectors.toList()));
         final By locator = By.xpath(xpathStrContactListItemByExpr.apply(xpathExpr));
-        return isLocatorDisplayed(locator, timeoutSeconds);
+        return isLocatorDisplayed(locator, timeout);
     }
 
     public BufferedImage getConversationEntryScreenshot(int idx) throws Exception {

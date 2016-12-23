@@ -13,7 +13,7 @@ import java.util.function.Function;
 public class ElementState {
     private static final Logger log = ZetaLogger.getLog(ElementState.class.getSimpleName());
 
-    private static final long MS_INTERVAL = 500;
+    private static final Timedelta INTERVAL = Timedelta.fromMilliSeconds(500);
 
     private Optional<BufferedImage> previousScreenshot = Optional.empty();
     private FunctionalInterfaces.StateGetter stateGetter;
@@ -33,7 +33,7 @@ public class ElementState {
             } catch (StaleElementReferenceException e) {
                 savedException = e;
                 nTry++;
-                Thread.sleep(MS_INTERVAL);
+                Thread.sleep(INTERVAL.asMilliSeconds());
             }
         } while (nTry < maxRetries);
         throw savedException;
@@ -44,14 +44,13 @@ public class ElementState {
         return this;
     }
 
-    private boolean checkState(Function<Double, Boolean> checkerFunc, int timeoutSeconds) throws Exception {
-        return checkState(checkerFunc, timeoutSeconds, ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+    private boolean checkState(Function<Double, Boolean> checkerFunc, Timedelta timeout) throws Exception {
+        return checkState(checkerFunc, timeout, ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
     }
 
-    private boolean checkState(Function<Double, Boolean> checkerFunc, int timeoutSeconds, int resizeMode)
+    private boolean checkState(Function<Double, Boolean> checkerFunc, Timedelta timeout, int resizeMode)
             throws Exception {
-        final long msTimeout = timeoutSeconds * 1000;
-        final long msStarted = System.currentTimeMillis();
+        final Timedelta started = Timedelta.now();
         do {
             try {
                 final BufferedImage currentState = stateGetter.getState();
@@ -59,45 +58,45 @@ public class ElementState {
                         this.previousScreenshot.orElseThrow(
                                 () -> new IllegalStateException("Please remember the previous element state first")),
                         currentState, resizeMode);
-                log.debug(String.format("Actual score: %.4f; Time left: %s ms", score,
-                        msTimeout + msStarted - System.currentTimeMillis()));
+                log.debug(String.format("Actual score: %.4f; Time left: %s", score,
+                        timeout.sum(started).diff(Timedelta.now()).toString()));
                 if (checkerFunc.apply(score)) {
                     return true;
                 }
             } catch (StaleElementReferenceException e) {
-                log.debug(String.format("Actual score: <calculation error>; Time left: %s ms",
-                        msTimeout + msStarted - System.currentTimeMillis()));
+                log.debug(String.format("Actual score: <calculation error>; Time left: %s",
+                        timeout.sum(started).diff(Timedelta.now()).toString()));
             }
-            Thread.sleep(MS_INTERVAL);
-        } while (System.currentTimeMillis() - msStarted <= msTimeout);
+            Thread.sleep(INTERVAL.asMilliSeconds());
+        } while (Timedelta.now().isDiffLessOrEqual(started, timeout));
         return false;
     }
 
-    public boolean isChanged(int timeoutSeconds, double minScore) throws Exception {
+    public boolean isChanged(Timedelta timeout, double minScore) throws Exception {
         log.debug(String.format(
-                "Checking if element state has been changed in %s seconds (Min score: %.4f)...",
-                timeoutSeconds, minScore));
-        return checkState((x) -> x < minScore, timeoutSeconds);
+                "Checking if element state has been changed in %s (Min score: %.4f)...",
+                timeout.toString(), minScore));
+        return checkState((x) -> x < minScore, timeout);
     }
 
-    public boolean isChanged(int timeoutSeconds, double minScore, int resizeMode) throws Exception {
+    public boolean isChanged(Timedelta timeout, double minScore, int resizeMode) throws Exception {
         log.debug(String.format(
-                "Checking if element state has been changed in %s seconds (Min score: %.4f)...",
-                timeoutSeconds, minScore));
-        return checkState((x) -> x < minScore, timeoutSeconds, resizeMode);
+                "Checking if element state has been changed in %s (Min score: %.4f)...",
+                timeout, minScore));
+        return checkState((x) -> x < minScore, timeout, resizeMode);
     }
 
-    public boolean isNotChanged(int timeoutSeconds, double minScore) throws Exception {
+    public boolean isNotChanged(Timedelta timeout, double minScore) throws Exception {
         log.debug(String.format(
-                "Checking if element state has NOT been changed in %s seconds (Min score: %.4f)...",
-                timeoutSeconds, minScore));
-        return checkState((x) -> x >= minScore, timeoutSeconds);
+                "Checking if element state has NOT been changed in %s (Min score: %.4f)...",
+                timeout, minScore));
+        return checkState((x) -> x >= minScore, timeout);
     }
 
-    public boolean isNotChanged(int timeoutSeconds, double minScore, int resizeMode) throws Exception {
+    public boolean isNotChanged(Timedelta timeout, double minScore, int resizeMode) throws Exception {
         log.debug(String.format(
-                "Checking if element state has NOT been changed in %s seconds (Min score: %.4f)...",
-                timeoutSeconds, minScore));
-        return checkState((x) -> x >= minScore, timeoutSeconds, resizeMode);
+                "Checking if element state has NOT been changed in %s (Min score: %.4f)...",
+                timeout, minScore));
+        return checkState((x) -> x >= minScore, timeout, resizeMode);
     }
 }

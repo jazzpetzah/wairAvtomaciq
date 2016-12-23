@@ -8,6 +8,7 @@ import com.wearezeta.auto.common.driver.device_helpers.IOSSimulatorHelpers;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBDragArguments;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
+import com.wearezeta.auto.common.misc.Timedelta;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
@@ -44,7 +45,7 @@ public class SketchPage extends IOSPage {
                                 startYPercent * screenSize.getHeight() / 100,
                                 endXPercent * screenSize.getWidth() / 100,
                                 endYPercent * screenSize.getHeight() / 100,
-                                3)
+                                Timedelta.fromSeconds(3))
                 );
             }
         }

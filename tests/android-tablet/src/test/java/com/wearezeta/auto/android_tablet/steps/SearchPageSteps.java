@@ -2,6 +2,7 @@ package com.wearezeta.auto.android_tablet.steps;
 
 import com.wearezeta.auto.android_tablet.pages.TabletContactListPage;
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.Timedelta;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android_tablet.pages.TabletSearchListPage;
@@ -144,7 +145,7 @@ public class SearchPageSteps {
         }
         Assert.assertTrue(
                 String.format("The current contact avatar of '%s' is very similar to the previous one", convoName),
-                this.rememberedAvatar.isChanged(10, MAX_SIMILARITY_VALUE));
+                this.rememberedAvatar.isChanged(Timedelta.fromSeconds(10), MAX_SIMILARITY_VALUE));
     }
 
     /**

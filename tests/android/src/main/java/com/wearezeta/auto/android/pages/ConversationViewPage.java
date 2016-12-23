@@ -16,6 +16,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces;
+import com.wearezeta.auto.common.misc.Timedelta;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -260,7 +261,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
 
     private static final String FILE_MESSAGE_SEPARATOR = " · ";
 
-    private static final int SCROLL_TO_BOTTOM_INTERVAL_MILLISECONDS = 1000;
+    private static final Timedelta SCROLL_TO_BOTTOM_INTERVAL = Timedelta.fromMilliSeconds(1000);
 
     private static final int DEFAULT_SWIPE_DURATION_MILLISECONDS = 40;
 
@@ -477,11 +478,11 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     }
 
     private WebElement showCursorToolButtonIfNotVisible(By locator) throws Exception {
-        final Optional<WebElement> btn = getElementIfDisplayed(locator, 3);
+        final Optional<WebElement> btn = getElementIfDisplayed(locator, Timedelta.fromSeconds(3));
         if (btn.isPresent()) {
             return btn.get();
         } else {
-            getElementIfDisplayed(idCursorMore, 3).orElseGet(() ->
+            getElementIfDisplayed(idCursorMore, Timedelta.fromSeconds(3)).orElseGet(() ->
                     {
                         try {
                             return getElement(idCursorLess);
@@ -643,7 +644,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     public void scrollToTheBottom() throws Exception {
         tapOnTextInput();
         this.hideKeyboard();
-        swipeByCoordinates(SCROLL_TO_BOTTOM_INTERVAL_MILLISECONDS, 50, 75, 50, 40);
+        swipeByCoordinates(SCROLL_TO_BOTTOM_INTERVAL, 50, 75, 50, 40);
     }
 
     private By getTopBarButtonLocator(String btnName) {
@@ -724,8 +725,8 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
      *
      * @throws Exception
      */
-    public void navigateBack(int timeMilliseconds) throws Exception {
-        swipeRightCoordinates(timeMilliseconds);
+    public void navigateBack(Timedelta duration) throws Exception {
+        swipeRightCoordinates(duration);
     }
 
     public boolean isConversationPeopleChangedMessageContainsNames(List<String> names) throws Exception {
@@ -832,10 +833,11 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
                 timeoutSeconds,
                 500,
                 () -> {
-                    final Optional<WebElement> msgElement = getElementIfDisplayed(locator, 1);
+                    final Optional<WebElement> msgElement = getElementIfDisplayed(locator, Timedelta.fromSeconds(1));
                     if (msgElement.isPresent()) {
                         final String indexMessage = getElement(messageIndexLocator.getLocator(),
-                                "Cannot find the indexed message in the conversation", 1).getText();
+                                "Cannot find the indexed message in the conversation",
+                                Timedelta.fromSeconds(1)).getText();
                         return expectedMessage.equals(indexMessage);
                     } else {
                         return false;
@@ -859,7 +861,8 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     public boolean scrollUpUntilMediaBarVisible(final int maxScrollRetries) throws Exception {
         int swipeNum = 1;
         while (swipeNum <= maxScrollRetries) {
-            swipeByCoordinates(1000, 50, 30, 50, 90);
+            swipeByCoordinates(Timedelta.fromMilliSeconds(1000),
+                    50, 30, 50, 90);
             if (waitUntilMediaBarVisible(2)) {
                 return true;
             }
@@ -1168,12 +1171,13 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
         int endHeightPercentage = (screenHeight - containerHeight) / screenHeight;
 
         while (nScrolls < maxScrolls) {
-            Optional<WebElement> el = getElementIfDisplayed(locator, 1);
+            Optional<WebElement> el = getElementIfDisplayed(locator, Timedelta.fromSeconds(1));
             if (el.isPresent() &&
                     el.get().getLocation().getY() + el.get().getSize().getHeight() - offset <= screenHeight) {
                 return true;
             }
-            swipeByCoordinates(500, 50, 95, 50, endHeightPercentage);
+            swipeByCoordinates(Timedelta.fromMilliSeconds(500),
+                    50, 95, 50, endHeightPercentage);
             nScrolls++;
         }
         return false;

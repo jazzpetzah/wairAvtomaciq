@@ -7,6 +7,7 @@ import java.util.Random;
 import com.wearezeta.auto.android.pages.ConversationsListPage;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.misc.Timedelta;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriverException;
@@ -42,7 +43,7 @@ public class PerformanceSteps {
 
     private static final Logger log = ZetaLogger.getLog(PerformanceSteps.class.getSimpleName());
 
-    private static final int DEFAULT_SWIPE_TIME = 500;
+    private static final Timedelta DEFAULT_SWIPE_TIME = Timedelta.fromMilliSeconds(500);
 
     private ConversationsListPage getContactListPage() throws Exception {
         return pagesCollection.getPage(ConversationsListPage.class);

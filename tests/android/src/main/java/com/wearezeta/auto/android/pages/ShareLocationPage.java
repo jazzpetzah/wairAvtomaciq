@@ -5,6 +5,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.DummyElement;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import com.wearezeta.auto.common.misc.Timedelta;
 import org.openqa.selenium.By;
 
 import java.util.concurrent.Future;
@@ -35,7 +36,8 @@ public class ShareLocationPage extends AndroidPage {
                 timeoutSeconds,
                 WAIT_UNTIL_INTERVAL_MILLISECONDS,
                 () -> {
-                    getElementIfDisplayed(getButtonLocator(btnName), 1).orElseGet(DummyElement::new).click();
+                    getElementIfDisplayed(getButtonLocator(btnName),
+                            Timedelta.fromSeconds(1)).orElseGet(DummyElement::new).click();
                     return DriverUtils.waitUntilLocatorDissapears(getDriver(), getButtonLocator(btnName), 2);
                 }
         );

@@ -3,6 +3,7 @@ package com.wearezeta.auto.android_tablet.pages;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
+import com.wearezeta.auto.common.misc.Timedelta;
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -70,7 +71,7 @@ public class TabletIncomingConnectionsPage extends AndroidTabletPage {
 			if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 1)) {
 				return;
 			}
-			this.swipeUpCoordinates(1000, 50);
+			this.swipeUpCoordinates(Timedelta.fromMilliSeconds(1000), 50);
 			ntry++;
 		}
 		throw new RuntimeException(String.format("Incoming pending contact '%s' is still not visible", name));
