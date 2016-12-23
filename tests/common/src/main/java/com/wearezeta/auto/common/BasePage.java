@@ -87,11 +87,21 @@ public abstract class BasePage {
 
     public Optional<BufferedImage> getElementScreenshot(Rectangle elementRect) throws Exception {
         final Optional<BufferedImage> screenshot = takeScreenshot();
-        if (screenshot.isPresent()) {
-            return Optional.of(screenshot.get().getSubimage(
-                    elementRect.x, elementRect.y, elementRect.width, elementRect.height));
+        if (!screenshot.isPresent()) {
+            return screenshot;
         }
-        return Optional.empty();
+        final Rectangle dstArea = elementRect.intersection(
+                new Rectangle(0, 0, screenshot.get().getWidth(), screenshot.get().getHeight())
+        );
+        if (dstArea.isEmpty()) {
+            throw new IllegalArgumentException(
+                    String.format("Cannot take a screenshot of the element, which is located outside of the viewport\n"
+                            + "(%s x %s == <empty rect>)", elementRect,
+                            new Rectangle(0, 0, screenshot.get().getWidth(), screenshot.get().getHeight()))
+            );
+        }
+        log.info(String.format("Taking the screenshot of %s area...", dstArea));
+        return Optional.of(screenshot.get().getSubimage(dstArea.x, dstArea.y, dstArea.width, dstArea.height));
     }
 
     protected List<WebElement> getElements(By locator) throws Exception {
