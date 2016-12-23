@@ -180,13 +180,14 @@ public class CommonIOSSteps {
         capabilities.setCapability("launchTimeout", ZetaIOSDriver.MAX_SESSION_INIT_DURATION_MILLIS);
         final String backendType = getBackendType(this.getClass());
         final List<String> processArgs = new ArrayList<>(Arrays.asList(
-                "-UseHockey", "0",
-                "-ZMBackendEnvironmentType", backendType,
+                "-UseHockey", "0"
+                , "-ZMBackendEnvironmentType", backendType
                 // https://wearezeta.atlassian.net/browse/ZIOS-5769
-                "--disable-autocorrection",
+                , "--disable-autocorrection"
                 // https://wearezeta.atlassian.net/browse/ZIOS-5259
-                "-AnalyticsUserDefaultsDisabledKey", "0"
+                , "-AnalyticsUserDefaultsDisabledKey", "0"
                 // ,"--debug-log-network"
+                , "-com.apple.CoreData.ConcurrencyDebug", "1"
         ));
 
         if (additionalCaps.isPresent()) {
