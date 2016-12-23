@@ -420,16 +420,27 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
         }
     }
 
-    // TODO: Remove this workaround after the fix for WDA landscape is merged to WDA
+    // TODO: Remove this workaround after the fix for XCTest landscape is merged to WDA
     public Point fixCoordinates(Point original) throws Exception {
-        if (!CommonUtils.getDeviceName(getClass()).toLowerCase().contains("ipad") ||
-                getOrientation() == ScreenOrientation.PORTRAIT) {
+        if (!CommonUtils.getDeviceName(getClass()).toLowerCase().contains("ipad")) {
+            return original;
+        }
+        final FBDeviceOrientation orientation = getFbDriverAPI().getOrientation();
+        if (orientation == FBDeviceOrientation.PORTRAIT) {
             return original;
         }
         final Dimension screenSize = FBElement.apiStringToDimension(
                 getFbDriverAPI().getWindowSize(CommonUtils.generateGUID().toUpperCase())
         );
-        return new Point(original.y, screenSize.height - original.x);
+        switch (orientation) {
+            case UIA_DEVICE_ORIENTATION_PORTRAIT_UPSIDEDOWN:
+                return new Point(screenSize.width - original.x, screenSize.height - original.y);
+            case LANDSCAPE:
+                return new Point(screenSize.width - original.y, original.x);
+            case UIA_DEVICE_ORIENTATION_LANDSCAPERIGHT:
+                return new Point(original.y, screenSize.height - original.x);
+        }
+        return original;
     }
 
     @Override
