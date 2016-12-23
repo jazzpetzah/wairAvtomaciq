@@ -76,6 +76,9 @@ public class CommonIOSSteps {
     public static final String CAPABILITY_NAME_FORCE_RESET_AFTER_TEST = "forceResetAfterTest";
     public static final String TAG_NAME_FORCE_RESET_AFTER_TEST = "@" + CAPABILITY_NAME_FORCE_RESET_AFTER_TEST;
 
+    public static final String CAPABILITY_NAME_ENABLE_LOCALYTICS_LOGS = "enableLocalyticsLogs";
+    public static final String TAG_NAME_ENABLE_LOCALYTICS_LOGS  = "@" + CAPABILITY_NAME_ENABLE_LOCALYTICS_LOGS;
+
     static {
         System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
         System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.http", "warn");
@@ -201,6 +204,9 @@ public class CommonIOSSteps {
                             "--loginemail=" + ((ClientUser) entry.getValue()).getEmail(),
                             "--loginpassword=" + ((ClientUser) entry.getValue()).getPassword()
                     ));
+                } else if (entry.getKey().equals(CAPABILITY_NAME_ENABLE_LOCALYTICS_LOGS) &&
+                        (entry.getValue() instanceof Boolean) && (Boolean) entry.getValue()) {
+                    processArgs.add("-ConsoleAnalytics");
                 } else {
                     if (entry.getKey().equals(CAPABILITY_NAME_ADDRESSBOOK) &&
                             (entry.getValue() instanceof Boolean) && (Boolean) entry.getValue()) {
@@ -408,6 +414,10 @@ public class CommonIOSSteps {
             }
 
             additionalCaps.put(CAPABILITY_NAME_FORCE_RESET, true);
+        }
+
+        if (scenario.getSourceTagNames().contains(TAG_NAME_ENABLE_LOCALYTICS_LOGS)) {
+            additionalCaps.put(CAPABILITY_NAME_ENABLE_LOCALYTICS_LOGS, true);
         }
 
         if (scenario.getSourceTagNames().contains(TAG_NAME_FORCE_RESET)) {
