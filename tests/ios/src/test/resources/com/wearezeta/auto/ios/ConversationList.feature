@@ -353,6 +353,8 @@ Feature: Conversation List
     And I tap Delete conversation action button
     And I tap Also Leave checkbox on Group info page
     And I confirm Delete conversation action
+    # Wait for animation
+    And I wait for 2 seconds
     And I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
