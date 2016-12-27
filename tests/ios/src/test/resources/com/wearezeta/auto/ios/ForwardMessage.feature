@@ -5,7 +5,7 @@ Feature: Forward Message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    Given User Myself sends encrypted image <Picture> to single user conversation <Contact1>
+    Given User <Contact1> sends encrypted image <Picture> to single user conversation Myself
     Given I see conversations list
     Given I tap on contact name <Contact1>
     # Wait for the picture to be loaded
