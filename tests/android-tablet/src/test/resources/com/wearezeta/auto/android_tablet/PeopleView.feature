@@ -10,12 +10,11 @@ Feature: People View
     Given I see the conversations list with conversations
     When I tap the conversation <Contact>
     And I tap conversation name from top toolbar
-    Then I see the user name <Contact> on Single user popover
-    And I see the user email <ContactEmail> on Single user popover
+    Then I see user name "<Contact>" on Single connected user details popover
 
     Examples:
-      | Name      | Contact   | ContactEmail |
-      | user1Name | user2Name | user2Email   |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @C732 @regression @rc @rc44
   Scenario Outline: Check contact personal info in landscape mode
@@ -27,12 +26,11 @@ Feature: People View
     Given I see the conversations list with conversations
     When I tap the conversation <Contact>
     And I tap conversation name from top toolbar
-    Then I see the user name <Contact> on Single user popover
-    And I see the user email <ContactEmail> on Single user popover
+    Then I see user name "<Contact>" on Single connected user details popover
 
     Examples:
-      | Name      | Contact   | ContactEmail |
-      | user1Name | user2Name | user2Email   |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @C739 @regression @rc
   Scenario Outline: Leave group conversation in portrait mode
@@ -45,10 +43,10 @@ Feature: People View
     Given I see the conversations list with conversations
     And I tap the conversation <GroupChatName>
     And I tap conversation name from top toolbar
-    And I tap Options button on Group popover
-    When I select <ItemLeave> menu item on Group popover
-    And I confirm leaving the group chat on Group popover
-    Then I do not see the Group popover
+    And I tap open menu button on Group info popover
+    When I tap <ItemLeave> button on Group conversation options menu
+    And I tap <ItemLeave> button on Confirm overlay page
+    Then I do not see Group info popover
     And I do not see the conversation <GroupChatName> in my conversations list
 
     Examples:
@@ -66,10 +64,10 @@ Feature: People View
     Given I see the conversations list with conversations
     And I tap the conversation <GroupChatName>
     And I tap conversation name from top toolbar
-    And I tap Options button on Group popover
-    When I select <ItemLeave> menu item on Group popover
-    And I confirm leaving the group chat on Group popover
-    Then I do not see the Group popover
+    And I tap open menu button on Group info popover
+    When I tap <ItemLeave> button on Group conversation options menu
+    And I tap <ItemLeave> button on Confirm overlay page
+    Then I do not see Group info popover
     And I do not see the conversation <GroupChatName> in my conversations list
 
     Examples:
@@ -87,12 +85,12 @@ Feature: People View
     Given I see the conversations list with conversations
     And I tap the conversation <GroupChatName>
     And I tap conversation name from top toolbar
-    And I tap the participant avatar <Contact2> on Group popover
-    When I tap Remove button on Group popover
-    And I confirm removal from the group chat on Group popover
-    Then I do not see the participant avatar <Contact2> on Group popover
-    When I tap Close button on Group popover
-    Then I do not see the Group popover
+    And I tap on contact <Contact2> on Group info popover
+    When I tap on remove button on Group connected user details page
+    And I tap REMOVE button on Confirm overlay page
+    Then I do not see participant <Contact2> on Group info popover
+    When I press Back button 1 time
+    Then I do not see Group info popover
     And I see the system message contains "<Action> <Contact2>" text on conversation view page
 
     Examples:
@@ -110,12 +108,12 @@ Feature: People View
     Given I see the conversations list with conversations
     And I tap the conversation <GroupChatName>
     And I tap conversation name from top toolbar
-    And I tap the participant avatar <Contact2> on Group popover
-    When I tap Remove button on Group popover
-    And I confirm removal from the group chat on Group popover
-    Then I do not see the participant avatar <Contact2> on Group popover
-    When I tap Close button on Group popover
-    Then I do not see the Group popover
+    And I tap on contact <Contact2> on Group info popover
+    When I tap on remove button on Group connected user details page
+    And I tap REMOVE button on Confirm overlay page
+    Then I do not see participant <Contact2> on Group info popover
+    When I press Back button 1 time
+    Then I do not see Group info popover
     And I see the system message contains "<Action> <Contact2>" text on conversation view page
 
     Examples:
@@ -172,9 +170,9 @@ Feature: People View
     Given User <Contact1> sends encrypted message <Message> to user Myself
     And I tap the conversation <GroupChatName>
     And I tap conversation name from top toolbar
-    When I tap the participant avatar <Contact1> on Group popover
-    And I tap Open Conversation button on Group popover
-    Then I do not see the Group popover
+    When I tap on contact <Contact1> on Group info popover
+    And I tap on open conversation button on Group connected user details page
+    Then I do not see Group info popover
     And I see the message "<Message>" in the conversation view
 
     Examples:
@@ -191,11 +189,11 @@ Feature: People View
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     Given User <Contact1> sends encrypted message <Message> to user Myself
-    And I tap the conversation <GroupChatName>
-    And I tap conversation name from top toolbar
-    When I tap the participant avatar <Contact1> on Group popover
-    And I tap Open Conversation button on Group popover
-    Then I do not see the Group popover
+    Given I tap the conversation <GroupChatName>
+    Given I tap conversation name from top toolbar
+    When I tap on contact <Contact1> on Group info popover
+    And I tap on open conversation button on Group connected user details page
+    Then I do not see Group info popover
     And I see the message "<Message>" in the conversation view
 
     Examples:
@@ -213,32 +211,31 @@ Feature: People View
     Given I see the conversations list with conversations
     And I tap the conversation <GroupChatName>
     And I tap conversation name from top toolbar
-    And I tap the participant avatar <Contact1> on Group popover
-    Then I see the user name <Contact1> on Group popover
-    And I see the user email <Contact1Email> on Group popover
+    And I tap on contact <Contact1> on Group info popover
+    Then I see user name "<Contact1>" on Group connected user details page
 
     Examples:
-      | Name      | Contact1  | Contact1Email | Contact2  | GroupChatName |
-      | user1Name | user2Name | user2Email    | user3Name | GroupChat     |
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | GroupChat     |
 
   @C530 @regression
   Scenario Outline: I can access user details page from group details pop-over (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Contact1> sets the unique username
     Given I rotate UI to portrait
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the conversation <GroupChatName>
     And I tap conversation name from top toolbar
-    And I tap the participant avatar <Contact1> on Group popover
-    Then I see the user name <Contact1> on Group popover
-    And I see the user email <Contact1Email> on Group popover
+    And I tap on contact <Contact1> on Group info popover
+    Then I see user name "<Contact1>" on Group connected user details page
 
     Examples:
-      | Name      | Contact1  | Contact1Email | Contact2  | GroupChatName |
-      | user1Name | user2Name | user2Email    | user3Name | GroupChat     |
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | GroupChat     |
 
   @C763 @regression @rc
   Scenario Outline: I see conversation name, number of participants and their avatars in group pop-over (portrait)
@@ -251,13 +248,14 @@ Feature: People View
     Given I see the conversations list with conversations
     And I tap the conversation <GroupChatName>
     When I tap conversation name from top toolbar
-    Then I see the participant avatars <Contact1>,<Contact2> on Group popover
-    And I see the conversation name "<GroupChatName>" on Group popover
-    And I see "<Subheader>" subheader on Group popover
+    Then I see participant <Contact1> on Group info popover
+    And I see participant <Contact2> on Group info popover
+    And I see the conversation name is "<GroupChatName>" on Group info popover
+    And I see "<Subheader>" in sub header on Group info popover
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Subheader |
-      | user1Name | user2Name | user3Name | GroupChat     | 2 PEOPLE  |
+      | user1Name | user2Name | user3Name | GroupChat     | 2 people  |
 
   @C801 @regression @rc
   Scenario Outline: I see conversation name, number of participants and their avatars in group pop-over (landscape)
@@ -270,13 +268,14 @@ Feature: People View
     Given I see the conversations list with conversations
     And I tap the conversation <GroupChatName>
     When I tap conversation name from top toolbar
-    Then I see the participant avatars <Contact1>,<Contact2> on Group popover
-    And I see the conversation name "<GroupChatName>" on Group popover
-    And I see "<Subheader>" subheader on Group popover
+    Then I see participant <Contact1> on Group info popover
+    And I see participant <Contact2> on Group info popover
+    And I see the conversation name is "<GroupChatName>" on Group info popover
+    And I see "<Subheader>" in sub header on Group info popover
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Subheader |
-      | user1Name | user2Name | user3Name | GroupChat     | 2 PEOPLE  |
+      | user1Name | user2Name | user3Name | GroupChat     | 2 people  |
 
   @C507 @regression
   Scenario Outline: Check interaction with options menu (portrait)
@@ -289,12 +288,12 @@ Feature: People View
     Given I see the conversations list with conversations
     And I tap the conversation <GroupChatName>
     And I tap conversation name from top toolbar
-    And I see the Group popover
-    When I tap Options button on Group popover
-    And I see <ItemLeave> menu item on Group popover
+    And I see Group info popover
+    When I tap open menu button on Group info popover
+    And I see <ItemLeave> button on Group conversation options menu
     And I navigate back
-    Then I do not see <ItemLeave> menu item on Group popover
-    And I see the Group popover
+    Then I do not see <ItemLeave> button on Group conversation options menu
+    And I see Group info popover
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | ItemLeave |
@@ -311,11 +310,11 @@ Feature: People View
     Given I see the conversations list with conversations
     And I tap the conversation <GroupChatName>
     And I tap conversation name from top toolbar
-    When I tap Options button on Group popover
-    And I see <ItemLeave> menu item on Group popover
+    When I tap open menu button on Group info popover
+    And I see <ItemLeave> button on Group conversation options menu
     And I navigate back
-    Then I do not see <ItemLeave> menu item on Group popover
-    And I see the Group popover
+    Then I do not see <ItemLeave> button on Group conversation options menu
+    And I see Group info popover
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | ItemLeave |
@@ -334,8 +333,9 @@ Feature: People View
     And I do not see the conversation <Contact2> in my conversations list
     And I tap the conversation <GroupChatName>
     And I tap conversation name from top toolbar
-    And I tap the participant avatar <Contact2> on Group popover
-    Then I do not see Open Conversation button on Group popover
+    And I tap on contact <Contact2> on Group info popover
+    Then I see user name "<Contact2>" on Group unconnected user details page
+    #TODO: Check the left action button label
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName        |

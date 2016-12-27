@@ -11,6 +11,18 @@ public class TabletSearchListPage extends AbstractTabletSearchPage {
         super(lazyDriver);
     }
 
+    public void tapOnUserName(String name) throws Exception {
+        getSearchListPage().tapOnUserName(name);
+    }
+
+    public void tapOnGroupName(String name) throws Exception {
+        getSearchListPage().tapOnGroupName(name);
+    }
+
+    private SearchListPage getSearchListPage() throws Exception {
+        return this.getAndroidPageInstance(SearchListPage.class);
+    }
+
     @Override
     protected Class getAndroidPageClass() {
         return SearchListPage.class;

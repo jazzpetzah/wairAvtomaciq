@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.wearezeta.auto.android_tablet.pages.details_overlay.TabletConversationOptionsMenuPage;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.misc.Timedelta;
 import org.junit.Assert;
@@ -23,6 +24,10 @@ public class ConversationsListPageSteps {
 
     private TabletConversationsListPage getConversationsListPage() throws Exception {
         return pagesCollection.getPage(TabletConversationsListPage.class);
+    }
+
+    private TabletConversationOptionsMenuPage getConversationListOptionMenuPage() throws Exception {
+        return pagesCollection.getPage(TabletConversationOptionsMenuPage.class);
     }
 
     /**
@@ -236,19 +241,6 @@ public class ConversationsListPageSteps {
                         .waitUntilPlayPauseButtonVisibleNextTo(convoName));
     }
 
-    /**
-     * Do swipe on a conversations list item to show actions overlay
-     *
-     * @param name conversation name/alias
-     * @throws Exception
-     * @step. ^I swipe right (?:the |\\s*)conversations list item (.*)
-     */
-    @When("^I swipe right (?:the |\\s*)conversations list item (.*)")
-    public void ISwipeRightListItem(String name) throws Exception {
-        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-        getConversationsListPage().swipeRightListItem(name);
-    }
-
     private Map<String, ElementState> playPauseBtnStates = new HashMap<>();
 
     /**
@@ -321,5 +313,29 @@ public class ConversationsListPageSteps {
     public void IRememberConvoItemCoords(String convoName) throws Exception {
         convoName = usrMgr.replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
         playPauseButtonCoords.put(convoName, getConversationsListPage().calcPlayPauseButtonCoordinates(convoName));
+    }
+
+    /**
+     * Make long press on contact to open option menu
+     *
+     * @param contact to press on
+     * @throws Exception
+     * @step. ^I long press on a (.*) on conversation list page$
+     */
+    @When("^I open options menu of (.*) on conversation list page$")
+    public void iLongPressOnAUser(String contact) throws Exception {
+        contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+        int nTies = 3;
+        //Just because it is not stable
+        while (nTies > 0) {
+            getConversationsListPage().longTapOnName(contact, 2000);
+            if (getConversationListOptionMenuPage().waitUntilUserDataVisible("user name",contact)) {
+                return;
+            }
+            nTies--;
+        }
+        Assert.assertTrue(
+                String.format("The conversation settings menu is not visible for contact list item %s", contact),
+                getConversationListOptionMenuPage().waitUntilUserDataVisible("user name",contact));
     }
 }

@@ -64,11 +64,11 @@ Feature: Conversation View
     Given I see the conversations list with conversations
     And I tap the conversation <Contact1>
     And I tap conversation name from top toolbar
-    And I see the Single user popover
-    When I tap Create Group button on Single user popover
-    And I enter "<Contact2>" into the Search input on Single user popover
-    And I tap the avatar of <Contact2> in search results on Single user popover
-    And I tap the Add To Conversation button on Single user popover
+    And I see Single connected user details popover
+    When I tap create group button on Single connected user details popover
+    And I enter "<Contact2>" into Search input on Search page
+    And I tap on user name found on Search page <Contact2>
+    And I tap on Add to conversation button on Search page
     Then I see the system message contains "<Action>" text on conversation view page
     And I see the system message contains "<Contact1>" text on conversation view page
     And I see the system message contains "<Contact2>" text on conversation view page
@@ -87,12 +87,12 @@ Feature: Conversation View
     Given I see the conversations list with conversations
     And I tap the conversation <Contact1>
     And I tap conversation name from top toolbar
-    And I see the Single user popover
-    When I tap Create Group button on Single user popover
-    And I enter "<Contact2>" into the Search input on Single user popover
+    And I see Single connected user details popover
+    When I tap create group button on Single connected user details popover
+    And I enter "<Contact2>" into Search input on Search page
     And I hide keyboard
-    And I tap the avatar of <Contact2> in search results on Single user popover
-    And I tap the Add To Conversation button on Single user popover
+    And I tap on user name found on Search page <Contact2>
+    And I tap on Add to conversation button on Search page
     Then I see the system message contains "<Action>" text on conversation view page
     And I see the system message contains "<Contact1>" text on conversation view page
     And I see the system message contains "<Contact2>" text on conversation view page
@@ -149,22 +149,22 @@ Feature: Conversation View
     Given I see the conversations list with conversations
     When I tap the conversation <Contact>
     And I tap conversation name from top toolbar
-    Then I see the Single user popover
-    And I see the user name <Contact> on Single user popover
-    When I tap Close button on Single user popover
-    Then I do not see the Single user popover
+    Then I see Single connected user details popover
+    And I see user name "<Contact>" on Single connected user details popover
+    When I press Back button 1 time
+    Then I do not see Single connected user details popover
     When I tap conversation name from top toolbar
-    Then I see the Single user popover
-    When I tap in the center of Single user popover
-    Then I see the Single user popover
-    When I tap outside of Single user popover
-    Then I do not see the Single user popover
+    Then I see Single connected user details popover
+    When I tap center of Single connected user details popover
+    Then I see Single connected user details popover
+    When I tap outside of Single connected user details popover
+    Then I do not see Single connected user details popover
     And I tap on text input
     And I hide keyboard
     When I tap conversation name from top toolbar
-    Then I see the Single user popover
+    Then I see Single connected user details popover
     When I navigate back
-    Then I do not see the Single user popover
+    Then I do not see Single connected user details popover
 
     Examples:
       | Name      | Contact   | Orientation |
@@ -181,15 +181,15 @@ Feature: Conversation View
     Given I see the conversations list with conversations
     And I tap the conversation <Contact>
     When I tap on text input
-    Then I do not see the Single user popover
+    Then I do not see Single connected user details popover
     When I tap conversation name from top toolbar
-    Then I see the Single user popover
+    Then I see Single connected user details popover
     When I rotate UI to landscape
-    Then I do not see the Single user popover
+    Then I do not see Single connected user details popover
     When I tap conversation name from top toolbar
-    Then I see the Single user popover
+    Then I see Single connected user details popover
     When I rotate UI to portrait
-    Then I do not see the Single user popover
+    Then I do not see Single connected user details popover
 
     Examples:
       | Name      | Contact   |
@@ -243,10 +243,10 @@ Feature: Conversation View
     Given I see the conversations list with conversations
     And I tap the conversation <GroupChatName>
     And I tap conversation name from top toolbar
-    And I see the Group popover
-    When I rename the conversation to "<NewGroupChatName>" on Group popover
-    And I tap Close button on Group popover
-    Then I do not see the Group popover
+    And I see Group info popover
+    When I rename group conversation to <NewGroupChatName> on Group info popover
+    And I press Back button 2 time
+    Then I do not see Group info popover
     And I see the conversation name system message "<NewGroupChatName>" on conversation view page
 
     Examples:
@@ -254,7 +254,7 @@ Feature: Conversation View
       | user1Name | user2Name | user3Name | GroupChat     | NewChatName      |
 
   @C800 @regression @rc @rc44
-  Scenario Outline: (AN-4282 for android 4.4) Verify editing the conversation name (landscape)
+  Scenario Outline: Verify editing the conversation name (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -264,10 +264,10 @@ Feature: Conversation View
     Given I see the conversations list with conversations
     And I tap the conversation <GroupChatName>
     And I tap conversation name from top toolbar
-    And I see the Group popover
-    When I rename the conversation to "<NewGroupChatName>" on Group popover
-    And I tap Close button on Group popover
-    Then I do not see the Group popover
+    And I see Group info popover
+    When I rename group conversation to <NewGroupChatName> on Group info popover
+    And I press Back button 2 time
+    Then I do not see Group info popover
     And I see the conversation name system message "<NewGroupChatName>" on conversation view page
 
     Examples:

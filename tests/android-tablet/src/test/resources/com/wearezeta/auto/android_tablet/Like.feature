@@ -45,7 +45,7 @@ Feature: Like
       | user1Name | user2Name | Sent          | OMG     |
 
   @C246205 @regression
-  Scenario Outline: I can like link by heart (Portrait)
+  Scenario Outline: (AN-4483) I can like link by heart (Portrait)
     Given There are 2 users where <Name> is me
     Given I rotate UI to portrait
     Given Myself is connected to <Contact>
@@ -89,7 +89,7 @@ Feature: Like
       | user1Name | user2Name | testing.jpg |
 
   @C246207 @regression
-  Scenario Outline: I can like sketch by heart/long tap/double tap (portrait)
+  Scenario Outline: (AN-4483) I can like sketch by heart/long tap/double tap (portrait)
     Given There are 2 users where <Name> is me
     Given I rotate UI to portrait
     Given Myself is connected to <Contact>
@@ -158,7 +158,7 @@ Feature: Like
       | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme |
 
   @C246209 @regression
-  Scenario Outline: I can like youtube (portrait)
+  Scenario Outline: (AN-4483) I can like youtube (portrait)
     Given There are 2 users where <Name> is me
     Given I rotate UI to portrait
     Given Myself is connected to <Contact>

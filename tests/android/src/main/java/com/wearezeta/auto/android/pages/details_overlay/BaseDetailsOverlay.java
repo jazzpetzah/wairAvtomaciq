@@ -1,7 +1,6 @@
 package com.wearezeta.auto.android.pages.details_overlay;
 
 import java.util.concurrent.Future;
-import java.util.function.Function;
 
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -13,11 +12,11 @@ public abstract class BaseDetailsOverlay extends AndroidPage {
     private static final By xpathVerifiedShield = By.id("sv__otr__verified_shield");
 
     private static final By xpathLeftActionButton =
-            By.xpath("//*[@id='gtv__participants__left__action' and @shown='true']");
+            By.xpath("//*[@id='fm__footer']//*[@id='gtv__participants__left__action' and @shown='true']");
     private static final By xpathRightActionButton =
-            By.xpath("//*[@id='gtv__participants__right__action' and @shown='true']");
+            By.xpath("//*[@id='fm__footer']//*[@id='gtv__participants__right__action' and @shown='true']");
     private static final By xpathCloseButton =
-            By.xpath("//*[@id='gtv__participants__close' and @shown='true']");
+            By.xpath("//*[@id='fm__footer']//*[@id='gtv__participants__close' and @shown='true']");
 
     public BaseDetailsOverlay(Future<ZetaAndroidDriver> driver) throws Exception {
         super(driver);

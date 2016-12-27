@@ -14,6 +14,7 @@ public class ConfirmOverlayPage extends AndroidPage {
 
     private static final By icRootOverlay = By.id("cm__confirm_action_light");
     private static final By idHeader = By.id("header");
+    private static final By idCheckbox = By.id("gtv__checkbox_icon");
 
     private static final Function<String, String> xpathStrConfirmButtonByName = name -> String
             .format("//*[@id='%s' and @value='%s']", strIdConfirm, name);
@@ -25,6 +26,18 @@ public class ConfirmOverlayPage extends AndroidPage {
     public void tapOnButton(String buttonLabel) throws Exception {
         By locator = getButtonLocator(buttonLabel);
         getElement(locator).click();
+    }
+
+    public void tapOnCheckbox() throws Exception {
+        getElement(idCheckbox).click();
+    }
+
+    public boolean waitUntilCheckboxVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCheckbox);
+    }
+
+    public boolean waitUntilCheckboxInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idCheckbox);
     }
 
     public boolean waitUntilPageVisible() throws Exception {

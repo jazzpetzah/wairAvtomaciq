@@ -121,6 +121,7 @@ Feature: Rich Media
   Scenario Outline: Verify that play of soundcloud track will be stopped by incoming video call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible

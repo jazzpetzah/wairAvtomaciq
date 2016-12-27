@@ -7,7 +7,6 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 
 import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class EmailSignInPageSteps {
@@ -31,7 +30,6 @@ public class EmailSignInPageSteps {
 	 */
 	@Given("^I sign in using my email$")
 	public void ISignInUsingMyEmail() throws Exception {
-		// just to make sure we are on correct page
 		pagesCollection.getPage(TabletWelcomePage.class).tapSignInButton();
 		final ClientUser selfUser = usrMgr.getSelfUserOrThrowError();
 		getEmailSignInPage().setLogin(selfUser.getEmail());

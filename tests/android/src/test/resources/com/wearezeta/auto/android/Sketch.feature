@@ -59,7 +59,7 @@ Feature: Sketch
       | user1Name | user2Name | 6         |
 
   @C246278 @regression
-  Scenario Outline: I can send an emoji sketch
+  Scenario Outline: (AN-4782) I can send an emoji sketch
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I push local file named "<FileName>" to the device
