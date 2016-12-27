@@ -387,6 +387,7 @@ Feature: Unique Username
     Given I add name <A3Name> and phone <A3Phone> with prefix <PhonePrefix> to Address Book
     Given I add <A4Name> into Address Book with email
     Given User <A4Name> sets the unique username
+    Given Users <Name>,<AName>,<A4Name>,<CF1>,<A5Name> upload own details
     Given <A5Name> is connected to <CF1>
     Given Myself is connected to <AName>,<A4Name>,<CF1>
     Given Myself sent connection request to <A5Name>
