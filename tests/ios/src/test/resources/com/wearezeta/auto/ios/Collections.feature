@@ -6,10 +6,10 @@ Feature: Collections
     Given Myself is connected to <Contact>
     Given I create temporary file <FileSize> in size with name "<FileName>" and extension "<FileExt>"
     Given I sign in using my email or phone number
-    Given User <Contact> sends temporary file <FileName>.<FileExt> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
-    Given I see conversations list
+    Given User <Contact> sends temporary file <FileName>.<FileExt> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Given User Myself sends encrypted message "<Link>" to user <Contact>
+    Given I see conversations list
     Given I tap on contact name <Contact>
     When I tap Collection button in conversation view
     Then I see collection category PICTURES
