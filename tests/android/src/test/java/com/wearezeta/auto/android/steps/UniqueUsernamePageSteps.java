@@ -34,7 +34,10 @@ public class UniqueUsernamePageSteps {
     @Then("^I( do not)? see [Uu]nique [Uu]sername (\"(.*)\")?( in )?edit field on Settings page$")
     public void iSeeUsernameEdit(String shouldNotSee, String uniqueUsernameExpected, String uniqueUsername, String
             in) throws Exception {
-        uniqueUsername = usrMgr.replaceAliasesOccurences(uniqueUsername, FindBy.UNIQUE_USERNAME_ALIAS);
+        if (uniqueUsernameExpected != null) {
+            uniqueUsername = usrMgr.replaceAliasesOccurences(uniqueUsername, FindBy.UNIQUE_USERNAME_ALIAS);
+        }
+
         if (shouldNotSee == null) {
             if (uniqueUsernameExpected == null) {
                 Assert.assertTrue("Username edit should be visible", getUniqueUsernamePage()

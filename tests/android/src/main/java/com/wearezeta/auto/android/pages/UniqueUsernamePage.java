@@ -44,6 +44,7 @@ public class UniqueUsernamePage extends AndroidPage {
         WebElement edit = getElement(idUsernameEdit);
         edit.clear();
         edit.sendKeys(username);
+        edit.sendKeys("\n");
     }
 
     public String enterNewRandomUsername(int count) throws Exception {

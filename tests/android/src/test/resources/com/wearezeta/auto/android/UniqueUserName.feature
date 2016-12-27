@@ -16,7 +16,7 @@ Feature: Unique Username
     When <ContactInABEmail> sent connection request to me
     And I tap on conversation name <WaitingMess1>
     Then I see unique user name "<ContactINABEmailUniqueUsername>" on Single pending incoming connection page
-    And I see user info "<ABNameEmail> in Address Book" on Single pending incoming connection page
+    And I see user info "<ABNameEmail> in Contacts" on Single pending incoming connection page
     And I tap connect button for user <ContactInABEmail> on Single pending incoming connection page
     And I see Conversations list with name <ContactInABEmail>
     # Connect in AB with Phone
@@ -29,13 +29,13 @@ Feature: Unique Username
     When <ContactInABSameName> sent connection request to me
     And I tap on conversation name <WaitingMess1>
     Then I do not see unique user name "<ContactInABSameNameUniqueUserName>" on Single pending incoming connection page
-    And I see user info "in Address Book" on Single pending incoming connection page
+    And I see user info "in Contacts" on Single pending incoming connection page
     And I tap connect button for user <ContactInABSameName> on Single pending incoming connection page
     And I see Conversations list with name <ContactInABSameName>
     # Conversation for AB with Email
     When I tap on conversation name <ContactInABEmail>
     And I see unique user name "<ContactINABEmailUniqueUsername>" on Conversation view
-    And I see user info "<ABNameEmail> in Address Book" on Conversation view
+    And I see user info "<ABNameEmail> in Contacts" on Conversation view
     Then I navigate back from conversation
     # Conversation for AB with Phone
     When I tap on conversation name <ContactInABPhone>
@@ -44,7 +44,7 @@ Feature: Unique Username
     # Conversation for AB with Same name
     When I tap on conversation name <ContactInABSameName>
     And I do not see unique user name "<ContactInABSameNameUniqueUserName>" on Conversation view
-    And I see user info "in Address Book" on Conversation view
+    And I see user info "in Contacts" on Conversation view
 
     Examples:
       | Name      | ContactInABEmail | ContactInABPhone | ContactInABSameName | WaitingMess1     | ABNameEmail | ABNamePhone | ContactINABEmailUniqueUsername | ContactInABPhoneUniqueUsername | ContactInABSameNameUniqueUserName |
@@ -68,7 +68,7 @@ Feature: Unique Username
       | Name      | Contact1  | Contact2  | Contact3  | WaitingMess1     | CommonContact |
       | user1Name | user2Name | user3Name | user4Name | 1 person waiting | 2             |
 
-  @C352020 @regression
+  @C352020 @regression  
   Scenario Outline: Verify I see Unique User Name and AB name within outgoing Request in different condition
     Given I delete all contacts from Address Book
     Given There are 4 users where <Name> is me
@@ -90,19 +90,19 @@ Feature: Unique Username
     When I tap on conversation name <ContactInABEmail>
     Then I see user name "<ContactInABEmail>" on Single pending outgoing connection page
     And I see unique user name "<ContactInABEmailUniqueUsername>" on Single pending outgoing connection page
-    And I see user info "<ABNameEmail> in Address Book" on Single pending outgoing connection page
+    And I see user info "<ABNameEmail> in Contacts" on Single pending outgoing connection page
     And I tap Back button
     # Contact In AB with Phone
     When I tap on conversation name <ContactInABPhone>
     Then I see user name "<ContactInABPhone>" on Single pending outgoing connection page
     And I see unique user name "<ContactInABPhoneUniqueUsername>" on Single pending outgoing connection page
-    # And I see user info "<ABNamePhone> in Address Book" on Single pending outgoing connection page
+    # And I see user info "<ABNamePhone> in Contacts" on Single pending outgoing connection page
     And I tap Back button
     # Contact in AB with Same name
     When I tap on conversation name <ContactInABSameName>
     Then I see user name "<ContactInABSameName>" on Single pending outgoing connection page
     And I do not see unique user name "<ContactInABSameNameUniqueUsername>" on Single pending outgoing connection page
-    And I see user info "in Address Book" on Single pending outgoing connection page
+    And I see user info "in Contacts" on Single pending outgoing connection page
 
     Examples:
       | Name      | ContactInABEmail | ContactInABPhone | ContactInABSameName | ABNameEmail | ABNamePhone | ContactInABEmailUniqueUsername | ContactInABPhoneUniqueUsername | ContactInABSameNameUniqueUsername |
@@ -153,7 +153,7 @@ Feature: Unique Username
       | Name      | Contact2  | Contact2Email | Contact2UniqueUsername | Contact3UniqueUsername |
       | user1Name | user2Name | user2Email    | user2UniqueUsername    | user3UniqueUsername    |
 
-  @C352075 @regression
+  @C352075 @regression 
   Scenario Outline: Verify search shows correct user info for unconnected user
     Given There are 9 users where <Name> is me
     Given I add <Contact1InABWithCF> having custom name "<Contact1NameInAB>" into Address Book with email
@@ -172,11 +172,11 @@ Feature: Unique Username
     And I open Search UI
     Then I verify results in search page, according to datatable
       | Name                 | UserInfo                           |
-      | <Contact1InABWithCF> | <Contact1NameInAB> in Address Book |
-      | <Contact2InABWoCF>   | <Contact2NameInAB> in Address Book |
+      | <Contact1InABWithCF> | <Contact1NameInAB> in Contacts |
+      | <Contact2InABWoCF>   | <Contact2NameInAB> in Contacts |
       | <Contact3WithCF>     | 2 people in common                 |
       | <Contact4WoCF>       |                                    |
-      | <Contact5SameName>   | in Address Book                    |
+      | <Contact5SameName>   | in Contacts                    |
 
     Examples:
       | Name      | Contact1InABWithCF | Contact1NameInAB | Contact2InABWoCF | Contact2NameInAB | Contact3WithCF | Contact4WoCF | Contact5SameName | CF1       | CF2       | CF3       |
@@ -220,11 +220,11 @@ Feature: Unique Username
     When I open Search UI
     Then I verify results in search page, according to datatable
       | Name                 | UserInfo                                                       |
-      | <Contact1InABWithCF> | <Contact1NameInAB> in Address Book                             |
-      | <Contact2InABWoCF>   | @<Contact2UniqueUsername> - <Contact2NameInAB> in Address Book |
+      | <Contact1InABWithCF> | <Contact1NameInAB> in Contacts                             |
+      | <Contact2InABWoCF>   | @<Contact2UniqueUsername> - <Contact2NameInAB> in Contacts |
       | <Contact3WithCF>     | @<Contact3UniqueUsername>                                      |
       | <Contact4WoCF>       |                                                                |
-      | <Contact5SameName>   | in Address Book                                                |
+      | <Contact5SameName>   | in Contacts                                                |
 
     Examples:
       | Name      | Contact1InABWithCF | Contact1NameInAB | Contact2InABWoCF | Contact2NameInAB | Contact3WithCF | Contact3UniqueUsername | Contact4WoCF | Contact5SameName | Contact2UniqueUsername | CF1       | CF2       | CF3       |
@@ -273,7 +273,6 @@ Feature: Unique Username
     Given There is 2 user where <Name> is me without unique user name
     Given User <User2Name> changes the unique username to "<User2Name>"
     Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
     Given I see Unique Username Takeover page
     Given I tap Choose Your Own button on Unique Username Takeover page
     When I see unique username edit field on Settings page
@@ -332,20 +331,20 @@ Feature: Unique Username
     Given I tap conversation name from top toolbar
     When I tap on contact <ContactInABEmail> on Group info page
     Then I see unique user name "<ContactINABEmailUniqueUsername>" on Group connected user details page
-    And I see user info "<ABNameEmail> in Address Book" on Group connected user details page
+    And I see user info "<ABNameEmail> in Contacts" on Group connected user details page
     And I tap Back button
     When I tap on contact <ContactInABPhone> on Group info page
     Then I see unique user name "<ContactInABPhoneUniqueUsername>" on Group connected user details page
     And I tap Back button
     When I tap on contact <ContactInABSameName> on Group info page
     Then I do not see unique user name "<ContactInABSameNameUniqueUserName>" on Group connected user details page
-    And I see user info "in Address Book" on Group connected user details page
+    And I see user info "in Contacts" on Group connected user details page
 
     Examples:
       | Name      | ContactInABEmail | ContactInABPhone | ContactInABSameName | ABNameEmail | ABNamePhone | ContactINABEmailUniqueUsername | ContactInABPhoneUniqueUsername | ContactInABSameNameUniqueUserName | GroupChatName |
       | user1Name | user2Name        | user3Name        | user4Name           | Email       | Phone       | user2UniqueUsername            | user3UniqueUsername            | user4UniqueUsername               | UserNameGroup |
 
-  @C352702 @staging
+  @C352702 @staging 
   Scenario Outline: Verify usernames in Group Participant view for non-connected user
     Given I delete all contacts from Address Book
     Given There are 5 users where <Name> is me
@@ -364,21 +363,21 @@ Feature: Unique Username
     Given I tap conversation name from top toolbar
     When I tap on contact <ContactInABEmail> on Group info page
     Then I see unique user name "<ContactINABEmailUniqueUsername>" on Group unconnected user details page
-    And I see user info "<ABNameEmail> in Address Book" on Group unconnected user details page
+    And I see user info "<ABNameEmail> in Contacts" on Group unconnected user details page
     And I tap Back button
     When I tap on contact <ContactInABPhone> on Group info page
     Then I see unique user name "<ContactInABPhoneUniqueUsername>" on Group unconnected user details page
     And I tap Back button
     When I tap on contact <ContactInABSameName> on Group info page
     Then I do not see unique user name "<ContactInABSameNameUniqueUserName>" on Group unconnected user details page
-    And I see user info "in Address Book" on Group unconnected user details page
+    And I see user info "in Contacts" on Group unconnected user details page
 
     Examples:
       | Name      | ContactInABEmail | ContactInABPhone | ContactInABSameName | ABNameEmail | ABNamePhone | ContactINABEmailUniqueUsername | ContactInABPhoneUniqueUsername | ContactInABSameNameUniqueUserName | Contact   | GroupChatName |
       | user1Name | user2Name        | user3Name        | user4Name           | Email       | Phone       | user2UniqueUsername            | user3UniqueUsername            | user4UniqueUsername               | user5Name | UserNameGroup |
 
 
-  @C352696 @staging
+  @C352696 @staging 
   Scenario Outline: (AN-4784) Verify AB name is shown in the option menu if contact with this email exists in the AB
     Given I delete all contacts from Address Book
     Given There are 5 users where <Name> is me
@@ -397,19 +396,19 @@ Feature: Unique Username
     Given I see Conversations list with conversations
     When I open options menu of <A4Name> on conversation list page
     Then I see unique username "<A4UName>" on Single conversation options menu
-    And I see user info "in Address Book" on Single conversation options menu
+    And I see user info "in Contacts" on Single conversation options menu
     And I tap back button
     When I open options menu of <AName> on conversation list page
-    And I see user info "<ABName> in Address Book" on Single conversation options menu
+    And I see user info "<ABName> in Contacts" on Single conversation options menu
     Then I tap back button
     When I open options menu of <A4Name> on conversation list page
-    Then I see user info "in Address Book" on Single conversation options menu
+    Then I see user info "in Contacts" on Single conversation options menu
     And I tap back button
     When I open options menu of <A2Name> on conversation list page
-    Then I see user info "<APhoneName> in Address Book" on Single conversation options menu
+    Then I see user info "<APhoneName> in Contacts" on Single conversation options menu
     And I tap back button
     When I open options menu of <A3Name> on conversation list page
-    Then I see user info "in Address Book" on Single conversation options menu
+    Then I see user info "in Contacts" on Single conversation options menu
     And I tap back button
     When I open options menu of <A5Name> on conversation list page
     Then I do not see unique username on Single conversation options menu
