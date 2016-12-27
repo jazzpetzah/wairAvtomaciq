@@ -3,10 +3,10 @@ Feature: Autoconnect
   @C2034 @regression @addressbookStart @forceReset
   Scenario Outline: Verify autoconnect users by direct match phone numbers
     Given There are 2 users
+    Given Users <Contact1>,<Contact2> upload own details
     Given I minimize Wire
     Given I install Address Book Helper app
     Given I launch Address Book Helper app
-    Given I delete all contacts from Address Book
     Given I add name <Contact1> and phone <ContactPhone> to Address Book
     Given I add name <Contact2> and phone <Contact2Phone> to Address Book
     Given I restore Wire
@@ -35,10 +35,10 @@ Feature: Autoconnect
   @C202304 @regression @addressbookStart @forceReset
   Scenario Outline: Verify autoconnect users by direct match phone numbers - delayed
     Given There are 3 users where <Name> is me
+    Given Users <Name>,<Contact1>,<Contact2> upload own details
     Given I minimize Wire
     Given I install Address Book Helper app
     Given I launch Address Book Helper app
-    Given I delete all contacts from Address Book
     Given I add name <Contact1> and phone <ContactPhone> to Address Book
     Given I add name <Contact2> and phone <Contact2Phone> to Address Book
     Given I restore Wire
@@ -60,10 +60,10 @@ Feature: Autoconnect
   @C202303 @regression @addressbookStart @forceReset
   Scenario Outline: Verify direct matching email - delayed
     Given There are 2 users where <Name> is me
+    Given Users <Name>,<Contact> upload own details
     Given I minimize Wire
     Given I install Address Book Helper app
     Given I launch Address Book Helper app
-    Given I delete all contacts from Address Book
     Given I add name <Contact> and email <ContactEmail> to Address Book
     Given I restore Wire
     Given I sign in using my email or phone number
@@ -81,10 +81,10 @@ Feature: Autoconnect
   @C206254 @regression @addressbookStart @forceReset
   Scenario Outline: Verify direct matching of emails
     Given There is 1 user
+    Given User <Contact> uploads own details
     Given I minimize Wire
     Given I install Address Book Helper app
     Given I launch Address Book Helper app
-    Given I delete all contacts from Address Book
     Given I add name <Contact> and email <ContactEmail> to Address Book
     Given I restore Wire
     Given I see sign in screen

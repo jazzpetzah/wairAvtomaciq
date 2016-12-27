@@ -77,7 +77,7 @@ public class CommonIOSSteps {
     public static final String TAG_NAME_FORCE_RESET_AFTER_TEST = "@" + CAPABILITY_NAME_FORCE_RESET_AFTER_TEST;
 
     public static final String CAPABILITY_NAME_ENABLE_LOCALYTICS_LOGS = "enableLocalyticsLogs";
-    public static final String TAG_NAME_ENABLE_LOCALYTICS_LOGS  = "@" + CAPABILITY_NAME_ENABLE_LOCALYTICS_LOGS;
+    public static final String TAG_NAME_ENABLE_LOCALYTICS_LOGS = "@" + CAPABILITY_NAME_ENABLE_LOCALYTICS_LOGS;
 
     static {
         System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
@@ -1787,5 +1787,18 @@ public class CommonIOSSteps {
     public void UserSwitchAssetMode(String userAs, String mode, String deviceName) throws Exception {
         AssetProtocol asset = AssetProtocol.valueOf(mode.toUpperCase());
         commonSteps.UserSetAssetMode(userAs, asset, deviceName);
+    }
+
+    /**
+     * Upload self user properties (name and email) to /onboarding endpoint.
+     * This is mandatory to be able to get matches
+     *
+     * @step. ^Users? (.*) uploads? own details$
+     * @param aliases self users alias(es)
+     * @throws Exception
+     */
+    @Given("^Users? (.*) uploads? own details$")
+    public void uploadSelfUser(String aliases) throws Exception {
+        commonSteps.uploadSelfContact(aliases);
     }
 }

@@ -25,6 +25,7 @@ Feature: Unique Usernames
   @C352060 @addressbookStart @forceReset @regression
   Scenario Outline: Verify incoming connection view
     Given There are 7 users where <Name> is me
+    Given Users <Name>,<Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact5WithSameNameInAB>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact6Common> upload own details
     Given <Contact1WithABEmail> sent connection request to Me
     Given <Contact2WithABPhoneNumber> sent connection request to Me
     Given <Contact3WithUniqueUserName> sent connection request to Me
@@ -129,6 +130,7 @@ Feature: Unique Usernames
   @C352059 @addressbookStart @forceReset @regression
   Scenario Outline: Verify outgoing connection request view
     Given There are 7 users where <Name> is me
+    Given Users <Name>,<Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact5WithSameNameInAB>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact6Common> upload own details
     Given Myself sent connection request to <Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact5WithSameNameInAB>
     Given User <Contact3WithUniqueUserName> sets the unique username
     Given <Contact4WithCommonFriends> is connected to <Contact6Common>
@@ -260,6 +262,7 @@ Feature: Unique Usernames
   @C352058 @addressbookStart @forceReset @regression
   Scenario Outline: Verify 1-to-1 conversation details
     Given There are 7 users where <Name> is me
+    Given Users <Name>,<Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact5WithSameNameInAB>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact6Common> upload own details
     Given Myself is connected to <Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact5WithSameNameInAB>,<Contact6Common>
     Given User <Contact3WithUniqueUserName> sets the unique username
     Given <Contact4WithCommonFriends> is connected to <Contact6Common>
@@ -354,6 +357,7 @@ Feature: Unique Usernames
   @C352052 @addressbookStart @forceReset @regression
   Scenario Outline: Verify search for connected users returns proper results
     Given There are 8 users where <Name> is me
+    Given Users <Name>,<Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact5WithSameNameInAB>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact6Common>,<Contact7WoCF> upload own details
     Given Myself is connected to <Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact5WithSameNameInAB>,<Contact6Common>,<Contact7WoCF>
     Given User <Contact3WithUniqueUserName> sets the unique username
     Given User <Contact1WithABEmail> sets the unique username
@@ -378,13 +382,13 @@ Feature: Unique Usernames
     When I open search UI
     And I accept alert
     Then I verify correct details are shown for the found users
-      | Name                         | Details                                                      |
-      | <Contact7WoCF>               |                                                              |
-      | <Contact4WithCommonFriends>  |                                                              |
-      | <Contact1WithABEmail>        | @<Contact1UniqueUsername> · <Contact1ABName> in Address Book |
-      | <Contact2WithABPhoneNumber>  | <Contact2ABName> in Address Book                             |
-      | <Contact3WithUniqueUserName> | @<Contact3UniqueUserName>                                    |
-      | <Contact5WithSameNameInAB>   | in Address Book                                              |
+      | Name                         | Details                                                  |
+      | <Contact1WithABEmail>        | @<Contact1UniqueUsername> · <Contact1ABName> in Contacts |
+      | <Contact2WithABPhoneNumber>  | <Contact2ABName> in Contacts                             |
+      | <Contact3WithUniqueUserName> | @<Contact3UniqueUserName>                                |
+      | <Contact5WithSameNameInAB>   | in Address Book                                          |
+      | <Contact7WoCF>               |                                                          |
+      | <Contact4WithCommonFriends>  |                                                          |
 
     Examples:
       | Name      | Contact1WithABEmail | Contact1ABName | Contact1UniqueUsername | Contact1Email | Contact2WithABPhoneNumber | Contact2ABName | Contact2PhoneNumber | Contact3WithUniqueUserName | Contact3UniqueUserName | Contact4WithCommonFriends | Contact5WithSameNameInAB | Contact5Email | Contact6Common | Contact7WoCF |
@@ -415,6 +419,7 @@ Feature: Unique Usernames
   @C352049 @addressbookStart @forceReset @regression
   Scenario Outline: Verify search for unconnected users returns proper results
     Given There are 8 users where <Name> is me
+    Given Users <Name>,<Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact5WithSameNameInAB>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact6Common>,<Contact7WoCF> upload own details
     Given Myself is connected to <Contact6Common>
     Given User <Contact3WithUniqueUserName> sets the unique username
     Given User <Contact1WithABEmail> sets the unique username
@@ -442,13 +447,13 @@ Feature: Unique Usernames
     Given I see conversation <Contact2WithABPhoneNumber> in conversations list
     When I open search UI
     Then I verify correct details are shown for the found users
-      | Name                         | Details                                                      |
-      | <Contact7WoCF>               |                                                              |
-      | <Contact1WithABEmail>        | @<Contact1UniqueUsername> · <Contact1ABName> in Address Book |
-      | <Contact2WithABPhoneNumber>  | <Contact2ABName> in Address Book                             |
-      | <Contact3WithUniqueUserName> | @<Contact3UniqueUserName>                                    |
-      | <Contact4WithCommonFriends>  | 1 person in common                                           |
-      | <Contact5WithSameNameInAB>   | in Address Book                                              |
+      | Name                         | Details                                                  |
+      | <Contact7WoCF>               |                                                          |
+      | <Contact1WithABEmail>        | @<Contact1UniqueUsername> · <Contact1ABName> in Contacts |
+      | <Contact2WithABPhoneNumber>  | <Contact2ABName> in Contacts                             |
+      | <Contact3WithUniqueUserName> | @<Contact3UniqueUserName>                                |
+      | <Contact4WithCommonFriends>  | 1 person in common                                       |
+      | <Contact5WithSameNameInAB>   | in Address Book                                          |
 
     Examples:
       | Name      | Contact1WithABEmail | Contact1ABName | Contact1UniqueUsername | Contact1Email | Contact2WithABPhoneNumber | Contact2ABName | Contact2PhoneNumber | Contact3WithUniqueUserName | Contact3UniqueUserName | Contact4WithCommonFriends | Contact5WithSameNameInAB | Contact5Email | Contact6Common | Contact7WoCF |
@@ -495,6 +500,7 @@ Feature: Unique Usernames
   @C352061 @addressbookStart @forceReset @regression
   Scenario Outline: Verify user info from Contact List->Options (swipe)
     Given There are 8 users where <Name> is me
+    Given Users <Name>,<Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact5WithSameNameInAB>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact6Common> upload own details
     Given Myself is connected to <Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact5WithSameNameInAB>,<Contact6Common>
     Given Myself sent connection request to <Contact7Unconnected>
     Given User <Contact3WithUniqueUserName> sets the unique username
@@ -568,6 +574,7 @@ Feature: Unique Usernames
   @C352062 @addressbookStart @forceReset @regression
   Scenario Outline: Verify connected user in 1-to-1 conversation view
     Given There are 7 users where <Name> is me
+    Given Users <Name>,<Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact5WithSameNameInAB>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact6Common> upload own details
     Given Myself is connected to <Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact5WithSameNameInAB>,<Contact6Common>
     Given User <Contact3WithUniqueUserName> sets the unique username
     Given <Contact4WithCommonFriends> is connected to <Contact6Common>

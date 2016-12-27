@@ -26,7 +26,7 @@ public abstract class BaseUserDetailsOverlay extends BaseDetailsOverlay {
 
     private static final Function<String, String> xpathStrABNameByName = name ->
             String.format("//XCUIElementTypeStaticText[@name='correlation' and @value='%s']",
-                    name.trim().length() > 0 ? (name + " in Address Book") : "in Address Book");
+                    name.trim().length() > 0 ? (name + " in Contacts") : "in Contacts");
     private static final By nameABName = MobileBy.AccessibilityId("correlation");
 
     private static final Function<Integer, String> xpathStrCommonFriendsByCount = count ->
