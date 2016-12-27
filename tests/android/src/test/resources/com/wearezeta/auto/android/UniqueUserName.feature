@@ -68,7 +68,7 @@ Feature: Unique Username
       | Name      | Contact1  | Contact2  | Contact3  | WaitingMess1     | CommonContact |
       | user1Name | user2Name | user3Name | user4Name | 1 person waiting | 2             |
 
-  @C352020 @regression  
+  @C352020 @regression
   Scenario Outline: Verify I see Unique User Name and AB name within outgoing Request in different condition
     Given I delete all contacts from Address Book
     Given There are 4 users where <Name> is me
@@ -153,7 +153,7 @@ Feature: Unique Username
       | Name      | Contact2  | Contact2Email | Contact2UniqueUsername | Contact3UniqueUsername |
       | user1Name | user2Name | user2Email    | user2UniqueUsername    | user3UniqueUsername    |
 
-  @C352075 @regression 
+  @C352075 @regression
   Scenario Outline: Verify search shows correct user info for unconnected user
     Given There are 9 users where <Name> is me
     Given I add <Contact1InABWithCF> having custom name "<Contact1NameInAB>" into Address Book with email
@@ -171,11 +171,11 @@ Feature: Unique Username
     And I see Conversations list
     And I open Search UI
     Then I verify results in search page, according to datatable
-      | Name                 | UserInfo                           |
+      | Name                 | UserInfo                       |
       | <Contact1InABWithCF> | <Contact1NameInAB> in Contacts |
       | <Contact2InABWoCF>   | <Contact2NameInAB> in Contacts |
-      | <Contact3WithCF>     | 2 people in common                 |
-      | <Contact4WoCF>       |                                    |
+      | <Contact3WithCF>     | 2 people in common             |
+      | <Contact4WoCF>       |                                |
       | <Contact5SameName>   | in Contacts                    |
 
     Examples:
@@ -219,11 +219,11 @@ Feature: Unique Username
     Given I see Conversations list
     When I open Search UI
     Then I verify results in search page, according to datatable
-      | Name                 | UserInfo                                                       |
+      | Name                 | UserInfo                                                   |
       | <Contact1InABWithCF> | <Contact1NameInAB> in Contacts                             |
       | <Contact2InABWoCF>   | @<Contact2UniqueUsername> - <Contact2NameInAB> in Contacts |
-      | <Contact3WithCF>     | @<Contact3UniqueUsername>                                      |
-      | <Contact4WoCF>       |                                                                |
+      | <Contact3WithCF>     | @<Contact3UniqueUsername>                                  |
+      | <Contact4WoCF>       |                                                            |
       | <Contact5SameName>   | in Contacts                                                |
 
     Examples:
@@ -344,7 +344,7 @@ Feature: Unique Username
       | Name      | ContactInABEmail | ContactInABPhone | ContactInABSameName | ABNameEmail | ABNamePhone | ContactINABEmailUniqueUsername | ContactInABPhoneUniqueUsername | ContactInABSameNameUniqueUserName | GroupChatName |
       | user1Name | user2Name        | user3Name        | user4Name           | Email       | Phone       | user2UniqueUsername            | user3UniqueUsername            | user4UniqueUsername               | UserNameGroup |
 
-  @C352702 @staging 
+  @C352702 @staging
   Scenario Outline: (AN-4784) Verify usernames in Group Participant view for non-connected user
     Given I delete all contacts from Address Book
     Given There are 5 users where <Name> is me
@@ -377,7 +377,7 @@ Feature: Unique Username
       | user1Name | user2Name        | user3Name        | user4Name           | Email       | Phone       | user2UniqueUsername            | user3UniqueUsername            | user4UniqueUsername               | user5Name | UserNameGroup |
 
 
-  @C352696 @staging 
+  @C352696 @staging
   Scenario Outline: (AN-4784) Verify AB name is shown in the option menu if contact with this email exists in the AB
     Given I delete all contacts from Address Book
     Given There are 5 users where <Name> is me
@@ -418,8 +418,8 @@ Feature: Unique Username
     And I do not see user info on Group conversation options menu
 
     Examples:
-      | Name      | A2Name           | A2Phone    | PhonePrefix | APhoneName | A3Name           | A3Phone    | AName     | ABName          | A4Name    | CF1       | A5Name    | GroupName | A4UName             |
-      | user1Name | AutoconnectUser2 | 1722036230 | +49         | User123    | AutoconnectUser3 | 1622360109 | user2Name | user2CustomName | user3Name | user4Name | user5Name | group1    | user3UniqueUsername |
+      | Name      | A2Name          | A2Phone    | PhonePrefix | APhoneName | A3Name          | A3Phone    | AName     | ABName          | A4Name    | CF1       | A5Name    | GroupName | A4UName             |
+      | user1Name | JulianeStaging7 | 1722036230 | +49         | User123    | JulianeStaging9 | 1622360109 | user2Name | user2CustomName | user3Name | user4Name | user5Name | group1    | user3UniqueUsername |
 
 
   @C352687 @staging
