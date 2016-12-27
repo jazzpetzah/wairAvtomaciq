@@ -2041,5 +2041,18 @@ public class CommonAndroidSteps {
         commonSteps.UserSendsGiphy(userAs, convName, query, deviceName, isGroup);
     }
 
+    /**
+     * Upload self user properties (name and email) to /onboarding endpoint.
+     * This is mandatory to be able to get matches
+     *
+     * @step. ^Users? (.*) uploads? own details$
+     * @param aliases self users alias(es)
+     * @throws Exception
+     */
+    @Given("^Users? (.*) uploads? own details$")
+    public void uploadSelfUser(String aliases) throws Exception {
+        commonSteps.uploadSelfContact(aliases);
+    }
+
 
 }

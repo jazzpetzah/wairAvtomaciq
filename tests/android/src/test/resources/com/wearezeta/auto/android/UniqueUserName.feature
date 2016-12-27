@@ -260,7 +260,7 @@ Feature: Unique Username
       | aabbcc1234567890          | True             |
       | aabbccCyrillicМоёИмя      | False            |
       | aabbccArabicاسمي          | False            |
-      | aabbccChinese我的名字      | False            |
+      | aabbccChinese我的名字         | False            |
       | aabbccSpecialChars%^&@#$  | False            |
       | aabbccLong123456789012345 | False            |
 
@@ -345,9 +345,10 @@ Feature: Unique Username
       | user1Name | user2Name        | user3Name        | user4Name           | Email       | Phone       | user2UniqueUsername            | user3UniqueUsername            | user4UniqueUsername               | UserNameGroup |
 
   @C352702 @staging
-  Scenario Outline: (AN-4784) Verify usernames in Group Participant view for non-connected user
+  Scenario Outline: Verify usernames in Group Participant view for non-connected user
     Given I delete all contacts from Address Book
     Given There are 5 users where <Name> is me
+    Given Users <Name>,<ContactInABEmail>,<ContactInABPhone>,<ContactInABSameName>,<Contact> upload own details
     Given Myself is connected to <Contact>
     Given I add <ContactInABEmail> having custom name "<ABNameEmail>" into Address Book with email
     Given I add <ContactInABPhone> having custom name "<ABNamePhone>" into Address Book with phone
