@@ -87,7 +87,7 @@ Feature: Sketch
       | user1Name | user2Name | avatarTest.png |
 
   @C318630 @staging
-  Scenario Outline: I can send a text sketch
+  Scenario Outline: (AN-4782) I can send a text sketch
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I push local file named "<FileName>" to the device

@@ -1823,9 +1823,11 @@ public class CommonAndroidSteps {
     @Given("^Users? (.*) (sets?|changes?) the unique username( to \".*\")?(?: via device (.*))?$")
     public void UserSetsUniqueUsername(String userAs, String action, String uniqUsername, String deviceName) throws Exception {
         switch (action.toLowerCase()) {
+            case "set":
             case "sets":
                 commonSteps.UsersSetUniqueUsername(userAs);
                 break;
+            case "change":
             case "changes":
                 if (uniqUsername == null) {
                     throw new IllegalArgumentException("Unique username is mandatory to set");
