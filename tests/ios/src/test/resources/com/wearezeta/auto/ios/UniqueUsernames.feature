@@ -386,7 +386,7 @@ Feature: Unique Usernames
       | <Contact1WithABEmail>        | @<Contact1UniqueUsername> · <Contact1ABName> in Contacts |
       | <Contact2WithABPhoneNumber>  | <Contact2ABName> in Contacts                             |
       | <Contact3WithUniqueUserName> | @<Contact3UniqueUserName>                                |
-      | <Contact5WithSameNameInAB>   | in Address Book                                          |
+      | <Contact5WithSameNameInAB>   | in Contacts                                              |
       | <Contact7WoCF>               |                                                          |
       | <Contact4WithCommonFriends>  |                                                          |
 
