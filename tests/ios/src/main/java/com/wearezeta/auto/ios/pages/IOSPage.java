@@ -435,14 +435,8 @@ public abstract class IOSPage extends BasePage {
     public void lockScreen(Timedelta duration) throws Exception {
         assert getDriver() != null : "WebDriver is not ready";
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            final Timedelta started = Timedelta.now();
             IOSSimulatorHelpers.lock();
-            final Timedelta lockDuration = Timedelta.now().diff(started);
-            if (duration.isDiffGreater(lockDuration, Timedelta.fromSeconds(1))) {
-                Thread.sleep(duration.diff(lockDuration).asMilliSeconds());
-            } else {
-                Thread.sleep(2000);
-            }
+            Thread.sleep(2000);
             // this is to show the unlock label if not visible yet
             IOSSimulatorHelpers.goHome();
             if (getDriver().getOSVersion().compareTo(new DefaultArtifactVersion("10.0")) >= 0) {
