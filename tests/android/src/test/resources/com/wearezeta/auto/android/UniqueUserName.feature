@@ -345,7 +345,7 @@ Feature: Unique Username
       | user1Name | user2Name        | user3Name        | user4Name           | Email       | Phone       | user2UniqueUsername            | user3UniqueUsername            | user4UniqueUsername               | UserNameGroup |
 
   @C352702 @staging 
-  Scenario Outline: Verify usernames in Group Participant view for non-connected user
+  Scenario Outline: (AN-4784) Verify usernames in Group Participant view for non-connected user
     Given I delete all contacts from Address Book
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -429,7 +429,6 @@ Feature: Unique Username
     Given I accept First Time overlay as soon as it is visible
     Given I tap Choose Your Own button on Unique Username Takeover page
     Given I see unique username edit field on Settings page
-    Given I tap OK on Unique Username Settings page
     Given I tap OK on Unique Username Settings page
     Given User Myself adds a new device <Device1> with label <Device1>
     When User Myself changes the unique username to "<UniqueUsername1>" via device <Device1>
