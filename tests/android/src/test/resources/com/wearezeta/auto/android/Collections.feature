@@ -9,6 +9,7 @@ Feature: Collections
     Given I see Conversations list with name <User2>
     When I tap on conversation name <User2>
     Then I see conversation view
+    And Myself send 5 images with prefix "" starting from
     And I tap Collection button from top toolbar
     And I see Collection page
     And I see "<User2>" title on Conversation page

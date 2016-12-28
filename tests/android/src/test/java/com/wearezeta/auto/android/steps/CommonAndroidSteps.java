@@ -29,6 +29,7 @@ import com.wearezeta.auto.common.driver.AppiumServer;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import com.wearezeta.auto.common.image_send.ImageGenerator;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.misc.Timedelta;
@@ -2055,4 +2056,14 @@ public class CommonAndroidSteps {
     }
 
 
+    @And("^Myself send (\\d+) images( with prefix \"([^\"]*)\")?( starting from (\\d+))?$")
+    public void myselfSendImagesWithPrefixStartingFrom(Integer amountOfMessages, String withPrefix, String prefix, String startingFrom, Integer counterStart) throws Throwable {
+        if (withPrefix == null) prefix="";
+        if (startingFrom== null) counterStart = 1;
+        for (int i = counterStart; i < counterStart + amountOfMessages; i++) {
+            ImageGenerator.getTestPictureFile(prefix + i);
+            //TODO: sent it, Robin!
+        }
+
+    }
 }
