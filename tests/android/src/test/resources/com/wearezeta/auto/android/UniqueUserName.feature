@@ -313,7 +313,7 @@ Feature: Unique Username
       | Name      | Contact2  | NameFirstPartCount | NameLastPartCount | Contact2UniqueUsername |
       | user1Name | user2Name | 6                  | 6                 | user2UniqueUsername    |
 
-  @C352707 @staging
+  @C352707 @regression
   Scenario Outline: Verify usernames in Group Participant view for connected user
     Given I delete all contacts from Address Book
     Given There are 4 users where <Name> is me
@@ -344,7 +344,7 @@ Feature: Unique Username
       | Name      | ContactInABEmail | ContactInABPhone | ContactInABSameName | ABNameEmail | ABNamePhone | ContactINABEmailUniqueUsername | ContactInABPhoneUniqueUsername | ContactInABSameNameUniqueUserName | GroupChatName |
       | user1Name | user2Name        | user3Name        | user4Name           | Email       | Phone       | user2UniqueUsername            | user3UniqueUsername            | user4UniqueUsername               | UserNameGroup |
 
-  @C352702 @staging
+  @C352702 @regression
   Scenario Outline: Verify usernames in Group Participant view for non-connected user
     Given I delete all contacts from Address Book
     Given There are 5 users where <Name> is me
@@ -376,7 +376,6 @@ Feature: Unique Username
     Examples:
       | Name      | ContactInABEmail | ContactInABPhone | ContactInABSameName | ABNameEmail | ABNamePhone | ContactINABEmailUniqueUsername | ContactInABPhoneUniqueUsername | ContactInABSameNameUniqueUserName | Contact   | GroupChatName |
       | user1Name | user2Name        | user3Name        | user4Name           | Email       | Phone       | user2UniqueUsername            | user3UniqueUsername            | user4UniqueUsername               | user5Name | UserNameGroup |
-
 
   @C352696 @staging
   Scenario Outline: (AN-4784) Verify AB name is shown in the option menu if contact with this email exists in the AB
@@ -423,8 +422,7 @@ Feature: Unique Username
       | Name      | A2Name          | A2Phone    | PhonePrefix | APhoneName | A3Name          | A3Phone    | AName     | ABName          | A4Name    | CF1       | A5Name    | GroupName | A4UName             |
       | user1Name | JulianeStaging7 | 1722036230 | +49         | User123    | JulianeStaging9 | 1622360109 | user2Name | user2CustomName | user3Name | user4Name | user5Name | group1    | user3UniqueUsername |
 
-
-  @C352687 @staging
+  @C352687 @regression
   Scenario Outline: Verify new username is synched across the devices
     Given There are 1 users where <Name> is me without unique user name
     Given I sign in using my email or phone number
