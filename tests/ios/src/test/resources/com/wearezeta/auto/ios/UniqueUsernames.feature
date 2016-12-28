@@ -453,7 +453,7 @@ Feature: Unique Usernames
       | <Contact2WithABPhoneNumber>  | <Contact2ABName> in Contacts                             |
       | <Contact3WithUniqueUserName> | @<Contact3UniqueUserName>                                |
       | <Contact4WithCommonFriends>  | 1 person in common                                       |
-      | <Contact5WithSameNameInAB>   | in Address Book                                          |
+      | <Contact5WithSameNameInAB>   | in Contacts                                              |
 
     Examples:
       | Name      | Contact1WithABEmail | Contact1ABName | Contact1UniqueUsername | Contact1Email | Contact2WithABPhoneNumber | Contact2ABName | Contact2PhoneNumber | Contact3WithUniqueUserName | Contact3UniqueUserName | Contact4WithCommonFriends | Contact5WithSameNameInAB | Contact5Email | Contact6Common | Contact7WoCF |
