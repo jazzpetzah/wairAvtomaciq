@@ -16,7 +16,7 @@ Feature: Giphy
 
     Examples: 
       | Name      | Contact   | GiphyTag |
-      | user1Name | user2Name | Happy    |
+      | user1Name | user2Name | happy    |
 
   @C962 @clumsy @regression @rc @IPv6 @fastLogin
   Scenario Outline: Verify I can send gif from preview
@@ -37,7 +37,7 @@ Feature: Giphy
 
     Examples: 
       | Name      | Contact   | GiphyTag |
-      | user1Name | user2Name | Happy    |
+      | user1Name | user2Name | happy    |
 
   @C959 @regression @fastLogin
   Scenario Outline: Verify opening grid of gifs clicking on giphy icon
@@ -53,4 +53,4 @@ Feature: Giphy
 
     Examples:
       | Name      | Contact   | GiphyTag |
-      | user1Name | user2Name | Hello    |
+      | user1Name | user2Name | hello    |
