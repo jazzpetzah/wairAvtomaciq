@@ -1,6 +1,6 @@
 Feature: Localytics
 
-  @C375780 @staging @enableLocalyticsLogs @torun
+  @C375780 @staging @enableLocalyticsLogs
   Scenario Outline: Verify key tracking events
     Given There are 2 users
     Given I prepare <FileName> to be uploaded as a video message
@@ -28,10 +28,13 @@ Feature: Localytics
     Then I see "media.completed_media_action" event with {"action": "text", "conversation_type": "one_to_one", "with_bot": "false"} attributes is sent to Localytics at least 1 time
     When I tap Audio Call button
     And I tap Leave button on Calling overlay
+    And I do not see Calling overlay
     Then I see "media.completed_media_action" event with {"action": "audio_call", "conversation_type": "one_to_one", "with_bot": "false"} attributes is sent to Localytics at least 1 time
     And I see "calling.initiated_call" event is sent to Localytics at least 1 time
     When I tap Video Call button
+    And I accept alert if visible
     And I tap Leave button on Calling overlay
+    And I do not see Calling overlay
     Then I see "media.completed_media_action" event with {"action": "video_call", "conversation_type": "one_to_one", "with_bot": "false"} attributes is sent to Localytics at least 1 time
     And I see "calling.initiated_video_call" event is sent to Localytics at least 1 time
     When I tap Ping button from input tools
@@ -62,17 +65,17 @@ Feature: Localytics
     When I long tap Audio Message button from input tools
     And I tap Send record control button
     And I see audio message container in the conversation view
-    Then I see "media.completed_media_action" event with {"action": "file", "conversation_type": "one_to_one", "with_bot": "false"} attributes is sent to Localytics at least 1 time
+    Then I see "media.completed_media_action" event with {"action": "audio_message", "conversation_type": "one_to_one", "with_bot": "false"} attributes is sent to Localytics at least 1 time
     And I see "media.sent_audio_message" event is sent to Localytics at least 1 time
     When I tap Video Message button from input tools
-    And I see video message container in the conversation view
-    Then I see "media.completed_media_action" event with {"action": "file", "conversation_type": "one_to_one", "with_bot": "false"} attributes is sent to Localytics at least 2 times
+    And I wait for 10 seconds
+    Then I see "media.completed_media_action" event with {"action": "video_message", "conversation_type": "one_to_one", "with_bot": "false"} attributes is sent to Localytics at least 1 time
     And I see "media.sent_video_message" event is sent to Localytics at least 1 time
     When I tap File Transfer button from input tools
     And I wait for 5 seconds
     And I tap file transfer menu item <ItemName>
-    And I see file transfer placeholder
-    Then I see "media.completed_media_action" event with {"action": "file", "conversation_type": "one_to_one", "with_bot": "false"} attributes is sent to Localytics at least 3 times
+    And I wait for 7 seconds
+    Then I see "media.completed_media_action" event with {"action": "file", "conversation_type": "one_to_one", "with_bot": "false"} attributes is sent to Localytics at least 1 time
     When I tap Share Location button from input tools
     And I accept alert if visible
     And I wait for 5 seconds
