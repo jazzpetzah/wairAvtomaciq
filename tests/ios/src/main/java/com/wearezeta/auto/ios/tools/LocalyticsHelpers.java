@@ -1,12 +1,17 @@
 package com.wearezeta.auto.ios.tools;
 
+import com.wearezeta.auto.common.log.ZetaLogger;
 import org.json.JSONObject;
+
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
 public class LocalyticsHelpers {
+    private static final Logger log = ZetaLogger.getLog(LocalyticsHelpers.class.getSimpleName());
+
     private static final String LOG_RECORD_MARKER = "<ANALYTICS>:";
     private static final Pattern NEXT_LOG_LINE_PATTERN = Pattern.compile("^\\s+");
 
@@ -19,7 +24,7 @@ public class LocalyticsHelpers {
             if (matchPos > 0) {
                 final String resultRecord = currentRecord.toString();
                 if (!resultRecord.isEmpty()) {
-                    // in case this is one-line JSON
+                    // in case this was one-liner JSON
                     result.add(new JSONObject(resultRecord.trim()));
                 }
                 isRecordStarted = true;
@@ -42,6 +47,8 @@ public class LocalyticsHelpers {
         if (!resultRecord.isEmpty()) {
             result.add(new JSONObject(resultRecord.trim()));
         }
+        log.debug(String.format("Parsed %d Localytics action occurrences from the iOS log:\n%s",
+                result.size(), result));
         return result;
     }
 
@@ -49,21 +56,29 @@ public class LocalyticsHelpers {
     private static final String ATTRIBUTES_NAME_KEY = "attributes";
 
     public static long getEventOccurrencesCount(String currentLog, String eventName) {
+        log.debug(String.format("Getting occurrences count for Localytics event '%s'...", eventName));
         return filterLog(currentLog).stream().filter(
                 x -> x.has(EVENT_NAME_KEY) && x.getString(EVENT_NAME_KEY).equals(eventName)
         ).count();
     }
 
-    private static boolean hasAllItems(JSONObject src, JSONObject expectedAttributes) {
+    private static boolean hasAllItems(JSONObject actualAttributes, JSONObject expectedAttributes) {
+        log.debug(String.format("Comparing actual event attributes %s " +
+                "with expected attributes %s...", actualAttributes, expectedAttributes));
         for (String expectedKey : expectedAttributes.keySet()) {
-            if (!src.has(expectedKey) || !src.get(expectedKey).equals(expectedAttributes.get(expectedKey))) {
+            if (!actualAttributes.has(expectedKey)
+                    || !actualAttributes.get(expectedKey).equals(expectedAttributes.get(expectedKey))) {
+                log.debug(String.format("Comparison failed for the key '%s'", expectedKey));
                 return false;
             }
         }
+        log.debug("Comparison succeeded");
         return true;
     }
 
     public static long getEventOccurrencesCount(String currentLog, String eventName, JSONObject expectedAttributes) {
+        log.debug(String.format("Getting occurrences count for Localytics event '%s' with attributes '%s'...",
+                eventName, expectedAttributes.toString()));
         return filterLog(currentLog).stream().filter(
                 x -> x.has(EVENT_NAME_KEY) && x.getString(EVENT_NAME_KEY).equals(eventName) &&
                         x.has(ATTRIBUTES_NAME_KEY) && hasAllItems(x.getJSONObject(ATTRIBUTES_NAME_KEY),
