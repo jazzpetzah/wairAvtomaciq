@@ -21,7 +21,7 @@ Feature: Localytics
     Given User Myself sets the unique username
     Given I accept alert if visible
     Given I dismiss settings warning if visible
-    Given I see conversation <Contact1> in conversations list
+    When I see conversation <Contact1> in conversations list
     Then I see "registration.succeeded" event is sent to Localytics at least 1 time
     When I tap on contact name <Contact1>
     And I type the default message and send it
