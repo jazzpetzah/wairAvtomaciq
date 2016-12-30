@@ -1,6 +1,6 @@
 Feature: Localytics
 
-  @C375780 @staging @enableLocalyticsLogs
+  @C375780 @regression @enableLocalyticsLogs
   Scenario Outline: Verify key tracking events
     Given There are 2 users
     Given I prepare <FileName> to be uploaded as a video message
