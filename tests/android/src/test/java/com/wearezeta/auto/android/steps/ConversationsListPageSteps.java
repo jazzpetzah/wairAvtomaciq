@@ -8,6 +8,7 @@ import java.util.Map;
 import com.wearezeta.auto.android.pages.details_overlay.ConversationOptionsMenuPage;
 import com.wearezeta.auto.android.pages.ConversationsListPage;
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
@@ -38,7 +39,7 @@ public class ConversationsListPageSteps {
 
     private static final double CONVERSATIONS_LIST_BACKGROUND_MIN_SCORE = 0.9;
 
-    private static final int CONVERSATIONS_LIST_BACKGROUND_CHANGE_TIMEOUT = 3;
+    private static final Timedelta CONVERSATIONS_LIST_BACKGROUND_CHANGE_TIMEOUT = Timedelta.fromSeconds(3);
 
     /**
      * Verify whether conversations list is visible or not
@@ -73,7 +74,7 @@ public class ConversationsListPageSteps {
     }
 
     private static final double MIN_NEW_DEVICE_INDICATOR_SCORE = 0.95;
-    private static final int NEW_DEVICE_INDICATOR_STATE_CHANGE_TIMEOUT = 10; //seconds
+    private static final Timedelta NEW_DEVICE_INDICATOR_STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(10);
 
     /**
      * Verify whether the new device indicator is changed
@@ -290,10 +291,12 @@ public class ConversationsListPageSteps {
         convoName = usrMgr.replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
         if (expectedAction.equals("appears in")) {
             Assert.assertTrue(String.format("The conversation '%s' is not visible in the list",
-                    convoName), getConversationsListPage().isConversationVisible(convoName, timeoutSeconds));
+                    convoName), getConversationsListPage().isConversationVisible(convoName,
+                    Timedelta.fromSeconds(timeoutSeconds)));
         } else {
             Assert.assertTrue(String.format("The conversation '%s' is  visible in the list, but should be hidden",
-                    convoName), getConversationsListPage().waitUntilConversationDisappears(convoName, timeoutSeconds));
+                    convoName), getConversationsListPage().waitUntilConversationDisappears(convoName,
+                    Timedelta.fromSeconds(timeoutSeconds)));
         }
     }
 
@@ -341,7 +344,7 @@ public class ConversationsListPageSteps {
     }
 
     private final static double MAX_SIMILARITY_THRESHOLD = 0.6;
-    private final static int STATE_CHANGE_TIMEOUT_SECONDS = 5;
+    private final static Timedelta STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(5);
 
     /**
      * Verify whether the current screenshot of PlayPause button is different
@@ -360,9 +363,9 @@ public class ConversationsListPageSteps {
         convoName = usrMgr.findUserByNameOrNameAlias(convoName).getName();
         Assert.assertTrue(String.format(
                 "The current and previous states of PlayPause button for '%s' conversation " +
-                        "seems to be very similar after %d seconds",
-                convoName, STATE_CHANGE_TIMEOUT_SECONDS),
-                previousPlayPauseBtnState.isChanged(STATE_CHANGE_TIMEOUT_SECONDS, MAX_SIMILARITY_THRESHOLD));
+                        "seems to be very similar after %s",
+                convoName, STATE_CHANGE_TIMEOUT.toString()),
+                previousPlayPauseBtnState.isChanged(STATE_CHANGE_TIMEOUT, MAX_SIMILARITY_THRESHOLD));
     }
 
     /**
@@ -438,50 +441,14 @@ public class ConversationsListPageSteps {
             Assert.assertTrue(String.format(
                     "The current and previous states of Unread Dot for conversation '%s' seems to be very similar",
                     name),
-                    this.previousUnreadIndicatorState.get(name).isChanged(10, MAX_UNREAD_DOT_SIMILARITY_THRESHOLD));
+                    this.previousUnreadIndicatorState.get(name).isChanged(Timedelta.fromSeconds(10),
+                            MAX_UNREAD_DOT_SIMILARITY_THRESHOLD));
         } else {
             Assert.assertTrue(String.format(
                     "The current and previous states of Unread Dot for conversation '%s' seems to be very similar",
                     name),
-                    this.previousUnreadIndicatorState.get(name).isNotChanged(5, MIN_UNREAD_DOT_THRESHOLD));
-        }
-    }
-
-    /**
-     * Tap Delete on the delete confirmation alert
-     *
-     * @throws Exception
-     * @step. ^I tap DELETE on the confirm alert$
-     */
-    @When("^I tap DELETE on the confirm alert$")
-    public void ITapDELETEOnTheConfirmAlert() throws Exception {
-        getConversationsListPage().confirmDeleteConversationAlert();
-    }
-
-    /**
-     * Tap the leave as well during delete checkbox
-     *
-     * @throws Exception
-     * @step. ^I tap the Leave check box$
-     */
-    @When("^I tap the Leave check box$")
-    public void ITapLeave() throws Exception {
-        getConversationsListPage().checkLeaveWhileDeleteCheckbox();
-    }
-
-    /**
-     * Verifies if Leave check box is visible or not
-     *
-     * @param shouldNotSee equals to null if "do not" part does not exist
-     * @throws Exception
-     * @step. ^I( do not)? see the Leave check box$
-     */
-    @Then("^I( do not)? see the Leave check box$")
-    public void ISeeTheLeaveCheckBox(String shouldNotSee) throws Exception {
-        if (shouldNotSee == null) {
-            Assert.assertTrue(getConversationsListPage().isLeaveCheckBoxVisible());
-        } else {
-            Assert.assertFalse(getConversationsListPage().isLeaveCheckBoxVisible());
+                    this.previousUnreadIndicatorState.get(name).isNotChanged(Timedelta.fromSeconds(5),
+                            MIN_UNREAD_DOT_THRESHOLD));
         }
     }
 
@@ -529,11 +496,11 @@ public class ConversationsListPageSteps {
     @Then("^I verify Conversations list backgroud is (not )?changed$")
     public void IVerifyConversationsListBackgroundChanged(String shouldNotBeChanged) throws Exception {
         if (shouldNotBeChanged == null) {
-            Assert.assertTrue(String.format("State of conversations list has not been changed after timeout"),
+            Assert.assertTrue("State of conversations list has not been changed after timeout",
                     conversationsListBackgroundState.isChanged(CONVERSATIONS_LIST_BACKGROUND_CHANGE_TIMEOUT,
                     CONVERSATIONS_LIST_BACKGROUND_MIN_SCORE));
         } else {
-            Assert.assertTrue(String.format("State of conversations list has not been changed after timeout"),
+            Assert.assertTrue("State of conversations list has not been changed after timeout",
                     conversationsListBackgroundState.isNotChanged(CONVERSATIONS_LIST_BACKGROUND_CHANGE_TIMEOUT,
                     CONVERSATIONS_LIST_BACKGROUND_MIN_SCORE));
         }

@@ -7,6 +7,7 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import io.appium.java_client.MobileBy;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -28,7 +29,7 @@ public class IOSKeyboard extends IOSPage {
 
     private static final By nameKeyboardDeleteButton = MobileBy.AccessibilityId("delete");
 
-    private static final int DEFAULT_VISIBILITY_TIMEOUT = 5; //seconds
+    private static final Timedelta DEFAULT_VISIBILITY_TIMEOUT = Timedelta.fromSeconds(5);
 
     private KeyboardState getFinalState(List<KeyboardState> statesList, char c) throws Exception {
         String messageChar = "" + c;
@@ -45,12 +46,12 @@ public class IOSKeyboard extends IOSPage {
         super(lazyDriver);
     }
 
-    public boolean isVisible(int timeoutSeconds) throws Exception {
-        return isLocatorDisplayed(classKeyboard, timeoutSeconds);
+    public boolean isVisible(Timedelta timeout) throws Exception {
+        return isLocatorDisplayed(classKeyboard, timeout);
     }
 
-    public boolean isInvisible(int timeoutSeconds) throws Exception {
-        return isLocatorInvisible(classKeyboard, timeoutSeconds);
+    public boolean isInvisible(Timedelta timeout) throws Exception {
+        return isLocatorInvisible(classKeyboard, timeout);
     }
 
     public boolean isVisible() throws Exception {
@@ -74,7 +75,7 @@ public class IOSKeyboard extends IOSPage {
     }
 
     public void pressCommitButton() throws Exception {
-        getElement(classKeyboard, "Keyboard is not visible", 15)
+        getElement(classKeyboard, "Keyboard is not visible", Timedelta.fromSeconds(15))
                 .findElement(xpathCommitButton)
                 .click();
     }

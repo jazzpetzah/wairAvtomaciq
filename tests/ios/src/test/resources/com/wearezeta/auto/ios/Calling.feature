@@ -517,7 +517,7 @@ Feature: Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @call_loop @fastLogin
+  @fastLogin
   Scenario Outline: Make 1:1 call loop to AVS <CallBackend>
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -525,11 +525,25 @@ Feature: Calling
     Given I sign in using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I call 3 times for 1 minutes with <Contact>
+    And I call 1 times for 1 minutes with <Contact>
 
     Examples:
       | Name      | Contact   | CallBackend  |
-      | user1Name | user2Name | zcall:2.7.26 |
+      | user1Name | user2Name | zcall        |
+
+  @fastLogin @consecutive_call
+  Scenario Outline: I receive 1:1 call loop from AVS <CallBackend>
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
+    Given <Contact> starts instance using <CallBackend>
+    Given I sign in using my email
+    Given I see conversations list
+    And <Contact> calls to me in Background 50 times for 1 minute
+
+    Examples:
+      | Name      | Contact   | CallBackend  |
+      | user1Name | user2Name | zcall        |
 
   @C343168 @regression @calling_basic @fastLogin
   Scenario Outline: Verify you see group call conformation dialog for >5 participants group chat

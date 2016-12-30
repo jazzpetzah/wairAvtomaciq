@@ -5,6 +5,7 @@ import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.email.AccountDeletionMessage;
 import com.wearezeta.auto.common.email.WireMessage;
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.SettingsPage;
@@ -155,7 +156,7 @@ public class SettingsPageSteps {
         }
         final double minScore = 0.87;
         Assert.assertTrue("The previous and the current profile pictures seem to be the same",
-                this.previousProfilePictureScreenshot.isChanged(secondsTimeout, minScore));
+                this.previousProfilePictureScreenshot.isChanged(Timedelta.fromSeconds(secondsTimeout), minScore));
     }
 
     /**
@@ -220,7 +221,7 @@ public class SettingsPageSteps {
             () -> getSettingsPage().getColorPickerStateScreenshot()
     );
 
-    private static final int COLOR_PICKER_STATE_CHANGE_TIMEOUT = 10;
+    private static final Timedelta COLOR_PICKER_STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(10);
     private static final double MIN_COLOR_PICKER_SIMILARITY_SCORE = 0.999;
 
     /**

@@ -8,6 +8,7 @@ import java.util.function.Function;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import com.wearezeta.auto.common.misc.Timedelta;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -181,7 +182,7 @@ public abstract class AbstractPickUserPage extends AndroidPage {
         this.hideKeyboard();
         int ntry = 0;
         while (ntry < MAX_SCROLLS) {
-            final Optional<WebElement> result = getElementIfDisplayed(locator, 1);
+            final Optional<WebElement> result = getElementIfDisplayed(locator, Timedelta.fromSeconds(1));
             if (result.isPresent()) {
                 return result;
             } else {

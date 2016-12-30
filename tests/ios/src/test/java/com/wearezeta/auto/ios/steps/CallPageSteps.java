@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
+import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.ios.pages.CallingOverlayPage;
 import org.junit.Assert;
 
@@ -81,7 +82,7 @@ public class CallPageSteps {
                 getCallingOverlayPage().isCallingMessageContainingVisible(text));
     }
 
-    private static final int CALL_AVATARS_VISIBILITY_TIMEOUT = 20; //seconds
+    private static final Timedelta CALL_AVATARS_VISIBILITY_TIMEOUT = Timedelta.fromSeconds(20);
 
     /**
      * Verifies a number of avatars in the calling overlay

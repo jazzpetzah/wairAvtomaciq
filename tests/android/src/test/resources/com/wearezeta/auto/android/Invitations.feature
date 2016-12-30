@@ -79,6 +79,7 @@ Feature: Invitations
   Scenario Outline: Sending invite to user which already on Wire create pending connection request
     Given I delete all contacts from Address Book
     Given There are 2 users where <Name> is me
+    Given Users Myself,<Contact> upload own details
     Given I add <Contact> into Address Book with phone and email
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible

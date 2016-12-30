@@ -10,6 +10,7 @@ import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.exception.MultipleTestCaseAssertionFaultException;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
@@ -415,7 +416,7 @@ public class SearchPageSteps {
         final String name = usrMgr.findUserByNameOrNameAlias(alias).getName();
         final double minSimilarity = 0.97;
         Assert.assertTrue(String.format("User avatar for '%s' seems to be the same", name),
-                this.avatarState.isChanged(10, minSimilarity));
+                this.avatarState.isChanged(Timedelta.fromSeconds(10), minSimilarity));
     }
 
     /**

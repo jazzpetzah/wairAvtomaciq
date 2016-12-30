@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import org.junit.Assert;
 
@@ -33,7 +34,8 @@ public class TabletConversationsListPageSteps {
     @When("^I remember the (left|right) side state of (.*) conversation item on iPad$")
     public void IRememberConvoItemState(String side, String nameAlias) throws Exception {
         final String name = usrMgr.replaceAliasesOccurences(nameAlias, ClientUsersManager.FindBy.NAME_ALIAS);
-        final TabletConversationsListPage.EntrySide entrySide = TabletConversationsListPage.EntrySide.valueOf(side.toUpperCase());
+        final TabletConversationsListPage.EntrySide entrySide =
+                TabletConversationsListPage.EntrySide.valueOf(side.toUpperCase());
         this.savedConvoItemStates.put(name,
                 new ElementState(
                         () -> getTabletConversationsListPage().getConversationEntryScreenshot(entrySide, name)
@@ -41,7 +43,7 @@ public class TabletConversationsListPageSteps {
         );
     }
 
-    private static final double MIN_CONVO_SIMILARITY_SCORE = 0.8;
+    private static final double MIN_CONVO_SIMILARITY_SCORE = 0.95;
 
     /**
      * Verify whether the previous conversation state is the same or different to the current state
@@ -58,13 +60,13 @@ public class TabletConversationsListPageSteps {
             throw new IllegalStateException(String.format(
                     "Please take a screenshot of '%s' conversation entry first", name));
         }
-        final int timeoutSeconds = 35;
+        final Timedelta timeout = Timedelta.fromSeconds(35);
         if (shouldNotBeChanged == null) {
             Assert.assertTrue(String.format("The state of '%s' conversation item seems to be the same", name),
-                    this.savedConvoItemStates.get(name).isChanged(timeoutSeconds, MIN_CONVO_SIMILARITY_SCORE));
+                    this.savedConvoItemStates.get(name).isChanged(timeout, MIN_CONVO_SIMILARITY_SCORE));
         } else {
             Assert.assertTrue(String.format("The state of '%s' conversation item seems to be changed", name),
-                    this.savedConvoItemStates.get(name).isNotChanged(timeoutSeconds, MIN_CONVO_SIMILARITY_SCORE));
+                    this.savedConvoItemStates.get(name).isNotChanged(timeout, MIN_CONVO_SIMILARITY_SCORE));
         }
     }
 

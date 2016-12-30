@@ -3,6 +3,7 @@ package com.wearezeta.auto.android.pages.registration;
 import java.util.Optional;
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.misc.Timedelta;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -36,15 +37,16 @@ public class PhoneNumberVerificationPage extends AndroidPage {
     }
 
     public void inputVerificationCode(String verificationCode) throws Exception {
-        final Optional<WebElement> codeInput = getElementIfDisplayed(idCodeInput, 15);
+        final Optional<WebElement> codeInput = getElementIfDisplayed(idCodeInput, Timedelta.fromSeconds(15));
         if (codeInput.isPresent()) {
             codeInput.get().sendKeys(verificationCode);
         } else {
-            final Optional<WebElement> oldCodeInput = getElementIfDisplayed(idCodeOldInput, 15);
+            final Optional<WebElement> oldCodeInput = getElementIfDisplayed(idCodeOldInput, Timedelta.fromSeconds(15));
             if (oldCodeInput.isPresent()) {
                 oldCodeInput.get().sendKeys(verificationCode);
             } else {
-                getElement(idCodeInput, "Verification code input has not been shown in time", 1);
+                getElement(idCodeInput, "Verification code input has not been shown in time",
+                        Timedelta.fromSeconds(1));
             }
         }
     }

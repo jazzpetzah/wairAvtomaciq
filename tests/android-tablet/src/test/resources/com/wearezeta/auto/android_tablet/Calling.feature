@@ -104,7 +104,7 @@ Feature: Calling
       | user1Name | user2Name | zcall       |
 
   @C487 @calling_basic
-  Scenario Outline: (AN-3145) I see miss call notification on the list and inside conversation view (portrait)
+  Scenario Outline: I see miss call notification on the list and inside conversation view (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Contact2> starts instance using <CallBackend>
@@ -242,6 +242,7 @@ Feature: Calling
   Scenario Outline: Silence an incoming call (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I rotate UI to landscape
     Given I sign in using my email

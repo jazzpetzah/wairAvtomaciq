@@ -565,8 +565,17 @@ public final class BackendAPIWrappers {
         }
     }
 
+    public static void uploadSelfContact(ClientUser selfUser) throws Exception {
+        final AddressBook addressBook = new AddressBook();
+        final List<String> selfData = new ArrayList<>();
+        selfData.add(selfUser.getEmail());
+        selfData.add(selfUser.getPhoneNumber().toString());
+        addressBook.setSelfData(selfData);
+        BackendREST.uploadAddressBook(receiveAuthToken(selfUser), addressBook);
+    }
+
     public static void uploadAddressBookWithContacts(ClientUser user, List<String> emailsToAdd) throws Exception {
-        AddressBook addressBook = new AddressBook();
+        final AddressBook addressBook = new AddressBook();
         for (String email : emailsToAdd) {
             Card card = new Card();
             card.addContact(email);

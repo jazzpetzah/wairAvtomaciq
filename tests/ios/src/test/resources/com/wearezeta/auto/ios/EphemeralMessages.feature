@@ -133,7 +133,7 @@ Feature: Ephemeral Messages
 
     Examples:
       | Name      | Contact   | Timer |
-      | user1Name | user2Name | 15    |
+      | user1Name | user2Name | 30    |
 
   @C310633 @regression @fastLogin
   Scenario Outline: Verify sending ephemeral video message
@@ -241,7 +241,6 @@ Feature: Ephemeral Messages
     Given I type the "<SoundCloudLink>" message and send it
     # Wait for preview generation
     Given I wait for 5 seconds
-    Given I see media container in the conversation view
     When I remember the recent message from user Myself in the local database
     And I wait for <Timer> seconds
     Then I see 1 message in the conversation view
@@ -261,8 +260,8 @@ Feature: Ephemeral Messages
     Given I tap Hourglass button in conversation view
     Given I set ephemeral messages expiration timer to <Timer> seconds
     Given I type the "<Link>" message and send it
-    Given I navigate back to conversations list
-    Given I tap on contact name <Contact>
+    # Wait for preview generation
+    Given I wait for 5 seconds
     When I remember asset container state at cell 1
     And I wait for <Timer> seconds
     Then I see asset container state is changed
@@ -343,19 +342,10 @@ Feature: Ephemeral Messages
     And I do not see Like badge item
     And I do not see Copy badge item
     And I do not see Forward badge item
-    When User <Contact> sends encrypted message "<Message2>" to user Myself
-    # Wait for sync
-    And I wait for 3 seconds
-    And I long tap "<Message2>" message in conversation view
-    Then I do not see Edit badge item
-    And I do not see Delete badge item
-    And I do not see Like badge item
-    And I do not see Copy badge item
-    And I do not see Forward badge item
 
     Examples:
-      | Name      | Contact   | Message1    | Message2    | DeviceName | DeviceLabel | EphemeralTimeout |
-      | user1Name | user2Name | message one | message two | ContactDev | DevLabel    | 15               |
+      | Name      | Contact   | Message1    | DeviceName | DeviceLabel | EphemeralTimeout |
+      | user1Name | user2Name | message one | ContactDev | DevLabel    | 15               |
 
   @C259587 @rc @regression @fastLogin
   Scenario Outline: Verify ephemeral messages are not sent to my other devices

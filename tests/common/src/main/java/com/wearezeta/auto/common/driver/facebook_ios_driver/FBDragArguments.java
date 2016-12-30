@@ -1,20 +1,22 @@
 package com.wearezeta.auto.common.driver.facebook_ios_driver;
 
 
+import com.wearezeta.auto.common.misc.Timedelta;
+
 public class FBDragArguments {
     private double fromX;
     private double fromY;
     private double toX;
     private double toY;
-    private double durationSeconds;
+    private Timedelta duration;
 
-    public FBDragArguments(double fromX, double fromY, double toX, double toY, double durationSeconds) {
+    public FBDragArguments(double fromX, double fromY, double toX, double toY, Timedelta duration) {
         this.fromX = fromX;
         this.fromY = fromY;
         this.toX = toX;
         this.toY = toY;
-        DurationValidator.validate(durationSeconds);
-        this.durationSeconds = durationSeconds;
+        DurationValidator.validate(duration.asFloatSeconds());
+        this.duration = duration;
     }
 
     public double getFromX() {
@@ -33,7 +35,7 @@ public class FBDragArguments {
         return toY;
     }
 
-    public double getDurationSeconds() {
-        return durationSeconds;
+    public Timedelta getDuration() {
+        return duration;
     }
 }

@@ -31,6 +31,7 @@ import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.sync_engine_bridge.AssetProtocol;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
@@ -73,9 +74,9 @@ public class CommonAndroidSteps {
     public static final Platform CURRENT_PLATFORM = Platform.Android;
 
     public static final String PATH_ON_DEVICE = "/mnt/sdcard/DCIM/Camera/userpicture.jpg";
-    public static final int DEFAULT_SWIPE_TIME = 1500;
-    public static final int FIRST_TIME_OVERLAY_TIMEOUT = 3; // seconds
-    public static final int UI_DELAY_TIME = 2; // seconds
+    public static final Timedelta DEFAULT_SWIPE_TIME = Timedelta.fromMilliSeconds(1500);
+    public static final Timedelta FIRST_TIME_OVERLAY_TIMEOUT = Timedelta.fromSeconds(3);
+    public static final Timedelta UI_DELAY_TIME = Timedelta.fromSeconds(2);
     private static final String DEFAULT_USER_AVATAR = "aqaPictureContact600_800.jpg";
     private static final String GCM_TOKEN_PATTERN = "token:\\s+(.*)$";
     //TODO: should I move this list to configuration file?
@@ -104,7 +105,7 @@ public class CommonAndroidSteps {
                                                         Optional<Map<String, Object>> additionalCaps) throws Exception {
         final DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
-        capabilities.setCapability("newCommandTimeout", AppiumServer.DEFAULT_COMMAND_TIMEOUT);
+        capabilities.setCapability("newCommandTimeout", AppiumServer.DEFAULT_COMMAND_TIMEOUT.asSeconds());
         // To init the first available device
         capabilities.setCapability("deviceName", "null");
         capabilities.setCapability("app", path);
@@ -468,7 +469,7 @@ public class CommonAndroidSteps {
         } else {
             AndroidCommonUtils.switchToApplication(getPackageName());
         }
-        WaitForTime(UI_DELAY_TIME);
+        WaitForTime(UI_DELAY_TIME.asSeconds());
     }
 
     /**
@@ -483,11 +484,11 @@ public class CommonAndroidSteps {
         if (shouldUnlock == null) {
             AndroidCommonUtils.lockScreen();
             //UI need time to react action
-            WaitForTime(UI_DELAY_TIME);
+            WaitForTime(UI_DELAY_TIME.asSeconds());
         } else {
             AndroidCommonUtils.unlockDevice();
             //UI need time to react action
-            WaitForTime(UI_DELAY_TIME);
+            WaitForTime(UI_DELAY_TIME.asSeconds());
             // FIXME: Unlock selendroid app does not restore the previously active application
             AndroidCommonUtils.switchToApplication(getPackageName());
         }
@@ -543,10 +544,12 @@ public class CommonAndroidSteps {
         final int timeoutSeconds = 10;
         if (shouldBeEqual == null) {
             Assert.assertTrue(String.format("The current screen state seems to be similar to the previous one after %s " +
-                    "seconds", timeoutSeconds), screenState.isChanged(timeoutSeconds, SCREEN_MIN_SCORE));
+                    "seconds", timeoutSeconds), screenState.isChanged(Timedelta.fromSeconds(timeoutSeconds),
+                    SCREEN_MIN_SCORE));
         } else {
             Assert.assertTrue(String.format("The current screen state seems to be different to the previous one after %s " +
-                    "seconds", timeoutSeconds), screenState.isNotChanged(timeoutSeconds, SCREEN_MIN_SCORE));
+                    "seconds", timeoutSeconds), screenState.isNotChanged(Timedelta.fromSeconds(timeoutSeconds),
+                    SCREEN_MIN_SCORE));
         }
     }
 
@@ -1820,9 +1823,11 @@ public class CommonAndroidSteps {
     @Given("^Users? (.*) (sets?|changes?) the unique username( to \".*\")?(?: via device (.*))?$")
     public void UserSetsUniqueUsername(String userAs, String action, String uniqUsername, String deviceName) throws Exception {
         switch (action.toLowerCase()) {
+            case "set":
             case "sets":
                 commonSteps.UsersSetUniqueUsername(userAs);
                 break;
+            case "change":
             case "changes":
                 if (uniqUsername == null) {
                     throw new IllegalArgumentException("Unique username is mandatory to set");
@@ -2034,6 +2039,19 @@ public class CommonAndroidSteps {
             throws Exception {
         boolean isGroup = convoType.equals("group conversation");
         commonSteps.UserSendsGiphy(userAs, convName, query, deviceName, isGroup);
+    }
+
+    /**
+     * Upload self user properties (name and email) to /onboarding endpoint.
+     * This is mandatory to be able to get matches
+     *
+     * @step. ^Users? (.*) uploads? own details$
+     * @param aliases self users alias(es)
+     * @throws Exception
+     */
+    @Given("^Users? (.*) uploads? own details$")
+    public void uploadSelfUser(String aliases) throws Exception {
+        commonSteps.uploadSelfContact(aliases);
     }
 
 

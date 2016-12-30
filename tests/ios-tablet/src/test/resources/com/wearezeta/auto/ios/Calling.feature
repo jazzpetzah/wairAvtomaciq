@@ -112,7 +112,7 @@ Feature: Calling
       | user1Name | user2Name |
 
   @C2427 @rc @calling_advanced @fastLogin
-  Scenario Outline: 3rd person tries to call me after I initate a call to somebody [LANDSCAPE]
+  Scenario Outline: 3rd person tries to call me after I init a call to somebody [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given User <Contact1> sets the unique username
@@ -123,8 +123,8 @@ Feature: Calling
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    And I tap on contact name <Contact1>
-    And I remember the left side state of <Contact2> conversation item on iPad
+    Given I tap on contact name <Contact1>
+    When I remember the left side state of <Contact2> conversation item on iPad
     And I tap Audio Call button
     And I see Calling overlay
     And <Contact2> calls me

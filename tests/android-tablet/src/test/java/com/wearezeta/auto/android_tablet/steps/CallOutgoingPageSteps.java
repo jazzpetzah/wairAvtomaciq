@@ -4,6 +4,7 @@ package com.wearezeta.auto.android_tablet.steps;
 import com.wearezeta.auto.android_tablet.pages.TabletCallOutgoingAudioPage;
 import com.wearezeta.auto.android_tablet.pages.TabletCallOutgoingVideoPage;
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.Timedelta;
 import cucumber.api.java.en.Then;
 
 import cucumber.api.java.en.When;
@@ -100,7 +101,7 @@ public class CallOutgoingPageSteps {
         }
     }
 
-    private static final int STATE_CHANGE_TIMEOUT = 15;
+    private static final Timedelta STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(15);
     private static final double MIN_BUTTON_SIMILARITY_SCORE = 0.4;
 
     /**

@@ -1064,4 +1064,11 @@ public final class CommonSteps {
         }
         throw new Exception("Could not find any valid message");
     }
+
+    public void uploadSelfContact(String userAliases) throws Exception {
+        for (String alias : usrMgr.splitAliases(userAliases)) {
+            final ClientUser selfUser = usrMgr.findUserByNameOrNameAlias(alias);
+            BackendAPIWrappers.uploadSelfContact(selfUser);
+        }
+    }
 }

@@ -13,20 +13,8 @@ public abstract class AbstractTabletSearchPage extends AndroidTabletPage {
         super(lazyDriver);
     }
 
-    public void selectEmailOnAlert(String email) throws Exception {
-        getPage(getAndroidPageClass()).selectEmailOnAlert(email);
-    }
-
-    public void tapPeopleSearch() throws Exception {
-        getPage(getAndroidPageClass()).tapPeopleSearch();
-    }
-
     public void typeTextInPeopleSearch(String text) throws Exception {
         getPage(getAndroidPageClass()).typeTextInPeopleSearch(text);
-    }
-
-    public boolean isPeopleSearchTextEmpty() throws Exception {
-        return getPage(getAndroidPageClass()).isPeopleSearchTextEmpty();
     }
 
     public boolean waitUntilPageVisible() throws Exception {
@@ -39,10 +27,6 @@ public abstract class AbstractTabletSearchPage extends AndroidTabletPage {
 
     public void typeBackspaceInSearchInput() throws Exception {
         getPage(getAndroidPageClass()).typeBackspaceInSearchInput();
-    }
-
-    public void tapCreateConversation() throws Exception {
-        getPage(getAndroidPageClass()).tapCreateConversation();
     }
 
     public void tapClearButton() throws Exception {
@@ -77,16 +61,8 @@ public abstract class AbstractTabletSearchPage extends AndroidTabletPage {
         getPage(getAndroidPageClass()).tapOnUserAvatar(name);
     }
 
-    public void tapInviteButtonFor(String name) throws Exception {
-        getPage(getAndroidPageClass()).tapInviteButtonFor(name);
-    }
-
-    public boolean isErrorVisible() throws Exception {
-        return getPage(getAndroidPageClass()).isErrorVisible();
-    }
-
-    public boolean isErrorInvisible() throws Exception {
-        return getPage(getAndroidPageClass()).isErrorInvisible();
+    public void tapPickUserConfirmationButton() throws Exception {
+        getPage(getAndroidPageClass()).tapPickUserConfirmationButton();
     }
 
     protected abstract Class getAndroidPageClass();

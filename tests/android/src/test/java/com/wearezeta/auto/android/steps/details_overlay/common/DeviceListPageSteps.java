@@ -5,6 +5,7 @@ import com.wearezeta.auto.android.pages.details_overlay.common.DeviceDetailsPage
 import com.wearezeta.auto.android.pages.details_overlay.common.DeviceListPage;
 import com.wearezeta.auto.android.steps.AndroidPagesCollection;
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import cucumber.api.java.en.Then;
@@ -89,11 +90,13 @@ public class DeviceListPageSteps {
     public void ICheckDeviceShieldStateIsChanged(int deviceNum) throws Exception {
         if (!savedDeviceShieldStates.containsKey(deviceNum)) {
             throw new IllegalStateException(String.format(
-                    "Please call the corresponding step to take the screenshot of shield state for device '%s' first", deviceNum));
+                    "Please call the corresponding step to take the screenshot of shield state for device '%s' first",
+                    3d, deviceNum));
         }
         Assert.assertTrue(
                 String.format("Shield state for device '%s' seems not changed", deviceNum),
-                savedDeviceShieldStates.get(deviceNum).isChanged(10, SHIELD_STATE_OVERLAP_MAX_SCORE));
+                savedDeviceShieldStates.get(deviceNum).isChanged(Timedelta.fromSeconds(10),
+                        SHIELD_STATE_OVERLAP_MAX_SCORE));
     }
 
     /**

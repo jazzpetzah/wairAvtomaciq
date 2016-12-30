@@ -23,6 +23,7 @@ import com.wearezeta.auto.common.driver.device_helpers.IOSRealDeviceHelpers;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBDriverAPI;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.IOSDistributable;
+import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.sync_engine_bridge.AssetProtocol;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
@@ -74,6 +75,9 @@ public class CommonIOSSteps {
 
     public static final String CAPABILITY_NAME_FORCE_RESET_AFTER_TEST = "forceResetAfterTest";
     public static final String TAG_NAME_FORCE_RESET_AFTER_TEST = "@" + CAPABILITY_NAME_FORCE_RESET_AFTER_TEST;
+
+    public static final String CAPABILITY_NAME_ENABLE_LOCALYTICS_LOGS = "enableLocalyticsLogs";
+    public static final String TAG_NAME_ENABLE_LOCALYTICS_LOGS = "@" + CAPABILITY_NAME_ENABLE_LOCALYTICS_LOGS;
 
     static {
         System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
@@ -139,7 +143,7 @@ public class CommonIOSSteps {
         final boolean isRealDevice = !CommonUtils.getIsSimulatorFromConfig(getClass());
 
         final DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("newCommandTimeout", AppiumServer.DEFAULT_COMMAND_TIMEOUT);
+        capabilities.setCapability("newCommandTimeout", AppiumServer.DEFAULT_COMMAND_TIMEOUT.asSeconds());
         capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
         capabilities.setCapability(ZetaIOSDriver.AUTOMATION_NAME_CAPABILITY_NAME,
                 ZetaIOSDriver.AUTOMATION_MODE_XCUITEST);
@@ -177,16 +181,17 @@ public class CommonIOSSteps {
             capabilities.setCapability("iosInstallPause", INSTALL_DELAY_MS);
         }
         capabilities.setCapability("platformVersion", getPlatformVersion());
-        capabilities.setCapability("launchTimeout", ZetaIOSDriver.MAX_SESSION_INIT_DURATION_MILLIS);
+        capabilities.setCapability("launchTimeout", ZetaIOSDriver.MAX_SESSION_INIT_DURATION);
         final String backendType = getBackendType(this.getClass());
         final List<String> processArgs = new ArrayList<>(Arrays.asList(
-                "-UseHockey", "0",
-                "-ZMBackendEnvironmentType", backendType,
+                "-UseHockey", "0"
+                , "-ZMBackendEnvironmentType", backendType
                 // https://wearezeta.atlassian.net/browse/ZIOS-5769
-                "--disable-autocorrection",
+                , "--disable-autocorrection"
                 // https://wearezeta.atlassian.net/browse/ZIOS-5259
-                "-AnalyticsUserDefaultsDisabledKey", "0"
+                , "-AnalyticsUserDefaultsDisabledKey", "0"
                 // ,"--debug-log-network"
+                // , "-com.apple.CoreData.ConcurrencyDebug", "1"
         ));
 
         if (additionalCaps.isPresent()) {
@@ -199,6 +204,9 @@ public class CommonIOSSteps {
                             "--loginemail=" + ((ClientUser) entry.getValue()).getEmail(),
                             "--loginpassword=" + ((ClientUser) entry.getValue()).getPassword()
                     ));
+                } else if (entry.getKey().equals(CAPABILITY_NAME_ENABLE_LOCALYTICS_LOGS) &&
+                        (entry.getValue() instanceof Boolean) && (Boolean) entry.getValue()) {
+                    processArgs.add("-ConsoleAnalytics");
                 } else {
                     if (entry.getKey().equals(CAPABILITY_NAME_ADDRESSBOOK) &&
                             (entry.getValue() instanceof Boolean) && (Boolean) entry.getValue()) {
@@ -408,6 +416,10 @@ public class CommonIOSSteps {
             additionalCaps.put(CAPABILITY_NAME_FORCE_RESET, true);
         }
 
+        if (scenario.getSourceTagNames().contains(TAG_NAME_ENABLE_LOCALYTICS_LOGS)) {
+            additionalCaps.put(CAPABILITY_NAME_ENABLE_LOCALYTICS_LOGS, true);
+        }
+
         if (scenario.getSourceTagNames().contains(TAG_NAME_FORCE_RESET)) {
             additionalCaps.put(CAPABILITY_NAME_FORCE_RESET, true);
         }
@@ -538,7 +550,7 @@ public class CommonIOSSteps {
     public void IRestartWire() throws Exception {
         final RemoteWebDriver currentDriver =
                 PlatformDrivers.getInstance().getDriver(CURRENT_PLATFORM)
-                        .get(ZetaIOSDriver.MAX_COMMAND_DURATION_MILLIS, TimeUnit.MILLISECONDS);
+                        .get(ZetaIOSDriver.MAX_COMMAND_DURATION.asMilliSeconds(), TimeUnit.MILLISECONDS);
         final Map<String, ?> currentCapabilities = currentDriver.getCapabilities().asMap();
         try {
             PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
@@ -633,7 +645,7 @@ public class CommonIOSSteps {
      */
     @When("^I lock screen for (\\d+) seconds$")
     public void ILockScreen(int seconds) throws Exception {
-        pagesCollection.getCommonPage().lockScreen(seconds);
+        pagesCollection.getCommonPage().lockScreen(Timedelta.fromSeconds(seconds));
     }
 
     @Given("^(.*) sent connection request to (.*)$")
@@ -1775,5 +1787,18 @@ public class CommonIOSSteps {
     public void UserSwitchAssetMode(String userAs, String mode, String deviceName) throws Exception {
         AssetProtocol asset = AssetProtocol.valueOf(mode.toUpperCase());
         commonSteps.UserSetAssetMode(userAs, asset, deviceName);
+    }
+
+    /**
+     * Upload self user properties (name and email) to /onboarding endpoint.
+     * This is mandatory to be able to get matches
+     *
+     * @step. ^Users? (.*) uploads? own details$
+     * @param aliases self users alias(es)
+     * @throws Exception
+     */
+    @Given("^Users? (.*) uploads? own details$")
+    public void uploadSelfUser(String aliases) throws Exception {
+        commonSteps.uploadSelfContact(aliases);
     }
 }

@@ -1,7 +1,6 @@
 package com.wearezeta.auto.android.pages.details_overlay;
 
 import java.util.concurrent.Future;
-import java.util.function.Function;
 
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.common.driver.DriverUtils;

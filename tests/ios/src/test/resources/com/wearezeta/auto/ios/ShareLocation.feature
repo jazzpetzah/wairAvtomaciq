@@ -56,7 +56,7 @@ Feature: Share Location
     #TODO Stabilize sent address verification step
     #And I see the default sent Share Location address in the conversation view
     # Wait for delivery
-    When I wait for 5 seconds
+    When I wait for 8 seconds
     Then I see "<DeliveredLabel>" on the message toolbox in conversation view
 
     Examples:

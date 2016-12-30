@@ -140,7 +140,7 @@ Feature: Rich Media
       | user1Name | user2Name | H       |
 
   @C502 @regression
-  Scenario Outline: Verify you can play/pause media from the Media Bar in conversation view (portrait only)
+  Scenario Outline: (AN-4030) Verify you can play/pause media from the Media Bar in conversation view (portrait only)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     # This is to be able to scroll up until Media Bar appears

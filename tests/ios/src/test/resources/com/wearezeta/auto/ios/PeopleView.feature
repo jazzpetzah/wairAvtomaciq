@@ -462,10 +462,8 @@ Feature: People View
   Scenario Outline: Verify that left conversation is shown in the Archive
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    Given User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
-    Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     Given I see conversations list
     Given I tap on group chat with name <GroupChatName>
     Given I open group conversation details
@@ -476,8 +474,8 @@ Feature: People View
     Then I see conversation <GroupChatName> in conversations list
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName | Image       |
-      | user1Name | user2Name | user3Name | TESTCHAT      | testing.jpg |
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | TESTCHAT      |
 
   @C42 @regression @fastLogin
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending user (People view)

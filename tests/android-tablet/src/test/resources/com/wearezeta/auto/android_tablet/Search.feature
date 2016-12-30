@@ -11,9 +11,9 @@ Feature: Search
     Given I wait until <Contact> exists in backend search results
     When I open Search UI
     And I enter "<Contact>" into Search input on Search page
-    And I tap the found item <Contact> on Search page
-    And I see the Incoming connections page
-    And I ignore incoming connection request from <Contact> on Incoming connections page
+    And I tap on user name found on Search page <Contact>
+    And I see user name "<Contact>" on Single pending incoming connection page
+    And I tap ignore button on Single pending incoming connection page
     And I swipe right to show the conversations list
     Then I see the Conversations list with no conversations
 
@@ -32,9 +32,9 @@ Feature: Search
     Given I wait until <Contact> exists in backend search results
     When I open Search UI
     And I enter "<Contact>" into Search input on Search page
-    And I tap the found item <Contact> on Search page
-    And I see the Incoming connections page
-    And I ignore incoming connection request from <Contact> on Incoming connections page
+    And I tap on user name found on Search page <Contact>
+    And I see user name "<Contact>" on Single pending incoming connection page
+    And I tap ignore button on Single pending incoming connection page
     Then I see the Conversations list with no conversations
 
     Examples:
@@ -48,20 +48,20 @@ Feature: Search
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with no conversations
-    And I wait until <ContactEmail> exists in backend search results
+    And I wait until <Contact> exists in backend search results
     When I open Search UI
-    And I enter "<ContactEmail>" into Search input on Search page
-    And I tap the found item <Contact> on Search page
-    And I see Outgoing Connection popover
-    And I tap Close button on Outgoing Connection popover
-    And I do not see Outgoing Connection popover
+    And I enter "<Contact>" into Search input on Search page
+    And I tap on user name found on Search page <Contact>
+    And I see Single unconnected user details popover
+    And I press Back button 1 time
+    And I do not see Single unconnected user details popover
     And I see Search page
     And I close Search
     Then I see the Conversations list with no conversations
 
     Examples:
-      | Name      | Contact   | ContactEmail |
-      | user1Name | user2Name | user2Email   |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @C819 @regression @rc @rc44
   Scenario Outline: Verify opening conversation with action button (landscape)
@@ -74,7 +74,7 @@ Feature: Search
     And I wait until <Contact> exists in backend search results
     And I open Search UI
     And I enter "<Contact>" into Search input on Search page
-    And I tap the found item <Contact> on Search page
+    And I tap on user name found on Search page <Contact>
     When I tap Open Conversation action button on Search page
     Then I do not see Search page
     And I see the conversation view
@@ -94,7 +94,7 @@ Feature: Search
     And I wait until <Contact> exists in backend search results
     And I open Search UI
     And I enter "<Contact>" into Search input on Search page
-    And I tap the found item <Contact> on Search page
+    And I tap on user name found on Search page <Contact>
     When I tap Open Conversation action button on Search page
     Then I do not see Search page
     And I see the conversation view
@@ -115,15 +115,15 @@ Feature: Search
     Given I see the Conversations list with conversations
     And I open Search UI
     And I enter "<Contact1>" into Search input on Search page
-    And I tap the found item <Contact1> on Search page
+    And I tap on user name found on Search page <Contact1>
     And I enter "<Contact2>" into Search input on Search page
-    And I tap the found item <Contact2> on Search page
+    And I tap on user name found on Search page <Contact2>
     When I tap Create Conversation action button on Search page
     Then I do not see Search page
     When I tap conversation name from top toolbar
-    Then I see the participant avatar <Contact1> on Group popover
-    And I see the participant avatar <Contact2> on Group popover
-    And I do not see the participant avatar Myself on Group popover
+    Then I see participant <Contact1> on Group info popover
+    And I see participant <Contact2> on Group info popover
+    And I do not see participant Myself on Group info popover
 
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -141,15 +141,15 @@ Feature: Search
     Given I see the Conversations list with conversations
     And I open Search UI
     And I enter "<Contact1>" into Search input on Search page
-    And I tap the found item <Contact1> on Search page
+    And I tap on user name found on Search page <Contact1>
     And I enter "<Contact2>" into Search input on Search page
-    And I tap the found item <Contact2> on Search page
+    And I tap on user name found on Search page <Contact2>
     When I tap Create Conversation action button on Search page
     Then I do not see Search page
     When I tap conversation name from top toolbar
-    Then I see the participant avatar <Contact1> on Group popover
-    And I see the participant avatar <Contact2> on Group popover
-    And I do not see the participant avatar Myself on Group popover
+    Then I see participant <Contact1> on Group info popover
+    And I see participant <Contact2> on Group info popover
+    And I do not see participant Myself on Group info popover
 
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -166,7 +166,7 @@ Feature: Search
     Given I wait until <Contact> exists in backend search results
     And I open Search UI
     And I enter "<Contact>" into Search input on Search page
-    And I tap the found item <Contact> on Search page
+    And I tap on user name found on Search page <Contact>
     When I tap Send Image action button on Search page
     And I tap Take Photo button on Take Picture view
     And I tap Confirm button on Take Picture view
@@ -189,19 +189,19 @@ Feature: Search
     Given I see the Conversations list with conversations
     And I open Search UI
     And I enter "<Contact1>" into Search input on Search page
-    And I tap the found item <Contact1> on Search page
+    And I tap on user name found on Search page <Contact1>
     And I enter "<Contact2>" into Search input on Search page
-    And I tap the found item <Contact2> on Search page
+    And I tap on user name found on Search page <Contact2>
     When I tap Send Image action button on Search page
     And I tap Take Photo button on Take Picture view
     And I tap Confirm button on Take Picture view
     Then I see a new picture in the conversation view
     And I do not see Search page
     When I tap conversation name from top toolbar
-    And I see the Group popover
-    Then I do not see the participant avatar Myself on Group popover
-    And I see the participant avatar <Contact1> on Group popover
-    And I see the participant avatar <Contact2> on Group popover
+    And I see Group info popover
+    Then I do not see participant Myself on Group info popover
+    And I see participant <Contact1> on Group info popover
+    And I see participant <Contact2> on Group info popover
 
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -219,19 +219,19 @@ Feature: Search
     Given I wait until <Contact2> exists in backend search results
     And I open Search UI
     And I enter "<Contact1>" into Search input on Search page
-    And I tap the found item <Contact1> on Search page
+    And I tap on user name found on Search page <Contact1>
     And I enter "<Contact2>" into Search input on Search page
-    And I tap the found item <Contact2> on Search page
+    And I tap on user name found on Search page <Contact2>
     When I tap Send Image action button on Search page
     And I tap Take Photo button on Take Picture view
     And I tap Confirm button on Take Picture view
     Then I see a new picture in the conversation view
     And I do not see Search page
     When I tap conversation name from top toolbar
-    And I see the Group popover
-    Then I do not see the participant avatar Myself on Group popover
-    And I see the participant avatar <Contact1> on Group popover
-    And I see the participant avatar <Contact2> on Group popover
+    And I see Group info popover
+    Then I do not see participant Myself on Group info popover
+    And I see participant <Contact1> on Group info popover
+    And I see participant <Contact2> on Group info popover
 
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -249,10 +249,10 @@ Feature: Search
     Given I wait until <Contact2> exists in backend search results
     And I open Search UI
     And I enter "<Contact1>" into Search input on Search page
-    When I tap the found item <Contact1> on Search page
+    When I tap on user name found on Search page <Contact1>
     Then I see Open Conversation action button on Search page
     When I enter "<Contact2>" into Search input on Search page
-    And I tap the found item <Contact2> on Search page
+    And I tap on user name found on Search page <Contact2>
     Then I see Create Conversation action button on Search page
     When I type backspace in Search input on Search page
     Then I see Open Conversation action button on Search page
@@ -275,10 +275,10 @@ Feature: Search
     Given I wait until <Contact2> exists in backend search results
     And I open Search UI
     And I enter "<Contact1>" into Search input on Search page
-    When I tap the found item <Contact1> on Search page
+    When I tap on user name found on Search page <Contact1>
     Then I see Open Conversation action button on Search page
     When I enter "<Contact2>" into Search input on Search page
-    And I tap the found item <Contact2> on Search page
+    And I tap on user name found on Search page <Contact2>
     Then I see Create Conversation action button on Search page
     When I type backspace in Search input on Search page
     Then I see Open Conversation action button on Search page
@@ -300,7 +300,7 @@ Feature: Search
     And I wait until <Contact> exists in backend search results
     And I open Search UI
     And I enter "<Contact>" into Search input on Search page
-    And I tap the found item <Contact> on Search page
+    And I tap on user name found on Search page <Contact>
     When I tap Call action button on Search page
     Then I do not see Search page
     And I see outgoing call
@@ -320,7 +320,7 @@ Feature: Search
     And I wait until <Contact> exists in backend search results
     And I open Search UI
     And I enter "<Contact>" into Search input on Search page
-    And I tap the found item <Contact> on Search page
+    And I tap on user name found on Search page <Contact>
     When I tap Call action button on Search page
     Then I do not see Search page
     And I see outgoing call
@@ -341,9 +341,9 @@ Feature: Search
     Given I see the Conversations list with conversations
     And I open Search UI
     And I enter "<Contact1>" into Search input on Search page
-    And I tap the found item <Contact1> on Search page
+    And I tap on user name found on Search page <Contact1>
     And I enter "<Contact2>" into Search input on Search page
-    And I tap the found item <Contact2> on Search page
+    And I tap on user name found on Search page <Contact2>
     When I tap Call action button on Search page
     Then I see outgoing call
 
@@ -363,9 +363,9 @@ Feature: Search
     Given I see the Conversations list with conversations
     And I open Search UI
     And I enter "<Contact1>" into Search input on Search page
-    And I tap the found item <Contact1> on Search page
+    And I tap on user name found on Search page <Contact1>
     And I enter "<Contact2>" into Search input on Search page
-    And I tap the found item <Contact2> on Search page
+    And I tap on user name found on Search page <Contact2>
     When I tap Call action button on Search page
     Then I do not see Search page
     Then I see outgoing call

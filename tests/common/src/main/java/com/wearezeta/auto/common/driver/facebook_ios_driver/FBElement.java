@@ -1,6 +1,7 @@
 package com.wearezeta.auto.common.driver.facebook_ios_driver;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.rest.RESTError;
 import org.apache.commons.lang3.NotImplementedException;
 import org.json.JSONObject;
@@ -48,16 +49,16 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
         }
     }
 
-    public void touchAndHold(double durationSeconds) {
+    public void touchAndHold(Timedelta duration) {
         try {
-            fbDriverAPI.touchAndHold(this.uuid, durationSeconds);
+            fbDriverAPI.touchAndHold(this.uuid, duration);
         } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }
     }
 
     public void longTap() {
-        this.touchAndHold(DriverUtils.LONG_TAP_DURATION / 1000.0);
+        this.touchAndHold(Timedelta.fromMilliSeconds(DriverUtils.LONG_TAP_DURATION));
     }
 
     /**
