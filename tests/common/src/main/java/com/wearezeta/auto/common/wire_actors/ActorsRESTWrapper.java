@@ -1,112 +1,275 @@
 package com.wearezeta.auto.common.wire_actors;
 
-
-import com.wearezeta.auto.common.testrail.TestrailExecutionStatus;
-import com.wearezeta.auto.common.testrail.TestrailREST;
+import com.wearezeta.auto.common.misc.Timedelta;
+import com.wearezeta.auto.common.rest.CommonRESTHandlers;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
+import org.apache.commons.codec.binary.Base64;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.Arrays;
-import java.util.Map;
+import java.io.File;
+import java.net.URL;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class ActorsRESTWrapper {
-    public static long getProjectId(String projectName) throws Exception {
-        final JSONArray response = TestrailREST.getProjects();
-        for (int i = 0; i < response.length(); i++) {
-            if (response.getJSONObject(i).getString("name").equals(projectName)) {
-                return response.getJSONObject(i).getLong("id");
-            }
+    public static boolean isAlive() {
+        try {
+            return CommonRESTHandlers.isAlive(new URL(ActorsREST.getBaseURI()));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        throw new IllegalArgumentException(String.format("Project '%s' cannot be found in Testrail",
-                projectName));
+        return false;
     }
 
-    public static long getTestPlanId(long projectId, String testPlanName) throws Exception {
-        final JSONArray response = TestrailREST.getTestPlans(projectId);
-        for (int i = 0; i < response.length(); i++) {
-            if (response.getJSONObject(i).getString("name").equals(testPlanName)) {
-                return response.getJSONObject(i).getLong("id");
-            }
+    public static String createDevice(Optional<String> name) throws Exception {
+        final JSONObject response = ActorsREST.createDevice(name);
+        return response.getString("uuid");
+    }
+
+    public static void removeDevice(String uuid) throws Exception {
+        ActorsREST.removeDevice(uuid);
+    }
+
+    public static String loginToDevice(String uuid, ClientUser user) throws Exception {
+        final JSONObject response = ActorsREST.loginToDevice(uuid, user.getEmail(), user.getPassword());
+        return response.getString("uuid");
+    }
+
+    public static String getDeviceFingerprint(String uuid) throws Exception {
+        final JSONObject response = ActorsREST.getDeviceFingerprint(uuid);
+        return response.getString("fingerprint");
+    }
+
+    public static String getDeviceId(String uuid) throws Exception {
+        final JSONObject response = ActorsREST.getDeviceId(uuid);
+        return response.getString("deviceId");
+    }
+
+    public static String getUniqueUsername(String uuid) throws Exception {
+        final JSONObject response = ActorsREST.getUniqueUsername(uuid);
+        return response.getJSONObject("user").getString("uniqueName");
+    }
+
+    public static String setDeviceLabel(String uuid, String newLabel) throws Exception {
+        final JSONObject response = ActorsREST.setDeviceLabel(uuid, newLabel);
+        return response.getString("uuid");
+    }
+
+    public enum AssetsVersion {
+        V2("2"), V3("3");
+
+        private String strRepresentation;
+
+        AssetsVersion(String strRepresentation) {
+            this.strRepresentation = strRepresentation;
         }
-        throw new IllegalArgumentException(String.format("Test plan '%s' cannot be found in Testrail",
-                testPlanName));
+
+        public String stringRepresentation() {
+            return this.strRepresentation;
+        }
     }
 
-    private static boolean isConfigurationEqual(String expectedConfiguration, String actualConfiguration) {
-        // Configuration name is comma-separated string
-        final Set<String> normalizedExpectedConfig = Arrays.asList(expectedConfiguration.split(",")).stream().map(
-                String::trim).collect(Collectors.toSet());
-        final Set<String> normalizedActualConfig = Arrays.asList(actualConfiguration.split(",")).stream().map(
-                String::trim).collect(Collectors.toSet());
-        return normalizedExpectedConfig.equals(normalizedActualConfig);
+    public static String setDeviceAssetsVersion(String uuid, AssetsVersion newVersion) throws Exception {
+        final JSONObject response = ActorsREST.setDeviceAssetsVersion(uuid, newVersion.stringRepresentation());
+        return response.getString("uuid");
     }
 
-    public static long getTestRunId(long testPlanId, String testRunName, Optional<String> configurationName)
+    public static String sendMessage(String uuid, String convoId, String message) throws Exception {
+        final JSONObject response = ActorsREST.sendMessage(uuid, convoId, message);
+        return response.getString("uuid");
+    }
+
+    public static String sendGiphy(String uuid, String convoId, String giphyTag) throws Exception {
+        final JSONObject response = ActorsREST.sendGiphy(uuid, convoId, giphyTag);
+        return response.getString("uuid");
+    }
+
+    public class LocationInfo {
+        private float lon;
+        private float lat;
+        private String address;
+        private int zoom;
+
+        public LocationInfo(float lon, float lat, String address, int zoom) {
+            this.lon = lon;
+            this.lat = lat;
+            this.address = address;
+            this.zoom = zoom;
+        }
+
+        public float getLon() {
+            return lon;
+        }
+
+        public float getLat() {
+            return lat;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public int getZoom() {
+            return zoom;
+        }
+    }
+
+    public static String sendLocation(String uuid, String convoId, LocationInfo locationInfo) throws Exception {
+        final JSONObject response = ActorsREST.sendLocation(uuid, convoId, locationInfo.getLon(),
+                locationInfo.getLat(), locationInfo.getAddress(), locationInfo.getZoom());
+        return response.getString("uuid");
+    }
+
+    public static String sendLocation(String uuid, String convoId) throws Exception {
+        final JSONObject response = ActorsREST.sendLocation(uuid, convoId);
+        return response.getString("uuid");
+    }
+
+    private static String fileToBase64String(File srcFile) throws Exception {
+        if (!srcFile.exists()) {
+            throw new IllegalArgumentException(
+                    String.format("The file at path '%s' is not accessible or does not exist",
+                            srcFile.getAbsolutePath())
+            );
+        }
+        final byte[] asBytes = Files.readAllBytes(srcFile.toPath());
+        return Base64.encodeBase64String(asBytes);
+    }
+
+    public static String sendImage(String uuid, String convoId, File image) throws Exception {
+        final JSONObject response = ActorsREST.sendImage(uuid, convoId, fileToBase64String(image), image.getName());
+        return response.getString("uuid");
+    }
+
+    public static String sendFile(String uuid, String convoId, File file, String mimeType) throws Exception {
+        final JSONObject response = ActorsREST.sendFile(uuid, convoId, fileToBase64String(file),
+                mimeType, file.getName());
+        return response.getString("uuid");
+    }
+
+    public static String sendPing(String uuid, String convoId) throws Exception {
+        final JSONObject response = ActorsREST.sendPing(uuid, convoId);
+        return response.getString("uuid");
+    }
+
+    public static String sendTyping(String uuid, String convoId) throws Exception {
+        final JSONObject response = ActorsREST.sendTyping(uuid, convoId);
+        return response.getString("uuid");
+    }
+
+    public static String clearConversation(String uuid, String convoId) throws Exception {
+        final JSONObject response = ActorsREST.clearConversation(uuid, convoId);
+        return response.getString("uuid");
+    }
+
+    public static String muteConversation(String uuid, String convoId) throws Exception {
+        final JSONObject response = ActorsREST.muteConversation(uuid, convoId);
+        return response.getString("uuid");
+    }
+
+    public static String unmuteConversation(String uuid, String convoId) throws Exception {
+        final JSONObject response = ActorsREST.unmuteConversation(uuid, convoId);
+        return response.getString("uuid");
+    }
+
+    public static String archiveConversation(String uuid, String convoId) throws Exception {
+        final JSONObject response = ActorsREST.archiveConversation(uuid, convoId);
+        return response.getString("uuid");
+    }
+
+    public static String unarchiveConversation(String uuid, String convoId) throws Exception {
+        final JSONObject response = ActorsREST.unarchiveConversation(uuid, convoId);
+        return response.getString("uuid");
+    }
+
+    public static String setEpehemeralTimeout(String uuid, String convoId, Timedelta timeout) throws Exception {
+        final JSONObject response = ActorsREST.setEpehemeralTimeout(uuid, convoId, timeout);
+        return response.getString("uuid");
+    }
+
+    public static String cancelConnection(String uuid, String connId) throws Exception {
+        final JSONObject response = ActorsREST.cancelConnection(uuid, connId);
+        return response.getString("uuid");
+    }
+
+    public static String deleteMessage(String uuid, String convId, String msgId) throws Exception {
+        final JSONObject response = ActorsREST.deleteMessage(uuid, convId, msgId);
+        return response.getString("uuid");
+    }
+
+    public static String deleteMessageEverywhere(String uuid, String convId, String msgId) throws Exception {
+        final JSONObject response = ActorsREST.deleteMessageEverywhere(uuid, convId, msgId);
+        return response.getString("uuid");
+    }
+
+    public static String updateMessage(String uuid, String convId, String msgId, String newMessage) throws Exception {
+        final JSONObject response = ActorsREST.updateMessage(uuid, convId, msgId, newMessage);
+        return response.getString("uuid");
+    }
+
+    public enum MessageReaction {
+        LIKE, UNLIKE
+    }
+
+    public static String reactMessage(String uuid, String convId, String msgId, MessageReaction reaction)
             throws Exception {
-        final JSONObject response = TestrailREST.getTestPlan(testPlanId);
-        if (!response.has("entries")) {
-            throw new IllegalArgumentException(String.format("Test run '%s' cannot be found", testRunName));
+        final JSONObject response = ActorsREST.reactMessage(uuid, convId, msgId, reaction.name());
+        return response.getString("uuid");
+    }
+
+    public enum MessageType {
+
+    }
+
+    public static class MessageInfo {
+        private String id;
+        private MessageType type;
+        private Timedelta timestamp;
+
+        public MessageInfo(String id, MessageType type, Timedelta timestamp) {
+            this.id = id;
+            this.type = type;
+            this.timestamp = timestamp;
         }
-        final JSONArray entries = response.getJSONArray("entries");
-        for (int entryIdx = 0; entryIdx < entries.length(); entryIdx++) {
-            if (entries.getJSONObject(entryIdx).has("runs")) {
-                final JSONArray runs = entries.getJSONObject(entryIdx).getJSONArray("runs");
-                for (int runIdx = 0; runIdx < runs.length(); runIdx++) {
-                    if (runs.getJSONObject(runIdx).getString("name").equals(testRunName)) {
-                        if (configurationName.isPresent()) {
-                            if (runs.getJSONObject(runIdx).has("config") && isConfigurationEqual(
-                                    configurationName.get(), runs.getJSONObject(runIdx).getString("config"))) {
-                                return runs.getJSONObject(runIdx).getLong("id");
-                            } else {
-                                continue;
-                            }
-                        }
-                        return runs.getJSONObject(runIdx).getLong("id");
-                    }
+
+        public String getId() {
+            return id;
+        }
+
+        public MessageType getType() {
+            return type;
+        }
+
+        public Timedelta getTimestamp() {
+            return timestamp;
+        }
+    }
+
+    public static List<MessageInfo> getMessagesInfo(String uuid, String convId) throws Exception {
+        final List<MessageInfo> result = new ArrayList<>();
+        final JSONObject response = ActorsREST.getMessagesInfo(uuid, convId);
+        final JSONArray allConversations = response.getJSONArray("conversations");
+        for (int i = 0; i < allConversations.length(); i++) {
+            if (allConversations.getJSONObject(i).getString("id").equals(convId)) {
+                final JSONArray allMessages = allConversations.getJSONObject(i).getJSONArray("messagesInfo");
+                for (int j = 0; j < allMessages.length(); j++) {
+                    final JSONObject messageInfoAsJson = allMessages.getJSONObject(i);
+                    final MessageInfo messageInfo = new MessageInfo(
+                            messageInfoAsJson.getString("messageId"),
+                            MessageType.valueOf(messageInfoAsJson.getString("type")),
+                            Timedelta.fromMilliSeconds(messageInfoAsJson.getLong("time"))
+                    );
+                    result.add(messageInfo);
                 }
+                break;
             }
         }
-        throw new IllegalArgumentException(String.format("Test run '%s (%s)' cannot be found",
-                testRunName, configurationName.orElse("<No Config>")));
+        return result;
     }
 
-    /**
-     * @param testRunId
-     * @param caseId
-     * @param newStatus this has to be never set to TestrailExecutionStatus.Untested
-     *                  Otherwise API call will fail for sure
-     * @param comment
-     * @throws Exception
-     */
-
-    public static void updateTestResult(long testRunId, long caseId,
-                                        TestrailExecutionStatus newStatus, Optional<String> comment) throws Exception {
-        TestrailREST.addTestCaseResult(testRunId, caseId, newStatus.getId(), comment);
-    }
-
-    public static TestrailExecutionStatus getCurrentTestResult(long testRunId, long caseId) throws Exception {
-        final JSONArray response = TestrailREST.getTestCaseResults(testRunId, caseId);
-        if (response.length() == 0) {
-            return TestrailExecutionStatus.Untested;
-        } else {
-            return TestrailExecutionStatus.getById(response.getJSONObject(0).getInt("status_id"));
-        }
-    }
-
-    public static void updateCustomCaseProperty(long caseId, String valueName, Object newValue) throws Exception {
-        final JSONObject requestBody = new JSONObject();
-        requestBody.put(valueName, newValue);
-        TestrailREST.updateCase(caseId, requestBody);
-    }
-
-    public static void updateCustomCaseProperties(long caseId, Map<String, Object> newValues) throws Exception {
-        final JSONObject requestBody = new JSONObject();
-        for (Map.Entry<String, Object> entry : newValues.entrySet()) {
-            requestBody.put(entry.getKey(), entry.getValue());
-        }
-        TestrailREST.updateCase(caseId, requestBody);
-    }
 }
+
+

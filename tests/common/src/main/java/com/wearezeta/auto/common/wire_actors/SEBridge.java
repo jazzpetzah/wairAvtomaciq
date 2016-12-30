@@ -16,20 +16,11 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 public class SEBridge {
-
-    private volatile UserDevicePool devicePool;
     private static SEBridge instance = null;
-    protected static int MAX_PROCESS_NUM = 25;
 
     private static final Logger LOG = ZetaLogger.getLog(SEBridge.class.getSimpleName());
 
-    {
-        Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
-    }
-
     protected SEBridge() throws Exception {
-        this.devicePool = new UserDevicePool(CommonUtils.getBackendType(CommonUtils.class),
-                CommonUtils.getOtrOnly(CommonUtils.class), MAX_PROCESS_NUM);
     }
 
     public static synchronized SEBridge getInstance() {
@@ -222,18 +213,6 @@ public class SEBridge {
         this.getDevicePool().reset();
     }
 
-    private void shutdown() {
-        try {
-            getDevicePool().shutdown();
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-    }
-
-    private UserDevicePool getDevicePool() throws Exception {
-        return this.devicePool;
-    }
-
     private IDevice getOrAddDevice(ClientUser user) throws Exception {
         return getOrAddDevice(user, null);
     }
@@ -243,11 +222,5 @@ public class SEBridge {
             return getDevicePool().getOrAddRandomDevice(user);
         }
         return getDevicePool().getOrAddDevice(user, deviceName);
-    }
-
-    private static void verifyPathExists(String path) {
-        if (!new File(path).exists()) {
-            throw new IllegalArgumentException(String.format("The file %s is not accessible", path));
-        }
     }
 }
