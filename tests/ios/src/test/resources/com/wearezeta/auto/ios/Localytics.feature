@@ -75,7 +75,7 @@ Feature: Localytics
     And I wait for 5 seconds
     And I tap file transfer menu item <ItemName>
     And I wait for 7 seconds
-    Then I see "media.completed_media_action" event with {"action": "file", "conversation_type": "one_to_one", "with_bot": "false"} attributes is sent to Localytics at least 1 time
+    Then I see "media.completed_media_action" event with {"action": "file_transfer", "conversation_type": "one_to_one", "with_bot": "false"} attributes is sent to Localytics at least 1 time
     When I tap Share Location button from input tools
     And I accept alert if visible
     And I wait for 5 seconds
