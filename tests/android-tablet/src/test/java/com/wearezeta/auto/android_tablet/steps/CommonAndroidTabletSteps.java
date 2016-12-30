@@ -18,7 +18,7 @@ import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.Timedelta;
-import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
+import com.wearezeta.auto.common.wire_actors.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;

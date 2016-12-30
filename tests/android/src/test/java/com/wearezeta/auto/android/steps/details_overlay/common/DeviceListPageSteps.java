@@ -6,7 +6,7 @@ import com.wearezeta.auto.android.pages.details_overlay.common.DeviceListPage;
 import com.wearezeta.auto.android.steps.AndroidPagesCollection;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.misc.Timedelta;
-import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
+import com.wearezeta.auto.common.wire_actors.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;

@@ -519,8 +519,8 @@ public class CommonUtils {
         return getValueFromConfig(cls, "appName");
     }
 
-    public static int getCachedOtrDevicesCount(Class<?> cls) throws Exception {
-        return Integer.parseInt(getValueFromCommonConfig(cls, "cachedOtrDevicesCount"));
+    public static String getActorsServerUrl(Class<?> cls) throws Exception {
+        return getValueFromCommonConfig(cls, "actorsServerUrl");
     }
 
     public static final int SCREENSHOT_TIMEOUT_SECONDS = 5;

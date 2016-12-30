@@ -1,4 +1,4 @@
-package com.wearezeta.auto.common.sync_engine_bridge;
+package com.wearezeta.auto.common.wire_actors;
 
 public final class Constants {
     public static final int DEFAULT_GMAP_ZOOM_LEVEL = 7;

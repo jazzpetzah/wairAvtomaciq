@@ -1,9 +1,10 @@
 package com.wearezeta.auto.common.calling2.v1.model;
 
-import com.drew.lang.annotations.Nullable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import javax.annotation.Nullable;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Call {

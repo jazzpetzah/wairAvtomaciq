@@ -6,7 +6,7 @@ import com.wearezeta.auto.common.CommonCallingSteps2;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
+import com.wearezeta.auto.common.wire_actors.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import java.util.concurrent.ExecutionException;

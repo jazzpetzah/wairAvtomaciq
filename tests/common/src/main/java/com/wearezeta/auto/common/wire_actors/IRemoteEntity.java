@@ -1,4 +1,4 @@
-package com.wearezeta.auto.common.sync_engine_bridge;
+package com.wearezeta.auto.common.wire_actors;
 
 import akka.actor.ActorRef;
 
