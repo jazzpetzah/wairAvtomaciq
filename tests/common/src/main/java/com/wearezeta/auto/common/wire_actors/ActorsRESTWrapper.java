@@ -24,41 +24,41 @@ public class ActorsRESTWrapper {
         return false;
     }
 
-    public static String createDevice(Optional<String> name) throws Exception {
+    static String createDevice(Optional<String> name) throws Exception {
         final JSONObject response = ActorsREST.createDevice(name);
         return response.getString("uuid");
     }
 
-    public static void removeDevice(String uuid) throws Exception {
+    static void removeDevice(String uuid) throws Exception {
         ActorsREST.removeDevice(uuid);
     }
 
-    public static String loginToDevice(String uuid, ClientUser user) throws Exception {
+    static String loginToDevice(String uuid, ClientUser user) throws Exception {
         final JSONObject response = ActorsREST.loginToDevice(uuid, user.getEmail(), user.getPassword());
         return response.getString("uuid");
     }
 
-    public static String getDeviceFingerprint(String uuid) throws Exception {
+    static String getDeviceFingerprint(String uuid) throws Exception {
         final JSONObject response = ActorsREST.getDeviceFingerprint(uuid);
         return response.getString("fingerprint");
     }
 
-    public static String getDeviceId(String uuid) throws Exception {
+    static String getDeviceId(String uuid) throws Exception {
         final JSONObject response = ActorsREST.getDeviceId(uuid);
         return response.getString("deviceId");
     }
 
-    public static String getUniqueUsername(String uuid) throws Exception {
+    static String getUniqueUsername(String uuid) throws Exception {
         final JSONObject response = ActorsREST.getUniqueUsername(uuid);
         return response.getJSONObject("user").getString("uniqueName");
     }
 
-    public static String setUniqueUsername(String uuid, String newUsername) throws Exception {
+    static String setUniqueUsername(String uuid, String newUsername) throws Exception {
         final JSONObject response = ActorsREST.setUniqueUsername(uuid, newUsername);
         return response.getString("uuid");
     }
 
-    public static String setDeviceLabel(String uuid, String newLabel) throws Exception {
+    static String setDeviceLabel(String uuid, String newLabel) throws Exception {
         final JSONObject response = ActorsREST.setDeviceLabel(uuid, newLabel);
         return response.getString("uuid");
     }
@@ -77,17 +77,17 @@ public class ActorsRESTWrapper {
         }
     }
 
-    public static String setDeviceAssetsVersion(String uuid, AssetsVersion newVersion) throws Exception {
+    static String setDeviceAssetsVersion(String uuid, AssetsVersion newVersion) throws Exception {
         final JSONObject response = ActorsREST.setDeviceAssetsVersion(uuid, newVersion.stringRepresentation());
         return response.getString("uuid");
     }
 
-    public static String sendMessage(String uuid, String convoId, String message) throws Exception {
+    static String sendMessage(String uuid, String convoId, String message) throws Exception {
         final JSONObject response = ActorsREST.sendMessage(uuid, convoId, message);
         return response.getString("uuid");
     }
 
-    public static String sendGiphy(String uuid, String convoId, String giphyTag) throws Exception {
+    static String sendGiphy(String uuid, String convoId, String giphyTag) throws Exception {
         final JSONObject response = ActorsREST.sendGiphy(uuid, convoId, giphyTag);
         return response.getString("uuid");
     }
@@ -122,13 +122,13 @@ public class ActorsRESTWrapper {
         }
     }
 
-    public static String sendLocation(String uuid, String convoId, LocationInfo locationInfo) throws Exception {
+    static String sendLocation(String uuid, String convoId, LocationInfo locationInfo) throws Exception {
         final JSONObject response = ActorsREST.sendLocation(uuid, convoId, locationInfo.getLon(),
                 locationInfo.getLat(), locationInfo.getAddress(), locationInfo.getZoom());
         return response.getString("uuid");
     }
 
-    public static String sendLocation(String uuid, String convoId) throws Exception {
+    static String sendLocation(String uuid, String convoId) throws Exception {
         final JSONObject response = ActorsREST.sendLocation(uuid, convoId);
         return response.getString("uuid");
     }
@@ -144,78 +144,78 @@ public class ActorsRESTWrapper {
         return Base64.encodeBase64String(asBytes);
     }
 
-    public static String sendImage(String uuid, String convoId, File image) throws Exception {
+    static String sendImage(String uuid, String convoId, File image) throws Exception {
         final JSONObject response = ActorsREST.sendImage(uuid, convoId, fileToBase64String(image), image.getName());
         return response.getString("uuid");
     }
 
-    public static String sendFile(String uuid, String convoId, File file, String mimeType) throws Exception {
+    static String sendFile(String uuid, String convoId, File file, String mimeType) throws Exception {
         final JSONObject response = ActorsREST.sendFile(uuid, convoId, fileToBase64String(file),
                 mimeType, file.getName());
         return response.getString("uuid");
     }
 
-    public static String sendPing(String uuid, String convoId) throws Exception {
+    static String sendPing(String uuid, String convoId) throws Exception {
         final JSONObject response = ActorsREST.sendPing(uuid, convoId);
         return response.getString("uuid");
     }
 
-    public static String sendTyping(String uuid, String convoId) throws Exception {
+    static String sendTyping(String uuid, String convoId) throws Exception {
         final JSONObject response = ActorsREST.sendTyping(uuid, convoId);
         return response.getString("uuid");
     }
 
-    public static String clearConversation(String uuid, String convoId) throws Exception {
+    static String clearConversation(String uuid, String convoId) throws Exception {
         final JSONObject response = ActorsREST.clearConversation(uuid, convoId);
         return response.getString("uuid");
     }
 
-    public static String muteConversation(String uuid, String convoId) throws Exception {
+    static String muteConversation(String uuid, String convoId) throws Exception {
         final JSONObject response = ActorsREST.muteConversation(uuid, convoId);
         return response.getString("uuid");
     }
 
-    public static String unmuteConversation(String uuid, String convoId) throws Exception {
+    static String unmuteConversation(String uuid, String convoId) throws Exception {
         final JSONObject response = ActorsREST.unmuteConversation(uuid, convoId);
         return response.getString("uuid");
     }
 
-    public static String archiveConversation(String uuid, String convoId) throws Exception {
+    static String archiveConversation(String uuid, String convoId) throws Exception {
         final JSONObject response = ActorsREST.archiveConversation(uuid, convoId);
         return response.getString("uuid");
     }
 
-    public static String unarchiveConversation(String uuid, String convoId) throws Exception {
+    static String unarchiveConversation(String uuid, String convoId) throws Exception {
         final JSONObject response = ActorsREST.unarchiveConversation(uuid, convoId);
         return response.getString("uuid");
     }
 
-    public static String setEphemeralTimeout(String uuid, String convoId, Timedelta timeout) throws Exception {
+    static String setEphemeralTimeout(String uuid, String convoId, Timedelta timeout) throws Exception {
         final JSONObject response = ActorsREST.setEpehemeralTimeout(uuid, convoId, timeout);
         return response.getString("uuid");
     }
 
-    public static String readEphemeralMessage(String uuid, String convoId, String msgId) throws Exception {
+    static String readEphemeralMessage(String uuid, String convoId, String msgId) throws Exception {
         final JSONObject response = ActorsREST.readEphemeralMessage(uuid, convoId, msgId);
         return response.getString("uuid");
     }
 
-    public static String cancelConnection(String uuid, String connId) throws Exception {
+    static String cancelConnection(String uuid, String connId) throws Exception {
         final JSONObject response = ActorsREST.cancelConnection(uuid, connId);
         return response.getString("uuid");
     }
 
-    public static String deleteMessage(String uuid, String convId, String msgId) throws Exception {
+    static String deleteMessage(String uuid, String convId, String msgId) throws Exception {
         final JSONObject response = ActorsREST.deleteMessage(uuid, convId, msgId);
         return response.getString("uuid");
     }
 
-    public static String deleteMessageEverywhere(String uuid, String convId, String msgId) throws Exception {
+    static String deleteMessageEverywhere(String uuid, String convId, String msgId) throws Exception {
         final JSONObject response = ActorsREST.deleteMessageEverywhere(uuid, convId, msgId);
         return response.getString("uuid");
     }
 
-    public static String updateMessage(String uuid, String msgId, String newMessage) throws Exception {
+    static String updateMessage(String uuid, String msgId, String newMessage) throws Exception {
         final JSONObject response = ActorsREST.updateMessage(uuid, msgId, newMessage);
         return response.getString("uuid");
     }
@@ -224,15 +224,38 @@ public class ActorsRESTWrapper {
         LIKE, UNLIKE
     }
 
-    public static String reactMessage(String uuid, String convId, String msgId, MessageReaction reaction)
+    static String reactMessage(String uuid, String convId, String msgId, MessageReaction reaction)
             throws Exception {
         final JSONObject response = ActorsREST.reactMessage(uuid, convId, msgId, reaction.name());
         return response.getString("uuid");
     }
 
-    // TODO: Add types from SE
     public enum MessageType {
-
+        TEXT,
+        TEXT_EMOJI_ONLY,
+        ASSET,
+        ANY_ASSET,
+        VIDEO_ASSET,
+        AUDIO_ASSET,
+        KNOCK,
+        MEMBER_JOIN,
+        MEMBER_LEAVE,
+        CONNECT_REQUEST,
+        CONNECT_ACCEPTED,
+        RENAME,
+        MISSED_CALL,
+        INCOMING_CALL,
+        RICH_MEDIA,
+        OTR_ERROR,
+        OTR_IDENTITY_CHANGED,
+        OTR_VERIFIED,
+        OTR_UNVERIFIED,
+        OTR_DEVICE_ADDED,
+        STARTED_USING_DEVICE,
+        HISTORY_LOST,
+        LOCATION,
+        UNKNOWN,
+        RECALLED
     }
 
     public static class MessageInfo {
@@ -259,7 +282,7 @@ public class ActorsRESTWrapper {
         }
     }
 
-    public static List<MessageInfo> getMessagesInfo(String uuid, String convId) throws Exception {
+    static List<MessageInfo> getMessagesInfo(String uuid, String convId) throws Exception {
         final List<MessageInfo> result = new ArrayList<>();
         final JSONObject response = ActorsREST.getMessagesInfo(uuid, convId);
         final JSONArray allConversations = response.getJSONArray("conversations");

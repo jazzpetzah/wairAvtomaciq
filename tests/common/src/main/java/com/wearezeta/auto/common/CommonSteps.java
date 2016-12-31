@@ -942,7 +942,8 @@ public final class CommonSteps {
         SEBridge.getInstance().setEphemeralMode(msgFromUser, dstConvId, expirationMilliseconds, deviceName);
     }
 
-    public void UserSetAssetMode(String actorUserNameAlias, AssetProtocol asset, String deviceName) throws Exception {
+    public void UserSetAssetMode(String actorUserNameAlias, ActorsRESTWrapper.AssetsVersion asset, String deviceName)
+            throws Exception {
         final ClientUser actorUser = usrMgr.findUserByNameOrNameAlias(actorUserNameAlias);
         switch (asset) {
             case V3:
@@ -1037,7 +1038,7 @@ public final class CommonSteps {
                 !actualMessageId.isPresent());
     }
 
-    private MessageId getFilteredLastMessageId(List<ActorsRESTWrapper.MessageInfo> messageInfos) throws Exception {
+    private String getFilteredLastMessageId(List<ActorsRESTWrapper.MessageInfo> messageInfos) throws Exception {
         for (int i = messageInfos.length - 1; i >= 0; i--) {
             if (!messageInfos[i].tpe().equals(Message.Type.UNKNOWN)) {
                 return messageInfos[i].id();
@@ -1046,7 +1047,7 @@ public final class CommonSteps {
         throw new Exception("Could not find any valid message");
     }
 
-    private MessageId getFilteredSecondLastMessageId(List<ActorsRESTWrapper.MessageInfo> messageInfos) throws Exception {
+    private String getFilteredSecondLastMessageId(List<ActorsRESTWrapper.MessageInfo> messageInfos) throws Exception {
         MessageId latestMessage = null;
         for (int i = messageInfos.length - 1; i >= 0; i--) {
             if (!messageInfos[i].tpe().equals(Message.Type.UNKNOWN)) {

@@ -7,7 +7,6 @@ import com.wearezeta.auto.common.rest.CommonRESTHandlers;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.ws.rs.client.Client;
@@ -25,7 +24,7 @@ class ActorsREST {
     private static final CommonRESTHandlers restHandlers = new CommonRESTHandlers(
             ActorsREST::verifyRequestResult, 1);
 
-    public static String getBaseURI() throws Exception {
+    static String getBaseURI() throws Exception {
         return CommonUtils.getActorsServerUrl(ActorsREST.class);
     }
 
@@ -58,7 +57,7 @@ class ActorsREST {
         return new JSONObject(output);
     }
 
-    public static JSONObject createDevice(Optional<String> name) throws Exception {
+    static JSONObject createDevice(Optional<String> name) throws Exception {
         final Invocation.Builder webResource = buildRequest("devices/create");
         final JSONObject requestBody = new JSONObject();
         name.ifPresent(x -> requestBody.put("name", x));
@@ -66,12 +65,12 @@ class ActorsREST {
         return new JSONObject(output);
     }
 
-    public static void removeDevice(String uuid) throws Exception {
+    static void removeDevice(String uuid) throws Exception {
         final Invocation.Builder webResource = buildRequest(String.format("devices/%s", uuid));
         restHandlers.httpDelete(webResource, new int[]{HttpStatus.SC_OK});
     }
 
-    public static JSONObject loginToDevice(String uuid, String email, String password) throws Exception {
+    static JSONObject loginToDevice(String uuid, String email, String password) throws Exception {
         final Invocation.Builder webResource = buildRequest(String.format("devices/%s/login", uuid));
         final JSONObject requestBody = new JSONObject();
         requestBody.put("email", email);
@@ -80,7 +79,7 @@ class ActorsREST {
         return new JSONObject(output);
     }
 
-    public static JSONObject getDeviceFingerprint(String uuid) throws Exception {
+    static JSONObject getDeviceFingerprint(String uuid) throws Exception {
         final Invocation.Builder webResource = buildRequest(String.format("devices/%s/fingerprint", uuid));
         final String output = restHandlers.httpGet(webResource, new int[]{HttpStatus.SC_OK});
         return new JSONObject(output);
@@ -98,7 +97,7 @@ class ActorsREST {
         return new JSONObject(output);
     }
 
-    public static JSONObject setUniqueUsername(String uuid, String newUsername) throws Exception {
+    static JSONObject setUniqueUsername(String uuid, String newUsername) throws Exception {
         final Invocation.Builder webResource = buildRequest(String.format("devices/%s/user/uniqueName", uuid));
         final JSONObject requestBody = new JSONObject();
         requestBody.put("uniqueName", newUsername);
@@ -106,7 +105,7 @@ class ActorsREST {
         return new JSONObject(output);
     }
 
-    public static JSONObject setDeviceLabel(String uuid, String newLabel) throws Exception {
+    static JSONObject setDeviceLabel(String uuid, String newLabel) throws Exception {
         final Invocation.Builder webResource = buildRequest(String.format("devices/%s/label", uuid));
         final JSONObject requestBody = new JSONObject();
         requestBody.put("label", newLabel);
@@ -114,7 +113,7 @@ class ActorsREST {
         return new JSONObject(output);
     }
 
-    public static JSONObject setDeviceAssetsVersion(String uuid, String newVersion) throws Exception {
+    static JSONObject setDeviceAssetsVersion(String uuid, String newVersion) throws Exception {
         final Invocation.Builder webResource = buildRequest(String.format("devices/%s/assets/version", uuid));
         final JSONObject requestBody = new JSONObject();
         requestBody.put("version", newVersion);
@@ -122,7 +121,7 @@ class ActorsREST {
         return new JSONObject(output);
     }
 
-    public static JSONObject sendMessage(String uuid, String convoId, String message) throws Exception {
+    static JSONObject sendMessage(String uuid, String convoId, String message) throws Exception {
         final Invocation.Builder webResource = buildRequest(String.format("devices/%s/conversations/%s/send/message",
                 uuid, convoId));
         final JSONObject requestBody = new JSONObject();
@@ -131,7 +130,7 @@ class ActorsREST {
         return new JSONObject(output);
     }
 
-    public static JSONObject sendGiphy(String uuid, String convoId, String giphyTag) throws Exception {
+    static JSONObject sendGiphy(String uuid, String convoId, String giphyTag) throws Exception {
         final Invocation.Builder webResource = buildRequest(String.format("devices/%s/conversations/%s/send/giphy",
                 uuid, convoId));
         final JSONObject requestBody = new JSONObject();
@@ -140,8 +139,8 @@ class ActorsREST {
         return new JSONObject(output);
     }
 
-    public static JSONObject sendLocation(String uuid, String convoId,
-                                          float lon, float lat, String address, int zoom) throws Exception {
+    static JSONObject sendLocation(String uuid, String convoId,
+                                   float lon, float lat, String address, int zoom) throws Exception {
         final Invocation.Builder webResource = buildRequest(String.format("devices/%s/conversations/%s/send/location",
                 uuid, convoId));
         final JSONObject requestBody = new JSONObject();
@@ -153,14 +152,14 @@ class ActorsREST {
         return new JSONObject(output);
     }
 
-    public static JSONObject sendLocation(String uuid, String convoId) throws Exception {
+    static JSONObject sendLocation(String uuid, String convoId) throws Exception {
         final Invocation.Builder webResource = buildRequest(String.format("devices/%s/conversations/%s/send/location",
                 uuid, convoId));
         final String output = restHandlers.httpPost(webResource, EMPTY_BODY, new int[]{HttpStatus.SC_OK});
         return new JSONObject(output);
     }
 
-    public static JSONObject sendImage(String uuid, String convoId, String base64Content, String fileName)
+    static JSONObject sendImage(String uuid, String convoId, String base64Content, String fileName)
             throws Exception {
         final Invocation.Builder webResource = buildRequest(String.format("devices/%s/conversations/%s/send/image",
                 uuid, convoId));
@@ -171,8 +170,8 @@ class ActorsREST {
         return new JSONObject(output);
     }
 
-    public static JSONObject sendFile(String uuid, String convoId, String base64Content,
-                                      String mimeType, String fileName) throws Exception {
+    static JSONObject sendFile(String uuid, String convoId, String base64Content,
+                               String mimeType, String fileName) throws Exception {
         final Invocation.Builder webResource = buildRequest(String.format("devices/%s/conversations/%s/send/file",
                 uuid, convoId));
         final JSONObject requestBody = new JSONObject();
@@ -183,56 +182,56 @@ class ActorsREST {
         return new JSONObject(output);
     }
 
-    public static JSONObject sendPing(String uuid, String convoId) throws Exception {
+    static JSONObject sendPing(String uuid, String convoId) throws Exception {
         final Invocation.Builder webResource = buildRequest(String.format("devices/%s/conversations/%s/send/ping",
                 uuid, convoId));
         final String output = restHandlers.httpPost(webResource, EMPTY_BODY, new int[]{HttpStatus.SC_OK});
         return new JSONObject(output);
     }
 
-    public static JSONObject sendTyping(String uuid, String convoId) throws Exception {
+    static JSONObject sendTyping(String uuid, String convoId) throws Exception {
         final Invocation.Builder webResource = buildRequest(String.format("devices/%s/conversations/%s/send/typing",
                 uuid, convoId));
         final String output = restHandlers.httpPost(webResource, EMPTY_BODY, new int[]{HttpStatus.SC_OK});
         return new JSONObject(output);
     }
 
-    public static JSONObject clearConversation(String uuid, String convoId) throws Exception {
+    static JSONObject clearConversation(String uuid, String convoId) throws Exception {
         final Invocation.Builder webResource = buildRequest(String.format("devices/%s/conversations/%s/clear",
                 uuid, convoId));
         final String output = restHandlers.httpPost(webResource, EMPTY_BODY, new int[]{HttpStatus.SC_OK});
         return new JSONObject(output);
     }
 
-    public static JSONObject muteConversation(String uuid, String convoId) throws Exception {
+    static JSONObject muteConversation(String uuid, String convoId) throws Exception {
         final Invocation.Builder webResource = buildRequest(String.format("devices/%s/conversations/%s/mute",
                 uuid, convoId));
         final String output = restHandlers.httpPost(webResource, EMPTY_BODY, new int[]{HttpStatus.SC_OK});
         return new JSONObject(output);
     }
 
-    public static JSONObject unmuteConversation(String uuid, String convoId) throws Exception {
+    static JSONObject unmuteConversation(String uuid, String convoId) throws Exception {
         final Invocation.Builder webResource = buildRequest(String.format("devices/%s/conversations/%s/unmute",
                 uuid, convoId));
         final String output = restHandlers.httpPost(webResource, EMPTY_BODY, new int[]{HttpStatus.SC_OK});
         return new JSONObject(output);
     }
 
-    public static JSONObject archiveConversation(String uuid, String convoId) throws Exception {
+    static JSONObject archiveConversation(String uuid, String convoId) throws Exception {
         final Invocation.Builder webResource = buildRequest(String.format("devices/%s/conversations/%s/archive",
                 uuid, convoId));
         final String output = restHandlers.httpPost(webResource, EMPTY_BODY, new int[]{HttpStatus.SC_OK});
         return new JSONObject(output);
     }
 
-    public static JSONObject unarchiveConversation(String uuid, String convoId) throws Exception {
+    static JSONObject unarchiveConversation(String uuid, String convoId) throws Exception {
         final Invocation.Builder webResource = buildRequest(String.format("devices/%s/conversations/%s/unarchive",
                 uuid, convoId));
         final String output = restHandlers.httpPost(webResource, EMPTY_BODY, new int[]{HttpStatus.SC_OK});
         return new JSONObject(output);
     }
 
-    public static JSONObject setEpehemeralTimeout(String uuid, String convoId, Timedelta timeout) throws Exception {
+    static JSONObject setEpehemeralTimeout(String uuid, String convoId, Timedelta timeout) throws Exception {
         final Invocation.Builder webResource = buildRequest(String.format("devices/%s/conversations/%s/unarchive",
                 uuid, convoId));
         final JSONObject requestBody = new JSONObject();
@@ -241,14 +240,14 @@ class ActorsREST {
         return new JSONObject(output);
     }
 
-    public static JSONObject cancelConnection(String uuid, String connId) throws Exception {
+    static JSONObject cancelConnection(String uuid, String connId) throws Exception {
         final Invocation.Builder webResource = buildRequest(String.format("devices/%s/connections/%s/cancel",
                 uuid, connId));
         final String output = restHandlers.httpPost(webResource, EMPTY_BODY, new int[]{HttpStatus.SC_OK});
         return new JSONObject(output);
     }
 
-    public static JSONObject deleteMessage(String uuid, String convId, String msgId) throws Exception {
+    static JSONObject deleteMessage(String uuid, String convId, String msgId) throws Exception {
         final Invocation.Builder webResource = buildRequest(
                 String.format("devices/%s/conversations/%s/messages/%s/delete", uuid, convId, msgId)
         );
@@ -256,7 +255,7 @@ class ActorsREST {
         return new JSONObject(output);
     }
 
-    public static JSONObject deleteMessageEverywhere(String uuid, String convId, String msgId) throws Exception {
+    static JSONObject deleteMessageEverywhere(String uuid, String convId, String msgId) throws Exception {
         final Invocation.Builder webResource = buildRequest(
                 String.format("devices/%s/conversations/%s/messages/%s/deleteEverywhere", uuid, convId, msgId)
         );
@@ -264,8 +263,7 @@ class ActorsREST {
         return new JSONObject(output);
     }
 
-    public static JSONObject updateMessage(String uuid, String msgId, String newMessage)
-            throws Exception {
+    static JSONObject updateMessage(String uuid, String msgId, String newMessage) throws Exception {
         final Invocation.Builder webResource = buildRequest(
                 String.format("devices/%s/conversations/0/messages/%s/update", uuid, msgId)
         );
@@ -275,7 +273,7 @@ class ActorsREST {
         return new JSONObject(output);
     }
 
-    public static JSONObject readEphemeralMessage(String uuid, String convId, String msgId) throws Exception {
+    static JSONObject readEphemeralMessage(String uuid, String convId, String msgId) throws Exception {
         final Invocation.Builder webResource = buildRequest(
                 String.format("devices/%s/conversations/%s/messages/%s/readEphemeral", uuid, convId, msgId)
         );
@@ -283,7 +281,7 @@ class ActorsREST {
         return new JSONObject(output);
     }
 
-    public static JSONObject reactMessage(String uuid, String convId, String msgId, String reaction) throws Exception {
+    static JSONObject reactMessage(String uuid, String convId, String msgId, String reaction) throws Exception {
         final Invocation.Builder webResource = buildRequest(
                 String.format("devices/%s/conversations/%s/messages/%s/react", uuid, convId, msgId)
         );
@@ -293,9 +291,9 @@ class ActorsREST {
         return new JSONObject(output);
     }
 
-    public static JSONObject getMessagesInfo(String uuid, String convId) throws Exception {
+    static JSONObject getMessagesInfo(String uuid, String convId) throws Exception {
         final Invocation.Builder webResource = buildRequest(
-                String.format("devices/%s/conversations/%s/messagesInfo", uuid, convId)
+                String.format("devices/%s/conversations/%s/messages/info", uuid, convId)
         );
         final String output = restHandlers.httpGet(webResource, new int[]{HttpStatus.SC_OK});
         return new JSONObject(output);
