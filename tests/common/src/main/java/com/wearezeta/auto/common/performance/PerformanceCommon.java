@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.wearezeta.auto.common.wire_actors.SEBridge;
 import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -37,7 +38,8 @@ public final class PerformanceCommon {
         return instance;
     }
 
-    public void sendMultipleMessagesIntoConversation(String convoName, int msgsCount) throws Exception {
+    public void sendMultipleMessagesIntoConversation(SEBridge seBridge, String convoName, int msgsCount)
+            throws Exception {
         convoName = usrMgr.replaceAliasesOccurences(convoName, ClientUsersManager.FindBy.NAME_ALIAS);
         final String convo_id = BackendAPIWrappers.getConversationIdByName(usrMgr.getSelfUserOrThrowError(), convoName);
         final List<String> msgsToSend = new ArrayList<>();
@@ -45,7 +47,7 @@ public final class PerformanceCommon {
             msgsToSend.add(CommonUtils.generateGUID());
         }
         BackendAPIWrappers.sendConversationMessagesOtr(usrMgr.findUserByNameOrNameAlias(convoName),
-                convo_id, msgsToSend);
+                convo_id, msgsToSend, seBridge);
     }
 
     public interface PerformanceLoop {

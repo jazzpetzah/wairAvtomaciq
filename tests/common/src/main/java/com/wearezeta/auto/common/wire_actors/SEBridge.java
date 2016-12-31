@@ -1,226 +1,327 @@
 package com.wearezeta.auto.common.wire_actors;
 
 import com.google.common.base.Throwables;
-import com.waz.model.MessageId;
-import com.waz.model.UserId;
-import com.waz.provision.ActorMessage;
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.Semaphore;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 
 public class SEBridge {
-    private static SEBridge instance = null;
-
     private static final Logger LOG = ZetaLogger.getLog(SEBridge.class.getSimpleName());
 
-    protected SEBridge() throws Exception {
-    }
+    private static class Device {
+        private String uuid;
+        private Optional<String> name = Optional.empty();
+        private Optional<ClientUser> owner = Optional.empty();
 
-    public static synchronized SEBridge getInstance() {
-        if (instance == null) {
-            try {
-                instance = new SEBridge();
-            } catch (Exception e) {
-                Throwables.propagate(e);
-            }
+        public Device(String uuid, String name) {
+            this.uuid = uuid;
+            this.name = Optional.of(name);
         }
-        return instance;
+
+        public Device(String uuid) {
+            this.uuid = uuid;
+        }
+
+        public String getUUID() {
+            return uuid;
+        }
+
+        public Optional<String> getName() {
+            return name;
+        }
+
+        public void setOwner(ClientUser owner) {
+            this.owner = Optional.of(owner);
+        }
+
+        public Optional<ClientUser> getOwner() {
+            return this.owner;
+        }
+
+        public void setName(String name) {
+            this.name = Optional.of(name);
+        }
     }
 
-    public List<String> getDeviceIds(ClientUser user) throws Exception {
-        List<IDevice> devices = getDevicePool().getDevices(user);
-        List<String> ids = new ArrayList<>();
-        for (IDevice device : devices) {
-            try {
-                ids.add(device.getId());
-            } catch (Exception e) {
-                LOG.error(String.format("Could not get ID from device of user '%s'", user.getName()), e);
-            }
+    private List<Device> registeredDevices = new ArrayList<>();
+    private Semaphore devicesGuard = new Semaphore(1);
+
+    public SEBridge() throws Exception {
+        Runtime.getRuntime().addShutdownHook(new Thread(this::reset));
+    }
+
+    private List<Device> getDevicesOwnedBy(ClientUser owner) throws InterruptedException {
+        return getDevicesOwnedBy(owner, Optional.empty());
+    }
+
+    private Device getDeviceOwnedBy(ClientUser owner, String name) throws InterruptedException {
+        final List<Device> devices = getDevicesOwnedBy(owner, Optional.empty());
+        if (devices.isEmpty()) {
+            throw new IllegalStateException(String.format("There is no device '%s' owned by user '%s'",
+                    name, owner.getName()));
+        }
+        return devices.get(0);
+    }
+
+    private List<Device> getDevicesOwnedBy(ClientUser owner, Optional<String> byName) throws InterruptedException {
+        devicesGuard.acquire();
+        try {
+            final List<Device> ownedDevices = registeredDevices.stream()
+                    .filter(x -> x.getOwner().isPresent()
+                            && x.getOwner().get().getEmail().equals(owner.getEmail()))
+                    .collect(Collectors.toList());
+            return byName.map(s -> ownedDevices.stream()
+                    .filter(x -> x.getName().isPresent() && x.getName().get().equals(s))
+                    .collect(Collectors.toList()))
+                    .orElse(ownedDevices);
+        } finally {
+            devicesGuard.release();
+        }
+    }
+
+    private Device fetchDeviceOwnedBy(ClientUser owner) throws Exception {
+        return fetchDeviceOwnedBy(owner, Optional.empty());
+    }
+
+    /**
+     * This function fetches the first existing device, which is registered
+     * for the current user or creates a new one and returns in case it has not been created yet
+     *
+     * @param owner
+     * @param name
+     * @return
+     * @throws InterruptedException
+     */
+    private Device fetchDeviceOwnedBy(ClientUser owner, Optional<String> name) throws Exception {
+        final List<Device> existingDevices = getDevicesOwnedBy(owner, name);
+        if (!existingDevices.isEmpty()) {
+            return existingDevices.get(0);
+        }
+        final String uuid = ActorsRESTWrapper.createDevice(name);
+        ActorsRESTWrapper.loginToDevice(uuid, owner);
+        final Device newDevice = new Device(uuid);
+        name.ifPresent(newDevice::setName);
+        newDevice.setOwner(owner);
+        devicesGuard.acquire();
+        try {
+            registeredDevices.add(newDevice);
+        } finally {
+            devicesGuard.release();
+        }
+        return newDevice;
+    }
+
+    public List<String> getDeviceIds(ClientUser owner) throws Exception {
+        final List<Device> devices = getDevicesOwnedBy(owner);
+        final List<String> ids = new ArrayList<>();
+        for (Device device : devices) {
+            ids.add(ActorsRESTWrapper.getDeviceId(device.getUUID()));
         }
         return ids;
     }
 
-    public String getDeviceId(ClientUser user, String deviceName) throws Exception {
-        return getDevicePool().getDevice(user, deviceName).orElseThrow(() ->
-                new IllegalStateException(String.format("There is no device '%s' owned by user '%s'", deviceName,
-                        user.getName()))
-        ).getId();
+    public String getDeviceId(ClientUser owner, String deviceName) throws Exception {
+        return ActorsRESTWrapper.getDeviceId(getDeviceOwnedBy(owner, deviceName).getUUID());
     }
 
-    public String getDeviceFingerprint(ClientUser user, String deviceName) throws Exception {
-        return getDevicePool().getDevice(user, deviceName).orElseThrow(() ->
-                new IllegalStateException(String.format("There is no device '%s' owned by user '%s'", deviceName,
-                        user.getName()))
-        ).getFingerprint();
+    public String getDeviceFingerprint(ClientUser owner, String deviceName) throws Exception {
+        return ActorsRESTWrapper.getDeviceFingerprint(getDeviceOwnedBy(owner, deviceName).getUUID());
     }
 
     public void sendConversationMessage(ClientUser userFrom, String convId, String message) throws Exception {
-        getOrAddDevice(userFrom).sendMessage(convId, message);
+        ActorsRESTWrapper.sendMessage(fetchDeviceOwnedBy(userFrom).getUUID(), convId, message);
     }
 
     public void sendConversationMessage(ClientUser userFrom, String convId, String message, String deviceName) throws
             Exception {
-        getOrAddDevice(userFrom, deviceName).sendMessage(convId, message);
+        final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
+        ActorsRESTWrapper.sendMessage(dstDevice.getUUID(), convId, message);
     }
 
-    public void addRemoteDeviceToAccount(ClientUser user, String deviceName, String label) throws Exception {
-        IDevice dstDevice = this.getDevicePool().addDevice(user, deviceName);
+    public void addRemoteDeviceToAccount(ClientUser userFrom, String deviceName, String label) throws Exception {
+        final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
         LOG.info("Set label for device " + deviceName + " to " + label);
-        dstDevice.setLabel(label);
+        ActorsRESTWrapper.setDeviceLabel(dstDevice.getUUID(), label);
     }
 
     public void sendImage(ClientUser userFrom, String convId, String path) throws Exception {
-        verifyPathExists(path);
-        getOrAddDevice(userFrom).sendImage(convId, path);
+        final Device dstDevice = fetchDeviceOwnedBy(userFrom);
+        ActorsRESTWrapper.sendImage(dstDevice.getUUID(), convId, new File(path));
     }
 
     public void sendGiphy(ClientUser userFrom, String convId, String searchQuery, String deviceName) throws Exception {
-        getOrAddDevice(userFrom, deviceName).sendGiphy(convId, searchQuery);
+        final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
+        ActorsRESTWrapper.sendGiphy(dstDevice.getUUID(), convId, searchQuery);
     }
 
     public void sendPing(ClientUser userFrom, String convId) throws Exception {
-        getOrAddDevice(userFrom).sendPing(convId);
+        final Device dstDevice = fetchDeviceOwnedBy(userFrom);
+        ActorsRESTWrapper.sendPing(dstDevice.getUUID(), convId);
     }
 
     public void typing(ClientUser userFrom, String convId) throws Exception {
-        getOrAddDevice(userFrom).typing(convId);
+        final Device dstDevice = fetchDeviceOwnedBy(userFrom);
+        ActorsRESTWrapper.sendTyping(dstDevice.getUUID(), convId);
     }
 
     public void clearConversation(ClientUser userFrom, String convId, String deviceName) throws Exception {
-        getOrAddDevice(userFrom, deviceName).clearConversation(convId);
+        final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
+        ActorsRESTWrapper.clearConversation(dstDevice.getUUID(), convId);
     }
 
     public void muteConversation(ClientUser userFrom, String convId) throws Exception {
-        getOrAddDevice(userFrom).muteConversation(convId);
+        final Device dstDevice = fetchDeviceOwnedBy(userFrom);
+        ActorsRESTWrapper.muteConversation(dstDevice.getUUID(), convId);
     }
 
     public void muteConversation(ClientUser userFrom, String convId, String deviceName) throws Exception {
-        getOrAddDevice(userFrom, deviceName).muteConversation(convId);
+        final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
+        ActorsRESTWrapper.muteConversation(dstDevice.getUUID(), convId);
     }
 
     public void unmuteConversation(ClientUser userFrom, String convId) throws Exception {
-        getOrAddDevice(userFrom).unmuteConversation(convId);
+        final Device dstDevice = fetchDeviceOwnedBy(userFrom);
+        ActorsRESTWrapper.unmuteConversation(dstDevice.getUUID(), convId);
     }
 
     public void unmuteConversation(ClientUser userFrom, String convId, String deviceName) throws Exception {
-        getOrAddDevice(userFrom, deviceName).unmuteConversation(convId);
+        final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
+        ActorsRESTWrapper.unmuteConversation(dstDevice.getUUID(), convId);
     }
 
     public void archiveConversation(ClientUser userFrom, String convId) throws Exception {
-        getOrAddDevice(userFrom).archiveConversation(convId);
+        final Device dstDevice = fetchDeviceOwnedBy(userFrom);
+        ActorsRESTWrapper.archiveConversation(dstDevice.getUUID(), convId);
     }
 
     public void archiveConversation(ClientUser userFrom, String convId, String deviceName) throws Exception {
-        getOrAddDevice(userFrom, deviceName).archiveConversation(convId);
+        final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
+        ActorsRESTWrapper.archiveConversation(dstDevice.getUUID(), convId);
     }
 
     public void unarchiveConversation(ClientUser userFrom, String convId) throws Exception {
-        getOrAddDevice(userFrom).unarchiveConversation(convId);
+        final Device dstDevice = fetchDeviceOwnedBy(userFrom);
+        ActorsRESTWrapper.unarchiveConversation(dstDevice.getUUID(), convId);
     }
 
     public void unarchiveConversation(ClientUser userFrom, String convId, String deviceName) throws Exception {
-        getOrAddDevice(userFrom, deviceName).unarchiveConversation(convId);
+        final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
+        ActorsRESTWrapper.unarchiveConversation(dstDevice.getUUID(), convId);
     }
 
     public void sendFile(ClientUser userFrom, String convId, String path, String mime, String deviceName)
             throws Exception {
-        getOrAddDevice(userFrom, deviceName).sendFile(convId, path, mime);
+        final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
+        ActorsRESTWrapper.sendFile(dstDevice.getUUID(), convId, new File(path), mime);
     }
 
-    public void sendLocation(ClientUser userFrom, String deviceName, String convId, float longitude, float latitude, String
-            locationName, int zoom)
+    public void sendLocation(ClientUser userFrom, String deviceName, String convId, float longitude,
+                             float latitude, String locationName, int zoom) throws Exception {
+        final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
+        ActorsRESTWrapper.sendLocation(dstDevice.getUUID(), convId,
+                new ActorsRESTWrapper.LocationInfo(longitude, latitude, locationName, zoom)
+        );
+    }
+
+    public void deleteMessage(ClientUser userFrom, String convId, String messageId, String deviceName)
             throws Exception {
-        getOrAddDevice(userFrom, deviceName).shareLocation(convId, longitude, latitude, locationName, zoom);
+        final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
+        ActorsRESTWrapper.deleteMessage(dstDevice.getUUID(), convId, messageId);
     }
 
-    public void deleteMessage(ClientUser userFrom, String convId, MessageId messageId, String deviceName)
+    public void deleteMessageEverywhere(ClientUser userFrom, String convId, String messageId, String deviceName)
             throws Exception {
-        getOrAddDevice(userFrom, deviceName).deleteMessage(convId, messageId);
+        final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
+        ActorsRESTWrapper.deleteMessageEverywhere(dstDevice.getUUID(), convId, messageId);
     }
 
-    public void deleteMessageEverywhere(ClientUser userFrom, String convId, MessageId messageId, String deviceName)
+    public void updateMessage(ClientUser userFrom, String messageId, String newMessage, String deviceName)
             throws Exception {
-        getOrAddDevice(userFrom, deviceName).deleteMessageEveryWhere(convId, messageId);
+        final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
+        ActorsRESTWrapper.updateMessage(dstDevice.getUUID(), messageId, newMessage);
     }
 
-    public void updateMessage(ClientUser userFrom, MessageId messageId, String newMessage, String deviceName)
-            throws Exception {
-        getOrAddDevice(userFrom, deviceName).updateMessage(messageId, newMessage);
-    }
-
-    public void reactMessage(ClientUser userFrom, String convId, MessageId messageId,
-                             MessageReactionType reactionType, String deviceName) throws Exception {
-        getOrAddDevice(userFrom, deviceName).reactMessage(convId, messageId, reactionType);
+    public void reactMessage(ClientUser userFrom, String convId, String messageId,
+                             ActorsRESTWrapper.MessageReaction reactionType, String deviceName) throws Exception {
+        final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
+        ActorsRESTWrapper.reactMessage(dstDevice.getUUID(), convId, messageId, reactionType);
     }
 
     public void shareDefaultLocation(ClientUser userFrom, String convId, String deviceName) throws Exception {
-        getOrAddDevice(userFrom, deviceName).shareLocation(convId);
+        final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
+        ActorsRESTWrapper.sendLocation(dstDevice.getUUID(), convId);
     }
 
-    public void setEphemeralMode(ClientUser userFrom, String convId, long expirationMilliseconds, String deviceName)
+    public void setEphemeralMode(ClientUser userFrom, String convId, Timedelta expirationTimeout, String deviceName)
             throws Exception {
-        getOrAddDevice(userFrom, deviceName).setEphemeralMode(convId, expirationMilliseconds);
+        final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
+        ActorsRESTWrapper.setEphemeralTimeout(dstDevice.getUUID(), convId, expirationTimeout);
     }
 
-    public void markEphemeralRead(ClientUser userFrom, String convId, MessageId messageId, String deviceName)
+    public void markEphemeralRead(ClientUser userFrom, String convId, String messageId, String deviceName)
             throws Exception {
-        getOrAddDevice(userFrom, deviceName).markEphemeralRead(convId, messageId);
+        final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
+        ActorsRESTWrapper.readEphemeralMessage(dstDevice.getUUID(), convId, messageId);
     }
 
-    public ActorMessage.MessageInfo[] getConversationMessages(ClientUser userFrom, String convId, String deviceName)
-            throws Exception {
-        return getOrAddDevice(userFrom, deviceName).getConversationMessages(convId);
-    }
-
-    public void releaseDevicesOfUsers(Collection<ClientUser> users) throws Exception {
-        for (ClientUser user : users) {
-            getDevicePool().releaseDevices(getDevicePool().getDevices(user));
-        }
+    public List<ActorsRESTWrapper.MessageInfo> getConversationMessages(ClientUser userFrom, String convId,
+                                                                       String deviceName) throws Exception {
+        final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
+        return ActorsRESTWrapper.getMessagesInfo(dstDevice.getUUID(), convId);
     }
 
     public void setAssetToV3(ClientUser userFrom, String deviceName) throws Exception {
-        getOrAddDevice(userFrom, deviceName).setAssetToV3();
+        final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
+        ActorsRESTWrapper.setDeviceAssetsVersion(dstDevice.getUUID(), ActorsRESTWrapper.AssetsVersion.V3);
     }
 
     public void setAssetToV2(ClientUser userFrom, String deviceName) throws Exception {
-        getOrAddDevice(userFrom, deviceName).setAssetToV2();
+        final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
+        ActorsRESTWrapper.setDeviceAssetsVersion(dstDevice.getUUID(), ActorsRESTWrapper.AssetsVersion.V2);
     }
 
     public void cancelConnection(ClientUser userFrom, ClientUser userDst, String deviceName) throws Exception {
-        getOrAddDevice(userFrom, deviceName).cancelConnection(new UserId(userDst.getId()));
+        final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
+        ActorsRESTWrapper.cancelConnection(dstDevice.getUUID(), userDst.getId());
     }
 
     public String getUniqueUsername(ClientUser userFrom, String deviceName) throws Exception {
-        return getOrAddDevice(userFrom, deviceName).getUniqueUserName();
+        final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
+        return ActorsRESTWrapper.getUniqueUsername(dstDevice.getUUID());
     }
 
     public void updateUniqueUsername(ClientUser userFrom, String uniqueUserName, String deviceName) throws Exception {
-        getOrAddDevice(userFrom, deviceName).updateUniqueUserName(uniqueUserName);
+        final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
+        ActorsRESTWrapper.setUniqueUsername(dstDevice.getUUID(), uniqueUserName);
     }
 
-    public void releaseDevicesOfUser(ClientUser user) throws Exception {
-        getDevicePool().releaseDevices(getDevicePool().getDevices(user));
-    }
-
-    public void reset() throws Exception {
-        this.getDevicePool().reset();
-    }
-
-    private IDevice getOrAddDevice(ClientUser user) throws Exception {
-        return getOrAddDevice(user, null);
-    }
-
-    private IDevice getOrAddDevice(ClientUser user, String deviceName) throws Exception {
-        if (deviceName == null) {
-            return getDevicePool().getOrAddRandomDevice(user);
+    public void reset() {
+        try {
+            final List<Device> registeredDevicesCopy = new ArrayList<>(registeredDevices);
+            for (Device registeredDevice : registeredDevicesCopy) {
+                try {
+                    ActorsRESTWrapper.removeDevice(registeredDevice.getUUID());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                devicesGuard.acquire();
+                try {
+                    registeredDevices.remove(registeredDevice);
+                } finally {
+                    devicesGuard.release();
+                }
+            }
+        } catch (InterruptedException e) {
+            Throwables.propagate(e);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return getDevicePool().getOrAddDevice(user, deviceName);
     }
 }

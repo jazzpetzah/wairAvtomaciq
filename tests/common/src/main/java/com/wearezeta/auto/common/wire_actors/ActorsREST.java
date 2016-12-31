@@ -98,6 +98,14 @@ class ActorsREST {
         return new JSONObject(output);
     }
 
+    public static JSONObject setUniqueUsername(String uuid, String newUsername) throws Exception {
+        final Invocation.Builder webResource = buildRequest(String.format("devices/%s/user/uniqueName", uuid));
+        final JSONObject requestBody = new JSONObject();
+        requestBody.put("uniqueName", newUsername);
+        final String output = restHandlers.httpPut(webResource, requestBody.toString(), new int[]{HttpStatus.SC_OK});
+        return new JSONObject(output);
+    }
+
     public static JSONObject setDeviceLabel(String uuid, String newLabel) throws Exception {
         final Invocation.Builder webResource = buildRequest(String.format("devices/%s/label", uuid));
         final JSONObject requestBody = new JSONObject();
@@ -256,10 +264,10 @@ class ActorsREST {
         return new JSONObject(output);
     }
 
-    public static JSONObject updateMessage(String uuid, String convId, String msgId, String newMessage)
+    public static JSONObject updateMessage(String uuid, String msgId, String newMessage)
             throws Exception {
         final Invocation.Builder webResource = buildRequest(
-                String.format("devices/%s/conversations/%s/messages/%s/update", uuid, convId, msgId)
+                String.format("devices/%s/conversations/0/messages/%s/update", uuid, msgId)
         );
         final JSONObject requestBody = new JSONObject();
         requestBody.put("message", newMessage);

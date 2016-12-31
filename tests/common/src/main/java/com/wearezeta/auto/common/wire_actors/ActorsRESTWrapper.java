@@ -53,6 +53,11 @@ public class ActorsRESTWrapper {
         return response.getJSONObject("user").getString("uniqueName");
     }
 
+    public static String setUniqueUsername(String uuid, String newUsername) throws Exception {
+        final JSONObject response = ActorsREST.setUniqueUsername(uuid, newUsername);
+        return response.getString("uuid");
+    }
+
     public static String setDeviceLabel(String uuid, String newLabel) throws Exception {
         final JSONObject response = ActorsREST.setDeviceLabel(uuid, newLabel);
         return response.getString("uuid");
@@ -87,7 +92,7 @@ public class ActorsRESTWrapper {
         return response.getString("uuid");
     }
 
-    public class LocationInfo {
+    public static class LocationInfo {
         private float lon;
         private float lat;
         private String address;
@@ -185,8 +190,13 @@ public class ActorsRESTWrapper {
         return response.getString("uuid");
     }
 
-    public static String setEpehemeralTimeout(String uuid, String convoId, Timedelta timeout) throws Exception {
+    public static String setEphemeralTimeout(String uuid, String convoId, Timedelta timeout) throws Exception {
         final JSONObject response = ActorsREST.setEpehemeralTimeout(uuid, convoId, timeout);
+        return response.getString("uuid");
+    }
+
+    public static String readEphemeralMessage(String uuid, String convoId, String msgId) throws Exception {
+        final JSONObject response = ActorsREST.readEphemeralMessage(uuid, convoId, msgId);
         return response.getString("uuid");
     }
 
@@ -205,8 +215,8 @@ public class ActorsRESTWrapper {
         return response.getString("uuid");
     }
 
-    public static String updateMessage(String uuid, String convId, String msgId, String newMessage) throws Exception {
-        final JSONObject response = ActorsREST.updateMessage(uuid, convId, msgId, newMessage);
+    public static String updateMessage(String uuid, String msgId, String newMessage) throws Exception {
+        final JSONObject response = ActorsREST.updateMessage(uuid, msgId, newMessage);
         return response.getString("uuid");
     }
 
@@ -220,6 +230,7 @@ public class ActorsRESTWrapper {
         return response.getString("uuid");
     }
 
+    // TODO: Add types from SE
     public enum MessageType {
 
     }

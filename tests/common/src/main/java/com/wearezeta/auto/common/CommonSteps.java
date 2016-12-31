@@ -1,13 +1,9 @@
 package com.wearezeta.auto.common;
 
-import com.waz.api.Message;
-import com.waz.model.MessageId;
-import com.waz.provision.ActorMessage;
 import com.wearezeta.auto.common.backend.*;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.wire_actors.AssetProtocol;
-import com.wearezeta.auto.common.wire_actors.MessageReactionType;
+import com.wearezeta.auto.common.wire_actors.ActorsRESTWrapper;
 import com.wearezeta.auto.common.wire_actors.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -43,8 +39,6 @@ public final class CommonSteps {
 
     private final ClientUsersManager usrMgr;
 
-    private final SEBridge seBridge;
-
     public ClientUsersManager getUserManager() {
         return this.usrMgr;
     }
@@ -53,7 +47,7 @@ public final class CommonSteps {
 
     public synchronized static CommonSteps getInstance() {
         if (instance == null) {
-            instance = new CommonSteps(ClientUsersManager.getInstance(), SEBridge.getInstance());
+            instance = new CommonSteps(ClientUsersManager.getInstance());
         }
         return instance;
     }
@@ -63,9 +57,8 @@ public final class CommonSteps {
      * test executions. This means this class is not suitable as singleton and it should be changed to a non-singleton class. In
      * order to stay downward compatible we chose to just change the constructor.
      */
-    public CommonSteps(ClientUsersManager usrMgr, SEBridge seBridge) {
+    public CommonSteps(ClientUsersManager usrMgr) {
         this.usrMgr = usrMgr;
-        this.seBridge = seBridge;
     }
 
     public void ConnectionRequestIsSentTo(String userFromNameAlias,
@@ -295,13 +288,13 @@ public final class CommonSteps {
         seBridge.typing(typingFromUser, convId);
     }
 
-    public void UserDeleteMessage(String msgFromuserNameAlias, String dstConversationName, MessageId messageId,
+    public void UserDeleteMessage(String msgFromuserNameAlias, String dstConversationName, String messageId,
                                   String deviceName, boolean isGroup) throws Exception {
         //default is local delete, rather than delete everywhere
         UserDeleteMessage(msgFromuserNameAlias, dstConversationName, messageId, deviceName, isGroup, false);
     }
 
-    public void UserDeleteMessage(String msgFromuserNameAlias, String dstConversationName, MessageId messageId,
+    public void UserDeleteMessage(String msgFromuserNameAlias, String dstConversationName, String messageId,
                                   String deviceName, boolean isGroup, boolean isDeleteEverywhere) throws Exception {
         ClientUser user = usrMgr.findUserByNameOrNameAlias(msgFromuserNameAlias);
         if (!isGroup) {
@@ -321,7 +314,7 @@ public final class CommonSteps {
         UserDeleteLatestMessage(msgFromUserNameAlias, dstConversationName, deviceName, isGroup, false);
     }
 
-    public void UserReadEphemeralMessage(String msgFromUserNameAlias, String dstConversationName, MessageId messageId,
+    public void UserReadEphemeralMessage(String msgFromUserNameAlias, String dstConversationName, String messageId,
                                          String deviceName, boolean isGroup) throws Exception {
         ClientUser user = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
         if (!isGroup) {
@@ -338,7 +331,7 @@ public final class CommonSteps {
             dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
         }
         String dstConvId = BackendAPIWrappers.getConversationIdByName(user, dstConversationName);
-        ActorMessage.MessageInfo[] messageInfos = seBridge.getConversationMessages(user, dstConvId, deviceName);
+        List<ActorsRESTWrapper.MessageInfo> messageInfos = seBridge.getConversationMessages(user, dstConvId, deviceName);
         seBridge.markEphemeralRead(user, dstConvId, getFilteredLastMessageId(messageInfos), deviceName);
     }
 
@@ -349,27 +342,29 @@ public final class CommonSteps {
             dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
         }
         String dstConvId = BackendAPIWrappers.getConversationIdByName(user, dstConversationName);
-        ActorMessage.MessageInfo[] messageInfos = seBridge.getConversationMessages(user, dstConvId, deviceName);
+        List<ActorsRESTWrapper.MessageInfo> messageInfos = seBridge.getConversationMessages(user, dstConvId, deviceName);
         seBridge.markEphemeralRead(user, dstConvId, getFilteredSecondLastMessageId(messageInfos), deviceName);
     }
 
     public void UserLikeLatestMessage(String msgFromUserNameAlias, String dstConversationName, String deviceName)
             throws Exception {
-        userReactLatestMessage(msgFromUserNameAlias, dstConversationName, deviceName, MessageReactionType.LIKE);
+        userReactLatestMessage(msgFromUserNameAlias, dstConversationName, deviceName,
+                ActorsRESTWrapper.MessageReaction.LIKE);
     }
 
     public void UserUnlikeLatestMessage(String msgFromUserNameAlias, String dstConversationName, String deviceName)
             throws Exception {
-        userReactLatestMessage(msgFromUserNameAlias, dstConversationName, deviceName, MessageReactionType.UNLIKE);
+        userReactLatestMessage(msgFromUserNameAlias, dstConversationName, deviceName,
+                ActorsRESTWrapper.MessageReaction.UNLIKE);
     }
 
     private void userReactLatestMessage(String msgFromUserNameAlias, String dstConversationName, String deviceName,
-                                        MessageReactionType reactionType) throws Exception {
+                                        ActorsRESTWrapper.MessageReaction reactionType) throws Exception {
         ClientUser user = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
         dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
 
         String dstConvId = BackendAPIWrappers.getConversationIdByName(user, dstConversationName);
-        ActorMessage.MessageInfo[] messageInfos = seBridge.getConversationMessages(user, dstConvId, deviceName);
+        List<ActorsRESTWrapper.MessageInfo> messageInfos = seBridge.getConversationMessages(user, dstConvId, deviceName);
 
         seBridge.reactMessage(user, dstConvId, getFilteredLastMessageId(messageInfos), reactionType, deviceName);
     }
@@ -381,7 +376,7 @@ public final class CommonSteps {
             dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
         }
         String dstConvId = BackendAPIWrappers.getConversationIdByName(user, dstConversationName);
-        ActorMessage.MessageInfo[] messageInfos = seBridge.getConversationMessages(user, dstConvId, deviceName);
+        List<ActorsRESTWrapper.MessageInfo> messageInfos = seBridge.getConversationMessages(user, dstConvId, deviceName);
 
         if (isDeleteEverywhere) {
             seBridge.deleteMessageEverywhere(user, dstConvId, getFilteredLastMessageId(messageInfos), deviceName);
@@ -396,7 +391,7 @@ public final class CommonSteps {
         final ClientUser user = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
         dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
         final String dstConvId = BackendAPIWrappers.getConversationIdByName(user, dstConversationName);
-        final ActorMessage.MessageInfo[] messageInfos = seBridge.getConversationMessages(user, dstConvId, deviceName);
+        final List<ActorsRESTWrapper.MessageInfo> messageInfos = seBridge.getConversationMessages(user, dstConvId, deviceName);
         // TODO: Handle the situation with zero length of messageInfos
         final String actualType = messageInfos[messageInfos.length - 1].tpe().toString().toUpperCase();
         Assert.assertEquals(String.format("The type of the recent conversation message '%s' is not equal to the "
@@ -409,7 +404,7 @@ public final class CommonSteps {
         dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
 
         String dstConvId = BackendAPIWrappers.getConversationIdByName(user, dstConversationName);
-        ActorMessage.MessageInfo[] messageInfos = seBridge.getConversationMessages(user, dstConvId, deviceName);
+        List<ActorsRESTWrapper.MessageInfo> messageInfos = seBridge.getConversationMessages(user, dstConvId, deviceName);
 
         seBridge.updateMessage(user, getFilteredLastMessageId(messageInfos), newMessage, deviceName);
     }
@@ -420,7 +415,7 @@ public final class CommonSteps {
         dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
 
         String dstConvId = BackendAPIWrappers.getConversationIdByName(user, dstConversationName);
-        ActorMessage.MessageInfo[] messageInfos = seBridge.getConversationMessages(user, dstConvId, deviceName);
+        List<ActorsRESTWrapper.MessageInfo> messageInfos = seBridge.getConversationMessages(user, dstConvId, deviceName);
 
         seBridge.updateMessage(user, getFilteredSecondLastMessageId(messageInfos), newMessage, deviceName);
     }
@@ -441,7 +436,7 @@ public final class CommonSteps {
             dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
         }
         String dstConvId = BackendAPIWrappers.getConversationIdByName(user, dstConversationName);
-        ActorMessage.MessageInfo[] messageInfos = seBridge.getConversationMessages(user, dstConvId, deviceName);
+        List<ActorsRESTWrapper.MessageInfo> messageInfos = seBridge.getConversationMessages(user, dstConvId, deviceName);
         if (!ArrayUtils.isEmpty(messageInfos)) {
             return Optional.ofNullable(getFilteredLastMessageId(messageInfos).str());
         }
@@ -647,8 +642,8 @@ public final class CommonSteps {
         }
     }
 
-    public void IChangeUserAvatarPicture(String userNameAlias, String picturePath, AssetProtocol protocol)
-            throws Exception {
+    public void IChangeUserAvatarPicture(String userNameAlias, String picturePath,
+                                         ActorsRESTWrapper.AssetsVersion protocol) throws Exception {
         final ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(userNameAlias);
         if (new File(picturePath).exists()) {
             switch (protocol) {
@@ -1042,7 +1037,7 @@ public final class CommonSteps {
                 !actualMessageId.isPresent());
     }
 
-    private MessageId getFilteredLastMessageId(ActorMessage.MessageInfo[] messageInfos) throws Exception {
+    private MessageId getFilteredLastMessageId(List<ActorsRESTWrapper.MessageInfo> messageInfos) throws Exception {
         for (int i = messageInfos.length - 1; i >= 0; i--) {
             if (!messageInfos[i].tpe().equals(Message.Type.UNKNOWN)) {
                 return messageInfos[i].id();
@@ -1051,7 +1046,7 @@ public final class CommonSteps {
         throw new Exception("Could not find any valid message");
     }
 
-    private MessageId getFilteredSecondLastMessageId(ActorMessage.MessageInfo[] messageInfos) throws Exception {
+    private MessageId getFilteredSecondLastMessageId(List<ActorsRESTWrapper.MessageInfo> messageInfos) throws Exception {
         MessageId latestMessage = null;
         for (int i = messageInfos.length - 1; i >= 0; i--) {
             if (!messageInfos[i].tpe().equals(Message.Type.UNKNOWN)) {
