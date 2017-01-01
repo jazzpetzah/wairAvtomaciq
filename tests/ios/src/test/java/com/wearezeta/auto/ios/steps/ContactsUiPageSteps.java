@@ -38,7 +38,7 @@ public class ContactsUiPageSteps {
      */
     @When("^I input user name (.*) in search on ContactsUI$")
     public void IInputUserNameInSearchOnContactsUI(String contact) throws Exception {
-        contact = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        contact = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(contact, ClientUsersManager.FindBy.NAME_ALIAS);
         getContactsUiPage().inputTextToSearch(contact);
     }
@@ -53,7 +53,7 @@ public class ContactsUiPageSteps {
      */
     @Then("^I (do not )?see contact (.*) in ContactsUI page list$")
     public void ISeeContactInContactsUIList(String shouldNotBeVisible, String contact) throws Exception {
-        contact = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        contact = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(contact, ClientUsersManager.FindBy.NAME_ALIAS);
         if (shouldNotBeVisible == null) {
             Assert.assertTrue(
@@ -89,7 +89,7 @@ public class ContactsUiPageSteps {
      */
     @When("^I tap Open button next to user name (.*) on ContactsUI$")
     public void IClickOpenButtonNextToUser(String contact) throws Exception {
-        contact = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        contact = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(contact, ClientUsersManager.FindBy.NAME_ALIAS);
         getContactsUiPage().tapOpenButtonNextToUser(contact);
     }

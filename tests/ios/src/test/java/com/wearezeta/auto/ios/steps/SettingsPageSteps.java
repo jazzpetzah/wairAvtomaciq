@@ -60,11 +60,11 @@ public class SettingsPageSteps {
      */
     @Then("^I verify the value of settings item (.*) equals to \"(.*)\"")
     public void IVerifySettingsItemValue(String itemName, String expectedValue) throws Exception {
-        expectedValue = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        expectedValue = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(expectedValue, ClientUsersManager.FindBy.EMAIL_ALIAS);
-        expectedValue = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        expectedValue = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(expectedValue, ClientUsersManager.FindBy.NAME_ALIAS);
-        expectedValue = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        expectedValue = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(expectedValue, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
         Assert.assertTrue(String.format("The value of '%s' setting item is not equal to '%s'", itemName, expectedValue),
                 getSettingsPage().isSettingItemValueEqualTo(itemName, expectedValue));
@@ -114,7 +114,7 @@ public class SettingsPageSteps {
      */
     @When("^I start waiting for (.*) account removal notification$")
     public void IStartWaitingForAccountRemovalConfirmation(String name) throws Exception {
-        final ClientUser forUser = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        final ClientUser forUser = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .findUserByNameOrNameAlias(name);
         Map<String, String> additionalHeaders = new HashMap<>();
         additionalHeaders.put(WireMessage.ZETA_PURPOSE_HEADER_NAME, AccountDeletionMessage.MESSAGE_PURPOSE);
@@ -215,7 +215,7 @@ public class SettingsPageSteps {
      */
     @When("^I set \"(.*)\" value to Name input field on Settings page$")
     public void ISetSelfName(String newValue) throws Exception {
-        newValue = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        newValue = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(newValue, ClientUsersManager.FindBy.NAME_ALIAS);
         getSettingsPage().setSelfName(newValue);
     }
@@ -279,7 +279,7 @@ public class SettingsPageSteps {
             Assert.assertTrue(String.format("New previously set unique username %s is not displayed on Settings Page", name),
                     getSettingsPage().isUniqueUsernameInSettingsDisplayed(name));
         } else {
-            name = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+            name = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                     .replaceAliasesOccurences(name, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
             Assert.assertTrue(String.format("New previously set unique username %s is not displayed on Settings Page", name),
                     getSettingsPage().isUniqueUsernameInSettingsDisplayed(name));

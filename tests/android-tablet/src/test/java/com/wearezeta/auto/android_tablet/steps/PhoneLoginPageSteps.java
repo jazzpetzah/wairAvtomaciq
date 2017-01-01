@@ -32,7 +32,7 @@ public class PhoneLoginPageSteps {
     @When("^I enter my phone number on Phone Login page$")
     public void IEnterMyPhoneNumber() throws Exception {
         getTabletPhoneLoginPage().inputPhoneNumber(
-                AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+                AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                         .getSelfUserOrThrowError().getPhoneNumber()
         );
     }

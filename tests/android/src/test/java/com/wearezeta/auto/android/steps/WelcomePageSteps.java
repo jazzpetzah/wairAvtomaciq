@@ -75,7 +75,7 @@ public class WelcomePageSteps {
         getWelcomePage().tapAreaCodeSelector();
         getAreaCodePage().selectAreaCode(PhoneNumber.WIRE_COUNTRY_PREFIX);
 
-        this.userToRegister = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        this.userToRegister = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .findUserByNameOrNameAlias(name);
         getWelcomePage().inputPhoneNumber(this.userToRegister.getPhoneNumber());
         getWelcomePage().tapConfirm();

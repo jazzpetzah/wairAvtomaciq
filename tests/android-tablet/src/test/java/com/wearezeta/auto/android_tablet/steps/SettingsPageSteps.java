@@ -60,11 +60,11 @@ public class SettingsPageSteps {
      */
     @When("^I select \"(.*)\" settings menu item$")
     public void ISelectSettingsMenuItem(String name) throws Exception {
-        name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+        name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
-        name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+        name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(name, ClientUsersManager.FindBy.EMAIL_ALIAS);
-        name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+        name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(name, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
         getSettingsPage().selectMenuItem(name);
     }
@@ -79,11 +79,11 @@ public class SettingsPageSteps {
      */
     @When("^I (do not )?see \"(.*)\" settings menu item$")
     public void ISeeSettingsMenuItem(String shouldNotSee, String name) throws Exception {
-        name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+        name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
-        name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+        name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(name, ClientUsersManager.FindBy.EMAIL_ALIAS);
-        name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+        name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(name, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("Settings menu item '%s' is not visible", name),
@@ -103,7 +103,7 @@ public class SettingsPageSteps {
      */
     @When("^I enter (.*) into the device removal password confirmation dialog$")
     public void IEnterPassword(String passwordAlias) throws Exception {
-        final String password = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+        final String password = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(passwordAlias, ClientUsersManager.FindBy.PASSWORD_ALIAS);
         getSettingsPage().enterConfirmationPassword(password);
     }

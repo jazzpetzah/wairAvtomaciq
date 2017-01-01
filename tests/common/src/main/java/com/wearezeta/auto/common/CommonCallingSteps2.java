@@ -13,7 +13,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.function.Supplier;
 
 import javax.imageio.ImageIO;
 import javax.management.InstanceNotFoundException;
@@ -63,20 +62,20 @@ public final class CommonCallingSteps2 {
     private static final int INSTANCE_DESTROY_TIMEOUT_SECONDS = 30;
     private static final long POLLING_FREQUENCY_MILLISECONDS = 1000;
 
-    private Supplier<TestContext> testContextSupplier;
+    private final ClientUsersManager usersManager;
     private final CallingServiceClient client;
     private final Map<String, Instance> instanceMapping;
     private final Map<String, Call> callMapping;
 
-    public CommonCallingSteps2(Supplier<TestContext> testContextSupplier) {
+    public CommonCallingSteps2(ClientUsersManager usersManager) {
         this.callMapping = new ConcurrentHashMap<>();
         this.instanceMapping = new ConcurrentHashMap<>();
         this.client = new CallingServiceClient();
-        this.testContextSupplier = testContextSupplier;
+        this.usersManager = usersManager;
     }
 
     public ClientUsersManager getUsersManager() {
-        return this.testContextSupplier.get().getUserManager();
+        return this.usersManager;
     }
 
     public static class CallNotFoundException extends Exception {

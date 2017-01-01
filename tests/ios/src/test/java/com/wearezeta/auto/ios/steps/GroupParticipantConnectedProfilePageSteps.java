@@ -35,9 +35,9 @@ public class GroupParticipantConnectedProfilePageSteps {
      */
     @When("^I (do not )?see (name|unique username|Address Book name|common friends count) (\".*\" |\\s*)on Group participant profile page$")
     public void ISeeLabel(String shouldNotSee, String fieldType, String value) throws Exception {
-        value = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        value = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(value, ClientUsersManager.FindBy.NAME_ALIAS);
-        value = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        value = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(value, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
         if (shouldNotSee == null) {
             if (value.startsWith("\"")) {

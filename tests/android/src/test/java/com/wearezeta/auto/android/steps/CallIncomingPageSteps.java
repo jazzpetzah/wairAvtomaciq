@@ -84,7 +84,7 @@ public class CallIncomingPageSteps {
     public void ISeeIncomingCallingMessage(String expectedCallerName)
             throws Exception {
         expectedCallerName = AndroidTestContextHolder.getInstance().getTestContext()
-                .getUserManager().findUserByNameOrNameAlias(expectedCallerName).getName();
+                .getUsersManager().findUserByNameOrNameAlias(expectedCallerName).getName();
         Assert.assertTrue(String.format(
                 "The current caller name differs from the expected value '%s'", expectedCallerName),
                 getPage().waitUntilNameAppearsOnCallingBarCaption(expectedCallerName));
@@ -102,7 +102,7 @@ public class CallIncomingPageSteps {
     public void ISeeIncomingCallingMessageBeforeTimeout(int timeoutSeconds, String expectedCallerName)
             throws Exception {
         expectedCallerName = AndroidTestContextHolder.getInstance().getTestContext()
-                .getUserManager().findUserByNameOrNameAlias(expectedCallerName).getName();
+                .getUsersManager().findUserByNameOrNameAlias(expectedCallerName).getName();
         Assert.assertTrue(String.format(
                 "The current caller name differs from the expected value '%s'", expectedCallerName),
                 getPage().waitUntilNameAppearsOnCallingBarCaption(expectedCallerName, timeoutSeconds));

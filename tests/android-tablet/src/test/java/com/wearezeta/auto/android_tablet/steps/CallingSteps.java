@@ -26,7 +26,7 @@ public class CallingSteps {
         AndroidTabletTestContextHolder.getInstance().getTestContext().getCallingManager()
                 .startVideoCallToConversation(
                         AndroidTabletTestContextHolder.getInstance().getTestContext()
-                                .getUserManager().splitAliases(callerNames), conversationName);
+                                .getUsersManager().splitAliases(callerNames), conversationName);
     }
 
     /**
@@ -42,7 +42,7 @@ public class CallingSteps {
         AndroidTabletTestContextHolder.getInstance().getTestContext().getCallingManager()
                 .callToConversation(
                         AndroidTabletTestContextHolder.getInstance().getTestContext()
-                                .getUserManager().splitAliases(callerNames), conversationName);
+                                .getUsersManager().splitAliases(callerNames), conversationName);
     }
 
     /**
@@ -59,12 +59,12 @@ public class CallingSteps {
         if (outgoingCall == null) {
             AndroidTabletTestContextHolder.getInstance().getTestContext().getCallingManager()
                     .stopIncomingCall(AndroidTabletTestContextHolder.getInstance().getTestContext()
-                            .getUserManager().splitAliases(instanceUsers));
+                            .getUsersManager().splitAliases(instanceUsers));
         } else {
             AndroidTabletTestContextHolder.getInstance().getTestContext().getCallingManager()
                     .stopOutgoingCall(
                             AndroidTabletTestContextHolder.getInstance().getTestContext()
-                                    .getUserManager().splitAliases(instanceUsers), conversationName);
+                                    .getUsersManager().splitAliases(instanceUsers), conversationName);
         }
     }
 
@@ -86,7 +86,7 @@ public class CallingSteps {
         AndroidTabletTestContextHolder.getInstance().getTestContext().getCallingManager()
                 .verifyCallingStatus(
                         AndroidTabletTestContextHolder.getInstance().getTestContext()
-                                .getUserManager().splitAliases(callers),
+                                .getUsersManager().splitAliases(callers),
                         conversationName, expectedStatuses, timeoutSeconds);
     }
 
@@ -106,7 +106,7 @@ public class CallingSteps {
         AndroidTabletTestContextHolder.getInstance().getTestContext().getCallingManager()
                 .verifyAcceptingCallStatus(
                         AndroidTabletTestContextHolder.getInstance().getTestContext()
-                                .getUserManager().splitAliases(callees), expectedStatuses, timeoutSeconds);
+                                .getUsersManager().splitAliases(callees), expectedStatuses, timeoutSeconds);
     }
 
     /**
@@ -123,7 +123,7 @@ public class CallingSteps {
         AndroidTabletTestContextHolder.getInstance().getTestContext().getCallingManager()
                 .startInstances(
                         AndroidTabletTestContextHolder.getInstance().getTestContext()
-                                .getUserManager().splitAliases(callees),
+                                .getUsersManager().splitAliases(callees),
                 callingServiceBackend, "Android_Tablet", ZetaFormatter.getScenario());
     }
 
@@ -141,11 +141,11 @@ public class CallingSteps {
         if (video == null) {
             AndroidTabletTestContextHolder.getInstance().getTestContext().getCallingManager()
                     .acceptNextCall(AndroidTabletTestContextHolder.getInstance().getTestContext()
-                            .getUserManager().splitAliases(callees));
+                            .getUsersManager().splitAliases(callees));
         } else {
             AndroidTabletTestContextHolder.getInstance().getTestContext().getCallingManager()
                     .acceptNextVideoCall(AndroidTabletTestContextHolder.getInstance().getTestContext()
-                            .getUserManager().splitAliases(callees));
+                            .getUsersManager().splitAliases(callees));
         }
     }
 
@@ -161,7 +161,7 @@ public class CallingSteps {
     public void UserXVerifesHavingXFlows(String callees, int numberOfFlows)
             throws Exception {
         for (String callee : AndroidTabletTestContextHolder.getInstance().getTestContext()
-                .getUserManager().splitAliases(callees)) {
+                .getUsersManager().splitAliases(callees)) {
             assertThat(AndroidTabletTestContextHolder.getInstance().getTestContext().getCallingManager()
                             .getFlows(callee), hasSize(numberOfFlows));
         }
@@ -177,7 +177,7 @@ public class CallingSteps {
     @Then("(.*) verif(?:ies|y) that all flows have greater than 0 bytes$")
     public void UserXVerifesHavingXFlows(String callees) throws Exception {
         for (String callee : AndroidTabletTestContextHolder.getInstance().getTestContext()
-                .getUserManager().splitAliases(callees)) {
+                .getUsersManager().splitAliases(callees)) {
             for (Flow flow : AndroidTabletTestContextHolder.getInstance().getTestContext().getCallingManager()
                     .getFlows(callee)) {
                 assertThat("incoming bytes", flow.getTelemetry().getStats().getAudio().getBytesReceived(),
@@ -199,7 +199,7 @@ public class CallingSteps {
     public void UserXVerifesCallWasSuccessful(String callees, String conversation) throws Exception {
         for (Call call : AndroidTabletTestContextHolder.getInstance().getTestContext().getCallingManager()
                 .getOutgoingCall(AndroidTabletTestContextHolder.getInstance().getTestContext()
-                                .getUserManager().splitAliases(callees), conversation)) {
+                                .getUsersManager().splitAliases(callees), conversation)) {
             assertNotNull("There are no metrics available for this call \n" + call, call.getMetrics());
             assertTrue("Call failed: \n" + call + "\n" + call.getMetrics(), call.getMetrics().isSuccess());
         }

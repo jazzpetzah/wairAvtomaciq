@@ -54,7 +54,7 @@ public class ContactListPageSteps {
 
     @Given("I see Contact list with name (.*)")
     public void GivenISeeContactListWithName(String name) throws Exception {
-        name = context.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        name = context.getUsersManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         log.debug("Looking for contact with name " + name);
         Assert.assertTrue("No contact list loaded.", context.getPagesCollection()
                 .getPage(ContactListPage.class).waitForContactListVisible());
@@ -64,7 +64,7 @@ public class ContactListPageSteps {
 
     @Given("I see archive list with name (.*)")
     public void GivenISeeArchiveListWithName(String name) throws Exception {
-        name = context.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        name = context.getUsersManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         log.debug("Looking for contact with name " + name);
         ContactListPage contactListPage = context.getPagesCollection()
                 .getPage(ContactListPage.class);
@@ -81,7 +81,7 @@ public class ContactListPageSteps {
 
     @Given("^I open conversation with (.*)")
     public void IOpenConversationWith(String conversation) throws Exception {
-        conversation = context.getUserManager().replaceAliasesOccurences(conversation, FindBy.NAME_ALIAS);
+        conversation = context.getUsersManager().replaceAliasesOccurences(conversation, FindBy.NAME_ALIAS);
         ContactListPage contactListPage = context.getPagesCollection().getPage(ContactListPage.class);
         Assert.assertTrue(String.format("Conversation with name '%s' is not visible", conversation),
                 contactListPage.isConversationVisible(conversation));
@@ -92,7 +92,7 @@ public class ContactListPageSteps {
 
     @Then("^I see conversation with (.*) is selected in conversations list$")
     public void ISeeConversationIsSelected(String convoName) throws Exception {
-        convoName = context.getUserManager().replaceAliasesOccurences(convoName,
+        convoName = context.getUsersManager().replaceAliasesOccurences(convoName,
                 FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format("Conversation '%s' should be selected",
                 convoName),
@@ -102,7 +102,7 @@ public class ContactListPageSteps {
 
     @Given("^I unarchive conversation (.*)")
     public void GivenIUnarchiveConversation(String name) throws Exception {
-        name = context.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        name = context.getUsersManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         context.getPagesCollection().getPage(ContactListPage.class)
                 .unarchiveConversation(name);
     }
@@ -116,7 +116,7 @@ public class ContactListPageSteps {
 
     @When("^I archive conversation (.*)")
     public void IClickArchiveButton(String contact) throws Exception {
-        contact = context.getUserManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+        contact = context.getUsersManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         ContactListPage contactListPage = context.getPagesCollection()
                 .getPage(ContactListPage.class);
         contactListPage.clickOptionsButtonForContact(contact);
@@ -141,7 +141,7 @@ public class ContactListPageSteps {
 
     @Given("^I do not see Contact list with name (.*)$")
     public void IDoNotSeeContactListWithName(String name) throws Exception {
-        name = context.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        name = context.getUsersManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         Assert.assertTrue(context.getPagesCollection().getPage(ContactListPage.class)
                 .isConvoListEntryNotVisible(name));
     }
@@ -192,7 +192,7 @@ public class ContactListPageSteps {
 
     @When("^I set muted state for conversation (.*)")
     public void ISetMutedStateFor(String contact) throws Exception {
-        contact = context.getUserManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+        contact = context.getUsersManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         ContactListPage contactListPage = context.getPagesCollection()
                 .getPage(ContactListPage.class);
         contactListPage.clickOptionsButtonForContact(contact);
@@ -202,7 +202,7 @@ public class ContactListPageSteps {
 
     @When("^I set unmuted state for conversation (.*)")
     public void ISetUnmutedStateFor(String contact) throws Exception {
-        contact = context.getUserManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+        contact = context.getUsersManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         ContactListPage contactListPage = context.getPagesCollection()
                 .getPage(ContactListPage.class);
         contactListPage.clickOptionsButtonForContact(contact);
@@ -212,14 +212,14 @@ public class ContactListPageSteps {
 
     @When("^I see that conversation (.*) is muted$")
     public void ISeeConversationIsMuted(String contact) throws Exception {
-        contact = context.getUserManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+        contact = context.getUsersManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format("Mute button NOT visible for conversation '%s'", contact), context.getPagesCollection().
                 getPage(ContactListPage.class).isConversationMuted(contact));
     }
 
     @When("^I see that conversation (.*) is not muted$")
     public void ISeeConversationIsNotMuted(String contact) throws Exception {
-        contact = context.getUserManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+        contact = context.getUsersManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format("Mute button visible for conversation '%s'", contact), context.getPagesCollection().
                 getPage(ContactListPage.class).isConversationNotMuted(contact));
     }
@@ -227,7 +227,7 @@ public class ContactListPageSteps {
     @Then("^I verify that (.*) index in Contact list is (\\d+)$")
     public void IVerifyContactIndex(String convoNameAlias, int expectedIndex)
             throws Exception {
-        convoNameAlias = context.getUserManager().replaceAliasesOccurences(convoNameAlias,
+        convoNameAlias = context.getUsersManager().replaceAliasesOccurences(convoNameAlias,
                 FindBy.NAME_ALIAS);
         final int actualIndex = context.getPagesCollection().getPage(
                 ContactListPage.class).getItemIndex(convoNameAlias);
@@ -257,7 +257,7 @@ public class ContactListPageSteps {
     @Then("^I( do not)? see missed call notification in the conversation list for conversation (.*)$")
     public void isCallMissedVisibleForContact(String shouldNotBeVisible,
             String conversationName) throws Exception {
-        conversationName = context.getUserManager().replaceAliasesOccurences(conversationName,
+        conversationName = context.getUsersManager().replaceAliasesOccurences(conversationName,
                 FindBy.NAME_ALIAS);
         if (shouldNotBeVisible == null) {
             assertTrue(
@@ -291,7 +291,7 @@ public class ContactListPageSteps {
     @Given("^I verify ping icon in conversation with (\\w+) has (\\w+) color$")
     public void IVerifyPingIconColor(String conversationName, String colorName)
             throws Exception {
-        conversationName = context.getUserManager().replaceAliasesOccurences(conversationName,
+        conversationName = context.getUsersManager().replaceAliasesOccurences(conversationName,
                 FindBy.NAME_ALIAS);
         final AccentColor expectedColor = AccentColor.getByName(colorName);
         final AccentColor pingIconColor = context.getPagesCollection().getPage(
@@ -315,7 +315,7 @@ public class ContactListPageSteps {
     @Given("^I verify unread dot in conversation with (\\w+) has (\\w+) color$")
     public void IVerifyUnreadDotColor(String conversationName, String colorName)
             throws Exception {
-        conversationName = context.getUserManager().replaceAliasesOccurences(conversationName,
+        conversationName = context.getUsersManager().replaceAliasesOccurences(conversationName,
                 FindBy.NAME_ALIAS);
         final AccentColor expectedColor = AccentColor.getByName(colorName);
         final AccentColor unreadDotColor = context.getPagesCollection().getPage(
@@ -331,7 +331,7 @@ public class ContactListPageSteps {
      */
     @Then("^I (do not )?see unread dot in conversation (\\w+)$")
     public void IVerifySeeUnreadDot(String not, String conversationName) throws Exception {
-        conversationName = context.getUserManager().replaceAliasesOccurences(conversationName, FindBy.NAME_ALIAS);
+        conversationName = context.getUsersManager().replaceAliasesOccurences(conversationName, FindBy.NAME_ALIAS);
         if (not == null) {
             assertTrue(String.format("Unread dot for conversation %s is NOT visible", conversationName),
                     context.getPagesCollection().getPage(ContactListPage.class).isUnreadDotVisibleForConversation(
@@ -352,7 +352,7 @@ public class ContactListPageSteps {
      */
     @Given("^I see ping icon in conversation with (\\w+)")
     public void ISeePingIcon(String conversationName) throws Exception {
-        conversationName = context.getUserManager().replaceAliasesOccurences(conversationName,
+        conversationName = context.getUsersManager().replaceAliasesOccurences(conversationName,
                 FindBy.NAME_ALIAS);
         Assert.assertTrue("No ping visible.",
                 context.getPagesCollection().getPage(ContactListPage.class)
@@ -367,7 +367,7 @@ public class ContactListPageSteps {
         if (selectedTopPeople != null) {
             assert selectedTopPeople.size() == 1 : "Count of selected Top People is expected to be 1";
             String oneSelectedTopPeople = selectedTopPeople.get(0);
-            oneSelectedTopPeople = context.getUserManager().replaceAliasesOccurences(
+            oneSelectedTopPeople = context.getUsersManager().replaceAliasesOccurences(
                     oneSelectedTopPeople, FindBy.NAME_ALIAS);
             log.debug("Looking for contact with name " + selectedTopPeople);
             ContactListPage contactListPage = context.getPagesCollection()
@@ -391,7 +391,7 @@ public class ContactListPageSteps {
 
     @When("^I click on options button for conversation (.*)$")
     public void IClickOnOptionsButton(String contact) throws Exception {
-        contact = context.getUserManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+        contact = context.getUsersManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         context.getPagesCollection().getPage(ContactListPage.class)
                 .clickOptionsButtonForContact(contact);
     }
@@ -476,7 +476,7 @@ public class ContactListPageSteps {
 
     @When("^I see conversation (.*) is on the top$")
     public void ISeeConversationWithNameOnTop(String conv) throws Exception {
-        conv = context.getUserManager().replaceAliasesOccurences(conv, FindBy.NAME_ALIAS);
+        conv = context.getUsersManager().replaceAliasesOccurences(conv, FindBy.NAME_ALIAS);
         int itemIndex = context.getPagesCollection().getPage(ContactListPage.class)
                 .getItemIndex(conv);
         assertThat("Conversation is not on the top", itemIndex, equalTo(1));

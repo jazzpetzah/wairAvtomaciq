@@ -24,9 +24,9 @@ public class E2EEConfirmOverlayPageSteps {
                 getE2EEConfirmOverlayPage().waitUntilE2EETextVisible());
         String name;
         final String headerText = getE2EEConfirmOverlayPage().getHeaderText();
-        for (String nameAlias : AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        for (String nameAlias : AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .splitAliases(nameAliases)) {
-            name = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+            name = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                     .findUserByNameOrNameAlias(nameAlias).getName();
             Assert.assertTrue(String.format("Takeover header from user %s is not visible", name), headerText.contains(name));
         }

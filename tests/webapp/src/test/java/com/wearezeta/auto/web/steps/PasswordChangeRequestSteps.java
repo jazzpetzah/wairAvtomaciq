@@ -54,7 +54,7 @@ public class PasswordChangeRequestSteps {
 
     @When("^I enter email (\\S+) on Password Change Request page$")
     public void IEnterEmail(String emailOrAlias) throws Exception {
-        emailOrAlias = context.getUserManager().replaceAliasesOccurences(emailOrAlias,
+        emailOrAlias = context.getUsersManager().replaceAliasesOccurences(emailOrAlias,
                 FindBy.EMAIL_ALIAS);
         context.getPagesCollection().getPage(PasswordChangeRequestPage.class)
                 .setEmail(emailOrAlias);
@@ -74,9 +74,9 @@ public class PasswordChangeRequestSteps {
             throws Exception {
         ClientUser user;
         try {
-            user = context.getUserManager().findUserByEmailOrEmailAlias(emailOrName);
+            user = context.getUsersManager().findUserByEmailOrEmailAlias(emailOrName);
         } catch (NoSuchUserException e) {
-            user = context.getUserManager().findUserByNameOrNameAlias(emailOrName);
+            user = context.getUsersManager().findUserByNameOrNameAlias(emailOrName);
         }
         IMAPSMailbox mbox = IMAPSMailbox.getInstance(user.getEmail(), user.getPassword());
         Map<String, String> expectedHeaders = new HashMap<>();

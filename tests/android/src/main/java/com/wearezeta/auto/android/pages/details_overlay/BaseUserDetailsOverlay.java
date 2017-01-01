@@ -67,12 +67,12 @@ public abstract class BaseUserDetailsOverlay extends BaseDetailsOverlay {
     protected By getUserDataLocator(String type, String text) {
         switch (type.toLowerCase()) {
             case "user name":
-                text = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+                text = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                         .replaceAliasesOccurences(text, ClientUsersManager.FindBy.NAME_ALIAS);
                 return By.xpath(xpathStrUserName.apply(text));
             case "unique user name":
             case "unique username":
-                text = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+                text = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                         .replaceAliasesOccurences(text, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
                 return By.xpath(xpathStrUniqueUserName.apply(text));
             case "user info":

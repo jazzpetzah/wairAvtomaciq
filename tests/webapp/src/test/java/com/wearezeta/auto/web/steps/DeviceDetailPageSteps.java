@@ -41,7 +41,7 @@ public class DeviceDetailPageSteps {
     @When("I type password \"([^\"]*)\" into the device remove form")
     public void ITypePassword(String password) throws Exception {
         try {
-            password = context.getUserManager().findUserByPasswordAlias(password).getPassword();
+            password = context.getUsersManager().findUserByPasswordAlias(password).getPassword();
         } catch (NoSuchUserException e) {
             // Ignore silently
         }

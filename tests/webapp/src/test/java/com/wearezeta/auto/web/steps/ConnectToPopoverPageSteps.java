@@ -72,7 +72,7 @@ public class ConnectToPopoverPageSteps {
 
     @When("^I see unique username on Pending Outgoing Connection popover to user (.*)")
     public void ICanSeeUniqueUsernameToUser(String userAlias) throws Exception {
-        ClientUser user = context.getUserManager().findUserBy(userAlias, ClientUsersManager.FindBy.NAME_ALIAS);
+        ClientUser user = context.getUsersManager().findUserBy(userAlias, ClientUsersManager.FindBy.NAME_ALIAS);
         // username given. strict check for username
         String uniqueUsername = user.getUniqueUsername();
         assertThat(context.getPagesCollection().getPage(ConnectToPopoverContainer.class).getUniqueUsernameOutgoing(),

@@ -63,8 +63,8 @@ public class WebAppTestContext extends TestContext {
     public WebAppTestContext fromPrimaryContext(Future<? extends RemoteWebDriver> driver,
                                                 AbstractPagesCollection<? extends BasePage> pagesCollection)
             throws Exception {
-        setChildContext(new WebAppTestContext(this.testname, this.getCommonSteps(), this.getUserManager(),
-                this.getDeviceManager(), this.getCallingManager(), pagesCollection, driver));
+        setChildContext(new WebAppTestContext(this.testname, this.getCommonSteps(), this.getUsersManager(),
+                this.getDevicesManager(), this.getCallingManager(), pagesCollection, driver));
         return getChildContext();
     }
 

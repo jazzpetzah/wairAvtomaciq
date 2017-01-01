@@ -108,7 +108,7 @@ public class ConversationsListPageSteps {
     @When("^I tap on conversation name (.*)$")
     public void ITapOnContactName(String conversationName) throws Exception {
         try {
-            conversationName = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+            conversationName = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                     .findUserByNameOrNameAlias(conversationName).getName();
         } catch (NoSuchUserException e) {
             // Ignore silently
@@ -139,7 +139,7 @@ public class ConversationsListPageSteps {
     @When("^I swipe right on a (.*)$")
     public void ISwipeRightOnContact(String contact) throws Exception {
         try {
-            contact = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+            contact = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                     .findUserByNameOrNameAlias(contact).getName();
         } catch (NoSuchUserException e) {
             // Ignore silently - seems bad...
@@ -156,7 +156,7 @@ public class ConversationsListPageSteps {
      */
     @When("^I short swipe right on a (.*)$")
     public void IShortSwipeRightOnAUser(String contact) throws Exception {
-        contact = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        contact = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .findUserByNameOrNameAlias(contact).getName();
         getConversationsListPage().swipeShortRightOnConversation(1000, contact);
     }
@@ -170,7 +170,7 @@ public class ConversationsListPageSteps {
      */
     @When("^I open options menu of (.*) on conversation list page$")
     public void iLongPressOnAUser(String contact) throws Exception {
-        contact = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        contact = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         int nTies = 3;
         //Just because it is not stable
@@ -220,9 +220,9 @@ public class ConversationsListPageSteps {
     @Then("^I (do not )?see group conversation with (.*) in conversations list$")
     public void ISeeGroupChatInContactList(String shouldNotSee, String contacts) throws Exception {
         final List<String> users = new ArrayList<>();
-        for (String alias : AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        for (String alias : AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .splitAliases(contacts)) {
-            users.add(AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+            users.add(AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                     .findUserByNameOrNameAlias(alias).getName());
         }
         if (shouldNotSee == null) {
@@ -267,7 +267,7 @@ public class ConversationsListPageSteps {
     public void ISeeUserNameInContactList(String shouldNotSee, String userName)
             throws Exception {
         try {
-            userName = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+            userName = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                     .findUserByNameOrNameAlias(userName).getName();
         } catch (NoSuchUserException e) {
             // Ignore silently
@@ -293,7 +293,7 @@ public class ConversationsListPageSteps {
      */
     @Then("^I wait up to (\\d+) seconds? until conversation (.*) (appears in|disappears from) the list$")
     public void IWaitForConvo(int timeoutSeconds, String convoName, String expectedAction) throws Exception {
-        convoName = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        convoName = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
         if (expectedAction.equals("appears in")) {
             Assert.assertTrue(String.format("The conversation '%s' is not visible in the list",
@@ -317,7 +317,7 @@ public class ConversationsListPageSteps {
     @Then("^Conversation (.*) is (not )?muted$")
     public void ContactIsMutedOrNot(String contact, String shouldNotBeMuted)
             throws Exception {
-        contact = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        contact = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         if (shouldNotBeMuted == null) {
             Assert.assertTrue(
@@ -344,7 +344,7 @@ public class ConversationsListPageSteps {
     @When("^I remember the state of PlayPause button next to the (.*) conversation$")
     public void IRememberTheStateOfPlayPauseButton(String convoName)
             throws Exception {
-        final String name = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        final String name = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
         previousPlayPauseBtnState = new ElementState(
                 () -> getConversationsListPage().getScreenshotOfPlayPauseButtonNextTo(name).orElseThrow(
@@ -368,7 +368,7 @@ public class ConversationsListPageSteps {
         if (previousPlayPauseBtnState == null) {
             throw new IllegalStateException("Please take a screenshot of previous button state first");
         }
-        convoName = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        convoName = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .findUserByNameOrNameAlias(convoName).getName();
         Assert.assertTrue(String.format(
                 "The current and previous states of PlayPause button for '%s' conversation " +
@@ -387,7 +387,7 @@ public class ConversationsListPageSteps {
     @Then("^I see PlayPause media content button for conversation (.*)")
     public void ThenISeePlayPauseButtonForConvo(String convoName)
             throws Exception {
-        convoName = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        convoName = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
         Assert.assertTrue(getConversationsListPage().isPlayPauseMediaButtonVisible(
                 convoName));
@@ -402,7 +402,7 @@ public class ConversationsListPageSteps {
      */
     @When("^I tap PlayPause button next to the (.*) conversation$")
     public void ITapPlayPauseButton(String convoName) throws Exception {
-        convoName = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        convoName = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
         getConversationsListPage().tapPlayPauseMediaButton(convoName);
     }
@@ -419,7 +419,7 @@ public class ConversationsListPageSteps {
      */
     @When("^I remember unread messages indicator state for conversation (.*)")
     public void IRememberUnreadIndicatorState(String name) throws Exception {
-        final String convoName = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        final String convoName = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         this.previousUnreadIndicatorState.put(convoName,
                 new ElementState(() -> getConversationsListPage().getMessageIndicatorScreenshot(convoName)).remember()
@@ -440,7 +440,7 @@ public class ConversationsListPageSteps {
      */
     @Then("^I see unread messages indicator state is (not )?changed for conversation (.*)")
     public void ISeeUnreadIndicatorStateIsChanged(String notChanged, String name) throws Exception {
-        name = AndroidTestContextHolder.getInstance().getTestContext().getUserManager().replaceAliasesOccurences(name,
+        name = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager().replaceAliasesOccurences(name,
                 FindBy.NAME_ALIAS);
         if (!this.previousUnreadIndicatorState.containsKey(name)) {
             throw new IllegalStateException(

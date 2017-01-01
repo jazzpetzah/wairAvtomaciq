@@ -31,7 +31,7 @@ public class TabletConversationsListPageSteps {
      */
     @When("^I remember the (left|right) side state of (.*) conversation item on iPad$")
     public void IRememberConvoItemState(String side, String nameAlias) throws Exception {
-        final String name = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        final String name = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(nameAlias, ClientUsersManager.FindBy.NAME_ALIAS);
         final TabletConversationsListPage.EntrySide entrySide =
                 TabletConversationsListPage.EntrySide.valueOf(side.toUpperCase());
@@ -54,7 +54,7 @@ public class TabletConversationsListPageSteps {
      */
     @Then("^I see the state of (.*) conversation item is (not )?changed on iPad$")
     public void IVerifyConvoState(String nameAlias, String shouldNotBeChanged) throws Exception {
-        final String name = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        final String name = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(nameAlias, ClientUsersManager.FindBy.NAME_ALIAS);
         if (!this.savedConvoItemStates.containsKey(name)) {
             throw new IllegalStateException(String.format(
@@ -79,7 +79,7 @@ public class TabletConversationsListPageSteps {
      */
     @When("^I swipe right on iPad the conversation named (.*)")
     public void ISwipeRightConversation(String name) throws Exception {
-        name = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        name = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
         getTabletConversationsListPage().swipeRightConversationToRevealActionButtons(name);
     }

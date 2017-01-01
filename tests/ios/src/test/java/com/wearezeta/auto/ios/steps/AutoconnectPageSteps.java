@@ -72,9 +72,9 @@ public class AutoconnectPageSteps {
      */
     @Given("^I add name (.*) and phone (.*) to Address Book$")
     public void IAddNameAndPhoneToAddressBook(String name, String phoneNumber) throws Exception {
-        name = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        name = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
-        phoneNumber = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        phoneNumber = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(phoneNumber, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
         ABContact contact = new ABContact(name, Optional.empty(), Optional.of(Collections.singletonList(phoneNumber)));
         addressbookProvisioner.addContacts(Collections.singletonList(contact));
@@ -90,9 +90,9 @@ public class AutoconnectPageSteps {
      */
     @Given("^I add name (.*) and email (.*) to Address Book$")
     public void IAddNameAndEmailToAddressBook(String name, String email) throws Throwable {
-        name = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        name = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
-        email = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        email = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(email, ClientUsersManager.FindBy.EMAIL_ALIAS);
         ABContact contact = new ABContact(name, Optional.of(Collections.singletonList(email)), Optional.empty());
         addressbookProvisioner.addContacts(Collections.singletonList(contact));

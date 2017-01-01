@@ -390,7 +390,7 @@ public class CommonIOSSteps {
         AppiumServer.getInstance().resetLog();
 
         if (scenario.getSourceTagNames().contains("@useSpecialEmail")) {
-            iosTestContext.getUserManager().useSpecialEmail();
+            iosTestContext.getUsersManager().useSpecialEmail();
         }
 
         if (!getIsSimulatorFromConfig(getClass())) {
@@ -721,7 +721,7 @@ public class CommonIOSSteps {
         final FastLoginContainer flc = FastLoginContainer.getInstance();
         if (flc.isEnabled()) {
             updateDriver(flc.executeDriverCreation(IOSTestContextHolder.getInstance()
-                    .getTestContext().getUserManager().getSelfUserOrThrowError()));
+                    .getTestContext().getUsersManager().getSelfUserOrThrowError()));
         }
     }
 
@@ -749,7 +749,7 @@ public class CommonIOSSteps {
                 // Exclude quotes
                 uniqUsername = uniqUsername.substring(5, uniqUsername.length() - 1);
                 uniqUsername = IOSTestContextHolder.getInstance().getTestContext()
-                        .getUserManager().replaceAliasesOccurences(uniqUsername,
+                        .getUsersManager().replaceAliasesOccurences(uniqUsername,
                                 ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
                 if (deviceName == null) {
                     IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
@@ -807,7 +807,7 @@ public class CommonIOSSteps {
         final FastLoginContainer flc = FastLoginContainer.getInstance();
         if (flc.isEnabled()) {
             updateDriver(flc.executeDriverCreation(IOSTestContextHolder.getInstance().getTestContext()
-                    .getUserManager().getSelfUserOrThrowError()));
+                    .getUsersManager().getSelfUserOrThrowError()));
         }
     }
 
@@ -1209,7 +1209,7 @@ public class CommonIOSSteps {
     @When("^User (.*) adds new devices? (.*)")
     public void UserAddRemoteDeviceToAccount(String userNameAlias, String deviceNames) throws Exception {
         final List<String> names = IOSTestContextHolder.getInstance().getTestContext()
-                .getUserManager().splitAliases(deviceNames);
+                .getUsersManager().splitAliases(deviceNames);
         final int poolSize = 2;  // Runtime.getRuntime().availableProcessors()
         final ExecutorService pool = Executors.newFixedThreadPool(poolSize);
         for (String name : names) {
@@ -1411,7 +1411,7 @@ public class CommonIOSSteps {
                             "Make sure you have the '%s' tag in your scenario", FastLoginContainer.TAG_NAME));
         }
         updateDriver(flc.executeDriverCreation(IOSTestContextHolder.getInstance().getTestContext()
-                .getUserManager().findUserByNameOrNameAlias(alias)));
+                .getUsersManager().findUserByNameOrNameAlias(alias)));
     }
 
     /**
@@ -1660,7 +1660,7 @@ public class CommonIOSSteps {
      */
     @When("^I remember the state of the recent message from user (.*) in the local database$")
     public void IRememberMessageStateInLocalDatabase(String fromContact) throws Exception {
-        final ClientUser dstUser = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        final ClientUser dstUser = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .findUserByNameOrNameAlias(fromContact);
         final WireDatabase db = getWireDb();
         this.recentMsgId = db.getRecentMessageId(dstUser).orElseThrow(
@@ -1698,7 +1698,7 @@ public class CommonIOSSteps {
      */
     @When("^I remember the recent message from user (.*) in the local database$")
     public void IRememberRecentMessageInLocalDatabase(String fromContact) throws Exception {
-        final ClientUser dstUser = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        final ClientUser dstUser = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .findUserByNameOrNameAlias(fromContact);
         final WireDatabase db = getWireDb();
         this.recentMsgId = db.getRecentMessageId(dstUser).orElseThrow(

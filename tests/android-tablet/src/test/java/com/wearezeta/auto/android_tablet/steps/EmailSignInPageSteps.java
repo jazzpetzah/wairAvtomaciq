@@ -28,7 +28,7 @@ public class EmailSignInPageSteps {
 	public void ISignInUsingMyEmail() throws Exception {
         AndroidTabletTestContextHolder.getInstance().getTestContext().getPagesCollection()
                 .getPage(TabletWelcomePage.class).tapSignInButton();
-		final ClientUser selfUser = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+		final ClientUser selfUser = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .getSelfUserOrThrowError();
 		getEmailSignInPage().setLogin(selfUser.getEmail());
 		getEmailSignInPage().setPassword(selfUser.getPassword());
@@ -47,7 +47,7 @@ public class EmailSignInPageSteps {
 	 */
 	@When("^I enter login \"(.*)\"$")
 	public void IEnterLogin(String login) throws Exception {
-		login = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+		login = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(login, FindBy.EMAIL_ALIAS);
 		getEmailSignInPage().setLogin(login);
 	}
@@ -62,7 +62,7 @@ public class EmailSignInPageSteps {
 	 */
 	@When("^I enter password \"(.*)\"$")
 	public void IEnterPassword(String password) throws Exception {
-		password = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+		password = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(password, FindBy.PASSWORD_ALIAS);
 		getEmailSignInPage().setPassword(password);
 	}

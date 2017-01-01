@@ -74,7 +74,7 @@ public class DeviceLimitPageSteps {
     @Then("I enter password \"([^\"]*)\" to remove device named (.*) on the device limit page")
     public void IEnterPassword(String password, String deviceName) throws Exception {
         try {
-            password = context.getUserManager().findUserByPasswordAlias(password).getPassword();
+            password = context.getUsersManager().findUserByPasswordAlias(password).getPassword();
         } catch (NoSuchUserException e) {
             // Ignore silently
         }

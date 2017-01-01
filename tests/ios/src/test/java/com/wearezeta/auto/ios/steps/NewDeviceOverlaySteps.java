@@ -22,7 +22,7 @@ public class NewDeviceOverlaySteps {
      */
     @Then("^I see the label \"(.*)\" on New Device overlay$")
     public void ISeeLabel(String expectedLabel) throws Exception {
-        expectedLabel = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        expectedLabel = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(expectedLabel, ClientUsersManager.FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format("New Device overlay does not contain the label '%s'", expectedLabel),
                 getNewDeviceOverlay().isContainingLabel(expectedLabel));

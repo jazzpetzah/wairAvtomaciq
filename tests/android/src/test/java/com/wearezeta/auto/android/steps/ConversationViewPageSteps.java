@@ -341,7 +341,7 @@ public class ConversationViewPageSteps {
      */
     @Then("^I (do not )?see Ping message \"(.*)\" in the conversation view$")
     public void ISeePingMessageInTheDialog(String doNotSee, String message) throws Exception {
-        message = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        message = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
         if (doNotSee == null) {
             Assert.assertTrue(String.format("Ping message '%s' is not visible after the timeout", message),
@@ -574,9 +574,9 @@ public class ConversationViewPageSteps {
     @Then("^I see group chat page with users (.*)$")
     public void ISeeGroupChatPage(String participantNameAliases) throws Exception {
         List<String> participantNames = new ArrayList<>();
-        for (String nameAlias : AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        for (String nameAlias : AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .splitAliases(participantNameAliases)) {
-            participantNames.add(AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+            participantNames.add(AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                     .findUserByNameOrNameAlias(nameAlias).getName());
         }
         Assert.assertTrue(String.format("Group chat view with names %s is not visible", participantNames),
@@ -593,7 +593,7 @@ public class ConversationViewPageSteps {
      */
     @Then("^I see message (.*) contact (.*) on group page$")
     public void ISeeMessageContactOnGroupPage(String message, String contact) throws Exception {
-        contact = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        contact = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .findUserByNameOrNameAlias(contact).getName();
         final String expectedMsg = message + " " + contact;
         Assert.assertTrue(String.format("The message '%s' is not visible in the conversation view", expectedMsg),
@@ -632,7 +632,7 @@ public class ConversationViewPageSteps {
             Assert.assertTrue("The otr non verified conversation message has been shown in the conversation view",
                     getConversationViewPage().waitForOtrNonVerifiedMessage());
         } else {
-            userName = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+            userName = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                     .findUserByNameOrNameAlias(userName).getName();
             Assert.assertTrue(String.format(
                     "The otr non verified conversation message caused by user '%s' has been shown in the conversation view",
@@ -859,7 +859,7 @@ public class ConversationViewPageSteps {
      */
     @Then("^I see missed call from (.*) in the conversation$")
     public void ISeeMissedCallFrom(String contact) throws Exception {
-        contact = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        contact = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         final String expectedMessage = contact + " CALLED";
         Assert.assertTrue(String.format("Missed call message '%s' is not visible in the conversation view",
@@ -1215,7 +1215,7 @@ public class ConversationViewPageSteps {
             throws Exception {
         if (isObfuscated == null) {
             getConversationViewPage().tapMessage(messageType,
-                    Optional.of(AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+                    Optional.of(AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                             .replaceAliasesOccurences(message, FindBy.NAME_ALIAS)), tapType);
         } else {
             getConversationViewPage().tapMessage(messageType, Optional.empty(), tapType);
@@ -1601,7 +1601,7 @@ public class ConversationViewPageSteps {
      */
     @Then("^I (do not )?see the trashcan next to the name of (.*) in the conversation view$")
     public void ISeeTrashNextToName(String shouldNotSee, String name) throws Exception {
-        name = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        name = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("Cannot see the trashcan next to the name '%s'", name),
@@ -1622,7 +1622,7 @@ public class ConversationViewPageSteps {
      */
     @Then("^I (do not )?see the pen icon next to the name of (.*) in the conversation view$")
     public void ISeePenNextToName(String shouldNotSee, String name) throws Exception {
-        name = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        name = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("Cannot see the Pen icon next to the name '%s'", name),
@@ -1643,7 +1643,7 @@ public class ConversationViewPageSteps {
      */
     @Then("^I (do not )?see the message separator of (.*) in (\\d+) seconds$")
     public void ISeeMessageFromUser(String shouldNotSee, String name, int timeOutSeconds) throws Exception {
-        name = AndroidTestContextHolder.getInstance().getTestContext().getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        name = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("The message separator of user %s should be visible", name),
                     getConversationViewPage().waitUntilMessageSeparatorVisible(name, timeOutSeconds));
@@ -1675,7 +1675,7 @@ public class ConversationViewPageSteps {
                 expectedMsg = ANY_MESSAGE;
                 isVisible = getConversationViewPage().waitUntilMessageMetaItemVisible(itemType);
             } else {
-                expectedMsg = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+                expectedMsg = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                         .replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
                 isVisible = getConversationViewPage().waitUntilMessageMetaItemVisible(itemType, expectedMsg);
             }
@@ -1684,7 +1684,7 @@ public class ConversationViewPageSteps {
                 expectedMsg = ANY_MESSAGE;
                 isVisible = !getConversationViewPage().waitUntilMessageMetaItemInvisible(itemType);
             } else {
-                expectedMsg = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+                expectedMsg = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                         .replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
                 isVisible = !getConversationViewPage().waitUntilMessageMetaItemInvisible(itemType, expectedMsg);
             }
@@ -1729,7 +1729,7 @@ public class ConversationViewPageSteps {
      */
     @Then("^I see (.*) (?:is|are) typing$")
     public void ISeeTyping(String userNames) throws Exception {
-        String names = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        String names = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(userNames, FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format("%s are expected to be visible in typing list", userNames),
                 getConversationViewPage().waitUntilTypingVisible(names));

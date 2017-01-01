@@ -3,9 +3,7 @@ package com.wearezeta.auto.common.performance;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.function.Supplier;
 
-import com.wearezeta.auto.common.test_context.TestContext;
 import com.wearezeta.auto.common.wire_actors.SEBridge;
 import org.apache.log4j.Logger;
 
@@ -15,8 +13,6 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
 public final class PerformanceCommon {
-    private Supplier<TestContext> testContextSupplier;
-
     private final Logger logger = ZetaLogger.getLog(PerformanceCommon.class.getSimpleName());
 
     public Logger getLogger() {
@@ -26,16 +22,20 @@ public final class PerformanceCommon {
     private static final int MIN_WAIT_SECONDS = 2;
     private static final int MAX_WAIT_SECONDS = 5;
 
-    public PerformanceCommon(Supplier<TestContext> testContextSupplier) {
-        this.testContextSupplier = testContextSupplier;
+    private final ClientUsersManager usersManager;
+    private final SEBridge devicesManager;
+
+    public PerformanceCommon(ClientUsersManager usersManager, SEBridge devicesManager) {
+        this.usersManager = usersManager;
+        this.devicesManager = devicesManager;
     }
 
     private ClientUsersManager getUsersManager() {
-        return this.testContextSupplier.get().getUserManager();
+        return this.usersManager;
     }
 
     private SEBridge getDevicesManager() {
-        return this.testContextSupplier.get().getDeviceManager();
+        return this.devicesManager;
     }
 
     public void sendMultipleMessagesIntoConversation(String convoName, int msgsCount) throws Exception {

@@ -22,7 +22,6 @@ import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.Timedelta;
-import com.wearezeta.auto.common.wire_actors.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
@@ -194,8 +193,8 @@ public class CommonAndroidTabletSteps {
         );
         AndroidTabletTestContextHolder.getInstance().setTestContext(androidTabletTestContext);
         final AndroidTestContext androidTestContext = new AndroidTestContext(
-                androidTabletTestContext.getUserManager(),
-                androidTabletTestContext.getDeviceManager(),
+                androidTabletTestContext.getUsersManager(),
+                androidTabletTestContext.getDevicesManager(),
                 androidTabletTestContext.getCallingManager(),
                 androidTabletTestContext.getCommonSteps(),
                 scenario, new AndroidTabletPagesCollection()
@@ -205,7 +204,7 @@ public class CommonAndroidTabletSteps {
         AppiumServer.getInstance().resetLog();
 
         if (scenario.getSourceTagNames().contains("@useSpecialEmail")) {
-            androidTabletTestContext.getUserManager().useSpecialEmail();
+            androidTabletTestContext.getUsersManager().useSpecialEmail();
         }
 
         isAutoAcceptOfSecurityAlertsEnabled = !scenario.getSourceTagNames().contains("@noAcceptAlert");
@@ -423,7 +422,7 @@ public class CommonAndroidTabletSteps {
     @Given("^(.*) has an accent color (.*)$")
     public void GivenUserHasAnAccentColor(String name, String colorName) throws Exception {
         try {
-            name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager().findUserByNameOrNameAlias(name).getName();
+            name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager().findUserByNameOrNameAlias(name).getName();
         } catch (NoSuchUserException e) {
             // Ignore silently
         }
@@ -441,7 +440,7 @@ public class CommonAndroidTabletSteps {
     @Given("^(.*) has a name (.*)$")
     public void GivenUserHasAName(String name, String newName) throws Exception {
         try {
-            name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager().findUserByNameOrNameAlias(name).getName();
+            name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager().findUserByNameOrNameAlias(name).getName();
         } catch (NoSuchUserException e) {
             // Ignore silently
         }
@@ -475,8 +474,8 @@ public class CommonAndroidTabletSteps {
     @Given("^(.*) is silenced to user (.*)$")
     public void UserIsSilenced(String mutedUser, String otherUser)
             throws Exception {
-        mutedUser = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager().findUserByNameOrNameAlias(mutedUser).getName();
-        otherUser = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager().findUserByNameOrNameAlias(otherUser).getName();
+        mutedUser = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager().findUserByNameOrNameAlias(mutedUser).getName();
+        otherUser = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager().findUserByNameOrNameAlias(otherUser).getName();
 
         AndroidTabletTestContextHolder.getInstance().getTestContext().getCommonSteps().MuteConversationWithUser(otherUser, mutedUser);
     }
@@ -491,8 +490,8 @@ public class CommonAndroidTabletSteps {
      */
     @Given("^Group (.*) gets silenced for user (.*)$")
     public void GroupGetsSilenced(String mutedGroup, String otherUser) throws Throwable {
-        mutedGroup = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager().replaceAliasesOccurences(mutedGroup, ClientUsersManager.FindBy.NAME_ALIAS);
-        otherUser = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager().findUserByNameOrNameAlias(otherUser).getName();
+        mutedGroup = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager().replaceAliasesOccurences(mutedGroup, ClientUsersManager.FindBy.NAME_ALIAS);
+        otherUser = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager().findUserByNameOrNameAlias(otherUser).getName();
 
         AndroidTabletTestContextHolder.getInstance().getTestContext().getCommonSteps().MuteConversationWithGroup(otherUser, mutedGroup);
     }
@@ -730,7 +729,7 @@ public class CommonAndroidTabletSteps {
     public void GivenUserHasAnAvatarPicture(String name, String picture) throws Exception {
         String picturePath = CommonUtils.getImagesPathFromConfig(this.getClass()) + File.separator + picture;
         try {
-            name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager().findUserByNameOrNameAlias(name).getName();
+            name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager().findUserByNameOrNameAlias(name).getName();
         } catch (NoSuchUserException e) {
             // Ignore silently
         }
@@ -826,13 +825,13 @@ public class CommonAndroidTabletSteps {
     public void IImportUserIntoAddressBook(String alias, String withCustomName, String customName, String withInfo,
                                            String infoType) throws Exception {
         //TODO: Robin handle when custom name contains space
-        String name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager().findUserByNameOrNameAlias(alias).getName();
+        String name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager().findUserByNameOrNameAlias(alias).getName();
         if (withCustomName != null) {
             name = customName;
         }
         if (withInfo != null) {
-            final String email = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager().findUserByNameOrNameAlias(alias).getEmail();
-            final PhoneNumber phoneNumber = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager().findUserByNameOrNameAlias(alias).getPhoneNumber();
+            final String email = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager().findUserByNameOrNameAlias(alias).getEmail();
+            final PhoneNumber phoneNumber = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager().findUserByNameOrNameAlias(alias).getPhoneNumber();
             AndroidCommonUtils.insertContact(name, email, phoneNumber, infoType);
         } else {
             AndroidCommonUtils.insertContact(name);
@@ -848,7 +847,7 @@ public class CommonAndroidTabletSteps {
      */
     @Then("^I see alert message containing \"(.*)\"$")
     public void ISeeAlertMessage(String expectedMsg) throws Exception {
-        expectedMsg = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager().replaceAliasesOccurences(expectedMsg, ClientUsersManager.FindBy.NAME_ALIAS);
+        expectedMsg = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager().replaceAliasesOccurences(expectedMsg, ClientUsersManager.FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format("An alert containing text '%s' is not visible", expectedMsg),
                 AndroidTabletTestContextHolder.getInstance().getTestContext().getPagesCollection()
                         .getCommonPage().isAlertMessageVisible(expectedMsg));
@@ -891,7 +890,7 @@ public class CommonAndroidTabletSteps {
      */
     @When("^User (.*) adds new devices? (.*)$")
     public void UserAddRemoteDeviceToAccount(String userNameAlias, String deviceNames) throws Exception {
-        final List<String> names = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager().splitAliases(deviceNames);
+        final List<String> names = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager().splitAliases(deviceNames);
         final int poolSize = 2;  // Runtime.getRuntime().availableProcessors()
         final ExecutorService pool = Executors.newFixedThreadPool(poolSize);
         for (String name : names) {
@@ -1125,7 +1124,7 @@ public class CommonAndroidTabletSteps {
                 }
                 // Exclude quotes
                 uniqUsername = uniqUsername.substring(5, uniqUsername.length() - 1);
-                uniqUsername = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager().replaceAliasesOccurences(uniqUsername,
+                uniqUsername = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager().replaceAliasesOccurences(uniqUsername,
                         ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
                 AndroidTabletTestContextHolder.getInstance().getTestContext().getCommonSteps().IChangeUniqueUsername(userAs, uniqUsername);
                 break;

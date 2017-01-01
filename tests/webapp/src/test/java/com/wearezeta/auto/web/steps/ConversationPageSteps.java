@@ -209,7 +209,7 @@ public class ConversationPageSteps {
 
     @Then("^I verify the database is( not)? containing the message (.*) from (.*) in active conversation$")
     public void ISeeNoTraceInDatabase(String not, String message, String nameAlias) throws Exception {
-        String userId = context.getUserManager().findUserByNameOrNameAlias(nameAlias).getId();
+        String userId = context.getUsersManager().findUserByNameOrNameAlias(nameAlias).getId();
         String conversationId = context.getPagesCollection().getPage(ContactListPage.class).getActiveConversationId();
         assertThat("Couldn't get id of active conversation!", conversationId, not(isEmptyOrNullString()));
         if (not != null) {
@@ -225,7 +225,7 @@ public class ConversationPageSteps {
 
     @Then("^I see (\\d+) messages? in database from (.*) in active conversation$")
     public void ISeeXMessagesInDatabase(int numberOfMessages, String nameAlias) throws Exception {
-        String userId = context.getUserManager().findUserByNameOrNameAlias(nameAlias).getId();
+        String userId = context.getUsersManager().findUserByNameOrNameAlias(nameAlias).getId();
         String conversationId = context.getPagesCollection().getPage(ContactListPage.class).getActiveConversationId();
         assertThat("Couldn't get id of active conversation!", conversationId, not(isEmptyOrNullString()));
         assertThat("Number of messages in DB",
@@ -734,10 +734,10 @@ public class ConversationPageSteps {
     @Then("^I see the last message is liked by users? (.*)$")
     public void ISeeLastMessageIsLikedBy(String usersToNameAliases) throws Exception {
         List<String> likers = context.getPagesCollection().getPage(ConversationPage.class).getUsersThatLikeTheLastMessage();
-        List<String> aliases = context.getUserManager().splitAliases(usersToNameAliases);
+        List<String> aliases = context.getUsersManager().splitAliases(usersToNameAliases);
         String[] users = new String[aliases.size()];
         for (int i = 0; i < aliases.size(); i++) {
-            ClientUser userTo = context.getUserManager().findUserByNameOrNameAlias(aliases.get(i));
+            ClientUser userTo = context.getUsersManager().findUserByNameOrNameAlias(aliases.get(i));
             users[i] = userTo.getName();
         }
         assertThat("User not found in like message", likers, hasItems(users));
@@ -747,7 +747,7 @@ public class ConversationPageSteps {
     @Then("^I see (.*) is the most recent liker of last message$")
     public void ISeeMostRecentLiker(String liker) throws Exception {
         List<String> likers = context.getPagesCollection().getPage(ConversationPage.class).getUsersThatLikeTheLastMessage();
-        ClientUser userTo = context.getUserManager().findUserByNameOrNameAlias(liker);
+        ClientUser userTo = context.getUsersManager().findUserByNameOrNameAlias(liker);
         String user = userTo.getName();
         assertThat("User is not the most recent liker", likers.get(likers.size() - 1), is(user));
     }
@@ -782,7 +782,7 @@ public class ConversationPageSteps {
 
     @Then("^I see connecting message for (.*) in conversation$")
     public void ISeeConnectingMessage(String contact) throws Exception {
-        contact = context.getUserManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+        contact = context.getUsersManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         assertThat("User name", context.getPagesCollection().getPage(ConversationPage.class).getConnectedMessageUser(),
                 equalTo(contact));
         assertThat("Label", context.getPagesCollection().getPage(ConversationPage.class).getConnectedMessageLabel(),
@@ -791,7 +791,7 @@ public class ConversationPageSteps {
 
     @Then("^I see connected message for (.*) in conversation$")
     public void ISeeConnectedMessage(String contact) throws Exception {
-        contact = context.getUserManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+        contact = context.getUsersManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         assertThat("User name", context.getPagesCollection().getPage(ConversationPage.class).getConnectedMessageUser(),
                 equalTo(contact));
         assertThat("Label", context.getPagesCollection().getPage(ConversationPage.class).getConnectedMessageLabel(),
@@ -824,17 +824,17 @@ public class ConversationPageSteps {
 
     @And("^I see unique username of (.*) in conversation$")
     public void ISeeUniqueUsernameOnSelfProfilePage(String nameAlias) throws Exception {
-        String username = context.getUserManager().findUserByNameOrNameAlias(nameAlias).getUniqueUsername();
+        String username = context.getUsersManager().findUserByNameOrNameAlias(nameAlias).getUniqueUsername();
         Assert.assertThat("Username in conversation",
                 context.getPagesCollection().getPage(ConversationPage.class).getUniqueUsername(), equalTo(username));
     }
 
     @Then("^I see (.*) action (\\d+) times for (.*) in conversation$")
     public void ThenISeeActionForContactInConversation(String message, int times, String contacts) throws Exception {
-        contacts = context.getUserManager().replaceAliasesOccurences(contacts, FindBy.NAME_ALIAS);
+        contacts = context.getUsersManager().replaceAliasesOccurences(contacts, FindBy.NAME_ALIAS);
         Set<String> parts = new HashSet<String>();
         parts.add(message);
-        parts.addAll(context.getUserManager().splitAliases(contacts));
+        parts.addAll(context.getUsersManager().splitAliases(contacts));
         assertThat(message + " action for " + contacts, context.getPagesCollection().getPage(ConversationPage.class)
                 .waitForNumberOfMessageHeadersContain(parts), equalTo(times));
     }
@@ -1140,7 +1140,7 @@ public class ConversationPageSteps {
 
     @And("^I click on avatar of user (.*) in conversation view$")
     public void IClickOnUserAvatar(String userAlias) throws Exception {
-        ClientUser user = context.getUserManager().findUserBy(userAlias, FindBy.NAME_ALIAS);
+        ClientUser user = context.getUsersManager().findUserBy(userAlias, FindBy.NAME_ALIAS);
         context.getPagesCollection().getPage(ConversationPage.class).clickUserAvatar(user.getId());
     }
 

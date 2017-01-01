@@ -52,7 +52,7 @@ public class LoginSteps {
      */
     @Given("^I sign in using my email$")
     public void ISignInUsingMyEmail() throws Exception {
-        final ClientUser self = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        final ClientUser self = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .getSelfUserOrThrowError();
         assert getWelcomePage().waitForInitialScreen() : "The initial screen was not shown";
         getWelcomePage().tapSignInTab();
@@ -79,7 +79,7 @@ public class LoginSteps {
      */
     @Given("^I sign in using my phone number( with SMS verification)?$")
     public void ISignInUsingMyPhoneNumber(String verifiedBySmsURL) throws Exception {
-        final ClientUser self = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        final ClientUser self = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .getSelfUserOrThrowError();
         assert getWelcomePage().waitForInitialScreen() : "The initial screen was not shown";
         getWelcomePage().tapAreaCodeSelector();
@@ -131,7 +131,7 @@ public class LoginSteps {
     @When("^I have entered login (.*)$")
     public void IHaveEnteredLogin(String login) throws Exception {
         try {
-            login = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+            login = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                     .findUserByEmailOrEmailAlias(login).getEmail();
         } catch (NoSuchUserException e) {
             // Ignore silently
@@ -149,7 +149,7 @@ public class LoginSteps {
     @When("I have entered password (.*)")
     public void IHaveEnteredPassword(String password) throws Exception {
         try {
-            password = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+            password = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                     .findUserByPasswordAlias(password).getPassword();
         } catch (NoSuchUserException e) {
             // Ignore silently

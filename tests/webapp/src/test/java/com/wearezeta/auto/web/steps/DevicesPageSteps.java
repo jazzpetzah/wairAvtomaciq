@@ -78,8 +78,8 @@ public class DevicesPageSteps {
 
     @Then("^I( do not)? see device (.*) of user (.*) is verified in device section$")
     public void ISeeVerifiedDevice(String donot, String deviceName, String userAlias) throws Exception {
-        ClientUser user = context.getUserManager().findUserByNameOrNameAlias(userAlias);
-        String id = context.getDeviceManager().getDeviceId(user, deviceName + context.getTestname().hashCode());
+        ClientUser user = context.getUsersManager().findUserByNameOrNameAlias(userAlias);
+        String id = context.getDevicesManager().getDeviceId(user, deviceName + context.getTestname().hashCode());
         id = WebCommonUtils.removeDeviceIdPadding(id);
         context.getPagesCollection().getPage(DevicesPage.class).waitForDevices();
         List<String> devices = context.getPagesCollection().getPage(DevicesPage.class).getVerifiedDeviceIds();

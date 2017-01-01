@@ -39,9 +39,9 @@ public class UniqueUsernameTakeoverPageSteps {
     @Then("^I (do not )?see (unique )?username (starts with )?(.*) on Unique Username Takeover page$")
     public void ISeeUniqueUsername(String shouldNotSee, String isUnique, String startsWith, String expectedUsername)
             throws Exception {
-        expectedUsername = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        expectedUsername = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(expectedUsername, ClientUsersManager.FindBy.NAME_ALIAS);
-        expectedUsername = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        expectedUsername = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(expectedUsername, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
         if (isUnique == null) {
             if (shouldNotSee == null) {

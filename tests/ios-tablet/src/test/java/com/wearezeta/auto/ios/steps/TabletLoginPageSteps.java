@@ -32,7 +32,7 @@ public class TabletLoginPageSteps {
             getTabletLoginPage().waitForLoginToFinish();
             return;
         }
-        final ClientUser self = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        final ClientUser self = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .getSelfUserOrThrowError();
         getTabletLoginPage().setLogin(self.getEmail());
         getTabletLoginPage().setPassword(self.getPassword());

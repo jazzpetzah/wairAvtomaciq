@@ -34,7 +34,7 @@ public class TakeOverPageSteps {
 
     @Given("^I see name (.*) on take over screen$")
     public void ISeeNameOnTakeOverScreen(String name) throws Exception {
-        name = context.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        name = context.getUsersManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         Assert.assertEquals(name, context.getPagesCollection().getPage(TakeOverPage.class).getName());
     }
 
@@ -70,7 +70,7 @@ public class TakeOverPageSteps {
 
     @Then("^I see unique username starts with (.*) on take over screen$")
     public void ISeeTextAboutUsernamesSayingX(String name) throws Throwable {
-        name = context.getUserManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        name = context.getUsersManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
         Assert.assertThat("Username on take over screen",
                 context.getPagesCollection().getPage(TakeOverPage.class).getUniqueUsername(), startsWith(name));
     }

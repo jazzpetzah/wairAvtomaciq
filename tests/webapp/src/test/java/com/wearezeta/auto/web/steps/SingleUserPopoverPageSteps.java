@@ -69,21 +69,21 @@ public class SingleUserPopoverPageSteps {
 
     @When("^I input user name (.*) in search field on Single User Profile popover$")
     public void ISearchForUser(String name) throws Exception {
-        name = context.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        name = context.getUsersManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         context.getPagesCollection().getPage(SingleUserPopoverContainer.class)
                 .searchForUser(name);
     }
 
     @When("^I select (.*) from Single User Profile popover search results$")
     public void ISelectUserFromSearchResults(String user) throws Exception {
-        user = context.getUserManager().replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
+        user = context.getUsersManager().replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
         context.getPagesCollection().getPage(SingleUserPopoverContainer.class)
                 .selectUserFromSearchResult(user);
     }
 
     @When("^I see username (.*) on Single User Profile popover$")
     public void IseeUserNameOnUserProfilePage(String name) throws Exception {
-        name = context.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        name = context.getUsersManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         Assert.assertEquals(name,
                 context.getPagesCollection().getPage(SingleUserPopoverContainer.class)
                         .getUserName());
@@ -142,7 +142,7 @@ public class SingleUserPopoverPageSteps {
         final SingleUserPopoverContainer singleUserPopover = context.getPagesCollection().getPage(
                 SingleUserPopoverContainer.class);
         if (not == null) {
-            ClientUser user = context.getUserManager().findUserBy(userAlias, FindBy.NAME_ALIAS);
+            ClientUser user = context.getUsersManager().findUserBy(userAlias, FindBy.NAME_ALIAS);
             assertThat(singleUserPopover.getUserMail().toLowerCase(), equalTo(user.getEmail()));
         } else {
             if (singleUserPopover.isUserMailVisible()) {
@@ -261,8 +261,8 @@ public class SingleUserPopoverPageSteps {
 
     @Then("^I see all devices of user (.*) on Single User Profile popover$")
     public void ISeeADeviceNamed(String userAlias) throws Exception {
-        ClientUser user = context.getUserManager().findUserByNameOrNameAlias(userAlias);
-        List<String> ids = context.getDeviceManager().getDeviceIds(user);
+        ClientUser user = context.getUsersManager().findUserByNameOrNameAlias(userAlias);
+        List<String> ids = context.getDevicesManager().getDeviceIds(user);
         context.getPagesCollection().getPage(SingleUserPopoverContainer.class).waitForDevices();
         List<String> devices = context.getPagesCollection().getPage(SingleUserPopoverContainer.class).getDeviceIds();
         assertThat("Device id in list", devices, is(ids));
@@ -270,8 +270,8 @@ public class SingleUserPopoverPageSteps {
 
     @Then("^I see device (.*) of user (.*) is verified on Single User Profile popover$")
     public void ISeeADeviceNamed(String deviceName, String userAlias) throws Exception {
-        ClientUser user = context.getUserManager().findUserByNameOrNameAlias(userAlias);
-        String id = context.getDeviceManager().getDeviceId(user, deviceName + context.getTestname().hashCode());
+        ClientUser user = context.getUsersManager().findUserByNameOrNameAlias(userAlias);
+        String id = context.getDevicesManager().getDeviceId(user, deviceName + context.getTestname().hashCode());
         context.getPagesCollection().getPage(SingleUserPopoverContainer.class).waitForDevices();
         List<String> devices = context.getPagesCollection().getPage(SingleUserPopoverContainer.class).getVerifiedDeviceIds();
         assertThat("Device id is NOT in verified devices", devices, hasItem(id.toUpperCase()));
@@ -279,8 +279,8 @@ public class SingleUserPopoverPageSteps {
 
     @When("^I click on device (.*) of user (.*) on Single User Profile popover$")
     public void IClickOnDevice(String deviceName, String userAlias) throws Exception {
-        ClientUser user = context.getUserManager().findUserByNameOrNameAlias(userAlias);
-        String id = context.getDeviceManager().getDeviceId(user, deviceName + context.getTestname().hashCode());
+        ClientUser user = context.getUsersManager().findUserByNameOrNameAlias(userAlias);
+        String id = context.getDevicesManager().getDeviceId(user, deviceName + context.getTestname().hashCode());
         // TODO: workaround to remove leading zeros
         id = id.replaceFirst("^0+(?!$)", "");
         context.getPagesCollection().getPage(SingleUserPopoverContainer.class).clickDevice(id);
@@ -288,7 +288,7 @@ public class SingleUserPopoverPageSteps {
 
     @When("^I see unique username (.*) on Single User popover$")
     public void ISeeUniqueUsernameOnSingleUserPopover(String userAlias) throws Exception {
-        ClientUser user = context.getUserManager().findUserBy(userAlias, FindBy.NAME_ALIAS);
+        ClientUser user = context.getUsersManager().findUserBy(userAlias, FindBy.NAME_ALIAS);
         // username given. strict check for username
         String uniqueUsername = user.getUniqueUsername();
 

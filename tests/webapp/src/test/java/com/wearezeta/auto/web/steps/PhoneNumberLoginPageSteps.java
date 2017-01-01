@@ -27,7 +27,7 @@ public class PhoneNumberLoginPageSteps {
 
     @When("^I sign in using phone number of user (.*)$")
     public void ISignInUsignPhoneNumberOfUser(String name) throws Exception {
-        ClientUser user = context.getUserManager().findUserByNameOrNameAlias(name);
+        ClientUser user = context.getUsersManager().findUserByNameOrNameAlias(name);
         context.getPagesCollection().getPage(PhoneNumberLoginPage.class).enterCountryCode(user.getPhoneNumber().getPrefix());
         context.getPagesCollection().getPage(PhoneNumberLoginPage.class).enterPhoneNumber(user.getPhoneNumber().withoutPrefix());
     }

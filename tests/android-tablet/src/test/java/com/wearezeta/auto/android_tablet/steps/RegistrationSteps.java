@@ -35,7 +35,7 @@ public class RegistrationSteps {
 
     {
         try {
-            userToRegister = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+            userToRegister = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                     .findUserByNameOrNameAlias(ClientUsersManager.NAME_ALIAS_TEMPLATE.apply(1));
         } catch (NoSuchUserException e) {
             Throwables.propagate(e);
@@ -54,7 +54,7 @@ public class RegistrationSteps {
     @When("^I enter (?:the |\\s*)registration name \"(.*)\"$")
     public void IEnterRegistrationName(String name) throws Exception {
         try {
-            name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+            name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                     .findUserByNameOrNameAlias(name).getName();
         } catch (NoSuchUserException e) {
             this.userToRegister.setName(name);
@@ -73,7 +73,7 @@ public class RegistrationSteps {
     @When("^I enter (?:the |\\s*)registration email \"(.*)\"$")
     public void IEnterRegistrationEmail(String email) throws Exception {
         try {
-            email = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+            email = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                     .findUserByEmailOrEmailAlias(email).getEmail();
         } catch (NoSuchUserException e) {
             this.userToRegister.setEmail(email);
@@ -92,7 +92,7 @@ public class RegistrationSteps {
     @When("^I enter (?:the |\\s*)registration password \"(.*)\"$")
     public void IEnterRegistrationPassword(String password) throws Exception {
         try {
-            password = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+            password = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                     .findUserByPasswordAlias(password).getPassword();
         } catch (NoSuchUserException e) {
             this.userToRegister.setPassword(password);
@@ -110,9 +110,9 @@ public class RegistrationSteps {
     public void IStartListeningForRegistrationEmail() throws Exception {
         final Map<String, String> additionalHeaders = new HashMap<>();
         additionalHeaders.put(WireMessage.ZETA_PURPOSE_HEADER_NAME, ActivationMessage.MESSAGE_PURPOSE);
-        if (AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager().isSelfUserSet()) {
+        if (AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager().isSelfUserSet()) {
             registrationMessage = BackendAPIWrappers.initMessageListener(
-                    AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+                    AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                             .getSelfUserOrThrowError(), additionalHeaders);
         } else {
             registrationMessage = BackendAPIWrappers.initMessageListener(userToRegister, additionalHeaders);
@@ -141,8 +141,8 @@ public class RegistrationSteps {
     @Then("^I verify my registration via email$")
     public void IVerifyMyRegistrationData() throws Exception {
         BackendAPIWrappers.activateRegisteredUserByEmail(registrationMessage);
-        if (!AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager().isSelfUserSet()) {
-            AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager().setSelfUser(userToRegister);
+        if (!AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager().isSelfUserSet()) {
+            AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager().setSelfUser(userToRegister);
         }
     }
 

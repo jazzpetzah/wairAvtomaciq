@@ -27,7 +27,7 @@ public class GroupConversationViewPageSteps {
 
     @When("^I can see You Added (.*) message$")
     public void ICanSeeYouAddedContact(String contact) throws Throwable {
-        contact = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        contact = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .findUserByNameOrNameAlias(contact).getName();
         Assert.assertTrue("YOU ADDED contact to group is not shown",
                 getGroupConversationViewPage().isYouAddedUserMessageShown(contact));

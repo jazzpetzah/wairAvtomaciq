@@ -72,7 +72,7 @@ public class SearchPageSteps {
     @When("^I tap on (.*) in Top People$")
     public void ITapInTopPeople(String contact) throws Exception {
         try {
-            contact = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+            contact = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                     .findUserByNameOrNameAlias(contact).getName();
         } catch (NoSuchUserException e) {
             // Ignore silently
@@ -136,19 +136,19 @@ public class SearchPageSteps {
             Exception {
         switch (type) {
             case "user name":
-                text = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+                text = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                         .replaceAliasesOccurences(text, FindBy.NAME_ALIAS);
                 break;
             case "user email":
-                text = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+                text = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                         .replaceAliasesOccurences(text, FindBy.EMAIL_ALIAS);
                 break;
             case "user phone number":
-                text = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+                text = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                         .replaceAliasesOccurences(text, FindBy.PHONENUMBER_ALIAS);
                 break;
             case "unique user name":
-                text = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+                text = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                         .replaceAliasesOccurences(text, FindBy.UNIQUE_USERNAME_ALIAS);
             case "group name":
                 break;
@@ -183,7 +183,7 @@ public class SearchPageSteps {
      */
     @When("^I( do not)? see (user|group)? (.*) in (Liker|Search result|Contact)? list$")
     public void ISeeUser(String shouldNotSee, String group, String contact, String listType) throws Exception {
-        contact = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        contact = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         boolean isGroup = group.toLowerCase().equals("group");
 
@@ -243,7 +243,7 @@ public class SearchPageSteps {
     public void ITapOnUserNameFoundOnSearchPage(String contact)
             throws Exception {
         try {
-            contact = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+            contact = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                     .findUserByNameOrNameAlias(contact).getName();
         } catch (NoSuchUserException e) {
             // Ignore silently
@@ -261,7 +261,7 @@ public class SearchPageSteps {
     @When("^I tap on group found on [Ss]earch page (.*)$")
     public void ITapOnGroupFoundOnSearchPage(String contact)
             throws Exception {
-        contact = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        contact = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         getSearchListPage().tapOnGroupName(contact);
     }
@@ -393,7 +393,7 @@ public class SearchPageSteps {
      */
     @When("^I swipe right on contact avatar (.*) in [Ss]earch$")
     public void ISwipeRightOnContact(String name) throws Exception {
-        name = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        name = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .findUserByNameOrNameAlias(name).getName();
         getSearchListPage().swipeRightOnContactAvatar(name);
     }
@@ -407,7 +407,7 @@ public class SearchPageSteps {
      */
     @When("^I remember the state of (.*) avatar in Contact list$")
     public void IRememberTheStateOfAvatar(String alias) throws Exception {
-        final String name = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        final String name = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .findUserByNameOrNameAlias(alias).getName();
         this.avatarState = new ElementState(
                 () -> getContactListPage().getUserAvatarScreenshot(name).orElseThrow(IllegalStateException::new)
@@ -426,7 +426,7 @@ public class SearchPageSteps {
         if (this.avatarState == null) {
             throw new IllegalStateException("Please take a screenshot of previous avatar state first");
         }
-        final String name = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        final String name = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .findUserByNameOrNameAlias(alias).getName();
         final double minSimilarity = 0.97;
         Assert.assertTrue(String.format("User avatar for '%s' seems to be the same", name),
@@ -442,7 +442,7 @@ public class SearchPageSteps {
      */
     @When("^I tap Invite button next to (.*) in Contact list")
     public void ITapInviteButton(String alias) throws Exception {
-        final String name = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        final String name = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .findUserByNameOrNameAlias(alias).getName();
         getContactListPage().tapInviteButtonFor(name);
     }
@@ -456,7 +456,7 @@ public class SearchPageSteps {
      */
     @When("^I select (.*) email on invitation sending alert$")
     public void ISelectEmailOnInvitationAlert(String alias) throws Exception {
-        final String email = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        final String email = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(alias, ClientUsersManager.FindBy.EMAIL_ALIAS);
         getContactListPage().selectEmailOnAlert(email);
     }
@@ -470,7 +470,7 @@ public class SearchPageSteps {
      */
     @Then("^I verify user (.*) has received (?:an |\\s*)email invitation$")
     public void IVerifyUserReceiverInvitation(String alias) throws Exception {
-        final ClientUser user = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        final ClientUser user = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .findUserByNameOrNameAlias(alias);
         if (!invitationMessages.containsKey(user)) {
             throw new IllegalStateException(String.format("Please start invitation message listener for '%s' first",
@@ -490,7 +490,7 @@ public class SearchPageSteps {
      */
     @When("^I start listening to invitation messages for (.*)")
     public void IStartListeningToInviteMessages(String forUser) throws Exception {
-        final ClientUser user = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        final ClientUser user = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .findUserByNameOrNameAlias(forUser);
         IMAPSMailbox mbox = IMAPSMailbox.getInstance(user.getEmail(), user.getPassword());
         Map<String, String> expectedHeaders = new HashMap<>();
@@ -508,7 +508,7 @@ public class SearchPageSteps {
      */
     @When("^I broadcast the invitation for (.*)")
     public void IBroadcastInvitation(String receiver) throws Exception {
-        final ClientUser user = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        final ClientUser user = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .findUserByEmailOrEmailAlias(receiver);
         if (!invitationMessages.containsKey(user)) {
             throw new IllegalStateException(String.format("There are no invitation messages for user %s",
@@ -536,14 +536,14 @@ public class SearchPageSteps {
                 ResultParameter resultParameter = expectedResultParameters.get(i);
                 String contactName = resultParameter.name;
                 logger.debug(String.format("Searching for username: %s", contactName));
-                String contactActualName = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+                String contactActualName = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                         .replaceAliasesOccurences(contactName, FindBy.NAME_ALIAS);
 
                 if (i > 0) {
                     searchListPage.clearTextInPeopleSearch();
                 }
 
-                String userInfo = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+                String userInfo = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                         .replaceAliasesOccurences(resultParameter.userInfo, FindBy.UNIQUE_USERNAME_ALIAS);
 
                 searchListPage.typeTextInPeopleSearch(contactActualName);

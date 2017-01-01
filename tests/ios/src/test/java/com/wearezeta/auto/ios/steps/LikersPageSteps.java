@@ -1,7 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.ios.common.IOSPagesCollection;
 import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import com.wearezeta.auto.ios.pages.LikersPage;
 import cucumber.api.java.en.And;
@@ -36,7 +35,7 @@ public class LikersPageSteps {
      */
     @Then("^I see user (.*) in likers list(?: at position number )?(\\d+)?$")
     public void ISeeUserInLikersListAtPosition(String name, Integer position) throws Exception {
-        name = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        name = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
         if (position == null) {
             Assert.assertTrue(String.format("User name '%s' is not visible in Likers list", name),

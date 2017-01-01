@@ -46,11 +46,11 @@ public class SearchUIPageSteps {
      */
     @When("^I type \"(.*)\" in (cleared )?Search UI input field( in upper case)?$")
     public void ITypeInSearchInput(String text, String shouldClearBeforeInput, String isUpper) throws Exception {
-        text = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        text = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(text, ClientUsersManager.FindBy.NAME_ALIAS);
-        text = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        text = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(text, ClientUsersManager.FindBy.EMAIL_ALIAS);
-        text = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        text = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(text, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
         getSearchUIPage().typeText((isUpper == null) ? text : text.toUpperCase(),
                 shouldClearBeforeInput != null);
@@ -67,9 +67,9 @@ public class SearchUIPageSteps {
      */
     @When("^I type first (\\d+) letters? of (?:user|conversation) name \"(.*)\" into (cleared )?Search UI input field$")
     public void ITypeXLettersIntoSearchInput(int count, String name, String shouldBeCleared) throws Exception {
-        name = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        name = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
-        name = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        name = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(name, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
         if (name.length() > count) {
             getSearchUIPage().typeText(name.substring(0, count), shouldBeCleared != null);
@@ -89,7 +89,7 @@ public class SearchUIPageSteps {
      */
     @When("^I see the conversation \"(.*)\" (does not )?exists? in Search results$")
     public void ISeeConversationIsFoundInSearchResult(String name, String shouldNotExist) throws Exception {
-        name = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        name = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
         if (shouldNotExist == null) {
             Assert.assertTrue(String.format("The conversation '%s' does not exist in Search results", name),
@@ -110,7 +110,7 @@ public class SearchUIPageSteps {
      */
     @When("^I see the first item in Search result is (.*)$")
     public void ISeeConversationIsFirstSearchResult(String name) throws Exception {
-        name = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        name = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format("Contact %s is NOT first result in search", name),
                 getSearchUIPage().isFirstItemInSearchResult(name));
@@ -148,7 +148,7 @@ public class SearchUIPageSteps {
      */
     @Then("^I tap on (\\d+) top connections? but not (.*)")
     public void WhenITapOnTopConnectionsButNotUser(int numberOfTopConnections, String contact) throws Exception {
-        contact = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        contact = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .findUserByNameOrNameAlias(contact).getName();
         getSearchUIPage().tapNumberOfTopConnectionsButNotUser(numberOfTopConnections, contact);
     }
@@ -184,7 +184,7 @@ public class SearchUIPageSteps {
      */
     @When("^I tap on conversation (.*) in search result$")
     public void ITapOnConversationFromSearch(String name) throws Exception {
-        name = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        name = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .findUserByNameOrNameAlias(name).getName();
         getSearchUIPage().selectElementInSearchResults(name);
     }
@@ -222,7 +222,7 @@ public class SearchUIPageSteps {
      */
     @When("^I tap the instant connect button next to (.*)")
     public void ITapInstantConnectButton(String nameAlias) throws Exception {
-        nameAlias = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        nameAlias = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(nameAlias, ClientUsersManager.FindBy.NAME_ALIAS);
         getSearchUIPage().tapInstantConnectButton(nameAlias);
     }
@@ -283,15 +283,15 @@ public class SearchUIPageSteps {
         final List<String> failuresList = new ArrayList<>();
         for (int i = 1; i < data.size(); i++) {
             String textToEnter = data.get(i).get(0);
-            textToEnter = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+            textToEnter = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                     .replaceAliasesOccurences(textToEnter, ClientUsersManager.FindBy.NAME_ALIAS);
-            textToEnter = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+            textToEnter = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                     .replaceAliasesOccurences(textToEnter, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
             getSearchUIPage().typeText(textToEnter, i > 1);
             String expectedDetails = data.get(i).get(1);
-            expectedDetails = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+            expectedDetails = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                     .replaceAliasesOccurences(expectedDetails, ClientUsersManager.FindBy.NAME_ALIAS);
-            expectedDetails = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+            expectedDetails = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                     .replaceAliasesOccurences(expectedDetails, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
             if (!getSearchUIPage().isSearchResultDetailsVisible(textToEnter, expectedDetails)) {
                 failuresList.add(String.format("The expected details string '%s' is not shown for search result '%s'",

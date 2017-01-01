@@ -78,7 +78,7 @@ public class CallIncomingPageSteps {
      */
     @When("^I see incoming call from (.*)$")
     public void ISeeIncomingCallingMesage(String expectedCallerName) throws Exception {
-        expectedCallerName = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+        expectedCallerName = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .findUserByNameOrNameAlias(expectedCallerName).getName();
         Assert.assertTrue(String.format(
                 "The current caller name differs from the expected value '%s'",

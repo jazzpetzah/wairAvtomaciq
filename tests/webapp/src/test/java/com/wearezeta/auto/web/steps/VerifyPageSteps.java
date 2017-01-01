@@ -42,7 +42,7 @@ public class VerifyPageSteps {
 
     @When("^I generate verification code for user (.*)$")
     public void IGenerateVerificationCode(String name) throws Exception {
-        ClientUser user = context.getUserManager().findUserByNameOrNameAlias(name);
+        ClientUser user = context.getUsersManager().findUserByNameOrNameAlias(name);
         phoneVerificationCode = BackendAPIWrappers.getActivationCodeByPhoneNumber(user.getPhoneNumber());
     }
 

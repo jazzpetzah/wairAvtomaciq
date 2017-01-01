@@ -23,7 +23,7 @@ public class ContactListPageSteps {
     
     @Given("^I open context menu of conversation (.*)$")
     public void IOpenContextMenuOfContact(String name) throws Exception {
-        name = webContext.getUserManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        name = webContext.getUsersManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
         ContactListPage contactListPage = webContext.getPagesCollection(WebappPagesCollection.class).getPage(
                 ContactListPage.class);
         Assert.assertTrue("No contact list loaded.", contactListPage.waitForContactListVisible());

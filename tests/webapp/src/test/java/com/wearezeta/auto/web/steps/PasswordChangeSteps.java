@@ -35,7 +35,7 @@ public class PasswordChangeSteps {
 
     @When("^I enter password (\\S+) on Password Change page$")
     public void IEnterPassword(String passwordOrAlias) throws Exception {
-        passwordOrAlias = context.getUserManager().replaceAliasesOccurences(passwordOrAlias,
+        passwordOrAlias = context.getUsersManager().replaceAliasesOccurences(passwordOrAlias,
                 FindBy.PASSWORD_ALIAS);
         context.getPagesCollection().getPage(PasswordChangePage.class).setNewPassword(
                 passwordOrAlias);

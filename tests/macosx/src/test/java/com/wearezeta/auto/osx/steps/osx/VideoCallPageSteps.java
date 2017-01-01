@@ -81,8 +81,8 @@ public class VideoCallPageSteps {
 
     @Then("^I verify (.*) sees my screen$")
     public void IVerifyUserXVideoShowsScreen(String callees) throws Exception {
-        for (String callee : webContext.getUserManager().splitAliases(callees)) {
-            final ClientUser userAs = webContext.getUserManager().findUserByNameOrNameAlias(callee);
+        for (String callee : webContext.getUsersManager().splitAliases(callees)) {
+            final ClientUser userAs = webContext.getUsersManager().findUserByNameOrNameAlias(callee);
 
             // get screenshot from remote user
             BufferedImage remoteScreenshot = webContext.getCallingManager().getScreenshot(userAs);

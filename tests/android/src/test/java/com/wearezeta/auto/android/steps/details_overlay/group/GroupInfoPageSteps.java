@@ -49,7 +49,7 @@ public class GroupInfoPageSteps {
     @When("^I tap on contact (.*) on Group info page$")
     public void ITapOnContact(String contact) throws Exception {
         try {
-            contact = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+            contact = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                     .findUserByNameOrNameAlias(contact).getName();
         } catch (NoSuchUserException e) {
             // Ignore silently
@@ -89,9 +89,9 @@ public class GroupInfoPageSteps {
      */
     @Then("^I see the( verified)? participant avatars? for (.*) on Group info page")
     public void ISeeCorrectParticipantAvatars(String checkVerifiedContact, String contacts) throws Exception {
-        for (String userName : AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        for (String userName : AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .splitAliases(contacts)) {
-            userName = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+            userName = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                     .findUserByNameOrNameAlias(userName).getName();
             if (checkVerifiedContact == null) {
                 Assert.assertTrue(String.format("The avatar for '%s' is not visible", userName),
@@ -113,7 +113,7 @@ public class GroupInfoPageSteps {
      */
     @Then("^I( do not)? see participant (.*) on Group info page$")
     public void ISeeContact(String shouldNotSee, String userName) throws Exception {
-        userName = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        userName = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .findUserByNameOrNameAlias(userName).getName();
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("Participant %s is invisible", userName),

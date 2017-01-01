@@ -29,17 +29,17 @@ public class LoginPageSteps {
     public void ISignInUsingLoginAndPassword(String temporary, String login, String password)
             throws Exception {
         try {
-            login = context.getUserManager().findUserByEmailOrEmailAlias(login).getEmail();
+            login = context.getUsersManager().findUserByEmailOrEmailAlias(login).getEmail();
         } catch (NoSuchUserException e) {
             try {
                 // search for email by name aliases in case name is specified
-                login = context.getUserManager().findUserByNameOrNameAlias(login).getEmail();
+                login = context.getUsersManager().findUserByNameOrNameAlias(login).getEmail();
             } catch (NoSuchUserException ex) {
             }
         }
 
         try {
-            password = context.getUserManager().findUserByPasswordAlias(password).getPassword();
+            password = context.getUsersManager().findUserByPasswordAlias(password).getPassword();
         } catch (NoSuchUserException e) {
             // Ignore silently
         }
@@ -97,7 +97,7 @@ public class LoginPageSteps {
     @When("^I enter email \"([^\"]*)\"$")
     public void IEnterEmail(String email) throws Exception {
         try {
-            email = context.getUserManager().findUserByEmailOrEmailAlias(email).getEmail();
+            email = context.getUsersManager().findUserByEmailOrEmailAlias(email).getEmail();
         } catch (NoSuchUserException e) {
             // Ignore silently
         }
@@ -106,7 +106,7 @@ public class LoginPageSteps {
 
     @When("^I enter phone number \"([^\"]*)\"$")
     public void IEnterPhoneNumber(String phoneNumber) throws Exception {
-        phoneNumber = context.getUserManager().replaceAliasesOccurences(phoneNumber,
+        phoneNumber = context.getUsersManager().replaceAliasesOccurences(phoneNumber,
                 ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
         context.getPagesCollection().getPage(LoginPage.class).inputEmail(phoneNumber);
     }
@@ -114,7 +114,7 @@ public class LoginPageSteps {
     @When("^I enter password \"([^\"]*)\"$")
     public void IEnterPassword(String password) throws Exception {
         try {
-            password = context.getUserManager().findUserByPasswordAlias(password).getPassword();
+            password = context.getUsersManager().findUserByPasswordAlias(password).getPassword();
         } catch (NoSuchUserException e) {
             // Ignore silently
         }

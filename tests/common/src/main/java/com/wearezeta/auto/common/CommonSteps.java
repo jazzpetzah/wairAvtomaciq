@@ -5,7 +5,6 @@ import com.wearezeta.auto.common.backend.*;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.Timedelta;
-import com.wearezeta.auto.common.test_context.TestContext;
 import com.wearezeta.auto.common.wire_actors.ActorsRESTWrapper;
 import com.wearezeta.auto.common.wire_actors.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
@@ -18,7 +17,6 @@ import org.junit.Assert;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.function.Supplier;
 
 import static javax.xml.bind.DatatypeConverter.parseDateTime;
 import static org.hamcrest.CoreMatchers.not;
@@ -40,18 +38,20 @@ public final class CommonSteps {
     private static final int BACKEND_SUGGESTIONS_SYNC_TIMEOUT = 240; // seconds
     private static final int BACKEND_COMMON_CONTACTS_SYNC_TIMEOUT = 240; // seconds
 
-    private Supplier<TestContext> testContextSupplier;
+    private final ClientUsersManager usersManager;
+    private final SEBridge devicesManager;
 
     private ClientUsersManager getUserManager() {
-        return this.testContextSupplier.get().getUserManager();
+        return this.usersManager;
     }
 
     private SEBridge getDeviceManager() {
-        return this.testContextSupplier.get().getDeviceManager();
+        return this.devicesManager;
     }
 
-    public CommonSteps(Supplier<TestContext> testContextSupplier) {
-        this.testContextSupplier = testContextSupplier;
+    public CommonSteps(ClientUsersManager usersManager, SEBridge devicesManager) {
+        this.usersManager = usersManager;
+        this.devicesManager = devicesManager;
     }
 
     public void ConnectionRequestIsSentTo(String userFromNameAlias,

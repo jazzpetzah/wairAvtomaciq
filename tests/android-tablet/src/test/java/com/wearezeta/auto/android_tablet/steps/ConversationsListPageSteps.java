@@ -94,7 +94,7 @@ public class ConversationsListPageSteps {
      */
     @When("^I tap (?:the )conversation (.*)")
     public void ITapConversation(String name) throws Exception {
-        name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+        name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         getConversationsListPage().tapConversation(name);
     }
@@ -112,7 +112,7 @@ public class ConversationsListPageSteps {
     @Then("^I (do not )?see (?:the |\\s*)conversation (.*) in my conversations list$")
     public void ISeeOrNotTheConversation(String shouldNotSee, String name)
             throws Exception {
-        name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+        name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format(
@@ -140,7 +140,7 @@ public class ConversationsListPageSteps {
     @Then("^I see (?:the) conversation (.*) in my conversations list is (not )?silenced$")
     public void ISeeConversationSilenced(String name, String shouldNotBeSilenced)
             throws Exception {
-        name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+        name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         if (shouldNotBeSilenced == null) {
             Assert.assertTrue(
@@ -168,7 +168,7 @@ public class ConversationsListPageSteps {
     @Then("^I (do not )?see missed call notification near (.*) conversations list item$")
     public void ISeeMissedCallNotification(String shouldNotSee, String convoName)
             throws Exception {
-        convoName = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+        convoName = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
         if (shouldNotSee == null) {
             Assert.assertTrue(
@@ -233,7 +233,7 @@ public class ConversationsListPageSteps {
      */
     @When("^I see (?:Play|Pause) button next to the conversation name (.*)")
     public void ISeePlayPauseButton(String convoName) throws Exception {
-        convoName = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+        convoName = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
         Assert.assertTrue(
                 String.format(
@@ -255,7 +255,7 @@ public class ConversationsListPageSteps {
      */
     @When("^I remember the state of (?:Play|Pause) button next to the conversation name (.*)")
     public void IRememberTheStateOfPlayPauseButton(String convoName) throws Exception {
-        final String name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+        final String name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
         playPauseBtnStates.put(name, new ElementState(
                 () -> getConversationsListPage().getScreenshotOfPlayPauseButton(
@@ -277,7 +277,7 @@ public class ConversationsListPageSteps {
      */
     @Then("^I see the state of (?:Play|Pause) button next to the conversation name (.*) is changed$")
     public void ISeeThePlayPauseButtonStateIsChanged(String convoName) throws Exception {
-        convoName = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+        convoName = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
         if (!playPauseBtnStates.containsKey(convoName)) {
             throw new IllegalStateException(String.format(
@@ -299,7 +299,7 @@ public class ConversationsListPageSteps {
      */
     @When("^I tap (?:Play|Pause) button next to the conversation name (.*)")
     public void ITapPlayPauseButton(String convoName) throws Exception {
-        convoName = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+        convoName = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
         getConversationsListPage().tapPlayPauseMediaButton(playPauseButtonCoords.get(convoName));
     }
@@ -315,7 +315,7 @@ public class ConversationsListPageSteps {
      */
     @When("^I remember the coordinates of conversation item (.*)")
     public void IRememberConvoItemCoords(String convoName) throws Exception {
-        convoName = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+        convoName = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
         playPauseButtonCoords.put(convoName, getConversationsListPage().calcPlayPauseButtonCoordinates(convoName));
     }
@@ -329,7 +329,7 @@ public class ConversationsListPageSteps {
      */
     @When("^I open options menu of (.*) on conversation list page$")
     public void iLongPressOnAUser(String contact) throws Exception {
-        contact = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+        contact = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         int nTies = 3;
         //Just because it is not stable

@@ -26,9 +26,9 @@ public class SingleUserIncomingPendingConnectionPageSteps {
      */
     @Then("^I (do not )?see (unique username|name|Address Book name|common friends count) (\".*\" |\\s*)on Single user Pending incoming connection page$")
     public void ISeeLabel(String shouldNotSee, String fieldType, String value) throws Exception {
-        value = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        value = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(value, ClientUsersManager.FindBy.NAME_ALIAS);
-        value = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        value = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(value, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
         if (shouldNotSee == null) {
             if (value.startsWith("\"")) {

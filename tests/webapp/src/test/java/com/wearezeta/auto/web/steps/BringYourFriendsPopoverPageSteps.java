@@ -58,7 +58,7 @@ public class BringYourFriendsPopoverPageSteps {
 
     @When("^I see username starting with (.*) in invitation on Bring Your Friends popover$")
     public void ISeeUsernameInInvitation(String username) throws Exception {
-        username = context.getUserManager().replaceAliasesOccurences(username, ClientUsersManager.FindBy.NAME_ALIAS);
+        username = context.getUsersManager().replaceAliasesOccurences(username, ClientUsersManager.FindBy.NAME_ALIAS);
         Assert.assertEquals("Usernames are different in invitation on Bring your friend popover", username, context.getPagesCollection().getPage(
                 BringYourFriendsPopoverPage.class).getUsernameFromInvitation());
     }

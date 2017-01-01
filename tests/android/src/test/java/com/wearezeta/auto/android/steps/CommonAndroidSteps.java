@@ -225,7 +225,7 @@ public class CommonAndroidSteps {
         AppiumServer.getInstance().resetLog();
 
         if (scenario.getSourceTagNames().contains("@useSpecialEmail")) {
-            testContext.getUserManager().useSpecialEmail();
+            testContext.getUsersManager().useSpecialEmail();
         }
 
         isAutoAcceptOfSecurityAlertsEnabled = !scenario.getSourceTagNames().contains("@noAcceptAlert");
@@ -562,7 +562,7 @@ public class CommonAndroidSteps {
     public void UserHasAnAvatarPicture(String name, String picture) throws Exception {
         String picturePath = CommonUtils.getImagesPathFromConfig(getClass()) + picture;
         try {
-            name = AndroidTestContextHolder.getInstance().getTestContext().getUserManager().findUserByNameOrNameAlias(name).getName();
+            name = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager().findUserByNameOrNameAlias(name).getName();
         } catch (NoSuchUserException e) {
             // Ignore silently
         }
@@ -580,7 +580,7 @@ public class CommonAndroidSteps {
     @Given("^(.*) has an accent color (.*)$")
     public void UserHasAnAccentColor(String name, String colorName) throws Throwable {
         try {
-            name = AndroidTestContextHolder.getInstance().getTestContext().getUserManager().findUserByNameOrNameAlias(name).getName();
+            name = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager().findUserByNameOrNameAlias(name).getName();
         } catch (NoSuchUserException e) {
             // Ignore silently
         }
@@ -598,7 +598,7 @@ public class CommonAndroidSteps {
     @Given("^(.*) has a name (.*)$")
     public void UserHasAName(String name, String newName) throws Throwable {
         try {
-            name = AndroidTestContextHolder.getInstance().getTestContext().getUserManager().findUserByNameOrNameAlias(name).getName();
+            name = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager().findUserByNameOrNameAlias(name).getName();
         } catch (NoSuchUserException e) {
             // Ignore silently
         }
@@ -632,8 +632,8 @@ public class CommonAndroidSteps {
      */
     @Given("^(.*) is silenced to user (.*)$")
     public void UserIsSilenced(String mutedUser, String otherUser) throws Exception {
-        mutedUser = AndroidTestContextHolder.getInstance().getTestContext().getUserManager().findUserByNameOrNameAlias(mutedUser).getName();
-        otherUser = AndroidTestContextHolder.getInstance().getTestContext().getUserManager().findUserByNameOrNameAlias(otherUser).getName();
+        mutedUser = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager().findUserByNameOrNameAlias(mutedUser).getName();
+        otherUser = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager().findUserByNameOrNameAlias(otherUser).getName();
         AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().MuteConversationWithUser(otherUser, mutedUser);
     }
 
@@ -647,9 +647,9 @@ public class CommonAndroidSteps {
      */
     @Given("^Group (.*) gets silenced for user (.*)$")
     public void GroupGetsSilenced(String mutedGroup, String otherUser) throws Throwable {
-        mutedGroup = AndroidTestContextHolder.getInstance().getTestContext().getUserManager().replaceAliasesOccurences(mutedGroup,
+        mutedGroup = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager().replaceAliasesOccurences(mutedGroup,
                 ClientUsersManager.FindBy.NAME_ALIAS);
-        otherUser = AndroidTestContextHolder.getInstance().getTestContext().getUserManager().findUserByNameOrNameAlias(otherUser).getName();
+        otherUser = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager().findUserByNameOrNameAlias(otherUser).getName();
         AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().MuteConversationWithGroup(otherUser, mutedGroup);
     }
 
@@ -664,7 +664,7 @@ public class CommonAndroidSteps {
      */
     @Given("^(.*) is unarchived group chat (.*)$")
     public void UserIsUnarchivedGroupChat(String currentUser, String groupChat) throws Exception {
-        currentUser = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        currentUser = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .findUserByNameOrNameAlias(currentUser).getName();
         AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UnarchiveConversationWithGroup(currentUser, groupChat);
     }
@@ -1048,14 +1048,14 @@ public class CommonAndroidSteps {
     public void IImportUserIntoAddressBook(String alias, String withCustomName, String customName, String withInfo,
                                            String infoType) throws Exception {
         //TODO: Robin handle when custom name contains space
-        String name = AndroidTestContextHolder.getInstance().getTestContext().getUserManager().findUserByNameOrNameAlias(alias).getName();
+        String name = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager().findUserByNameOrNameAlias(alias).getName();
         if (withCustomName != null) {
             name = customName;
         }
         if (withInfo != null) {
-            final String email = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+            final String email = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                     .findUserByNameOrNameAlias(alias).getEmail();
-            final PhoneNumber phoneNumber = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+            final PhoneNumber phoneNumber = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                     .findUserByNameOrNameAlias(alias).getPhoneNumber();
             AndroidCommonUtils.insertContact(name, email, phoneNumber, infoType);
         } else {
@@ -1118,9 +1118,9 @@ public class CommonAndroidSteps {
      */
     @Given("^(.*) removes (.*) from group (.*)$")
     public void UserXRemovesUserYFromGroup(String user1, String user2, String group) throws Exception {
-        user1 = AndroidTestContextHolder.getInstance().getTestContext().getUserManager().findUserByNameOrNameAlias(user1).getName();
-        user2 = AndroidTestContextHolder.getInstance().getTestContext().getUserManager().findUserByNameOrNameAlias(user2).getName();
-        group = AndroidTestContextHolder.getInstance().getTestContext().getUserManager().replaceAliasesOccurences(group,
+        user1 = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager().findUserByNameOrNameAlias(user1).getName();
+        user2 = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager().findUserByNameOrNameAlias(user2).getName();
+        group = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager().replaceAliasesOccurences(group,
                 ClientUsersManager.FindBy.NAME_ALIAS);
         AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserXRemoveContactFromGroupChat(user1, user2, group);
     }
@@ -1148,7 +1148,7 @@ public class CommonAndroidSteps {
      */
     @When("^User (.*) adds new devices? (.*)$")
     public void UserAddRemoteDeviceToAccount(String userNameAlias, String deviceNames) throws Exception {
-        final List<String> names = AndroidTestContextHolder.getInstance().getTestContext().getUserManager().splitAliases(deviceNames);
+        final List<String> names = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager().splitAliases(deviceNames);
         final int poolSize = 2;  // Runtime.getRuntime().availableProcessors()
         final ExecutorService pool = Executors.newFixedThreadPool(poolSize);
         for (String name : names) {
@@ -1216,7 +1216,7 @@ public class CommonAndroidSteps {
     @Then("^I see alert message containing (pure text )?\"(.*)\" in the (title|body)$")
     public void ISeeAlertMessage(String pureText, String expectedMsg, String location) throws Exception {
         if (pureText == null) {
-            expectedMsg = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+            expectedMsg = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                     .replaceAliasesOccurences(expectedMsg, ClientUsersManager.FindBy.NAME_ALIAS);
         }
         switch (location.toLowerCase()) {
@@ -1806,7 +1806,7 @@ public class CommonAndroidSteps {
      */
     @When("^User (.*) resets password to \"(.*)\"$")
     public void UserXRestesPassword(String userNmaeAlias, String newPassword) throws Exception {
-        newPassword = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        newPassword = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(newPassword, ClientUsersManager.FindBy.PASSWORD_ALIAS);
         AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserResetsPassword(userNmaeAlias, newPassword);
     }
@@ -1853,7 +1853,7 @@ public class CommonAndroidSteps {
                 }
                 // Exclude quotes
                 uniqUsername = uniqUsername.substring(5, uniqUsername.length() - 1);
-                uniqUsername = AndroidTestContextHolder.getInstance().getTestContext().getUserManager().replaceAliasesOccurences(uniqUsername,
+                uniqUsername = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager().replaceAliasesOccurences(uniqUsername,
                         ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
                 if (deviceName == null) {
                     AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().IChangeUniqueUsername(userAs, uniqUsername);
@@ -1892,9 +1892,9 @@ public class CommonAndroidSteps {
      */
     @When("^I remember the state of the recent message from user (.*) in the local database$")
     public void IRememberMessageStateInLocalDatabase(String fromContact) throws Exception {
-        final ClientUser dstUser = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        final ClientUser dstUser = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .findUserByNameOrNameAlias(fromContact);
-        final ClientUser myself = AndroidTestContextHolder.getInstance().getTestContext().getUserManager().getSelfUserOrThrowError();
+        final ClientUser myself = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager().getSelfUserOrThrowError();
         final WireDatabase db = new WireDatabase();
         this.recentMsgId = db.getRecentMessageId(myself, dstUser).orElseThrow(
                 () -> new IllegalStateException(

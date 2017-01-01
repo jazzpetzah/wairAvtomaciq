@@ -24,9 +24,9 @@ public class GroupParticipantOutgoingPendingConnectionPageSteps {
      */
     @Then("^I (do not )?see (unique username|Address Book name|name|common friends count) (\".*\" |\\s*)on Group participant Pending outgoing connection page$")
     public void ISeeLabel(String shouldNotSee, String fieldType, String value) throws Exception {
-        value = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        value = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(value, ClientUsersManager.FindBy.NAME_ALIAS);
-        value = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        value = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(value, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
         if (shouldNotSee == null) {
             if (value.startsWith("\"")) {

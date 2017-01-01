@@ -20,7 +20,7 @@ public class AddEmailAddressPageSteps {
     @When("^I enter email of user (.*) on add email address dialog$")
     public void IEnterEmailOfUserOnAddEmailAddressDialog(String name)
             throws Throwable {
-        ClientUser user = context.getUserManager().findUserByNameOrNameAlias(name);
+        ClientUser user = context.getUsersManager().findUserByNameOrNameAlias(name);
         context.getPagesCollection().getPage(AddEmailAddressPage.class).setEmail(
                 user.getEmail());
     }

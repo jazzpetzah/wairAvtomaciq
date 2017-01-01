@@ -18,7 +18,7 @@ public class CallPageSteps {
 
     @And("^I( do not)? see the( incoming| outgoing| ongoing| join)? call controls for conversation (.*)$")
     public void ISeeCallControlsForConversation(String doNot, String direction, String conversation) throws Exception {
-        conversation = context.getUserManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
+        conversation = context.getUsersManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
         CallPage page = context.getPagesCollection().getPage(CallPage.class);
         if (doNot == null) {
             if (direction.equals(" incoming")) {
@@ -43,22 +43,22 @@ public class CallPageSteps {
     @And("^I see row of avatars on call controls with users? (.*)$")
     public void ISeeRowOfAvatarsOnCall(String participants) throws Exception {
         CallPage page = context.getPagesCollection().getPage(CallPage.class);
-        for (String alias : context.getUserManager().splitAliases(participants)) {
-            String id = context.getUserManager().findUserByNameOrNameAlias(alias).getId();
+        for (String alias : context.getUsersManager().splitAliases(participants)) {
+            String id = context.getUsersManager().findUserByNameOrNameAlias(alias).getId();
             assertThat(String.format("Avatar of user %s not visible", alias), page.isAvatarVisibleInCallControls(id));
         }
     }
 
     @And("^I accept the call from conversation (.*)$")
     public void IClickAcceptCallButtonInConversationView(String conversation) throws Exception {
-        conversation = context.getUserManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
+        conversation = context.getUsersManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
         context.getPagesCollection().getPage(CallPage.class)
                 .clickAcceptCallButton(conversation);
     }
 
     @And("^I ignore the call from conversation (.*)$")
     public void IClickDeclineCallButtonInConversationView(String conversation) throws Exception {
-        conversation = context.getUserManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
+        conversation = context.getUsersManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
         context.getPagesCollection().getPage(CallPage.class)
                 .clickDeclineCallButton(conversation);
     }
@@ -70,7 +70,7 @@ public class CallPageSteps {
 
     @When("^I( do not)? see mute call button for conversation (.*)")
     public void ISeeMuteCallButton(String doNot, String conversation) throws Exception {
-        conversation = context.getUserManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
+        conversation = context.getUsersManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
         CallPage contactListPage = context.getPagesCollection()
                 .getPage(CallPage.class);
         if (doNot == null) {
@@ -84,7 +84,7 @@ public class CallPageSteps {
 
     @When("^I( do not)? see video button for conversation (.*)")
     public void ISeeVideoButton(String doNot, String conversation) throws Exception {
-        conversation = context.getUserManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
+        conversation = context.getUsersManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
         CallPage contactListPage = context.getPagesCollection()
                 .getPage(CallPage.class);
         if (doNot == null) {
@@ -98,7 +98,7 @@ public class CallPageSteps {
 
     @When("^I( do not)? see hang up button for conversation (.*)$")
     public void ISeeEndCallButton(String doNot, String conversation) throws Exception {
-        conversation = context.getUserManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
+        conversation = context.getUsersManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
         CallPage contactListPage = context.getPagesCollection()
                 .getPage(CallPage.class);
         if (doNot == null) {
@@ -112,7 +112,7 @@ public class CallPageSteps {
 
     @When("^I hang up call with conversation (.*)$")
     public void IClickEndCallButton(String conversation) throws Exception {
-        conversation = context.getUserManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
+        conversation = context.getUsersManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
         CallPage contactListPage = context.getPagesCollection()
                 .getPage(CallPage.class);
         contactListPage.clickEndCallButton(conversation);
@@ -132,7 +132,7 @@ public class CallPageSteps {
 
     @When("^I( do not)? see accept video call button for conversation (.*)")
     public void ISeeAcceptVideoCallButton(String doNot, String conversation) throws Exception {
-        conversation = context.getUserManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
+        conversation = context.getUsersManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
         CallPage contactListPage = context.getPagesCollection()
                 .getPage(CallPage.class);
         if (doNot == null) {
@@ -146,7 +146,7 @@ public class CallPageSteps {
 
     @When("^I( do not)? see decline call button for conversation (.*)")
     public void ISeeDeclineCallButton(String doNot, String conversation) throws Exception {
-        conversation = context.getUserManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
+        conversation = context.getUsersManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
         CallPage contactListPage = context.getPagesCollection()
                 .getPage(CallPage.class);
         if (doNot == null) {
@@ -160,7 +160,7 @@ public class CallPageSteps {
 
     @When("^I( do not)? see join call button for conversation (.*)")
     public void ISeeJoinCallButton(String doNot, String conversation) throws Exception {
-        conversation = context.getUserManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
+        conversation = context.getUsersManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
         CallPage contactListPage = context.getPagesCollection()
                 .getPage(CallPage.class);
         if (doNot == null) {
@@ -174,7 +174,7 @@ public class CallPageSteps {
 
     @When("^I click mute call button for conversation (.*)$")
     public void IClickMuteCallButton(String conversation) throws Exception {
-        conversation = context.getUserManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
+        conversation = context.getUsersManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
         CallPage contactListPage = context.getPagesCollection()
                 .getPage(CallPage.class);
         contactListPage.clickMuteCallButton(conversation);
@@ -183,7 +183,7 @@ public class CallPageSteps {
     @When("^I see mute button for conversation (.*) is( not)? pressed$")
     public void ISeeMuteButtonNotPressed(String conversation, String doNot)
             throws Exception {
-        conversation = context.getUserManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
+        conversation = context.getUsersManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
         CallPage contactListPage = context.getPagesCollection()
                 .getPage(CallPage.class);
         if (doNot == null) {
@@ -197,7 +197,7 @@ public class CallPageSteps {
 
     @When("^I click upgrade to video call button for conversation (.*)$")
     public void IClickVideoCallButton(String conversation) throws Exception {
-        conversation = context.getUserManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
+        conversation = context.getUsersManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
         CallPage page = context.getPagesCollection().getPage(CallPage.class);
         page.clickVideoCallButton(conversation);
     }

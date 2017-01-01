@@ -68,7 +68,7 @@ public class ConversationViewPageSteps {
     @Then("^I see the system message contains \"(.*)\" text on [Cc]onversation view page$")
     public void ISeeTheLastSystemMessage(String expectedMessage)
             throws Exception {
-        expectedMessage = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+        expectedMessage = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(expectedMessage, FindBy.NAME_ALIAS);
         Assert.assertTrue(
                 String.format(
@@ -88,7 +88,7 @@ public class ConversationViewPageSteps {
     @Then("^I see the conversation name system message \"(.*)\" on [Cc]onversation view page$")
     public void ISeeTheConversationNameSystemMessage(String expectedMessage)
             throws Exception {
-        expectedMessage = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+        expectedMessage = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(expectedMessage, FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format(
                 "The conversation name system message does not equal to '%s'",
@@ -107,7 +107,7 @@ public class ConversationViewPageSteps {
     @Then("^I see the system connection message contains \"(.*)\" text on [Cc]onversation view page$")
     public void ISeeTheSystemConnectionMessage(String expectedMessage)
             throws Exception {
-        expectedMessage = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+        expectedMessage = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(expectedMessage, FindBy.NAME_ALIAS);
         Assert.assertTrue(
                 String.format(
@@ -129,7 +129,7 @@ public class ConversationViewPageSteps {
     @Then("^I see the outgoing invitation message \"(.*)\" on [Cc]onversation view page$")
     public void ISeeOutgoungInvitationMessage(String expectedMessage)
             throws Exception {
-        expectedMessage = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+        expectedMessage = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(expectedMessage, FindBy.NAME_ALIAS);
         Assert.assertTrue(
                 String.format(
@@ -290,7 +290,7 @@ public class ConversationViewPageSteps {
     @Then("^I (do not )?see the [Pp]ing message \"(.*)\" in (?:the |\\s*)[Cc]onversation view$")
     public void ISeePingMessage(String shouldNotBeVisible,
                                 String expectedMessage) throws Exception {
-        expectedMessage = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+        expectedMessage = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(expectedMessage, FindBy.NAME_ALIAS);
         if (shouldNotBeVisible == null) {
             Assert.assertTrue(
@@ -526,7 +526,7 @@ public class ConversationViewPageSteps {
      */
     @When("^I (long tap|double tap|tap) the (Ping|Text) message \"(.*)\" in the conversation view$")
     public void ITapTheNonTextMessage(String tapType, String messageType, String message) throws Exception {
-        message = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+        message = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
         getConversationViewPage().tapMessage(messageType, message, tapType);
     }
@@ -750,7 +750,7 @@ public class ConversationViewPageSteps {
                 expectedMsg = ANY_MESSAGE;
                 isVisible = getConversationViewPage().waitUntilMessageMetaItemVisible(itemType);
             } else {
-                expectedMsg = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+                expectedMsg = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                         .replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
                 isVisible = getConversationViewPage().waitUntilMessageMetaItemVisible(itemType, expectedMsg);
             }
@@ -759,7 +759,7 @@ public class ConversationViewPageSteps {
                 expectedMsg = ANY_MESSAGE;
                 isVisible = !getConversationViewPage().waitUntilMessageMetaItemInvisible(itemType);
             } else {
-                expectedMsg = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+                expectedMsg = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                         .replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
                 isVisible = !getConversationViewPage().waitUntilMessageMetaItemInvisible(itemType, expectedMsg);
             }
@@ -839,7 +839,7 @@ public class ConversationViewPageSteps {
      */
     @Then("^I (do not )?see the trashcan next to the name of (.*) in the conversation view$")
     public void ISeeTrashNextToName(String shouldNotSee, String name) throws Exception {
-        name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+        name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("Cannot see the trashcan next to the name '%s'", name),
@@ -860,7 +860,7 @@ public class ConversationViewPageSteps {
      */
     @Then("^I (do not )?see the pen icon next to the name of (.*) in the conversation view$")
     public void ISeePenNextToName(String shouldNotSee, String name) throws Exception {
-        name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+        name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("Cannot see the Pen icon next to the name '%s'", name),

@@ -106,8 +106,8 @@ public class DeviceListPageSteps {
      */
     @Then("^I verify all device ids of user (.*) are shown on Device list page$")
     public void IVerifyAllDeviceIdsOfUserXAreShown(String user) throws Exception {
-        List<String> expectedDeviceIds = AndroidTestContextHolder.getInstance().getTestContext().getDeviceManager()
-                .getDeviceIds(AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        List<String> expectedDeviceIds = AndroidTestContextHolder.getInstance().getTestContext().getDevicesManager()
+                .getDeviceIds(AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                         .findUserByNameOrNameAlias(user));
         List<String> actualDeviceIds = getDeviceListPage().getParticipantDevices();
         Assert.assertThat("List does not contain all device ids", actualDeviceIds, is(expectedDeviceIds));

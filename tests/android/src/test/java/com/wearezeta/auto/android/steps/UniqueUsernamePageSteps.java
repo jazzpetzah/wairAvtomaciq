@@ -30,7 +30,7 @@ public class UniqueUsernamePageSteps {
     public void iSeeUsernameEdit(String shouldNotSee, String uniqueUsernameExpected, String uniqueUsername, String
             in) throws Exception {
         if (uniqueUsernameExpected != null) {
-            uniqueUsername = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+            uniqueUsername = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                     .replaceAliasesOccurences(uniqueUsername, FindBy.UNIQUE_USERNAME_ALIAS);
         }
 
@@ -93,9 +93,9 @@ public class UniqueUsernamePageSteps {
      */
     @Then("^I set new [Uu]nique [Uu]sername \"(.*)\" on Settings page$")
     public void iEnterNewUsernameOnSettingsPage(String username) throws Exception {
-        username = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        username = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(username, FindBy.NAME_ALIAS);
-        username = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        username = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(username, FindBy.UNIQUE_USERNAME_ALIAS);
         UniqueUsernamePage uniqueUsernamePage = getUniqueUsernamePage();
         uniqueUsernamePage.enterNewUsername(username);
@@ -131,7 +131,7 @@ public class UniqueUsernamePageSteps {
             uniqueUsernamePage.tapButton("OK");
             Assert.assertTrue("Username edit is visible", getUniqueUsernamePage().isUsernameEditInvisible());
         } finally {
-            uniqueUsername = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+            uniqueUsername = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                     .replaceAliasesOccurences(uniqueUsername,
                     FindBy.UNIQUE_USERNAME_ALIAS);
             AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps()

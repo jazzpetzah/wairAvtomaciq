@@ -70,7 +70,7 @@ public class PerformanceSteps {
     @Given("^I select random contact for the performance test$")
     public void ISelectRandomContact() throws Exception {
         final int contactIndex = 2 + rand.nextInt(AndroidTestContextHolder.getInstance().getTestContext()
-                .getUserManager().getCreatedUsers().size() - 1);
+                .getUsersManager().getCreatedUsers().size() - 1);
         this.randomContactAlias = Optional.of(ClientUsersManager.NAME_ALIAS_TEMPLATE.apply(contactIndex));
     }
 
@@ -84,7 +84,7 @@ public class PerformanceSteps {
      */
     @Given("^I sign in using my email with (\\d+) seconds? timeout$")
     public void ISignInUsingMyEmail(int timeoutSeconds) throws Exception {
-        final ClientUser self = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        final ClientUser self = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .getSelfUserOrThrowError();
         assert getWelcomePage().waitForInitialScreen() : "The initial screen was not shown";
         getWelcomePage().tapSignInTab();
@@ -187,7 +187,7 @@ public class PerformanceSteps {
         final String fromContact = randomContactAlias.orElseThrow(
                 () -> new IllegalStateException("You need to set the random contact first")
         );
-        final String destConvoName = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+        final String destConvoName = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .findUserByNameOrNameAlias(fromContact).getName();
         // Visit the conversation for the first time
         visitConversationWhenAvailable(destConvoName);

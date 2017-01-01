@@ -49,7 +49,7 @@ public class GroupInfoPopoverSteps {
     @When("^I tap on contact (.*) on Group info popover")
     public void ITapOnContact(String contact) throws Exception {
         try {
-            contact = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+            contact = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                     .findUserByNameOrNameAlias(contact).getName();
         } catch (NoSuchUserException e) {
             // Ignore silently
@@ -94,9 +94,9 @@ public class GroupInfoPopoverSteps {
      */
     @Then("^I see the( verified)? participant avatars? for (.*) on Group info popover")
     public void ISeeCorrectParticipantAvatars(String checkVerifiedContact, String contacts) throws Exception {
-        for (String userName : AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+        for (String userName : AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .splitAliases(contacts)) {
-            userName = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+            userName = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                     .findUserByNameOrNameAlias(userName).getName();
             if (checkVerifiedContact == null) {
                 Assert.assertTrue(String.format("The avatar for '%s' is not visible", userName),
@@ -118,7 +118,7 @@ public class GroupInfoPopoverSteps {
      */
     @Then("^I( do not)? see participant (.*) on Group info popover")
     public void ISeeContact(String shouldNotSee, String userName) throws Exception {
-        userName = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+        userName = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .findUserByNameOrNameAlias(userName).getName();
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("Participant %s is invisible", userName),

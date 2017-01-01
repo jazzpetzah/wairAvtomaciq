@@ -37,7 +37,7 @@ public class OutgoingConnectionRequestSteps {
 
     @Then("^I see unique username in outgoing connection request to user (.*)$")
     public void ICanSeeUniqueUsernameToUser(String userAlias) throws Exception {
-        ClientUser user = context.getUserManager().findUserBy(userAlias, ClientUsersManager.FindBy.NAME_ALIAS);
+        ClientUser user = context.getUsersManager().findUserBy(userAlias, ClientUsersManager.FindBy.NAME_ALIAS);
         // username given. strict check for username
         String uniqueUsername = user.getUniqueUsername();
         assertThat(context.getPagesCollection().getPage(OutgoingConnectionRequestPage.class).getUniqueUsernameOutgoing(),

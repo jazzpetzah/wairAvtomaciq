@@ -1,7 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.common.misc.Timedelta;
-import com.wearezeta.auto.ios.common.IOSPagesCollection;
 import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import com.wearezeta.auto.ios.pages.CallingOverlayPage;
 import org.junit.Assert;
@@ -75,7 +74,7 @@ public class CallPageSteps {
      */
     @When("^I see call status message contains \"(.*)\"$")
     public void ISeeCallStatusMessage(String text) throws Exception {
-        text = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        text = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(text, ClientUsersManager.FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format("Call status message containing '%s' is not visible", text),
                 getCallingOverlayPage().isCallingMessageContainingVisible(text));

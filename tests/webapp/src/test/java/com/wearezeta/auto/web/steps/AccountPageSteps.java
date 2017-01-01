@@ -65,13 +65,13 @@ public class AccountPageSteps {
 
     @And("^I see name (.*) in account preferences$")
     public void ISeeNameOnSelfProfilePage(String name) throws Exception {
-        name = context.getUserManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        name = context.getUsersManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
         assertThat("Name", context.getPagesCollection().getPage(AccountPage.class).getName(), equalTo(name));
     }
 
     @And("^I see user phone number (.*) in account preferences$")
     public void ISeeUserPhoneNumberOnSelfProfilePage(String phoneNumber) throws Exception {
-        phoneNumber = context.getUserManager().
+        phoneNumber = context.getUsersManager().
                 replaceAliasesOccurences(phoneNumber, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
         assertThat(context.getPagesCollection().getPage(AccountPage.class).getUserPhoneNumber(), equalTo(phoneNumber));
     }
@@ -79,7 +79,7 @@ public class AccountPageSteps {
     @And("^I see user email (.*) in account preferences$")
     public void ISeeUserEmailOnSelfProfilePage(String email) throws NoSuchUserException, Exception {
         try {
-            email = context.getUserManager().findUserByEmailOrEmailAlias(email).getEmail();
+            email = context.getUsersManager().findUserByEmailOrEmailAlias(email).getEmail();
         } catch (NoSuchUserException e) {
 
         }
@@ -89,7 +89,7 @@ public class AccountPageSteps {
 
     @And("^I see unique username starts with (.*) in account preferences$")
     public void ISeeUniqueUsernameStartsWithOnSelfProfilePage(String name) throws Exception {
-        name = context.getUserManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        name = context.getUsersManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
         Assert.assertThat("Username in settings",
                 context.getPagesCollection().getPage(AccountPage.class).getUniqueUsername(), startsWith(name));
     }
@@ -107,8 +107,8 @@ public class AccountPageSteps {
 
     @And("^I see unique username is (.*) in account preferences$")
     public void ISeeUniqueUsernameOnSelfProfilePage(String name) throws Exception {
-        name = context.getUserManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
-        name = context.getUserManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
+        name = context.getUsersManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        name = context.getUsersManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
         Assert.assertThat("Username in settings",
                 context.getPagesCollection().getPage(AccountPage.class).getUniqueUsername(), equalTo(name.replaceAll(" ","")));
     }
@@ -148,20 +148,20 @@ public class AccountPageSteps {
     @And("^I change name to (.*)")
     public void IChangeNameTo(String name) throws Exception {
         context.getPagesCollection().getPage(AccountPage.class).setName(name);
-        context.getUserManager().getSelfUserOrThrowError().setName(name);
+        context.getUsersManager().getSelfUserOrThrowError().setName(name);
     }
 
     @And("^I type (.*) into unique username field$")
     public void ITypeIntoUniqueUserNameField(String name) throws Exception {
-        name = context.getUserManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
-        name = context.getUserManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
+        name = context.getUsersManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        name = context.getUsersManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
         context.getPagesCollection().getPage(AccountPage.class).setUniqueUsername(name);
     }
 
     @And("^I change unique username to (.*)")
     public void IChangeUniqueUserNameTo(String name) throws Exception {
-        name = context.getUserManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
-        name = context.getUserManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
+        name = context.getUsersManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        name = context.getUsersManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
         context.getPagesCollection().getPage(AccountPage.class).setUniqueUsername(name);
     }
     
@@ -228,7 +228,7 @@ public class AccountPageSteps {
 
     @Then("^I see unique username for (.*) in account preferences$")
     public void ICanSeeUniqueUsernameToUser(String userAlias) throws Exception {
-        ClientUser user = context.getUserManager().findUserBy(userAlias, ClientUsersManager.FindBy.NAME_ALIAS);
+        ClientUser user = context.getUsersManager().findUserBy(userAlias, ClientUsersManager.FindBy.NAME_ALIAS);
         // username given. strict check for username
         String uniqueUsername = user.getUniqueUsername();
         assertThat(context.getPagesCollection().getPage(AccountPage.class).getUniqueUsername(),
@@ -236,7 +236,7 @@ public class AccountPageSteps {
     }
     @Then("I remember unique username of (.*)")
     public void RememberUniqueUsername(String nameAlias) throws Exception {
-        ClientUser user = context.getUserManager().findUserByNameOrNameAlias(nameAlias);
+        ClientUser user = context.getUsersManager().findUserByNameOrNameAlias(nameAlias);
         rememberedUniqueUsername = user.getUniqueUsername();
     }
 }

@@ -20,7 +20,7 @@ public class TabletSearchUIPageSteps {
      */
     @When("^I tap connected user (.*) in Search UI on iPad popover$")
     public void ITapConnectedUserOnPeoplePickerOniPadPopover(String name) throws Exception {
-        name = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        name = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .findUserByNameOrNameAlias(name).getName();
         getSearchUIPage().selectConnectedUser(name);
     }

@@ -8,45 +8,45 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.wire_actors.SEBridge;
 
 public class TestContext {
-    private final ClientUsersManager userManager;
-    private final SEBridge deviceManager;
+    private final ClientUsersManager usersManager;
+    private final SEBridge devicesManager;
     private final CommonSteps commonSteps;
     private final CommonCallingSteps2 callingManager;
     protected final AbstractPagesCollection<? extends BasePage> pagesCollection;
 
     public TestContext(AbstractPagesCollection<? extends BasePage> pagesCollection) throws Exception {
-        this.userManager = new ClientUsersManager();
-        this.deviceManager = new SEBridge();
-        this.callingManager = new CommonCallingSteps2(() -> this);
-        this.commonSteps = new CommonSteps(() -> this);
+        this.usersManager = new ClientUsersManager();
+        this.devicesManager = new SEBridge();
+        this.callingManager = new CommonCallingSteps2(this.usersManager);
+        this.commonSteps = new CommonSteps(this.usersManager, this.devicesManager);
         this.pagesCollection = pagesCollection;
     }
 
-    public TestContext(ClientUsersManager userManager, SEBridge deviceManager,
+    public TestContext(ClientUsersManager userManager, SEBridge devicesManager,
                        CommonCallingSteps2 callingManager, CommonSteps commonSteps,
                        AbstractPagesCollection<? extends BasePage> pagesCollection) throws Exception {
-        this.userManager = userManager;
-        this.deviceManager = deviceManager;
+        this.usersManager = userManager;
+        this.devicesManager = devicesManager;
         this.callingManager = callingManager;
         this.commonSteps = commonSteps;
         this.pagesCollection = pagesCollection;
     }
 
-    public ClientUsersManager getUserManager() {
-        return userManager;
+    public ClientUsersManager getUsersManager() {
+        return usersManager;
     }
 
-    public SEBridge getDeviceManager() {
-        return deviceManager;
+    public SEBridge getDevicesManager() {
+        return devicesManager;
     }
 
     public void reset() {
         try {
-            this.getUserManager().resetUsers();
+            this.getUsersManager().resetUsers();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        this.getDeviceManager().reset();
+        this.getDevicesManager().reset();
         try {
             this.getCallingManager().cleanup();
         } catch (Exception e) {

@@ -32,7 +32,7 @@ public class RegistrationPageSteps {
      */
     @When("^I enter phone number for (.*)$")
     public void IEnterPhoneNumber(String name) throws Exception {
-        this.userToRegister = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        this.userToRegister = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .findUserByNameOrNameAlias(name);
         getRegistrationPage().inputPhoneNumber(this.userToRegister.getPhoneNumber());
     }
@@ -97,7 +97,7 @@ public class RegistrationPageSteps {
 
     @When("^I enter name (.*)$")
     public void IEnterName(String name) throws Exception {
-        this.userToRegister = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        this.userToRegister = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .findUserByNameOrNameAlias(name);
         getRegistrationPage().setName(this.userToRegister.getName());
     }
@@ -114,14 +114,14 @@ public class RegistrationPageSteps {
 
     @When("^I enter email (.*)$")
     public void IEnterEmail(String email) throws Exception {
-        this.userToRegister = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        this.userToRegister = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .findUserByEmailOrEmailAlias(email);
         getRegistrationPage().setEmail(this.userToRegister.getEmail());
     }
 
     @When("^I enter password (.*)$")
     public void IEnterPassword(String password) throws Exception {
-        this.userToRegister = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        this.userToRegister = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .findUserByPasswordAlias(password);
         getRegistrationPage().setPassword(this.userToRegister.getPassword());
     }
@@ -154,8 +154,8 @@ public class RegistrationPageSteps {
     @Then("^I verify registration address$")
     public void IVerifyRegistrationAddress() throws Exception {
         BackendAPIWrappers.activateRegisteredUserByEmail(this.activationMessage);
-        if (!IOSTestContextHolder.getInstance().getTestContext().getUserManager().isSelfUserSet()) {
-            IOSTestContextHolder.getInstance().getTestContext().getUserManager().setSelfUser(userToRegister);
+        if (!IOSTestContextHolder.getInstance().getTestContext().getUsersManager().isSelfUserSet()) {
+            IOSTestContextHolder.getInstance().getTestContext().getUsersManager().setSelfUser(userToRegister);
         }
         getRegistrationPage().waitRegistrationToFinish();
     }

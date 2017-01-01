@@ -35,7 +35,7 @@ public class ForwardPageSteps {
      */
     @Then("^I select (.*) conversation on Forward page$")
     public void ISelectConversation(String name) throws Exception {
-        name = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        name = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
         getPage().selectConversation(name);
     }
@@ -51,7 +51,7 @@ public class ForwardPageSteps {
      */
     @When("^I (do not )?see (.*) conversation on Forward page$")
     public void ISeeConversation(String shouldNotSee, String name) throws Exception {
-        name = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        name = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("The '%s' conversation is expected to be visible", name),

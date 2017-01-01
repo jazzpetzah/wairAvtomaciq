@@ -48,7 +48,7 @@ public class UserSettingsDevicesPageSteps {
      */
     @When("^I confirm with my (.*) the deletion of the device on Settings page$")
     public void IConfirmWithMyPasswordTheDeletionOfTheDevice(String password) throws Exception {
-        password = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        password = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(password, ClientUsersManager.FindBy.PASSWORD_ALIAS);
         getUserSettingsDevicesPage().typePasswordToConfirmDeleteDevice(password);
         IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()

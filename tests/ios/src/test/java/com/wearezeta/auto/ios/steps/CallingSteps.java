@@ -43,7 +43,7 @@ public class CallingSteps {
     @When("(\\w+) calls (\\w+)$")
     public void UserXCallsToUserYUsingCallBackend(String caller, String conversationName) throws Exception {
         IOSTestContextHolder.getInstance().getTestContext().getCallingManager().callToConversation(
-                IOSTestContextHolder.getInstance().getTestContext().getUserManager().splitAliases(caller),
+                IOSTestContextHolder.getInstance().getTestContext().getUsersManager().splitAliases(caller),
                 conversationName);
     }
 
@@ -60,11 +60,11 @@ public class CallingSteps {
             throws Exception {
         if (typeOfCall.equals("incoming call from")) {
             IOSTestContextHolder.getInstance().getTestContext().getCallingManager()
-                    .stopIncomingCall(IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                    .stopIncomingCall(IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                             .splitAliases(instanceUsers));
         } else {
             IOSTestContextHolder.getInstance().getTestContext().getCallingManager()
-                    .stopOutgoingCall(IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                    .stopOutgoingCall(IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                             .splitAliases(instanceUsers), conversationName);
         }
     }
@@ -89,7 +89,7 @@ public class CallingSteps {
                                               String conversationName, String expectedStatuses, int timeoutSeconds)
             throws Exception {
         IOSTestContextHolder.getInstance().getTestContext().getCallingManager()
-                .verifyCallingStatus(IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .verifyCallingStatus(IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                                 .splitAliases(callers), conversationName, expectedStatuses, timeoutSeconds);
     }
 
@@ -110,7 +110,7 @@ public class CallingSteps {
     public void UserXVerifesCallStatusToUserY(String callees,
                                               String expectedStatuses, int timeoutSeconds) throws Exception {
         IOSTestContextHolder.getInstance().getTestContext().getCallingManager()
-                .verifyAcceptingCallStatus(IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .verifyAcceptingCallStatus(IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                                 .splitAliases(callees), expectedStatuses, timeoutSeconds);
     }
 
@@ -125,7 +125,7 @@ public class CallingSteps {
     @Then("(.*) verif(?:ies|y) to have (\\d+) flows?$")
     public void UserXVerifesHavingXFlows(String callees, int numberOfFlows)
             throws Exception {
-        for (String callee : IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        for (String callee : IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .splitAliases(callees)) {
             int actualFlowNumber = IOSTestContextHolder.getInstance().getTestContext().getCallingManager()
                     .getFlows(callee).size();
@@ -144,7 +144,7 @@ public class CallingSteps {
      */
     @Then("(.*) verif(?:ies|y) that all flows have greater than 0 bytes$")
     public void UserXVerifesHavingXFlows(String callees) throws Exception {
-        for (String callee : IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        for (String callee : IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .splitAliases(callees)) {
             for (Flow flow : IOSTestContextHolder.getInstance().getTestContext().getCallingManager().getFlows(callee)) {
                 Assert.assertTrue("There is no incoming bytes",
@@ -167,7 +167,7 @@ public class CallingSteps {
     @When("(.*) starts? instance using (.*)$")
     public void UserXStartsInstance(String callees, String callingServiceBackend) throws Exception {
         IOSTestContextHolder.getInstance().getTestContext().getCallingManager()
-                .startInstances(IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .startInstances(IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                                 .splitAliases(callees),
                 callingServiceBackend, "iOS", ZetaFormatter.getScenario());
     }
@@ -184,7 +184,7 @@ public class CallingSteps {
     @When("(.*) accepts? next incoming call automatically$")
     public void UserXAcceptsNextIncomingCallAutomatically(String callees) throws Exception {
         IOSTestContextHolder.getInstance().getTestContext().getCallingManager()
-                .acceptNextCall(IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .acceptNextCall(IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                         .splitAliases(callees));
     }
 
@@ -200,7 +200,7 @@ public class CallingSteps {
     @When("(.*) accepts? next incoming video call automatically$")
     public void UserXAcceptsNextIncomingVideoCallAutomatically(String callees) throws Exception {
         IOSTestContextHolder.getInstance().getTestContext().getCallingManager()
-                .acceptNextVideoCall(IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .acceptNextVideoCall(IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                         .splitAliases(callees));
     }
 
@@ -215,7 +215,7 @@ public class CallingSteps {
     @When("(.*) starts? a video call to (.*)$")
     public void UserXStartVideoCallsToUserYUsingCallBackend(String callers, String conversationName) throws Exception {
         IOSTestContextHolder.getInstance().getTestContext().getCallingManager()
-                .startVideoCallToConversation(IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .startVideoCallToConversation(IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                                 .splitAliases(callers), conversationName);
     }
 
@@ -229,7 +229,7 @@ public class CallingSteps {
     @Then("(.*) verif(?:ies|y) that call to conversation (.*) was successful$")
     public void UserXVerifesCallWasSuccessful(String callees, String conversation) throws Exception {
         for (Call call : IOSTestContextHolder.getInstance().getTestContext().getCallingManager()
-                .getOutgoingCall(IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .getOutgoingCall(IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                                 .splitAliases(callees), conversation)) {
             assertNotNull("There are no metrics available for this call \n" + call, call.getMetrics());
             assertTrue("Call failed: \n" + call + "\n" + call.getMetrics(), call.getMetrics().isSuccess());
@@ -281,7 +281,7 @@ public class CallingSteps {
                                 List<Integer> callsWithoutByteFlowData) throws Exception {
         final int timeBetweenCall = 10;
         final List<String> calleeList =
-                IOSTestContextHolder.getInstance().getTestContext().getUserManager().splitAliases(callees);
+                IOSTestContextHolder.getInstance().getTestContext().getUsersManager().splitAliases(callees);
 
         LOG.info("\n\nSTARTING CALL " + callIndex);
         try {
@@ -489,7 +489,7 @@ public class CallingSteps {
                                    List<Integer> callsWithoutByteFlowData) throws Exception {
         final int timeBetweenCall = 10;
         final List<String> calleeList =
-                IOSTestContextHolder.getInstance().getTestContext().getUserManager().splitAliases(callees);
+                IOSTestContextHolder.getInstance().getTestContext().getUsersManager().splitAliases(callees);
 
         LOG.info("\n\nSTARTING CALL " + callIndex);
         try {

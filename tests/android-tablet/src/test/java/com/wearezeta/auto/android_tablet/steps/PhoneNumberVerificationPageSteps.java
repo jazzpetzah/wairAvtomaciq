@@ -21,7 +21,7 @@ public class PhoneNumberVerificationPageSteps {
     @When("^I enter my code on Phone Number Verification page$")
     public void IEnterCode() throws Exception {
         final String verificationCode = BackendAPIWrappers.getLoginCodeByPhoneNumber(
-                AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+                AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                         .getSelfUserOrThrowError().getPhoneNumber());
         getTabletPhoneNumberVerificationPage().inputConfirmationCode(verificationCode);
     }

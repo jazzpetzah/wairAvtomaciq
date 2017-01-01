@@ -23,7 +23,7 @@ public class TabletGroupConversationInfoPopoverPageSteps {
      */
     @When("^I select user on iPad group popover (.*)$")
     public void ISelectUserOniPadGroupPopover(String name) throws Exception {
-        name = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        name = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .findUserByNameOrNameAlias(name).getName();
         getTabletGroupConversationDetailPopoverPage().selectUserByNameOniPadPopover(name);
     }

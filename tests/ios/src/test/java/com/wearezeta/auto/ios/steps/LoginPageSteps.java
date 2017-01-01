@@ -55,7 +55,7 @@ public class LoginPageSteps {
      */
     @Given("^I sign in using my email$")
     public void GivenISignInUsingEmail() throws Exception {
-        final ClientUser self = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        final ClientUser self = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .getSelfUserOrThrowError();
         emailLoginSequence(self.getEmail(), self.getPassword());
     }
@@ -96,7 +96,7 @@ public class LoginPageSteps {
      */
     @When("^I enter (login|registration|random) verification code for (.*)")
     public void IEnterVerificationCodeForUser(String codeType, String name) throws Exception {
-        ClientUser user = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        ClientUser user = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .findUserByNameOrNameAlias(name);
         switch (codeType.toLowerCase()) {
             case "login":
@@ -147,7 +147,7 @@ public class LoginPageSteps {
      */
     @Given("^I sign in using my email or phone number$")
     public void GivenISignInUsingEmailOrPhone() throws Exception {
-        final ClientUser self = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        final ClientUser self = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .getSelfUserOrThrowError();
         if (!FastLoginContainer.getInstance().isEnabled() && rand.nextInt(100) < BY_PHONE_NUMBER_LOGIN_PROBABILITY) {
             phoneLoginSequence(self.getPhoneNumber());
@@ -199,7 +199,7 @@ public class LoginPageSteps {
      */
     @When("^I have entered login (.*)")
     public void WhenIHaveEnteredLogin(String login) throws Exception {
-        login = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        login = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(login, ClientUsersManager.FindBy.EMAIL_ALIAS);
         getLoginPage().setLogin(login);
     }
@@ -213,7 +213,7 @@ public class LoginPageSteps {
      */
     @When("^I have entered password (.*)")
     public void WhenIHaveEnteredPassword(String password) throws Exception {
-        password = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        password = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(password, ClientUsersManager.FindBy.PASSWORD_ALIAS);
         getLoginPage().setPassword(password);
     }

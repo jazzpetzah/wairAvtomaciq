@@ -192,8 +192,8 @@ public class Lifecycle {
         } finally {
             try {
                 LOG.debug("Releasing devices");
-                LOG.debug(webContext.getUserManager().getCreatedUsers());
-                webContext.getDeviceManager().releaseDevicesOfUsers(webContext.getUserManager().getCreatedUsers());
+                LOG.debug(webContext.getUsersManager().getCreatedUsers());
+                webContext.getDevicesManager().releaseDevicesOfUsers(webContext.getUsersManager().getCreatedUsers());
             } catch (Exception e) {
                 LOG.warn(e);
             }
@@ -224,7 +224,7 @@ public class Lifecycle {
             }
             try {
                 LOG.debug("Resetting users");
-                webContext.getUserManager().resetUsers();
+                webContext.getUsersManager().resetUsers();
             } catch (Exception e) {
                 LOG.warn(e);
             }

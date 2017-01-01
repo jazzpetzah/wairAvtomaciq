@@ -21,7 +21,7 @@ public class SinglePendingIncomingConnectionPageSteps {
      */
     @When("^I scroll to contact (.*) on Single pending incoming connection page$")
     public void IScrollToInboxContact(String contact) throws Throwable {
-        contact = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+        contact = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .findUserByNameOrNameAlias(contact).getName();
         getSinglePendingIncomingConnectionPage().scrollToContact(contact);
     }
@@ -37,7 +37,7 @@ public class SinglePendingIncomingConnectionPageSteps {
     @When("^I tap (ignore|connect) button( for user (.+))? on Single pending incoming connection (?:page|popover)$")
     public void ITapButton(String buttonName, String withSpecifiedUser, String userName) throws Exception {
         if (withSpecifiedUser != null) {
-            userName = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+            userName = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                     .findUserByNameOrNameAlias(userName).getName();
             getSinglePendingIncomingConnectionPage().tapButton(userName, buttonName);
         } else {

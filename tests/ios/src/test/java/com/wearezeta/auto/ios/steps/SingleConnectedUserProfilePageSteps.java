@@ -41,9 +41,9 @@ public class SingleConnectedUserProfilePageSteps {
      */
     @When("^I (do not )?see (name|unique username|Address Book name|common friends count) (\".*\" |\\s*)on Single user profile page$")
     public void ISeeLabel(String shouldNotSee, String fieldType, String value) throws Exception {
-        value = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        value = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(value, ClientUsersManager.FindBy.NAME_ALIAS);
-        value = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        value = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(value, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
         if (shouldNotSee == null) {
             if (value.startsWith("\"")) {
@@ -77,7 +77,7 @@ public class SingleConnectedUserProfilePageSteps {
      */
     @When("^I remember the name of user (.*) in Address Book$")
     public void IRememberTheUsersAddressBookName(String addressbookName) throws Exception {
-        userAddressBookName = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+        userAddressBookName = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(addressbookName, ClientUsersManager.FindBy.NAME_ALIAS);
     }
 

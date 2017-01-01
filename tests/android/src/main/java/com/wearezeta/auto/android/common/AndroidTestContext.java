@@ -19,7 +19,7 @@ public class AndroidTestContext extends TestContext {
             throws Exception {
         super(pagesCollection);
         this.scenario = scenario;
-        this.performanceCommon = new PerformanceCommon(() -> this);
+        this.performanceCommon = new PerformanceCommon(this.getUsersManager(), this.getDevicesManager());
     }
 
     public AndroidTestContext(ClientUsersManager clientUsersManager, SEBridge seBridge,
@@ -28,7 +28,7 @@ public class AndroidTestContext extends TestContext {
             throws Exception {
         super(clientUsersManager, seBridge, callingManager, commonSteps, pagesCollection);
         this.scenario = scenario;
-        this.performanceCommon = new PerformanceCommon(() -> this);
+        this.performanceCommon = new PerformanceCommon(this.getUsersManager(), this.getDevicesManager());
     }
 
     public Scenario getScenario() {

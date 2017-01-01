@@ -291,7 +291,7 @@ public class CommonWebAppSteps {
     @When("^Contact (.*) sends? (\\d+) messages with prefix (.*) via device (.*) to (user|group conversation) (.*)$")
     public void UserSendAmountOfMessages(String msgFromUserNameAlias, int amount, String prefix, String deviceName,
             String convoType, String dstConvoName) throws Exception {
-        ClientUser user = context.getUserManager().findUserByNameOrNameAlias(msgFromUserNameAlias);
+        ClientUser user = context.getUsersManager().findUserByNameOrNameAlias(msgFromUserNameAlias);
         if (convoType.equals("user")) {
             for (int i = 0; i < amount; i++) {
                 context.getConversationStates().addMessage(dstConvoName, new Message(prefix + i, user.getId()));
@@ -350,8 +350,8 @@ public class CommonWebAppSteps {
 
     @When("^I break the session with device (.*) of user (.*)$")
     public void IBreakTheSession(String deviceName, String userAlias) throws Exception {
-        ClientUser user = context.getUserManager().findUserByNameOrNameAlias(userAlias);
-        String deviceId = context.getDeviceManager().getDeviceId(user, deviceName + context.getTestname().hashCode());
+        ClientUser user = context.getUsersManager().findUserByNameOrNameAlias(userAlias);
+        String deviceId = context.getDevicesManager().getDeviceId(user, deviceName + context.getTestname().hashCode());
         deviceId = WebCommonUtils.removeDeviceIdPadding(deviceId);
         context.getPagesCollection().getPage(WebPage.class).breakSession(deviceId);
     }
@@ -528,7 +528,7 @@ public class CommonWebAppSteps {
     @Then("^I verify user (.*) has received (?:an |\\s*)email invitation$")
     public void IVerifyUserReceiverInvitation(String alias) throws Throwable {
         context.startPinging();
-        final ClientUser user = context.getUserManager().findUserByNameOrNameAlias(alias);
+        final ClientUser user = context.getUsersManager().findUserByNameOrNameAlias(alias);
         assertTrue(
                 String.format("Invitation email for %s is not valid", user.getEmail()),
                 BackendAPIWrappers
@@ -543,7 +543,7 @@ public class CommonWebAppSteps {
 
     @Then("^I delete account of user (.*) via email$")
     public void IDeleteAccountViaEmail(String alias) throws Throwable {
-        final ClientUser user = context.getUserManager().findUserByNameOrNameAlias(alias);
+        final ClientUser user = context.getUsersManager().findUserByNameOrNameAlias(alias);
         IMAPSMailbox mbox = IMAPSMailbox.getInstance(user.getEmail(), user.getPassword());
         Map<String, String> expectedHeaders = new HashMap<>();
         expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, user.getEmail());
@@ -561,7 +561,7 @@ public class CommonWebAppSteps {
 
     @Then("^(.*) navigates to personal invitation registration page$")
     public void INavigateToPersonalInvitationRegistrationPage(String alias) throws Throwable {
-        final ClientUser user = context.getUserManager().findUserByNameOrNameAlias(alias);
+        final ClientUser user = context.getUsersManager().findUserByNameOrNameAlias(alias);
         String url = BackendAPIWrappers
                 .getInvitationMessage(user)
                 .orElseThrow(
