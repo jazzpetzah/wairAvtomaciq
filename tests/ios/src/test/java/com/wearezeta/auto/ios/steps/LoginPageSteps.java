@@ -2,7 +2,6 @@ package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import com.wearezeta.auto.ios.pages.FirstTimeOverlay;
-import com.wearezeta.auto.ios.tools.FastLoginContainer;
 import org.junit.Assert;
 
 import java.io.IOException;
@@ -62,7 +61,7 @@ public class LoginPageSteps {
 
     private void emailLoginSequence(String login, String password) throws Exception {
         getLoginPage().switchToLogin();
-        if (FastLoginContainer.getInstance().isEnabled()) {
+        if (IOSTestContextHolder.getInstance().getTestContext().getFastLoginContainer().isEnabled()) {
             getLoginPage().waitForLoginToFinish();
             return;
         }
@@ -149,7 +148,8 @@ public class LoginPageSteps {
     public void GivenISignInUsingEmailOrPhone() throws Exception {
         final ClientUser self = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .getSelfUserOrThrowError();
-        if (!FastLoginContainer.getInstance().isEnabled() && rand.nextInt(100) < BY_PHONE_NUMBER_LOGIN_PROBABILITY) {
+        if (!IOSTestContextHolder.getInstance().getTestContext().getFastLoginContainer().isEnabled()
+                && rand.nextInt(100) < BY_PHONE_NUMBER_LOGIN_PROBABILITY) {
             phoneLoginSequence(self.getPhoneNumber());
         } else {
             emailLoginSequence(self.getEmail(), self.getPassword());

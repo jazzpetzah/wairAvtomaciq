@@ -5,7 +5,6 @@ import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import com.wearezeta.auto.ios.pages.FirstTimeOverlay;
 import com.wearezeta.auto.ios.pages.TabletLoginPage;
 
-import com.wearezeta.auto.ios.tools.FastLoginContainer;
 import cucumber.api.java.en.Given;
 
 public class TabletLoginPageSteps {
@@ -28,7 +27,7 @@ public class TabletLoginPageSteps {
     @Given("^I Sign in on tablet using my email$")
     public void GivenISignInUsingEmail() throws Exception {
         getTabletLoginPage().switchToLogin();
-        if (FastLoginContainer.getInstance().isEnabled()) {
+        if (IOSTestContextHolder.getInstance().getTestContext().getFastLoginContainer().isEnabled()) {
             getTabletLoginPage().waitForLoginToFinish();
             return;
         }

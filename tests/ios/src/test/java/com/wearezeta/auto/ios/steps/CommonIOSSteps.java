@@ -421,7 +421,7 @@ public class CommonIOSSteps {
         }
 
         if (scenario.getSourceTagNames().contains(FastLoginContainer.TAG_NAME)) {
-            FastLoginContainer.getInstance().enable(this::resetIOSDriver,
+            iosTestContext.getFastLoginContainer().enable(this::resetIOSDriver,
                     appPath,
                     Optional.of(additionalCaps),
                     DRIVER_CREATION_RETRIES_COUNT);
@@ -477,8 +477,6 @@ public class CommonIOSSteps {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        FastLoginContainer.getInstance().reset();
 
         try {
             if (getIsSimulatorFromConfig(getClass())
@@ -718,7 +716,7 @@ public class CommonIOSSteps {
                 .ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count, myNameAlias);
         IChangeUserAvatarPicture(myNameAlias, "", "default");
         IOSTestContextHolder.getInstance().getTestContext().getCommonSteps().UsersSetUniqueUsername(myNameAlias);
-        final FastLoginContainer flc = FastLoginContainer.getInstance();
+        final FastLoginContainer flc = IOSTestContextHolder.getInstance().getTestContext().getFastLoginContainer();
         if (flc.isEnabled()) {
             updateDriver(flc.executeDriverCreation(IOSTestContextHolder.getInstance()
                     .getTestContext().getUsersManager().getSelfUserOrThrowError()));
@@ -782,7 +780,7 @@ public class CommonIOSSteps {
                 .ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(count, myNameAlias);
         IChangeUserAvatarPicture(myNameAlias, "", "default");
         IOSTestContextHolder.getInstance().getTestContext().getCommonSteps().UsersSetUniqueUsername(myNameAlias);
-        final FastLoginContainer flc = FastLoginContainer.getInstance();
+        final FastLoginContainer flc = IOSTestContextHolder.getInstance().getTestContext().getFastLoginContainer();
         if (flc.isEnabled()) {
             throw new IllegalStateException("Fast login feature is only supported in log in by email");
         }
@@ -804,7 +802,7 @@ public class CommonIOSSteps {
                 .ThereAreNUsersWhereXIsMeRegOnlyByMail(count, myNameAlias);
         IChangeUserAvatarPicture(myNameAlias, "", "default");
         IOSTestContextHolder.getInstance().getTestContext().getCommonSteps().UsersSetUniqueUsername(myNameAlias);
-        final FastLoginContainer flc = FastLoginContainer.getInstance();
+        final FastLoginContainer flc = IOSTestContextHolder.getInstance().getTestContext().getFastLoginContainer();
         if (flc.isEnabled()) {
             updateDriver(flc.executeDriverCreation(IOSTestContextHolder.getInstance().getTestContext()
                     .getUsersManager().getSelfUserOrThrowError()));
@@ -1404,7 +1402,7 @@ public class CommonIOSSteps {
      */
     @Given("^I prepare Wire to perform fast log in by email as (.*)")
     public void IDoFastLogin(String alias) throws Exception {
-        final FastLoginContainer flc = FastLoginContainer.getInstance();
+        final FastLoginContainer flc = IOSTestContextHolder.getInstance().getTestContext().getFastLoginContainer();
         if (!flc.isEnabled()) {
             throw new IllegalStateException(
                     String.format("Fast login should be enabled first in order to call this step." +
