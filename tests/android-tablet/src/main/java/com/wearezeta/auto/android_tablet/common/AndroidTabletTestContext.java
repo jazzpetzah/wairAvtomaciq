@@ -21,7 +21,7 @@ public class AndroidTabletTestContext extends TestContext {
     }
 
     public AndroidTabletPagesCollection getPagesCollection() {
-        return (AndroidTabletPagesCollection) pagesCollection;
+        return (AndroidTabletPagesCollection) super.getPagesCollection();
     }
 
     public ScreenOrientationHelper getScreenOrientationHelper() {

@@ -12,7 +12,7 @@ public class TestContext {
     private final SEBridge devicesManager;
     private final CommonSteps commonSteps;
     private final CommonCallingSteps2 callingManager;
-    protected final AbstractPagesCollection<? extends BasePage> pagesCollection;
+    private final AbstractPagesCollection<? extends BasePage> pagesCollection;
 
     public TestContext(AbstractPagesCollection<? extends BasePage> pagesCollection) throws Exception {
         this.usersManager = new ClientUsersManager();

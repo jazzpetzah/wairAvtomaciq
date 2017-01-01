@@ -74,11 +74,11 @@ public class WebAppTestContext extends TestContext {
 
     @Override
     public WebappPagesCollection getPagesCollection() {
-        return (WebappPagesCollection) pagesCollection;
+        return (WebappPagesCollection) super.getPagesCollection();
     }
 
     public <T extends AbstractPagesCollection<?>> T getPagesCollection(Class<T> type) {
-        return (T) pagesCollection;
+        return (T) super.getPagesCollection();
     }
 
     public Future<? extends RemoteWebDriver> getFutureDriver() {

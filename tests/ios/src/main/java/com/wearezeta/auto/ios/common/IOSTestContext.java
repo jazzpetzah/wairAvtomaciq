@@ -19,6 +19,6 @@ public class IOSTestContext extends TestContext {
     }
 
     public IOSPagesCollection getPagesCollection() {
-        return (IOSPagesCollection) pagesCollection;
+        return (IOSPagesCollection) super.getPagesCollection();
     }
 }

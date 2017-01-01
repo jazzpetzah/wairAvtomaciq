@@ -36,7 +36,7 @@ public class AndroidTestContext extends TestContext {
     }
 
     public AndroidPagesCollection getPagesCollection() {
-        return (AndroidPagesCollection) pagesCollection;
+        return (AndroidPagesCollection) super.getPagesCollection();
     }
 
     public PerformanceCommon getPerformanceCommon() {
