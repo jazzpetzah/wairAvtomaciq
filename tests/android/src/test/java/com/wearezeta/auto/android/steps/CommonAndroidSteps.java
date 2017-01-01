@@ -9,6 +9,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -1135,7 +1136,8 @@ public class CommonAndroidSteps {
      */
     @When("^User (.*) adds a new device (.*) with label (.*)$")
     public void UserAddRemoteDeviceToAccount(String userNameAlias, String deviceName, String label) throws Exception {
-        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserAddsRemoteDeviceToAccount(userNameAlias, deviceName, label);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .UserAddsRemoteDeviceToAccount(userNameAlias, deviceName, Optional.of(label));
     }
 
     /**
@@ -1148,14 +1150,17 @@ public class CommonAndroidSteps {
      */
     @When("^User (.*) adds new devices? (.*)$")
     public void UserAddRemoteDeviceToAccount(String userNameAlias, String deviceNames) throws Exception {
-        final List<String> names = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager().splitAliases(deviceNames);
+        final List<String> names = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .splitAliases(deviceNames);
         final int poolSize = 2;  // Runtime.getRuntime().availableProcessors()
         final ExecutorService pool = Executors.newFixedThreadPool(poolSize);
+        final AtomicInteger createdDevicesCount = new AtomicInteger(0);
         for (String name : names) {
             pool.submit(() -> {
                 try {
-                    AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserAddsRemoteDeviceToAccount(userNameAlias,
-                            name, CommonUtils.generateRandomString(10));
+                    AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                            .UserAddsRemoteDeviceToAccount(userNameAlias, name, Optional.empty());
+                    createdDevicesCount.incrementAndGet();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1163,7 +1168,7 @@ public class CommonAndroidSteps {
         }
         pool.shutdown();
         final int secondsTimeout = (names.size() / poolSize + 1) * 60;
-        if (!pool.awaitTermination(secondsTimeout, TimeUnit.SECONDS)) {
+        if (!pool.awaitTermination(secondsTimeout, TimeUnit.SECONDS) || createdDevicesCount.get() != names.size()) {
             throw new IllegalStateException(String.format(
                     "Devices '%s' were not created within %s seconds timeout", names, secondsTimeout));
         }

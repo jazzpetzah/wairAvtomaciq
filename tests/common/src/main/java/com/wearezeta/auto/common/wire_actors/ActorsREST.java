@@ -7,6 +7,8 @@ import com.wearezeta.auto.common.rest.CommonRESTHandlers;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
+import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.client.ClientProperties;
 import org.json.JSONObject;
 
 import javax.ws.rs.client.Client;
@@ -39,11 +41,22 @@ class ActorsREST {
         }
     }
 
-    private static Invocation.Builder buildRequest(String restAction)
-            throws Exception {
+    private static ClientConfig clientConfig = null;
+
+    private static ClientConfig getClientConfig() {
+        if (clientConfig == null) {
+            final ClientConfig configuration = new ClientConfig();
+            configuration.property(ClientProperties.CONNECT_TIMEOUT, 5000);
+            configuration.property(ClientProperties.READ_TIMEOUT, 120000);
+            clientConfig = configuration;
+        }
+        return clientConfig;
+    }
+
+    private static Invocation.Builder buildRequest(String restAction) throws Exception {
         final String dstUrl = String.format("%s/%s", getBaseURI(), restAction);
         log.debug(String.format("Making request to %s...", dstUrl));
-        final Client client = ClientBuilder.newClient();
+        final Client client = ClientBuilder.newClient(getClientConfig());
         return client
                 .target(dstUrl)
                 .request()

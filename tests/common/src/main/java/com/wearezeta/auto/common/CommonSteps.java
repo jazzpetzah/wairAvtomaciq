@@ -249,7 +249,7 @@ public final class CommonSteps {
     }
 
     public void UserAddsRemoteDeviceToAccount(String userNameAlias,
-                                              String deviceName, String label) throws Exception {
+                                              String deviceName, Optional<String> label) throws Exception {
         ClientUser user = getUserManager().findUserByNameOrNameAlias(userNameAlias);
         getDeviceManager().addRemoteDeviceToAccount(user, deviceName, label);
     }

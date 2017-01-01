@@ -160,10 +160,13 @@ public class SEBridge {
         ActorsRESTWrapper.sendMessage(dstDevice.getUUID(), convId, message);
     }
 
-    public void addRemoteDeviceToAccount(ClientUser userFrom, String deviceName, String label) throws Exception {
+    public void addRemoteDeviceToAccount(ClientUser userFrom, String deviceName, Optional<String> label)
+            throws Exception {
         final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
-        LOG.info("Set label for device " + deviceName + " to " + label);
-        ActorsRESTWrapper.setDeviceLabel(dstDevice.getUUID(), label);
+        if (label.isPresent()) {
+            LOG.info(String.format("Setting label '%s' to device '%s'", label.get(), deviceName));
+            ActorsRESTWrapper.setDeviceLabel(dstDevice.getUUID(), label.get());
+        }
     }
 
     public void sendImage(ClientUser userFrom, String convId, String path) throws Exception {

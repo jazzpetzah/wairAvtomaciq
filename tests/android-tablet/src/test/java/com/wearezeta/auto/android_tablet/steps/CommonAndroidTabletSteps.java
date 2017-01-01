@@ -48,6 +48,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class CommonAndroidTabletSteps {
     static {
@@ -890,13 +891,17 @@ public class CommonAndroidTabletSteps {
      */
     @When("^User (.*) adds new devices? (.*)$")
     public void UserAddRemoteDeviceToAccount(String userNameAlias, String deviceNames) throws Exception {
-        final List<String> names = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager().splitAliases(deviceNames);
+        final List<String> names = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .splitAliases(deviceNames);
         final int poolSize = 2;  // Runtime.getRuntime().availableProcessors()
         final ExecutorService pool = Executors.newFixedThreadPool(poolSize);
+        final AtomicInteger createdDevicesCount = new AtomicInteger(0);
         for (String name : names) {
             pool.submit(() -> {
                 try {
-                    AndroidTabletTestContextHolder.getInstance().getTestContext().getCommonSteps().UserAddsRemoteDeviceToAccount(userNameAlias, name, CommonUtils.generateRandomString(10));
+                    AndroidTabletTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                            .UserAddsRemoteDeviceToAccount(userNameAlias, name, Optional.empty());
+                    createdDevicesCount.incrementAndGet();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -904,7 +909,7 @@ public class CommonAndroidTabletSteps {
         }
         pool.shutdown();
         final int secondsTimeout = (names.size() / poolSize + 1) * 60;
-        if (!pool.awaitTermination(secondsTimeout, TimeUnit.SECONDS)) {
+        if (!pool.awaitTermination(secondsTimeout, TimeUnit.SECONDS) || createdDevicesCount.get() != names.size()) {
             throw new IllegalStateException(String.format(
                     "Devices '%s' were not created within %s seconds timeout", names, secondsTimeout));
         }

@@ -30,7 +30,7 @@
         <syncIsAutomated>False</syncIsAutomated>
         <syncIsMuted>False</syncIsMuted>
         <backendType>staging</backendType>
-        <actors.server.url>http://192.168.2.120:10080/wire-actors/api/v1</actors.server.url>
+        <actors.server.url>http://localhost:10080/wire-actors/api/v1</actors.server.url>
     </properties>
 
     <dependencies>

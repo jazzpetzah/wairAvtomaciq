@@ -25,10 +25,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 import java.net.URI;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
@@ -618,8 +615,8 @@ public class CommonWebAppSteps {
     public void UserAddRemoteDeviceToAccount(String userNameAlias,
             String deviceName, String label) throws Exception {
         context.startPinging();
-        context.getCommonSteps().UserAddsRemoteDeviceToAccount(userNameAlias, deviceName + context.getTestname().hashCode(),
-                label);
+        context.getCommonSteps().UserAddsRemoteDeviceToAccount(userNameAlias,
+                deviceName + context.getTestname().hashCode(), Optional.of(label));
         context.stopPinging();
     }
 
