@@ -138,7 +138,7 @@ class ActorsREST {
         final Invocation.Builder webResource = buildRequest(String.format("devices/%s/conversations/%s/send/message",
                 uuid, convoId));
         final JSONObject requestBody = new JSONObject();
-        requestBody.put("message", message);
+        requestBody.put("payload", message);
         final String output = restHandlers.httpPost(webResource, requestBody.toString(), new int[]{HttpStatus.SC_OK});
         return new JSONObject(output);
     }
@@ -147,7 +147,7 @@ class ActorsREST {
         final Invocation.Builder webResource = buildRequest(String.format("devices/%s/conversations/%s/send/giphy",
                 uuid, convoId));
         final JSONObject requestBody = new JSONObject();
-        requestBody.put("message", giphyTag);
+        requestBody.put("payload", giphyTag);
         final String output = restHandlers.httpPost(webResource, requestBody.toString(), new int[]{HttpStatus.SC_OK});
         return new JSONObject(output);
     }
@@ -177,7 +177,7 @@ class ActorsREST {
         final Invocation.Builder webResource = buildRequest(String.format("devices/%s/conversations/%s/send/image",
                 uuid, convoId));
         final JSONObject requestBody = new JSONObject();
-        requestBody.put("message", base64Content);
+        requestBody.put("payload", base64Content);
         requestBody.put("fileName", fileName);
         final String output = restHandlers.httpPost(webResource, requestBody.toString(), new int[]{HttpStatus.SC_OK});
         return new JSONObject(output);
@@ -188,7 +188,7 @@ class ActorsREST {
         final Invocation.Builder webResource = buildRequest(String.format("devices/%s/conversations/%s/send/file",
                 uuid, convoId));
         final JSONObject requestBody = new JSONObject();
-        requestBody.put("message", base64Content);
+        requestBody.put("payload", base64Content);
         requestBody.put("mimeType", mimeType);
         requestBody.put("fileName", fileName);
         final String output = restHandlers.httpPost(webResource, requestBody.toString(), new int[]{HttpStatus.SC_OK});
@@ -281,7 +281,7 @@ class ActorsREST {
                 String.format("devices/%s/conversations/0/messages/%s/update", uuid, msgId)
         );
         final JSONObject requestBody = new JSONObject();
-        requestBody.put("message", newMessage);
+        requestBody.put("payload", newMessage);
         final String output = restHandlers.httpPost(webResource, requestBody.toString(), new int[]{HttpStatus.SC_OK});
         return new JSONObject(output);
     }
