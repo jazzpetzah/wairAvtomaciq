@@ -6,8 +6,8 @@ import com.wearezeta.auto.common.test_context.TestContext;
 import cucumber.api.Scenario;
 
 public class AndroidTabletTestContext extends TestContext {
-    private Scenario scenario;
-    private ScreenOrientationHelper screenOrientationHelper;
+    private final Scenario scenario;
+    private final ScreenOrientationHelper screenOrientationHelper;
 
     public AndroidTabletTestContext(Scenario scenario, AbstractPagesCollection<? extends BasePage> pagesCollection)
             throws Exception {

@@ -10,10 +10,12 @@ import com.wearezeta.auto.common.test_context.TestContext;
 import com.wearezeta.auto.common.wire_actors.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
+
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+
 import org.apache.log4j.Logger;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -29,7 +31,7 @@ public class WebAppTestContext extends TestContext {
     private final Pinger pinger;
 
     private WebAppTestContext childContext;
-    
+
     private final String testname;
     private final LogManager logManager;
     private final Future<? extends RemoteWebDriver> driver;
@@ -47,14 +49,15 @@ public class WebAppTestContext extends TestContext {
         this.pinger = new Pinger(this);
     }
 
-    private WebAppTestContext(String testname, CommonSteps commonSteps, ClientUsersManager userManager, SEBridge deviceManager,
-                              CommonCallingSteps2 callingManager, AbstractPagesCollection<? extends BasePage> pagesCollection,
+    private WebAppTestContext(String testname, CommonSteps commonSteps, ClientUsersManager userManager,
+                              SEBridge deviceManager, CommonCallingSteps2 callingManager,
+                              AbstractPagesCollection<? extends BasePage> pagesCollection,
                               Future<? extends RemoteWebDriver> driver) throws Exception {
         super(userManager, deviceManager, callingManager, commonSteps, pagesCollection);
         this.testname = testname;
         this.driver = driver;
         this.childContext = null;
-        
+
         this.conversationStates = new ConversationStates();
         this.logManager = new LogManager(this);
         this.pinger = new Pinger(this);
@@ -88,7 +91,7 @@ public class WebAppTestContext extends TestContext {
     public RemoteWebDriver getDriver() throws InterruptedException, ExecutionException, TimeoutException {
         return driver.get(DRIVER_INIT_TIMEOUT, TimeUnit.SECONDS);
     }
-    
+
     public Platform getCurrentPlatform() {
         return currentPlatform;
     }
@@ -96,7 +99,7 @@ public class WebAppTestContext extends TestContext {
     public ConversationStates getConversationStates() {
         return conversationStates;
     }
-    
+
     public LogManager getLogManager() {
         return logManager;
     }

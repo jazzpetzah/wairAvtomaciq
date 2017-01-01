@@ -6,7 +6,7 @@ import com.wearezeta.auto.common.test_context.TestContext;
 import cucumber.api.Scenario;
 
 public class IOSTestContext extends TestContext {
-    private Scenario scenario;
+    private final Scenario scenario;
 
     public IOSTestContext(Scenario scenario, AbstractPagesCollection<? extends BasePage> pagesCollection)
             throws Exception {

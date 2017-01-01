@@ -12,8 +12,8 @@ import com.wearezeta.auto.common.wire_actors.SEBridge;
 import cucumber.api.Scenario;
 
 public class AndroidTestContext extends TestContext {
-    private Scenario scenario;
-    private PerformanceCommon performanceCommon;
+    private final Scenario scenario;
+    private final PerformanceCommon performanceCommon;
 
     public AndroidTestContext(Scenario scenario, AbstractPagesCollection<? extends BasePage> pagesCollection)
             throws Exception {
