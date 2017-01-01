@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import com.wearezeta.auto.ios.pages.UniqueUsernamePage;
 import cucumber.api.DataTable;
 import cucumber.api.java.en.Then;
@@ -10,17 +11,14 @@ import org.junit.Assert;
 import java.util.List;
 
 public class UniqueUsernamePageSteps {
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-
     private UniqueUsernamePage getUniqueUsernamePage() throws Exception {
-        return pagesCollection.getPage(UniqueUsernamePage.class);
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(UniqueUsernamePage.class);
     }
 
     private static String newUniqueName = null;
 
-    public static String getNewUniqueName() {
+    static String getNewUniqueName() {
         if (newUniqueName == null) {
             throw new IllegalStateException("'newUniqueName' variable should be initialised first");
         }
@@ -58,7 +56,8 @@ public class UniqueUsernamePageSteps {
      */
     @When("^I enter \"(.*)\" name on Unique Username page$")
     public void IFillInNameInInputOnUniqueUsernamePage(String name) throws Exception {
-        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
+        name = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .replaceAliasesOccurences(name, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
         getUniqueUsernamePage().inputStringInNameInput(name);
     }
 
@@ -136,7 +135,8 @@ public class UniqueUsernamePageSteps {
      */
     @Then("^I see unique username input is prefilled with (.*) on Unique Username page$")
     public void ISeeUniqueUsernameInputIsPrefilledWith(String nameAlias) throws Exception {
-        final String name = usrMgr.replaceAliasesOccurences(nameAlias, ClientUsersManager.FindBy.NAME_ALIAS);
+        final String name = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .replaceAliasesOccurences(nameAlias, ClientUsersManager.FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format("Unique username is not prefilled with %s", name),
                 getUniqueUsernamePage().getNameInputValue().equals(name));
     }

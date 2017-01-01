@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.misc.Timedelta;
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import com.wearezeta.auto.ios.pages.VideoCallingOverlayPage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -16,10 +17,9 @@ public class VideoCallingOverlayPageSteps {
     private final ElementState muteButtonState = new ElementState(() -> getVideoCallingOverlayPage().getMuteButtonScreenshot());
     private final ElementState videoButtonState = new ElementState(() -> getVideoCallingOverlayPage().getVideoButtonScreenshot());
 
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-
-    public VideoCallingOverlayPage getVideoCallingOverlayPage() throws Exception {
-        return pagesCollection.getPage(VideoCallingOverlayPage.class);
+    private VideoCallingOverlayPage getVideoCallingOverlayPage() throws Exception {
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(VideoCallingOverlayPage.class);
     }
 
     /**

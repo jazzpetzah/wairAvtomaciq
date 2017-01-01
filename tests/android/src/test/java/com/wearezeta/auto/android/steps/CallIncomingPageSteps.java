@@ -1,8 +1,7 @@
 package com.wearezeta.auto.android.steps;
 
+import com.wearezeta.auto.android.common.AndroidTestContextHolder;
 import com.wearezeta.auto.android.pages.CallIncomingPage;
-
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
 import cucumber.api.java.en.When;
 import cucumber.api.java.en.Then;
@@ -11,13 +10,10 @@ import org.junit.Assert;
 import static org.junit.Assert.assertTrue;
 
 public class CallIncomingPageSteps {
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
-
     private CallIncomingPage getPage() throws Exception {
-        return pagesCollection.getPage(CallIncomingPage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext()
+                .getPagesCollection().getPage(CallIncomingPage.class);
     }
-
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     /**
      * Verifies presence of incoming call
@@ -87,7 +83,8 @@ public class CallIncomingPageSteps {
     @When("^I see incoming call from (.*)$")
     public void ISeeIncomingCallingMessage(String expectedCallerName)
             throws Exception {
-        expectedCallerName = usrMgr.findUserByNameOrNameAlias(expectedCallerName).getName();
+        expectedCallerName = AndroidTestContextHolder.getInstance().getTestContext()
+                .getUserManager().findUserByNameOrNameAlias(expectedCallerName).getName();
         Assert.assertTrue(String.format(
                 "The current caller name differs from the expected value '%s'", expectedCallerName),
                 getPage().waitUntilNameAppearsOnCallingBarCaption(expectedCallerName));
@@ -104,7 +101,8 @@ public class CallIncomingPageSteps {
     @When("^I wait up to (\\d+) seconds? for incoming call from (.*)$")
     public void ISeeIncomingCallingMessageBeforeTimeout(int timeoutSeconds, String expectedCallerName)
             throws Exception {
-        expectedCallerName = usrMgr.findUserByNameOrNameAlias(expectedCallerName).getName();
+        expectedCallerName = AndroidTestContextHolder.getInstance().getTestContext()
+                .getUserManager().findUserByNameOrNameAlias(expectedCallerName).getName();
         Assert.assertTrue(String.format(
                 "The current caller name differs from the expected value '%s'", expectedCallerName),
                 getPage().waitUntilNameAppearsOnCallingBarCaption(expectedCallerName, timeoutSeconds));

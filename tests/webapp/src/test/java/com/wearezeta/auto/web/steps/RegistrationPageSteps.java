@@ -19,7 +19,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.LoginPage;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 
@@ -39,9 +39,9 @@ public class RegistrationPageSteps {
     private ClientUser userToRegister = null;
     private Future<String> activationMessage;
     private Future<String> newDeviceMessage;
-    private final TestContext context;
+    private final WebAppTestContext context;
 
-    public RegistrationPageSteps(TestContext context) {
+    public RegistrationPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 

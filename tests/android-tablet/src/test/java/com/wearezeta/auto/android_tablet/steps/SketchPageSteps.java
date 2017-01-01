@@ -1,17 +1,16 @@
 package com.wearezeta.auto.android_tablet.steps;
 
 import com.wearezeta.auto.android.pages.SketchPage;
+import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContextHolder;
 import com.wearezeta.auto.android_tablet.pages.TabletSketchPage;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
 
 public class SketchPageSteps {
-    private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection
-            .getInstance();
-
     private TabletSketchPage getSketchPage() throws Exception {
-        return pagesCollection.getPage(TabletSketchPage.class);
+        return AndroidTabletTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(TabletSketchPage.class);
     }
 
     /**

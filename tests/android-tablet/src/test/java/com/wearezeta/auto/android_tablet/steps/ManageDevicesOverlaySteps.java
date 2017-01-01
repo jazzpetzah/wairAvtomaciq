@@ -1,16 +1,15 @@
 package com.wearezeta.auto.android_tablet.steps;
 
+import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContextHolder;
 import com.wearezeta.auto.android_tablet.pages.TabletManageDevicesOverlay;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 
 public class ManageDevicesOverlaySteps {
-    private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection
-            .getInstance();
-
     private TabletManageDevicesOverlay getManageDevicesOverlay() throws Exception {
-        return (TabletManageDevicesOverlay) pagesCollection.getPage(TabletManageDevicesOverlay.class);
+        return  AndroidTabletTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(TabletManageDevicesOverlay.class);
     }
 
     /**

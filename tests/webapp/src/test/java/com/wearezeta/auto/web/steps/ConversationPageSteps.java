@@ -14,10 +14,9 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.common.Message;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.pages.ContactListPage;
@@ -52,9 +51,9 @@ public class ConversationPageSteps {
 
     private String randomMessage;
     private String rememberedEditTimeStamp;
-    private final TestContext context;
+    private final WebAppTestContext context;
 
-    public ConversationPageSteps(TestContext context) {
+    public ConversationPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 

@@ -1,8 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
 import com.google.common.base.Throwables;
-import com.wearezeta.auto.common.CommonCallingSteps2;
-import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.calling2.v1.model.Call;
 import com.wearezeta.auto.common.calling2.v1.model.Flow;
@@ -14,6 +12,7 @@ import static org.junit.Assert.assertTrue;
 
 import com.wearezeta.auto.common.calling2.v1.model.Metrics;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import com.wearezeta.auto.ios.pages.CallKitOverlayPage;
 import com.wearezeta.auto.ios.pages.CallingOverlayPage;
 import com.wearezeta.auto.ios.pages.ConversationViewPage;
@@ -32,11 +31,6 @@ import java.util.List;
 import java.util.Map;
 
 public class CallingSteps {
-
-    private final CommonCallingSteps2 commonCallingSteps = CommonCallingSteps2.getInstance();
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-    private final CommonSteps commonSteps = CommonSteps.getInstance();
-
     /**
      * Make call to a specific user. You may instantiate more than one incoming
      * call from single caller by calling this step multiple times
@@ -48,7 +42,9 @@ public class CallingSteps {
      */
     @When("(\\w+) calls (\\w+)$")
     public void UserXCallsToUserYUsingCallBackend(String caller, String conversationName) throws Exception {
-        commonCallingSteps.callToConversation(commonCallingSteps.getUsersManager().splitAliases(caller), conversationName);
+        IOSTestContextHolder.getInstance().getTestContext().getCallingManager().callToConversation(
+                IOSTestContextHolder.getInstance().getTestContext().getUserManager().splitAliases(caller),
+                conversationName);
     }
 
     /**
@@ -63,9 +59,13 @@ public class CallingSteps {
     public void UserXStopsIncomingOutgoingCallsToUserY(String instanceUsers, String typeOfCall, String conversationName)
             throws Exception {
         if (typeOfCall.equals("incoming call from")) {
-            commonCallingSteps.stopIncomingCall(commonCallingSteps.getUsersManager().splitAliases(instanceUsers));
+            IOSTestContextHolder.getInstance().getTestContext().getCallingManager()
+                    .stopIncomingCall(IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                            .splitAliases(instanceUsers));
         } else {
-            commonCallingSteps.stopOutgoingCall(commonCallingSteps.getUsersManager().splitAliases(instanceUsers), conversationName);
+            IOSTestContextHolder.getInstance().getTestContext().getCallingManager()
+                    .stopOutgoingCall(IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                            .splitAliases(instanceUsers), conversationName);
         }
     }
 
@@ -88,8 +88,9 @@ public class CallingSteps {
     public void UserXVerifesCallStatusToUserY(String callers,
                                               String conversationName, String expectedStatuses, int timeoutSeconds)
             throws Exception {
-        commonCallingSteps.verifyCallingStatus(commonCallingSteps.getUsersManager().splitAliases(callers),
-                conversationName, expectedStatuses, timeoutSeconds);
+        IOSTestContextHolder.getInstance().getTestContext().getCallingManager()
+                .verifyCallingStatus(IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                                .splitAliases(callers), conversationName, expectedStatuses, timeoutSeconds);
     }
 
     /**
@@ -108,8 +109,9 @@ public class CallingSteps {
     @Then("(.*) verif(?:ies|y) that waiting instance status is changed to (.*) in (\\d+) seconds?$")
     public void UserXVerifesCallStatusToUserY(String callees,
                                               String expectedStatuses, int timeoutSeconds) throws Exception {
-        commonCallingSteps.verifyAcceptingCallStatus(commonCallingSteps.getUsersManager().splitAliases(callees),
-                expectedStatuses, timeoutSeconds);
+        IOSTestContextHolder.getInstance().getTestContext().getCallingManager()
+                .verifyAcceptingCallStatus(IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                                .splitAliases(callees), expectedStatuses, timeoutSeconds);
     }
 
     /**
@@ -123,8 +125,10 @@ public class CallingSteps {
     @Then("(.*) verif(?:ies|y) to have (\\d+) flows?$")
     public void UserXVerifesHavingXFlows(String callees, int numberOfFlows)
             throws Exception {
-        for (String callee : commonCallingSteps.getUsersManager().splitAliases(callees)) {
-            int actualFlowNumber = commonCallingSteps.getFlows(callee).size();
+        for (String callee : IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .splitAliases(callees)) {
+            int actualFlowNumber = IOSTestContextHolder.getInstance().getTestContext().getCallingManager()
+                    .getFlows(callee).size();
             Assert.assertTrue(String.format("Expected flows number is : %s but actual flows number was : %s",
                     numberOfFlows, actualFlowNumber), actualFlowNumber == numberOfFlows);
         }
@@ -140,10 +144,13 @@ public class CallingSteps {
      */
     @Then("(.*) verif(?:ies|y) that all flows have greater than 0 bytes$")
     public void UserXVerifesHavingXFlows(String callees) throws Exception {
-        for (String callee : commonCallingSteps.getUsersManager().splitAliases(callees)) {
-            for (Flow flow : commonCallingSteps.getFlows(callee)) {
-                Assert.assertTrue("There is no incoming bytes", flow.getTelemetry().getStats().getAudio().getBytesReceived() > 0L);
-                Assert.assertTrue("There is no outgoing bytes", flow.getTelemetry().getStats().getAudio().getBytesSent() > 0L);
+        for (String callee : IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .splitAliases(callees)) {
+            for (Flow flow : IOSTestContextHolder.getInstance().getTestContext().getCallingManager().getFlows(callee)) {
+                Assert.assertTrue("There is no incoming bytes",
+                        flow.getTelemetry().getStats().getAudio().getBytesReceived() > 0L);
+                Assert.assertTrue("There is no outgoing bytes",
+                        flow.getTelemetry().getStats().getAudio().getBytesSent() > 0L);
             }
         }
     }
@@ -159,7 +166,9 @@ public class CallingSteps {
      */
     @When("(.*) starts? instance using (.*)$")
     public void UserXStartsInstance(String callees, String callingServiceBackend) throws Exception {
-        commonCallingSteps.startInstances(commonCallingSteps.getUsersManager().splitAliases(callees),
+        IOSTestContextHolder.getInstance().getTestContext().getCallingManager()
+                .startInstances(IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                                .splitAliases(callees),
                 callingServiceBackend, "iOS", ZetaFormatter.getScenario());
     }
 
@@ -174,7 +183,9 @@ public class CallingSteps {
      */
     @When("(.*) accepts? next incoming call automatically$")
     public void UserXAcceptsNextIncomingCallAutomatically(String callees) throws Exception {
-        commonCallingSteps.acceptNextCall(commonCallingSteps.getUsersManager().splitAliases(callees));
+        IOSTestContextHolder.getInstance().getTestContext().getCallingManager()
+                .acceptNextCall(IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                        .splitAliases(callees));
     }
 
     /**
@@ -188,7 +199,9 @@ public class CallingSteps {
      */
     @When("(.*) accepts? next incoming video call automatically$")
     public void UserXAcceptsNextIncomingVideoCallAutomatically(String callees) throws Exception {
-        commonCallingSteps.acceptNextVideoCall(commonCallingSteps.getUsersManager().splitAliases(callees));
+        IOSTestContextHolder.getInstance().getTestContext().getCallingManager()
+                .acceptNextVideoCall(IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                        .splitAliases(callees));
     }
 
     /**
@@ -201,8 +214,9 @@ public class CallingSteps {
      */
     @When("(.*) starts? a video call to (.*)$")
     public void UserXStartVideoCallsToUserYUsingCallBackend(String callers, String conversationName) throws Exception {
-        commonCallingSteps.startVideoCallToConversation(commonCallingSteps.getUsersManager().splitAliases(callers),
-                conversationName);
+        IOSTestContextHolder.getInstance().getTestContext().getCallingManager()
+                .startVideoCallToConversation(IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                                .splitAliases(callers), conversationName);
     }
 
     /**
@@ -214,8 +228,9 @@ public class CallingSteps {
      */
     @Then("(.*) verif(?:ies|y) that call to conversation (.*) was successful$")
     public void UserXVerifesCallWasSuccessful(String callees, String conversation) throws Exception {
-        for (Call call : commonCallingSteps.getOutgoingCall(commonCallingSteps.getUsersManager().splitAliases(callees),
-                conversation)) {
+        for (Call call : IOSTestContextHolder.getInstance().getTestContext().getCallingManager()
+                .getOutgoingCall(IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                                .splitAliases(callees), conversation)) {
             assertNotNull("There are no metrics available for this call \n" + call, call.getMetrics());
             assertTrue("Call failed: \n" + call + "\n" + call.getMetrics(), call.getMetrics().isSuccess());
         }
@@ -265,38 +280,49 @@ public class CallingSteps {
                                 final Map<Integer, Exception> failures, List<Integer> callsWithoutMetricsData,
                                 List<Integer> callsWithoutByteFlowData) throws Exception {
         final int timeBetweenCall = 10;
-        final List<String> calleeList = commonCallingSteps.getUsersManager().splitAliases(callees);
+        final List<String> calleeList =
+                IOSTestContextHolder.getInstance().getTestContext().getUserManager().splitAliases(callees);
 
         LOG.info("\n\nSTARTING CALL " + callIndex);
         try {
-            pagesCollection.getPage(ConversationViewPage.class).tapButton("Audio Call");
+            IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                    .getPage(ConversationViewPage.class).tapButton("Audio Call");
             LOG.info("Pressing Audio button to start call");
 
             if (callIndex == 0) {
-                pagesCollection.getCommonPage().acceptAlert();
+                IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                        .getCommonPage().acceptAlert();
             }
 
-            commonCallingSteps.acceptNextCall(calleeList);
-            commonCallingSteps.verifyAcceptingCallStatus(calleeList, CALL_STATUS_ACTIVE, 20);
+            IOSTestContextHolder.getInstance().getTestContext().getCallingManager()
+                    .acceptNextCall(calleeList);
+            IOSTestContextHolder.getInstance().getTestContext().getCallingManager()
+                    .verifyAcceptingCallStatus(calleeList, CALL_STATUS_ACTIVE, 20);
             LOG.info("All instances are active");
 
-            boolean isVisible = pagesCollection.getPage(CallingOverlayPage.class).isCallStatusLabelVisible();
+            boolean isVisible = IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                    .getPage(CallingOverlayPage.class).isCallStatusLabelVisible();
             if (!isVisible) {
                 throw new CallIterationError(callIndex, "Calling overlay should be visible");
             }
             LOG.info("Calling overlay is visible");
 
-            commonSteps.WaitForTime(callDurationMinutes * 60);
-            pagesCollection.getPage(CallingOverlayPage.class).tapButtonByName(CALLINGOVERLAY_LEAVE_BUTTON);
-            boolean isInvisible = pagesCollection.getPage(CallingOverlayPage.class).isCallStatusLabelInvisible();
+            IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                    .WaitForTime(callDurationMinutes * 60);
+            IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                    .getPage(CallingOverlayPage.class).tapButtonByName(CALLINGOVERLAY_LEAVE_BUTTON);
+            boolean isInvisible = IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                    .getPage(CallingOverlayPage.class).isCallStatusLabelInvisible();
             if (!isInvisible) {
                 throw new CallIterationError(callIndex, "Calling overlay should be invisible");
             }
             LOG.info("Calling overlay is NOT visible");
-            commonCallingSteps.verifyAcceptingCallStatus(calleeList, CALL_STATUS_DESTROYED, 20);
+            IOSTestContextHolder.getInstance().getTestContext().getCallingManager()
+                    .verifyAcceptingCallStatus(calleeList, CALL_STATUS_DESTROYED, 20);
             LOG.info("All instances are destroyed");
 
-            for (Call call : commonCallingSteps.getIncomingCall(calleeList)) {
+            for (Call call : IOSTestContextHolder.getInstance().getTestContext().getCallingManager()
+                    .getIncomingCall(calleeList)) {
                 final Metrics metrics = call.getMetrics();
                 if (metrics == null) {
                     LOG.info("Could not get metrics for this call.");
@@ -312,7 +338,8 @@ public class CallingSteps {
                 }
             }
             LOG.info(String.format("CALL %s SUCCESSFUL", callIndex));
-            commonSteps.WaitForTime(timeBetweenCall);
+            IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                    .WaitForTime(timeBetweenCall);
 
         } catch (InterruptedException ie) {
             Throwables.propagate(ie);
@@ -320,13 +347,16 @@ public class CallingSteps {
             LOG.info(String.format("CALL %s FAILED", callIndex));
             LOG.error(String.format("Can not stop waiting call %s because %s", callIndex, t.getMessage()));
             try {
-                if (pagesCollection.getPage(CallingOverlayPage.class).isButtonVisible(CALLINGOVERLAY_LEAVE_BUTTON)) {
-                    pagesCollection.getPage(CallingOverlayPage.class).tapButtonByName(CALLINGOVERLAY_LEAVE_BUTTON);
+                if (IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                        .getPage(CallingOverlayPage.class).isButtonVisible(CALLINGOVERLAY_LEAVE_BUTTON)) {
+                    IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                            .getPage(CallingOverlayPage.class).tapButtonByName(CALLINGOVERLAY_LEAVE_BUTTON);
                 }
             } catch (Exception ex) {
                 LOG.error(String.format("Can not stop call kit %s because %s", callIndex, ex));
                 try {
-                    boolean callButtonVisible = pagesCollection.getPage(ConversationViewPage.class).isButtonVisible("Audio Call");
+                    boolean callButtonVisible = IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                            .getPage(ConversationViewPage.class).isButtonVisible("Audio Call");
                     if (!callButtonVisible) {
                         throw new CallIterationError(callIndex, "Calling button is not visible");
                     }
@@ -458,40 +488,51 @@ public class CallingSteps {
                                    List<Integer> callsWithoutMetricsData,
                                    List<Integer> callsWithoutByteFlowData) throws Exception {
         final int timeBetweenCall = 10;
-        final List<String> calleeList = commonCallingSteps.getUsersManager().splitAliases(callees);
+        final List<String> calleeList =
+                IOSTestContextHolder.getInstance().getTestContext().getUserManager().splitAliases(callees);
 
         LOG.info("\n\nSTARTING CALL " + callIndex);
         try {
             if (appState.equals("Background")) {
-                pagesCollection.getCommonPage().pressHomeButton();
+                IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                        .getCommonPage().pressHomeButton();
                 LOG.info("Put app into background");
             }
-            commonCallingSteps.callToConversation(calleeList, conversationName);
+            IOSTestContextHolder.getInstance().getTestContext().getCallingManager()
+                    .callToConversation(calleeList, conversationName);
 
-            boolean isVisible = pagesCollection.getPage(CallKitOverlayPage.class).isVisible("Audio");
+            boolean isVisible = IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                    .getPage(CallKitOverlayPage.class).isVisible("Audio");
             if (!isVisible) {
                 throw new CallIterationError(callIndex, "Audio Call Kit overlay should be visible");
             }
             LOG.info("Audio Call Kit overlay is visible");
-            pagesCollection.getPage(CallKitOverlayPage.class).tapButton(CALLKIT_ACCEPT_BUTTON);
+            IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                    .getPage(CallKitOverlayPage.class).tapButton(CALLKIT_ACCEPT_BUTTON);
             if (callIndex == 0) {
-                pagesCollection.getCommonPage().acceptAlert();
+                IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                        .getCommonPage().acceptAlert();
             }
 
-            commonCallingSteps.verifyCallingStatus(calleeList, conversationName, CALL_STATUS_ACTIVE, 20);
+            IOSTestContextHolder.getInstance().getTestContext().getCallingManager()
+                    .verifyCallingStatus(calleeList, conversationName, CALL_STATUS_ACTIVE, 20);
             LOG.info("All instances are active");
 
             LOG.info("Calling for 1 minute");
-            commonSteps.WaitForTime(callDurationMinutes * 60);
+            IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                    .WaitForTime(callDurationMinutes * 60);
 
-            pagesCollection.getPage(CallingOverlayPage.class).tapButtonByName(CALLINGOVERLAY_LEAVE_BUTTON);
-            boolean isNotVisible = pagesCollection.getPage(CallingOverlayPage.class).isCallStatusLabelInvisible();
+            IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                    .getPage(CallingOverlayPage.class).tapButtonByName(CALLINGOVERLAY_LEAVE_BUTTON);
+            boolean isNotVisible = IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                    .getPage(CallingOverlayPage.class).isCallStatusLabelInvisible();
             if (!isNotVisible) {
                 throw new CallIterationError(callIndex, "Audio Call overlay should be invisible");
             }
             LOG.info("Calling overlay is NOT visible");
 
-            for (Call call : commonCallingSteps.getOutgoingCall(calleeList, conversationName)) {
+            for (Call call : IOSTestContextHolder.getInstance().getTestContext().getCallingManager()
+                    .getOutgoingCall(calleeList, conversationName)) {
                 final Metrics metrics = call.getMetrics();
                 if (metrics == null) {
                     LOG.info("Could not get metrics for this call.");
@@ -508,25 +549,31 @@ public class CallingSteps {
             }
 
             LOG.info(String.format("CALL %s SUCCESSFUL", callIndex));
-            commonSteps.WaitForTime(timeBetweenCall);
+            IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                    .WaitForTime(timeBetweenCall);
         } catch (InterruptedException ie) {
             Throwables.propagate(ie);
         } catch (Exception t) {
             LOG.info(String.format("CALL %s FAILED", callIndex));
             try {
-                if (pagesCollection.getPage(CallingOverlayPage.class).isButtonVisible(CALLINGOVERLAY_LEAVE_BUTTON)) {
-                    pagesCollection.getPage(CallingOverlayPage.class).tapButtonByName(CALLINGOVERLAY_LEAVE_BUTTON);
+                if (IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                        .getPage(CallingOverlayPage.class).isButtonVisible(CALLINGOVERLAY_LEAVE_BUTTON)) {
+                    IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                            .getPage(CallingOverlayPage.class).tapButtonByName(CALLINGOVERLAY_LEAVE_BUTTON);
                 }
             } catch (Exception ex) {
                 LOG.error(String.format("Can not stop call %s because %s", callIndex, ex));
                 try {
-                    if (pagesCollection.getPage(CallKitOverlayPage.class).isButtonVisible(CALLKIT_DECLINE_BUTTON)) {
-                        pagesCollection.getPage(CallKitOverlayPage.class).tapButton(CALLKIT_DECLINE_BUTTON);
+                    if (IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                            .getPage(CallKitOverlayPage.class).isButtonVisible(CALLKIT_DECLINE_BUTTON)) {
+                        IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                                .getPage(CallKitOverlayPage.class).tapButton(CALLKIT_DECLINE_BUTTON);
                     }
                 } catch (Exception exe) {
                     LOG.error(String.format("Can not stop call kit %s because %s", callIndex, exe));
                     try {
-                        pagesCollection.getCommonPage().pressHomeButton();
+                        IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                                .getCommonPage().pressHomeButton();
                         LOG.info("Put app into background");
                     } catch (Exception morexe) {
                         LOG.error(String.format("Call %s failed because %s", callIndex, morexe));

@@ -1,16 +1,15 @@
 package com.wearezeta.auto.ios.steps;
 
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import com.wearezeta.auto.ios.pages.CameraPage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 
 public class CameraPageSteps {
-
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-
     private CameraPage getCameraPage() throws Exception {
-        return pagesCollection.getPage(CameraPage.class);
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(CameraPage.class);
     }
 
     /**

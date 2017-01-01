@@ -1,19 +1,16 @@
 package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import com.wearezeta.auto.ios.pages.NewDeviceOverlay;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 
 public class NewDeviceOverlaySteps {
-
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
     private NewDeviceOverlay getNewDeviceOverlay() throws Exception {
-        return pagesCollection.getPage(NewDeviceOverlay.class);
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(NewDeviceOverlay.class);
     }
 
     /**
@@ -25,7 +22,8 @@ public class NewDeviceOverlaySteps {
      */
     @Then("^I see the label \"(.*)\" on New Device overlay$")
     public void ISeeLabel(String expectedLabel) throws Exception {
-        expectedLabel = usrMgr.replaceAliasesOccurences(expectedLabel, ClientUsersManager.FindBy.NAME_ALIAS);
+        expectedLabel = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .replaceAliasesOccurences(expectedLabel, ClientUsersManager.FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format("New Device overlay does not contain the label '%s'", expectedLabel),
                 getNewDeviceOverlay().isContainingLabel(expectedLabel));
     }

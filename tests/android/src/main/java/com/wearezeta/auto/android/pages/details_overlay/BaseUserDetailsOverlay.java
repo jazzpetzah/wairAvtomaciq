@@ -1,8 +1,8 @@
 package com.wearezeta.auto.android.pages.details_overlay;
 
+import com.wearezeta.auto.android.common.AndroidTestContextHolder;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import org.apache.commons.lang3.NotImplementedException;
 import org.openqa.selenium.By;
@@ -11,8 +11,6 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 public abstract class BaseUserDetailsOverlay extends BaseDetailsOverlay {
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
     private static final String strIdUniqueName = "ttv__user_details__user_name";
     private static final String strIdUserInfo = "ttv__user_details__user_info";
     private static final String strIdAcceptButton = "zb__connect_request__accept_button";
@@ -69,11 +67,13 @@ public abstract class BaseUserDetailsOverlay extends BaseDetailsOverlay {
     protected By getUserDataLocator(String type, String text) {
         switch (type.toLowerCase()) {
             case "user name":
-                text = usrMgr.replaceAliasesOccurences(text, ClientUsersManager.FindBy.NAME_ALIAS);
+                text = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+                        .replaceAliasesOccurences(text, ClientUsersManager.FindBy.NAME_ALIAS);
                 return By.xpath(xpathStrUserName.apply(text));
             case "unique user name":
             case "unique username":
-                text = usrMgr.replaceAliasesOccurences(text, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
+                text = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+                        .replaceAliasesOccurences(text, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
                 return By.xpath(xpathStrUniqueUserName.apply(text));
             case "user info":
                 return By.xpath(xpathStrUserInfo.apply(text));

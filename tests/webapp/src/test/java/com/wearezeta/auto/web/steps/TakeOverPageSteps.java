@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.pages.AccountPage;
 import com.wearezeta.auto.web.pages.TakeOverPage;
@@ -24,11 +24,11 @@ public class TakeOverPageSteps {
 
     private static final Logger log = ZetaLogger.getLog(TakeOverPageSteps.class.getSimpleName());
 
-    private final TestContext context;
+    private final WebAppTestContext context;
 
     private String rememberedUsername = null;
 
-    public TakeOverPageSteps(TestContext context) {
+    public TakeOverPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 

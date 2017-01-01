@@ -3,7 +3,7 @@ package com.wearezeta.auto.web.steps;
 import java.util.List;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.pages.DevicesPage;
 import cucumber.api.java.en.Then;
@@ -17,10 +17,10 @@ import static org.hamcrest.Matchers.not;
 
 public class DevicesPageSteps {
 
-    private final TestContext context;
+    private final WebAppTestContext context;
     private String currentDeviceId = null;
 
-    public DevicesPageSteps(TestContext context) {
+    public DevicesPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 

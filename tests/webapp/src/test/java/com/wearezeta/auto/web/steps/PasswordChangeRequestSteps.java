@@ -16,7 +16,7 @@ import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.external.PasswordChangePage;
 import com.wearezeta.auto.web.pages.external.PasswordChangeRequestPage;
 import com.wearezeta.auto.web.pages.external.PasswordChangeRequestSuccessfullPage;
@@ -33,9 +33,9 @@ public class PasswordChangeRequestSteps {
     private static final Logger log = ZetaLogger.getLog(PasswordChangeRequestSteps.class.getSimpleName());
 
     private Future<String> passwordChangeMessage = null;
-    private final TestContext context;
+    private final WebAppTestContext context;
 
-    public PasswordChangeRequestSteps(TestContext context) {
+    public PasswordChangeRequestSteps(WebAppTestContext context) {
         this.context = context;
     }
 

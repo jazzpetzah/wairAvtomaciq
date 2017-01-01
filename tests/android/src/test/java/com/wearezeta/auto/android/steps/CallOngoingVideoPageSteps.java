@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android.steps;
 
+import com.wearezeta.auto.android.common.AndroidTestContextHolder;
 import com.wearezeta.auto.android.pages.CallOngoingVideoPage;
 import com.wearezeta.auto.common.misc.ElementState;
 
@@ -12,14 +13,12 @@ import org.junit.Assert;
 import static org.junit.Assert.assertTrue;
 
 public class CallOngoingVideoPageSteps {
-
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
-
     private final ElementState videoButtonState = new ElementState(() -> getPage().getSpecialButtonScreenshot());
     private final ElementState muteButtonState = new ElementState(() -> getPage().getMuteButtonScreenshot());
 
     private CallOngoingVideoPage getPage() throws Exception {
-        return pagesCollection.getPage(CallOngoingVideoPage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(CallOngoingVideoPage.class);
     }
 
     /**

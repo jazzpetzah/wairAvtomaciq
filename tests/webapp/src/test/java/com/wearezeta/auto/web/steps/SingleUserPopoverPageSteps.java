@@ -16,9 +16,8 @@ import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
-import com.wearezeta.auto.web.pages.AccountPage;
 import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
 
 import cucumber.api.java.en.And;
@@ -38,9 +37,9 @@ public class SingleUserPopoverPageSteps {
     private static final String TOOLTIP_PENDING = "Pending";
     private static final String TOOLTIP_OPEN_CONVERSATION = "Open conversation";
 
-    private final TestContext context;
+    private final WebAppTestContext context;
 
-    public SingleUserPopoverPageSteps(TestContext context) {
+    public SingleUserPopoverPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 

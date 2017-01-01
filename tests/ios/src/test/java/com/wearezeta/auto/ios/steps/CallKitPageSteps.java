@@ -1,15 +1,15 @@
 package com.wearezeta.auto.ios.steps;
 
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import com.wearezeta.auto.ios.pages.CallKitOverlayPage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 
 public class CallKitPageSteps {
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-
     private CallKitOverlayPage getPage() throws Exception {
-        return pagesCollection.getPage(CallKitOverlayPage.class);
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(CallKitOverlayPage.class);
     }
 
     /**

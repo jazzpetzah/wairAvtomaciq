@@ -2,7 +2,7 @@ package com.wearezeta.auto.osx.steps.osx;
 
 import com.wearezeta.auto.osx.pages.osx.AddressBookPermissionPage;
 import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -10,9 +10,9 @@ import static org.junit.Assert.assertTrue;
 
 public class AddressBookPermissionPageSteps {
 
-    private final TestContext webContext;
+    private final WebAppTestContext webContext;
 
-    public AddressBookPermissionPageSteps(TestContext webContext) {
+    public AddressBookPermissionPageSteps(WebAppTestContext webContext) {
         this.webContext = webContext;
     }
 

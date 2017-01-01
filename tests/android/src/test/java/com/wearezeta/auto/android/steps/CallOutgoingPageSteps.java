@@ -1,7 +1,7 @@
 package com.wearezeta.auto.android.steps;
 
 
-import com.wearezeta.auto.android.pages.AbstractCallOutgoingPage;
+import com.wearezeta.auto.android.common.AndroidTestContextHolder;
 import com.wearezeta.auto.android.pages.CallOutgoingAudioPage;
 import com.wearezeta.auto.android.pages.CallOutgoingVideoPage;
 import com.wearezeta.auto.common.misc.ElementState;
@@ -14,19 +14,18 @@ import org.junit.Assert;
 import static org.junit.Assert.assertTrue;
 
 public class CallOutgoingPageSteps {
-
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
-
     private final ElementState videoButtonState = new ElementState(() -> getAudioPage().getSpecialButtonScreenshot());
     private final ElementState speakerButtonState = new ElementState(() -> getAudioPage().getSpecialButtonScreenshot());
     private final ElementState muteButtonState = new ElementState(() -> getAudioPage().getMuteButtonScreenshot());
 
     private CallOutgoingVideoPage getVideoPage() throws Exception {
-        return pagesCollection.getPage(CallOutgoingVideoPage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(CallOutgoingVideoPage.class);
     }
 
     private CallOutgoingAudioPage getAudioPage() throws Exception {
-        return pagesCollection.getPage(CallOutgoingAudioPage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(CallOutgoingAudioPage.class);
     }
 
     /**

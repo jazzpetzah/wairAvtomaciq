@@ -6,7 +6,7 @@ import com.wearezeta.auto.web.pages.ConversationPage;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.ContactListPage;
 import com.wearezeta.auto.web.pages.StartUIPage;
 import com.wearezeta.auto.web.pages.external.GoogleLoginPage;
@@ -22,11 +22,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class StartUIPageSteps {
 
-    private final TestContext context;
+    private final WebAppTestContext context;
 
     private static String rememberedUser;
 
-    public StartUIPageSteps(TestContext context) {
+    public StartUIPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 

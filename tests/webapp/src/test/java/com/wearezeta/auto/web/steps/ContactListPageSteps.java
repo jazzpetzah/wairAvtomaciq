@@ -11,7 +11,7 @@ import org.junit.Assert;
 import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.ContactListPage;
@@ -40,9 +40,9 @@ public class ContactListPageSteps {
     private static final String SHORTCUT_MUTE_WIN = "(Ctrl + Alt + S)";
     private static final String SHORTCUT_MUTE_MAC = "(⌘⌥S)";
 
-    private final TestContext context;
+    private final WebAppTestContext context;
 
-    public ContactListPageSteps(TestContext context) {
+    public ContactListPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 

@@ -1,18 +1,15 @@
 package com.wearezeta.auto.android_tablet.steps;
 
+import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContextHolder;
 import com.wearezeta.auto.android_tablet.pages.TabletPhoneLoginPage;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
 
 public class PhoneLoginPageSteps {
-	private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection.getInstance();
-
 	private TabletPhoneLoginPage getTabletPhoneLoginPage() throws Exception {
-		return pagesCollection.getPage(TabletPhoneLoginPage.class);
+		return AndroidTabletTestContextHolder.getInstance().getTestContext().getPagesCollection()
+				.getPage(TabletPhoneLoginPage.class);
 	}
-
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	/**
 	 * Select Wire country on phone login page
@@ -34,7 +31,10 @@ public class PhoneLoginPageSteps {
      */
     @When("^I enter my phone number on Phone Login page$")
     public void IEnterMyPhoneNumber() throws Exception {
-        getTabletPhoneLoginPage().inputPhoneNumber(usrMgr.getSelfUserOrThrowError().getPhoneNumber());
+        getTabletPhoneLoginPage().inputPhoneNumber(
+                AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+                        .getSelfUserOrThrowError().getPhoneNumber()
+        );
     }
 
     /**

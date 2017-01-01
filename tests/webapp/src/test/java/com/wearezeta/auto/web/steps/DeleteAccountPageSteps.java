@@ -14,7 +14,7 @@ import com.wearezeta.auto.common.email.MessagingUtils;
 import com.wearezeta.auto.common.email.WireMessage;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.external.DeleteAccountPage;
 
 import cucumber.api.java.en.Then;
@@ -25,9 +25,9 @@ public class DeleteAccountPageSteps {
     private static final int DELETION_RECEIVING_TIMEOUT = 120;
 
     private String deleteLink = null;
-    private final TestContext context;
+    private final WebAppTestContext context;
 
-    public DeleteAccountPageSteps(TestContext context) {
+    public DeleteAccountPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 

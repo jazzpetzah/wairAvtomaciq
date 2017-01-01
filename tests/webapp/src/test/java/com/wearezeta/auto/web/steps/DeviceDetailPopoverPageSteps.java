@@ -1,7 +1,7 @@
 package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.popovers.DeviceDetailPopoverPage;
 import cucumber.api.java.en.When;
 
@@ -10,9 +10,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class DeviceDetailPopoverPageSteps {
 
-    private final TestContext context;
+    private final WebAppTestContext context;
 
-    public DeviceDetailPopoverPageSteps(TestContext context) {
+    public DeviceDetailPopoverPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 

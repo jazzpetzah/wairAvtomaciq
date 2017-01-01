@@ -11,21 +11,12 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
  * device originalOrientation is sometimes overriden without any reason and we have to
  * fix it in such a tricky way
  *
- * @author elf
  */
 public final class ScreenOrientationHelper {
 
     public static final long ROTATION_DELAY_MS = 1500;
-    private static ScreenOrientationHelper instance;
 
-    public static synchronized ScreenOrientationHelper getInstance() {
-        if (instance == null) {
-            instance = new ScreenOrientationHelper();
-        }
-        return instance;
-    }
-
-    private ScreenOrientationHelper() {
+    ScreenOrientationHelper() {
     }
 
     private Optional<ScreenOrientation> originalOrientation = Optional.empty();

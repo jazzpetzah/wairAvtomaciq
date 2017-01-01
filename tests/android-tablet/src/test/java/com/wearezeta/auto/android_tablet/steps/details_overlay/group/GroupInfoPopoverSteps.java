@@ -1,19 +1,16 @@
 package com.wearezeta.auto.android_tablet.steps.details_overlay.group;
 
+import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContextHolder;
 import com.wearezeta.auto.android_tablet.pages.details_overlay.group.TabletGroupInfoPopover;
-import com.wearezeta.auto.android_tablet.steps.AndroidTabletPagesCollection;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 
 public class GroupInfoPopoverSteps {
-    private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection.getInstance();
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
     private TabletGroupInfoPopover getGroupInfoPopover() throws Exception {
-        return pagesCollection.getPage(TabletGroupInfoPopover.class);
+        return AndroidTabletTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(TabletGroupInfoPopover.class);
     }
 
     /**
@@ -52,7 +49,8 @@ public class GroupInfoPopoverSteps {
     @When("^I tap on contact (.*) on Group info popover")
     public void ITapOnContact(String contact) throws Exception {
         try {
-            contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+            contact = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+                    .findUserByNameOrNameAlias(contact).getName();
         } catch (NoSuchUserException e) {
             // Ignore silently
         }
@@ -96,8 +94,10 @@ public class GroupInfoPopoverSteps {
      */
     @Then("^I see the( verified)? participant avatars? for (.*) on Group info popover")
     public void ISeeCorrectParticipantAvatars(String checkVerifiedContact, String contacts) throws Exception {
-        for (String userName : usrMgr.splitAliases(contacts)) {
-            userName = usrMgr.findUserByNameOrNameAlias(userName).getName();
+        for (String userName : AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+                .splitAliases(contacts)) {
+            userName = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+                    .findUserByNameOrNameAlias(userName).getName();
             if (checkVerifiedContact == null) {
                 Assert.assertTrue(String.format("The avatar for '%s' is not visible", userName),
                         getGroupInfoPopover().waitUntilParticipantAvatarVisible(userName));
@@ -118,7 +118,8 @@ public class GroupInfoPopoverSteps {
      */
     @Then("^I( do not)? see participant (.*) on Group info popover")
     public void ISeeContact(String shouldNotSee, String userName) throws Exception {
-        userName = usrMgr.findUserByNameOrNameAlias(userName).getName();
+        userName = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+                .findUserByNameOrNameAlias(userName).getName();
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("Participant %s is invisible", userName),
                     getGroupInfoPopover().waitUntilParticipantVisible(userName));

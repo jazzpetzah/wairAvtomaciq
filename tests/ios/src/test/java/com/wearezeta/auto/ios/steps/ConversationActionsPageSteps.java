@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import com.wearezeta.auto.ios.pages.ConversationActionsPage;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
@@ -9,12 +10,9 @@ import org.junit.Assert;
 
 
 public class ConversationActionsPageSteps {
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-
     private ConversationActionsPage getPage() throws Exception {
-        return pagesCollection.getPage(ConversationActionsPage.class);
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(ConversationActionsPage.class);
     }
 
     /**
@@ -80,7 +78,8 @@ public class ConversationActionsPageSteps {
      */
     @And("^I see actions menu for (.*) conversation$")
     public void ISeeConversationNameInActionMenu(String conversation) throws Exception {
-        conversation = usrMgr.replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
+        conversation = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format("There is no conversation name %s in opened action menu.",
                 conversation), getPage().isVisibleForConversation(conversation));
     }
@@ -96,8 +95,10 @@ public class ConversationActionsPageSteps {
      */
     @When("^I (do not )?see (unique username|Address Book name|common friends count) (\".*\" |\\s*)on Conversation actions page$")
     public void ISeeLabel(String shouldNotSee, String fieldType, String value) throws Exception {
-        value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.NAME_ALIAS);
-        value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
+        value = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .replaceAliasesOccurences(value, ClientUsersManager.FindBy.NAME_ALIAS);
+        value = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .replaceAliasesOccurences(value, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
         if (shouldNotSee == null) {
             if (value.startsWith("\"")) {
                 value = value.trim().replaceAll("^\"|\"$", "");

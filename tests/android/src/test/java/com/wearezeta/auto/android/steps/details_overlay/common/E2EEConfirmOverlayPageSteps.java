@@ -1,19 +1,15 @@
 package com.wearezeta.auto.android.steps.details_overlay.common;
 
+import com.wearezeta.auto.android.common.AndroidTestContextHolder;
 import com.wearezeta.auto.android.pages.details_overlay.common.E2EEConfirmOverlayPage;
-import com.wearezeta.auto.android.steps.AndroidPagesCollection;
-import com.wearezeta.auto.common.CommonSteps;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 
 public class E2EEConfirmOverlayPageSteps {
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
     private E2EEConfirmOverlayPage getE2EEConfirmOverlayPage() throws Exception {
-        return pagesCollection.getPage(E2EEConfirmOverlayPage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(E2EEConfirmOverlayPage.class);
     }
 
     /**
@@ -28,8 +24,10 @@ public class E2EEConfirmOverlayPageSteps {
                 getE2EEConfirmOverlayPage().waitUntilE2EETextVisible());
         String name;
         final String headerText = getE2EEConfirmOverlayPage().getHeaderText();
-        for (String nameAlias : usrMgr.splitAliases(nameAliases)) {
-            name = usrMgr.findUserByNameOrNameAlias(nameAlias).getName();
+        for (String nameAlias : AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+                .splitAliases(nameAliases)) {
+            name = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+                    .findUserByNameOrNameAlias(nameAlias).getName();
             Assert.assertTrue(String.format("Takeover header from user %s is not visible", name), headerText.contains(name));
         }
     }

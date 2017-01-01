@@ -1,12 +1,9 @@
 package com.wearezeta.auto.web.steps;
 
-import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
-import com.wearezeta.auto.web.pages.AccountPage;
 import com.wearezeta.auto.web.pages.popovers.GroupPopoverContainer;
 
 import cucumber.api.java.en.Then;
@@ -39,9 +36,9 @@ public class GroupPopoverPageSteps {
     private static final String TOOLTIP_UNBLOCK = "Unblock";
     private static final String TOOLTIP_OPEN_YOUR_PROFILE = "Open your profile";
 
-    private final TestContext context;
+    private final WebAppTestContext context;
 
-    public GroupPopoverPageSteps(TestContext context) {
+    public GroupPopoverPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 

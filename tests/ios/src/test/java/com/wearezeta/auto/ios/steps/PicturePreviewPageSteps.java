@@ -1,15 +1,13 @@
 package com.wearezeta.auto.ios.steps;
 
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import com.wearezeta.auto.ios.pages.PicturePreviewPage;
-import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class PicturePreviewPageSteps {
-
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-
     private PicturePreviewPage getPicturePreviewPage() throws Exception {
-        return pagesCollection.getPage(PicturePreviewPage.class);
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(PicturePreviewPage.class);
     }
 
     /**

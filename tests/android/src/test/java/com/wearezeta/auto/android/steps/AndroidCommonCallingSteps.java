@@ -3,22 +3,19 @@ package com.wearezeta.auto.android.steps;
 import java.util.List;
 import java.util.Random;
 
+import com.wearezeta.auto.android.common.AndroidTestContextHolder;
 import com.wearezeta.auto.android.pages.CallIncomingPage;
-import com.wearezeta.auto.common.CommonCallingSteps2;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.calling2.v1.exception.CallingServiceCallException;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import org.apache.log4j.Logger;
 
 public class AndroidCommonCallingSteps {
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
-
-    private static final CommonCallingSteps2 commonCallingSteps = CommonCallingSteps2.getInstance();
-
     private static final Logger log = ZetaLogger.getLog(CommonUtils.class.getSimpleName());
 
     private CallIncomingPage getIncomingCallPage() throws Exception {
-        return pagesCollection.getPage(CallIncomingPage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext()
+                .getPagesCollection().getPage(CallIncomingPage.class);
     }
 
     private static final int DEFAULT_RETRIES = 3;
@@ -32,7 +29,8 @@ public class AndroidCommonCallingSteps {
         do {
             long sleepInterval = 1000;
             try {
-                commonCallingSteps.callToConversation(callerNames, conversationName);
+                AndroidTestContextHolder.getInstance().getTestContext().getCallingManager()
+                        .callToConversation(callerNames, conversationName);
                 return;
             } catch (CallingServiceCallException e) {
                 e.printStackTrace();

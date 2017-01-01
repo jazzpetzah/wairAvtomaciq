@@ -1,17 +1,16 @@
 package com.wearezeta.auto.android.steps.cursor;
 
+import com.wearezeta.auto.android.common.AndroidTestContextHolder;
 import com.wearezeta.auto.android.pages.cursor.VoiceFiltersOverlayPage;
-import com.wearezeta.auto.android.steps.AndroidPagesCollection;
+import com.wearezeta.auto.android.pages.AndroidPagesCollection;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 
 public class VoiceFiltersOverlayPageSteps {
-
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
-
     private VoiceFiltersOverlayPage getVoiceFiltersOverlayPage() throws Exception {
-        return pagesCollection.getPage(VoiceFiltersOverlayPage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext()
+                .getPagesCollection().getPage(VoiceFiltersOverlayPage.class);
     }
 
     /**

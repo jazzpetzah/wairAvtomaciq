@@ -1,18 +1,14 @@
 package com.wearezeta.auto.android.steps.details_overlay.single;
 
+import com.wearezeta.auto.android.common.AndroidTestContextHolder;
 import com.wearezeta.auto.android.pages.details_overlay.single.SinglePendingOutgoingConnectionPage;
-import com.wearezeta.auto.android.steps.AndroidPagesCollection;
-import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import cucumber.api.java.en.Then;
 import org.junit.Assert;
 
 public class SinglePendingOutgoingConnectionPageSteps {
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
     private SinglePendingOutgoingConnectionPage getSinglePendingOutgoingConnectionPage() throws Exception {
-        return pagesCollection.getPage(SinglePendingOutgoingConnectionPage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(SinglePendingOutgoingConnectionPage.class);
     }
 
     /**

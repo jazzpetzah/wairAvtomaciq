@@ -4,6 +4,7 @@ import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.email.ActivationMessage;
 import com.wearezeta.auto.common.email.WireMessage;
 import com.wearezeta.auto.common.usrmgmt.*;
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import com.wearezeta.auto.ios.pages.RegistrationPage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -14,12 +15,9 @@ import java.util.Map;
 import java.util.concurrent.Future;
 
 public class RegistrationPageSteps {
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-
     private RegistrationPage getRegistrationPage() throws Exception {
-        return pagesCollection.getPage(RegistrationPage.class);
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(RegistrationPage.class);
     }
 
     private ClientUser userToRegister = null;
@@ -34,7 +32,8 @@ public class RegistrationPageSteps {
      */
     @When("^I enter phone number for (.*)$")
     public void IEnterPhoneNumber(String name) throws Exception {
-        this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
+        this.userToRegister = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .findUserByNameOrNameAlias(name);
         getRegistrationPage().inputPhoneNumber(this.userToRegister.getPhoneNumber());
     }
 
@@ -98,7 +97,8 @@ public class RegistrationPageSteps {
 
     @When("^I enter name (.*)$")
     public void IEnterName(String name) throws Exception {
-        this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
+        this.userToRegister = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .findUserByNameOrNameAlias(name);
         getRegistrationPage().setName(this.userToRegister.getName());
     }
 
@@ -114,13 +114,15 @@ public class RegistrationPageSteps {
 
     @When("^I enter email (.*)$")
     public void IEnterEmail(String email) throws Exception {
-        this.userToRegister = usrMgr.findUserByEmailOrEmailAlias(email);
+        this.userToRegister = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .findUserByEmailOrEmailAlias(email);
         getRegistrationPage().setEmail(this.userToRegister.getEmail());
     }
 
     @When("^I enter password (.*)$")
     public void IEnterPassword(String password) throws Exception {
-        this.userToRegister = usrMgr.findUserByPasswordAlias(password);
+        this.userToRegister = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .findUserByPasswordAlias(password);
         getRegistrationPage().setPassword(this.userToRegister.getPassword());
     }
 
@@ -152,8 +154,8 @@ public class RegistrationPageSteps {
     @Then("^I verify registration address$")
     public void IVerifyRegistrationAddress() throws Exception {
         BackendAPIWrappers.activateRegisteredUserByEmail(this.activationMessage);
-        if (!usrMgr.isSelfUserSet()) {
-            usrMgr.setSelfUser(userToRegister);
+        if (!IOSTestContextHolder.getInstance().getTestContext().getUserManager().isSelfUserSet()) {
+            IOSTestContextHolder.getInstance().getTestContext().getUserManager().setSelfUser(userToRegister);
         }
         getRegistrationPage().waitRegistrationToFinish();
     }
@@ -208,7 +210,7 @@ public class RegistrationPageSteps {
         }
     }
 
-     /**
+    /**
      * Verify visibility of "No code to show up" label
      *
      * @param shouldNotBeVisible equals to null if the shield should be visible

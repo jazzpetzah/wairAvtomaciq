@@ -7,7 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.WebPage;
 import cucumber.api.java.en.When;
 import org.apache.http.HttpResponse;
@@ -26,9 +26,9 @@ public class MigrationSteps {
 
     private Path temp;
     private Process gruntProcess;
-    private TestContext context;
+    private WebAppTestContext context;
 
-    public MigrationSteps(TestContext context) {
+    public MigrationSteps(WebAppTestContext context) {
         this.context = context;
     }
 

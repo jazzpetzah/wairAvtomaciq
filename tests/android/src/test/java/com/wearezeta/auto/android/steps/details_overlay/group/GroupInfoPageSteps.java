@@ -1,19 +1,16 @@
 package com.wearezeta.auto.android.steps.details_overlay.group;
 
+import com.wearezeta.auto.android.common.AndroidTestContextHolder;
 import com.wearezeta.auto.android.pages.details_overlay.group.GroupInfoPage;
-import com.wearezeta.auto.android.steps.AndroidPagesCollection;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 
 public class GroupInfoPageSteps {
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
     private GroupInfoPage getGroupInfoPage() throws Exception {
-        return pagesCollection.getPage(GroupInfoPage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(GroupInfoPage.class);
     }
 
     /**
@@ -52,7 +49,8 @@ public class GroupInfoPageSteps {
     @When("^I tap on contact (.*) on Group info page$")
     public void ITapOnContact(String contact) throws Exception {
         try {
-            contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+            contact = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+                    .findUserByNameOrNameAlias(contact).getName();
         } catch (NoSuchUserException e) {
             // Ignore silently
         }
@@ -91,8 +89,10 @@ public class GroupInfoPageSteps {
      */
     @Then("^I see the( verified)? participant avatars? for (.*) on Group info page")
     public void ISeeCorrectParticipantAvatars(String checkVerifiedContact, String contacts) throws Exception {
-        for (String userName : usrMgr.splitAliases(contacts)) {
-            userName = usrMgr.findUserByNameOrNameAlias(userName).getName();
+        for (String userName : AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+                .splitAliases(contacts)) {
+            userName = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+                    .findUserByNameOrNameAlias(userName).getName();
             if (checkVerifiedContact == null) {
                 Assert.assertTrue(String.format("The avatar for '%s' is not visible", userName),
                         getGroupInfoPage().waitUntilParticipantAvatarVisible(userName));
@@ -113,7 +113,8 @@ public class GroupInfoPageSteps {
      */
     @Then("^I( do not)? see participant (.*) on Group info page$")
     public void ISeeContact(String shouldNotSee, String userName) throws Exception {
-        userName = usrMgr.findUserByNameOrNameAlias(userName).getName();
+        userName = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+                .findUserByNameOrNameAlias(userName).getName();
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("Participant %s is invisible", userName),
                     getGroupInfoPage().waitUntilParticipantVisible(userName));

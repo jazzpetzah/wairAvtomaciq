@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import com.wearezeta.auto.ios.pages.FirstTimeOverlay;
 import com.wearezeta.auto.ios.tools.FastLoginContainer;
 import org.junit.Assert;
@@ -10,7 +11,6 @@ import java.util.Random;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.ios.pages.LoginPage;
 import com.wearezeta.auto.ios.pages.RegistrationPage;
 
@@ -20,20 +20,19 @@ import cucumber.api.java.en.*;
  * Contains steps to work with Login/Welcome page
  */
 public class LoginPageSteps {
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-
     private LoginPage getLoginPage() throws Exception {
-        return pagesCollection.getPage(LoginPage.class);
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(LoginPage.class);
     }
 
     private RegistrationPage getRegistrationPage() throws Exception {
-        return pagesCollection.getPage(RegistrationPage.class);
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(RegistrationPage.class);
     }
 
     private FirstTimeOverlay getFirstTimeOverlayPage() throws Exception {
-        return pagesCollection.getPage(FirstTimeOverlay.class);
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(FirstTimeOverlay.class);
     }
 
     /**
@@ -56,7 +55,8 @@ public class LoginPageSteps {
      */
     @Given("^I sign in using my email$")
     public void GivenISignInUsingEmail() throws Exception {
-        final ClientUser self = usrMgr.getSelfUserOrThrowError();
+        final ClientUser self = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .getSelfUserOrThrowError();
         emailLoginSequence(self.getEmail(), self.getPassword());
     }
 
@@ -96,7 +96,8 @@ public class LoginPageSteps {
      */
     @When("^I enter (login|registration|random) verification code for (.*)")
     public void IEnterVerificationCodeForUser(String codeType, String name) throws Exception {
-        ClientUser user = usrMgr.findUserByNameOrNameAlias(name);
+        ClientUser user = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .findUserByNameOrNameAlias(name);
         switch (codeType.toLowerCase()) {
             case "login":
                 getLoginPage().inputLoginCode(user.getPhoneNumber());
@@ -146,7 +147,8 @@ public class LoginPageSteps {
      */
     @Given("^I sign in using my email or phone number$")
     public void GivenISignInUsingEmailOrPhone() throws Exception {
-        final ClientUser self = usrMgr.getSelfUserOrThrowError();
+        final ClientUser self = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .getSelfUserOrThrowError();
         if (!FastLoginContainer.getInstance().isEnabled() && rand.nextInt(100) < BY_PHONE_NUMBER_LOGIN_PROBABILITY) {
             phoneLoginSequence(self.getPhoneNumber());
         } else {
@@ -197,7 +199,8 @@ public class LoginPageSteps {
      */
     @When("^I have entered login (.*)")
     public void WhenIHaveEnteredLogin(String login) throws Exception {
-        login = usrMgr.replaceAliasesOccurences(login, ClientUsersManager.FindBy.EMAIL_ALIAS);
+        login = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .replaceAliasesOccurences(login, ClientUsersManager.FindBy.EMAIL_ALIAS);
         getLoginPage().setLogin(login);
     }
 
@@ -210,7 +213,8 @@ public class LoginPageSteps {
      */
     @When("^I have entered password (.*)")
     public void WhenIHaveEnteredPassword(String password) throws Exception {
-        password = usrMgr.replaceAliasesOccurences(password, ClientUsersManager.FindBy.PASSWORD_ALIAS);
+        password = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .replaceAliasesOccurences(password, ClientUsersManager.FindBy.PASSWORD_ALIAS);
         getLoginPage().setPassword(password);
     }
 

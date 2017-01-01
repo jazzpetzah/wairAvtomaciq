@@ -8,6 +8,7 @@ import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import com.wearezeta.auto.ios.pages.SettingsPage;
 
 import cucumber.api.java.en.And;
@@ -21,12 +22,9 @@ import java.util.Map;
 import java.util.concurrent.Future;
 
 public class SettingsPageSteps {
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-
     private SettingsPage getSettingsPage() throws Exception {
-        return pagesCollection.getPage(SettingsPage.class);
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(SettingsPage.class);
     }
 
     /**
@@ -62,9 +60,12 @@ public class SettingsPageSteps {
      */
     @Then("^I verify the value of settings item (.*) equals to \"(.*)\"")
     public void IVerifySettingsItemValue(String itemName, String expectedValue) throws Exception {
-        expectedValue = usrMgr.replaceAliasesOccurences(expectedValue, ClientUsersManager.FindBy.EMAIL_ALIAS);
-        expectedValue = usrMgr.replaceAliasesOccurences(expectedValue, ClientUsersManager.FindBy.NAME_ALIAS);
-        expectedValue = usrMgr.replaceAliasesOccurences(expectedValue, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
+        expectedValue = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .replaceAliasesOccurences(expectedValue, ClientUsersManager.FindBy.EMAIL_ALIAS);
+        expectedValue = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .replaceAliasesOccurences(expectedValue, ClientUsersManager.FindBy.NAME_ALIAS);
+        expectedValue = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .replaceAliasesOccurences(expectedValue, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
         Assert.assertTrue(String.format("The value of '%s' setting item is not equal to '%s'", itemName, expectedValue),
                 getSettingsPage().isSettingItemValueEqualTo(itemName, expectedValue));
     }
@@ -113,7 +114,8 @@ public class SettingsPageSteps {
      */
     @When("^I start waiting for (.*) account removal notification$")
     public void IStartWaitingForAccountRemovalConfirmation(String name) throws Exception {
-        final ClientUser forUser = usrMgr.findUserByNameOrNameAlias(name);
+        final ClientUser forUser = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .findUserByNameOrNameAlias(name);
         Map<String, String> additionalHeaders = new HashMap<>();
         additionalHeaders.put(WireMessage.ZETA_PURPOSE_HEADER_NAME, AccountDeletionMessage.MESSAGE_PURPOSE);
         accountRemovalConfirmation = BackendAPIWrappers.initMessageListener(forUser, additionalHeaders);
@@ -213,7 +215,8 @@ public class SettingsPageSteps {
      */
     @When("^I set \"(.*)\" value to Name input field on Settings page$")
     public void ISetSelfName(String newValue) throws Exception {
-        newValue = usrMgr.replaceAliasesOccurences(newValue, ClientUsersManager.FindBy.NAME_ALIAS);
+        newValue = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .replaceAliasesOccurences(newValue, ClientUsersManager.FindBy.NAME_ALIAS);
         getSettingsPage().setSelfName(newValue);
     }
 
@@ -276,7 +279,8 @@ public class SettingsPageSteps {
             Assert.assertTrue(String.format("New previously set unique username %s is not displayed on Settings Page", name),
                     getSettingsPage().isUniqueUsernameInSettingsDisplayed(name));
         } else {
-            name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
+            name = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                    .replaceAliasesOccurences(name, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
             Assert.assertTrue(String.format("New previously set unique username %s is not displayed on Settings Page", name),
                     getSettingsPage().isUniqueUsernameInSettingsDisplayed(name));
         }

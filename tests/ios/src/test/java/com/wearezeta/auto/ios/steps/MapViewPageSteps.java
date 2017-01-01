@@ -1,14 +1,13 @@
 package com.wearezeta.auto.ios.steps;
 
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import com.wearezeta.auto.ios.pages.MapViewPage;
 import cucumber.api.java.en.When;
 
 public class MapViewPageSteps {
-
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-
     private MapViewPage getMapViewPage() throws Exception {
-        return pagesCollection.getPage(MapViewPage.class);
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(MapViewPage.class);
     }
 
     /**

@@ -1,19 +1,16 @@
 package com.wearezeta.auto.android_tablet.steps;
 
+import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContextHolder;
 import com.wearezeta.auto.android_tablet.pages.TabletPhoneNumberVerificationPage;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
 
 public class PhoneNumberVerificationPageSteps {
-    private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection.getInstance();
-
     private TabletPhoneNumberVerificationPage getTabletPhoneNumberVerificationPage() throws Exception {
-        return pagesCollection.getPage(TabletPhoneNumberVerificationPage.class);
+        return AndroidTabletTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(TabletPhoneNumberVerificationPage.class);
     }
-
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     /**
      * Type phone number verification code into the corresponding field
@@ -24,7 +21,8 @@ public class PhoneNumberVerificationPageSteps {
     @When("^I enter my code on Phone Number Verification page$")
     public void IEnterCode() throws Exception {
         final String verificationCode = BackendAPIWrappers.getLoginCodeByPhoneNumber(
-                usrMgr.getSelfUserOrThrowError().getPhoneNumber());
+                AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+                        .getSelfUserOrThrowError().getPhoneNumber());
         getTabletPhoneNumberVerificationPage().inputConfirmationCode(verificationCode);
     }
 

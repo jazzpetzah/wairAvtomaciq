@@ -53,7 +53,7 @@ public class SEBridge {
     private List<Device> registeredDevices = new ArrayList<>();
     private Semaphore devicesGuard = new Semaphore(1);
 
-    public SEBridge() throws Exception {
+    public SEBridge() {
         Runtime.getRuntime().addShutdownHook(new Thread(this::reset));
     }
 
@@ -86,6 +86,27 @@ public class SEBridge {
         }
     }
 
+    private void unregisterDevice(Device device) throws Exception {
+        devicesGuard.acquire();
+        try {
+            if (registeredDevices.contains(device)) {
+                registeredDevices.remove(device);
+            }
+        } finally {
+            devicesGuard.release();
+        }
+    }
+
+    private Device registerDevice(Device newDevice) throws Exception {
+        devicesGuard.acquire();
+        try {
+            registeredDevices.add(newDevice);
+            return newDevice;
+        } finally {
+            devicesGuard.release();
+        }
+    }
+
     private Device fetchDeviceOwnedBy(ClientUser owner) throws Exception {
         return fetchDeviceOwnedBy(owner, Optional.empty());
     }
@@ -109,13 +130,7 @@ public class SEBridge {
         final Device newDevice = new Device(uuid);
         name.ifPresent(newDevice::setName);
         newDevice.setOwner(owner);
-        devicesGuard.acquire();
-        try {
-            registeredDevices.add(newDevice);
-        } finally {
-            devicesGuard.release();
-        }
-        return newDevice;
+        return this.registerDevice(newDevice);
     }
 
     public List<String> getDeviceIds(ClientUser owner) throws Exception {
@@ -304,24 +319,39 @@ public class SEBridge {
 
     public void reset() {
         try {
-            final List<Device> registeredDevicesCopy = new ArrayList<>(registeredDevices);
+            devicesGuard.acquire();
+            final List<Device> registeredDevicesCopy;
+            try {
+                registeredDevicesCopy = new ArrayList<>(registeredDevices);
+            } finally {
+                devicesGuard.release();
+            }
             for (Device registeredDevice : registeredDevicesCopy) {
                 try {
+                    unregisterDevice(registeredDevice);
                     ActorsRESTWrapper.removeDevice(registeredDevice.getUUID());
                 } catch (Exception e) {
                     e.printStackTrace();
-                }
-                devicesGuard.acquire();
-                try {
-                    registeredDevices.remove(registeredDevice);
-                } finally {
-                    devicesGuard.release();
                 }
             }
         } catch (InterruptedException e) {
             Throwables.propagate(e);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void releaseDevicesOfUsers(List<ClientUser> owners) throws Exception {
+        for (ClientUser owner : owners) {
+            final List<Device> ownedDevices = getDevicesOwnedBy(owner);
+            for (Device ownedDevice : ownedDevices) {
+                try {
+                    this.unregisterDevice(ownedDevice);
+                    ActorsRESTWrapper.removeDevice(ownedDevice.getUUID());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

@@ -6,7 +6,7 @@ import org.junit.Assert;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.LoginPage;
 
 import cucumber.api.java.en.Given;
@@ -19,9 +19,9 @@ public class LoginPageSteps {
 
     private static final Logger log = ZetaLogger.getLog(LoginPageSteps.class.getSimpleName());
 
-    private final TestContext context;
+    private final WebAppTestContext context;
 
-    public LoginPageSteps(TestContext context) {
+    public LoginPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 

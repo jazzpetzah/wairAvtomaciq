@@ -13,6 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.function.Supplier;
 
 import javax.imageio.ImageIO;
 import javax.management.InstanceNotFoundException;
@@ -28,6 +29,7 @@ import com.wearezeta.auto.common.calling2.v1.model.Flow;
 import com.wearezeta.auto.common.calling2.v1.model.Instance;
 import com.wearezeta.auto.common.calling2.v1.model.VersionedInstanceType;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.test_context.TestContext;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
@@ -60,36 +62,21 @@ public final class CommonCallingSteps2 {
     private static final int INSTANCE_START_TIMEOUT_SECONDS = 190;
     private static final int INSTANCE_DESTROY_TIMEOUT_SECONDS = 30;
     private static final long POLLING_FREQUENCY_MILLISECONDS = 1000;
-    private static CommonCallingSteps2 singleton = null;
 
-    private ClientUsersManager usrMgr;
+    private Supplier<TestContext> testContextSupplier;
     private final CallingServiceClient client;
     private final Map<String, Instance> instanceMapping;
     private final Map<String, Call> callMapping;
 
-    public synchronized static CommonCallingSteps2 getInstance() {
-        if (singleton == null) {
-            singleton = new CommonCallingSteps2(ClientUsersManager.getInstance());
-        }
-        return singleton;
-    }
-
-    /**
-     * We break the singleton pattern here and make the constructor public to have multiple instances of this class for parallel
-     * test executions. This means this class is not suitable as singleton and it should be changed to a non-singleton class. In
-     * order to stay downward compatible we chose to just change the constructor.
-     *
-     * @return
-     */
-    public CommonCallingSteps2(ClientUsersManager usrMgr) {
+    public CommonCallingSteps2(Supplier<TestContext> testContextSupplier) {
         this.callMapping = new ConcurrentHashMap<>();
         this.instanceMapping = new ConcurrentHashMap<>();
         this.client = new CallingServiceClient();
-        this.usrMgr = usrMgr;
+        this.testContextSupplier = testContextSupplier;
     }
 
     public ClientUsersManager getUsersManager() {
-        return this.usrMgr;
+        return this.testContextSupplier.get().getUserManager();
     }
 
     public static class CallNotFoundException extends Exception {
@@ -105,13 +92,13 @@ public final class CommonCallingSteps2 {
      * Calls to a given conversation with given users. Instances are NOT automatically created.
      * <p>
      *
-     * @param callerNames List of caller names who call to a conversation
+     * @param callerNames      List of caller names who call to a conversation
      * @param conversationName the name of the conversation to call
      * @throws Exception
      */
     public void callToConversation(List<String> callerNames, String conversationName) throws Exception {
         for (String callerName : callerNames) {
-            final ClientUser callerUser = usrMgr.findUserByNameOrNameAlias(callerName);
+            final ClientUser callerUser = getUsersManager().findUserByNameOrNameAlias(callerName);
             final String convId = getConversationId(callerUser, conversationName);
             final Instance instance = getInstance(callerUser);
             final Call call = client.callToUser(instance, convId);
@@ -123,13 +110,13 @@ public final class CommonCallingSteps2 {
      * Start video calls to a given conversation with given users. Instances are NOT automatically created.
      * <p>
      *
-     * @param callerNames list of caller names
+     * @param callerNames      list of caller names
      * @param conversationName the name of the conversation to call
      * @throws Exception
      */
     public void startVideoCallToConversation(List<String> callerNames, String conversationName) throws Exception {
         for (String callerName : callerNames) {
-            final ClientUser callerUser = usrMgr.findUserByNameOrNameAlias(callerName);
+            final ClientUser callerUser = getUsersManager().findUserByNameOrNameAlias(callerName);
             final String convId = getConversationId(callerUser, conversationName);
             final Instance instance = getInstance(callerUser);
             final Call call = client.videoCallToUser(instance, convId);
@@ -141,17 +128,17 @@ public final class CommonCallingSteps2 {
      * Verifies the status of a call from a calling instance in a given conversation from the view of a given user.
      * <p>
      *
-     * @param callerNames the names of the callers
+     * @param callerNames      the names of the callers
      * @param conversationName the name of the conversation to check
      * @param expectedStatuses the expected status
-     * @param secondsTimeout timeout for checking the status
+     * @param secondsTimeout   timeout for checking the status
      * @throws Exception
      * @see com.wearezeta.auto.common.calling2.v1.model.CallStatus
      */
     public void verifyCallingStatus(List<String> callerNames, String conversationName,
-            String expectedStatuses, int secondsTimeout) throws Exception {
+                                    String expectedStatuses, int secondsTimeout) throws Exception {
         for (String callerName : callerNames) {
-            ClientUser userAs = usrMgr.findUserByNameOrNameAlias(callerName);
+            ClientUser userAs = getUsersManager().findUserByNameOrNameAlias(callerName);
             final String convId = getConversationId(userAs, conversationName);
             waitForExpectedCallStatuses(getInstance(userAs),
                     getOutgoingCall(userAs, convId),
@@ -163,16 +150,16 @@ public final class CommonCallingSteps2 {
      * Verifies current call status for a waiting instance.
      * <p>
      *
-     * @param calleeNames list of the names of the callees
+     * @param calleeNames      list of the names of the callees
      * @param expectedStatuses the expected status
-     * @param secondsTimeout timeout for checking the status
+     * @param secondsTimeout   timeout for checking the status
      * @throws Exception
      * @see com.wearezeta.auto.common.calling2.v1.model.CallStatus
      */
     public void verifyAcceptingCallStatus(List<String> calleeNames,
-            String expectedStatuses, int secondsTimeout) throws Exception {
+                                          String expectedStatuses, int secondsTimeout) throws Exception {
         for (String calleeName : calleeNames) {
-            final ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
+            final ClientUser userAs = getUsersManager().findUserByNameOrNameAlias(calleeName);
             waitForExpectedCallStatuses(getInstance(userAs), getIncomingCall(userAs),
                     callStatusesListToObject(expectedStatuses), secondsTimeout);
         }
@@ -183,7 +170,7 @@ public final class CommonCallingSteps2 {
      * accepting an incoming call with such an instance use the method {@code CommonCallingSteps2#acceptNextCall}.
      * <p>
      *
-     * @param calleeNames list of callee names
+     * @param calleeNames  list of callee names
      * @param instanceType the {@code InstanceType} to call with as String
      * @throws Exception
      */
@@ -191,17 +178,17 @@ public final class CommonCallingSteps2 {
         LOG.debug("Creating instances for " + Arrays.toString(calleeNames.toArray()));
         createInstances(calleeNames, instanceType, "Unknown", ZetaFormatter.getScenario());
     }
-    
+
     public void startInstances(List<String> calleeNames, String instanceType, String platform, String scenarioName) throws Exception {
         LOG.debug("Creating instances for " + Arrays.toString(calleeNames.toArray()));
         createInstances(calleeNames, instanceType, platform, scenarioName);
     }
-    
+
     private void createInstances(final List<String> calleeNames, String instanceType, String platform, String scenarioName) throws InterruptedException,
             ExecutionException, NoSuchUserException, TimeoutException {
         Map<String, CompletableFuture<Instance>> createTasks = new HashMap<>(calleeNames.size());
         for (String calleeName : calleeNames) {
-            ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
+            ClientUser userAs = getUsersManager().findUserByNameOrNameAlias(calleeName);
             createTasks.put(calleeName, CompletableFuture.supplyAsync(() -> {
                 try {
                     return CompletableFuture.supplyAsync(() -> {
@@ -234,7 +221,7 @@ public final class CommonCallingSteps2 {
      */
     public void acceptNextCall(List<String> calleeNames) throws Exception {
         for (String calleeName : calleeNames) {
-            final ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
+            final ClientUser userAs = getUsersManager().findUserByNameOrNameAlias(calleeName);
             final Call call = client.acceptNextIncomingCall(getInstance(userAs));
             addCall(call, userAs);
         }
@@ -249,7 +236,7 @@ public final class CommonCallingSteps2 {
      */
     public void acceptNextVideoCall(List<String> calleeNames) throws Exception {
         for (String calleeName : calleeNames) {
-            final ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
+            final ClientUser userAs = getUsersManager().findUserByNameOrNameAlias(calleeName);
             final Call call = client.acceptNextIncomingVideoCall(getInstance(userAs));
             addCall(call, userAs);
         }
@@ -264,7 +251,7 @@ public final class CommonCallingSteps2 {
      */
     public void stopIncomingCall(List<String> calleeNames) throws Exception {
         for (String calleeName : calleeNames) {
-            ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
+            ClientUser userAs = getUsersManager().findUserByNameOrNameAlias(calleeName);
             client.stopCall(getInstance(userAs), getIncomingCall(userAs));
         }
     }
@@ -273,29 +260,29 @@ public final class CommonCallingSteps2 {
      * Stops a call to a given conversation.
      * <p>
      *
-     * @param callerNames the name of the caller
+     * @param callerNames      the name of the caller
      * @param conversationName the name of the conversation to stop call to
      * @throws Exception
      */
     public void stopOutgoingCall(List<String> callerNames, String conversationName) throws Exception {
         for (String callerName : callerNames) {
-            ClientUser userAs = usrMgr.findUserByNameOrNameAlias(callerName);
+            ClientUser userAs = getUsersManager().findUserByNameOrNameAlias(callerName);
             final String convId = getConversationId(userAs, conversationName);
             client.stopCall(getInstance(userAs), getOutgoingCall(userAs, convId));
         }
     }
-    
+
     /**
      * Declines a remote call within the given converastion
      * <p>
      *
-     * @param calleeNames List of callees names who should decline the incoming call
+     * @param calleeNames      List of callees names who should decline the incoming call
      * @param conversationName the name of the conversation with the call to decline
      * @throws Exception
      */
     public void declineIncomingCallToConversation(List<String> calleeNames, String conversationName) throws Exception {
         for (String callerName : calleeNames) {
-            final ClientUser callerUser = usrMgr.findUserByNameOrNameAlias(callerName);
+            final ClientUser callerUser = getUsersManager().findUserByNameOrNameAlias(callerName);
             final String convId = getConversationId(callerUser, conversationName);
             final Instance instance = getInstance(callerUser);
             final Call call = client.declineCall(instance, convId);
@@ -304,7 +291,7 @@ public final class CommonCallingSteps2 {
 
     public List<Flow> getFlows(String callerName) throws CallingServiceInstanceException, NoSuchUserException,
             InstanceNotFoundException {
-        ClientUser userAs = usrMgr.findUserByNameOrNameAlias(callerName);
+        ClientUser userAs = getUsersManager().findUserByNameOrNameAlias(callerName);
         LOG.info("Get flows for user " + userAs.getEmail());
         return client.getFlows(getInstance(userAs));
     }
@@ -312,7 +299,7 @@ public final class CommonCallingSteps2 {
     public List<Call> getOutgoingCall(List<String> callerNames, String conversationName) throws NoSuchUserException, Exception {
         final List<Call> calls = new ArrayList<>();
         for (String callerName : callerNames) {
-            ClientUser userAs = usrMgr.findUserByNameOrNameAlias(callerName);
+            ClientUser userAs = getUsersManager().findUserByNameOrNameAlias(callerName);
             final String convId = getConversationId(userAs, conversationName);
             calls.add(client.getCall(getInstance(userAs), getOutgoingCall(userAs, convId)));
         }
@@ -322,7 +309,7 @@ public final class CommonCallingSteps2 {
     public List<Call> getIncomingCall(List<String> calleeNames) throws NoSuchUserException, Exception {
         final List<Call> calls = new ArrayList<>();
         for (String callerName : calleeNames) {
-            ClientUser userAs = usrMgr.findUserByNameOrNameAlias(callerName);
+            ClientUser userAs = getUsersManager().findUserByNameOrNameAlias(callerName);
             calls.add(client.getCall(getInstance(userAs), getIncomingCall(userAs)));
         }
         return calls;
@@ -350,9 +337,9 @@ public final class CommonCallingSteps2 {
             final Instance instance = entry.getValue();
             final String url = callingServiceUrl + "/api/v1/instance/" + instance.getId();
             LOG.debug("---BROWSER LOG FOR INSTANCE:\n" + instance + "\n"
-                    + "<a href="+url+"/log>"+instance.getId()+" LOGS</a>"+ "\n"
-                    + "<a href="+url+"/screenshots>"+instance.getId()+" SCREENSHOTS</a>");
-            
+                    + "<a href=" + url + "/log>" + instance.getId() + " LOGS</a>" + "\n"
+                    + "<a href=" + url + "/screenshots>" + instance.getId() + " SCREENSHOTS</a>");
+
             destroyTasks.put(instance, CompletableFuture.supplyAsync(() -> {
                 try {
                     return client.stopInstance(instance);
@@ -505,7 +492,7 @@ public final class CommonCallingSteps2 {
             convId = BackendAPIWrappers.getConversationIdByName(conversationOwner, conversationName);
         } catch (Exception e) {
             // get conv id from username
-            final ClientUser convUser = usrMgr.findUserByNameOrNameAlias(conversationName);
+            final ClientUser convUser = getUsersManager().findUserByNameOrNameAlias(conversationName);
             convId = BackendAPIWrappers.getConversationIdByName(conversationOwner, convUser.getName());
         }
         return convId;
@@ -514,7 +501,7 @@ public final class CommonCallingSteps2 {
     public void switchVideoOn(List<String> calleeNames) throws NoSuchUserException, InstanceNotFoundException,
             CallingServiceCallException, CallingServiceInstanceException {
         for (String calleeName : calleeNames) {
-            final ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
+            final ClientUser userAs = getUsersManager().findUserByNameOrNameAlias(calleeName);
             Instance instance = getInstance(userAs);
             client.switchVideoOn(instance, getCurrentCall(instance));
         }
@@ -523,7 +510,7 @@ public final class CommonCallingSteps2 {
     public void switchVideoOff(List<String> calleeNames) throws NoSuchUserException, InstanceNotFoundException,
             CallingServiceCallException, CallingServiceInstanceException {
         for (String calleeName : calleeNames) {
-            final ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
+            final ClientUser userAs = getUsersManager().findUserByNameOrNameAlias(calleeName);
             Instance instance = getInstance(userAs);
             client.switchVideoOff(instance, getCurrentCall(instance));
         }
@@ -532,7 +519,7 @@ public final class CommonCallingSteps2 {
     public void maximiseVideoCall(List<String> calleeNames) throws NoSuchUserException, InstanceNotFoundException,
             CallingServiceCallException, CallingServiceInstanceException {
         for (String calleeName : calleeNames) {
-            final ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
+            final ClientUser userAs = getUsersManager().findUserByNameOrNameAlias(calleeName);
             Instance instance = getInstance(userAs);
             client.maximiseVideoCall(instance, getCurrentCall(instance));
         }
@@ -541,7 +528,7 @@ public final class CommonCallingSteps2 {
     public void minimiseVideoCall(List<String> calleeNames) throws NoSuchUserException, InstanceNotFoundException,
             CallingServiceCallException, CallingServiceInstanceException {
         for (String calleeName : calleeNames) {
-            final ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
+            final ClientUser userAs = getUsersManager().findUserByNameOrNameAlias(calleeName);
             Instance instance = getInstance(userAs);
             client.minimiseVideoCall(instance, getCurrentCall(instance));
         }

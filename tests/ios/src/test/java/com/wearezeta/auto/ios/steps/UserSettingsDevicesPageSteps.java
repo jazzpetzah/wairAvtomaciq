@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import com.wearezeta.auto.ios.pages.details_overlay.common.UserSettingsDevicesPage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -8,12 +9,9 @@ import org.junit.Assert;
 
 
 public class UserSettingsDevicesPageSteps {
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-
     private UserSettingsDevicesPage getUserSettingsDevicesPage() throws Exception {
-        return pagesCollection.getPage(UserSettingsDevicesPage.class);
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(UserSettingsDevicesPage.class);
     }
 
     /**
@@ -50,9 +48,11 @@ public class UserSettingsDevicesPageSteps {
      */
     @When("^I confirm with my (.*) the deletion of the device on Settings page$")
     public void IConfirmWithMyPasswordTheDeletionOfTheDevice(String password) throws Exception {
-        password = usrMgr.replaceAliasesOccurences(password, ClientUsersManager.FindBy.PASSWORD_ALIAS);
+        password = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .replaceAliasesOccurences(password, ClientUsersManager.FindBy.PASSWORD_ALIAS);
         getUserSettingsDevicesPage().typePasswordToConfirmDeleteDevice(password);
-        pagesCollection.getCommonPage().tapAlertButton("OK");
+        IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getCommonPage().tapAlertButton("OK");
     }
 
     /**

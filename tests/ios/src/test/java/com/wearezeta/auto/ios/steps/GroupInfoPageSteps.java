@@ -1,6 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
-import com.wearezeta.auto.common.CommonSteps;
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -14,12 +14,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class GroupInfoPageSteps {
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-
     private GroupInfoPage getGroupInfoPage() throws Exception {
-        return pagesCollection.getPage(GroupInfoPage.class);
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(GroupInfoPage.class);
     }
 
     @When("^I change group conversation name to \"(.*)\" on Group info page$")
@@ -54,9 +51,11 @@ public class GroupInfoPageSteps {
 
     @Then("^I see that the conversation name contains users? (.*)$")
     public void IVerifyCorrectConversationName(String nameAliases) throws Exception {
-        final List<String> expectedNames = usrMgr.splitAliases(nameAliases).stream().
-                map(x -> usrMgr.replaceAliasesOccurences(x, ClientUsersManager.FindBy.NAME_ALIAS)).
-                collect(Collectors.toList());
+        final List<String> expectedNames = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .splitAliases(nameAliases).stream().
+                        map(x -> IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                                .replaceAliasesOccurences(x, ClientUsersManager.FindBy.NAME_ALIAS)).
+                        collect(Collectors.toList());
         Assert.assertTrue(String.format("Group conversation name does not contain all the aliases from '%s'",
                 nameAliases),
                 getGroupInfoPage().isCorrectConversationName(expectedNames));
@@ -70,7 +69,8 @@ public class GroupInfoPageSteps {
 
     @When("^I select participant (.*) on Group info page$")
     public void ISelectParticipant(String name) throws Exception {
-        name = usrMgr.findUserByNameOrNameAlias(name).getName();
+        name = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .findUserByNameOrNameAlias(name).getName();
         getGroupInfoPage().selectParticipant(name);
     }
 
@@ -97,7 +97,8 @@ public class GroupInfoPageSteps {
      */
     @Then("^I (do not )?see participant name (.*) on Group info page$")
     public void ISeeContactInGroupInfo(String shouldNotSee, String contact) throws Exception {
-        contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+        contact = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .findUserByNameOrNameAlias(contact).getName();
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("User '%s' should be visible", contact),
                     getGroupInfoPage().isParticipantVisible(contact));

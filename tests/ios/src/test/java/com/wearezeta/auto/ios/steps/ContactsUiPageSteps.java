@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -9,12 +10,9 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class ContactsUiPageSteps {
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-
     private ContactsUiPage getContactsUiPage() throws Exception {
-        return pagesCollection.getPage(ContactsUiPage.class);
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(ContactsUiPage.class);
     }
 
     /**
@@ -40,7 +38,8 @@ public class ContactsUiPageSteps {
      */
     @When("^I input user name (.*) in search on ContactsUI$")
     public void IInputUserNameInSearchOnContactsUI(String contact) throws Exception {
-        contact = usrMgr.replaceAliasesOccurences(contact, ClientUsersManager.FindBy.NAME_ALIAS);
+        contact = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .replaceAliasesOccurences(contact, ClientUsersManager.FindBy.NAME_ALIAS);
         getContactsUiPage().inputTextToSearch(contact);
     }
 
@@ -54,7 +53,8 @@ public class ContactsUiPageSteps {
      */
     @Then("^I (do not )?see contact (.*) in ContactsUI page list$")
     public void ISeeContactInContactsUIList(String shouldNotBeVisible, String contact) throws Exception {
-        contact = usrMgr.replaceAliasesOccurences(contact, ClientUsersManager.FindBy.NAME_ALIAS);
+        contact = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .replaceAliasesOccurences(contact, ClientUsersManager.FindBy.NAME_ALIAS);
         if (shouldNotBeVisible == null) {
             Assert.assertTrue(
                     String.format("User '%s' should be visible in ContactsUI user list", contact),
@@ -89,7 +89,8 @@ public class ContactsUiPageSteps {
      */
     @When("^I tap Open button next to user name (.*) on ContactsUI$")
     public void IClickOpenButtonNextToUser(String contact) throws Exception {
-        contact = usrMgr.replaceAliasesOccurences(contact, ClientUsersManager.FindBy.NAME_ALIAS);
+        contact = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .replaceAliasesOccurences(contact, ClientUsersManager.FindBy.NAME_ALIAS);
         getContactsUiPage().tapOpenButtonNextToUser(contact);
     }
 }

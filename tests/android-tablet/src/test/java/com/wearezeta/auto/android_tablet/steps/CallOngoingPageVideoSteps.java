@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android_tablet.steps;
 
+import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContextHolder;
 import com.wearezeta.auto.android_tablet.pages.TabletCallOngoingVideoPage;
 import com.wearezeta.auto.common.misc.ElementState;
 
@@ -12,14 +13,12 @@ import org.junit.Assert;
 import static org.junit.Assert.assertTrue;
 
 public class CallOngoingPageVideoSteps {
-
-    private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection.getInstance();
-
     private final ElementState specialButtonState = new ElementState(() -> getPage().getSpecialButtonScreenshot());
     private final ElementState muteButtonState = new ElementState(() -> getPage().getMuteButtonScreenshot());
 
     private TabletCallOngoingVideoPage getPage() throws Exception {
-        return pagesCollection.getPage(TabletCallOngoingVideoPage.class);
+        return AndroidTabletTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(TabletCallOngoingVideoPage.class);
     }
 
     /**

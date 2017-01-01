@@ -3,6 +3,7 @@ package com.wearezeta.auto.ios.steps;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import org.junit.Assert;
 
 import com.wearezeta.auto.ios.pages.TabletConversationsListPage;
@@ -13,12 +14,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TabletConversationsListPageSteps {
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-
     private TabletConversationsListPage getTabletConversationsListPage() throws Exception {
-        return pagesCollection.getPage(TabletConversationsListPage.class);
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(TabletConversationsListPage.class);
     }
 
     private Map<String, ElementState> savedConvoItemStates = new HashMap<>();
@@ -33,7 +31,8 @@ public class TabletConversationsListPageSteps {
      */
     @When("^I remember the (left|right) side state of (.*) conversation item on iPad$")
     public void IRememberConvoItemState(String side, String nameAlias) throws Exception {
-        final String name = usrMgr.replaceAliasesOccurences(nameAlias, ClientUsersManager.FindBy.NAME_ALIAS);
+        final String name = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .replaceAliasesOccurences(nameAlias, ClientUsersManager.FindBy.NAME_ALIAS);
         final TabletConversationsListPage.EntrySide entrySide =
                 TabletConversationsListPage.EntrySide.valueOf(side.toUpperCase());
         this.savedConvoItemStates.put(name,
@@ -55,7 +54,8 @@ public class TabletConversationsListPageSteps {
      */
     @Then("^I see the state of (.*) conversation item is (not )?changed on iPad$")
     public void IVerifyConvoState(String nameAlias, String shouldNotBeChanged) throws Exception {
-        final String name = usrMgr.replaceAliasesOccurences(nameAlias, ClientUsersManager.FindBy.NAME_ALIAS);
+        final String name = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .replaceAliasesOccurences(nameAlias, ClientUsersManager.FindBy.NAME_ALIAS);
         if (!this.savedConvoItemStates.containsKey(name)) {
             throw new IllegalStateException(String.format(
                     "Please take a screenshot of '%s' conversation entry first", name));
@@ -73,13 +73,14 @@ public class TabletConversationsListPageSteps {
     /**
      * Performs swipe right action on the particular convo list item
      *
-     * @step. ^I swipe right on iPad the conversation named (.*)
      * @param name conversation name/alias
      * @throws Exception
+     * @step. ^I swipe right on iPad the conversation named (.*)
      */
     @When("^I swipe right on iPad the conversation named (.*)")
     public void ISwipeRightConversation(String name) throws Exception {
-        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        name = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
         getTabletConversationsListPage().swipeRightConversationToRevealActionButtons(name);
     }
 }

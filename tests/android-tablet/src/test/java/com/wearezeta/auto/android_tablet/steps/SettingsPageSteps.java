@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android_tablet.steps;
 
+import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContextHolder;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import org.junit.Assert;
 
@@ -10,14 +11,10 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 
 public class SettingsPageSteps {
-    private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection
-            .getInstance();
-
     private TabletSettingsPage getSettingsPage() throws Exception {
-        return pagesCollection.getPage(TabletSettingsPage.class);
+        return AndroidTabletTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(TabletSettingsPage.class);
     }
-
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     /**
      * Verify whether Settings page is visible
@@ -63,9 +60,12 @@ public class SettingsPageSteps {
      */
     @When("^I select \"(.*)\" settings menu item$")
     public void ISelectSettingsMenuItem(String name) throws Exception {
-        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
-        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.EMAIL_ALIAS);
-        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
+        name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+                .replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+                .replaceAliasesOccurences(name, ClientUsersManager.FindBy.EMAIL_ALIAS);
+        name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+                .replaceAliasesOccurences(name, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
         getSettingsPage().selectMenuItem(name);
     }
 
@@ -79,9 +79,12 @@ public class SettingsPageSteps {
      */
     @When("^I (do not )?see \"(.*)\" settings menu item$")
     public void ISeeSettingsMenuItem(String shouldNotSee, String name) throws Exception {
-        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
-        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.EMAIL_ALIAS);
-        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
+        name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+                .replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+                .replaceAliasesOccurences(name, ClientUsersManager.FindBy.EMAIL_ALIAS);
+        name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+                .replaceAliasesOccurences(name, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("Settings menu item '%s' is not visible", name),
                     getSettingsPage().waitUntilMenuItemVisible(name));
@@ -100,8 +103,8 @@ public class SettingsPageSteps {
      */
     @When("^I enter (.*) into the device removal password confirmation dialog$")
     public void IEnterPassword(String passwordAlias) throws Exception {
-        final String password = usrMgr.replaceAliasesOccurences(passwordAlias,
-                ClientUsersManager.FindBy.PASSWORD_ALIAS);
+        final String password = AndroidTabletTestContextHolder.getInstance().getTestContext().getUserManager()
+                .replaceAliasesOccurences(passwordAlias, ClientUsersManager.FindBy.PASSWORD_ALIAS);
         getSettingsPage().enterConfirmationPassword(password);
     }
 

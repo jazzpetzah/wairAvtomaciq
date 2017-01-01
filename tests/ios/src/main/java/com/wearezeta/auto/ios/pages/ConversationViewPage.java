@@ -3,6 +3,7 @@ package com.wearezeta.auto.ios.pages;
 import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Future;
@@ -18,7 +19,6 @@ import com.wearezeta.auto.common.misc.FunctionalInterfaces.FunctionFor2Parameter
 import com.wearezeta.auto.common.driver.device_helpers.IOSSimulatorHelpers;
 import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.ios.pages.details_overlay.BaseUserDetailsOverlay;
-import edu.emory.mathcs.backport.java.util.Arrays;
 import io.appium.java_client.MobileBy;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;

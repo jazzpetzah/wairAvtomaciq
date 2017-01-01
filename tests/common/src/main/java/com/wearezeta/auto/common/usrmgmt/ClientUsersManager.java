@@ -1,6 +1,5 @@
 package com.wearezeta.auto.common.usrmgmt;
 
-import com.google.common.base.Throwables;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.backend.BackendRequestException;
@@ -137,8 +136,6 @@ public class ClientUsersManager {
         this.resetClientsList(MAX_USERS);
     }
 
-    private static ClientUsersManager instance = null;
-
     /**
      * We break the singleton pattern here and make the constructor public to have multiple instances of this class for parallel
      * test executions. This means this class is not suitable as singleton and it should be changed to a non-singleton class. In
@@ -148,17 +145,6 @@ public class ClientUsersManager {
         usersMap.put(UserState.Created, new ArrayList<>());
         usersMap.put(UserState.NotCreated, new ArrayList<>());
         resetClientsList(MAX_USERS);
-    }
-
-    public synchronized static ClientUsersManager getInstance() {
-        if (instance == null) {
-            try {
-                instance = new ClientUsersManager();
-            } catch (Exception e) {
-                Throwables.propagate(e);
-            }
-        }
-        return instance;
     }
 
     public enum FindBy {

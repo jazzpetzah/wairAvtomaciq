@@ -1,14 +1,14 @@
 package com.wearezeta.auto.web.steps;
 
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.PreferencesPage;
 import cucumber.api.java.en.When;
 
 public class PreferencesPageSteps {
 
-    private final TestContext context;
+    private final WebAppTestContext context;
 
-    public PreferencesPageSteps(TestContext context) {
+    public PreferencesPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 

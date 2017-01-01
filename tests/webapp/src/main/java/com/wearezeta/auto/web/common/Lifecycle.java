@@ -41,9 +41,9 @@ public class Lifecycle {
     private static final int SAFARI_DRIVER_CREATION_RETRY = 3;
     
     private boolean DEBUG = false;
-    private TestContext context;
+    private WebAppTestContext context;
 
-    public TestContext getContext() {
+    public WebAppTestContext getContext() {
         return context;
     }
 
@@ -134,7 +134,7 @@ public class Lifecycle {
 
         final Future<ZetaWebAppDriver> lazyWebDriver = pool.submit(callableWebAppDriver);
 
-        context = new TestContext(scenario.getName(), lazyWebDriver);
+        context = new WebAppTestContext(scenario.getName(), lazyWebDriver);
         context.getDriver().get(url);
         context.getPagesCollection().setFirstPage(new RegistrationPage(lazyWebDriver, url));
     }

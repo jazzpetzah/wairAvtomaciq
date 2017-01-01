@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.LoginPage;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
@@ -13,9 +13,9 @@ public class LoginPageSteps {
 
     private static final Logger LOG = ZetaLogger.getLog(LoginPageSteps.class.getName());
 
-    private final TestContext webContext;
+    private final WebAppTestContext webContext;
 
-    public LoginPageSteps(TestContext webContext) {
+    public LoginPageSteps(WebAppTestContext webContext) {
         this.webContext = webContext;
     }
 

@@ -3,6 +3,7 @@ package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.common.misc.IOSDistributable;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import com.wearezeta.auto.ios.tools.ABProvisioner.ABContact;
 import com.wearezeta.auto.ios.tools.ABProvisioner.ABProvisionerAPI;
 import com.wearezeta.auto.common.driver.device_helpers.IOSSimulatorHelpers;
@@ -12,9 +13,6 @@ import java.util.*;
 
 
 public class AutoconnectPageSteps {
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
     private final ABProvisionerAPI addressbookProvisioner = ABProvisionerAPI.getInstance();
 
     /**
@@ -28,8 +26,10 @@ public class AutoconnectPageSteps {
         final IOSDistributable addressBookHelperDist =
                 IOSDistributable.getInstance(CommonIOSSteps.getiOSAddressbookAppPath());
         // remove the previous version of this app if present
-        pagesCollection.getCommonPage().uninstallApp(addressBookHelperDist.getBundleId());
-        pagesCollection.getCommonPage().installApp(addressBookHelperDist.getAppRoot());
+        IOSTestContextHolder.getInstance().getTestContext()
+                .getPagesCollection().getCommonPage().uninstallApp(addressBookHelperDist.getBundleId());
+        IOSTestContextHolder.getInstance().getTestContext()
+                .getPagesCollection().getCommonPage().installApp(addressBookHelperDist.getAppRoot());
     }
 
     private static final String ADDRESSBOOK_APP_BUNDLE = "com.wire.addressbookautomation";
@@ -72,8 +72,10 @@ public class AutoconnectPageSteps {
      */
     @Given("^I add name (.*) and phone (.*) to Address Book$")
     public void IAddNameAndPhoneToAddressBook(String name, String phoneNumber) throws Exception {
-        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
-        phoneNumber = usrMgr.replaceAliasesOccurences(phoneNumber, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
+        name = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        phoneNumber = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .replaceAliasesOccurences(phoneNumber, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
         ABContact contact = new ABContact(name, Optional.empty(), Optional.of(Collections.singletonList(phoneNumber)));
         addressbookProvisioner.addContacts(Collections.singletonList(contact));
     }
@@ -88,8 +90,10 @@ public class AutoconnectPageSteps {
      */
     @Given("^I add name (.*) and email (.*) to Address Book$")
     public void IAddNameAndEmailToAddressBook(String name, String email) throws Throwable {
-        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
-        email = usrMgr.replaceAliasesOccurences(email, ClientUsersManager.FindBy.EMAIL_ALIAS);
+        name = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        email = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .replaceAliasesOccurences(email, ClientUsersManager.FindBy.EMAIL_ALIAS);
         ABContact contact = new ABContact(name, Optional.of(Collections.singletonList(email)), Optional.empty());
         addressbookProvisioner.addContacts(Collections.singletonList(contact));
     }

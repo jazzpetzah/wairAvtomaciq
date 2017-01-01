@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android_tablet.steps;
 
+import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContextHolder;
 import com.wearezeta.auto.android_tablet.pages.TabletFirstTimeOverlay;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
@@ -7,11 +8,9 @@ import cucumber.api.java.en.When;
 import org.junit.Assert;
 
 public class FirstTimeOverlaySteps {
-	private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection
-			.getInstance();
-
 	private TabletFirstTimeOverlay getFirstTimeOverlay() throws Exception {
-		return pagesCollection.getPage(TabletFirstTimeOverlay.class);
+		return AndroidTabletTestContextHolder.getInstance().getTestContext().getPagesCollection()
+				.getPage(TabletFirstTimeOverlay.class);
 	}
 
 

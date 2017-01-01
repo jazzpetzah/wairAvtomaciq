@@ -7,7 +7,7 @@ import com.wearezeta.auto.common.calling2.v1.model.Call;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 
 import cucumber.api.java.en.Then;
@@ -28,9 +28,9 @@ public class CallingSteps {
     private static final Logger LOG = ZetaLogger.getLog(CallingSteps.class.getName());
     private static final int FLOW_UPDATE_WAIT_MS = 5000;
 
-    private final TestContext context;
+    private final WebAppTestContext context;
 
-    public CallingSteps(TestContext context) {
+    public CallingSteps(WebAppTestContext context) {
         this.context = context;
     }
 

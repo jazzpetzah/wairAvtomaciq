@@ -4,7 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.DeviceDetailPage;
 
 import cucumber.api.java.en.Then;
@@ -12,9 +12,9 @@ import cucumber.api.java.en.When;
 
 public class DeviceDetailPageSteps {
 
-    private final TestContext context;
+    private final WebAppTestContext context;
 
-    public DeviceDetailPageSteps(TestContext context) {
+    public DeviceDetailPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 

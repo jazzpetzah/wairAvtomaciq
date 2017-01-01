@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.PhoneNumberLoginPage;
 
 import cucumber.api.java.en.Then;
@@ -19,9 +19,9 @@ public class PhoneNumberLoginPageSteps {
     @SuppressWarnings("unused")
     private static final Logger log = ZetaLogger.getLog(PhoneNumberLoginPageSteps.class.getSimpleName());
 
-    private final TestContext context;
+    private final WebAppTestContext context;
 
-    public PhoneNumberLoginPageSteps(TestContext context) {
+    public PhoneNumberLoginPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 

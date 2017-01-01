@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import cucumber.api.java.en.Then;
 import org.junit.Assert;
 
@@ -9,12 +10,9 @@ import com.wearezeta.auto.ios.pages.details_overlay.single.SinglePendingUserInco
 import cucumber.api.java.en.When;
 
 public class SingleUserIncomingPendingConnectionPageSteps {
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-
     private SinglePendingUserIncomingConnectionPage getPage() throws Exception {
-        return pagesCollection.getPage(SinglePendingUserIncomingConnectionPage.class);
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(SinglePendingUserIncomingConnectionPage.class);
     }
 
     /**
@@ -28,8 +26,10 @@ public class SingleUserIncomingPendingConnectionPageSteps {
      */
     @Then("^I (do not )?see (unique username|name|Address Book name|common friends count) (\".*\" |\\s*)on Single user Pending incoming connection page$")
     public void ISeeLabel(String shouldNotSee, String fieldType, String value) throws Exception {
-        value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.NAME_ALIAS);
-        value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
+        value = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .replaceAliasesOccurences(value, ClientUsersManager.FindBy.NAME_ALIAS);
+        value = IOSTestContextHolder.getInstance().getTestContext().getUserManager()
+                .replaceAliasesOccurences(value, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
         if (shouldNotSee == null) {
             if (value.startsWith("\"")) {
                 value = value.trim().replaceAll("^\"|\"$", "");

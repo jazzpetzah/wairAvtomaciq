@@ -10,7 +10,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.AccountPage;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
@@ -36,10 +36,10 @@ public class AccountPageSteps {
     private static final Logger LOG = ZetaLogger.getLog(AccountPageSteps.class.getSimpleName());
 
     private BufferedImage profileImage = null;
-    private final TestContext context;
+    private final WebAppTestContext context;
     private String rememberedUniqueUsername = null;
 
-    public AccountPageSteps(TestContext context) {
+    public AccountPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 

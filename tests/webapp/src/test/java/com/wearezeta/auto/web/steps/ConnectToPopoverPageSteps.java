@@ -2,7 +2,7 @@ package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.popovers.ConnectToPopoverContainer;
 
 import cucumber.api.java.en.And;
@@ -13,9 +13,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ConnectToPopoverPageSteps {
 
-    private final TestContext context;
+    private final WebAppTestContext context;
 
-    public ConnectToPopoverPageSteps(TestContext context) {
+    public ConnectToPopoverPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 

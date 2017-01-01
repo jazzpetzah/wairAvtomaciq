@@ -12,11 +12,9 @@ import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.Message;
 
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
-import com.wearezeta.auto.web.locators.WebAppLocators;
-import com.wearezeta.auto.web.pages.AccountPage;
 import com.wearezeta.auto.web.pages.ConversationPage;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.pages.WebPage;
@@ -52,11 +50,11 @@ public class CommonWebAppSteps {
     private static final String DEFAULT_USER_PICTURE = "/images/aqaPictureContact600_800.jpg";
     private static final String VIDEO_MESSAGE_IMAGE = "example.png";
 
-    private final TestContext context;
+    private final WebAppTestContext context;
     private String rememberedPage = null;
     private String rememberedMessageId = null;
 
-    public CommonWebAppSteps(TestContext context) {
+    public CommonWebAppSteps(WebAppTestContext context) {
         this.context = context;
     }
 

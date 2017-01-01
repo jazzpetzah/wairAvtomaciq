@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.android.common.AndroidTestContextHolder;
 import com.wearezeta.auto.android.pages.RegistrationPage;
 import com.wearezeta.auto.common.email.ActivationMessage;
 import com.wearezeta.auto.common.email.WireMessage;
@@ -16,12 +17,9 @@ import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import cucumber.api.java.en.*;
 
 public class RegistrationSteps {
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
-
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
     private RegistrationPage getRegistrationPage() throws Exception {
-        return pagesCollection.getPage(RegistrationPage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(RegistrationPage.class);
     }
 
     private ClientUser userToRegister = null;
@@ -76,7 +74,8 @@ public class RegistrationSteps {
      */
     @When("^I input password \"(.*)\"$")
     public void IInputPassword(String pwd) throws Exception {
-        final String password = usrMgr.replaceAliasesOccurences(pwd, ClientUsersManager.FindBy.PASSWORD_ALIAS);
+        final String password = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+                .replaceAliasesOccurences(pwd, ClientUsersManager.FindBy.PASSWORD_ALIAS);
         getRegistrationPage().enterPassword(password);
     }
 
@@ -150,8 +149,10 @@ public class RegistrationSteps {
     @When("^I start listening for confirmation email (.*) with mailbox password (.*)$")
     public void IStartListeningForConfirmEmail(String email, String password) throws Exception {
         final Map<String, String> additionalHeaders = new HashMap<>();
-        email = usrMgr.replaceAliasesOccurences(email, ClientUsersManager.FindBy.EMAIL_ALIAS);
-        password = usrMgr.replaceAliasesOccurences(password, ClientUsersManager.FindBy.PASSWORD_ALIAS);
+        email = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+                .replaceAliasesOccurences(email, ClientUsersManager.FindBy.EMAIL_ALIAS);
+        password = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+                .replaceAliasesOccurences(password, ClientUsersManager.FindBy.PASSWORD_ALIAS);
         additionalHeaders.put(WireMessage.ZETA_PURPOSE_HEADER_NAME, ActivationMessage.MESSAGE_PURPOSE);
         emailConfirmMessages.put(email,
                 BackendAPIWrappers.initMessageListener(email, password, additionalHeaders));
@@ -167,7 +168,8 @@ public class RegistrationSteps {
      */
     @Then("^I verify email (.*)")
     public void IVerifyMyRegistrationData(String email) throws Exception {
-        email = usrMgr.replaceAliasesOccurences(email, ClientUsersManager.FindBy.EMAIL_ALIAS);
+        email = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+                .replaceAliasesOccurences(email, ClientUsersManager.FindBy.EMAIL_ALIAS);
         if (emailConfirmMessages.containsKey(email)) {
             BackendAPIWrappers.activateRegisteredUserByEmail(emailConfirmMessages.get(email));
         } else {

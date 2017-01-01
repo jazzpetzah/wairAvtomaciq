@@ -1,10 +1,8 @@
 package com.wearezeta.auto.web.steps;
 
-import com.wearezeta.auto.common.image_send.AssetData;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.web.common.TestContext;
-import com.wearezeta.auto.web.pages.external.YouAreInvitedPage;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.popovers.BringYourFriendsPopoverPage;
 
 import cucumber.api.java.en.Then;
@@ -16,9 +14,9 @@ public class BringYourFriendsPopoverPageSteps {
 
     private static final Logger LOG = ZetaLogger.getLog(BringYourFriendsPopoverPageSteps.class.getName());
     private String invitationLink = null;
-    private final TestContext context;
+    private final WebAppTestContext context;
 
-    public BringYourFriendsPopoverPageSteps(TestContext context) {
+    public BringYourFriendsPopoverPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 

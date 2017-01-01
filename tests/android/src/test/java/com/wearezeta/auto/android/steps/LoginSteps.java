@@ -3,44 +3,45 @@ package com.wearezeta.auto.android.steps;
 import java.util.Random;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
+import com.wearezeta.auto.android.common.AndroidTestContextHolder;
 import com.wearezeta.auto.android.pages.registration.*;
 import cucumber.api.java.en.And;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 
 public class LoginSteps {
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
-
     private final static int DEFAULT_LOGIN_SCREEN_TIMEOUT_SECONDS = 60 * 2;
 
     private EmailSignInPage getEmailSignInPage() throws Exception {
-        return pagesCollection.getPage(EmailSignInPage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(EmailSignInPage.class);
     }
 
     private WelcomePage getWelcomePage() throws Exception {
-        return pagesCollection.getPage(WelcomePage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(WelcomePage.class);
     }
 
     private AreaCodePage getAreaCodePage() throws Exception {
-        return pagesCollection.getPage(AreaCodePage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(AreaCodePage.class);
     }
 
     private AddPhoneNumberPage getAddPhoneNumberPage() throws Exception {
-        return pagesCollection.getPage(AddPhoneNumberPage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(AddPhoneNumberPage.class);
     }
 
     private PhoneNumberVerificationPage getVerificationPage() throws Exception {
-        return pagesCollection.getPage(PhoneNumberVerificationPage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(PhoneNumberVerificationPage.class);
     }
-
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     /**
      * Inputs the login details for the self user and then taps the sign in
@@ -51,7 +52,8 @@ public class LoginSteps {
      */
     @Given("^I sign in using my email$")
     public void ISignInUsingMyEmail() throws Exception {
-        final ClientUser self = usrMgr.getSelfUserOrThrowError();
+        final ClientUser self = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+                .getSelfUserOrThrowError();
         assert getWelcomePage().waitForInitialScreen() : "The initial screen was not shown";
         getWelcomePage().tapSignInTab();
         // FIXME: AN-4116
@@ -77,7 +79,8 @@ public class LoginSteps {
      */
     @Given("^I sign in using my phone number( with SMS verification)?$")
     public void ISignInUsingMyPhoneNumber(String verifiedBySmsURL) throws Exception {
-        final ClientUser self = usrMgr.getSelfUserOrThrowError();
+        final ClientUser self = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+                .getSelfUserOrThrowError();
         assert getWelcomePage().waitForInitialScreen() : "The initial screen was not shown";
         getWelcomePage().tapAreaCodeSelector();
         getAreaCodePage().selectAreaCode(self.getPhoneNumber().getPrefix());
@@ -128,7 +131,8 @@ public class LoginSteps {
     @When("^I have entered login (.*)$")
     public void IHaveEnteredLogin(String login) throws Exception {
         try {
-            login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
+            login = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+                    .findUserByEmailOrEmailAlias(login).getEmail();
         } catch (NoSuchUserException e) {
             // Ignore silently
         }
@@ -145,7 +149,8 @@ public class LoginSteps {
     @When("I have entered password (.*)")
     public void IHaveEnteredPassword(String password) throws Exception {
         try {
-            password = usrMgr.findUserByPasswordAlias(password).getPassword();
+            password = AndroidTestContextHolder.getInstance().getTestContext().getUserManager()
+                    .findUserByPasswordAlias(password).getPassword();
         } catch (NoSuchUserException e) {
             // Ignore silently
         }

@@ -3,7 +3,7 @@ package com.wearezeta.auto.web.steps;
 import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.PendingConnectionsPage;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -18,9 +18,9 @@ import org.junit.Assert;
 
 public class PendingConnectionsPageSteps {
 
-    private final TestContext context;
+    private final WebAppTestContext context;
 
-    public PendingConnectionsPageSteps(TestContext context) {
+    public PendingConnectionsPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 
