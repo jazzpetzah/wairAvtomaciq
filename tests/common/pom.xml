@@ -16,12 +16,13 @@
         <defaultCallingServiceUrl>https://192.168.10.44:35443</defaultCallingServiceUrl>
         <!-- JavaX | REST -->
         <mailboxHandlerType>REST</mailboxHandlerType>
-        <defaultEmailListenerServiceHost>192.168.10.44</defaultEmailListenerServiceHost>
-        <defaultEmailListenerServicePort>21990</defaultEmailListenerServicePort>
+        <defaultEmailListenerUrl>http://192.168.10.44:21990</defaultEmailListenerUrl>
+        <defaultEmailListenerUrl.internal>http://192.168.2.120:9080</defaultEmailListenerUrl.internal>
         <makeScreenshots>true</makeScreenshots>
         <makeScreenshotOnPassedSteps>true</makeScreenshotOnPassedSteps>
         <initNodeIp>true</initNodeIp>
         <testrailServerUrl>http://192.168.10.44:29082/testrail</testrailServerUrl>
+        <testrailServerUrl.internal>http://192.168.2.191:80/testrail</testrailServerUrl.internal>
         <testrailProjectName></testrailProjectName>
         <testrailPlanName></testrailPlanName>
         <testrailRunName></testrailRunName>
@@ -31,6 +32,7 @@
         <syncIsMuted>False</syncIsMuted>
         <backendType>staging</backendType>
         <actors.server.url>http://192.168.10.44:21080/wire-actors/api/v1</actors.server.url>
+        <actors.server.url.internal>http://192.168.2.120:10080/wire-actors/api/v1</actors.server.url.internal>
     </properties>
 
     <dependencies>

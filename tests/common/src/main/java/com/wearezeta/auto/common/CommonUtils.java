@@ -447,12 +447,11 @@ public class CommonUtils {
         return Base64.encodeBase64String(digest);
     }
 
-    public static String getDefaultEmailListenerServiceHostFromConfig(Class<?> c) throws Exception {
-        return getValueFromCommonConfig(c, "defaultEmailListenerServiceHost");
-    }
-
-    public static String getDefaultEmailListenerServicePortFromConfig(Class<?> c) throws Exception {
-        return getValueFromCommonConfig(c, "defaultEmailListenerServicePort");
+    public static String getDefaultEmailListenerUrlFromConfig(Class<?> c) throws Exception {
+        if (isRunningInJenkinsNetwork()) {
+            return getValueFromCommonConfig(c, "defaultInternalEmailListenerUrl");
+        }
+        return getValueFromCommonConfig(c, "defaultEmailListenerUrl");
     }
 
     public static boolean getMakeScreenshotsFromConfig(Class<?> c) throws Exception {
@@ -468,6 +467,9 @@ public class CommonUtils {
     }
 
     public static String getTestrailServerUrlFromConfig(Class<?> c) throws Exception {
+        if (isRunningInJenkinsNetwork()) {
+            return getValueFromCommonConfig(c, "internalTestrailServerUrl");
+        }
         return getValueFromCommonConfig(c, "testrailServerUrl");
     }
 
@@ -520,6 +522,9 @@ public class CommonUtils {
     }
 
     public static String getActorsServerUrl(Class<?> cls) throws Exception {
+        if (isRunningInJenkinsNetwork()) {
+            return getValueFromCommonConfig(cls, "internalActorsServerUrl");
+        }
         return getValueFromCommonConfig(cls, "actorsServerUrl");
     }
 
@@ -669,8 +674,7 @@ public class CommonUtils {
             isInJenkinsNetwork = m.find()
                     && Integer.parseInt(m.group(1)) == 192
                     && Integer.parseInt(m.group(2)) == 168
-                    && Integer.parseInt(m.group(3)) == 2
-                    && Integer.parseInt(m.group(4)) < 200;
+                    && Integer.parseInt(m.group(3)) == 2;
         }
         return isInJenkinsNetwork;
     }
