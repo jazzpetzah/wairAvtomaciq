@@ -191,7 +191,7 @@ public class ActorsRESTWrapper {
     }
 
     static String setEphemeralTimeout(String uuid, String convoId, Timedelta timeout) throws Exception {
-        final JSONObject response = ActorsREST.setEpehemeralTimeout(uuid, convoId, timeout);
+        final JSONObject response = ActorsREST.setEphemeralTimeout(uuid, convoId, timeout);
         return response.getString("uuid");
     }
 

@@ -244,8 +244,8 @@ class ActorsREST {
         return new JSONObject(output);
     }
 
-    static JSONObject setEpehemeralTimeout(String uuid, String convoId, Timedelta timeout) throws Exception {
-        final Invocation.Builder webResource = buildRequest(String.format("devices/%s/conversations/%s/unarchive",
+    static JSONObject setEphemeralTimeout(String uuid, String convoId, Timedelta timeout) throws Exception {
+        final Invocation.Builder webResource = buildRequest(String.format("devices/%s/conversations/%s/ephemeral",
                 uuid, convoId));
         final JSONObject requestBody = new JSONObject();
         requestBody.put("msTimeout", timeout.asMilliSeconds());
