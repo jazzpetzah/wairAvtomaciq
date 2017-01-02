@@ -2,10 +2,13 @@ package com.wearezeta.auto.common.testrail;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.rest.CommonRESTHandlers;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
+import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.client.ClientProperties;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -20,7 +23,6 @@ import java.util.Optional;
 
 /**
  * http://docs.gurock.com/testrail-api2/start
- *
  */
 class TestrailREST {
 
@@ -47,7 +49,7 @@ class TestrailREST {
     }
 
     private static void verifyRequestResult(int currentResponseCode,
-            int[] acceptableResponseCodes, String message)
+                                            int[] acceptableResponseCodes, String message)
             throws TestrailRequestException {
         if (!ArrayUtils.contains(acceptableResponseCodes, currentResponseCode)) {
             throw new TestrailRequestException(
@@ -59,11 +61,20 @@ class TestrailREST {
         }
     }
 
+    private static final Timedelta CONNECT_TIMEOUT = Timedelta.fromSeconds(5);
+    private static final Timedelta READ_TIMEOUT = Timedelta.fromSeconds(15);
+    private static final Client client;
+    static {
+        final ClientConfig configuration = new ClientConfig();
+        configuration.property(ClientProperties.CONNECT_TIMEOUT, CONNECT_TIMEOUT.asMilliSeconds());
+        configuration.property(ClientProperties.READ_TIMEOUT, READ_TIMEOUT.asMilliSeconds());
+        client = ClientBuilder.newClient(configuration);
+    }
+
     private static Invocation.Builder buildRequest(String restAction)
             throws Exception {
         final String dstUrl = String.format("%s/%s", getBaseURI(), restAction);
         log.debug(String.format("Making request to %s...", dstUrl));
-        final Client client = ClientBuilder.newClient();
         return client
                 .target(dstUrl)
                 .request()
@@ -102,7 +113,7 @@ class TestrailREST {
     }
 
     public static JSONObject addTestCaseResult(long testRunId, long caseId,
-            int statusId, Optional<String> comment) throws Exception {
+                                               int statusId, Optional<String> comment) throws Exception {
         Invocation.Builder webResource = buildRequest(String.format(
                 "add_result_for_case/%s/%s", testRunId, caseId));
         final JSONObject requestBody = new JSONObject();

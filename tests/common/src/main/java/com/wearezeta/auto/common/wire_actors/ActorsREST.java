@@ -41,22 +41,19 @@ class ActorsREST {
         }
     }
 
-    private static ClientConfig clientConfig = null;
-
-    private static ClientConfig getClientConfig() {
-        if (clientConfig == null) {
-            final ClientConfig configuration = new ClientConfig();
-            configuration.property(ClientProperties.CONNECT_TIMEOUT, 5000);
-            configuration.property(ClientProperties.READ_TIMEOUT, 120000);
-            clientConfig = configuration;
-        }
-        return clientConfig;
+    private static final Timedelta CONNECT_TIMEOUT = Timedelta.fromSeconds(5);
+    private static final Timedelta READ_TIMEOUT = Timedelta.fromSeconds(120);
+    private static final Client client;
+    static {
+        final ClientConfig configuration = new ClientConfig();
+        configuration.property(ClientProperties.CONNECT_TIMEOUT, CONNECT_TIMEOUT.asMilliSeconds());
+        configuration.property(ClientProperties.READ_TIMEOUT, READ_TIMEOUT.asMilliSeconds());
+        client = ClientBuilder.newClient(configuration);
     }
 
     private static Invocation.Builder buildRequest(String restAction) throws Exception {
         final String dstUrl = String.format("%s/%s", getBaseURI(), restAction);
         log.debug(String.format("Making request to %s...", dstUrl));
-        final Client client = ClientBuilder.newClient(getClientConfig());
         return client
                 .target(dstUrl)
                 .request()
