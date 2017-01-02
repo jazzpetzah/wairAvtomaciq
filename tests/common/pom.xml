@@ -14,6 +14,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- note there's no trailing slash -->
         <defaultCallingServiceUrl>https://192.168.10.44:35443</defaultCallingServiceUrl>
+        <defaultCallingServiceUrl.internal>https://192.168.2.25:443</defaultCallingServiceUrl.internal>
         <!-- JavaX | REST -->
         <mailboxHandlerType>REST</mailboxHandlerType>
         <defaultEmailListenerUrl>http://192.168.10.44:21990</defaultEmailListenerUrl>

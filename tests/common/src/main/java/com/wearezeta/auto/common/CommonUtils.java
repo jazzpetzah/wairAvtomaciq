@@ -202,7 +202,7 @@ public class CommonUtils {
         throw savedException;
     }
 
-    private static final String PROJECT_CONFIG = "Configuration.cnf";
+    private static final String PROJECT_CONFIG = "Configuration.properties";
 
     public static Optional<String> getOptionalValueFromConfig(Class<?> c, String key) throws Exception {
         return getValueFromConfigFile(c, key, PROJECT_CONFIG);
@@ -218,7 +218,7 @@ public class CommonUtils {
         }
     }
 
-    private static final String COMMON_CONFIG = "CommonConfiguration.cnf";
+    private static final String COMMON_CONFIG = "CommonConfiguration.properties";
 
     public static Optional<String> getOptionalValueFromCommonConfig(Class<?> c, String key) throws Exception {
         return getValueFromConfigFile(c, key, COMMON_CONFIG);
@@ -437,6 +437,9 @@ public class CommonUtils {
     }
 
     public static String getDefaultCallingServiceUrlFromConfig(Class<?> c) throws Exception {
+        if (isRunningInJenkinsNetwork()) {
+            return getValueFromCommonConfig(c, "defaultInternalCallingServiceUrl");
+        }
         return getValueFromCommonConfig(c, "defaultCallingServiceUrl");
     }
 

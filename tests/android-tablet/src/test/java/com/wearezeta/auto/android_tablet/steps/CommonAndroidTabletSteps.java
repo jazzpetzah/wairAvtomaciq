@@ -655,7 +655,7 @@ public class CommonAndroidTabletSteps {
      * @param imageSenderUserNameAlias the user to sending the image
      * @param imageFileName            the file path name of the image to send. The path name is
      *                                 defined relative to the image file defined in
-     *                                 Configuration.cnf.
+     *                                 Configuration.properties.
      * @param conversationType         "single user" or "group" conversation.
      * @param dstConversationName      the name of the conversation to send the image to.
      * @throws Exception
@@ -722,7 +722,7 @@ public class CommonAndroidTabletSteps {
      * @param name    the user to check
      * @param picture the file name of the picture to check against. The file name
      *                is relative to the pictures directory as defined in the
-     *                Configurations.cnf file
+     *                Configurations.properties file
      * @throws Exception
      * @step. ^(.*) has an avatar picture from file (.*)$
      */
