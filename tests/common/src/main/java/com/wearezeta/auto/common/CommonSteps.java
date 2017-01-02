@@ -17,6 +17,7 @@ import org.junit.Assert;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static javax.xml.bind.DatatypeConverter.parseDateTime;
 import static org.hamcrest.CoreMatchers.not;
@@ -108,11 +109,13 @@ public final class CommonSteps {
     }
 
     public void ThereAreNUsers(Platform currentPlatform, int count) throws Exception {
-        getUsersManager().createUsersOnBackend(count, RegistrationStrategy.getRegistrationStrategyForPlatform(currentPlatform));
+        getUsersManager().createUsersOnBackend(count,
+                RegistrationStrategy.getRegistrationStrategyForPlatform(currentPlatform));
     }
 
     public void ThereAreXAdditionalUsers(Platform currentPlatform, int count) throws Exception {
-        getUsersManager().createAndAppendUsers(count, RegistrationStrategy.getRegistrationStrategyForPlatform(currentPlatform));
+        getUsersManager().createAndAppendUsers(count,
+                RegistrationStrategy.getRegistrationStrategyForPlatform(currentPlatform));
     }
 
     public void ThereAreNUsersWhereXIsMe(Platform currentPlatform, int count, String myNameAlias) throws Exception {
@@ -324,8 +327,9 @@ public final class CommonSteps {
             dstConversationName = getUsersManager().replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
         }
         String dstConvId = BackendAPIWrappers.getConversationIdByName(user, dstConversationName);
-        List<ActorsRESTWrapper.MessageInfo> messageInfos = getDevicesManager().getConversationMessages(user, dstConvId, deviceName);
-        getDevicesManager().markEphemeralRead(user, dstConvId, getFilteredLastMessageId(messageInfos), deviceName);
+        List<ActorsRESTWrapper.MessageInfo> messageInfos =
+                getDevicesManager().getConversationMessages(user, dstConvId, deviceName);
+        getDevicesManager().markEphemeralRead(user, dstConvId, getRecentMessageId(messageInfos), deviceName);
     }
 
     public void UserReadSecondLastEphemeralMessage(String msgFromUserNameAlias, String dstConversationName, String deviceName,
@@ -335,8 +339,9 @@ public final class CommonSteps {
             dstConversationName = getUsersManager().replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
         }
         String dstConvId = BackendAPIWrappers.getConversationIdByName(user, dstConversationName);
-        List<ActorsRESTWrapper.MessageInfo> messageInfos = getDevicesManager().getConversationMessages(user, dstConvId, deviceName);
-        getDevicesManager().markEphemeralRead(user, dstConvId, getFilteredSecondLastMessageId(messageInfos), deviceName);
+        List<ActorsRESTWrapper.MessageInfo> messageInfos =
+                getDevicesManager().getConversationMessages(user, dstConvId, deviceName);
+        getDevicesManager().markEphemeralRead(user, dstConvId, getSecondLastMessageId(messageInfos), deviceName);
     }
 
     public void UserLikeLatestMessage(String msgFromUserNameAlias, String dstConversationName, String deviceName)
@@ -355,11 +360,10 @@ public final class CommonSteps {
                                         ActorsRESTWrapper.MessageReaction reactionType) throws Exception {
         ClientUser user = getUsersManager().findUserByNameOrNameAlias(msgFromUserNameAlias);
         dstConversationName = getUsersManager().replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
-
         String dstConvId = BackendAPIWrappers.getConversationIdByName(user, dstConversationName);
-        List<ActorsRESTWrapper.MessageInfo> messageInfos = getDevicesManager().getConversationMessages(user, dstConvId, deviceName);
-
-        getDevicesManager().reactMessage(user, dstConvId, getFilteredLastMessageId(messageInfos), reactionType, deviceName);
+        List<ActorsRESTWrapper.MessageInfo> messageInfos =
+                getDevicesManager().getConversationMessages(user, dstConvId, deviceName);
+        getDevicesManager().reactMessage(user, dstConvId, getRecentMessageId(messageInfos), reactionType, deviceName);
     }
 
     public void UserDeleteLatestMessage(String msgFromUserNameAlias, String dstConversationName, String deviceName,
@@ -369,12 +373,12 @@ public final class CommonSteps {
             dstConversationName = getUsersManager().replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
         }
         String dstConvId = BackendAPIWrappers.getConversationIdByName(user, dstConversationName);
-        List<ActorsRESTWrapper.MessageInfo> messageInfos = getDevicesManager().getConversationMessages(user, dstConvId, deviceName);
-
+        List<ActorsRESTWrapper.MessageInfo> messageInfos =
+                getDevicesManager().getConversationMessages(user, dstConvId, deviceName);
         if (isDeleteEverywhere) {
-            getDevicesManager().deleteMessageEverywhere(user, dstConvId, getFilteredLastMessageId(messageInfos), deviceName);
+            getDevicesManager().deleteMessageEverywhere(user, dstConvId, getRecentMessageId(messageInfos), deviceName);
         } else {
-            getDevicesManager().deleteMessage(user, dstConvId, getFilteredLastMessageId(messageInfos), deviceName);
+            getDevicesManager().deleteMessage(user, dstConvId, getRecentMessageId(messageInfos), deviceName);
         }
     }
 
@@ -384,7 +388,8 @@ public final class CommonSteps {
         final ClientUser user = getUsersManager().findUserByNameOrNameAlias(msgFromUserNameAlias);
         dstConversationName = getUsersManager().replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
         final String dstConvId = BackendAPIWrappers.getConversationIdByName(user, dstConversationName);
-        final List<ActorsRESTWrapper.MessageInfo> messageInfos = getDevicesManager().getConversationMessages(user, dstConvId, deviceName);
+        final List<ActorsRESTWrapper.MessageInfo> messageInfos =
+                getDevicesManager().getConversationMessages(user, dstConvId, deviceName);
         // TODO: Handle the situation with zero length of messageInfos
         final String actualType = messageInfos.get(messageInfos.size() - 1).getType().toString().toUpperCase();
         Assert.assertEquals(String.format("The type of the recent conversation message '%s' is not equal to the "
@@ -395,22 +400,20 @@ public final class CommonSteps {
                                         String deviceName, boolean isGroup) throws Exception {
         ClientUser user = getUsersManager().findUserByNameOrNameAlias(msgFromUserNameAlias);
         dstConversationName = getUsersManager().replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
-
         String dstConvId = BackendAPIWrappers.getConversationIdByName(user, dstConversationName);
-        List<ActorsRESTWrapper.MessageInfo> messageInfos = getDevicesManager().getConversationMessages(user, dstConvId, deviceName);
-
-        getDevicesManager().updateMessage(user, getFilteredLastMessageId(messageInfos), newMessage, deviceName);
+        List<ActorsRESTWrapper.MessageInfo> messageInfos =
+                getDevicesManager().getConversationMessages(user, dstConvId, deviceName);
+        getDevicesManager().updateMessage(user, getRecentMessageId(messageInfos), newMessage, deviceName);
     }
 
     public void UserUpdateSecondLastMessage(String msgFromUserNameAlias, String dstConversationName, String newMessage,
                                             String deviceName, boolean isGroup) throws Exception {
         ClientUser user = getUsersManager().findUserByNameOrNameAlias(msgFromUserNameAlias);
         dstConversationName = getUsersManager().replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
-
         String dstConvId = BackendAPIWrappers.getConversationIdByName(user, dstConversationName);
-        List<ActorsRESTWrapper.MessageInfo> messageInfos = getDevicesManager().getConversationMessages(user, dstConvId, deviceName);
-
-        getDevicesManager().updateMessage(user, getFilteredSecondLastMessageId(messageInfos), newMessage, deviceName);
+        List<ActorsRESTWrapper.MessageInfo> messageInfos =
+                getDevicesManager().getConversationMessages(user, dstConvId, deviceName);
+        getDevicesManager().updateMessage(user, getSecondLastMessageId(messageInfos), newMessage, deviceName);
     }
 
     public void UserUpdateMessageById(String msgFromUserNameAlias, String messageId,
@@ -431,7 +434,7 @@ public final class CommonSteps {
         String dstConvId = BackendAPIWrappers.getConversationIdByName(user, dstConversationName);
         List<ActorsRESTWrapper.MessageInfo> messageInfos = getDevicesManager().getConversationMessages(user, dstConvId, deviceName);
         if (!messageInfos.isEmpty()) {
-            return Optional.ofNullable(getFilteredLastMessageId(messageInfos));
+            return Optional.ofNullable(getRecentMessageId(messageInfos));
         }
         return Optional.empty();
     }
@@ -729,20 +732,24 @@ public final class CommonSteps {
     public void WaitUntilContactIsFoundInSearchByEmail(String searchByNameAlias, String contactAlias) throws Exception {
         final ClientUser userAs = getUsersManager().findUserByNameOrNameAlias(contactAlias);
         String query = userAs.getEmail();
-        BackendAPIWrappers.waitUntilContactsFound(getUsersManager().findUserByNameOrNameAlias(searchByNameAlias), query, 1, true,
+        BackendAPIWrappers.waitUntilContactsFound(getUsersManager()
+                        .findUserByNameOrNameAlias(searchByNameAlias), query, 1, true,
                 BACKEND_USER_SYNC_TIMEOUT);
     }
 
-    public void WaitUntilContactIsFoundInSearchByUniqueUsername(String searchByNameAlias, String contactAlias) throws Exception {
+    public void WaitUntilContactIsFoundInSearchByUniqueUsername(String searchByNameAlias, String contactAlias)
+            throws Exception {
         final ClientUser userAs = getUsersManager().findUserByNameOrNameAlias(contactAlias);
         String query = userAs.getUniqueUsername();
-        BackendAPIWrappers.waitUntilContactsFound(getUsersManager().findUserByNameOrNameAlias(searchByNameAlias), query, 1, true,
+        BackendAPIWrappers.waitUntilContactsFound(
+                getUsersManager().findUserByNameOrNameAlias(searchByNameAlias), query, 1, true,
                 BACKEND_USER_SYNC_TIMEOUT);
     }
 
     public void WaitUntilTopPeopleContactsIsFoundInSearch(String searchByNameAlias, int size) throws Exception {
-        BackendAPIWrappers.waitUntilTopPeopleContactsFound(getUsersManager().findUserByNameOrNameAlias(searchByNameAlias), size,
-                size, true, BACKEND_USER_SYNC_TIMEOUT);
+        BackendAPIWrappers.waitUntilTopPeopleContactsFound(
+                getUsersManager().findUserByNameOrNameAlias(searchByNameAlias), size, size,
+                true, BACKEND_USER_SYNC_TIMEOUT);
     }
 
     public void UserXAddedContactsToGroupChat(String userAsNameAlias,
@@ -818,8 +825,10 @@ public final class CommonSteps {
             Thread.sleep(500);
         } while (System.currentTimeMillis() - millisecondsStarted <= secondsTimeout * 1000);
         assertThat("User profile picture is not different (V2)", actualHash, not(equalTo(previousHash)));
-        assertThat("User big profile picture is not different (V3)", actualCompleteKey, not(equalTo(previousCompleteKey)));
-        assertThat("User small profile picture is not different (V3)", actualPreviewKey, not(equalTo(previousPreviewKey)));
+        assertThat("User big profile picture is not different (V3)", actualCompleteKey,
+                not(equalTo(previousCompleteKey)));
+        assertThat("User small profile picture is not different (V3)", actualPreviewKey,
+                not(equalTo(previousPreviewKey)));
     }
 
     private static final int PICTURE_CHANGE_TIMEOUT = 15; // seconds
@@ -976,7 +985,8 @@ public final class CommonSteps {
     private Map<String, Optional<String>> recentMessageIds = new HashMap<>();
 
     private String generateConversationKey(String userFrom, String dstName, String deviceName) {
-        return String.format("%s:%s:%s", getUsersManager().replaceAliasesOccurences(userFrom, ClientUsersManager.FindBy.NAME_ALIAS),
+        return String.format("%s:%s:%s", getUsersManager().replaceAliasesOccurences(userFrom,
+                ClientUsersManager.FindBy.NAME_ALIAS),
                 getUsersManager().replaceAliasesOccurences(dstName, ClientUsersManager.FindBy.NAME_ALIAS), deviceName);
     }
 
@@ -1014,7 +1024,8 @@ public final class CommonSteps {
             throw new IllegalStateException("You should remember the recent message before you check it");
         }
         final String rememberedMessageId = recentMessageIds.get(convoKey).orElse("");
-        Optional<String> actualMessageId = getUserXLastMessageId(rememberedMessageId, userNameAlias, isGroup, dstNameAlias, deviceName, durationSeconds);
+        Optional<String> actualMessageId = getUserXLastMessageId(rememberedMessageId, userNameAlias, isGroup,
+                dstNameAlias, deviceName, durationSeconds);
         Assert.assertTrue(String.format("Actual message Id should not equal to '%s'", rememberedMessageId),
                 actualMessageId.isPresent());
     }
@@ -1032,27 +1043,22 @@ public final class CommonSteps {
                 !actualMessageId.isPresent());
     }
 
-    private String getFilteredLastMessageId(List<ActorsRESTWrapper.MessageInfo> messageInfos) throws Exception {
-        for (ActorsRESTWrapper.MessageInfo messageInfo : Lists.reverse(messageInfos)) {
-            if (messageInfo.getType() != ActorsRESTWrapper.MessageType.UNKNOWN) {
-                return messageInfo.getId();
-            }
-        }
-        throw new RuntimeException("Could not find any valid message");
+    private static String getRecentMessageId(List<ActorsRESTWrapper.MessageInfo> messageInfos) {
+        return Lists.reverse(messageInfos).stream()
+                .filter(x -> x.getType() != ActorsRESTWrapper.MessageType.UNKNOWN)
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("Cannot find any valid messages"))
+                .getId();
     }
 
-    private String getFilteredSecondLastMessageId(List<ActorsRESTWrapper.MessageInfo> messageInfos) throws Exception {
-        ActorsRESTWrapper.MessageInfo latestMessage = null;
-        for (ActorsRESTWrapper.MessageInfo messageInfo : Lists.reverse(messageInfos)) {
-            if (messageInfo.getType() != ActorsRESTWrapper.MessageType.UNKNOWN) {
-                if (latestMessage == null) {
-                    latestMessage = messageInfo;
-                } else {
-                    return messageInfo.getId();
-                }
-            }
+    private static String getSecondLastMessageId(List<ActorsRESTWrapper.MessageInfo> messageInfos) {
+        final List<ActorsRESTWrapper.MessageInfo> filteredList = Lists.reverse(messageInfos).stream()
+                .filter(x -> x.getType() != ActorsRESTWrapper.MessageType.UNKNOWN)
+                .collect(Collectors.toList());
+        if (filteredList.size() < 2) {
+            throw new IllegalStateException("Cannot find the second valid message");
         }
-        throw new RuntimeException("Could not find any valid message");
+        return filteredList.get(1).getId();
     }
 
     public void uploadSelfContact(String userAliases) throws Exception {

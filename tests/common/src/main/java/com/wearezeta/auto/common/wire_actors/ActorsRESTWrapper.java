@@ -286,11 +286,12 @@ public class ActorsRESTWrapper {
         final List<MessageInfo> result = new ArrayList<>();
         final JSONObject response = ActorsREST.getMessagesInfo(uuid, convId);
         final JSONArray allConversations = response.getJSONArray("conversations");
-        for (int i = 0; i < allConversations.length(); i++) {
-            if (allConversations.getJSONObject(i).getString("id").equals(convId)) {
-                final JSONArray allMessages = allConversations.getJSONObject(i).getJSONArray("messagesInfo");
-                for (int j = 0; j < allMessages.length(); j++) {
-                    final JSONObject messageInfoAsJson = allMessages.getJSONObject(i);
+        for (int conversationIdx = 0; conversationIdx < allConversations.length(); conversationIdx++) {
+            if (allConversations.getJSONObject(conversationIdx).getString("id").equals(convId)) {
+                final JSONArray allMessages =
+                        allConversations.getJSONObject(conversationIdx).getJSONArray("messagesInfo");
+                for (int messageIdx = 0; messageIdx < allMessages.length(); messageIdx++) {
+                    final JSONObject messageInfoAsJson = allMessages.getJSONObject(messageIdx);
                     final MessageInfo messageInfo = new MessageInfo(
                             messageInfoAsJson.getString("messageId"),
                             MessageType.valueOf(messageInfoAsJson.getString("type")),
