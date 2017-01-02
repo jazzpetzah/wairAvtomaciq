@@ -1,12 +1,12 @@
 package com.wearezeta.auto.win.steps.webapp;
 
 
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.win.pages.webapp.ContactListPage;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -15,9 +15,9 @@ import cucumber.api.java.en.When;
 public class ConversationListPageSteps {
 
     private static final Logger LOG = ZetaLogger.getLog(ConversationListPageSteps.class.getName());
-    private final TestContext webContext;
+    private final WebAppTestContext webContext;
 
-    public ConversationListPageSteps(TestContext webContext) {
+    public ConversationListPageSteps(WebAppTestContext webContext) {
         this.webContext = webContext;
     }
     
@@ -62,7 +62,7 @@ public class ConversationListPageSteps {
     
     @Given("^I open context menu of conversation (.*)$")
     public void IOpenContextMenuOfContact(String name) throws Exception {
-        name = webContext.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        name = webContext.getUsersManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         ContactListPage contactListPage = webContext.getPagesCollection().getPage(ContactListPage.class);
         Assert.assertTrue("No contact list loaded.", contactListPage.waitForContactListVisible());
         contactListPage.openContextMenuWithContextClickForConversation(name);

@@ -1,6 +1,6 @@
 package com.wearezeta.auto.win.steps.win;
 
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.win.pages.win.AboutPage;
 import com.wearezeta.auto.win.pages.win.WinPagesCollection;
 
@@ -10,9 +10,9 @@ import static org.junit.Assert.assertTrue;
 
 public class AboutPageSteps {
 
-    private final TestContext webContext;
+    private final WebAppTestContext webContext;
 
-    public AboutPageSteps(TestContext webContext) {
+    public AboutPageSteps(WebAppTestContext webContext) {
         this.webContext = webContext;
     }
 

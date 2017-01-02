@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.VideoCallPage;
 import com.wearezeta.auto.win.pages.win.MainWirePage;
 import com.wearezeta.auto.win.pages.win.WinPagesCollection;
@@ -21,9 +21,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class VideoCallPageSteps {
 
-    private final TestContext webContext;
+    private final WebAppTestContext webContext;
 
-    public VideoCallPageSteps(TestContext webContext) {
+    public VideoCallPageSteps(WebAppTestContext webContext) {
         this.webContext = webContext;
     }
 
@@ -67,8 +67,8 @@ public class VideoCallPageSteps {
 
     @Then("^I verify (.*) sees my screen$")
     public void IVerifyUserXVideoShowsScreen(String callees) throws Exception {
-        for (String callee : webContext.getUserManager().splitAliases(callees)) {
-            final ClientUser userAs = webContext.getUserManager().findUserByNameOrNameAlias(callee);
+        for (String callee : webContext.getUsersManager().splitAliases(callees)) {
+            final ClientUser userAs = webContext.getUsersManager().findUserByNameOrNameAlias(callee);
 
             // get screenshot from remote user
             BufferedImage remoteScreenshot = webContext.getCallingManager().getScreenshot(userAs);
