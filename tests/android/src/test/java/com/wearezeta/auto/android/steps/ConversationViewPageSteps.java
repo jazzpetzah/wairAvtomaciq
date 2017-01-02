@@ -716,6 +716,7 @@ public class ConversationViewPageSteps {
         messageLikeButtonState.remember();
     }
 
+    //TODO: Delete this out-date step, Robin
     /**
      * Store the screenshot of current file placeholder action button
      *
@@ -875,7 +876,7 @@ public class ConversationViewPageSteps {
      * @step. ^I see the picture in the (conversation|preview) is animated$
      */
     @Then("^I see the picture in the (conversation|preview) is animated$")
-    public void ISeeDialogPictureIsAnimated(String destination) throws Exception {
+    public void ISeePictureIsAnimated(String destination) throws Exception {
         final PictureDestination dst = PictureDestination.valueOf(destination.toUpperCase());
         double avgThreshold;
         // no need to wait, since screenshoting procedure itself is quite long
@@ -1115,10 +1116,10 @@ public class ConversationViewPageSteps {
      * @param timeout       (optional) to define the validation should be complete within timeout
      * @param actionFailed  equals null means current action successfully
      * @throws Exception
-     * @step. ^I( do not)? see the result of (.*) file (upload|received)? having name "(.*)" and extension "(\w+)"( in \d+
+     * @step. ^I( do not)? see the result of \"(.*)\" file (upload|received)? having name "(.*)" and extension "(\w+)"( in \d+
      * seconds)?( failed)?$
      */
-    @Then("^I( do not)? see the result of (.*) file (upload|received)? having name \"(.*)\"" +
+    @Then("^I( do not)? see the result of \"(.*)\" file (upload|received)? having name \"(.*)\"" +
             " and extension \"(\\w+)\"( in \\d+ seconds)?( failed)?$")
     public void ISeeTheResultOfXFileUpload(String doNotSee, String size, String loadDirection, String fileFullName,
                                            String extension, String timeout, String actionFailed) throws Exception {

@@ -33,7 +33,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
 
     //region Conversation Row Locators
     // Text
-    private static final String idStrRowConversationMessage = "tmltv__row_conversation__message";
+    private static final String idStrRowConversationMessage = "ltv__row_conversation__message";
     private static final Function<String, String> xpathStrConversationMessageByText = text -> String
             .format("//*[@id='%s' and @value='%s']", idStrRowConversationMessage, text);
     private static final By xpathLastConversationMessage =
@@ -44,7 +44,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
             String.format("//*[@id='cv__row_conversation__link_preview__text_message' and @value='%s']", text);
 
     // Image
-    private static final String idStrConversationImages = "fl__row_conversation__message_image_container";
+    private static final String idStrConversationImages = "ipv__message_image";
     public static final By idConversationImageContainer = By.id(idStrConversationImages);
     private static final String xpathStrLastImage = String.format("(//*[@id='%s'])[last()]", idStrConversationImages);
 
@@ -152,11 +152,23 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     private static final By xpathAudioMessageDurationText =
             By.xpath("//*[@id='ttv__audio_message__recording__duration' and not(text())]");
 
-    private static final By idFileActionBtn = By.id("aab__row_conversation__action_button");
+    //region File transfer
+    private static final By idFileActionBtn = By.id("action_button");
+
+    private static final By idFileTransferContainer = By.id("fapv__message_file_asset");
+
+    private static final By idFileTransferPlaceholder = By.id("pdv__row_conversation__file_placeholder_dots");
+
+    private static final Function<String, String> xpathFileNamePlaceHolderByValue = value -> String
+            .format("//*[@id='file_name' and @value='%s']", value);
+
+    private static final Function<String, String> xpathFileInfoPlaceHolderByValue = value -> String
+            .format("//*[@id='file_info' and @value='%s']", value);
 
     private static final By idFileDialogActionOpenBtn = By.id("ttv__file_action_dialog__open");
 
     private static final By idFileDialogActionSaveBtn = By.id("ttv__file_action_dialog__save");
+    //endregion
 
     private static final String xpathStrConversationToolbar = "//*[@id='t_conversation_toolbar']";
 
@@ -190,12 +202,6 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     private static final Function<String, String> xpathMessageNotificationByValue = value -> String
             .format("//*[starts-with(@id,'ttv_message_notification_chathead__label') and @value='%s']", value);
 
-    private static final Function<String, String> xpathFileNamePlaceHolderByValue = value -> String
-            .format("//*[@id='ttv__row_conversation__file__filename' and @value='%s']", value);
-
-    private static final Function<String, String> xpathFileInfoPlaceHolderByValue = value -> String
-            .format("//*[@id='ttv__row_conversation__file__fileinfo' and @value='%s']", value);
-
     private static final Function<String, String> xpathConversationPeopleChangedByExp = exp -> String
             .format("//*[@id='ttv__row_conversation__people_changed__text' and %s]", exp);
 
@@ -215,25 +221,21 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     private static final Function<String, String> xpathMessageSeparator = name -> String
             .format("//*[@id='%s' and @value='%s']", idStrSeparatorName, name.toLowerCase());
 
-    private static final By idYoutubeContainer = By.id("iv__row_conversation__youtube_image");
+    private static final By idYoutubeContainer = By.id("ytpv__message_youtube");
 
     private static final By idSoundcloudContainer = By.id("mpv__row_conversation__message_media_player");
 
-    private static final By idFileTransferContainer = By.id("ll__row_conversation__file__message_container");
+    private static final By idVideoMessageContainer = By.id("vapv__message_video_asset");
 
-    private static final By idFileTransferPlaceholder = By.id("pdv__row_conversation__file_placeholder_dots");
+    private static final By idVideoContainerButton = By.id("action_button");
 
-    private static final By idVideoMessageContainer = By.id("fl__video_message_container");
-
-    private static final By idVideoContainerButton = By.id("gpv__row_conversation__video_button");
-
-    private static final By idAudioMessageContainer = By.id("tfll__audio_message_container");
+    private static final By idAudioMessageContainer = By.id("aapv__message_audio_asset");
 
     private static final By idAudioMessagePlaceholder = By.id("pdv__row_conversation__audio_placeholder_dots");
 
     private static final By idAudioContainerButton = By.id("aab__row_conversation__audio_button");
 
-    private static final By idShareLocationContainer = By.id("fl__row_conversation__map_image_container");
+    private static final By idShareLocationContainer = By.id("lpv__message_location");
 
     private static final By idLinkPreviewContainer = By.id("cv__row_conversation__link_preview__container");
 
