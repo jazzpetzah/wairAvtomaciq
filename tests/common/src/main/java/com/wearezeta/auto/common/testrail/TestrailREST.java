@@ -64,10 +64,11 @@ class TestrailREST {
     private static final Timedelta CONNECT_TIMEOUT = Timedelta.fromSeconds(5);
     private static final Timedelta READ_TIMEOUT = Timedelta.fromSeconds(15);
     private static final Client client;
+
     static {
         final ClientConfig configuration = new ClientConfig();
-        configuration.property(ClientProperties.CONNECT_TIMEOUT, CONNECT_TIMEOUT.asMilliSeconds());
-        configuration.property(ClientProperties.READ_TIMEOUT, READ_TIMEOUT.asMilliSeconds());
+        configuration.property(ClientProperties.CONNECT_TIMEOUT, (int) CONNECT_TIMEOUT.asMilliSeconds());
+        configuration.property(ClientProperties.READ_TIMEOUT, (int) READ_TIMEOUT.asMilliSeconds());
         client = ClientBuilder.newClient(configuration);
     }
 
