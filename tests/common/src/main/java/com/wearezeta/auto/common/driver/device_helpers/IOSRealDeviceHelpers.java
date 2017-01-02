@@ -126,8 +126,8 @@ public class IOSRealDeviceHelpers {
      * brew install fping
      */
     public static String getIP() throws Exception {
-        final String nodeIP = CommonUtils.getLocalIP4Address();
         final InetAddress localHost = Inet4Address.getLocalHost();
+        final String nodeIP = localHost.getHostAddress();
         final NetworkInterface networkInterface = NetworkInterface.getByInetAddress(localHost);
         final short prefixLength = networkInterface.getInterfaceAddresses().get(0).getNetworkPrefixLength();
         final String fullIP = String.format("%s/%s", nodeIP, prefixLength);

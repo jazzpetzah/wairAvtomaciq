@@ -15,20 +15,11 @@ import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
 import java.io.Writer;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.net.NetworkInterface;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.MessageDigest;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Properties;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -50,6 +41,7 @@ import javax.sound.sampled.AudioSystem;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver.SurfaceOrientation;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.process.UnixProcessHelpers;
 import com.wearezeta.auto.common.video.SequenceEncoder;
 import org.apache.commons.codec.binary.Base64;
@@ -531,13 +523,13 @@ public class CommonUtils {
         return getValueFromCommonConfig(cls, "actorsServerUrl");
     }
 
-    public static final int SCREENSHOT_TIMEOUT_SECONDS = 5;
+    private static final Timedelta SCREENSHOT_TIMEOUT = Timedelta.fromSeconds(5);
 
     public static void takeIOSSimulatorScreenshot(File output) throws Exception {
         try {
             executeUIShellScript(new String[]{String.format("mkdir -p $(dirname \"%s\")", output.getCanonicalPath()),
                     String.format("%s/simshot \"%s\"", getIOSToolsRoot(CommonUtils.class), output.getCanonicalPath())})
-                    .get(SCREENSHOT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+                    .get(SCREENSHOT_TIMEOUT.asSeconds(), TimeUnit.SECONDS);
         } catch (TimeoutException e) {
             UnixProcessHelpers.killProcessesGracefully("simshot");
             throw e;
@@ -664,20 +656,35 @@ public class CommonUtils {
         return executeUIShellScript(scriptContent.toArray(asArray));
     }
 
-    public static String getLocalIP4Address() throws UnknownHostException {
-        return InetAddress.getLocalHost().getHostAddress();
+    private static List<String> getLocalIpAddresses() throws Exception {
+        final Enumeration allInterfaces = NetworkInterface.getNetworkInterfaces();
+        final List<String> result = new ArrayList<>();
+        while (allInterfaces.hasMoreElements()) {
+            final NetworkInterface currentInterface = (NetworkInterface) allInterfaces.nextElement();
+            final Enumeration inetAddresses = currentInterface.getInetAddresses();
+            while (inetAddresses.hasMoreElements()) {
+                final InetAddress inetAddress = (InetAddress) inetAddresses.nextElement();
+                result.add(inetAddress.getHostAddress());
+            }
+        }
+        return result;
     }
 
     private static Boolean isInJenkinsNetwork = null;
 
-    public static boolean isRunningInJenkinsNetwork() throws UnknownHostException {
+    public static boolean isRunningInJenkinsNetwork() throws Exception {
         if (isInJenkinsNetwork == null) {
             final Pattern ip4ParsePattern = Pattern.compile("(\\d+)\\.(\\d+)\\.(\\d+)\\.(\\d+)");
-            final Matcher m = ip4ParsePattern.matcher(getLocalIP4Address());
-            isInJenkinsNetwork = m.find()
-                    && Integer.parseInt(m.group(1)) == 192
-                    && Integer.parseInt(m.group(2)) == 168
-                    && Integer.parseInt(m.group(3)) == 2;
+            for (String ip : getLocalIpAddresses()) {
+                final Matcher m = ip4ParsePattern.matcher(ip);
+                isInJenkinsNetwork = m.find()
+                        && Integer.parseInt(m.group(1)) == 192
+                        && Integer.parseInt(m.group(2)) == 168
+                        && Integer.parseInt(m.group(3)) == 2;
+                if (isInJenkinsNetwork) {
+                    break;
+                }
+            }
         }
         return isInJenkinsNetwork;
     }
