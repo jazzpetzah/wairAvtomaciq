@@ -12,7 +12,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import com.wearezeta.auto.common.onboarding.AddressBook;
 import com.wearezeta.auto.common.onboarding.Card;
-import com.wearezeta.auto.common.wire_actors.SEBridge;
+import com.wearezeta.auto.common.wire_actors.RemoteDevicesManager;
 import com.wearezeta.auto.common.usrmgmt.*;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -307,9 +307,9 @@ public final class BackendAPIWrappers {
     }
 
     public static void sendPictureToSingleUserConversationOtr(ClientUser userFrom, ClientUser userTo, String path,
-                                                              SEBridge seBridge) throws Exception {
+                                                              RemoteDevicesManager remoteDevicesManager) throws Exception {
         final String convId = getConversationWithSingleUser(userFrom, userTo);
-        seBridge.sendImage(userFrom, convId, path);
+        remoteDevicesManager.sendImage(userFrom, convId, path);
     }
 
     private static String getImageMimeType(String path) {
@@ -334,9 +334,9 @@ public final class BackendAPIWrappers {
     }
 
     public static void sendPictureToChatByNameOtr(ClientUser userFrom, String chatName, String path,
-                                                  SEBridge seBridge) throws Exception {
+                                                  RemoteDevicesManager remoteDevicesManager) throws Exception {
         final String convId = getConversationIdByName(userFrom, chatName);
-        seBridge.sendImage(userFrom, convId, path);
+        remoteDevicesManager.sendImage(userFrom, convId, path);
     }
 
     public static String getConversationIdByName(ClientUser ownerUser, String conversationName) throws Exception {
@@ -558,9 +558,9 @@ public final class BackendAPIWrappers {
     }
 
     public static void sendConversationMessagesOtr(ClientUser userFrom, String convId, List<String> messages,
-                                                   SEBridge seBridge) throws Exception {
+                                                   RemoteDevicesManager remoteDevicesManager) throws Exception {
         for (String message : messages) {
-            seBridge.sendConversationMessage(userFrom, convId, message);
+            remoteDevicesManager.sendConversationMessage(userFrom, convId, message);
             Thread.sleep(50);
         }
     }

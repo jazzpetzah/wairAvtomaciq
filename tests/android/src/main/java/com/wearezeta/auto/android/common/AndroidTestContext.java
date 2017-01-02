@@ -8,7 +8,7 @@ import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.performance.PerformanceCommon;
 import com.wearezeta.auto.common.test_context.TestContext;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.wire_actors.SEBridge;
+import com.wearezeta.auto.common.wire_actors.RemoteDevicesManager;
 import cucumber.api.Scenario;
 
 public class AndroidTestContext extends TestContext {
@@ -22,11 +22,11 @@ public class AndroidTestContext extends TestContext {
         this.performanceCommon = new PerformanceCommon(this.getUsersManager(), this.getDevicesManager());
     }
 
-    public AndroidTestContext(ClientUsersManager clientUsersManager, SEBridge seBridge,
+    public AndroidTestContext(ClientUsersManager clientUsersManager, RemoteDevicesManager remoteDevicesManager,
                               CommonCallingSteps2 callingManager, CommonSteps commonSteps,
                               Scenario scenario, AbstractPagesCollection<? extends BasePage> pagesCollection)
             throws Exception {
-        super(clientUsersManager, seBridge, callingManager, commonSteps, pagesCollection);
+        super(clientUsersManager, remoteDevicesManager, callingManager, commonSteps, pagesCollection);
         this.scenario = scenario;
         this.performanceCommon = new PerformanceCommon(this.getUsersManager(), this.getDevicesManager());
     }

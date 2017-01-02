@@ -5,24 +5,24 @@ import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonCallingSteps2;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.wire_actors.SEBridge;
+import com.wearezeta.auto.common.wire_actors.RemoteDevicesManager;
 
 public class TestContext {
     private final ClientUsersManager usersManager;
-    private final SEBridge devicesManager;
+    private final RemoteDevicesManager devicesManager;
     private final CommonSteps commonSteps;
     private final CommonCallingSteps2 callingManager;
     private final AbstractPagesCollection<? extends BasePage> pagesCollection;
 
     public TestContext(AbstractPagesCollection<? extends BasePage> pagesCollection) throws Exception {
         this.usersManager = new ClientUsersManager();
-        this.devicesManager = new SEBridge();
+        this.devicesManager = new RemoteDevicesManager();
         this.callingManager = new CommonCallingSteps2(this.usersManager);
         this.commonSteps = new CommonSteps(this.usersManager, this.devicesManager);
         this.pagesCollection = pagesCollection;
     }
 
-    public TestContext(ClientUsersManager userManager, SEBridge devicesManager,
+    public TestContext(ClientUsersManager userManager, RemoteDevicesManager devicesManager,
                        CommonCallingSteps2 callingManager, CommonSteps commonSteps,
                        AbstractPagesCollection<? extends BasePage> pagesCollection) throws Exception {
         this.usersManager = userManager;
@@ -36,7 +36,7 @@ public class TestContext {
         return usersManager;
     }
 
-    public SEBridge getDevicesManager() {
+    public RemoteDevicesManager getDevicesManager() {
         return devicesManager;
     }
 

@@ -7,7 +7,7 @@ import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.test_context.TestContext;
-import com.wearezeta.auto.common.wire_actors.SEBridge;
+import com.wearezeta.auto.common.wire_actors.RemoteDevicesManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
@@ -50,7 +50,7 @@ public class WebAppTestContext extends TestContext {
     }
 
     private WebAppTestContext(String testname, CommonSteps commonSteps, ClientUsersManager userManager,
-                              SEBridge deviceManager, CommonCallingSteps2 callingManager,
+                              RemoteDevicesManager deviceManager, CommonCallingSteps2 callingManager,
                               AbstractPagesCollection<? extends BasePage> pagesCollection,
                               Future<? extends RemoteWebDriver> driver) throws Exception {
         super(userManager, deviceManager, callingManager, commonSteps, pagesCollection);

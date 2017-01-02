@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import com.wearezeta.auto.common.wire_actors.SEBridge;
+import com.wearezeta.auto.common.wire_actors.RemoteDevicesManager;
 import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -23,9 +23,9 @@ public final class PerformanceCommon {
     private static final int MAX_WAIT_SECONDS = 5;
 
     private final ClientUsersManager usersManager;
-    private final SEBridge devicesManager;
+    private final RemoteDevicesManager devicesManager;
 
-    public PerformanceCommon(ClientUsersManager usersManager, SEBridge devicesManager) {
+    public PerformanceCommon(ClientUsersManager usersManager, RemoteDevicesManager devicesManager) {
         this.usersManager = usersManager;
         this.devicesManager = devicesManager;
     }
@@ -34,7 +34,7 @@ public final class PerformanceCommon {
         return this.usersManager;
     }
 
-    private SEBridge getDevicesManager() {
+    private RemoteDevicesManager getDevicesManager() {
         return this.devicesManager;
     }
 

@@ -12,8 +12,8 @@ import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 
-public class SEBridge {
-    private static final Logger LOG = ZetaLogger.getLog(SEBridge.class.getSimpleName());
+public class RemoteDevicesManager {
+    private static final Logger LOG = ZetaLogger.getLog(RemoteDevicesManager.class.getSimpleName());
 
     private static class Device {
         private String uuid;
@@ -53,7 +53,7 @@ public class SEBridge {
     private List<Device> registeredDevices = new ArrayList<>();
     private Semaphore devicesGuard = new Semaphore(1);
 
-    public SEBridge() {
+    public RemoteDevicesManager() {
         Runtime.getRuntime().addShutdownHook(new Thread(this::reset));
     }
 

@@ -6,7 +6,7 @@ import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.wire_actors.ActorsRESTWrapper;
-import com.wearezeta.auto.common.wire_actors.SEBridge;
+import com.wearezeta.auto.common.wire_actors.RemoteDevicesManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
@@ -39,17 +39,17 @@ public final class CommonSteps {
     private static final int BACKEND_COMMON_CONTACTS_SYNC_TIMEOUT = 240; // seconds
 
     private final ClientUsersManager usersManager;
-    private final SEBridge devicesManager;
+    private final RemoteDevicesManager devicesManager;
 
     private ClientUsersManager getUsersManager() {
         return this.usersManager;
     }
 
-    private SEBridge getDevicesManager() {
+    private RemoteDevicesManager getDevicesManager() {
         return this.devicesManager;
     }
 
-    public CommonSteps(ClientUsersManager usersManager, SEBridge devicesManager) {
+    public CommonSteps(ClientUsersManager usersManager, RemoteDevicesManager devicesManager) {
         this.usersManager = usersManager;
         this.devicesManager = devicesManager;
     }
