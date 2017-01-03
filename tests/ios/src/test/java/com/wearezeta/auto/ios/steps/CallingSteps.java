@@ -414,12 +414,10 @@ public class CallingSteps {
                                      final List<Integer> callsWithoutMetricsData, final List<Integer> callsWithoutByteFlowData,
                                      int avgCallSetupTime, int avgCallEstabTime, CallLoopType typeOfCall)
             throws Exception {
-        String message = String.format("%s CALL LOOP! %s/%s calls succeeded. Got no metrics data from %s calls." +
-                        " Average calculated from %s calls. average Call setup_time: %s ms , average Call estab_time: %s ms." +
-                        "%s/%s calls had no byte flow during the call.",
-                typeOfCall, timesOfCalls - failures.size(), timesOfCalls, callsWithoutMetricsData.size(),
-                timesOfCalls - failures.size() - callsWithoutMetricsData.size(), avgCallSetupTime, avgCallEstabTime,
-                callsWithoutByteFlowData.size(), timesOfCalls);
+        String message = String.format("%s CALL LOOP!\n %s/%s calls succeeded. %s call(s) no byte flow, %s call(s) failed\n" +
+                        "Average calculated from %s call(s): Average Call setup_time: %s ms , average Call estab_time: %s ms.",
+                typeOfCall, timesOfCalls - failures.size(), timesOfCalls, callsWithoutByteFlowData.size(), failures.size(),
+                timesOfCalls - failures.size() - callsWithoutMetricsData.size(), avgCallSetupTime, avgCallEstabTime);
         LOG.info(message);
 
         final String reportContent = String.format("%s=%s", CALL_STATS_JENKINS_ENV_VARIABLE, message);
