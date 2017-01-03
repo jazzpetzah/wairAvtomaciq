@@ -525,7 +525,7 @@ Feature: Calling
     Given I sign in using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I call 2 times for 1 minutes with <Contact>
+    And I call 10 times for 1 minutes with <Contact>
 
     Examples:
       | Name      | Contact   | CallBackend  |
@@ -539,7 +539,7 @@ Feature: Calling
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email
     Given I see conversations list
-    And <Contact> calls to me in Background 2 times for 1 minute
+    And <Contact> calls to me in Background 10 times for 1 minute
 
     Examples:
       | Name      | Contact   | CallBackend  |
