@@ -198,6 +198,7 @@ Feature: Ephemeral Messages
     # Wait for transition
     Given I wait for 5 seconds
     Given I tap file transfer menu item <ItemName>
+    Given I wait for 3 seconds
     When I remember asset container state at cell 1
     And I wait for <Timer> seconds
     Then I see asset container state is changed
