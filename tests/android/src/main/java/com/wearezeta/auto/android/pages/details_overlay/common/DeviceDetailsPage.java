@@ -3,6 +3,7 @@ package com.wearezeta.auto.android.pages.details_overlay.common;
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import com.wearezeta.auto.common.misc.Timedelta;
 import org.apache.commons.lang3.NotImplementedException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -67,7 +68,8 @@ public class DeviceDetailsPage extends AndroidPage {
                 By.xpath(xpathStrOtrSwitchByState.apply(VERIFIED_STATE)), 1);
         if(!isAlreadyVerified) {
             final By unselectedSwitchLocator = By.xpath(xpathStrOtrSwitchByState.apply(NOT_VERIFIED_STATE));
-            final Optional<WebElement> otrSwitch = getElementIfDisplayed(unselectedSwitchLocator, 3);
+            final Optional<WebElement> otrSwitch = getElementIfDisplayed(unselectedSwitchLocator,
+                    Timedelta.fromSeconds(3));
             if (otrSwitch.isPresent()) {
                 //Need to tap on standalone switch, because tap on switch text do nothing
                 getElement(xpathSingleOtrSwitch).click();

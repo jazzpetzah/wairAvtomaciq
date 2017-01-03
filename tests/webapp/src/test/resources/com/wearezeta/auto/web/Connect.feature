@@ -16,6 +16,7 @@ Feature: Connect
     Then I see unique username in connection request from user <Contact>
     And I accept connection request from user <Contact>
     Then I see Contact list with name <Contact>
+    And I see unique username of <Contact> in conversation
     When I write message <Message>
     And I send message
     Then I see text message <Message>
@@ -469,7 +470,7 @@ Feature: Connect
     Then I see user <Contact1> found in People Picker
     When I click on pending user <Contact1> found in People Picker
     And I see Pending Outgoing Connection popover
-    And I see unique username in outgoing connection request to user <Contact1>
+    And I see unique username on Pending Outgoing Connection popover to user <Contact1>
     When I click Cancel request on Pending Outgoing Connection popover
     Then I see Cancel request confirmation popover
     When I click No button on Cancel request confirmation popover
@@ -593,7 +594,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact1  | Contact2  | ConvOption1 | ConvOption2    | ConvOption3 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | Archive     | Cancel request | Block       |
 
-  @C352248 @staging
+  @C352248 @regression
   Scenario Outline: Verify number of common friends is shown on the outgoing connection request
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -601,8 +602,7 @@ Feature: Connect
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
-#    Wait for Graph generation
-    When I wait for 75 seconds
+    Given I wait until <Contact2> has 1 common friends on the backend
     And I sent connection request to <Contact2>
     And I open conversation with <Contact2>
     Then I see conversation with <Contact2> is selected in conversations list
@@ -611,3 +611,36 @@ Feature: Connect
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
+
+  @C352249 @regression
+  Scenario Outline: Verify number of common friends is shown on the incoming connection request
+    Given There are 11 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
+    Given <UnknownContact1>, <UnknownContact2>, <UnknownContact3>, <UnknownContact4>, <UnknownContact5> have unique username
+    Given <UnknownContact1> is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
+    Given <UnknownContact2> is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <UnknownContact3> is connected to <Contact1>,<Contact2>,<Contact3>
+    Given <UnknownContact4> is connected to <Contact1>,<Contact2>
+    Given <UnknownContact5> is connected to <Contact1>
+    Given <UnknownContact1> sent connection request to me
+    Given <UnknownContact2> sent connection request to me
+    Given <UnknownContact3> sent connection request to me
+    Given <UnknownContact4> sent connection request to me
+    Given <UnknownContact5> sent connection request to me
+ # We need to wait for the backend
+    Given I wait until <UnknownContact1> has 5 common friends on the backend
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    Then I see connection request from 5 user
+    When I open the list of incoming connection requests
+    And I see 5 common friends in connection request from user <UnknownContact1>
+    And I see 4 common friends in connection request from user <UnknownContact2>
+    And I see 3 common friends in connection request from user <UnknownContact3>
+    And I see 2 common friends in connection request from user <UnknownContact4>
+    And I see 1 common friend in connection request from user <UnknownContact5>
+
+    Examples:
+      | Login      | Password      | Name      | UnknownContact1 | UnknownContact2 | UnknownContact3 | UnknownContact4 | UnknownContact5 | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  |
+      | user1Email | user1Password | user1Name | user2Name       | user3Name       | user4Name       | user5Name       | user6Name       | user7Name | user8Name | user9Name | user10Name | user11Name |
+

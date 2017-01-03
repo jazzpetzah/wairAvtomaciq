@@ -85,7 +85,7 @@ Feature: Connect
       | user1Name | user2Name | user3Name | 1 person waiting | 2 people waiting |
 
   @C384 @regression
-  Scenario Outline: I can ignore a connect request and reconnect later
+  Scenario Outline: (AN-4823) I can ignore a connect request and reconnect later
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to me
     Given I sign in using my email or phone number
@@ -193,9 +193,9 @@ Feature: Connect
     And I tap conversation name from top toolbar
     #Sometimes here only one user visible (backend issue)
     And I tap on contact <Contact2> on Group info page
-    Then I see user name "<Contact2>" on Single unconnected user details page
-    When I tap connect button on Single unconnected user details page
-    And I tap connect button on Single unconnected user details page
+    Then I see user name "<Contact2>" on Group unconnected user details page
+    When I tap on +connect button on Group unconnected user details page
+    And I tap on connect button on Group unconnected user details page
     And I tap back button
     And I navigate back from conversation
     Then I see Conversations list with name <Contact2>
@@ -215,7 +215,7 @@ Feature: Connect
     When I tap on conversation name <Contact1>
     And I tap conversation name from top toolbar
     And I tap open menu button on Single connected user details page
-    And I tap BLOCK button on Conversation options menu overlay page
+    And I tap BLOCK button on Single conversation options menu
     And I tap BLOCK button on Confirm overlay page
     Then I do not see Conversations list with name <Contact1>
     And I wait until <Contact1> exists in backend search results
@@ -285,7 +285,7 @@ Feature: Connect
       | user1Name | user2Name | user3Name |
 
   @C407 @regression
-  Scenario Outline: (BUG AN-2721) I can find blocked user in Search and unblock
+  Scenario Outline: (AN-2721) I can find blocked user in Search and unblock
     Given There are 4 users where <Name> is me
       # Having the extra user is a workaround for an app bug
     Given Myself is connected to <Contact1>,<Contact2>
@@ -301,6 +301,7 @@ Feature: Connect
     And I see user <Contact1> in Search result list
     And I tap on user name found on Search page <Contact1>
     Then I see unblock button on Single blocked user details page
+    And I tap on unblock button on Single blocked user details page
     Then I see conversation view
     When I navigate back from conversation
     Then I see Conversations list with name <Contact1>
@@ -334,7 +335,7 @@ Feature: Connect
       | user1Name | user2Name | aqaPictureContact600_800.jpg | user3Name           |
 
   @C409 @regression
-  Scenario Outline: Verify you do not receive any messages from blocked person in 1:1 chat
+  Scenario Outline: (AN-4824) Verify you do not receive any messages from blocked person in 1:1 chat
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -396,8 +397,8 @@ Feature: Connect
     And I see Conversations list with name <A2Name>
 
     Examples:
-      | Contact   | AName            | APhone     | PhonePrefix | A2Name           | A2Phone    |
-      | user1Name | AutoconnectUser2 | 1722036230 | +49         | AutoconnectUser3 | 1622360109 |
+      | Contact   | AName           | APhone     | PhonePrefix | A2Name          | A2Phone    |
+      | user1Name | JulianeStaging7 | 1722036230 | +49         | JulianeStaging9 | 1622360109 |
 
 
   @C192699 @regression @rc
@@ -411,8 +412,8 @@ Feature: Connect
     And I see Conversations list with name <A2Name>
 
     Examples:
-      | Name      | APhone     | PhonePrefix | A2Phone    | AName            | A2Name           |
-      | user1Name | 1722036230 | +49         | 1622360109 | AutoconnectUser2 | AutoconnectUser3 |
+      | Name      | APhone     | PhonePrefix | A2Phone    | AName           | A2Name          |
+      | user1Name | 1722036230 | +49         | 1622360109 | JulianeStaging7 | JulianeStaging9 |
 
   @C194553 @regression
   Scenario Outline: Direct matching emails -  delayed
@@ -430,6 +431,7 @@ Feature: Connect
     And I select "Log out" settings menu item
     And I confirm sign out
     And User <UserB> is me
+    And User <UserB> sets the unique username
     And I sign in using my email
     And I accept First Time overlay as soon as it is visible
     And I see Conversations list with no conversations

@@ -1,11 +1,15 @@
 package com.wearezeta.auto.common.driver.facebook_ios_driver;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.rest.RESTError;
 import org.apache.commons.lang3.NotImplementedException;
 import org.json.JSONObject;
 import org.openqa.selenium.*;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 
+import java.awt.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,16 +49,16 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
         }
     }
 
-    public void touchAndHold(double durationSeconds) {
+    public void touchAndHold(Timedelta duration) {
         try {
-            fbDriverAPI.touchAndHold(this.uuid, durationSeconds);
+            fbDriverAPI.touchAndHold(this.uuid, duration);
         } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }
     }
 
     public void longTap() {
-        this.touchAndHold(DriverUtils.LONG_TAP_DURATION / 1000.0);
+        this.touchAndHold(Timedelta.fromMilliSeconds(DriverUtils.LONG_TAP_DURATION));
     }
 
     /**
@@ -337,5 +341,13 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
         } catch (RESTError e) {
             throw new WebDriverException(e);
         }
+    }
+
+    public Rectangle getRect() {
+        final JSONObject wdRect = new JSONObject(getAttribute("wdRect"));
+        return new Rectangle((int) wdRect.getDouble("x"),
+                (int) wdRect.getDouble("y"),
+                (int) wdRect.getDouble("width"),
+                (int) wdRect.getDouble("height"));
     }
 }

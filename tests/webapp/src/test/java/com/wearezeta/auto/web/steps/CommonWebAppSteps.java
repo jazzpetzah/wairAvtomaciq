@@ -246,6 +246,11 @@ public class CommonWebAppSteps {
         context.stopPinging();
     }
 
+    @Given("^(\\w+) waits? until (\\w+) has (\\d+) common friends? on the backend$")
+    public void UserWaitsForCommonFriends(String usrAsAlias, String query, int expectedFriendsCount) throws Exception {
+        context.getCommonSteps().WaitUntilCommonContactsIsGenerated(usrAsAlias, query, expectedFriendsCount);
+    }
+
     @When("^I wait for (\\d+) seconds?$")
     public void WaitForTime(int seconds) throws Exception {
         context.getCommonSteps().WaitForTime(seconds);
@@ -703,5 +708,11 @@ public class CommonWebAppSteps {
         Random rand = new Random();
         String uniqUserName = uniqueUserName + rand.nextInt(5);
         context.getCommonSteps().UpdateUniqueUsername(userNameAlias, uniqUserName, deviceName);
+    }
+
+    @Given("^User (.*) updates? the unique user name to random value(?: via device (.*))?")
+    public void UserXUpdateUniqueUserName(String userNameAlias, String deviceName) throws Exception {
+        String randomUniqueUsername = CommonUtils.generateGUID().replace("-", "").substring(0, 8);
+        context.getCommonSteps().UpdateUniqueUsername(userNameAlias, randomUniqueUsername, deviceName);
     }
 }

@@ -7,7 +7,6 @@ import org.openqa.selenium.WebElement;
 
 import java.awt.image.BufferedImage;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.stream.Collectors;

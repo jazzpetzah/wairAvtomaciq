@@ -242,13 +242,19 @@ public class IOSSimulatorHelpers {
         return result.toString();
     }
 
-    public static String getLogsAndCrashes() throws Exception {
+    public static String getLogs() throws Exception {
         final File logFile = new File(String.format("%s/Library/Logs/CoreSimulator/%s/system.log",
                 System.getProperty("user.home"), getId()));
         final StringBuilder result = new StringBuilder();
         if (logFile.exists()) {
             result.append(new String(Files.readAllBytes(logFile.toPath()), Charset.forName("UTF-8")));
         }
+        return result.toString();
+    }
+
+    public static String getLogsAndCrashes() throws Exception {
+        final StringBuilder result = new StringBuilder();
+        result.append(getLogs());
         final String crashReports = getRecentWireCrashReports();
         if (crashReports.isEmpty()) {
             result.append("\n\n\n\n\n").append("------- No new crashes were detected so far --------");

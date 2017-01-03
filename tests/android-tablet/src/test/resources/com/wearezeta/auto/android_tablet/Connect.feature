@@ -2,52 +2,48 @@ Feature: Connect
 
   @C747 @regression @rc @rc44
   Scenario Outline: (AN-4282 for android 4.4) Send connection request from search by name in landscape
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <IntermediateContact>
-    Given <IntermediateContact> is connected to <Contact>
+    Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
-    Given I see the Conversations list with conversations
+    Given I see the Conversations list with no conversations
     And I wait until <Contact> exists in backend search results
     When I open Search UI
     And I enter "<Contact>" into Search input on Search page
-    And I tap the found item <Contact> on Search page
-    And I see Outgoing Connection popover
-    And I see the name <Contact> on Outgoing Connection popover
-    And I tap Connect button on Outgoing Connection popover
-    And I do not see Outgoing Connection popover
+    And I tap on user name found on Search page <Contact>
+    And I see Single unconnected user details popover
+    And I see user name "<Contact>" on Single unconnected user details popover
+    And I tap connect button on Single unconnected user details popover
+    And I do not see Single unconnected user details popover
     And I close Search
     Then I see the conversation <Contact> in my conversations list
 
     Examples:
-      | Name      | Contact   | IntermediateContact |
-      | user1Name | user2Name | user3Name           |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @C746 @regression @rc @rc44
   Scenario Outline: Send connection request from search by name in portrait
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <IntermediateContact>
-    Given <IntermediateContact> is connected to <Contact>
+    Given There are 2 users where <Name> is me
     Given I rotate UI to portrait
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
-    Given I see the Conversations list with conversations
+    Given I see the Conversations list with no conversations
     And I wait until <Contact> exists in backend search results
     When I open Search UI
     And I enter "<Contact>" into Search input on Search page
-    And I tap the found item <Contact> on Search page
-    And I see Outgoing Connection popover
-    And I see the name <Contact> on Outgoing Connection popover
-    And I tap Connect button on Outgoing Connection popover
-    And I do not see Outgoing Connection popover
+    And I tap on user name found on Search page <Contact>
+    And I see Single unconnected user details popover
+    And I see user name "<Contact>" on Single unconnected user details popover
+    And I tap connect button on Single unconnected user details popover
+    And I do not see Single unconnected user details popover
     And I swipe right to show the conversations list
     And I close Search
     Then I see the conversation <Contact> in my conversations list
 
     Examples:
-      | Name      | Contact   | IntermediateContact |
-      | user1Name | user2Name | user3Name           |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @C730 @regression @rc @rc44
   Scenario Outline: Accept connection request in landscape mode
@@ -58,8 +54,8 @@ Feature: Connect
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversation
     When I tap the conversation <WaitingMess>
-    And I see the Incoming connections page
-    And I accept incoming connection request from <Contact> on Incoming connections page
+    And I see user name "<Contact>" on Single pending incoming connection page
+    And I tap connect button on Single pending incoming connection page
     Then I see the conversation <Contact> in my conversations list
     And I do not see the conversation <WaitingMess> in my conversations list
 
@@ -76,8 +72,8 @@ Feature: Connect
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversation
     When I tap the conversation <WaitingMess>
-    And I see the Incoming connections page
-    And I accept incoming connection request from <Contact> on Incoming connections page
+    And I see user name "<Contact>" on Single pending incoming connection page
+    And I tap connect button on Single pending incoming connection page
     Then I see the conversation <Contact> in my conversations list
     And I do not see the conversation <WaitingMess> in my conversations list
 
@@ -98,11 +94,10 @@ Feature: Connect
     Given I do not see the conversation <Contact2> in my conversations list
     Given I tap the conversation <GroupChatName>
     When I tap conversation name from top toolbar
-    And I see the Group popover
-    And I see the participant avatar <Contact2> on Group popover
-    And I tap the participant avatar <Contact2> on Group popover
-    And I tap Connect button on Group popover
-    And I tap Connect button on Outgoing Connection popover
+    And I see Group info popover
+    And I tap on contact <Contact2> on Group info popover
+    And I tap on +connect button on Group unconnected user details page
+    And I tap on connect button on Group unconnected user details page
     And I tap conversation name from top toolbar
     And I swipe right to show the conversations list
     Then I see the conversation <Contact2> in my conversations list
@@ -124,11 +119,10 @@ Feature: Connect
     Given I do not see the conversation <Contact2> in my conversations list
     Given I tap the conversation <GroupChatName>
     When I tap conversation name from top toolbar
-    And I see the Group popover
-    And I see the participant avatar <Contact2> on Group popover
-    And I tap the participant avatar <Contact2> on Group popover
-    And I tap Connect button on Group popover
-    And I tap Connect button on Outgoing Connection popover
+    And I see Group info popover
+    And I tap on contact <Contact2> on Group info popover
+    And I tap on +connect button on Group unconnected user details page
+    And I tap on connect button on Group unconnected user details page
     And I tap conversation name from top toolbar
     Then I see the conversation <Contact2> in my conversations list
 
@@ -137,52 +131,56 @@ Feature: Connect
       | user1Name | user2Name | user3Name | NonConnectedUserChat |
 
   @C789 @regression @rc
-  Scenario Outline: Send connection request to user from search results by email (portrait)
+  Scenario Outline: Send connection request to user from search results by unique user name (portrait)
     Given There are 2 users where <Name> is me
+    Given User <Contact> sets the unique username
     Given I rotate UI to portrait
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with no conversations
-    And I wait until <ContactEmail> exists in backend search results
+    And I wait until <ContactUniqueUsername> exists in backend search results
     When I open Search UI
-    And I enter "<ContactEmail>" into Search input on Search page
-    And I tap the found item <Contact> on Search page
-    And I see Outgoing Connection popover
-    And I see the name <Contact> on Outgoing Connection popover
-    And I tap Connect button on Outgoing Connection popover
-    And I do not see Outgoing Connection popover
+    And I enter "<ContactUniqueUsername>" into Search input on Search page
+    And I tap on user name found on Search page <Contact>
+    And I see Single unconnected user details popover
+    And I see user name "<Contact>" on Single unconnected user details popover
+    And I see unique user name "<ContactUniqueUsername>" on Single unconnected user details popover
+    And I tap connect button on Single unconnected user details popover
+    And I do not see Single unconnected user details popover
     And I swipe right to show the conversations list
     And I close Search
     Then I see the conversation <Contact> in my conversations list
 
     Examples:
-      | Name      | Contact   | ContactEmail |
-      | user1Name | user2Name | user2Email   |
+      | Name      | Contact   | ContactUniqueUsername |
+      | user1Name | user2Name | user2UniqueUsername   |
 
   @C790 @regression @rc
-  Scenario Outline: Send connection request to user from search results by email (landscape)
+  Scenario Outline: Send connection request to user from search results by unique user name (landscape)
     Given There are 2 users where <Name> is me
+    Given User <Contact> sets the unique username
     Given I rotate UI to landscape
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with no conversations
-    And I wait until <ContactEmail> exists in backend search results
+    And I wait until <ContactUniqueUsername> exists in backend search results
     When I open Search UI
-    And I enter "<ContactEmail>" into Search input on Search page
-    And I tap the found item <Contact> on Search page
-    And I see Outgoing Connection popover
-    And I see the name <Contact> on Outgoing Connection popover
-    And I tap Connect button on Outgoing Connection popover
-    And I do not see Outgoing Connection popover
+    And I enter "<ContactUniqueUsername>" into Search input on Search page
+    And I tap on user name found on Search page <Contact>
+    And I see Single unconnected user details popover
+    And I see user name "<Contact>" on Single unconnected user details popover
+    And I see unique user name "<ContactUniqueUsername>" on Single unconnected user details popover
+    And I tap connect button on Single unconnected user details popover
+    And I do not see Single unconnected user details popover
     And I close Search
     Then I see the conversation <Contact> in my conversations list
 
     Examples:
-      | Name      | Contact   | ContactEmail |
-      | user1Name | user2Name | user2Email   |
+      | Name      | Contact   | ContactUniqueUsername |
+      | user1Name | user2Name | user2UniqueUsername   |
 
   @C489 @regression
-  Scenario Outline: (AN-2735) Ignore a connect request and reconnect later from search (portrait)
+  Scenario Outline: (AN-4823) Ignore a connect request and reconnect later from search (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to me
     Given I rotate UI to portrait
@@ -190,8 +188,8 @@ Feature: Connect
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversation
     When I tap the conversation <WaitingMess>
-    And I see the Incoming connections page
-    And I ignore incoming connection request from <Contact> on Incoming connections page
+    And I see user name "<Contact>" on Single pending incoming connection page
+    And I tap ignore button on Single pending incoming connection page
     # Workaround for a bug
     And I wait for 3 seconds
     And I swipe right to show the conversations list
@@ -200,11 +198,11 @@ Feature: Connect
     And I wait until <Contact> exists in backend search results
     And I open Search UI
     And I enter "<Contact>" into Search input on Search page
-    And I tap the found item <Contact> on Search page
-    And I see Incoming Connection popover
-    And I see the name <Contact> on Incoming Connection popover
-    And I tap Accept button on Incoming Connection popover
-    And I do not see Incoming Connection popover
+    And I tap on user name found on Search page <Contact>
+    And I see Single pending incoming connection popover
+    And I see user name "<Contact>" on Single pending incoming connection popover
+    And I tap connect button on Single pending incoming connection popover
+    And I do not see Single pending incoming connection popover
     And I swipe right to show the conversations list
     And I close Search
     Then I see the conversation <Contact> in my conversations list
@@ -214,7 +212,7 @@ Feature: Connect
       | user1Name | user2Name | 1 person waiting |
 
   @C522 @regression
-  Scenario Outline: (AN-2735) Ignore a connect request and reconnect later from search (landscape)
+  Scenario Outline: (AN-4823) Ignore a connect request and reconnect later from search (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to me
     Given I rotate UI to landscape
@@ -222,18 +220,18 @@ Feature: Connect
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversation
     When I tap the conversation <WaitingMess>
-    And I see the Incoming connections page
-    And I ignore incoming connection request from <Contact> on Incoming connections page
+    And I see user name "<Contact>" on Single pending incoming connection page
+    And I tap ignore button on Single pending incoming connection page
     Then I do not see the conversation <Contact> in my conversations list
     And I do not see the conversation <WaitingMess> in my conversations list
     And I wait until <Contact> exists in backend search results
     And I open Search UI
     And I enter "<Contact>" into Search input on Search page
-    And I tap the found item <Contact> on Search page
-    And I see Incoming Connection popover
-    And I see the name <Contact> on Incoming Connection popover
-    And I tap Accept button on Incoming Connection popover
-    And I do not see Incoming Connection popover
+    And I tap on user name found on Search page <Contact>
+    And I see Single pending incoming connection popover
+    And I see user name "<Contact>" on Single pending incoming connection popover
+    And I tap connect button on Single pending incoming connection popover
+    And I do not see Single pending incoming connection popover
     And I close Search
     Then I see the conversation <Contact> in my conversations list
 
@@ -251,14 +249,14 @@ Feature: Connect
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversation
     When I tap the conversation <WaitingMess2>
-    And I see the Incoming connections page
-    And I ignore incoming connection request from <Contact2> on Incoming connections page
-    And I see the Incoming connections page
+    And I scroll to contact <Contact2> on Single pending incoming connection page
+    And I see user name "<Contact2>" on Single pending incoming connection page
+    And I tap ignore button for user <Contact2> on Single pending incoming connection page
     And I swipe right to show the conversations list
     Then I see the conversation <WaitingMess1> in my conversations list
     When I tap the conversation <WaitingMess1>
-    And I see the Incoming connections page
-    And I ignore incoming connection request from <Contact1> on Incoming connections page
+    And I see user name "<Contact1>" on Single pending incoming connection page
+    And I tap ignore button for user <Contact1> on Single pending incoming connection page
     Then I see the Conversations list with no conversations
     When <Contact3> sent connection request to me
     Then I see the conversation <WaitingMess1> in my conversations list
@@ -277,13 +275,12 @@ Feature: Connect
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversation
     When I tap the conversation <WaitingMess2>
-    And I see the Incoming connections page
-    And I scroll the list up to 2 times until <Contact2> entry is visible on Incoming connections page
-    And I ignore incoming connection request from <Contact2> on Incoming connections page
+    And I scroll to contact <Contact2> on Single pending incoming connection page
+    And I see user name "<Contact2>" on Single pending incoming connection page
+    And I tap ignore button for user <Contact2> on Single pending incoming connection page
     When I tap the conversation <WaitingMess1>
-    And I see the Incoming connections page
-    And I scroll the list up to 2 times until <Contact1> entry is visible on Incoming connections page
-    And I ignore incoming connection request from <Contact1> on Incoming connections page
+    And I see user name "<Contact1>" on Single pending incoming connection page
+    And I tap ignore button for user <Contact1> on Single pending incoming connection page
     Then I see the Conversations list with no conversations
     When <Contact3> sent connection request to me
     Then I see the conversation <WaitingMess1> in my conversations list
@@ -303,13 +300,11 @@ Feature: Connect
     # Workaround for a bug
     And I swipe right to show the conversations list
     When I tap the conversation <WaitingMsg>
-    Then I see the Incoming connections page
-    And I see email <ContactEmail> on Incoming connections page
-    And I see name <Contact> on Incoming connections page
+    Then I see user name "<Contact>" on Single pending incoming connection page
 
     Examples:
-      | Name      | Contact   | ContactEmail | WaitingMsg       |
-      | user1Name | user2Name | user2Email   | 1 person waiting |
+      | Name      | Contact   | WaitingMsg       |
+      | user1Name | user2Name | 1 person waiting |
 
   @C526 @regression
   Scenario Outline: I can see a new inbox for connection when receive new connection request (landscape)
@@ -320,13 +315,11 @@ Feature: Connect
     Given I see the Conversations list with no conversations
     When <Contact> sent connection request to me
     When I tap the conversation <WaitingMsg>
-    Then I see the Incoming connections page
-    And I see email <ContactEmail> on Incoming connections page
-    And I see name <Contact> on Incoming connections page
+    Then I see user name "<Contact>" on Single pending incoming connection page
 
     Examples:
-      | Name      | Contact   | ContactEmail | WaitingMsg       |
-      | user1Name | user2Name | user2Email   | 1 person waiting |
+      | Name      | Contact   | WaitingMsg       |
+      | user1Name | user2Name | 1 person waiting |
 
   @C492 @regression
   Scenario Outline: (AN-2897) I want to see that the other person has accepted the connect request in the conversation view (portrait)
@@ -337,8 +330,7 @@ Feature: Connect
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
     When I tap the conversation <Contact>
-    Then I see Outgoing Pending Connection page
-    And I see <Contact> name on the Outgoing Pending Connection page
+    Then I see user name "<Contact>" on Single pending outgoing connection page
     When <Contact> accepts all requests
     Then I see the conversation view
     And I see the system connection message contains "<SysMessage>" text on Conversation view page
@@ -356,8 +348,7 @@ Feature: Connect
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
     When I tap the conversation <Contact>
-    Then I see Outgoing Pending Connection page
-    And I see <Contact> name on the Outgoing Pending Connection page
+    Then I see user name "<Contact>" on Single pending outgoing connection page
     When <Contact> accepts all requests
     Then I see the conversation view
     And I see the system connection message contains "<SysMessage>" text on Conversation view page
@@ -375,11 +366,10 @@ Feature: Connect
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
     When I tap the conversation <Contact>
-    Then I see Outgoing Pending Connection page
-    And I see <Contact> name on the Outgoing Pending Connection page
+    Then I see user name "<Contact>" on Single pending outgoing connection page
     When <Contact> ignores all requests
     Then I do not see conversation view
-    And I see <Contact> name on the Outgoing Pending Connection page
+    And I see user name "<Contact>" on Single pending outgoing connection page
 
     Examples:
       | Name      | Contact   |
@@ -396,10 +386,8 @@ Feature: Connect
     And <Contact> sent connection request to me
     And I restore the application
     When I tap the conversation <WaitingMsg>
-    Then I see the Incoming connections page
-    And I see email <ContactEmail> on Incoming connections page
-    And I see name <Contact> on Incoming connections page
+    Then I see user name "<Contact>" on Single pending incoming connection page
 
     Examples:
-      | Name      | Contact   | ContactEmail | WaitingMsg       |
-      | user1Name | user2Name | user2Email   | 1 person waiting |
+      | Name      | Contact   | WaitingMsg       |
+      | user1Name | user2Name | 1 person waiting |

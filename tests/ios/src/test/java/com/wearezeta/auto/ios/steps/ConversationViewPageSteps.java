@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.Timedelta;
 import cucumber.api.java.en.And;
 import org.apache.commons.lang3.text.WordUtils;
 import org.junit.Assert;
@@ -115,7 +116,7 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. I tap (Send Message|Emoji Keyboard|Text Keyboard|Hourglass) button in conversation view
      */
-    @And("^I tap (Send Message|Emoji Keyboard|Text Keyboard|Hourglass|Time Indicator) button in conversation view$")
+    @And("^I tap (Send Message|Emoji Keyboard|Text Keyboard|Hourglass|Time Indicator|Collection) button in conversation view$")
     public void ITapConvoButton(String btnName) throws Exception {
         getConversationViewPage().tapButton(btnName);
     }
@@ -247,7 +248,7 @@ public class ConversationViewPageSteps {
                 getConversationViewPage().longTapInputToolButtonByName(btnName);
             } else {
                 getConversationViewPage().longTapWithDurationInputToolButtonByName(btnName,
-                        Integer.parseInt(durationSeconds.replaceAll("[\\D]", "")));
+                        Timedelta.fromSeconds(Integer.parseInt(durationSeconds.replaceAll("[\\D]", ""))));
             }
         }
     }
@@ -373,20 +374,20 @@ public class ConversationViewPageSteps {
         if (shouldNotChange == null) {
             Assert.assertTrue(
                     String.format("The current asset container state is not different from the expected one after " +
-                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT_SECONDS),
-                    previousAssetsContainerState.isChanged(MEDIA_STATE_CHANGE_TIMEOUT_SECONDS,
+                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT),
+                    previousAssetsContainerState.isChanged(MEDIA_STATE_CHANGE_TIMEOUT,
                             CONTAINER_COMPARE_MIN_SCORE));
         } else {
             Assert.assertTrue(
                     String.format("The current asset container state is different from the expected one after " +
-                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT_SECONDS),
-                    previousAssetsContainerState.isNotChanged(MEDIA_STATE_CHANGE_TIMEOUT_SECONDS,
+                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT),
+                    previousAssetsContainerState.isNotChanged(MEDIA_STATE_CHANGE_TIMEOUT,
                             CONTAINER_COMPARE_MIN_SCORE));
         }
     }
 
     private static final double CONTAINER_COMPARE_MIN_SCORE = 0.9;
-    private static final int MEDIA_STATE_CHANGE_TIMEOUT_SECONDS = 10;
+    private static final Timedelta MEDIA_STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(10);
 
     /**
      * Verify whether the state of a media container is changed - soundclound play button
@@ -403,13 +404,13 @@ public class ConversationViewPageSteps {
         if (shouldNotChange == null) {
             Assert.assertTrue(
                     String.format("The current media state is not different from the expected one after " +
-                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT_SECONDS),
-                    previousMediaContainerState.isChanged(MEDIA_STATE_CHANGE_TIMEOUT_SECONDS,
+                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT),
+                    previousMediaContainerState.isChanged(MEDIA_STATE_CHANGE_TIMEOUT,
                             CONTAINER_COMPARE_MIN_SCORE));
         } else {
             Assert.assertTrue(String.format("The current media state is different from the expected one after " +
-                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT_SECONDS),
-                    previousMediaContainerState.isNotChanged(MEDIA_STATE_CHANGE_TIMEOUT_SECONDS,
+                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT),
+                    previousMediaContainerState.isNotChanged(MEDIA_STATE_CHANGE_TIMEOUT,
                             CONTAINER_COMPARE_MIN_SCORE));
         }
     }
@@ -780,7 +781,7 @@ public class ConversationViewPageSteps {
                 "Cannot detect the Download Finished placeholder for a file '%s' in the conversation view after %s seconds",
                 expectedFileName, timeoutSeconds),
                 getConversationViewPage().waitUntilDownloadReadyPlaceholderVisible(expectedFileName, expectedSize,
-                        timeoutSeconds));
+                        Timedelta.fromSeconds(timeoutSeconds)));
     }
 
     /**
@@ -795,7 +796,8 @@ public class ConversationViewPageSteps {
     public void IWaitForFilePreview(int secondsTimeout, String expectedFileName) throws Exception {
         Assert.assertTrue(String.format("The preview was not shown for '%s' after %s seconds timeout", expectedFileName,
                 secondsTimeout),
-                getConversationViewPage().waitUntilFilePreviewIsVisible(secondsTimeout, expectedFileName));
+                getConversationViewPage().waitUntilFilePreviewIsVisible(Timedelta.fromSeconds(secondsTimeout),
+                        expectedFileName));
     }
 
     /**
@@ -821,7 +823,7 @@ public class ConversationViewPageSteps {
     @Then("^I wait up to (\\d+) seconds until I see generic file share menu$")
     public void ISeeGenericFileShareMenu(int timeoutSeconds) throws Exception {
         Assert.assertTrue("Generic file share menu has not been shown",
-                getConversationViewPage().isGenericFileShareMenuVisible(timeoutSeconds));
+                getConversationViewPage().isGenericFileShareMenuVisible(Timedelta.fromSeconds(timeoutSeconds)));
     }
 
     /**
@@ -924,7 +926,7 @@ public class ConversationViewPageSteps {
         playButtonState.remember();
     }
 
-    private static final int PLAY_BUTTON_STATE_CHANGE_TIMEOUT = 7;
+    private static final Timedelta PLAY_BUTTON_STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(7);
     private static final double PLAY_BUTTON_MIN_SIMILARITY = 0.95;
 
     /**
@@ -1120,7 +1122,7 @@ public class ConversationViewPageSteps {
                 getConversationViewPage().isMessageByPositionDisplayed(message, position));
     }
 
-    private static final int LIKE_ICON_STATE_CHANGE_TIMEOUT = 7; //seconds
+    private static final Timedelta LIKE_ICON_STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(7); //seconds
     private static final double LIKE_ICON_MIN_SIMILARITY = 0.9;
     private ElementState likeIconState = new ElementState(
             () -> getConversationViewPage().getLikeIconState()

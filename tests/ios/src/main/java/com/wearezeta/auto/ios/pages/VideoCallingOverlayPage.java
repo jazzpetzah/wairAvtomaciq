@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.pages;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import com.wearezeta.auto.common.misc.Timedelta;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -17,11 +18,11 @@ public class VideoCallingOverlayPage extends CallingOverlayPage {
 
     private Optional<WebElement> makeOverlayButtonVisible(String name) throws Exception {
         final By locator = MobileBy.AccessibilityId(getButtonAccessibilityIdByName(name));
-        final Optional<WebElement> dstBtn = getElementIfDisplayed(locator, 1);
+        final Optional<WebElement> dstBtn = getElementIfDisplayed(locator, Timedelta.fromSeconds(1));
         if (!dstBtn.isPresent()) {
             final Dimension screenSize = getDriver().manage().window().getSize();
             this.tapScreenAt(screenSize.getWidth() / 2, screenSize.getHeight() / 2);
-            return getElementIfExists(locator, 5);
+            return getElementIfExists(locator, Timedelta.fromSeconds(5));
         }
         return dstBtn;
     }
@@ -29,7 +30,7 @@ public class VideoCallingOverlayPage extends CallingOverlayPage {
     @Override
     public void tapButtonByName(String buttonName) throws Exception {
         final By locator = MobileBy.AccessibilityId(getButtonAccessibilityIdByName(buttonName));
-        final Optional<WebElement> dstBtn = getElementIfDisplayed(locator, 1);
+        final Optional<WebElement> dstBtn = getElementIfDisplayed(locator, Timedelta.fromSeconds(1));
         if (dstBtn.isPresent()) {
             dstBtn.get().click();
             return;

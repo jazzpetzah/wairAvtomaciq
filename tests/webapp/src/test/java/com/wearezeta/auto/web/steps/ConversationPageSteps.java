@@ -823,11 +823,11 @@ public class ConversationPageSteps {
         }
     }
 
-    @And("^I see unique username starts with (.*) in conversation$")
-    public void ISeeUniqueUsernameOnSelfProfilePage(String name) throws Exception {
-        name = context.getUserManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+    @And("^I see unique username of (.*) in conversation$")
+    public void ISeeUniqueUsernameOnSelfProfilePage(String nameAlias) throws Exception {
+        String username = context.getUserManager().findUserByNameOrNameAlias(nameAlias).getUniqueUsername();
         Assert.assertThat("Username in conversation",
-                context.getPagesCollection().getPage(ConversationPage.class).getUniqueUsername(), startsWith(name));
+                context.getPagesCollection().getPage(ConversationPage.class).getUniqueUsername(), equalTo(username));
     }
 
     @Then("^I see (.*) action (\\d+) times for (.*) in conversation$")

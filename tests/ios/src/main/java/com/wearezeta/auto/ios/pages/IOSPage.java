@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
@@ -18,8 +19,8 @@ import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.IOSDistributable;
 import com.wearezeta.auto.common.driver.device_helpers.IOSSimulatorHelpers;
+import com.wearezeta.auto.common.misc.Timedelta;
 import io.appium.java_client.MobileBy;
-import javafx.print.PageOrientation;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
@@ -82,8 +83,8 @@ public abstract class IOSPage extends BasePage {
     }
 
     protected long getDriverInitializationTimeout() {
-        return (ZetaIOSDriver.MAX_SESSION_INIT_DURATION_MILLIS + AppiumServer.RESTART_TIMEOUT_MILLIS)
-                * DRIVER_CREATION_RETRIES_COUNT;
+        return (ZetaIOSDriver.MAX_SESSION_INIT_DURATION.asMilliSeconds() +
+                AppiumServer.RESTART_TIMEOUT.asMilliSeconds()) * DRIVER_CREATION_RETRIES_COUNT;
     }
 
     public IOSPage(Future<ZetaIOSDriver> driver) throws Exception {
@@ -160,11 +161,11 @@ public abstract class IOSPage extends BasePage {
     }
 
     public boolean isKeyboardInvisible() throws Exception {
-        return this.isKeyboardInvisible(DriverUtils.getDefaultLookupTimeoutSeconds());
+        return this.isKeyboardInvisible(Timedelta.fromSeconds(DriverUtils.getDefaultLookupTimeoutSeconds()));
     }
 
-    public boolean isKeyboardInvisible(int timeoutSeconds) throws Exception {
-        return this.getOnScreenKeyboard().isInvisible(timeoutSeconds);
+    public boolean isKeyboardInvisible(Timedelta timeout) throws Exception {
+        return this.getOnScreenKeyboard().isInvisible(timeout);
     }
 
     public void tapKeyboardDeleteButton() throws Exception {
@@ -187,26 +188,26 @@ public abstract class IOSPage extends BasePage {
 
     public void acceptAlertIfVisible() throws Exception {
         try {
-            handleAlert(AlertAction.ACCEPT, 3);
+            handleAlert(AlertAction.ACCEPT, Timedelta.fromSeconds(3));
         } catch (IllegalStateException e) {
-            // Ignore silently
+            log.error("Did not accept the alert", e);
         }
     }
 
     public void dismissAlertIfVisible() throws Exception {
         try {
-            handleAlert(AlertAction.DISMISS, 3);
+            handleAlert(AlertAction.DISMISS, Timedelta.fromSeconds(3));
         } catch (IllegalStateException e) {
             // Ignore silently
         }
     }
 
     public void acceptAlert() throws Exception {
-        handleAlert(AlertAction.ACCEPT, DriverUtils.getDefaultLookupTimeoutSeconds());
+        handleAlert(AlertAction.ACCEPT, Timedelta.fromSeconds(DriverUtils.getDefaultLookupTimeoutSeconds()));
     }
 
     public void dismissAlert() throws Exception {
-        handleAlert(AlertAction.DISMISS, DriverUtils.getDefaultLookupTimeoutSeconds());
+        handleAlert(AlertAction.DISMISS, Timedelta.fromSeconds(DriverUtils.getDefaultLookupTimeoutSeconds()));
     }
 
     private final static int MAX_ALERT_HANDLING_RETRIES = 5;
@@ -217,7 +218,7 @@ public abstract class IOSPage extends BasePage {
             getDriver().forceAcceptAlert();
         } else {
             try {
-                handleAlert(AlertAction.ACCEPT, 1);
+                handleAlert(AlertAction.ACCEPT, Timedelta.fromSeconds(1));
             } catch (Exception e) {
                 // just ignore it
             }
@@ -228,8 +229,8 @@ public abstract class IOSPage extends BasePage {
         ACCEPT, DISMISS
     }
 
-    public void handleAlert(AlertAction action, int timeoutSeconds) throws Exception {
-        final Optional<String> initialAlertText = readAlertText(timeoutSeconds);
+    public void handleAlert(AlertAction action, Timedelta timeout) throws Exception {
+        final Optional<String> initialAlertText = readAlertText(timeout);
         if (initialAlertText.isPresent()) {
             int retry = 0;
             do {
@@ -258,7 +259,7 @@ public abstract class IOSPage extends BasePage {
                 } catch (WebDriverException e) {
                     // ignore silently
                 }
-                final Optional<String> currentText = readAlertText(1);
+                final Optional<String> currentText = readAlertText(Timedelta.fromSeconds(1));
                 if (!currentText.isPresent() || !currentText.get().equals(initialAlertText.get())) {
                     return;
                 }
@@ -269,8 +270,8 @@ public abstract class IOSPage extends BasePage {
             }
         }
         throw new IllegalStateException(
-                String.format("No alert has been shown after %s seconds or it cannot be %s after %s retries",
-                        timeoutSeconds,
+                String.format("No alert has been shown after %s or it cannot be %s after %s retries",
+                        timeout.toString(),
                         (action == AlertAction.ACCEPT) ? "accepted" : "dismissed",
                         MAX_ALERT_HANDLING_RETRIES)
         );
@@ -336,14 +337,14 @@ public abstract class IOSPage extends BasePage {
     /**
      * Perform click on Simulator using Python script
      *
-     * @param el              optional element to click. Absolute screen size will be calculated if Optional.empty()
-     *                        is provided
-     * @param percentX        should be between 0 and 100
-     * @param percentY        should be between 0 and 100
-     * @param durationSeconds click duration in seconds
+     * @param el       optional element to click. Absolute screen size will be calculated if Optional.empty()
+     *                 is provided
+     * @param percentX should be between 0 and 100
+     * @param percentY should be between 0 and 100
+     * @param duration click duration
      * @throws Exception
      */
-    protected void clickAt(Optional<WebElement> el, int percentX, int percentY, double durationSeconds) throws Exception {
+    protected void clickAt(Optional<WebElement> el, int percentX, int percentY, Timedelta duration) throws Exception {
         if (!CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
             throw new IllegalStateException("This method works for iOS Simulator only");
         }
@@ -361,67 +362,52 @@ public abstract class IOSPage extends BasePage {
         }
         IOSSimulatorHelpers.clickAt(String.format("%.2f", px),
                 String.format("%.2f", py),
-                String.format("%.3f", durationSeconds));
+                String.format("%.3f", duration.asFloatSeconds()));
     }
 
-    private Point calculateTapCoordinates(Optional<WebElement> el, int percentX, int percentY) throws Exception {
+    private Point calculateTapCoordinates(Optional<FBElement> el, int percentX, int percentY) throws Exception {
         int tapX, tapY;
         if (el.isPresent()) {
-            final Point elLocation = el.get().getLocation();
-            final Dimension elSize = el.get().getSize();
-            tapX = elLocation.getX() + elSize.getWidth() * percentX / 100;
-            tapY = elLocation.getY() + elSize.getHeight() * percentY / 100;
-        } else {
-            final Dimension screenSize = getDriver().manage().window().getSize();
-            tapX = screenSize.getWidth() * percentX / 100;
-            tapY = screenSize.getHeight() * percentY / 100;
+            final Rectangle elRect = el.get().getRect();
+            tapX = elRect.x + elRect.width * percentX / 100;
+            tapY = elRect.y + elRect.height * percentY / 100;
+            return getDriver().fixCoordinates(new Point(tapX, tapY));
         }
+        final Dimension screenSize = getDriver().manage().window().getSize();
+        tapX = screenSize.getWidth() * percentX / 100;
+        tapY = screenSize.getHeight() * percentY / 100;
         return new Point(tapX, tapY);
     }
 
-    protected void doubleTapAt(WebElement el, int percentX, int percentY) throws Exception {
+    protected void doubleTapAt(FBElement el, int percentX, int percentY) throws Exception {
         this.doubleTapAt(Optional.of(el), percentX, percentY);
     }
 
-    protected void doubleTapAt(Optional<WebElement> el, int percentX, int percentY) throws Exception {
-        if (getDriver().getOrientation() == ScreenOrientation.LANDSCAPE) {
-            // FIXME: Remove the workaround after landscape orientation is respected by XCTest
-            if (el.isPresent() && el.get() instanceof FBElement) {
-                ((FBElement)(el.get())).doubleTap();
-                return;
-            }
-        }
+    protected void doubleTapAt(Optional<FBElement> el, int percentX, int percentY) throws Exception {
         final Point tapPoint = calculateTapCoordinates(el, percentX, percentY);
         getDriver().doubleTapScreenAt(tapPoint.getX(), tapPoint.getY());
     }
 
-    protected void longTapAt(WebElement el, int percentX, int percentY) throws Exception {
-        this.longTapAt(Optional.of(el), percentX, percentY, DriverUtils.LONG_TAP_DURATION / 1000.0);
+    protected void longTapAt(FBElement el, int percentX, int percentY) throws Exception {
+        this.longTapAt(Optional.of(el), percentX, percentY, Timedelta.fromMilliSeconds(DriverUtils.LONG_TAP_DURATION));
     }
 
-    protected void longTapAt(Optional<WebElement> el, int percentX, int percentY, double durationSeconds)
+    protected void longTapAt(Optional<FBElement> el, int percentX, int percentY, Timedelta duration)
             throws Exception {
-        if (getDriver().getOrientation() == ScreenOrientation.LANDSCAPE) {
-            // FIXME: Remove the workaround after landscape orientation is respected by XCTest
-            if (el.isPresent() && el.get() instanceof FBElement) {
-                ((FBElement)(el.get())).longTap();
-                return;
-            }
-        }
         final Point tapPoint = calculateTapCoordinates(el, percentX, percentY);
-        getDriver().longTapScreenAt(tapPoint.getX(), tapPoint.getY(), durationSeconds);
+        getDriver().longTapScreenAt(tapPoint.getX(), tapPoint.getY(), duration);
     }
 
     protected void longClickAt(WebElement el, int percentX, int percentY) throws Exception {
-        this.clickAt(Optional.of(el), percentX, percentY, DriverUtils.LONG_TAP_DURATION / 1000.0);
+        this.clickAt(Optional.of(el), percentX, percentY, Timedelta.fromMilliSeconds(DriverUtils.LONG_TAP_DURATION));
     }
 
     protected void longClickAt(int percentX, int percentY) throws Exception {
-        this.clickAt(Optional.empty(), percentX, percentY, DriverUtils.LONG_TAP_DURATION / 1000.0);
+        this.clickAt(Optional.empty(), percentX, percentY, Timedelta.fromMilliSeconds(DriverUtils.LONG_TAP_DURATION));
     }
 
     protected void clickAt(int percentX, int percentY) throws Exception {
-        this.clickAt(Optional.empty(), percentX, percentY, DriverUtils.SINGLE_TAP_DURATION / 1000.0);
+        this.clickAt(Optional.empty(), percentX, percentY, Timedelta.fromMilliSeconds(DriverUtils.SINGLE_TAP_DURATION));
     }
 
     public void rotateScreen(ScreenOrientation orientation) throws Exception {
@@ -446,17 +432,11 @@ public abstract class IOSPage extends BasePage {
         this.getDriver().rotate(ScreenOrientation.PORTRAIT);
     }
 
-    public void lockScreen(int timeSeconds) throws Exception {
+    public void lockScreen(Timedelta duration) throws Exception {
         assert getDriver() != null : "WebDriver is not ready";
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            final long millisecondsStarted = System.currentTimeMillis();
             IOSSimulatorHelpers.lock();
-            final long lockDuration = (System.currentTimeMillis() - millisecondsStarted) / 1000;
-            if (timeSeconds > lockDuration + 1) {
-                Thread.sleep((timeSeconds - lockDuration) * 1000);
-            } else {
-                Thread.sleep(2000);
-            }
+            Thread.sleep(2000);
             // this is to show the unlock label if not visible yet
             IOSSimulatorHelpers.goHome();
             if (getDriver().getOSVersion().compareTo(new DefaultArtifactVersion("10.0")) >= 0) {
@@ -466,7 +446,7 @@ public abstract class IOSPage extends BasePage {
             }
             Thread.sleep(2000);
         } else {
-            this.getDriver().lockDevice(timeSeconds);
+            this.getDriver().lockDevice(duration.asSeconds());
         }
     }
 
@@ -492,7 +472,7 @@ public abstract class IOSPage extends BasePage {
         do {
             el.click();
             counter++;
-            if (isLocatorInvisible(locator, 4)) {
+            if (isLocatorInvisible(locator, Timedelta.fromSeconds(4))) {
                 return;
             }
         } while (counter < retryCount);
@@ -527,22 +507,22 @@ public abstract class IOSPage extends BasePage {
     protected WebElement getElement(By locator) throws Exception {
         return this.getElement(locator,
                 String.format("The element '%s' is not visible", locator),
-                DriverUtils.getDefaultLookupTimeoutSeconds()
+                Timedelta.fromSeconds(DriverUtils.getDefaultLookupTimeoutSeconds())
         );
     }
 
     @Override
     protected WebElement getElement(By locator, String message) throws Exception {
-        return this.getElement(locator, message, DriverUtils.getDefaultLookupTimeoutSeconds());
+        return this.getElement(locator, message, Timedelta.fromSeconds(DriverUtils.getDefaultLookupTimeoutSeconds()));
     }
 
     private static final double MAX_EXISTENCE_DELAY_MS = 3000.0;
     private static final long MIN_EXISTENCE_ITERATIONS_COUNT = 2;
 
     @Override
-    protected WebElement getElement(By locator, String message, int timeoutSeconds) throws Exception {
+    protected WebElement getElement(By locator, String message, Timedelta timeout) throws Exception {
         WebDriverException savedException;
-        final long msStarted = System.currentTimeMillis();
+        final Timedelta started = Timedelta.now();
         int iterationNumber = 1;
         do {
             try {
@@ -550,25 +530,25 @@ public abstract class IOSPage extends BasePage {
                 if (el.isDisplayed()) {
                     return el;
                 }
-                throw new WebDriverException(String.format("The element '%s' is still not visible after %s ms",
-                        locator, System.currentTimeMillis() - msStarted));
+                throw new WebDriverException(String.format("The element '%s' is still not visible after %s",
+                        locator, Timedelta.now().diff(started).toString()));
             } catch (WebDriverException e) {
                 log.debug(e.getMessage());
                 savedException = e;
             }
             Thread.sleep((long) (MAX_EXISTENCE_DELAY_MS / iterationNumber));
             iterationNumber++;
-        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000 ||
+        } while (Timedelta.now().isDiffLessOrEqual(started, timeout) ||
                 iterationNumber <= MIN_EXISTENCE_ITERATIONS_COUNT);
         throw new IllegalStateException(message, savedException);
     }
 
     protected boolean isLocatorExist(By locator) throws Exception {
-        return this.isLocatorExist(locator, DriverUtils.getDefaultLookupTimeoutSeconds());
+        return this.isLocatorExist(locator, Timedelta.fromSeconds(DriverUtils.getDefaultLookupTimeoutSeconds()));
     }
 
-    protected boolean isLocatorExist(By locator, int timeoutSeconds) throws Exception {
-        final long msStarted = System.currentTimeMillis();
+    protected boolean isLocatorExist(By locator, Timedelta timeout) throws Exception {
+        final Timedelta started = Timedelta.now();
         int iterationNumber = 1;
         do {
             try {
@@ -576,24 +556,24 @@ public abstract class IOSPage extends BasePage {
                 if (el != null) {
                     return true;
                 }
-                throw new WebDriverException(String.format("The element '%s' is still not present after %s ms",
-                        locator, System.currentTimeMillis() - msStarted));
+                throw new WebDriverException(String.format("The element '%s' is still not present after %s",
+                        locator, Timedelta.now().diff(started).toString()));
             } catch (WebDriverException e) {
                 log.debug(e.getMessage());
             }
             Thread.sleep((long) (MAX_EXISTENCE_DELAY_MS / iterationNumber));
             iterationNumber++;
-        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000 ||
+        } while (Timedelta.now().isDiffLessOrEqual(started, timeout) ||
                 iterationNumber <= MIN_EXISTENCE_ITERATIONS_COUNT);
         return false;
     }
 
     protected boolean isLocatorDisplayed(By locator) throws Exception {
-        return this.isLocatorDisplayed(locator, DriverUtils.getDefaultLookupTimeoutSeconds());
+        return this.isLocatorDisplayed(locator, Timedelta.fromSeconds(DriverUtils.getDefaultLookupTimeoutSeconds()));
     }
 
-    protected boolean isLocatorDisplayed(By locator, int timeoutSeconds) throws Exception {
-        final long msStarted = System.currentTimeMillis();
+    protected boolean isLocatorDisplayed(By locator, Timedelta timeout) throws Exception {
+        final Timedelta started = Timedelta.now();
         int iterationNumber = 1;
         do {
             try {
@@ -601,24 +581,24 @@ public abstract class IOSPage extends BasePage {
                 if (el.isDisplayed()) {
                     return true;
                 }
-                throw new WebDriverException(String.format("The element '%s' is still not visible after %s ms",
-                        locator, System.currentTimeMillis() - msStarted));
+                throw new WebDriverException(String.format("The element '%s' is still not visible after %s",
+                        locator, Timedelta.now().diff(started).toString()));
             } catch (WebDriverException e) {
                 log.debug(e.getMessage());
             }
             Thread.sleep((long) (MAX_EXISTENCE_DELAY_MS / iterationNumber));
             iterationNumber++;
-        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000 ||
+        } while (Timedelta.now().isDiffLessOrEqual(started, timeout) ||
                 iterationNumber <= MIN_EXISTENCE_ITERATIONS_COUNT);
         return false;
     }
 
     protected boolean isLocatorInvisible(By locator) throws Exception {
-        return this.isLocatorInvisible(locator, DriverUtils.getDefaultLookupTimeoutSeconds());
+        return this.isLocatorInvisible(locator, Timedelta.fromSeconds(DriverUtils.getDefaultLookupTimeoutSeconds()));
     }
 
-    protected boolean isLocatorInvisible(By locator, int timeoutSeconds) throws Exception {
-        final long msStarted = System.currentTimeMillis();
+    protected boolean isLocatorInvisible(By locator, Timedelta timeout) throws Exception {
+        final Timedelta started = Timedelta.now();
         int iterationNumber = 1;
         do {
             try {
@@ -626,45 +606,69 @@ public abstract class IOSPage extends BasePage {
                 if (!el.isDisplayed()) {
                     return true;
                 }
-                log.debug(String.format("The element '%s' is still visible after %s ms",
-                        locator, System.currentTimeMillis() - msStarted));
+                log.debug(String.format("The element '%s' is still visible after %s",
+                        locator, Timedelta.now().diff(started).toString()));
             } catch (WebDriverException e) {
                 return true;
             }
             Thread.sleep((long) (MAX_EXISTENCE_DELAY_MS / iterationNumber));
             iterationNumber++;
-        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000 ||
+        } while (Timedelta.now().isDiffLessOrEqual(started, timeout) ||
                 iterationNumber <= MIN_EXISTENCE_ITERATIONS_COUNT);
         return false;
     }
 
     protected boolean isElementInvisible(WebElement element) throws Exception {
-        return this.isElementInvisible(element, DriverUtils.getDefaultLookupTimeoutSeconds());
+        return this.isElementInvisible(element, Timedelta.fromSeconds(DriverUtils.getDefaultLookupTimeoutSeconds()));
     }
 
-    protected boolean isElementInvisible(WebElement el, int timeoutSeconds) throws Exception {
-        final long msStarted = System.currentTimeMillis();
+    protected boolean isElementInvisible(WebElement el, Timedelta timeout) throws Exception {
+        final Timedelta started = Timedelta.now();
         int iterationNumber = 1;
         do {
             try {
                 if (!el.isDisplayed()) {
                     return true;
                 }
-                log.debug(String.format("The element '%s' is still visible after %s ms",
-                        el, System.currentTimeMillis() - msStarted));
+                log.debug(String.format("The element '%s' is still visible after %s",
+                        el, Timedelta.now().diff(started).toString()));
             } catch (WebDriverException e) {
                 return true;
             }
             Thread.sleep((long) (MAX_EXISTENCE_DELAY_MS / iterationNumber));
             iterationNumber++;
-        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000 ||
+        } while (Timedelta.now().isDiffLessOrEqual(started, timeout) ||
+                iterationNumber <= MIN_EXISTENCE_ITERATIONS_COUNT);
+        return false;
+    }
+
+    protected boolean isElementVisible(WebElement element) throws Exception {
+        return this.isElementVisible(element, Timedelta.fromSeconds(DriverUtils.getDefaultLookupTimeoutSeconds()));
+    }
+
+    protected boolean isElementVisible(WebElement el, Timedelta timeout) throws Exception {
+        final Timedelta started = Timedelta.now();
+        int iterationNumber = 1;
+        do {
+            try {
+                if (el.isDisplayed()) {
+                    return true;
+                }
+                log.debug(String.format("The element '%s' is still invisible after %s",
+                        el, Timedelta.now().diff(started).toString()));
+            } catch (WebDriverException e) {
+                return false;
+            }
+            Thread.sleep((long) (MAX_EXISTENCE_DELAY_MS / iterationNumber));
+            iterationNumber++;
+        } while (Timedelta.now().isDiffLessOrEqual(started, timeout) ||
                 iterationNumber <= MIN_EXISTENCE_ITERATIONS_COUNT);
         return false;
     }
 
     @Override
-    protected Optional<WebElement> getElementIfDisplayed(By locator, int timeoutSeconds) throws Exception {
-        final long msStarted = System.currentTimeMillis();
+    protected Optional<WebElement> getElementIfDisplayed(By locator, Timedelta timeout) throws Exception {
+        final Timedelta started = Timedelta.now();
         int iterationNumber = 1;
         do {
             try {
@@ -672,25 +676,25 @@ public abstract class IOSPage extends BasePage {
                 if (el.isDisplayed()) {
                     return Optional.of(el);
                 }
-                throw new WebDriverException(String.format("The element '%s' is still not visible after %s ms",
-                        locator, System.currentTimeMillis() - msStarted));
+                throw new WebDriverException(String.format("The element '%s' is still not visible after %s",
+                        locator, Timedelta.now().diff(started).toString()));
             } catch (WebDriverException e) {
                 log.debug(e.getMessage());
             }
             Thread.sleep((long) (MAX_EXISTENCE_DELAY_MS / iterationNumber));
             iterationNumber++;
-        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000);
+        } while (Timedelta.now().isDiffLessOrEqual(started, timeout));
         return Optional.empty();
     }
 
     @Override
     protected Optional<WebElement> getElementIfExists(By locator) throws Exception {
-        return this.getElementIfExists(locator, DriverUtils.getDefaultLookupTimeoutSeconds());
+        return this.getElementIfExists(locator, Timedelta.fromSeconds(DriverUtils.getDefaultLookupTimeoutSeconds()));
     }
 
     @Override
-    protected Optional<WebElement> getElementIfExists(By locator, int timeoutSeconds) throws Exception {
-        final long msStarted = System.currentTimeMillis();
+    protected Optional<WebElement> getElementIfExists(By locator, Timedelta timeout) throws Exception {
+        final Timedelta started = Timedelta.now();
         int iterationNumber = 1;
         do {
             try {
@@ -698,26 +702,26 @@ public abstract class IOSPage extends BasePage {
                 if (el != null) {
                     return Optional.of(el);
                 }
-                throw new WebDriverException(String.format("The element '%s' is still not present after %s ms",
-                        locator, System.currentTimeMillis() - msStarted));
+                throw new WebDriverException(String.format("The element '%s' is still not present after %s",
+                        locator, Timedelta.now().diff(started).toString()));
             } catch (WebDriverException e) {
                 log.debug(e.getMessage());
             }
             Thread.sleep((long) (MAX_EXISTENCE_DELAY_MS / iterationNumber));
             iterationNumber++;
-        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000);
+        } while (Timedelta.now().isDiffLessOrEqual(started, timeout));
         return Optional.empty();
     }
 
     @Override
     protected List<WebElement> selectVisibleElements(By locator) throws Exception {
-        return this.selectVisibleElements(locator, DriverUtils.getDefaultLookupTimeoutSeconds());
+        return this.selectVisibleElements(locator, Timedelta.fromSeconds(DriverUtils.getDefaultLookupTimeoutSeconds()));
     }
 
     @Override
-    protected List<WebElement> selectVisibleElements(By locator, int timeoutSeconds) throws Exception {
+    protected List<WebElement> selectVisibleElements(By locator, Timedelta timeout) throws Exception {
         final List<WebElement> result = new ArrayList<>();
-        final long msStarted = System.currentTimeMillis();
+        final Timedelta started = Timedelta.now();
         int iterationNumber = 1;
         do {
             result.addAll(
@@ -729,7 +733,7 @@ public abstract class IOSPage extends BasePage {
             }
             Thread.sleep((long) (MAX_EXISTENCE_DELAY_MS / iterationNumber));
             iterationNumber++;
-        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000);
+        } while (Timedelta.now().isDiffLessOrEqual(started, timeout));
         return result;
     }
 
@@ -790,11 +794,11 @@ public abstract class IOSPage extends BasePage {
     }
 
     public Optional<String> readAlertText() throws Exception {
-        return readAlertText(DriverUtils.getDefaultLookupTimeoutSeconds());
+        return readAlertText(Timedelta.fromSeconds(DriverUtils.getDefaultLookupTimeoutSeconds()));
     }
 
-    public Optional<String> readAlertText(int timeoutSeconds) throws Exception {
-        final long msStart = System.currentTimeMillis();
+    public Optional<String> readAlertText(Timedelta timeout) throws Exception {
+        final Timedelta start = Timedelta.now();
         do {
             try {
                 final String text = getDriver().switchTo().alert().getText();
@@ -804,7 +808,7 @@ public abstract class IOSPage extends BasePage {
             } catch (WebDriverException e) {
                 Thread.sleep(500);
             }
-        } while (System.currentTimeMillis() - msStart <= timeoutSeconds * 1000);
+        } while (Timedelta.now().isDiffLessOrEqual(start, timeout));
         return Optional.empty();
     }
 
@@ -813,12 +817,6 @@ public abstract class IOSPage extends BasePage {
         getElement(locator).click();
     }
 
-    /**
-     * fixes taking tablet simulator screenshots via simshot
-     *
-     * @return Optinal screenshot image
-     * @throws Exception
-     */
     @Override
     public Optional<BufferedImage> takeScreenshot() throws Exception {
         Optional<BufferedImage> screenshotImage = super.takeScreenshot();
@@ -848,5 +846,18 @@ public abstract class IOSPage extends BasePage {
         } else {
             throw new IllegalArgumentException(String.format("There is no '%s' key on Emoji keyboard", keyName));
         }
+    }
+
+    @Override
+    public Optional<BufferedImage> getElementScreenshot(WebElement element) throws Exception {
+        Rectangle dstRect;
+        if (element instanceof FBElement) {
+            dstRect = ((FBElement) element).getRect();
+        } else {
+            final Point elementLocation = element.getLocation();
+            final Dimension elementSize = element.getSize();
+            dstRect = new Rectangle(elementLocation.x, elementLocation.y, elementSize.width, elementSize.height);
+        }
+        return this.getElementScreenshot(dstRect);
     }
 }

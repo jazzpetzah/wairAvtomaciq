@@ -158,8 +158,8 @@ Feature: Like
     When I type the message "<Message>" and send it by cursor Send button
     And I navigate back from conversation
     And I swipe right on a <Contact>
-    And I tap DELETE button on single Conversation option menu
-    And I tap DELETE on the confirm alert
+    And I tap DELETE button on Single conversation options menu
+    And I tap DELETE button on Confirm overlay page
     And User <Contact> likes the recent message from user Myself via device <Device>
     Then I see Conversations list with no conversations
 

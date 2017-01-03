@@ -10,22 +10,22 @@ Feature: Conversation List
     Given I see the conversations list with conversations
     And I tap the conversation <Contact>
     And I tap conversation name from top toolbar
-    And I see the Single user popover
-    And I tap Options button on Single user popover
-    When I select <ItemSilence> menu item on Single user popover
-    And I tap Options button on Single user popover
-    Then I see <ItemNotify> menu item on Single user popover
-    And I tap outside of Single user popover
-    And I do not see the Single user popover
+    And I see Single connected user details popover
+    And I tap open menu button on Single connected user details popover
+    When I tap <ItemSilence> button on Single conversation options menu
+    And I tap open menu button on Single connected user details popover
+    Then I see <ItemNotify> button on Single conversation options menu
+    And I tap outside of Single connected user details popover
+    And I do not see Single connected user details popover
     Then I see the conversation <Contact> in my conversations list is silenced
     And I tap conversation name from top toolbar
-    Then I see the Single user popover
-    When I tap Options button on Single user popover
-    And I select <ItemNotify> menu item on Single user popover
-    And I tap Options button on Single user popover
-    Then I see <ItemSilence> menu item on Single user popover
-    When I tap outside of Single user popover
-    Then I do not see the Single user popover
+    Then I see Single connected user details popover
+    When I tap open menu button on Single connected user details popover
+    And I tap <ItemNotify> button on Single conversation options menu
+    And I tap open menu button on Single connected user details popover
+    Then I see <ItemSilence> button on Single conversation options menu
+    When I tap outside of Single connected user details popover
+    Then I do not see Single connected user details popover
     Then I see the conversation <Contact> in my conversations list is not silenced
 
     Examples:
@@ -42,23 +42,23 @@ Feature: Conversation List
     Given I see the conversations list with conversations
     And I tap the conversation <Contact>
     And I tap conversation name from top toolbar
-    And I see the Single user popover
-    And I tap Options button on Single user popover
-    When I select <ItemSilence> menu item on Single user popover
-    And I tap Options button on Single user popover
-    Then I see <ItemNotify> menu item on Single user popover
-    And I tap outside of Single user popover
-    And I do not see the Single user popover
+    And I see Single connected user details popover
+    And I tap open menu button on Single connected user details popover
+    When I tap <ItemSilence> button on Single conversation options menu
+    And I tap open menu button on Single connected user details popover
+    Then I see <ItemNotify> button on Single conversation options menu
+    And I tap outside of Single connected user details popover
+    And I do not see Single connected user details popover
     When I swipe right to show the conversations list
     When I tap the conversation <Contact>
     And I tap conversation name from top toolbar
-    Then I see the Single user popover
-    When I tap Options button on Single user popover
-    And I select <ItemNotify> menu item on Single user popover
-    And I tap Options button on Single user popover
-    Then I see <ItemSilence> menu item on Single user popover
-    When I tap outside of Single user popover
-    Then I do not see the Single user popover
+    Then I see Single connected user details popover
+    When I tap open menu button on Single connected user details popover
+    And I tap <ItemNotify> button on Single conversation options menu
+    And I tap open menu button on Single connected user details popover
+    Then I see <ItemSilence> button on Single conversation options menu
+    When I tap outside of Single connected user details popover
+    Then I do not see Single connected user details popover
     When I swipe right to show the conversations list
     Then I see the conversation <Contact> in my conversations list is not silenced
 
@@ -74,15 +74,15 @@ Feature: Conversation List
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    When I swipe right the conversations list item <Contact1>
-    Then I see Conversation Actions overlay
-    When I select <ItemSilence> menu item on Conversation Actions overlay
-    Then I do not see Conversation Actions overlay
+    When I open options menu of <Contact1> on conversation list page
+    Then I see Single conversation options menu
+    When I tap <ItemSilence> button on Single conversation options menu
+    Then I do not see Single conversation options menu
     And I see the conversation <Contact1> in my conversations list is silenced
-    When I swipe right the conversations list item <Contact1>
-    Then I see Conversation Actions overlay
-    When I select <ItemNotify> menu item on Conversation Actions overlay
-    Then I do not see Conversation Actions overlay
+    When I open options menu of <Contact1> on conversation list page
+    Then I see Single conversation options menu
+    When I tap <ItemNotify> button on Single conversation options menu
+    Then I do not see Single conversation options menu
     And I see the conversation <Contact1> in my conversations list is not silenced
 
     Examples:
@@ -97,15 +97,15 @@ Feature: Conversation List
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    When I swipe right the conversations list item <Contact1>
-    Then I see Conversation Actions overlay
-    When I select <ItemSilence> menu item on Conversation Actions overlay
-    Then I do not see Conversation Actions overlay
+    When I open options menu of <Contact1> on conversation list page
+    Then I see Single conversation options menu
+    When I tap <ItemSilence> button on Single conversation options menu
+    Then I do not see Single conversation options menu
     And I see the conversation <Contact1> in my conversations list is silenced
-    When I swipe right the conversations list item <Contact1>
-    Then I see Conversation Actions overlay
-    When I select <ItemNotify> menu item on Conversation Actions overlay
-    Then I do not see Conversation Actions overlay
+    When I open options menu of <Contact1> on conversation list page
+    Then I see Single conversation options menu
+    When I tap <ItemNotify> button on Single conversation options menu
+    Then I do not see Single conversation options menu
     And I see the conversation <Contact1> in my conversations list is not silenced
 
     Examples:
@@ -113,7 +113,7 @@ Feature: Conversation List
       | user1Name | user2Name | user3Name | MUTE        | UNMUTE     |
 
   @C771 @regression @rc
-  Scenario Outline: Verify play/pause controls are visible in the list if there is active media item in other conversation (portrait)
+  Scenario Outline: (AN-4030) Verify play/pause controls are visible in the list if there is active media item in other conversation (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I rotate UI to portrait
@@ -162,11 +162,11 @@ Feature: Conversation List
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And User <Contact1> sends encrypted message <Msg1> to user Myself
-    When I swipe right the conversations list item <Contact1>
-    Then I see Conversation Actions overlay
-    When I select <DeleteItem> menu item on Conversation Actions overlay
-    And I confirm conversation deletion on Conversation Actions overlay
-    Then I do not see Conversation Actions overlay
+    When I open options menu of <Contact1> on conversation list page
+    Then I see Single conversation options menu
+    When I tap <DeleteItem> button on Single conversation options menu
+    And I tap DELETE button on Confirm overlay page
+    Then I do not see Single conversation options menu
     And I do not see conversation <Contact1> in my conversations list
     And I wait until <Contact1> exists in backend search results
     When I open Search UI
@@ -192,11 +192,11 @@ Feature: Conversation List
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And User <Contact1> sends encrypted message <Msg1> to group conversation <GroupChatName>
-    When I swipe right the conversations list item <GroupChatName>
-    Then I see Conversation Actions overlay
-    When I select <DeleteItem> menu item on Conversation Actions overlay
-    And I confirm conversation deletion on Conversation Actions overlay
-    Then I do not see Conversation Actions overlay
+    When I open options menu of <GroupChatName> on conversation list page
+    Then I see Single conversation options menu
+    When I tap <DeleteItem> button on Single conversation options menu
+    And I tap DELETE button on Confirm overlay page
+    Then I do not see Single conversation options menu
     And I do not see conversation <GroupChatName> in my conversations list
     When I open Search UI
     And I enter "<GroupChatName>" into Search input on Search page
@@ -221,12 +221,12 @@ Feature: Conversation List
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And User <Contact1> sends encrypted message <Msg1> to group conversation <GroupChatName>
-    When I swipe right the conversations list item <GroupChatName>
-    Then I see Conversation Actions overlay
-    When I select <DeleteItem> menu item on Conversation Actions overlay
-    And I confirm conversation deletion on Conversation Actions overlay
+    When I open options menu of <GroupChatName> on conversation list page
+    Then I see Single conversation options menu
+    When I tap <DeleteItem> button on Single conversation options menu
+    And I tap DELETE button on Confirm overlay page
     And I swipe right to show the conversations list
-    Then I do not see Conversation Actions overlay
+    Then I do not see Single conversation options menu
     And I do not see conversation <GroupChatName> in my conversations list
     When I open Search UI
     And I enter "<GroupChatName>" into Search input on Search page
@@ -250,12 +250,12 @@ Feature: Conversation List
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     And I see the conversations list with conversations
-    When I swipe right the conversations list item <GroupChatName>
-    Then I see Conversation Actions overlay
-    When I select <DeleteItem> menu item on Conversation Actions overlay
-    And I tap Leave Conversation check box on Conversation Actions overlay
-    And I confirm conversation deletion on Conversation Actions overlay
-    Then I do not see Conversation Actions overlay
+    When I open options menu of <GroupChatName> on conversation list page
+    Then I see Single conversation options menu
+    When I tap <DeleteItem> button on Single conversation options menu
+    And I tap on leave checkbox on Confirm overlay page
+    And I tap DELETE button on Confirm overlay page
+    Then I do not see Single conversation options menu
     And I do not see conversation <GroupChatName> in my conversations list
     When I open Search UI
     And I enter "<GroupChatName>" into Search input on Search page
@@ -279,13 +279,13 @@ Feature: Conversation List
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     And I see the conversations list with conversations
-    When I swipe right the conversations list item <GroupChatName>
-    Then I see Conversation Actions overlay
-    When I select <DeleteItem> menu item on Conversation Actions overlay
-    And I tap Leave Conversation check box on Conversation Actions overlay
-    And I confirm conversation deletion on Conversation Actions overlay
+    When I open options menu of <GroupChatName> on conversation list page
+    Then I see Single conversation options menu
+    When I tap <DeleteItem> button on Single conversation options menu
+    And I tap on leave checkbox on Confirm overlay page
+    And I tap DELETE button on Confirm overlay page
     And I swipe right to show the conversations list
-    Then I do not see Conversation Actions overlay
+    Then I do not see Single conversation options menu
     And I do not see conversation <GroupChatName> in my conversations list
     When I open Search UI
     And I enter "<GroupChatName>" into Search input on Search page
@@ -310,12 +310,12 @@ Feature: Conversation List
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     And I see the conversations list with conversations
-    When I swipe right the conversations list item <GroupChatName>
-    Then I see Conversation Actions overlay
-    When I select <DeleteItem> menu item on Conversation Actions overlay
-    And I confirm conversation deletion on Conversation Actions overlay
+    When I open options menu of <GroupChatName> on conversation list page
+    Then I see Single conversation options menu
+    When I tap <DeleteItem> button on Single conversation options menu
+    And I tap DELETE button on Confirm overlay page
     And I swipe right to show the conversations list
-    Then I do not see Conversation Actions overlay
+    Then I do not see Single conversation options menu
     And I do not see conversation <GroupChatName> in my conversations list
     When I open Search UI
     And I enter "<GroupChatName>" into Search input on Search page
@@ -323,17 +323,17 @@ Feature: Conversation List
     And I close Search
     And User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
     Then I see conversation <GroupChatName> in my conversations list
-    When I swipe right the conversations list item <GroupChatName>
-    Then I see Conversation Actions overlay
-    When I select <DeleteItem> menu item on Conversation Actions overlay
-    And I confirm conversation deletion on Conversation Actions overlay
+    When I open options menu of <GroupChatName> on conversation list page
+    Then I see Single conversation options menu
+    When I tap <DeleteItem> button on Single conversation options menu
+    And I tap DELETE button on Confirm overlay page
     Then I do not see conversation <GroupChatName> in my conversations list
     When User <Contact1> securely pings conversation <GroupChatName>
     Then I see conversation <GroupChatName> in my conversations list
-    When I swipe right the conversations list item <GroupChatName>
-    Then I see Conversation Actions overlay
-    When I select <DeleteItem> menu item on Conversation Actions overlay
-    And I confirm conversation deletion on Conversation Actions overlay
+    When I open options menu of <GroupChatName> on conversation list page
+    Then I see Single conversation options menu
+    When I tap <DeleteItem> button on Single conversation options menu
+    And I tap DELETE button on Confirm overlay page
     Then I do not see conversation <GroupChatName> in my conversations list
     When <Contact1> calls <GroupChatName>
     Then I see conversation <GroupChatName> in my conversations list
@@ -352,11 +352,11 @@ Feature: Conversation List
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     And I see the conversations list with conversations
-    When I swipe right the conversations list item <GroupChatName>
-    Then I see Conversation Actions overlay
-    When I select <DeleteItem> menu item on Conversation Actions overlay
-    And I confirm conversation deletion on Conversation Actions overlay
-    Then I do not see Conversation Actions overlay
+    When I open options menu of <GroupChatName> on conversation list page
+    Then I see Single conversation options menu
+    When I tap <DeleteItem> button on Single conversation options menu
+    And I tap DELETE button on Confirm overlay page
+    Then I do not see Single conversation options menu
     And I do not see conversation <GroupChatName> in my conversations list
     When I open Search UI
     And I enter "<GroupChatName>" into Search input on Search page
@@ -364,17 +364,17 @@ Feature: Conversation List
     And I close Search
     And User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
     Then I see conversation <GroupChatName> in my conversations list
-    When I swipe right the conversations list item <GroupChatName>
-    Then I see Conversation Actions overlay
-    When I select <DeleteItem> menu item on Conversation Actions overlay
-    And I confirm conversation deletion on Conversation Actions overlay
+    When I open options menu of <GroupChatName> on conversation list page
+    Then I see Single conversation options menu
+    When I tap <DeleteItem> button on Single conversation options menu
+    And I tap DELETE button on Confirm overlay page
     Then I do not see conversation <GroupChatName> in my conversations list
     When User <Contact1> securely pings conversation <GroupChatName>
     Then I see conversation <GroupChatName> in my conversations list
-    When I swipe right the conversations list item <GroupChatName>
-    Then I see Conversation Actions overlay
-    When I select <DeleteItem> menu item on Conversation Actions overlay
-    And I confirm conversation deletion on Conversation Actions overlay
+    When I open options menu of <GroupChatName> on conversation list page
+    Then I see Single conversation options menu
+    When I tap <DeleteItem> button on Single conversation options menu
+    And I tap DELETE button on Confirm overlay page
     Then I do not see conversation <GroupChatName> in my conversations list
     When <Contact1> calls <GroupChatName>
     Then I see conversation <GroupChatName> in my conversations list
@@ -391,9 +391,9 @@ Feature: Conversation List
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    When I swipe right the conversations list item <Contact1>
-    Then I see Conversation Actions overlay
-    When I select <SilenceItem> menu item on Conversation Actions overlay
+    When I open options menu of <Contact1> on conversation list page
+    Then I see Single conversation options menu
+    When I tap <SilenceItem> button on Single conversation options menu
     Then I see the conversation <Contact1> in my conversations list is silenced
 
     Examples:
@@ -408,9 +408,9 @@ Feature: Conversation List
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    When I swipe right the conversations list item <Contact1>
-    Then I see Conversation Actions overlay
-    When I select <SilenceItem> menu item on Conversation Actions overlay
+    When I open options menu of <Contact1> on conversation list page
+    Then I see Single conversation options menu
+    When I tap <SilenceItem> button on Single conversation options menu
     Then I see the conversation <Contact1> in my conversations list is silenced
 
     Examples:
@@ -427,9 +427,9 @@ Feature: Conversation List
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact1> in my conversations list is silenced
-    When I swipe right the conversations list item <Contact1>
-    Then I see Conversation Actions overlay
-    When I select <NotifyItem> menu item on Conversation Actions overlay
+    When I open options menu of <Contact1> on conversation list page
+    Then I see Single conversation options menu
+    When I tap <NotifyItem> button on Single conversation options menu
     Then I see the conversation <Contact1> in my conversations list is not silenced
 
     Examples:
@@ -446,9 +446,9 @@ Feature: Conversation List
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact1> in my conversations list is silenced
-    When I swipe right the conversations list item <Contact1>
-    Then I see Conversation Actions overlay
-    When I select <NotifyItem> menu item on Conversation Actions overlay
+    When I open options menu of <Contact1> on conversation list page
+    Then I see Single conversation options menu
+    When I tap <NotifyItem> button on Single conversation options menu
     Then I see the conversation <Contact1> in my conversations list is not silenced
 
     Examples:
@@ -464,9 +464,9 @@ Feature: Conversation List
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    When I swipe right the conversations list item <GroupChatName>
-    Then I see Conversation Actions overlay
-    When I select <SilenceItem> menu item on Conversation Actions overlay
+    When I open options menu of <GroupChatName> on conversation list page
+    Then I see Single conversation options menu
+    When I tap <SilenceItem> button on Single conversation options menu
     Then I see the conversation <GroupChatName> in my conversations list is silenced
 
     Examples:
@@ -482,9 +482,9 @@ Feature: Conversation List
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    When I swipe right the conversations list item <GroupChatName>
-    Then I see Conversation Actions overlay
-    When I select <SilenceItem> menu item on Conversation Actions overlay
+    When I open options menu of <GroupChatName> on conversation list page
+    Then I see Single conversation options menu
+    When I tap <SilenceItem> button on Single conversation options menu
     Then I see the conversation <GroupChatName> in my conversations list is silenced
 
     Examples:
@@ -502,9 +502,9 @@ Feature: Conversation List
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <GroupChatName> in my conversations list is silenced
-    When I swipe right the conversations list item <GroupChatName>
-    Then I see Conversation Actions overlay
-    When I select <NotifyItem> menu item on Conversation Actions overlay
+    When I open options menu of <GroupChatName> on conversation list page
+    Then I see Single conversation options menu
+    When I tap <NotifyItem> button on Single conversation options menu
     Then I see the conversation <GroupChatName> in my conversations list is not silenced
 
     Examples:
@@ -522,9 +522,9 @@ Feature: Conversation List
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <GroupChatName> in my conversations list is silenced
-    When I swipe right the conversations list item <GroupChatName>
-    Then I see Conversation Actions overlay
-    When I select <NotifyItem> menu item on Conversation Actions overlay
+    When I open options menu of <GroupChatName> on conversation list page
+    Then I see Single conversation options menu
+    When I tap <NotifyItem> button on Single conversation options menu
     Then I see the conversation <GroupChatName> in my conversations list is not silenced
 
     Examples:

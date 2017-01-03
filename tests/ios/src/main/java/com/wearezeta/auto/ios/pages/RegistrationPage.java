@@ -5,6 +5,7 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import io.appium.java_client.MobileBy;
 import org.apache.log4j.Logger;
@@ -82,7 +83,7 @@ public class RegistrationPage extends IOSPage {
     private void selectWirestan() throws Exception {
         final WebElement countryPickerBtn = getElement(nameCountryPickerButton);
         countryPickerBtn.click();
-        if (!isLocatorInvisible(nameCountryPickerButton, 5)) {
+        if (!isLocatorInvisible(nameCountryPickerButton, Timedelta.fromSeconds(5))) {
             countryPickerBtn.click();
         }
         final WebElement searchInput = getElement(nameSearchField);
@@ -113,14 +114,14 @@ public class RegistrationPage extends IOSPage {
         final WebElement codeInput = getElement(nameVerificationCodeInput, "Activation code input is not visible");
         final String code = BackendAPIWrappers.getActivationCodeByPhoneNumber(forNumber);
         codeInput.sendKeys(code);
-        getElement(nameConfirmButton, "Confirm button is not visible", 2).click();
+        getElement(nameConfirmButton, "Confirm button is not visible", Timedelta.fromSeconds(2)).click();
     }
 
     private static final Random rand = new Random();
 
     public void inputRandomConfirmationCode() throws Exception {
         getElement(nameVerificationCodeInput).sendKeys(Integer.toString(100000 + rand.nextInt(900000)));
-        getElement(nameConfirmButton, "Confirm button is not visible", 2).click();
+        getElement(nameConfirmButton, "Confirm button is not visible", Timedelta.fromSeconds(2)).click();
     }
 
     public void clickResendCodeButton() throws Exception {
@@ -207,18 +208,18 @@ public class RegistrationPage extends IOSPage {
 
     public void waitRegistrationToFinish() throws Exception {
         final By locator = By.xpath(xpathStrConfirmationByMessage.apply(getEmail()));
-        if (!isLocatorInvisible(locator, 40)) {
+        if (!isLocatorInvisible(locator, Timedelta.fromSeconds(40))) {
             throw new IllegalStateException("Verification page is still visible after the timeout");
         }
     }
 
-    private static final int SELF_PICTURE_LOAD_TIMEOUT_SECONDS = 30;
+    private static final Timedelta SELF_PICTURE_LOAD_TIMEOUT = Timedelta.fromSeconds(30);
 
     public void tapKeepThisOneButton() throws Exception {
         getElement(nameKeepThisOneButton).click();
-        if (!isLocatorInvisible(nameKeepThisOneButton, SELF_PICTURE_LOAD_TIMEOUT_SECONDS)) {
-            log.warn(String.format("The self picture has not been loaded within %s seconds timeout",
-                    SELF_PICTURE_LOAD_TIMEOUT_SECONDS));
+        if (!isLocatorInvisible(nameKeepThisOneButton, SELF_PICTURE_LOAD_TIMEOUT)) {
+            log.warn(String.format("The self picture has not been loaded within %s timeout",
+                    SELF_PICTURE_LOAD_TIMEOUT.toString()));
         }
     }
 
@@ -248,7 +249,7 @@ public class RegistrationPage extends IOSPage {
         this.tapAtTheCenterOfElement(phoneNumberField);
         Thread.sleep(2000);
         phoneNumberField.sendKeys(phoneNumber.withoutPrefix());
-        if (isLocatorDisplayed(nameConfirmButton, 3)) {
+        if (isLocatorDisplayed(nameConfirmButton, Timedelta.fromSeconds(3))) {
             throw new IllegalStateException("Confirm button is visible, but should be hidden");
         }
     }

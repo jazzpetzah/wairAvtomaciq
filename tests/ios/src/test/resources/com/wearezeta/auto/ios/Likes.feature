@@ -207,6 +207,8 @@ Feature: Likes
     Given User <Contact1> sends file <FileName> having MIME type <MIMEType> to group conversation <Group> using device <Contact1Device>
     Given I see conversations list
     Given I tap on contact name <Group>
+    # Wait for preview load
+    Given I wait for 3 seconds
     When I do not see Like icon in the conversation
     And I long tap on video message in conversation view
     And I tap on Like badge item

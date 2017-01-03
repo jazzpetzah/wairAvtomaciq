@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.ios.pages.ImageFullScreenPage;
 
 import cucumber.api.java.en.Then;
@@ -76,11 +77,13 @@ public class ImageFullScreenPageSteps {
         if (moreOrLess.equals("less")) {
             Assert.assertTrue(
                     String.format("Current picture preview state looks too similar to the previous one after %s seconds",
-                            timeoutSeconds), pictureState.isChanged(timeoutSeconds, Double.parseDouble(score)));
+                            timeoutSeconds), pictureState.isChanged(Timedelta.fromSeconds(timeoutSeconds),
+                            Double.parseDouble(score)));
         } else {
             Assert.assertTrue(
                     String.format("Current picture preview state looks different to the previous one after %s seconds",
-                            timeoutSeconds), pictureState.isNotChanged(timeoutSeconds, Double.parseDouble(score)));
+                            timeoutSeconds), pictureState.isNotChanged(Timedelta.fromSeconds(timeoutSeconds),
+                            Double.parseDouble(score)));
         }
     }
 

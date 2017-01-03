@@ -4,6 +4,7 @@ import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import com.wearezeta.auto.common.misc.Timedelta;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -38,7 +39,7 @@ public class BackendSelectPage extends AndroidPage {
                 DEFAULT_BACKEND_SELECTION_TIMEOUT_IN_SECONDS,
                 DEFAULT_BACKEND_SELECTION_INTERVAL_IN_MILLISECONDS,
                 () -> {
-                    Optional<WebElement> element = getElementIfDisplayed(locator, 1);
+                    Optional<WebElement> element = getElementIfDisplayed(locator, Timedelta.fromSeconds(1));
                     if(element.isPresent()) {
                         element.get().click();
                         return false;

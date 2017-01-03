@@ -3,6 +3,7 @@ package com.wearezeta.auto.common.driver.facebook_ios_driver;
 import com.google.common.base.Throwables;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.rest.CommonRESTHandlers;
 import com.wearezeta.auto.common.rest.RESTError;
 import org.apache.commons.lang3.ArrayUtils;
@@ -120,12 +121,12 @@ final class FBDriverRESTClient {
 
     private final ExecutorService pool = Executors.newFixedThreadPool(1);
 
-    private static final long WD_REQUEST_TIMEOUT_MS = ZetaIOSDriver.MAX_COMMAND_DURATION_MILLIS;
+    private static final Timedelta WD_REQUEST_TIMEOUT = ZetaIOSDriver.MAX_COMMAND_DURATION;
 
     private JSONObject waitForResponse(RequestSender r) throws RESTError {
         final Future<String> future = pool.submit(r::send);
         try {
-            return new JSONObject(future.get(WD_REQUEST_TIMEOUT_MS, TimeUnit.MILLISECONDS));
+            return new JSONObject(future.get(WD_REQUEST_TIMEOUT.asMilliSeconds(), TimeUnit.MILLISECONDS));
         } catch (Exception e) {
             if (e.getCause() instanceof FBDriverAPIError) {
                 throw (FBDriverAPIError) e.getCause();
@@ -229,7 +230,6 @@ final class FBDriverRESTClient {
     }
 
     public JSONObject doubleTap(String sessionId, double x, double y) throws RESTError {
-        // TODO: available since Appium 1.6.1+
         final Builder webResource = buildDefaultRequest("doubleTap", sessionId);
         final JSONObject body = new JSONObject();
         body.put("x", x);
@@ -237,20 +237,20 @@ final class FBDriverRESTClient {
         return waitForResponse(() -> restHandlers.httpPost(webResource, body, new int[]{HttpStatus.SC_OK}));
     }
 
-    public JSONObject touchAndHold(String sessionId, String uuid, double durationSeconds) throws RESTError {
+    public JSONObject touchAndHold(String sessionId, String uuid, Timedelta duration) throws RESTError {
         final Builder webResource = buildDefaultRequest(String.format("uiaElement/%s/touchAndHold", uuid), sessionId);
         final JSONObject body = new JSONObject();
-        body.put("duration", durationSeconds);
+        body.put("duration", duration.asFloatSeconds());
         return waitForResponse(() -> restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
     }
 
-    public JSONObject touchAndHold(String sessionId, double x, double y, double durationSeconds) throws RESTError {
+    public JSONObject touchAndHold(String sessionId, double x, double y, Timedelta duration) throws RESTError {
         // TODO: available since Appium 1.6.1+
         final Builder webResource = buildDefaultRequest("touchAndHold", sessionId);
         final JSONObject body = new JSONObject();
         body.put("x", x);
         body.put("y", y);
-        body.put("duration", durationSeconds);
+        body.put("duration", duration.asFloatSeconds());
         return waitForResponse(() -> restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
     }
 
@@ -311,10 +311,10 @@ final class FBDriverRESTClient {
         return waitForResponse(() -> restHandlers.httpGet(webResource, new int[]{HttpStatus.SC_OK}));
     }
 
-    public JSONObject deactivateApp(String sessionId, double durationSeconds) throws RESTError {
+    public JSONObject deactivateApp(String sessionId, Timedelta duration) throws RESTError {
         final Builder webResource = buildDefaultRequest("deactivateApp", sessionId);
         final JSONObject body = new JSONObject();
-        body.put("duration", durationSeconds);
+        body.put("duration", duration.asFloatSeconds());
         return waitForResponse(() -> restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
     }
 
@@ -351,7 +351,7 @@ final class FBDriverRESTClient {
         body.put("fromY", fbDragArguments.getFromY());
         body.put("toX", fbDragArguments.getToX());
         body.put("toY", fbDragArguments.getToY());
-        body.put("duration", fbDragArguments.getDurationSeconds());
+        body.put("duration", fbDragArguments.getDuration());
         return waitForResponse(() -> restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
     }
 

@@ -2,6 +2,7 @@ package com.wearezeta.auto.android_tablet.steps;
 
 import com.wearezeta.auto.android_tablet.pages.TabletContactListPage;
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.Timedelta;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android_tablet.pages.TabletSearchListPage;
@@ -56,22 +57,42 @@ public class SearchPageSteps {
         searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria, FindBy.EMAIL_ALIAS);
         searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria, FindBy.NAME_ALIAS);
         searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria, FindBy.PHONENUMBER_ALIAS);
+        searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria, FindBy.UNIQUE_USERNAME_ALIAS);
         getContactListPage().typeTextInPeopleSearch(searchCriteria);
     }
 
     /**
-     * Tap one of found items in Search results
+     * Taps on a name found in the Search page
      *
-     * @param item user name/email/phone number or the corresponding aliases
+     * @param contact user name/alias
      * @throws Exception
-     * @step. ^I tap the found item (.*) on [Ss]earch page$
+     * @step. ^I tap on user name found on [Ss]earch page (.*)$
      */
-    @When("^I tap the found item (.*) on [Ss]earch page$")
-    public void ITapUserName(String item) throws Exception {
-        item = usrMgr.replaceAliasesOccurences(item, FindBy.EMAIL_ALIAS);
-        item = usrMgr.replaceAliasesOccurences(item, FindBy.NAME_ALIAS);
-        item = usrMgr.replaceAliasesOccurences(item, FindBy.PHONENUMBER_ALIAS);
-        getSearchListPage().tapOnUserAvatar(item);
+    @When("^I tap on user name found on [Ss]earch page (.*)$")
+    public void ITapOnUserNameFoundOnSearchPage(String contact)
+            throws Exception {
+        contact = usrMgr.replaceAliasesOccurences(contact, FindBy.EMAIL_ALIAS);
+        contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+        contact = usrMgr.replaceAliasesOccurences(contact, FindBy.PHONENUMBER_ALIAS);
+        contact = usrMgr.replaceAliasesOccurences(contact, FindBy.UNIQUE_USERNAME_ALIAS);
+        getSearchListPage().tapOnUserName(contact);
+    }
+
+    /**
+     * Taps on a group found in the Search page
+     *
+     * @param contact user name/alias
+     * @throws Exception
+     * @step. ^I tap on group found on [Ss]earch page (.*)$
+     */
+    @When("^I tap on group found on [Ss]earch page (.*)$")
+    public void ITapOnGroupFoundOnSearchPage(String contact)
+            throws Exception {
+        contact = usrMgr.replaceAliasesOccurences(contact, FindBy.EMAIL_ALIAS);
+        contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+        contact = usrMgr.replaceAliasesOccurences(contact, FindBy.PHONENUMBER_ALIAS);
+        contact = usrMgr.replaceAliasesOccurences(contact, FindBy.UNIQUE_USERNAME_ALIAS);
+        getSearchListPage().tapOnGroupName(contact);
     }
 
     /**
@@ -144,7 +165,7 @@ public class SearchPageSteps {
         }
         Assert.assertTrue(
                 String.format("The current contact avatar of '%s' is very similar to the previous one", convoName),
-                this.rememberedAvatar.isChanged(10, MAX_SIMILARITY_VALUE));
+                this.rememberedAvatar.isChanged(Timedelta.fromSeconds(10), MAX_SIMILARITY_VALUE));
     }
 
     /**
@@ -213,5 +234,16 @@ public class SearchPageSteps {
     @When("^I type backspace in Search input on [Ss]earch page$")
     public void ITypeBackspace() throws Exception {
         getSearchListPage().typeBackspaceInSearchInput();
+    }
+
+    /**
+     * Clicks on the Add to conversation button
+     *
+     * @throws Exception
+     * @step. ^I tap on (?:Add to|Create) to conversation button on Search page$
+     */
+    @When("^I tap on (?:Add to|Create) conversation button on Search page$")
+    public void ITapOnAddToConversationButton() throws Exception {
+        getSearchListPage().tapPickUserConfirmationButton();
     }
 }

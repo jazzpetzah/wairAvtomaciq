@@ -4,6 +4,7 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -44,7 +45,8 @@ public class WelcomePage extends AndroidPage {
     }
 
     public void tapSignInTab() throws Exception {
-        final WebElement signInTab = getElement(xpathSignInTab, "Sign In tab is not visible", 30);
+        final WebElement signInTab = getElement(xpathSignInTab, "Sign In tab is not visible",
+                Timedelta.fromSeconds(30));
         signInTab.click();
         if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), EmailSignInPage.idLoginInput)) {
             signInTab.click();

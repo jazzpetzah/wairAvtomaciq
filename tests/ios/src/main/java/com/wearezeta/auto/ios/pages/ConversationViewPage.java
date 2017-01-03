@@ -16,6 +16,7 @@ import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces.FunctionFor2Parameters;
 import com.wearezeta.auto.common.driver.device_helpers.IOSSimulatorHelpers;
+import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.ios.pages.details_overlay.BaseUserDetailsOverlay;
 import edu.emory.mathcs.backport.java.util.Arrays;
 import io.appium.java_client.MobileBy;
@@ -207,6 +208,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     private static final By nameEmojiKeyboardButton = MobileBy.AccessibilityId("emojiButton");
     private static final By nameTimeIndicatorButton = MobileBy.AccessibilityId("ephemeralTimeIndicatorButton");
     private static final By nameEpheTextInputPlaceholder = MobileBy.AccessibilityId("TIMED MESSAGE");
+    private static final By nameCollectionButton = MobileBy.AccessibilityId("collection");
 
     private static final By fbClassPickerWheel = FBBy.className("XCUIElementTypePickerWheel");
 
@@ -219,7 +221,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
             "group-icon@3x.png", "CountryCodes.plist", "iCloud"
     };
 
-    private static final int MAX_APPEARANCE_TIME = 20;
+    private static final Timedelta MAX_APPEARANCE_TIME = Timedelta.fromSeconds(20);
 
     private static final String FTRANSFER_MENU_DEFAULT_PNG = "group-icon@3x.png";
     private static final String FTRANSFER_MENU_TOO_BIG = "Big file";
@@ -261,7 +263,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
         final Optional<WebElement> backBtn = getElementIfDisplayed(nameConversationBackButton);
         if (backBtn.isPresent()) {
             backBtn.get().click();
-            isElementInvisible(backBtn.get(), 3);
+            isElementInvisible(backBtn.get(), Timedelta.fromSeconds(3));
         } else {
             log.warn("Back button is not visible. Probably, the conversations list is already visible");
         }
@@ -272,7 +274,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     }
 
     public boolean waitForCursorInputVisible() throws Exception {
-        return isLocatorDisplayed(fbNameConversationInput, 10);
+        return isLocatorDisplayed(fbNameConversationInput, Timedelta.fromSeconds(10));
     }
 
     public boolean waitForCursorInputInvisible() throws Exception {
@@ -304,7 +306,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
 
     public boolean isCurrentInputTextEqualTo(String expectedMsg) throws Exception {
         final By locator = By.xpath(xpathStrConversationInputByValue.apply(expectedMsg));
-        return isLocatorDisplayed(locator, 3);
+        return isLocatorDisplayed(locator, Timedelta.fromSeconds(3));
     }
 
     public boolean isRecentMessageContain(String expectedText) throws Exception {
@@ -358,7 +360,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     public void typeMessage(String message, boolean shouldSend) throws Exception {
         final FBElement convoInput = (FBElement) getElement(fbNameConversationInput,
                 "Conversation input is not visible after the timeout");
-        final boolean wasKeyboardInvisible = this.isKeyboardInvisible(2);
+        final boolean wasKeyboardInvisible = this.isKeyboardInvisible(Timedelta.fromSeconds(2));
         if (wasKeyboardInvisible) {
             convoInput.click();
         }
@@ -400,7 +402,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     }
 
     public BufferedImage getAssetContainerStateScreenshot(int index) throws Exception {
-        final By locator = By.xpath(xpathStrAssetContainerByIndex.apply(index));
+        final By locator = FBBy.xpath(xpathStrAssetContainerByIndex.apply(index));
         final BufferedImage containerScreen = this.getElementScreenshot(getElement(locator)).orElseThrow(() ->
                 new IllegalStateException("Cannot take a screenshot of asset container"));
         //javax.imageio.ImageIO.write(containerScreen, "png", new java.io.File("/Users/guest/Desktop/" + System.currentTimeMillis() + ".png"));
@@ -517,7 +519,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
             return true;
         } else {
             this.tapAtTheCenterOfElement((FBElement) getElement(fbNameEllipsisButton));
-            return isLocatorDisplayed(locator, 3);
+            return isLocatorDisplayed(locator, Timedelta.fromSeconds(3));
         }
     }
 
@@ -527,7 +529,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
             return true;
         } else {
             this.tapAtTheCenterOfElement((FBElement) getElement(fbNameEllipsisButton));
-            return isLocatorInvisible(locator, 3);
+            return isLocatorInvisible(locator, Timedelta.fromSeconds(3));
         }
     }
 
@@ -544,7 +546,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     }
 
     public boolean waitUntilDownloadReadyPlaceholderVisible(String expectedFileName, String expectedSize,
-                                                            int timeoutSeconds) throws Exception {
+                                                            Timedelta timeout) throws Exception {
         final String nameWOExtension = FilenameUtils.getBaseName(expectedFileName);
         final String extension = FilenameUtils.getExtension(expectedFileName);
 
@@ -555,17 +557,17 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
                         String.format("contains(@value, '%s')", extension.toUpperCase())
                 )
         ));
-        return isLocatorDisplayed(topLabelLocator, timeoutSeconds) &&
-                isLocatorDisplayed(bottomLabelLocator, timeoutSeconds);
+        return isLocatorDisplayed(topLabelLocator, timeout) &&
+                isLocatorDisplayed(bottomLabelLocator, timeout);
     }
 
-    public boolean waitUntilFilePreviewIsVisible(int secondsTimeout, String expectedFileName) throws Exception {
+    public boolean waitUntilFilePreviewIsVisible(Timedelta timeout, String expectedFileName) throws Exception {
         final By locator = By.xpath(xpathStrFilePreviewByFileName.apply(expectedFileName));
-        return isLocatorDisplayed(locator, secondsTimeout);
+        return isLocatorDisplayed(locator, timeout);
     }
 
-    public boolean isGenericFileShareMenuVisible(int timeoutSeconds) throws Exception {
-        return isLocatorDisplayed(nameGenericFileShareMenu, timeoutSeconds);
+    public boolean isGenericFileShareMenuVisible(Timedelta timeout) throws Exception {
+        return isLocatorDisplayed(nameGenericFileShareMenu, timeout);
     }
 
     private static By getInputPlaceholderLocatorByName(String name) {
@@ -594,7 +596,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
         final int tapPercentX = 8;
         final int tapPercentY = 50;
         if (isDoubleTap) {
-            this.doubleTapAt(el, tapPercentX, tapPercentY);
+            el.doubleTap();
         } else if (isLongTap) {
             this.longTapAt(el, tapPercentX, tapPercentY);
         } else {
@@ -603,7 +605,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     }
 
     private WebElement locateCursorToolButton(By locator) throws Exception {
-        final Optional<WebElement> toolButton = getElementIfDisplayed(locator, 3);
+        final Optional<WebElement> toolButton = getElementIfDisplayed(locator, Timedelta.fromSeconds(3));
         if (toolButton.isPresent()) {
             return toolButton.get();
         } else {
@@ -619,9 +621,9 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
         dstElement.longTap();
     }
 
-    public void longTapWithDurationInputToolButtonByName(String btnName, int durationSeconds) throws Exception {
+    public void longTapWithDurationInputToolButtonByName(String btnName, Timedelta duration) throws Exception {
         final FBElement dstElement = (FBElement) locateCursorToolButton(getInputToolButtonByName(btnName));
-        dstElement.touchAndHold(durationSeconds);
+        dstElement.touchAndHold(duration);
     }
 
     private By getRecordControlButtonByName(String buttonName) {
@@ -876,9 +878,9 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
             return result;
         } else {
             if (result) {
-                final long msStarted = System.currentTimeMillis();
-                while (System.currentTimeMillis() - msStarted <=
-                        Integer.parseInt(CommonUtils.getDriverTimeoutFromConfig(getClass()))) {
+                final Timedelta started = Timedelta.now();
+                while (Timedelta.now().isDiffLessOrEqual(started,
+                        Timedelta.fromSeconds(Integer.parseInt(CommonUtils.getDriverTimeoutFromConfig(getClass()))))) {
                     if (selectVisibleElements(locator).size() >= times) {
                         return true;
                     }
@@ -906,6 +908,8 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
                 return xpathAudioCallButton;
             case "video call":
                 return xpathVideoCallButton;
+            case "collection":
+                return nameCollectionButton;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", name));
         }

@@ -7,6 +7,7 @@ import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.backend.AccentColor;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.web.common.TestContext;
@@ -36,6 +37,7 @@ public class AccountPageSteps {
 
     private BufferedImage profileImage = null;
     private final TestContext context;
+    private String rememberedUniqueUsername = null;
 
     public AccountPageSteps(TestContext context) {
         this.context = context;
@@ -96,10 +98,10 @@ public class AccountPageSteps {
     public void ISeeRememberedUniqueUsernameOnSelfProfilePage(String not) throws Exception {
         if (not == null) {
             Assert.assertThat("Remembered username is NOT in settings",
-                context.getPagesCollection().getPage(AccountPage.class).getUniqueUsername(), equalTo(context.getPagesCollection().getPage(AccountPage.class).getRememberedUniqueUsername()));
+                context.getPagesCollection().getPage(AccountPage.class).getUniqueUsername(), equalTo(rememberedUniqueUsername));
         }else{
             Assert.assertThat("Remembered username is in settings",
-                context.getPagesCollection().getPage(AccountPage.class).getUniqueUsername(), not(equalTo(context.getPagesCollection().getPage(AccountPage.class).getRememberedUniqueUsername())));
+                context.getPagesCollection().getPage(AccountPage.class).getUniqueUsername(), not(equalTo(rememberedUniqueUsername)));
         }
     }
 
@@ -222,5 +224,19 @@ public class AccountPageSteps {
     @When("^I click send button to delete account$")
     public void IClickSendButton() throws Exception {
         context.getPagesCollection().getPage(AccountPage.class).clickConfirmDeleteAccountButton();
+    }
+
+    @Then("^I see unique username for (.*) in account preferences$")
+    public void ICanSeeUniqueUsernameToUser(String userAlias) throws Exception {
+        ClientUser user = context.getUserManager().findUserBy(userAlias, ClientUsersManager.FindBy.NAME_ALIAS);
+        // username given. strict check for username
+        String uniqueUsername = user.getUniqueUsername();
+        assertThat(context.getPagesCollection().getPage(AccountPage.class).getUniqueUsername(),
+                equalTo(uniqueUsername));
+    }
+    @Then("I remember unique username of (.*)")
+    public void RememberUniqueUsername(String nameAlias) throws Exception {
+        ClientUser user = context.getUserManager().findUserByNameOrNameAlias(nameAlias);
+        rememberedUniqueUsername = user.getUniqueUsername();
     }
 }

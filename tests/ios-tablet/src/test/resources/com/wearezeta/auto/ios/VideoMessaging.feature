@@ -18,7 +18,7 @@ Feature: Video Messaging
 
     Examples:
       | Name      | Contact   | FileName    | MIMEType  | DeviceName | DownloadTimeout |
-      | user1Name | user2Name | testing.mp4 | video/mp4 | Device1    | 6               |
+      | user1Name | user2Name | testing.mp4 | video/mp4 | Device1    | 3               |
 
   @C145951 @rc @regression @fastLogin
   Scenario Outline: Verify recording a video message [LANDSCAPE]

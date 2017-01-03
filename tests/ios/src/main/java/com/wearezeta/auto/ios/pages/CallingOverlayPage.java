@@ -5,6 +5,7 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import com.wearezeta.auto.common.misc.Timedelta;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -34,7 +35,7 @@ public class CallingOverlayPage extends IOSPage {
 
     private static final Function<Integer, String> xpathStrGroupCallAvatarsByCount = count ->
             String.format("//XCUIElementTypeStaticText[@name='%s']/" +
-                    "following::XCUIElementTypeCollectionView[count(XCUIElementTypeCell)=%s]",
+                            "following::XCUIElementTypeCollectionView[count(XCUIElementTypeCell)=%s]",
                     nameStrCallStatusLabel, count);
 
     private static final By xpathCallerAvatar = By.xpath(String.format(
@@ -86,19 +87,20 @@ public class CallingOverlayPage extends IOSPage {
 
     public boolean isCallingMessageContainingVisible(String text) throws Exception {
         // XPath locators are bloody slow here
-        final long msStarted = System.currentTimeMillis();
-        final WebElement el = getElement(nameCallingMessage, "No calling overlay is visible after the timeout", 15);
+        final Timedelta started = Timedelta.now();
+        final WebElement el = getElement(nameCallingMessage,
+                "No calling overlay is visible after the timeout", Timedelta.fromSeconds(15));
         do {
             if (el.getText().contains(text)) {
                 return true;
             }
             Thread.sleep(500);
-        } while (System.currentTimeMillis() - msStarted <= 5000);
+        } while (Timedelta.now().isDiffLessOrEqual(started, Timedelta.fromMilliSeconds(5000)));
         return false;
     }
 
     public boolean isButtonVisible(String name) throws Exception {
-        return isLocatorDisplayed(getButtonLocatorByName(name), 20);
+        return isLocatorDisplayed(getButtonLocatorByName(name), Timedelta.fromSeconds(20));
     }
 
     public boolean isButtonInvisible(String name) throws Exception {
@@ -111,7 +113,7 @@ public class CallingOverlayPage extends IOSPage {
         );
     }
 
-    public boolean isCountOfAvatarsEqualTo(int expectedNumberOfAvatars, int timeoutSeconds) throws Exception {
+    public boolean isCountOfAvatarsEqualTo(int expectedNumberOfAvatars, Timedelta timeout) throws Exception {
         assert expectedNumberOfAvatars > 0 : "The expected number of avatar should be greater than zero";
         By locator;
         if (expectedNumberOfAvatars == 1) {
@@ -119,6 +121,6 @@ public class CallingOverlayPage extends IOSPage {
         } else {
             locator = By.xpath(xpathStrGroupCallAvatarsByCount.apply(expectedNumberOfAvatars));
         }
-        return isLocatorDisplayed(locator, timeoutSeconds);
+        return isLocatorDisplayed(locator, timeout);
     }
 }

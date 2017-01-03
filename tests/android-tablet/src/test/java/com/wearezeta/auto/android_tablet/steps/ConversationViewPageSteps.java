@@ -2,6 +2,7 @@ package com.wearezeta.auto.android_tablet.steps;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.Timedelta;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android_tablet.pages.TabletConversationViewPage;
@@ -18,7 +19,7 @@ public class ConversationViewPageSteps {
 
     private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection.getInstance();
     private static final String ANY_MESSAGE = "*ANY MESSAGE*";
-    private static final int LIKE_BUTTON_CHANGE_TIMEOUT = 15;
+    private static final Timedelta LIKE_BUTTON_CHANGE_TIMEOUT = Timedelta.fromSeconds(15);
     private static final double LIKE_BUTTON_MIN_SIMILARITY_SCORE = 0.6;
     private static final double LIKE_BUTTON_NOT_CHANGED_MIN_SCORE = -0.5;
 
@@ -476,7 +477,7 @@ public class ConversationViewPageSteps {
                 .scrollUpUntilMediaBarVisible(MAX_SWIPES));
     }
 
-    private static final int MEDIA_BUTTON_STATE_CHANGE_TIMEOUT = 15;
+    private static final Timedelta MEDIA_BUTTON_STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(15);
     private static final double MEDIA_BUTTON_MIN_SIMILARITY_SCORE = 0.97;
 
     private ElementState mediaButtonState = new ElementState(
@@ -697,7 +698,7 @@ public class ConversationViewPageSteps {
     /**
      * Wait to check whether the file placeholder action button is changed
      *
-     * @param timeout            timeout in seconds
+     * @param timeoutSeconds     timeout in seconds
      * @param shouldNotBeChanged is not null if the button should not be changed
      * @throws Exception
      * @step. ^I wait up to (\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download)
@@ -705,13 +706,14 @@ public class ConversationViewPageSteps {
      */
     @When("^I wait up to (\\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download)" +
             " placeholder is (not )?changed$")
-    public void IWaitFileTransferActionButtonChanged(int timeout, String shouldNotBeChanged) throws Exception {
+    public void IWaitFileTransferActionButtonChanged(int timeoutSeconds, String shouldNotBeChanged) throws Exception {
+        final Timedelta timeout = Timedelta.fromSeconds(timeoutSeconds);
         if (shouldNotBeChanged == null) {
-            Assert.assertTrue(String.format("State of file transfer action button has not been changed after %s seconds",
+            Assert.assertTrue(String.format("State of file transfer action button has not been changed after %s",
                     timeout), filePlaceHolderActionButtonState.isChanged(timeout,
                     FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE));
         } else {
-            Assert.assertTrue(String.format("State of file transfer action button has been changed after %s seconds",
+            Assert.assertTrue(String.format("State of file transfer action button has been changed after %s",
                     timeout), filePlaceHolderActionButtonState.isNotChanged(timeout,
                     FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE));
         }
@@ -735,7 +737,6 @@ public class ConversationViewPageSteps {
      * @param itemType       Message Meta Item type
      * @param hasExpectedMsg equals null means you don't specify the expceted content for item
      * @param expectedMsg    specified expected content for item
-     * @param messageType    the message type
      * @throws Exception
      * @step. ^I (do not )?see (Like button|Like description|Message status|First like avatar|Second like avatar)
      * (with expected text "(.*)" )?in conversation view$
@@ -804,7 +805,6 @@ public class ConversationViewPageSteps {
      * Tap on Any msg meta item
      *
      * @param itemType    Message Meta Item type
-     * @param messageType The message type
      * @throws Exception
      * @step. ^^I tap (Like button|Like description|Message status|First like avatar|Second like avatar)
      * in conversation view$
@@ -819,7 +819,6 @@ public class ConversationViewPageSteps {
      * Verify the count of Message status within current conversation
      *
      * @param expectedCount expect apperance count
-     * @param expectedText  the expected text within Message Status
      * @throws Exception
      * @step. ^I see (\d+) Message statu(?:s|ses) with expected text "(.*)" in conversation view$
      */

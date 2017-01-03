@@ -18,6 +18,8 @@ public class UniqueUsernamePage extends AndroidPage {
 
     private static final By idOkButton = By.id("tv__ok_button");
 
+    private static final By idCancelButton = By.id("tv__back_button");
+
     public UniqueUsernamePage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -34,10 +36,15 @@ public class UniqueUsernamePage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), usernameEditWithValue.apply(expectedValue));
     }
 
+    public boolean isUsernameEditInvisible(String expectedValue) throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), usernameEditWithValue.apply(expectedValue));
+    }
+
     public void enterNewUsername(String username) throws Exception {
         WebElement edit = getElement(idUsernameEdit);
         edit.clear();
         edit.sendKeys(username);
+        edit.sendKeys("\n");
     }
 
     public String enterNewRandomUsername(int count) throws Exception {
@@ -46,7 +53,20 @@ public class UniqueUsernamePage extends AndroidPage {
         return newUniqueName;
     }
 
-    public void tapOkButton() throws Exception {
-        getElement(idOkButton).click();
+    public void tapButton(String buttonName) throws Exception {
+        getElement(getButtonLocator(buttonName)).click();
+    }
+
+    private By getButtonLocator(String buttonName) {
+        switch (buttonName.toUpperCase()) {
+            case "OK":
+                return idOkButton;
+            case "CANCEL":
+                return idCancelButton;
+            default:
+                throw new IllegalArgumentException(String.format("No such button %s on Unique Username Settings page",
+                        buttonName));
+        }
+
     }
 }

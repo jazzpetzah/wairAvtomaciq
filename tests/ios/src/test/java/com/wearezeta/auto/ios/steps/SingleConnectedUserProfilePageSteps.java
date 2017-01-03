@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.Timedelta;
 import cucumber.api.java.en.Then;
 
 import org.junit.Assert;
@@ -124,7 +125,7 @@ public class SingleConnectedUserProfilePageSteps {
         }
     }
 
-    private static final int PROFILE_PICTURE_CHANGE_TIMEOUT_SECONDS = 7;
+    private static final Timedelta PROFILE_PICTURE_CHANGE_TIMEOUT = Timedelta.fromSeconds(7);
     private static final double PROFILE_PICTURE_MAX_SCORE = 0.7;
 
     private final ElementState profilePictureState = new ElementState(
@@ -153,10 +154,10 @@ public class SingleConnectedUserProfilePageSteps {
     public void IVerifyPicture(String shouldNotBeChanged) throws Exception {
         if (shouldNotBeChanged == null) {
             Assert.assertTrue("User profile picture is still the same",
-                    profilePictureState.isChanged(PROFILE_PICTURE_CHANGE_TIMEOUT_SECONDS, PROFILE_PICTURE_MAX_SCORE));
+                    profilePictureState.isChanged(PROFILE_PICTURE_CHANGE_TIMEOUT, PROFILE_PICTURE_MAX_SCORE));
         } else {
             Assert.assertTrue("User profile picture is expected to be the same",
-                    profilePictureState.isNotChanged(PROFILE_PICTURE_CHANGE_TIMEOUT_SECONDS, PROFILE_PICTURE_MAX_SCORE));
+                    profilePictureState.isNotChanged(PROFILE_PICTURE_CHANGE_TIMEOUT, PROFILE_PICTURE_MAX_SCORE));
         }
     }
 }

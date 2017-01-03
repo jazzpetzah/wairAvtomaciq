@@ -3,6 +3,7 @@ package com.wearezeta.auto.android.pages;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.DummyElement;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import com.wearezeta.auto.common.misc.Timedelta;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -33,7 +34,7 @@ public class FirstTimeOverlay extends AndroidPage {
         getElement(idGotItButton).click();
     }
 
-    public void acceptWhenVisible(int timeoutSeconds) throws Exception {
-        getElementIfDisplayed(idGotItButton, timeoutSeconds).orElseGet(DummyElement::new).click();
+    public void acceptWhenVisible(Timedelta timeout) throws Exception {
+        getElementIfDisplayed(idGotItButton, timeout).orElseGet(DummyElement::new).click();
     }
 }

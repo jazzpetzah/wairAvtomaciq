@@ -4,7 +4,6 @@ import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.common.TestContext;
-import com.wearezeta.auto.web.pages.AccountPage;
 import com.wearezeta.auto.web.pages.PendingConnectionsPage;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -138,5 +137,14 @@ public class PendingConnectionsPageSteps {
         ClientUser user = context.getUserManager().findUserBy(userAlias, FindBy.NAME_ALIAS);
         context.getPagesCollection().getPage(PendingConnectionsPage.class)
                 .ignoreRequestFromUser(user.getId());
+    }
+
+    @When("^I see (\\d+) common friends? in connection request from user (.*)$")
+    public void ISeeXCommonFriendsInConnectionRequest(int amount, String nameAlias)
+            throws Throwable {
+        ClientUser user = context.getUserManager().findUserBy(nameAlias, FindBy.NAME_ALIAS);
+        assertThat(context.getPagesCollection().getPage(PendingConnectionsPage.class)
+                        .getCommonFriendsForUser(user.getId()),
+                containsString(String.valueOf(amount)));
     }
 }

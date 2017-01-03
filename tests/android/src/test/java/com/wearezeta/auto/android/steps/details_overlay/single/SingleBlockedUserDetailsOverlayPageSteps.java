@@ -4,15 +4,28 @@ import com.wearezeta.auto.android.pages.details_overlay.single.SingleBlockedUser
 import com.wearezeta.auto.android.steps.AndroidPagesCollection;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
 import org.jcodec.common.Assert;
 
 public class SingleBlockedUserDetailsOverlayPageSteps {
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     private SingleBlockedUserDetailsOverlayPage getSingleBlockedUserDetailsOverlayPage() throws Exception {
         return pagesCollection.getPage(SingleBlockedUserDetailsOverlayPage.class);
     }
+
+    /**
+     * Tap on buttons on Single blocked user details page
+     *
+     * @param name button name
+     * @throws Exception
+     * @step. ^I tap on (unblock) button on Single blocked user details page$
+     */
+    @When("^I tap on (unblock) button on Single blocked user details page$")
+    public void ITapButton(String name) throws Exception {
+        getSingleBlockedUserDetailsOverlayPage().tapButton(name);
+    }
+
 
     /**
      * Verify the button is visible
