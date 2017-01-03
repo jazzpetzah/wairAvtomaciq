@@ -104,7 +104,8 @@ public class StartUIPage extends WebPage {
     }
 
     public boolean isUsernameNotVisible(String name, String username) throws Exception {
-        return false;
+        String xpath = String.format(WebAppLocators.StartUIPage.xpathTopPeopleName, name, username);
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.xpath(xpath));
     }
 
     public void closeStartUI() throws Exception {

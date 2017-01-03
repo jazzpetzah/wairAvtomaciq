@@ -743,6 +743,10 @@ public final class WebAppLocators {
                 + ".//*[contains(@class,'search-list-item-content-name') and text()='%s']"
                 + "/parent::*//*[contains(@class,'search-list-item-content-username') and text()='%s']]";
 
+        public static final String xpathTopPeopleName = xpathTopPeopleRoot + "//*[@data-uie-name='item-user' and "
+                + ".//*[contains(@class,'search-list-item-content-name') and text()='%s']"
+                + "/parent::*//*[not(contains(@class,'search-list-item-content-username') and text()='%s')]]";
+
         public static final Function<String, String> xpathSearchResultGroupByName = (
                 name) -> String.format(
                 "%s//*[@data-uie-name='item-group' and .//*[text()='%s']]",

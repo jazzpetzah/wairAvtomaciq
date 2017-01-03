@@ -321,8 +321,7 @@ Feature: Usernames
   @C352084 @usernames @staging
   Scenario Outline: Verify top people are shown without usernames
     Given There are 2 users where <NameAlias> is me
-    Given <NameAlias>,<Contact> have unique usernames
-#    Given User <Contact> changes unique username to <ContactName>
+    Given User <Contact> changes unique username to <Contact>
     Given Myself is connected to <Contact>
     Given Contact Me sends message QUESTION to user <Contact>
     Given Contact <Contact> sends message ANSWER to user <NameAlias>
@@ -337,9 +336,9 @@ Feature: Usernames
     Then I see 1 people in Top people list
     And I see user <Contact> found in People Picker
     And I see user <Contact> found in Top People
-#    And I do not see username <ContactName> of user <Contact> in Top People
-    And I do not see user <Contact> with username <ContactName> found in People Picker
+    And I do not see username <Contact> of user <Contact> in Top People
+    And I do not see user <Contact> with username <Contact> found in People Picker
 
     Examples:
-      | Email      | Password      | NameAlias | Contact   | ContactName |
-      | user1Email | user1Password | user1Name | user2Name | visible     |
+      | Email      | Password      | NameAlias | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
