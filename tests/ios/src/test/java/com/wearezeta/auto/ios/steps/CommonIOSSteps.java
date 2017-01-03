@@ -1209,7 +1209,7 @@ public class CommonIOSSteps {
     public void UserAddRemoteDeviceToAccount(String userNameAlias, String deviceNames) throws Exception {
         final List<String> names = IOSTestContextHolder.getInstance().getTestContext()
                 .getUsersManager().splitAliases(deviceNames);
-        final int poolSize = 2;  // Runtime.getRuntime().availableProcessors()
+        final int poolSize = CommonUtils.getOptimalThreadsCount();
         final ExecutorService pool = Executors.newFixedThreadPool(poolSize);
         final AtomicInteger createdDevicesCount = new AtomicInteger(0);
         for (String name : names) {

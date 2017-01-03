@@ -908,4 +908,9 @@ public class CommonUtils {
                         ipaFile.getAbsolutePath()))
         );
     }
+
+    public static int getOptimalThreadsCount() {
+        final int coresCount = Runtime.getRuntime().availableProcessors();
+        return coresCount > 2 ? coresCount - 1 : 2;
+    }
 }

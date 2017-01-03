@@ -1,13 +1,16 @@
 package com.wearezeta.auto.common.wire_actors;
 
-import com.google.common.base.Throwables;
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 
 import java.io.File;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.wire_actors.models.AssetsVersion;
@@ -53,7 +56,13 @@ public class RemoteDevicesManager {
     private Semaphore devicesGuard = new Semaphore(1);
 
     public RemoteDevicesManager() {
-        Runtime.getRuntime().addShutdownHook(new Thread(this::reset));
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            try {
+                this.reset();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }));
     }
 
     private List<Device> getDevicesOwnedBy(ClientUser owner) throws InterruptedException {
@@ -341,36 +350,53 @@ public class RemoteDevicesManager {
         ActorsRESTWrapper.setUniqueUsername(dstDevice.getUUID(), uniqueUserName);
     }
 
-    public void reset() {
-        List<String> uuids = new ArrayList<>();
-        try {
-            uuids = getRegisteredDevices().stream()
-                    .map(Device::getUUID)
-                    .collect(Collectors.toList());
-            unregisterAllDevices();
-        } catch (InterruptedException e) {
-            Throwables.propagate(e);
-        } finally {
-            for (String uuid : uuids) {
+    private static ExecutorService removeDevicesAsync(List<String> uuids) {
+        final int poolSize = CommonUtils.getOptimalThreadsCount();
+        final ExecutorService pool = Executors.newFixedThreadPool(poolSize);
+        for (String uuid : uuids) {
+            pool.submit(() -> {
                 try {
                     ActorsRESTWrapper.removeDevice(uuid);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }
+            });
+        }
+        pool.shutdown();
+        return pool;
+    }
+
+    private static final Timedelta DEVICES_REMOVAL_TIMEOUT = Timedelta.fromSeconds(5);
+
+    public void reset() throws InterruptedException {
+        final List<String> uuids = getRegisteredDevices().stream()
+                .map(Device::getUUID)
+                .collect(Collectors.toList());
+        if (uuids.isEmpty()) {
+            return;
+        }
+        LOG.info(String.format("Cleaning %d devices from remote devices manager...", uuids.size()));
+        try {
+            unregisterAllDevices();
+        } finally {
+            removeDevicesAsync(uuids).awaitTermination(DEVICES_REMOVAL_TIMEOUT.asSeconds(), TimeUnit.SECONDS);
         }
     }
 
-    public void releaseDevicesOfUsers(List<ClientUser> owners) throws Exception {
-        for (ClientUser owner : owners) {
-            final List<Device> ownedDevices = getDevicesOwnedBy(owner);
-            for (Device ownedDevice : ownedDevices) {
-                try {
+    public void releaseDevicesOfUsers(List<ClientUser> owners) throws InterruptedException {
+        final List<String> uuids = new ArrayList<>();
+        try {
+            for (ClientUser owner : owners) {
+                final List<Device> ownedDevices = getDevicesOwnedBy(owner);
+                for (Device ownedDevice : ownedDevices) {
                     this.unregisterDevice(ownedDevice);
-                    ActorsRESTWrapper.removeDevice(ownedDevice.getUUID());
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    uuids.add(ownedDevice.getUUID());
                 }
+            }
+        } finally {
+            if (!uuids.isEmpty()) {
+                LOG.info(String.format("Cleaning %d devices from remote devices manager...", uuids.size()));
+                removeDevicesAsync(uuids).awaitTermination(DEVICES_REMOVAL_TIMEOUT.asSeconds(), TimeUnit.SECONDS);
             }
         }
     }
