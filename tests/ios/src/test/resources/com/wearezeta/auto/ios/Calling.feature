@@ -517,7 +517,7 @@ Feature: Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @fastLogin
+  @fastLogin @consecutive_call
   Scenario Outline: Make 1:1 call loop to AVS <CallBackend>
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -525,7 +525,7 @@ Feature: Calling
     Given I sign in using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I call 1 times for 1 minutes with <Contact>
+    And I call 2 times for 1 minutes with <Contact>
 
     Examples:
       | Name      | Contact   | CallBackend  |
@@ -539,7 +539,7 @@ Feature: Calling
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email
     Given I see conversations list
-    And <Contact> calls to me in Background 50 times for 1 minute
+    And <Contact> calls to me in Background 2 times for 1 minute
 
     Examples:
       | Name      | Contact   | CallBackend  |
