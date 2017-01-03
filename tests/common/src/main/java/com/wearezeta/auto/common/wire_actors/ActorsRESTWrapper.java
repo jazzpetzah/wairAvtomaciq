@@ -3,6 +3,10 @@ package com.wearezeta.auto.common.wire_actors;
 import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.rest.CommonRESTHandlers;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
+import com.wearezeta.auto.common.wire_actors.models.AssetsVersion;
+import com.wearezeta.auto.common.wire_actors.models.LocationInfo;
+import com.wearezeta.auto.common.wire_actors.models.MessageInfo;
+import com.wearezeta.auto.common.wire_actors.models.MessageReaction;
 import org.apache.commons.codec.binary.Base64;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -14,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ActorsRESTWrapper {
+class ActorsRESTWrapper {
     public static boolean isAlive() {
         try {
             return CommonRESTHandlers.isAlive(new URL(ActorsREST.getBaseURI()));
@@ -63,21 +67,7 @@ public class ActorsRESTWrapper {
         return response.getString("uuid");
     }
 
-    public enum AssetsVersion {
-        V2("2"), V3("3");
-
-        private String strRepresentation;
-
-        AssetsVersion(String strRepresentation) {
-            this.strRepresentation = strRepresentation;
-        }
-
-        public String stringRepresentation() {
-            return this.strRepresentation;
-        }
-    }
-
-    static String setDeviceAssetsVersion(String uuid, AssetsVersion newVersion) throws Exception {
+     static String setDeviceAssetsVersion(String uuid, AssetsVersion newVersion) throws Exception {
         final JSONObject response = ActorsREST.setDeviceAssetsVersion(uuid, newVersion.stringRepresentation());
         return response.getString("uuid");
     }
@@ -90,36 +80,6 @@ public class ActorsRESTWrapper {
     static String sendGiphy(String uuid, String convoId, String giphyTag) throws Exception {
         final JSONObject response = ActorsREST.sendGiphy(uuid, convoId, giphyTag);
         return response.getString("uuid");
-    }
-
-    public static class LocationInfo {
-        private float lon;
-        private float lat;
-        private String address;
-        private int zoom;
-
-        public LocationInfo(float lon, float lat, String address, int zoom) {
-            this.lon = lon;
-            this.lat = lat;
-            this.address = address;
-            this.zoom = zoom;
-        }
-
-        public float getLon() {
-            return lon;
-        }
-
-        public float getLat() {
-            return lat;
-        }
-
-        public String getAddress() {
-            return address;
-        }
-
-        public int getZoom() {
-            return zoom;
-        }
     }
 
     static String sendLocation(String uuid, String convoId, LocationInfo locationInfo) throws Exception {
@@ -220,66 +180,10 @@ public class ActorsRESTWrapper {
         return response.getString("uuid");
     }
 
-    public enum MessageReaction {
-        LIKE, UNLIKE
-    }
-
     static String reactMessage(String uuid, String convId, String msgId, MessageReaction reaction)
             throws Exception {
         final JSONObject response = ActorsREST.reactMessage(uuid, convId, msgId, reaction.name());
         return response.getString("uuid");
-    }
-
-    public enum MessageType {
-        TEXT,
-        TEXT_EMOJI_ONLY,
-        ASSET,
-        ANY_ASSET,
-        VIDEO_ASSET,
-        AUDIO_ASSET,
-        KNOCK,
-        MEMBER_JOIN,
-        MEMBER_LEAVE,
-        CONNECT_REQUEST,
-        CONNECT_ACCEPTED,
-        RENAME,
-        MISSED_CALL,
-        INCOMING_CALL,
-        RICH_MEDIA,
-        OTR_ERROR,
-        OTR_IDENTITY_CHANGED,
-        OTR_VERIFIED,
-        OTR_UNVERIFIED,
-        OTR_DEVICE_ADDED,
-        STARTED_USING_DEVICE,
-        HISTORY_LOST,
-        LOCATION,
-        UNKNOWN,
-        RECALLED
-    }
-
-    public static class MessageInfo {
-        private String id;
-        private MessageType type;
-        private Timedelta timestamp;
-
-        public MessageInfo(String id, MessageType type, Timedelta timestamp) {
-            this.id = id;
-            this.type = type;
-            this.timestamp = timestamp;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public MessageType getType() {
-            return type;
-        }
-
-        public Timedelta getTimestamp() {
-            return timestamp;
-        }
     }
 
     static List<MessageInfo> getMessagesInfo(String uuid, String convId) throws Exception {
@@ -294,7 +198,7 @@ public class ActorsRESTWrapper {
                     final JSONObject messageInfoAsJson = allMessages.getJSONObject(messageIdx);
                     final MessageInfo messageInfo = new MessageInfo(
                             messageInfoAsJson.getString("messageId"),
-                            MessageType.valueOf(messageInfoAsJson.getString("type")),
+                            MessageInfo.MessageType.valueOf(messageInfoAsJson.getString("type")),
                             Timedelta.fromMilliSeconds(messageInfoAsJson.getLong("time"))
                     );
                     result.add(messageInfo);

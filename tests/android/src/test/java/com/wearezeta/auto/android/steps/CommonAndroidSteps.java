@@ -36,11 +36,11 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.misc.Timedelta;
-import com.wearezeta.auto.common.wire_actors.ActorsRESTWrapper;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
+import com.wearezeta.auto.common.wire_actors.models.AssetsVersion;
 import cucumber.api.PendingException;
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
@@ -2050,7 +2050,7 @@ public class CommonAndroidSteps {
      */
     @When("^User (.*) switches assets to (V2|V3) (?:via device (.*))?$")
     public void UserSwitchAssetMode(String userAs, String mode, String deviceName) throws Exception {
-        ActorsRESTWrapper.AssetsVersion asset = ActorsRESTWrapper.AssetsVersion.valueOf(mode.toUpperCase());
+        AssetsVersion asset = AssetsVersion.valueOf(mode.toUpperCase());
         AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserSetAssetMode(userAs, asset, deviceName);
     }
 

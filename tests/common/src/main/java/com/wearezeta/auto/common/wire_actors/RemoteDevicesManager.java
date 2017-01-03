@@ -10,6 +10,10 @@ import java.util.*;
 import java.util.concurrent.Semaphore;
 import java.util.stream.Collectors;
 
+import com.wearezeta.auto.common.wire_actors.models.AssetsVersion;
+import com.wearezeta.auto.common.wire_actors.models.LocationInfo;
+import com.wearezeta.auto.common.wire_actors.models.MessageInfo;
+import com.wearezeta.auto.common.wire_actors.models.MessageReaction;
 import org.apache.log4j.Logger;
 
 public class RemoteDevicesManager {
@@ -62,12 +66,14 @@ public class RemoteDevicesManager {
     }
 
     private Device getDeviceOwnedBy(ClientUser owner, String name) throws InterruptedException {
-        final List<Device> devices = getDevicesOwnedBy(owner, Optional.empty());
-        if (devices.isEmpty()) {
-            throw new IllegalStateException(String.format("There is no device '%s' owned by user '%s'",
-                    name, owner.getName()));
+        synchronized (owner.getEmail()) {
+            final List<Device> devices = getDevicesOwnedBy(owner, Optional.empty());
+            if (devices.isEmpty()) {
+                throw new IllegalStateException(String.format("There is no device '%s' owned by user '%s'",
+                        name, owner.getName()));
+            }
+            return devices.get(0);
         }
-        return devices.get(0);
     }
 
     private List<Device> getDevicesOwnedBy(ClientUser owner, Optional<String> byName) throws InterruptedException {
@@ -121,16 +127,18 @@ public class RemoteDevicesManager {
      * @throws InterruptedException
      */
     private Device fetchDeviceOwnedBy(ClientUser owner, Optional<String> name) throws Exception {
-        final List<Device> existingDevices = getDevicesOwnedBy(owner, name);
-        if (!existingDevices.isEmpty()) {
-            return existingDevices.get(0);
+        synchronized (owner.getEmail()) {
+            final List<Device> existingDevices = getDevicesOwnedBy(owner, name);
+            if (!existingDevices.isEmpty()) {
+                return existingDevices.get(0);
+            }
+            final String uuid = ActorsRESTWrapper.createDevice(name);
+            ActorsRESTWrapper.loginToDevice(uuid, owner);
+            final Device newDevice = new Device(uuid);
+            name.ifPresent(newDevice::setName);
+            newDevice.setOwner(owner);
+            return this.registerDevice(newDevice);
         }
-        final String uuid = ActorsRESTWrapper.createDevice(name);
-        ActorsRESTWrapper.loginToDevice(uuid, owner);
-        final Device newDevice = new Device(uuid);
-        name.ifPresent(newDevice::setName);
-        newDevice.setOwner(owner);
-        return this.registerDevice(newDevice);
     }
 
     public List<String> getDeviceIds(ClientUser owner) throws Exception {
@@ -244,7 +252,7 @@ public class RemoteDevicesManager {
                              float latitude, String locationName, int zoom) throws Exception {
         final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
         ActorsRESTWrapper.sendLocation(dstDevice.getUUID(), convId,
-                new ActorsRESTWrapper.LocationInfo(longitude, latitude, locationName, zoom)
+                new LocationInfo(longitude, latitude, locationName, zoom)
         );
     }
 
@@ -267,7 +275,7 @@ public class RemoteDevicesManager {
     }
 
     public void reactMessage(ClientUser userFrom, String convId, String messageId,
-                             ActorsRESTWrapper.MessageReaction reactionType, String deviceName) throws Exception {
+                             MessageReaction reactionType, String deviceName) throws Exception {
         final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
         ActorsRESTWrapper.reactMessage(dstDevice.getUUID(), convId, messageId, reactionType);
     }
@@ -289,20 +297,20 @@ public class RemoteDevicesManager {
         ActorsRESTWrapper.readEphemeralMessage(dstDevice.getUUID(), convId, messageId);
     }
 
-    public List<ActorsRESTWrapper.MessageInfo> getConversationMessages(ClientUser userFrom, String convId,
-                                                                       String deviceName) throws Exception {
+    public List<MessageInfo> getConversationMessages(ClientUser userFrom, String convId,
+                                                     String deviceName) throws Exception {
         final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
         return ActorsRESTWrapper.getMessagesInfo(dstDevice.getUUID(), convId);
     }
 
     public void setAssetToV3(ClientUser userFrom, String deviceName) throws Exception {
         final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
-        ActorsRESTWrapper.setDeviceAssetsVersion(dstDevice.getUUID(), ActorsRESTWrapper.AssetsVersion.V3);
+        ActorsRESTWrapper.setDeviceAssetsVersion(dstDevice.getUUID(), AssetsVersion.V3);
     }
 
     public void setAssetToV2(ClientUser userFrom, String deviceName) throws Exception {
         final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
-        ActorsRESTWrapper.setDeviceAssetsVersion(dstDevice.getUUID(), ActorsRESTWrapper.AssetsVersion.V2);
+        ActorsRESTWrapper.setDeviceAssetsVersion(dstDevice.getUUID(), AssetsVersion.V2);
     }
 
     public void cancelConnection(ClientUser userFrom, ClientUser userDst, String deviceName) throws Exception {

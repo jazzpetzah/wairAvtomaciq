@@ -26,7 +26,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.IOSDistributable;
 import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.common.wire_actors.ActorsRESTWrapper;
+import com.wearezeta.auto.common.wire_actors.models.AssetsVersion;
 import com.wearezeta.auto.ios.common.IOSPagesCollection;
 import com.wearezeta.auto.ios.common.IOSTestContext;
 import com.wearezeta.auto.ios.common.IOSTestContextHolder;
@@ -1011,7 +1011,7 @@ public class CommonIOSSteps {
             case "v3":
                 IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
                         .IChangeUserAvatarPicture(userNameAlias, picturePath,
-                                ActorsRESTWrapper.AssetsVersion.valueOf(protocol.toUpperCase()));
+                                AssetsVersion.valueOf(protocol.toUpperCase()));
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown protocol name '%s'", protocol));
@@ -1856,7 +1856,7 @@ public class CommonIOSSteps {
      */
     @Given("^User (.*) switches assets to (V2|V3) protocol(?: via device (.*))?$")
     public void UserSwitchAssetMode(String userAs, String mode, String deviceName) throws Exception {
-        ActorsRESTWrapper.AssetsVersion asset = ActorsRESTWrapper.AssetsVersion.valueOf(mode.toUpperCase());
+        AssetsVersion asset = AssetsVersion.valueOf(mode.toUpperCase());
         IOSTestContextHolder.getInstance().getTestContext().getCommonSteps().UserSetAssetMode(userAs, asset, deviceName);
     }
 
