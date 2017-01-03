@@ -24,32 +24,27 @@ public class RemoteDevicesManager {
         private Optional<String> name = Optional.empty();
         private Optional<ClientUser> owner = Optional.empty();
 
-        public Device(String uuid, String name) {
-            this.uuid = uuid;
-            this.name = Optional.of(name);
-        }
-
-        public Device(String uuid) {
+        Device(String uuid) {
             this.uuid = uuid;
         }
 
-        public String getUUID() {
+        String getUUID() {
             return uuid;
         }
 
-        public Optional<String> getName() {
+        Optional<String> getName() {
             return name;
         }
 
-        public void setOwner(ClientUser owner) {
+        void setOwner(ClientUser owner) {
             this.owner = Optional.of(owner);
         }
 
-        public Optional<ClientUser> getOwner() {
+        Optional<ClientUser> getOwner() {
             return this.owner;
         }
 
-        public void setName(String name) {
+        void setName(String name) {
             this.name = Optional.of(name);
         }
     }
@@ -92,7 +87,25 @@ public class RemoteDevicesManager {
         }
     }
 
-    private void unregisterDevice(Device device) throws Exception {
+    private void unregisterAllDevices() throws InterruptedException {
+        devicesGuard.acquire();
+        try {
+            registeredDevices.clear();
+        } finally {
+            devicesGuard.release();
+        }
+    }
+
+    private List<Device> getRegisteredDevices() throws InterruptedException {
+        devicesGuard.acquire();
+        try {
+            return new ArrayList<>(registeredDevices);
+        } finally {
+            devicesGuard.release();
+        }
+    }
+
+    private void unregisterDevice(Device device) throws InterruptedException {
         devicesGuard.acquire();
         try {
             if (registeredDevices.contains(device)) {
@@ -103,7 +116,7 @@ public class RemoteDevicesManager {
         }
     }
 
-    private Device registerDevice(Device newDevice) throws Exception {
+    private Device registerDevice(Device newDevice) throws InterruptedException {
         devicesGuard.acquire();
         try {
             registeredDevices.add(newDevice);
@@ -329,26 +342,22 @@ public class RemoteDevicesManager {
     }
 
     public void reset() {
+        List<String> uuids = new ArrayList<>();
         try {
-            devicesGuard.acquire();
-            final List<Device> registeredDevicesCopy;
-            try {
-                registeredDevicesCopy = new ArrayList<>(registeredDevices);
-            } finally {
-                devicesGuard.release();
-            }
-            for (Device registeredDevice : registeredDevicesCopy) {
+            uuids = getRegisteredDevices().stream()
+                    .map(Device::getUUID)
+                    .collect(Collectors.toList());
+            unregisterAllDevices();
+        } catch (InterruptedException e) {
+            Throwables.propagate(e);
+        } finally {
+            for (String uuid : uuids) {
                 try {
-                    unregisterDevice(registeredDevice);
-                    ActorsRESTWrapper.removeDevice(registeredDevice.getUUID());
+                    ActorsRESTWrapper.removeDevice(uuid);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-        } catch (InterruptedException e) {
-            Throwables.propagate(e);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
