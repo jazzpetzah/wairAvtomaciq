@@ -1,18 +1,15 @@
 package com.wearezeta.auto.android_tablet.steps.details_overlay.single;
 
+import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContextHolder;
 import com.wearezeta.auto.android_tablet.pages.details_overlay.single.TabletSinglePendingIncomingConnectionPage;
-import com.wearezeta.auto.android_tablet.steps.AndroidTabletPagesCollection;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 
 public class SinglePendingIncomingConnectionPageSteps {
-    private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection.getInstance();
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
     private TabletSinglePendingIncomingConnectionPage getSinglePendingIncomingConnectionPage() throws Exception {
-        return pagesCollection.getPage(TabletSinglePendingIncomingConnectionPage.class);
+        return AndroidTabletTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(TabletSinglePendingIncomingConnectionPage.class);
     }
 
     /**
@@ -24,7 +21,8 @@ public class SinglePendingIncomingConnectionPageSteps {
      */
     @When("^I scroll to contact (.*) on Single pending incoming connection page$")
     public void IScrollToInboxContact(String contact) throws Throwable {
-        contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+        contact = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .findUserByNameOrNameAlias(contact).getName();
         getSinglePendingIncomingConnectionPage().scrollToContact(contact);
     }
 
@@ -39,7 +37,8 @@ public class SinglePendingIncomingConnectionPageSteps {
     @When("^I tap (ignore|connect) button( for user (.+))? on Single pending incoming connection (?:page|popover)$")
     public void ITapButton(String buttonName, String withSpecifiedUser, String userName) throws Exception {
         if (withSpecifiedUser != null) {
-            userName = usrMgr.findUserByNameOrNameAlias(userName).getName();
+            userName = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
+                    .findUserByNameOrNameAlias(userName).getName();
             getSinglePendingIncomingConnectionPage().tapButton(userName, buttonName);
         } else {
             getSinglePendingIncomingConnectionPage().tapButton(buttonName);

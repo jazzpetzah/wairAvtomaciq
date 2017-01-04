@@ -1,16 +1,15 @@
 package com.wearezeta.auto.android_tablet.steps.details_overlay.single;
 
+import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContextHolder;
 import com.wearezeta.auto.android_tablet.pages.details_overlay.single.TabletSingleBlockedUserDetailsOverlayPage;
-import com.wearezeta.auto.android_tablet.steps.AndroidTabletPagesCollection;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.jcodec.common.Assert;
 
 public class SingleBlockedUserDetailsOverlayPageSteps {
-    private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection.getInstance();
-
     private TabletSingleBlockedUserDetailsOverlayPage getSingleBlockedUserDetailsOverlayPage() throws Exception {
-        return pagesCollection.getPage(TabletSingleBlockedUserDetailsOverlayPage.class);
+        return AndroidTabletTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(TabletSingleBlockedUserDetailsOverlayPage.class);
     }
 
     /**

@@ -1,8 +1,8 @@
 package com.wearezeta.auto.win.steps;
 
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import org.apache.log4j.Logger;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.web.common.TestContext;
 import static com.wearezeta.auto.win.common.WinCommonUtils.getSizeOfAppInMB;
 import com.wearezeta.auto.win.pages.win.MainWirePage;
 import com.wearezeta.auto.win.common.WinCommonUtils;
@@ -16,9 +16,9 @@ import static org.junit.Assert.assertEquals;
 public class CommonWinSteps {
 
     private static final Logger LOG = ZetaLogger.getLog(CommonWinSteps.class.getName());
-    private final TestContext webContext;
+    private final WebAppTestContext webContext;
 
-    public CommonWinSteps(TestContext webContext) {
+    public CommonWinSteps(WebAppTestContext webContext) {
         this.webContext = webContext;
     }
 

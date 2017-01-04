@@ -1,9 +1,7 @@
 package com.wearezeta.auto.android_tablet.steps;
 
-import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
+import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContextHolder;
 import com.wearezeta.auto.android_tablet.pages.TabletCallIncomingPage;
-
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
 import cucumber.api.java.en.When;
 import org.junit.Assert;
@@ -15,15 +13,10 @@ import org.openqa.selenium.ScreenOrientation;
 import static org.openqa.selenium.ScreenOrientation.LANDSCAPE;
 
 public class CallIncomingPageSteps {
-    private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection.getInstance();
-
     private TabletCallIncomingPage getPage() throws Exception {
-        return pagesCollection.getPage(TabletCallIncomingPage.class);
+        return AndroidTabletTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(TabletCallIncomingPage.class);
     }
-
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
-    private final ScreenOrientationHelper screenOrientationHelper = ScreenOrientationHelper.getInstance();
 
     /**
      * Verifies presence of incoming call
@@ -52,7 +45,8 @@ public class CallIncomingPageSteps {
      */
     @When("^I swipe to (ignore|accept) the call$")
     public void ISwipeTo(String action) throws Exception {
-        final ScreenOrientation currentOrientation = screenOrientationHelper.getOriginalOrientation()
+        final ScreenOrientation currentOrientation = AndroidTabletTestContextHolder.getInstance().getTestContext()
+                .getScreenOrientationHelper().getOriginalOrientation()
                 .orElseThrow(() -> new IllegalStateException("Could not get device orientation"));
         switch (action.toLowerCase()) {
             case "ignore":
@@ -84,7 +78,8 @@ public class CallIncomingPageSteps {
      */
     @When("^I see incoming call from (.*)$")
     public void ISeeIncomingCallingMesage(String expectedCallerName) throws Exception {
-        expectedCallerName = usrMgr.findUserByNameOrNameAlias(expectedCallerName).getName();
+        expectedCallerName = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .findUserByNameOrNameAlias(expectedCallerName).getName();
         Assert.assertTrue(String.format(
                 "The current caller name differs from the expected value '%s'",
                 expectedCallerName), getPage()

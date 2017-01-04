@@ -3,6 +3,7 @@ package com.wearezeta.auto.ios.steps;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.misc.Timedelta;
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import com.wearezeta.auto.ios.pages.ImageFullScreenPage;
 
 import cucumber.api.java.en.Then;
@@ -11,10 +12,9 @@ import cucumber.api.java.en.When;
 import org.junit.Assert;
 
 public class ImageFullScreenPageSteps {
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-
     private ImageFullScreenPage getImageFullScreenPage() throws Exception {
-        return pagesCollection.getPage(ImageFullScreenPage.class);
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(ImageFullScreenPage.class);
     }
 
     @When("^I see Full Screen Page opened$")

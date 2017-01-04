@@ -1,15 +1,14 @@
 package com.wearezeta.auto.android_tablet.steps.details_overlay.single;
 
+import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContextHolder;
 import com.wearezeta.auto.android_tablet.pages.details_overlay.single.TabletSinglePendingOutgoingConnectionPage;
-import com.wearezeta.auto.android_tablet.steps.AndroidTabletPagesCollection;
 import cucumber.api.java.en.Then;
 import org.junit.Assert;
 
 public class SinglePendingOutgoingConnectionPageSteps {
-    private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection.getInstance();
-
     private TabletSinglePendingOutgoingConnectionPage getSinglePendingOutgoingConnectionPage() throws Exception {
-        return pagesCollection.getPage(TabletSinglePendingOutgoingConnectionPage.class);
+        return AndroidTabletTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(TabletSinglePendingOutgoingConnectionPage.class);
     }
 
     /**

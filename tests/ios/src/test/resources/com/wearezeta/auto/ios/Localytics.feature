@@ -1,6 +1,6 @@
 Feature: Localytics
 
-  @C375780 @staging @enableLocalyticsLogs
+  @C375780 @regression @enableLocalyticsLogs
   Scenario Outline: Verify key tracking events
     Given There are 2 users
     Given I prepare <FileName> to be uploaded as a video message
@@ -70,12 +70,12 @@ Feature: Localytics
     When I tap Video Message button from input tools
     And I wait for 10 seconds
     Then I see "media.completed_media_action" event with {"action": "video_message", "conversation_type": "one_to_one", "with_bot": "false"} attributes is sent to Localytics at least 1 time
-    And I see "media.sent_video_message" event is sent to Localytics at least 1 time
+    # And I see "media.sent_video_message" event is sent to Localytics at least 1 time
     When I tap File Transfer button from input tools
     And I wait for 5 seconds
     And I tap file transfer menu item <ItemName>
     And I wait for 7 seconds
-    Then I see "media.completed_media_action" event with {"action": "file", "conversation_type": "one_to_one", "with_bot": "false"} attributes is sent to Localytics at least 1 time
+    Then I see "media.completed_media_action" event with {"action": "file_transfer", "conversation_type": "one_to_one", "with_bot": "false"} attributes is sent to Localytics at least 1 time
     When I tap Share Location button from input tools
     And I accept alert if visible
     And I wait for 5 seconds

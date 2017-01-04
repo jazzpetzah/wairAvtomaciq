@@ -1,14 +1,14 @@
 package com.wearezeta.auto.ios.steps;
 
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import com.wearezeta.auto.ios.pages.ManageDevicesOverlay;
 import cucumber.api.java.en.Then;
 import org.junit.Assert;
 
 public class ManageDeviceOverlaySteps {
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-
     private ManageDevicesOverlay getManageDevicesOverlay() throws Exception {
-        return pagesCollection.getPage(ManageDevicesOverlay.class);
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(ManageDevicesOverlay.class);
     }
 
     /**

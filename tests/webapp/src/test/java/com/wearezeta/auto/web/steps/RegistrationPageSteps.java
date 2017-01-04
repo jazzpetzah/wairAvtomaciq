@@ -19,7 +19,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.LoginPage;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 
@@ -39,9 +39,9 @@ public class RegistrationPageSteps {
     private ClientUser userToRegister = null;
     private Future<String> activationMessage;
     private Future<String> newDeviceMessage;
-    private final TestContext context;
+    private final WebAppTestContext context;
 
-    public RegistrationPageSteps(TestContext context) {
+    public RegistrationPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 
@@ -55,7 +55,7 @@ public class RegistrationPageSteps {
         context.getPagesCollection().getPage(RegistrationPage.class)
                 .waitForRegistrationPageToFullyLoad();
         try {
-            this.userToRegister = context.getUserManager().findUserByNameOrNameAlias(name);
+            this.userToRegister = context.getUsersManager().findUserByNameOrNameAlias(name);
         } catch (NoSuchUserException e) {
             if (this.userToRegister == null) {
                 this.userToRegister = new ClientUser();
@@ -72,7 +72,7 @@ public class RegistrationPageSteps {
     public void IEnterEmail(String email) throws Exception {
         boolean flag = false;
         try {
-            String realEmail = context.getUserManager().findUserByEmailOrEmailAlias(email)
+            String realEmail = context.getUsersManager().findUserByEmailOrEmailAlias(email)
                     .getEmail();
             this.userToRegister.setEmail(realEmail);
         } catch (NoSuchUserException e) {
@@ -93,7 +93,7 @@ public class RegistrationPageSteps {
 
     @When("^(.*) verifies email is correct on Registration page$")
     public void IVerifyEmail(String usernameAlias) throws Exception {
-        String realEmail = context.getUserManager().findUserByNameOrNameAlias(usernameAlias)
+        String realEmail = context.getUsersManager().findUserByNameOrNameAlias(usernameAlias)
                 .getEmail();
         Assert.assertEquals("Entered email is wrong", realEmail,
                 context.getPagesCollection().getPage(RegistrationPage.class)
@@ -103,7 +103,7 @@ public class RegistrationPageSteps {
 
     @When("^(.*) verifies username is correct on Registration page$")
     public void IVerifyUsername(String usernameAlias) throws Exception {
-        String realUsername = context.getUserManager().findUserByNameOrNameAlias(usernameAlias)
+        String realUsername = context.getUsersManager().findUserByNameOrNameAlias(usernameAlias)
                 .getName();
         Assert.assertEquals("Entered username is wrong", realUsername,
                 context.getPagesCollection().getPage(RegistrationPage.class)
@@ -115,7 +115,7 @@ public class RegistrationPageSteps {
     public void IEnterPassword(String password) throws Exception {
 
         try {
-            ClientUser user = context.getUserManager().findUserByPasswordAlias(password);
+            ClientUser user = context.getUsersManager().findUserByPasswordAlias(password);
             if (this.userToRegister == null) {
                 this.userToRegister = user;
             }
@@ -158,9 +158,9 @@ public class RegistrationPageSteps {
     public void IStartListeningForNewDeviceMail(String emailOrName) throws Exception {
         ClientUser user;
         try {
-            user = context.getUserManager().findUserByEmailOrEmailAlias(emailOrName);
+            user = context.getUsersManager().findUserByEmailOrEmailAlias(emailOrName);
         } catch (NoSuchUserException e) {
-            user = context.getUserManager().findUserByNameOrNameAlias(emailOrName);
+            user = context.getUsersManager().findUserByNameOrNameAlias(emailOrName);
         }
         IMAPSMailbox mbox = IMAPSMailbox.getInstance(user.getEmail(), user.getPassword());
         Map<String, String> expectedHeaders = new HashMap<>();
@@ -171,14 +171,14 @@ public class RegistrationPageSteps {
 
     @Then("^I see email (.*) on [Vv]erification page$")
     public void ISeeVerificationEmail(String email) throws Exception {
-        email = context.getUserManager().findUserByEmailOrEmailAlias(email).getEmail();
+        email = context.getUsersManager().findUserByEmailOrEmailAlias(email).getEmail();
         assertThat(context.getPagesCollection().getPage(RegistrationPage.class)
                 .getVerificationEmailAddress(), containsString(email));
     }
 
     @Then("^I see email (.*) on pending page$")
     public void ISeePendingEmail(String email) throws Exception {
-        email = context.getUserManager().findUserByEmailOrEmailAlias(email).getEmail();
+        email = context.getUsersManager().findUserByEmailOrEmailAlias(email).getEmail();
         assertThat(context.getPagesCollection().getPage(RegistrationPage.class)
                 .getPendingEmailAddress(), containsString(email));
     }
@@ -254,7 +254,7 @@ public class RegistrationPageSteps {
         context.stopPinging();
 
         // indexes in aliases start from 1
-        final int userIndex = context.getUserManager().appendCustomUser(userToRegister) + 1;
+        final int userIndex = context.getUsersManager().appendCustomUser(userToRegister) + 1;
         userToRegister.addEmailAlias(ClientUsersManager.EMAIL_ALIAS_TEMPLATE.apply(userIndex));
         userToRegister.addNameAlias(ClientUsersManager.NAME_ALIAS_TEMPLATE.apply(userIndex));
         userToRegister.addPasswordAlias(ClientUsersManager.PASSWORD_ALIAS_TEMPLATE.apply(userIndex));

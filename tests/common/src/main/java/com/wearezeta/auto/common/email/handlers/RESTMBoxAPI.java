@@ -24,16 +24,11 @@ final class RESTMBoxAPI {
 
     private static final Logger log = ZetaLogger.getLog(RESTMBoxAPI.class.getSimpleName());
 
-    private static final String URL_PROTOCOL = "http://";
-
     public static String getApiRoot() {
         try {
-            return String.format("%s%s:%s", URL_PROTOCOL,
-                    CommonUtils.getDefaultEmailListenerServiceHostFromConfig(RESTMBoxAPI.class),
-                    CommonUtils.getDefaultEmailListenerServicePortFromConfig(RESTMBoxAPI.class));
+            return CommonUtils.getDefaultEmailListenerUrlFromConfig(RESTMBoxAPI.class);
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 

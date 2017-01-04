@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
+import com.wearezeta.auto.android.common.AndroidTestContextHolder;
 import com.wearezeta.auto.android.pages.ConversationsListPage;
-import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.misc.Timedelta;
 import org.apache.log4j.Logger;
@@ -20,11 +20,9 @@ import com.wearezeta.auto.android.common.reporter.AndroidPerfReportModel;
 import com.wearezeta.auto.android.pages.ConversationViewPage;
 import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
 import com.wearezeta.auto.android.pages.registration.WelcomePage;
-import com.wearezeta.auto.common.CommonCallingSteps2;
 import com.wearezeta.auto.common.calling2.v1.model.Flow;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.performance.PerformanceCommon;
 import com.wearezeta.auto.common.performance.PerformanceHelpers;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -35,30 +33,28 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class PerformanceSteps {
-
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
-    private final PerformanceCommon perfCommon = PerformanceCommon.getInstance();
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-    private final CommonCallingSteps2 commonCallingSteps = CommonCallingSteps2.getInstance();
-
     private static final Logger log = ZetaLogger.getLog(PerformanceSteps.class.getSimpleName());
 
     private static final Timedelta DEFAULT_SWIPE_TIME = Timedelta.fromMilliSeconds(500);
 
     private ConversationsListPage getContactListPage() throws Exception {
-        return pagesCollection.getPage(ConversationsListPage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(ConversationsListPage.class);
     }
 
     private ConversationViewPage getConversationViewPage() throws Exception {
-        return pagesCollection.getPage(ConversationViewPage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(ConversationViewPage.class);
     }
 
     private EmailSignInPage getEmailSignInPage() throws Exception {
-        return pagesCollection.getPage(EmailSignInPage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(EmailSignInPage.class);
     }
 
     private WelcomePage getWelcomePage() throws Exception {
-        return pagesCollection.getPage(WelcomePage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(WelcomePage.class);
     }
 
     private Optional<String> randomContactAlias = Optional.empty();
@@ -73,7 +69,8 @@ public class PerformanceSteps {
      */
     @Given("^I select random contact for the performance test$")
     public void ISelectRandomContact() throws Exception {
-        final int contactIndex = 2 + rand.nextInt(usrMgr.getCreatedUsers().size() - 1);
+        final int contactIndex = 2 + rand.nextInt(AndroidTestContextHolder.getInstance().getTestContext()
+                .getUsersManager().getCreatedUsers().size() - 1);
         this.randomContactAlias = Optional.of(ClientUsersManager.NAME_ALIAS_TEMPLATE.apply(contactIndex));
     }
 
@@ -87,7 +84,8 @@ public class PerformanceSteps {
      */
     @Given("^I sign in using my email with (\\d+) seconds? timeout$")
     public void ISignInUsingMyEmail(int timeoutSeconds) throws Exception {
-        final ClientUser self = usrMgr.getSelfUserOrThrowError();
+        final ClientUser self = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .getSelfUserOrThrowError();
         assert getWelcomePage().waitForInitialScreen() : "The initial screen was not shown";
         getWelcomePage().tapSignInTab();
         getEmailSignInPage().setLogin(self.getEmail());
@@ -103,9 +101,10 @@ public class PerformanceSteps {
      */
     @Given("^The random performance contact removes all his registered OTR clients$")
     public void UserRemovesAllRegisteredOtrClients() throws Exception {
-        CommonSteps.getInstance().UserRemovesAllRegisteredOtrClients(randomContactAlias.orElseThrow(
-                () -> new IllegalStateException("You need to set the random contact first")
-        ));
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserRemovesAllRegisteredOtrClients(
+                randomContactAlias.orElseThrow(
+                        () -> new IllegalStateException("You need to set the random contact first")
+                ));
     }
 
     /**
@@ -119,9 +118,10 @@ public class PerformanceSteps {
      */
     @Given("^I receive (\\d+) messages? from the random performance contact$")
     public void IReceiveXMessagesFromContact(int msgsCount) throws Exception {
-        perfCommon.sendMultipleMessagesIntoConversation(randomContactAlias.orElseThrow(
-                () -> new IllegalStateException("You need to set the random contact first")
-        ), msgsCount);
+        AndroidTestContextHolder.getInstance().getTestContext().getPerformanceCommon()
+                .sendMultipleMessagesIntoConversation(randomContactAlias.orElseThrow(
+                        () -> new IllegalStateException("You need to set the random contact first")
+                ), msgsCount);
     }
 
     private void waitUntilConversationsListIsFullyLoaded() throws Exception {
@@ -163,7 +163,8 @@ public class PerformanceSteps {
         } while (!getConversationViewPage().isConversationVisible() &&
                 System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
         if (!getConversationViewPage().isConversationVisible()) {
-            pagesCollection.getCommonPage().logUIAutomatorSource();
+            AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                    .getCommonPage().logUIAutomatorSource();
             throw new IllegalStateException(
                     String.format("The conversation has not been opened after %s seconds timeout", timeoutSeconds));
         }
@@ -186,10 +187,13 @@ public class PerformanceSteps {
         final String fromContact = randomContactAlias.orElseThrow(
                 () -> new IllegalStateException("You need to set the random contact first")
         );
-        final String destConvoName = usrMgr.findUserByNameOrNameAlias(fromContact).getName();
+        final String destConvoName = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .findUserByNameOrNameAlias(fromContact).getName();
         // Visit the conversation for the first time
         visitConversationWhenAvailable(destConvoName);
-        perfCommon.runPerformanceLoop(() -> visitConversationWhenAvailable(destConvoName), timeoutMinutes);
+        AndroidTestContextHolder.getInstance().getTestContext().getPerformanceCommon().runPerformanceLoop(
+                () -> visitConversationWhenAvailable(destConvoName), timeoutMinutes
+        );
     }
 
     /**
@@ -248,7 +252,8 @@ public class PerformanceSteps {
             PlatformDrivers.getInstance().pingDrivers();
             final long secondsElapsed = (System.currentTimeMillis() - millisecondsStarted) / 1000;
             final long secondsRemaining = durationMinutes * 60 - secondsElapsed;
-            final List<Flow> flows = commonCallingSteps.getFlows(caller);
+            final List<Flow> flows = AndroidTestContextHolder.getInstance().getTestContext()
+                    .getCallingManager().getFlows(caller);
             if (flows.size() == 0) {
                 throw new IllegalStateException(
                         String.format(

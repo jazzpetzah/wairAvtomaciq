@@ -3,7 +3,7 @@ package com.wearezeta.auto.win.steps.webapp;
 
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.win.pages.webapp.ConversationPage;
 import cucumber.api.java.en.Then;
@@ -18,9 +18,9 @@ public class ConversationPageSteps {
     @SuppressWarnings("unused")
     private static final Logger LOG = ZetaLogger.getLog(ConversationPageSteps.class.getName());
 
-    private final TestContext webContext;
+    private final WebAppTestContext webContext;
 
-    public ConversationPageSteps(TestContext webContext) {
+    public ConversationPageSteps(WebAppTestContext webContext) {
         this.webContext = webContext;
     }
     

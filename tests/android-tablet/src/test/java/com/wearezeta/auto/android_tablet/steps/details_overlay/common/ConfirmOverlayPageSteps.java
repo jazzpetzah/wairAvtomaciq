@@ -1,16 +1,15 @@
 package com.wearezeta.auto.android_tablet.steps.details_overlay.common;
 
+import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContextHolder;
 import com.wearezeta.auto.android_tablet.pages.details_overlay.common.TabletConfirmOverlayPage;
-import com.wearezeta.auto.android_tablet.steps.AndroidTabletPagesCollection;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.jcodec.common.Assert;
 
 public class ConfirmOverlayPageSteps {
-    private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection.getInstance();
-
     private TabletConfirmOverlayPage getConfirmOverlayPage() throws Exception {
-        return pagesCollection.getPage(TabletConfirmOverlayPage.class);
+        return AndroidTabletTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(TabletConfirmOverlayPage.class);
     }
 
     /**

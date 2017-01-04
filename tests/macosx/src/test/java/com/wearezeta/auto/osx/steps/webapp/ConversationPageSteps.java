@@ -5,7 +5,7 @@ import static org.hamcrest.Matchers.*;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.pages.webapp.ConversationPage;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import cucumber.api.java.en.Given;
@@ -19,9 +19,9 @@ public class ConversationPageSteps {
 
     @SuppressWarnings("unused")
     private static final Logger LOG = ZetaLogger.getLog(ConversationPageSteps.class.getSimpleName());
-    private final TestContext webContext;
+    private final WebAppTestContext webContext;
 
-    public ConversationPageSteps(TestContext webContext) {
+    public ConversationPageSteps(WebAppTestContext webContext) {
         this.webContext = webContext;
     }
 

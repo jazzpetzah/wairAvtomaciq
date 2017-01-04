@@ -3,7 +3,7 @@ package com.wearezeta.auto.web.steps;
 import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.PhoneNumberPasswordPage;
 import com.wearezeta.auto.web.pages.PhoneNumberVerificationPage;
 import cucumber.api.java.en.Then;
@@ -17,9 +17,9 @@ public class PhoneNumberPasswordPageSteps {
     @SuppressWarnings("unused")
     private static final Logger LOG = ZetaLogger.getLog(PhoneNumberVerificationPage.class.getSimpleName());
 
-    private final TestContext context;
+    private final WebAppTestContext context;
 
-    public PhoneNumberPasswordPageSteps(TestContext context) {
+    public PhoneNumberPasswordPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 

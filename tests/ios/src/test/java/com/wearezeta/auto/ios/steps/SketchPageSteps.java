@@ -1,14 +1,14 @@
 package com.wearezeta.auto.ios.steps;
 
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import com.wearezeta.auto.ios.pages.SketchPage;
 
 import cucumber.api.java.en.When;
 
 public class SketchPageSteps {
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-
     private SketchPage getSketchPage() throws Exception {
-        return pagesCollection.getPage(SketchPage.class);
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(SketchPage.class);
     }
 
     /**

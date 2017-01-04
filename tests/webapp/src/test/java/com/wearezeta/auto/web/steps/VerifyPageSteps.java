@@ -4,7 +4,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.external.VerifyPage;
 
 import cucumber.api.java.en.Then;
@@ -18,10 +18,10 @@ public class VerifyPageSteps {
 
     private static final Logger log = ZetaLogger.getLog(VerifyPageSteps.class.getSimpleName());
 
-    private final TestContext context;
+    private final WebAppTestContext context;
     private String phoneVerificationCode;
 
-    public VerifyPageSteps(TestContext context) {
+    public VerifyPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 
@@ -42,7 +42,7 @@ public class VerifyPageSteps {
 
     @When("^I generate verification code for user (.*)$")
     public void IGenerateVerificationCode(String name) throws Exception {
-        ClientUser user = context.getUserManager().findUserByNameOrNameAlias(name);
+        ClientUser user = context.getUsersManager().findUserByNameOrNameAlias(name);
         phoneVerificationCode = BackendAPIWrappers.getActivationCodeByPhoneNumber(user.getPhoneNumber());
     }
 

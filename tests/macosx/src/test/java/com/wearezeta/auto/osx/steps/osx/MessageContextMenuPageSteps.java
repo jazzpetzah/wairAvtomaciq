@@ -4,14 +4,14 @@ package com.wearezeta.auto.osx.steps.osx;
 import com.wearezeta.auto.osx.pages.osx.ForeignMessageContextMenuPage;
 import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
 import com.wearezeta.auto.osx.pages.osx.OwnMessageContextMenuPage;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import cucumber.api.java.en.When;
 
 public class MessageContextMenuPageSteps {
 
-    private final TestContext webContext;
+    private final WebAppTestContext webContext;
     
-    public MessageContextMenuPageSteps(TestContext webContext) {
+    public MessageContextMenuPageSteps(WebAppTestContext webContext) {
         this.webContext = webContext;
     }
 

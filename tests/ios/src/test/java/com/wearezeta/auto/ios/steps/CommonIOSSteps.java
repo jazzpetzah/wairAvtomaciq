@@ -13,6 +13,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import com.google.common.base.Throwables;
@@ -24,9 +25,11 @@ import com.wearezeta.auto.common.driver.facebook_ios_driver.FBDriverAPI;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.IOSDistributable;
 import com.wearezeta.auto.common.misc.Timedelta;
-import com.wearezeta.auto.common.sync_engine_bridge.AssetProtocol;
-import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
+import com.wearezeta.auto.common.wire_actors.models.AssetsVersion;
+import com.wearezeta.auto.ios.common.IOSPagesCollection;
+import com.wearezeta.auto.ios.common.IOSTestContext;
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import com.wearezeta.auto.ios.tools.*;
 import cucumber.api.PendingException;
 import cucumber.api.Scenario;
@@ -52,13 +55,10 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import static com.wearezeta.auto.common.CommonUtils.*;
 
 public class CommonIOSSteps {
-    private final CommonSteps commonSteps = CommonSteps.getInstance();
     private static final String DEFAULT_USER_AVATAR = "android_dialog_sendpicture_result.png";
     // private static final String IOS_WD_APP_BUNDLE = "com.apple.test.WebDriverAgentRunner-Runner";
     // private static final String FACEBOOK_WD_APP_BUNDLE = "com.facebook.IntegrationApp";
     private static final String ADDRESSBOOK_HELPER_APP_NAME = "AddressbookApp.ipa";
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
     private static Logger log = ZetaLogger.getLog(CommonIOSSteps.class.getSimpleName());
 
     // We keep this short and compatible with spell checker
@@ -385,16 +385,13 @@ public class CommonIOSSteps {
 
     @Before
     public void setUp(Scenario scenario) throws Exception {
-        try {
-            SEBridge.getInstance().reset();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        final IOSTestContext iosTestContext = new IOSTestContext(scenario, new IOSPagesCollection());
+        IOSTestContextHolder.getInstance().setTestContext(iosTestContext);
 
         AppiumServer.getInstance().resetLog();
 
         if (scenario.getSourceTagNames().contains("@useSpecialEmail")) {
-            usrMgr.useSpecialEmail();
+            iosTestContext.getUsersManager().useSpecialEmail();
         }
 
         if (!getIsSimulatorFromConfig(getClass())) {
@@ -425,7 +422,7 @@ public class CommonIOSSteps {
         }
 
         if (scenario.getSourceTagNames().contains(FastLoginContainer.TAG_NAME)) {
-            FastLoginContainer.getInstance().enable(this::resetIOSDriver,
+            iosTestContext.getFastLoginContainer().enable(this::resetIOSDriver,
                     appPath,
                     Optional.of(additionalCaps),
                     DRIVER_CREATION_RETRIES_COUNT);
@@ -439,27 +436,22 @@ public class CommonIOSSteps {
 
     private void updateDriver(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         ZetaFormatter.setLazyDriver(lazyDriver);
-        if (pagesCollection.hasPages()) {
-            pagesCollection.clearAllPages();
+        if (IOSTestContextHolder.getInstance().getTestContext().getPagesCollection().hasPages()) {
+            IOSTestContextHolder.getInstance().getTestContext().getPagesCollection().clearAllPages();
         }
-        pagesCollection.setFirstPage(new LoginPage(lazyDriver));
+        IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .setFirstPage(new LoginPage(lazyDriver));
     }
 
     @After
     public void tearDown(Scenario scenario) {
-        try {
-            // async calls/waiting instances cleanup
-            CommonCallingSteps2.getInstance().cleanup();
-        } catch (Exception e) {
-            // do not fail if smt fails here
-            e.printStackTrace();
-        }
+        final IOSTestContext iosTestContext = IOSTestContextHolder.getInstance().getTestContext();
 
         try {
             if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
-                pagesCollection.getCommonPage().forceAcceptAlert();
-                if (!scenario.getStatus().equals(Result.PASSED) && pagesCollection.hasPages()) {
-                    pagesCollection.getCommonPage().printPageSource();
+                iosTestContext.getPagesCollection().getCommonPage().forceAcceptAlert();
+                if (!scenario.getStatus().equals(Result.PASSED) && iosTestContext.getPagesCollection().hasPages()) {
+                    iosTestContext.getPagesCollection().getCommonPage().printPageSource();
                 }
                 PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
             }
@@ -487,16 +479,6 @@ public class CommonIOSSteps {
             e.printStackTrace();
         }
 
-        FastLoginContainer.getInstance().reset();
-
-        pagesCollection.clearAllPages();
-
-        try {
-            usrMgr.resetUsers();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         try {
             if (getIsSimulatorFromConfig(getClass())
                     && scenario.getSourceTagNames().contains(TAG_NAME_FORCE_RESET_AFTER_TEST)) {
@@ -505,6 +487,8 @@ public class CommonIOSSteps {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        iosTestContext.reset();
 
         log.debug("\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
     }
@@ -533,7 +517,8 @@ public class CommonIOSSteps {
         customCaps.put(CAPABILITY_NAME_FORCE_RESET, false);
         customCaps.put(CAPABILITY_NAME_NO_UNINSTALL, true);
         final File currentBuildRoot = IOSDistributable.getInstance(getAppPath()).getAppRoot();
-        pagesCollection.getCommonPage().installApp(currentBuildRoot);
+        IOSTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage()
+                .installApp(currentBuildRoot);
         final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(
                 currentBuildRoot.getAbsolutePath(),
                 Optional.of(customCaps), 1);
@@ -583,16 +568,20 @@ public class CommonIOSSteps {
         switch (action.toLowerCase()) {
             case "accept":
                 if (mayIgnore == null) {
-                    pagesCollection.getCommonPage().acceptAlert();
+                    IOSTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage()
+                            .acceptAlert();
                 } else {
-                    pagesCollection.getCommonPage().acceptAlertIfVisible();
+                    IOSTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage()
+                            .acceptAlertIfVisible();
                 }
                 break;
             case "dismiss":
                 if (mayIgnore == null) {
-                    pagesCollection.getCommonPage().dismissAlert();
+                    IOSTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage()
+                            .dismissAlert();
                 } else {
-                    pagesCollection.getCommonPage().dismissAlertIfVisible();
+                    IOSTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage()
+                            .dismissAlertIfVisible();
                 }
                 break;
             default:
@@ -611,13 +600,16 @@ public class CommonIOSSteps {
     public void ITapHideKeyboardBtn(String btnName) throws Exception {
         switch (btnName.toLowerCase()) {
             case "hide":
-                pagesCollection.getCommonPage().tapHideKeyboardButton();
+                IOSTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage()
+                        .tapHideKeyboardButton();
                 break;
             case "space":
-                pagesCollection.getCommonPage().tapSpaceKeyboardButton();
+                IOSTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage()
+                        .tapSpaceKeyboardButton();
                 break;
             case "done":
-                pagesCollection.getCommonPage().tapKeyboardCommitButton();
+                IOSTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage()
+                        .tapKeyboardCommitButton();
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name: %s", btnName));
@@ -633,7 +625,8 @@ public class CommonIOSSteps {
      */
     @When("^I close the app for (\\d+) seconds?$")
     public void ICloseApp(int seconds) throws Exception {
-        pagesCollection.getCommonPage().putWireToBackgroundFor(seconds);
+        IOSTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage()
+                .putWireToBackgroundFor(seconds);
     }
 
     /**
@@ -645,18 +638,21 @@ public class CommonIOSSteps {
      */
     @When("^I lock screen for (\\d+) seconds$")
     public void ILockScreen(int seconds) throws Exception {
-        pagesCollection.getCommonPage().lockScreen(Timedelta.fromSeconds(seconds));
+        IOSTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage()
+                .lockScreen(Timedelta.fromSeconds(seconds));
     }
 
     @Given("^(.*) sent connection request to (.*)$")
     public void GivenConnectionRequestIsSentTo(String userFromNameAlias, String usersToNameAliases) throws Exception {
-        commonSteps.ConnectionRequestIsSentTo(userFromNameAlias, usersToNameAliases);
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .ConnectionRequestIsSentTo(userFromNameAlias, usersToNameAliases);
     }
 
     @Given("^(.*) has group chat (.*) with (.*)$")
     public void UserHasGroupChatWithContacts(String chatOwnerNameAlias,
                                              String chatName, String otherParticipantsNameAlises) throws Exception {
-        commonSteps.UserHasGroupChatWithContacts(chatOwnerNameAlias, chatName, otherParticipantsNameAlises);
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .UserHasGroupChatWithContacts(chatOwnerNameAlias, chatName, otherParticipantsNameAlises);
     }
 
     /**
@@ -671,7 +667,8 @@ public class CommonIOSSteps {
     @Given("^(.*) removes? (.*) from group chat (.*)$")
     public void UserARemoveUserBFromGroupChat(String chatOwnerNameAlias,
                                               String userToRemove, String chatName) throws Exception {
-        commonSteps.UserXRemoveContactFromGroupChat(chatOwnerNameAlias, userToRemove, chatName);
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .UserXRemoveContactFromGroupChat(chatOwnerNameAlias, userToRemove, chatName);
     }
 
     /**
@@ -686,7 +683,8 @@ public class CommonIOSSteps {
     @When("^(.*) added (.*) to group chat (.*)")
     public void UserXaddUserBToGroupChat(String chatOwnerNameAlias,
                                          String userToAdd, String chatName) throws Exception {
-        commonSteps.UserXAddedContactsToGroupChat(chatOwnerNameAlias, userToAdd, chatName);
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .UserXAddedContactsToGroupChat(chatOwnerNameAlias, userToAdd, chatName);
     }
 
     /**
@@ -699,27 +697,30 @@ public class CommonIOSSteps {
      */
     @Given("^(.*) leaves? group chat (.*)$")
     public void UserLeavesGroupChat(String userName, String chatName) throws Exception {
-        commonSteps.UserXLeavesGroupChat(userName, chatName);
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps().UserXLeavesGroupChat(userName, chatName);
     }
 
     @Given("^(.*) is connected to (.*)$")
     public void UserIsConnectedTo(String userFromNameAlias, String usersToNameAliases) throws Exception {
-        commonSteps.UserIsConnectedTo(userFromNameAlias, usersToNameAliases);
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .UserIsConnectedTo(userFromNameAlias, usersToNameAliases);
     }
 
     @Given("^There (?:is|are) (\\d+) users?$")
     public void ThereAreNUsers(int count) throws Exception {
-        commonSteps.ThereAreNUsers(CURRENT_PLATFORM, count);
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps().ThereAreNUsers(CURRENT_PLATFORM, count);
     }
 
     @Given("^There (?:is|are) (\\d+) users? where (.*) is me$")
     public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias) throws Exception {
-        commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count, myNameAlias);
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count, myNameAlias);
         IChangeUserAvatarPicture(myNameAlias, "", "default");
-        commonSteps.UsersSetUniqueUsername(myNameAlias);
-        final FastLoginContainer flc = FastLoginContainer.getInstance();
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps().UsersSetUniqueUsername(myNameAlias);
+        final FastLoginContainer flc = IOSTestContextHolder.getInstance().getTestContext().getFastLoginContainer();
         if (flc.isEnabled()) {
-            updateDriver(flc.executeDriverCreation(usrMgr.getSelfUserOrThrowError()));
+            updateDriver(flc.executeDriverCreation(IOSTestContextHolder.getInstance()
+                    .getTestContext().getUsersManager().getSelfUserOrThrowError()));
         }
     }
 
@@ -738,7 +739,7 @@ public class CommonIOSSteps {
     public void UserSetsUniqueUsername(String userAs, String action, String uniqUsername, String deviceName) throws Exception {
         switch (action.toLowerCase()) {
             case "sets":
-                commonSteps.UsersSetUniqueUsername(userAs);
+                IOSTestContextHolder.getInstance().getTestContext().getCommonSteps().UsersSetUniqueUsername(userAs);
                 break;
             case "changes":
                 if (uniqUsername == null) {
@@ -746,12 +747,15 @@ public class CommonIOSSteps {
                 }
                 // Exclude quotes
                 uniqUsername = uniqUsername.substring(5, uniqUsername.length() - 1);
-                uniqUsername = usrMgr.replaceAliasesOccurences(uniqUsername,
-                        ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
+                uniqUsername = IOSTestContextHolder.getInstance().getTestContext()
+                        .getUsersManager().replaceAliasesOccurences(uniqUsername,
+                                ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
                 if (deviceName == null) {
-                    commonSteps.IChangeUniqueUsername(userAs, uniqUsername);
+                    IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                            .IChangeUniqueUsername(userAs, uniqUsername);
                 } else {
-                    commonSteps.UpdateUniqueUsername(userAs, uniqUsername, deviceName);
+                    IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                            .UpdateUniqueUsername(userAs, uniqUsername, deviceName);
                 }
                 break;
             default:
@@ -773,10 +777,11 @@ public class CommonIOSSteps {
      */
     @Given("^There (?:is|are) (\\d+) users? where (.*) is me with phone number only$")
     public void ThereAreNUsersWhereXIsMeWithoutEmail(int count, String myNameAlias) throws Exception {
-        commonSteps.ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(count, myNameAlias);
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(count, myNameAlias);
         IChangeUserAvatarPicture(myNameAlias, "", "default");
-        commonSteps.UsersSetUniqueUsername(myNameAlias);
-        final FastLoginContainer flc = FastLoginContainer.getInstance();
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps().UsersSetUniqueUsername(myNameAlias);
+        final FastLoginContainer flc = IOSTestContextHolder.getInstance().getTestContext().getFastLoginContainer();
         if (flc.isEnabled()) {
             throw new IllegalStateException("Fast login feature is only supported in log in by email");
         }
@@ -794,12 +799,14 @@ public class CommonIOSSteps {
      */
     @Given("^There (?:is|are) (\\d+) users? where (.*) is me with email only$")
     public void ThereAreNUsersWhereXIsMeWithoutPhone(int count, String myNameAlias) throws Exception {
-        commonSteps.ThereAreNUsersWhereXIsMeRegOnlyByMail(count, myNameAlias);
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .ThereAreNUsersWhereXIsMeRegOnlyByMail(count, myNameAlias);
         IChangeUserAvatarPicture(myNameAlias, "", "default");
-        commonSteps.UsersSetUniqueUsername(myNameAlias);
-        final FastLoginContainer flc = FastLoginContainer.getInstance();
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps().UsersSetUniqueUsername(myNameAlias);
+        final FastLoginContainer flc = IOSTestContextHolder.getInstance().getTestContext().getFastLoginContainer();
         if (flc.isEnabled()) {
-            updateDriver(flc.executeDriverCreation(usrMgr.getSelfUserOrThrowError()));
+            updateDriver(flc.executeDriverCreation(IOSTestContextHolder.getInstance().getTestContext()
+                    .getUsersManager().getSelfUserOrThrowError()));
         }
     }
 
@@ -812,27 +819,31 @@ public class CommonIOSSteps {
      */
     @When("^(.*) cancel all outgoing connection requests$")
     public void CancelAllOutgoingConnectRequest(String userToNameAlias) throws Exception {
-        commonSteps.CancelAllOutgoingConnectRequests(userToNameAlias);
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .CancelAllOutgoingConnectRequests(userToNameAlias);
     }
 
     @When("^I wait for (\\d+) seconds?$")
     public void WaitForTime(int seconds) throws Exception {
-        commonSteps.WaitForTime(seconds);
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps().WaitForTime(seconds);
     }
 
     @When("^User (.*) blocks? user (.*)")
     public void BlockContact(String blockAsUserNameAlias,
                              String userToBlockNameAlias) throws Exception {
-        commonSteps.BlockContact(blockAsUserNameAlias, userToBlockNameAlias);
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .BlockContact(blockAsUserNameAlias, userToBlockNameAlias);
     }
 
     @When("^User (.*) archives? (single user|group) conversation (.*)$")
     public void ArchiveConversationWithUser(String userToNameAlias, String isGroup,
                                             String dstConvoName) throws Exception {
         if (isGroup.equals("group")) {
-            commonSteps.ArchiveConversationWithGroup(userToNameAlias, dstConvoName);
+            IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                    .ArchiveConversationWithGroup(userToNameAlias, dstConvoName);
         } else {
-            commonSteps.ArchiveConversationWithUser(userToNameAlias, dstConvoName);
+            IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                    .ArchiveConversationWithUser(userToNameAlias, dstConvoName);
         }
     }
 
@@ -849,9 +860,11 @@ public class CommonIOSSteps {
     public void MuteConversationWithUser(String userToNameAlias, String isGroup,
                                          String dstConvo) throws Exception {
         if (isGroup.equals("group")) {
-            commonSteps.MuteConversationWithGroup(userToNameAlias, dstConvo);
+            IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                    .MuteConversationWithGroup(userToNameAlias, dstConvo);
         } else {
-            commonSteps.MuteConversationWithUser(userToNameAlias, dstConvo);
+            IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                    .MuteConversationWithUser(userToNameAlias, dstConvo);
         }
     }
 
@@ -867,12 +880,14 @@ public class CommonIOSSteps {
     @When("^User (.*) renames? conversation (.*) to (.*)$")
     public void UserChangeGruopChatName(String user, String oldConversationName, String newConversationName)
             throws Exception {
-        commonSteps.ChangeGroupChatName(user, oldConversationName, newConversationName);
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .ChangeGroupChatName(user, oldConversationName, newConversationName);
     }
 
     @Given("^User (\\w+) (?:securely |\\s*)pings conversation (.*)$")
     public void UserPingedConversation(String pingFromUserNameAlias, String dstConversationName) throws Exception {
-        commonSteps.UserPingedConversationOtr(pingFromUserNameAlias, dstConversationName);
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .UserPingedConversationOtr(pingFromUserNameAlias, dstConversationName);
     }
 
     @Given("^User (.*) sends (\\d+) (encrypted )?messages? to (user|group conversation) (.*)$")
@@ -884,20 +899,23 @@ public class CommonIOSSteps {
             if (conversationType.equals("user")) {
                 // 1:1 conversation
                 if (areEncrypted == null) {
-                    commonSteps.UserSentMessageToUser(msgFromUserNameAlias,
-                            conversationName, DEFAULT_AUTOMATION_MESSAGE);
+                    IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                            .UserSentMessageToUser(msgFromUserNameAlias, conversationName, DEFAULT_AUTOMATION_MESSAGE);
                 } else {
-                    commonSteps.UserSentOtrMessageToUser(msgFromUserNameAlias,
-                            conversationName, DEFAULT_AUTOMATION_MESSAGE, null);
+                    IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                            .UserSentOtrMessageToUser(msgFromUserNameAlias,
+                                    conversationName, DEFAULT_AUTOMATION_MESSAGE, null);
                 }
             } else {
                 // group conversation
                 if (areEncrypted == null) {
-                    commonSteps.UserSentMessageToConversation(msgFromUserNameAlias,
-                            conversationName, DEFAULT_AUTOMATION_MESSAGE);
+                    IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                            .UserSentMessageToConversation(msgFromUserNameAlias,
+                                    conversationName, DEFAULT_AUTOMATION_MESSAGE);
                 } else {
-                    commonSteps.UserSentOtrMessageToConversation(msgFromUserNameAlias,
-                            conversationName, DEFAULT_AUTOMATION_MESSAGE, null);
+                    IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                            .UserSentOtrMessageToConversation(msgFromUserNameAlias,
+                                    conversationName, DEFAULT_AUTOMATION_MESSAGE, null);
                 }
             }
         }
@@ -922,12 +940,14 @@ public class CommonIOSSteps {
         for (int i = 0; i < msgsCount; i++) {
             if (conversationType.equals("user")) {
                 // 1:1 conversation
-                commonSteps.UserSentOtrMessageToUser(msgFromUserNameAlias,
-                        conversationName, DEFAULT_AUTOMATION_MESSAGE, deviceName);
+                IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                        .UserSentOtrMessageToUser(msgFromUserNameAlias,
+                                conversationName, DEFAULT_AUTOMATION_MESSAGE, deviceName);
             } else {
                 // group conversation
-                commonSteps.UserSentOtrMessageToConversation(msgFromUserNameAlias,
-                        conversationName, DEFAULT_AUTOMATION_MESSAGE, deviceName);
+                IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                        .UserSentOtrMessageToConversation(msgFromUserNameAlias,
+                                conversationName, DEFAULT_AUTOMATION_MESSAGE, deviceName);
             }
         }
     }
@@ -950,16 +970,20 @@ public class CommonIOSSteps {
         if (conversationType.equals("user")) {
             // 1:1 conversation
             if (areEncrypted == null) {
-                commonSteps.UserSentMessageToConversation(userFromNameAlias, conversationName, msg);
+                IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                        .UserSentMessageToConversation(userFromNameAlias, conversationName, msg);
             } else {
-                commonSteps.UserSentOtrMessageToConversation(userFromNameAlias, conversationName, msg, null);
+                IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                        .UserSentOtrMessageToConversation(userFromNameAlias, conversationName, msg, null);
             }
         } else {
             // group conversation
             if (areEncrypted == null) {
-                commonSteps.UserSentMessageToConversation(userFromNameAlias, conversationName, msg);
+                IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                        .UserSentMessageToConversation(userFromNameAlias, conversationName, msg);
             } else {
-                commonSteps.UserSentOtrMessageToConversation(userFromNameAlias, conversationName, msg, null);
+                IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                        .UserSentOtrMessageToConversation(userFromNameAlias, conversationName, msg, null);
             }
         }
     }
@@ -980,12 +1004,14 @@ public class CommonIOSSteps {
         protocol = protocol.trim();
         switch (protocol) {
             case "":
-                commonSteps.IChangeUserAvatarPicture(userNameAlias, picturePath);
+                IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                        .IChangeUserAvatarPicture(userNameAlias, picturePath);
                 break;
             case "v2":
             case "v3":
-                commonSteps.IChangeUserAvatarPicture(userNameAlias, picturePath,
-                        AssetProtocol.valueOf(protocol.toUpperCase()));
+                IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                        .IChangeUserAvatarPicture(userNameAlias, picturePath,
+                                AssetsVersion.valueOf(protocol.toUpperCase()));
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown protocol name '%s'", protocol));
@@ -1003,29 +1029,32 @@ public class CommonIOSSteps {
     @When("^User (\\w+) changes? name to (.*)$")
     public void IChangeName(String userNameAlias, String newName)
             throws Exception {
-        commonSteps.IChangeName(userNameAlias, newName);
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps().IChangeName(userNameAlias, newName);
     }
 
     @When("^User (\\w+) changes? accent color to (.*)$")
     public void IChangeAccentColor(String userNameAlias, String newColor) throws Exception {
-        commonSteps.IChangeUserAccentColor(userNameAlias, newColor);
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .IChangeUserAccentColor(userNameAlias, newColor);
     }
 
     @Given("^There \\w+ (\\d+) shared user[s]* with name prefix (\\w+)$")
     public void ThereAreNSharedUsersWithNamePrefix(int count, String namePrefix)
             throws Exception {
-        commonSteps.ThereAreNSharedUsersWithNamePrefix(count, namePrefix);
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .ThereAreNSharedUsersWithNamePrefix(count, namePrefix);
     }
 
     @Given("^User (\\w+) is [Mm]e$")
     public void UserXIsMe(String nameAlias) throws Exception {
-        commonSteps.UserXIsMe(nameAlias);
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps().UserXIsMe(nameAlias);
     }
 
     @Given("^(\\w+) waits? until (\\w+) exists in backend search results$")
     public void UserWaitsUntilContactExistsInHisSearchResults(
             String searchByNameAlias, String query) throws Exception {
-        commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
     }
 
     /**
@@ -1039,7 +1068,8 @@ public class CommonIOSSteps {
      */
     @Given("^(\\w+) waits? until (\\w+) has (\\d+) common friends? on the backend$")
     public void UserWaitForCommonFriends(String userAsAlias, String query, int expectedFriendsCount) throws Exception {
-        commonSteps.WaitUntilCommonContactsIsGenerated(userAsAlias, query, expectedFriendsCount);
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .WaitUntilCommonContactsIsGenerated(userAsAlias, query, expectedFriendsCount);
     }
 
     @Given("^User (.*) sends (encrypted )?image (.*) to (single user|group) conversation (.*)")
@@ -1050,11 +1080,11 @@ public class CommonIOSSteps {
         final String imagePath = CommonUtils.getImagesPathFromConfig(this.getClass()) + File.separator + imageFileName;
         final boolean isGroup = conversationType.equals("group");
         if (isEncrypted == null) {
-            commonSteps.UserSentImageToConversation(imageSenderUserNameAlias,
-                    imagePath, dstConversationName, isGroup);
+            IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                    .UserSentImageToConversation(imageSenderUserNameAlias, imagePath, dstConversationName, isGroup);
         } else {
-            commonSteps.UserSentImageToConversationOtr(imageSenderUserNameAlias,
-                    imagePath, dstConversationName, isGroup);
+            IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                    .UserSentImageToConversationOtr(imageSenderUserNameAlias, imagePath, dstConversationName, isGroup);
         }
     }
 
@@ -1067,7 +1097,8 @@ public class CommonIOSSteps {
      */
     @When("^I rotate UI to (landscape|portrait)$")
     public void WhenIRotateUILandscape(ScreenOrientation orientation) throws Exception {
-        pagesCollection.getCommonPage().rotateScreen(orientation);
+        IOSTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage()
+                .rotateScreen(orientation);
         Thread.sleep(1000); // fix for animation
     }
 
@@ -1082,7 +1113,8 @@ public class CommonIOSSteps {
      */
     @When("^User (.*) adds [Uu]ser (.*) to group chat (.*)$")
     public void UserAddsUserToGroupChat(String user, String userToBeAdded, String group) throws Exception {
-        commonSteps.UserXAddedContactsToGroupChat(user, userToBeAdded, group);
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .UserXAddedContactsToGroupChat(user, userToBeAdded, group);
     }
 
     /**
@@ -1112,7 +1144,8 @@ public class CommonIOSSteps {
      */
     @When("^I tap at (\\d+)%,(\\d+)% of the viewport size")
     public void ITapAtPoint(int percentX, int percentY) throws Exception {
-        pagesCollection.getCommonPage().tapScreenByPercents(percentX, percentY);
+        IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getCommonPage().tapScreenByPercents(percentX, percentY);
     }
 
     /**
@@ -1124,7 +1157,8 @@ public class CommonIOSSteps {
      */
     @Given("^User (.*) removes his avatar picture$")
     public void UserRemovesAvatarPicture(String nameAlias) throws Exception {
-        commonSteps.UserDeletesAvatarPicture(nameAlias);
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .UserDeletesAvatarPicture(nameAlias);
     }
 
     /**
@@ -1139,10 +1173,12 @@ public class CommonIOSSteps {
     public void ISeeAlertContains(String shouldNotBeVisible, String expectedText) throws Exception {
         if (shouldNotBeVisible == null) {
             Assert.assertTrue(String.format("There is no '%s' text on the alert", expectedText),
-                    pagesCollection.getCommonPage().isAlertContainsText(expectedText));
+                    IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                            .getCommonPage().isAlertContainsText(expectedText));
         } else {
             Assert.assertTrue(String.format("There is '%s' text on the alert", expectedText),
-                    pagesCollection.getCommonPage().isAlertDoesNotContainsText(expectedText));
+                    IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                            .getCommonPage().isAlertDoesNotContainsText(expectedText));
         }
     }
 
@@ -1157,7 +1193,8 @@ public class CommonIOSSteps {
     @When("^User (.*) adds a new device (.*) with label (.*)$")
     public void UserAddRemoteDeviceToAccount(String userNameAlias,
                                              String deviceName, String label) throws Exception {
-        commonSteps.UserAddsRemoteDeviceToAccount(userNameAlias, deviceName, label);
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .UserAddsRemoteDeviceToAccount(userNameAlias, deviceName, Optional.of(label));
     }
 
     /**
@@ -1170,13 +1207,17 @@ public class CommonIOSSteps {
      */
     @When("^User (.*) adds new devices? (.*)")
     public void UserAddRemoteDeviceToAccount(String userNameAlias, String deviceNames) throws Exception {
-        final List<String> names = usrMgr.splitAliases(deviceNames);
-        final int poolSize = 2;  // Runtime.getRuntime().availableProcessors()
+        final List<String> names = IOSTestContextHolder.getInstance().getTestContext()
+                .getUsersManager().splitAliases(deviceNames);
+        final int poolSize = CommonUtils.getOptimalThreadsCount();
         final ExecutorService pool = Executors.newFixedThreadPool(poolSize);
+        final AtomicInteger createdDevicesCount = new AtomicInteger(0);
         for (String name : names) {
             pool.submit(() -> {
                 try {
-                    commonSteps.UserAddsRemoteDeviceToAccount(userNameAlias, name, CommonUtils.generateRandomString(10));
+                    IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                            .UserAddsRemoteDeviceToAccount(userNameAlias, name, Optional.empty());
+                    createdDevicesCount.incrementAndGet();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1184,7 +1225,7 @@ public class CommonIOSSteps {
         }
         pool.shutdown();
         final int secondsTimeout = (names.size() / poolSize + 1) * 60;
-        if (!pool.awaitTermination(secondsTimeout, TimeUnit.SECONDS)) {
+        if (!pool.awaitTermination(secondsTimeout, TimeUnit.SECONDS) || createdDevicesCount.get() != names.size()) {
             throw new IllegalStateException(String.format(
                     "Devices '%s' were not created within %s seconds timeout", names, secondsTimeout));
         }
@@ -1200,7 +1241,8 @@ public class CommonIOSSteps {
     @Then("^I see \"(.*)\" web page opened$")
     public void ISeeWebPage(String expectedUrl) throws Exception {
         Assert.assertTrue(String.format("The expected URL '%s' has not been opened in web browser", expectedUrl),
-                pagesCollection.getCommonPage().isWebPageVisible(expectedUrl));
+                IOSTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage()
+                        .isWebPageVisible(expectedUrl));
     }
 
     /**
@@ -1211,7 +1253,7 @@ public class CommonIOSSteps {
      */
     @When("^I tap Back To Wire button$")
     public void ITapBackToWire() throws Exception {
-        pagesCollection.getCommonPage().tapBackToWire();
+        IOSTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage().tapBackToWire();
     }
 
     /**
@@ -1223,7 +1265,7 @@ public class CommonIOSSteps {
      */
     @Given("^User (.*) removes all his registered OTR clients$")
     public void UserRemovesAllRegisteredOtrClients(String userAs) throws Exception {
-        commonSteps.UserRemovesAllRegisteredOtrClients(userAs);
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps().UserRemovesAllRegisteredOtrClients(userAs);
     }
 
     /**
@@ -1235,7 +1277,8 @@ public class CommonIOSSteps {
      */
     @Given("^(\\w+) waits? until (?:his|my) Top People list is not empty on the backend$")
     public void UserWaitsUntilContactExistsInTopPeopleResults(String searchByNameAlias) throws Exception {
-        commonSteps.WaitUntilTopPeopleContactsIsFoundInSearch(searchByNameAlias, 1);
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .WaitUntilTopPeopleContactsIsFoundInSearch(searchByNameAlias, 1);
     }
 
     /**
@@ -1249,10 +1292,12 @@ public class CommonIOSSteps {
     public void IDoChoice(String action) throws Exception {
         switch (action.toLowerCase()) {
             case "confirm":
-                pagesCollection.getCommonPage().tapConfirmButton();
+                IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                        .getCommonPage().tapConfirmButton();
                 break;
             case "discard":
-                pagesCollection.getCommonPage().tapCancelButton();
+                IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                        .getCommonPage().tapCancelButton();
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Illegal action name: '%s'", action));
@@ -1272,7 +1317,8 @@ public class CommonIOSSteps {
     @Given("^User (.*) deletes? (single user|group) conversation (.*) using device (.*)")
     public void UserDeletedConversation(String userAs, String convoType, String convoName, String deviceName)
             throws Exception {
-        commonSteps.UserClearsConversation(userAs, convoName, deviceName, convoType.equals("group"));
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .UserClearsConversation(userAs, convoName, deviceName, convoType.equals("group"));
     }
 
     /**
@@ -1305,7 +1351,8 @@ public class CommonIOSSteps {
         } else {
             root = CommonUtils.getBuildPathFromConfig(getClass());
         }
-        commonSteps.UserSentFileToConversation(sender, convoName, root + File.separator + fileName, mimeType,
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .UserSentFileToConversation(sender, convoName, root + File.separator + fileName, mimeType,
                 deviceName, convoType.equals("group"));
     }
 
@@ -1357,13 +1404,14 @@ public class CommonIOSSteps {
      */
     @Given("^I prepare Wire to perform fast log in by email as (.*)")
     public void IDoFastLogin(String alias) throws Exception {
-        final FastLoginContainer flc = FastLoginContainer.getInstance();
+        final FastLoginContainer flc = IOSTestContextHolder.getInstance().getTestContext().getFastLoginContainer();
         if (!flc.isEnabled()) {
             throw new IllegalStateException(
                     String.format("Fast login should be enabled first in order to call this step." +
                             "Make sure you have the '%s' tag in your scenario", FastLoginContainer.TAG_NAME));
         }
-        updateDriver(flc.executeDriverCreation(usrMgr.findUserByNameOrNameAlias(alias)));
+        updateDriver(flc.executeDriverCreation(IOSTestContextHolder.getInstance().getTestContext()
+                .getUsersManager().findUserByNameOrNameAlias(alias)));
     }
 
     /**
@@ -1379,7 +1427,8 @@ public class CommonIOSSteps {
     @When("^User (.*) shares? the default location to (user|group conversation) (.*) via device (.*)")
     public void UserXSharesLocationTo(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
             throws Exception {
-        commonSteps.UserSharesLocationTo(userNameAlias, dstNameAlias, convoType.equals("group conversation"),
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .UserSharesLocationTo(userNameAlias, dstNameAlias, convoType.equals("group conversation"),
                 deviceName);
     }
 
@@ -1393,10 +1442,13 @@ public class CommonIOSSteps {
     @Then("^I (do not )?see the on-screen keyboard$")
     public void ISeeOnScreenKeyboard(String shouldNotSee) throws Exception {
         if (shouldNotSee == null) {
-            Assert.assertTrue("On-screen keyboard is not visible", pagesCollection.getCommonPage().isKeyboardVisible());
+            Assert.assertTrue("On-screen keyboard is not visible",
+                    IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                            .getCommonPage().isKeyboardVisible());
         } else {
             Assert.assertTrue("On-screen keyboard is visible, but should be hidden",
-                    pagesCollection.getCommonPage().isKeyboardInvisible());
+                    IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                            .getCommonPage().isKeyboardInvisible());
         }
     }
 
@@ -1410,7 +1462,8 @@ public class CommonIOSSteps {
     @When("^I tap (?:Commit|Return|Send|Enter) button on the keyboard( if visible)?$")
     public void ITapCommitButtonOnKeyboard(String canSkip) throws Exception {
         try {
-            pagesCollection.getCommonPage().tapKeyboardCommitButton();
+            IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                    .getCommonPage().tapKeyboardCommitButton();
         } catch (IllegalStateException e) {
             if (canSkip != null) {
                 return;
@@ -1432,7 +1485,8 @@ public class CommonIOSSteps {
     @When("^User (.*) deletes? the recent message from (user|group conversation) (.*)$")
     public void UserXDeleteLastMessage(String userNameAlias, String convoType, String dstNameAlias) throws Exception {
         boolean isGroup = convoType.equals("group conversation");
-        commonSteps.UserDeleteLatestMessage(userNameAlias, dstNameAlias, null, isGroup);
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .UserDeleteLatestMessage(userNameAlias, dstNameAlias, null, isGroup);
     }
 
     /**
@@ -1452,7 +1506,8 @@ public class CommonIOSSteps {
                                        String dstNameAlias, String deviceName) throws Exception {
         boolean isGroup = convoType.equals("group conversation");
         boolean isDeleteEverywhere = deleteEverywhere != null;
-        commonSteps.UserDeleteLatestMessage(userNameAlias, dstNameAlias, deviceName, isGroup, isDeleteEverywhere);
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .UserDeleteLatestMessage(userNameAlias, dstNameAlias, deviceName, isGroup, isDeleteEverywhere);
     }
 
     /**
@@ -1468,7 +1523,8 @@ public class CommonIOSSteps {
     @When("^User (.*) remembers? the recent message from (user|group conversation) (.*) via device (.*)$")
     public void UserXRemembersLastMessage(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
             throws Exception {
-        commonSteps.UserXRemembersLastMessage(userNameAlias, convoType.equals("group conversation"),
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .UserXRemembersLastMessage(userNameAlias, convoType.equals("group conversation"),
                 dstNameAlias, deviceName);
     }
 
@@ -1495,10 +1551,12 @@ public class CommonIOSSteps {
                 : Integer.parseInt(waitDuration.replaceAll("[\\D]", ""));
         final boolean isGroup = convoType.equals("group conversation");
         if (shouldNotBeChanged == null) {
-            commonSteps.UserXFoundLastMessageChanged(userNameAlias, isGroup, dstNameAlias, deviceName,
+            IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                    .UserXFoundLastMessageChanged(userNameAlias, isGroup, dstNameAlias, deviceName,
                     durationSeconds);
         } else {
-            commonSteps.UserXFoundLastMessageNotChanged(userNameAlias, isGroup, dstNameAlias, deviceName,
+            IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                    .UserXFoundLastMessageNotChanged(userNameAlias, isGroup, dstNameAlias, deviceName,
                     durationSeconds);
         }
     }
@@ -1515,9 +1573,11 @@ public class CommonIOSSteps {
     public void ISeeBadge(String shouldNotSee, String itemName) throws Exception {
         boolean result;
         if (shouldNotSee == null) {
-            result = pagesCollection.getCommonPage().isBadgeItemVisible(itemName);
+            result = IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                    .getCommonPage().isBadgeItemVisible(itemName);
         } else {
-            result = pagesCollection.getCommonPage().isBadgeItemInvisible(itemName);
+            result = IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                    .getCommonPage().isBadgeItemInvisible(itemName);
         }
         Assert.assertTrue(String.format("The '%s' badge item is %s", itemName,
                 (shouldNotSee == null) ? "not visible" : "still visible"), result);
@@ -1532,7 +1592,7 @@ public class CommonIOSSteps {
      */
     @When("^I tap on (Select All|Copy|Save|Delete|Paste|Edit|Like|Unlike|Forward) badge item$")
     public void ITapBadge(String itemName) throws Exception {
-        pagesCollection.getCommonPage().tapBadgeItem(itemName);
+        IOSTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage().tapBadgeItem(itemName);
     }
 
     /**
@@ -1549,7 +1609,8 @@ public class CommonIOSSteps {
     public void UserXEditLastMessage(String userNameAlias, String newMessage, String convoType,
                                      String dstNameAlias, String deviceName) throws Exception {
         boolean isGroup = convoType.equals("group conversation");
-        commonSteps.UserUpdateLatestMessage(userNameAlias, dstNameAlias, newMessage, deviceName, isGroup);
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .UserUpdateLatestMessage(userNameAlias, dstNameAlias, newMessage, deviceName, isGroup);
     }
 
     /**
@@ -1567,7 +1628,8 @@ public class CommonIOSSteps {
             "via device (.*)")
     public void UserXVerifiesRecentMessageType(String msgFromUserNameAlias, String dstConversationName,
                                                String expectedType, String deviceName) throws Exception {
-        commonSteps.UserXVerifiesRecentMessageType(msgFromUserNameAlias, dstConversationName, deviceName, expectedType);
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .UserXVerifiesRecentMessageType(msgFromUserNameAlias, dstConversationName, deviceName, expectedType);
     }
 
     private Long recentMsgId = null;
@@ -1598,7 +1660,8 @@ public class CommonIOSSteps {
      */
     @When("^I remember the state of the recent message from user (.*) in the local database$")
     public void IRememberMessageStateInLocalDatabase(String fromContact) throws Exception {
-        final ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(fromContact);
+        final ClientUser dstUser = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .findUserByNameOrNameAlias(fromContact);
         final WireDatabase db = getWireDb();
         this.recentMsgId = db.getRecentMessageId(dstUser).orElseThrow(
                 () -> new IllegalStateException(
@@ -1635,7 +1698,8 @@ public class CommonIOSSteps {
      */
     @When("^I remember the recent message from user (.*) in the local database$")
     public void IRememberRecentMessageInLocalDatabase(String fromContact) throws Exception {
-        final ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(fromContact);
+        final ClientUser dstUser = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .findUserByNameOrNameAlias(fromContact);
         final WireDatabase db = getWireDb();
         this.recentMsgId = db.getRecentMessageId(dstUser).orElseThrow(
                 () -> new IllegalStateException(
@@ -1683,13 +1747,16 @@ public class CommonIOSSteps {
             throws Exception {
         switch (reactionType.toLowerCase()) {
             case "likes":
-                commonSteps.UserLikeLatestMessage(userNameAlias, dstNameAlias, null);
+                IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                        .UserLikeLatestMessage(userNameAlias, dstNameAlias, null);
                 break;
             case "unlikes":
-                commonSteps.UserUnlikeLatestMessage(userNameAlias, dstNameAlias, null);
+                IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                        .UserUnlikeLatestMessage(userNameAlias, dstNameAlias, null);
                 break;
             case "reads":
-                commonSteps.UserReadLastEphemeralMessage(userNameAlias, dstNameAlias, null,
+                IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                        .UserReadLastEphemeralMessage(userNameAlias, dstNameAlias, null,
                         convType.equals("group conversation"));
                 break;
             default:
@@ -1709,10 +1776,10 @@ public class CommonIOSSteps {
     public void IMinimizeWire(String action) throws Exception {
         switch (action.toLowerCase()) {
             case "minimize":
-                pagesCollection.getCommonPage().pressHomeButton();
+                IOSTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage().pressHomeButton();
                 break;
             case "restore":
-                pagesCollection.getCommonPage().restoreWire();
+                IOSTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage().restoreWire();
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown action keyword: '%s'", action));
@@ -1734,7 +1801,8 @@ public class CommonIOSSteps {
     public void UserSwitchesToEphemeralMode(String userAs, String isGroup, String convoName, int timeout,
                                             String timeMetrics) throws Exception {
         final long timeoutMs = timeMetrics.startsWith("minute") ? timeout * 60 * 1000 : timeout * 1000;
-        commonSteps.UserSwitchesToEphemeralMode(userAs, convoName, timeoutMs, isGroup.equals("group conversation"),
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .UserSwitchesToEphemeralMode(userAs, convoName, timeoutMs, isGroup.equals("group conversation"),
                 null);
     }
 
@@ -1747,7 +1815,8 @@ public class CommonIOSSteps {
     @Then("^I see map application is opened$")
     public void VerifyMapDefaultApplicationVisibility() throws Exception {
         Assert.assertTrue("The default map application is not visible",
-                pagesCollection.getCommonPage().isDefaultMapApplicationVisible());
+                IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                        .getCommonPage().isDefaultMapApplicationVisible());
     }
 
 
@@ -1760,7 +1829,8 @@ public class CommonIOSSteps {
      */
     @When("^I tap \"(.*)\" key on Emoji Keyboard$")
     public void TapKeyOnEmojiKeyboard(String keyName) throws Exception {
-        pagesCollection.getCommonPage().tapEmojiKeyboardKey(keyName);
+        IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getCommonPage().tapEmojiKeyboardKey(keyName);
     }
 
     /**
@@ -1771,7 +1841,8 @@ public class CommonIOSSteps {
      */
     @Given("^I press Home button$")
     public void IPressHomeButton() throws Exception {
-        pagesCollection.getCommonPage().pressHomeButton();
+        IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getCommonPage().pressHomeButton();
     }
 
     /**
@@ -1785,20 +1856,20 @@ public class CommonIOSSteps {
      */
     @Given("^User (.*) switches assets to (V2|V3) protocol(?: via device (.*))?$")
     public void UserSwitchAssetMode(String userAs, String mode, String deviceName) throws Exception {
-        AssetProtocol asset = AssetProtocol.valueOf(mode.toUpperCase());
-        commonSteps.UserSetAssetMode(userAs, asset, deviceName);
+        AssetsVersion asset = AssetsVersion.valueOf(mode.toUpperCase());
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps().UserSetAssetMode(userAs, asset, deviceName);
     }
 
     /**
      * Upload self user properties (name and email) to /onboarding endpoint.
      * This is mandatory to be able to get matches
      *
-     * @step. ^Users? (.*) uploads? own details$
      * @param aliases self users alias(es)
      * @throws Exception
+     * @step. ^Users? (.*) uploads? own details$
      */
     @Given("^Users? (.*) uploads? own details$")
     public void uploadSelfUser(String aliases) throws Exception {
-        commonSteps.uploadSelfContact(aliases);
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps().uploadSelfContact(aliases);
     }
 }

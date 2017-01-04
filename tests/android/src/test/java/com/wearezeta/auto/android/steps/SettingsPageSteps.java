@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android.steps;
 
+import com.wearezeta.auto.android.common.AndroidTestContextHolder;
 import com.wearezeta.auto.android.pages.SettingsPage;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
@@ -13,14 +14,9 @@ import org.junit.Assert;
 import java.util.Optional;
 
 public class SettingsPageSteps {
-
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
-            .getInstance();
-
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
     private SettingsPage getSettingsPage() throws Exception {
-        return pagesCollection.getPage(SettingsPage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(SettingsPage.class);
     }
 
     /**
@@ -44,10 +40,14 @@ public class SettingsPageSteps {
      */
     @When("^I select \"(.*)\" settings menu item$")
     public void ISelectSettingsMenuItem(String name) throws Exception {
-        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
-        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.EMAIL_ALIAS);
-        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
-        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
+        name = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        name = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(name, ClientUsersManager.FindBy.EMAIL_ALIAS);
+        name = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(name, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
+        name = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(name, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
         getSettingsPage().selectMenuItem(name);
     }
 
@@ -61,9 +61,12 @@ public class SettingsPageSteps {
      */
     @When("^I (do not )?see \"(.*)\" settings menu item$")
     public void ISeeSettingsMenuItem(String shouldNotSee, String name) throws Exception {
-        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
-        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.EMAIL_ALIAS);
-        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
+        name = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        name = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(name, ClientUsersManager.FindBy.EMAIL_ALIAS);
+        name = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(name, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("Settings menu item '%s' is not visible", name),
                     getSettingsPage().waitUntilMenuItemVisible(name));
@@ -93,7 +96,8 @@ public class SettingsPageSteps {
      */
     @When("^I enter (.*) into the device removal password confirmation dialog$")
     public void IEnterPassword(String passwordAlias) throws Exception {
-        final String password = usrMgr.replaceAliasesOccurences(passwordAlias,
+        final String password = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(passwordAlias,
                 ClientUsersManager.FindBy.PASSWORD_ALIAS);
         getSettingsPage().enterConfirmationPassword(password);
     }
@@ -131,18 +135,22 @@ public class SettingsPageSteps {
     @And("^I commit my new (name|email|phone number) \"(.*)\"( with password (.*))?$")
     public void ICommitNewUSerName(String what, String newValue, String withPassword, String password) throws
             Exception {
-        final ClientUser self = usrMgr.getSelfUserOrThrowError();
+        final ClientUser self = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .getSelfUserOrThrowError();
         password = withPassword != null ?
-                usrMgr.replaceAliasesOccurences(password, ClientUsersManager.FindBy.PASSWORD_ALIAS) : null;
+                AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                        .replaceAliasesOccurences(password, ClientUsersManager.FindBy.PASSWORD_ALIAS) : null;
 
         switch (what) {
             case "name":
-                newValue = usrMgr.replaceAliasesOccurences(newValue, ClientUsersManager.FindBy.NAME_ALIAS);
+                newValue = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                        .replaceAliasesOccurences(newValue, ClientUsersManager.FindBy.NAME_ALIAS);
                 getSettingsPage().commitNewName(newValue);
                 self.setName(newValue);
                 break;
             case "email":
-                newValue = usrMgr.replaceAliasesOccurences(newValue, ClientUsersManager.FindBy.EMAIL_ALIAS);
+                newValue = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                        .replaceAliasesOccurences(newValue, ClientUsersManager.FindBy.EMAIL_ALIAS);
                 getSettingsPage().commitNewEmailWithPassword(newValue, Optional.ofNullable(password));
                 self.setEmail(newValue);
                 if (password != null) {
@@ -150,7 +158,8 @@ public class SettingsPageSteps {
                 }
                 break;
             case "phone number":
-                newValue = usrMgr.replaceAliasesOccurences(newValue, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
+                newValue = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                        .replaceAliasesOccurences(newValue, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
                 final PhoneNumber newNumber = new PhoneNumber(PhoneNumber.WIRE_COUNTRY_PREFIX,
                         newValue.replace(PhoneNumber.WIRE_COUNTRY_PREFIX, ""));
                 getSettingsPage().commitNewPhoneNumber(newNumber);
@@ -171,7 +180,8 @@ public class SettingsPageSteps {
      */
     @And("^I commit verification code for phone number (.*)")
     public void ICommitVerificationCodeForPhoneNumber(String number) throws Exception {
-        number = usrMgr.replaceAliasesOccurences(number, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
+        number = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(number, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
         final String activationCode = BackendAPIWrappers.getActivationCodeByPhoneNumber(new PhoneNumber(
                 PhoneNumber.WIRE_COUNTRY_PREFIX, number.replace(PhoneNumber.WIRE_COUNTRY_PREFIX, "")
         ));

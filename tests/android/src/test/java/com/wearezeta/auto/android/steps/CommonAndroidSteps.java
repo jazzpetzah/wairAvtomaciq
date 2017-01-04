@@ -9,17 +9,21 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.google.common.base.Throwables;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
+import com.wearezeta.auto.android.common.AndroidTestContext;
+import com.wearezeta.auto.android.common.AndroidTestContextHolder;
 import com.wearezeta.auto.android.common.logging.AndroidLogListener;
 import com.wearezeta.auto.android.common.logging.AndroidLogListener.ListenerType;
 import com.wearezeta.auto.android.common.logging.LoggingProfile;
 import com.wearezeta.auto.android.common.logging.RegressionFailedLoggingProfile;
 import com.wearezeta.auto.android.common.logging.RegressionPassedLoggingProfile;
 import com.wearezeta.auto.android.pages.AndroidPage;
+import com.wearezeta.auto.android.pages.AndroidPagesCollection;
 import com.wearezeta.auto.android.pages.SecurityAlertPage;
 import com.wearezeta.auto.android.pages.registration.BackendSelectPage;
 import com.wearezeta.auto.android.pages.registration.WelcomePage;
@@ -32,12 +36,11 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.misc.Timedelta;
-import com.wearezeta.auto.common.sync_engine_bridge.AssetProtocol;
-import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
+import com.wearezeta.auto.common.wire_actors.models.AssetsVersion;
 import cucumber.api.PendingException;
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
@@ -62,15 +65,11 @@ public class CommonAndroidSteps {
         System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.http", "warn");
     }
 
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
-
     private static final Logger log = ZetaLogger.getLog(CommonAndroidSteps.class.getSimpleName());
 
-    private final ElementState screenState = new ElementState(() -> pagesCollection.getCommonPage().takeScreenshot()
+    private final ElementState screenState = new ElementState(() -> AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage().takeScreenshot()
             .orElseThrow(() -> new IllegalStateException("Cannot take a screenshot of the whole screen")));
 
-    private final CommonSteps commonSteps = CommonSteps.getInstance();
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     public static final Platform CURRENT_PLATFORM = Platform.Android;
 
     public static final String PATH_ON_DEVICE = "/mnt/sdcard/DCIM/Camera/userpicture.jpg";
@@ -221,16 +220,13 @@ public class CommonAndroidSteps {
 
     @Before
     public void setUp(Scenario scenario) throws Exception {
-        try {
-            SEBridge.getInstance().reset();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        final AndroidTestContext testContext = new AndroidTestContext(scenario, new AndroidPagesCollection());
+        AndroidTestContextHolder.getInstance().setTestContext(testContext);
 
         AppiumServer.getInstance().resetLog();
 
         if (scenario.getSourceTagNames().contains("@useSpecialEmail")) {
-            usrMgr.useSpecialEmail();
+            testContext.getUsersManager().useSpecialEmail();
         }
 
         isAutoAcceptOfSecurityAlertsEnabled = !scenario.getSourceTagNames().contains("@noAcceptAlert");
@@ -277,16 +273,6 @@ public class CommonAndroidSteps {
         }
 
         try {
-            // async calls/waiting instances cleanup
-            CommonCallingSteps2.getInstance().cleanup();
-        } catch (Exception e) {
-            // do not fail if smt fails here
-            e.printStackTrace();
-        }
-
-        pagesCollection.clearAllPages();
-
-        try {
             if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
                 PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
             }
@@ -297,12 +283,6 @@ public class CommonAndroidSteps {
         // Clear all contacts in address book
         try {
             AndroidCommonUtils.clearAllContacts();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
-            usrMgr.resetUsers();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -320,18 +300,20 @@ public class CommonAndroidSteps {
             }
         }
         AndroidLogListener.forceStopAll();
+
+        AndroidTestContextHolder.getInstance().resetTestContext();
     }
 
     private void updateDriver(Future<ZetaAndroidDriver> lazyDriver, boolean hasBackendSelectPopup) throws Exception {
         ZetaFormatter.setLazyDriver(lazyDriver);
-        if (pagesCollection.hasPages()) {
-            pagesCollection.clearAllPages();
+        if (AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection().hasPages()) {
+            AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection().clearAllPages();
         }
         if (hasBackendSelectPopup) {
-            pagesCollection.setFirstPage(new BackendSelectPage(lazyDriver));
-            pagesCollection.getPage(BackendSelectPage.class).waitForInitialScreen();
+            AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection().setFirstPage(new BackendSelectPage(lazyDriver));
+            AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection().getPage(BackendSelectPage.class).waitForInitialScreen();
         } else {
-            pagesCollection.setFirstPage(new WelcomePage(lazyDriver));
+            AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection().setFirstPage(new WelcomePage(lazyDriver));
         }
     }
 
@@ -363,7 +345,7 @@ public class CommonAndroidSteps {
      */
     @When("^I tap [Bb]ack button$")
     public void TapBackButton() throws Exception {
-        pagesCollection.getCommonPage().navigateBack();
+        AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage().navigateBack();
     }
 
     /**
@@ -376,7 +358,7 @@ public class CommonAndroidSteps {
     @When("^I tap [Bb]ack button (\\d+) times$")
     public void TapBackButtonXTimes(int times) throws Exception {
         for (int i = 0; i < times; i++) {
-            pagesCollection.getCommonPage().navigateBack();
+            AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage().navigateBack();
         }
     }
 
@@ -390,7 +372,7 @@ public class CommonAndroidSteps {
      */
     @Given("^(\\w+) (?:wait|waits) until (\\d+) (?:person|people) (?:is|are) in the Top People list on the backend$")
     public void UserWaitsUntilContactExistsInTopPeopleResults(String searchByNameAlias, int size) throws Exception {
-        commonSteps.WaitUntilTopPeopleContactsIsFoundInSearch(searchByNameAlias, size);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().WaitUntilTopPeopleContactsIsFoundInSearch(searchByNameAlias, size);
     }
 
     /**
@@ -403,7 +385,7 @@ public class CommonAndroidSteps {
      */
     @Given("^(.*) leave[s]* group chat (.*)$")
     public void UserLeavesGroupChat(String userName, String chatName) throws Exception {
-        commonSteps.UserXLeavesGroupChat(userName, chatName);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserXLeavesGroupChat(userName, chatName);
     }
 
     /**
@@ -414,7 +396,7 @@ public class CommonAndroidSteps {
      */
     @When("^I hide keyboard$")
     public void IHideKeyboard() throws Exception {
-        pagesCollection.getCommonPage().hideKeyboard();
+        AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage().hideKeyboard();
     }
 
     /**
@@ -428,16 +410,16 @@ public class CommonAndroidSteps {
     public void ISwipeRight(String direction) throws Exception {
         switch (direction.toLowerCase()) {
             case "right":
-                pagesCollection.getCommonPage().swipeRightCoordinates(DEFAULT_SWIPE_TIME);
+                AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage().swipeRightCoordinates(DEFAULT_SWIPE_TIME);
                 break;
             case "left":
-                pagesCollection.getCommonPage().swipeLeftCoordinates(DEFAULT_SWIPE_TIME);
+                AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage().swipeLeftCoordinates(DEFAULT_SWIPE_TIME);
                 break;
             case "up":
-                pagesCollection.getCommonPage().swipeUpCoordinates(DEFAULT_SWIPE_TIME);
+                AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage().swipeUpCoordinates(DEFAULT_SWIPE_TIME);
                 break;
             case "down":
-                pagesCollection.getCommonPage().swipeDownCoordinates(DEFAULT_SWIPE_TIME);
+                AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage().swipeDownCoordinates(DEFAULT_SWIPE_TIME);
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown swipe direction '%s'", direction));
@@ -452,7 +434,8 @@ public class CommonAndroidSteps {
      */
     @When("^I swipe down from\\s(\\d+)%$")
     public void ISwipeDownFrom(int startPercent) throws Exception {
-        pagesCollection.getCommonPage().swipeByCoordinates(DEFAULT_SWIPE_TIME, 50, startPercent, 50, 90);
+        AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage().swipeByCoordinates(DEFAULT_SWIPE_TIME, 50, startPercent,
+                50, 90);
     }
 
     /**
@@ -516,7 +499,7 @@ public class CommonAndroidSteps {
      */
     @When("^User (.*) adds [Uu]ser (.*) to group chat (.*)$")
     public void UserAddsUserToGroupChat(String user, String userToBeAdded, String group) throws Exception {
-        commonSteps.UserXAddedContactsToGroupChat(user, userToBeAdded, group);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserXAddedContactsToGroupChat(user, userToBeAdded, group);
     }
 
     /**
@@ -527,10 +510,10 @@ public class CommonAndroidSteps {
      */
     @When("^I tap on center of screen")
     public void ITapOnCenterOfScreen() throws Throwable {
-        pagesCollection.getCommonPage().tapByCoordinates(50, 40);
+        AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage().tapByCoordinates(50, 40);
     }
 
-    private static double SCREEN_MIN_SCORE = 0.85;
+    private static final double SCREEN_MIN_SCORE = 0.85;
 
     /**
      * Compare that 1st and 2nd screenshots are equal/not equal
@@ -561,8 +544,9 @@ public class CommonAndroidSteps {
      * @step. ^(.*) sent connection request to (.*)$
      */
     @Given("^(.*) sent connection request to (.*)$")
-    public void ConnectionRequestIsSentTo(String userFromNameAlias, String usersToNameAliases) throws Throwable {
-        commonSteps.ConnectionRequestIsSentTo(userFromNameAlias, usersToNameAliases);
+    public void ConnectionRequestIsSentTo(String userFromNameAlias, String usersToNameAliases) throws Exception {
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().ConnectionRequestIsSentTo(userFromNameAlias,
+                usersToNameAliases);
     }
 
     /**
@@ -571,7 +555,7 @@ public class CommonAndroidSteps {
      * @param name    the user to check
      * @param picture the file name of the picture to check against. The file name
      *                is relative to the pictures directory as defined in the
-     *                Configurations.cnf file
+     *                Configurations.properties file
      * @throws Exception
      * @step. ^(.*) has an avatar picture from file (.*)$
      */
@@ -579,11 +563,11 @@ public class CommonAndroidSteps {
     public void UserHasAnAvatarPicture(String name, String picture) throws Exception {
         String picturePath = CommonUtils.getImagesPathFromConfig(getClass()) + picture;
         try {
-            name = usrMgr.findUserByNameOrNameAlias(name).getName();
+            name = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager().findUserByNameOrNameAlias(name).getName();
         } catch (NoSuchUserException e) {
             // Ignore silently
         }
-        commonSteps.IChangeUserAvatarPicture(name, picturePath);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().IChangeUserAvatarPicture(name, picturePath);
     }
 
     /**
@@ -597,11 +581,11 @@ public class CommonAndroidSteps {
     @Given("^(.*) has an accent color (.*)$")
     public void UserHasAnAccentColor(String name, String colorName) throws Throwable {
         try {
-            name = usrMgr.findUserByNameOrNameAlias(name).getName();
+            name = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager().findUserByNameOrNameAlias(name).getName();
         } catch (NoSuchUserException e) {
             // Ignore silently
         }
-        commonSteps.IChangeUserAccentColor(name, colorName);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().IChangeUserAccentColor(name, colorName);
     }
 
     /**
@@ -615,11 +599,11 @@ public class CommonAndroidSteps {
     @Given("^(.*) has a name (.*)$")
     public void UserHasAName(String name, String newName) throws Throwable {
         try {
-            name = usrMgr.findUserByNameOrNameAlias(name).getName();
+            name = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager().findUserByNameOrNameAlias(name).getName();
         } catch (NoSuchUserException e) {
             // Ignore silently
         }
-        commonSteps.IChangeName(name, newName);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().IChangeName(name, newName);
     }
 
     /**
@@ -635,7 +619,7 @@ public class CommonAndroidSteps {
     public void UserIsConnectedTo(String userFromNameAlias, String usersToNameAliases) throws Exception {
         System.out.println("userFromAlias: " + userFromNameAlias);
         System.out.println("usersToNameAliases: " + usersToNameAliases);
-        commonSteps.UserIsConnectedTo(userFromNameAlias, usersToNameAliases);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserIsConnectedTo(userFromNameAlias, usersToNameAliases);
     }
 
     /**
@@ -649,9 +633,9 @@ public class CommonAndroidSteps {
      */
     @Given("^(.*) is silenced to user (.*)$")
     public void UserIsSilenced(String mutedUser, String otherUser) throws Exception {
-        mutedUser = usrMgr.findUserByNameOrNameAlias(mutedUser).getName();
-        otherUser = usrMgr.findUserByNameOrNameAlias(otherUser).getName();
-        commonSteps.MuteConversationWithUser(otherUser, mutedUser);
+        mutedUser = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager().findUserByNameOrNameAlias(mutedUser).getName();
+        otherUser = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager().findUserByNameOrNameAlias(otherUser).getName();
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().MuteConversationWithUser(otherUser, mutedUser);
     }
 
     /**
@@ -664,9 +648,10 @@ public class CommonAndroidSteps {
      */
     @Given("^Group (.*) gets silenced for user (.*)$")
     public void GroupGetsSilenced(String mutedGroup, String otherUser) throws Throwable {
-        mutedGroup = usrMgr.replaceAliasesOccurences(mutedGroup, ClientUsersManager.FindBy.NAME_ALIAS);
-        otherUser = usrMgr.findUserByNameOrNameAlias(otherUser).getName();
-        commonSteps.MuteConversationWithGroup(otherUser, mutedGroup);
+        mutedGroup = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager().replaceAliasesOccurences(mutedGroup,
+                ClientUsersManager.FindBy.NAME_ALIAS);
+        otherUser = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager().findUserByNameOrNameAlias(otherUser).getName();
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().MuteConversationWithGroup(otherUser, mutedGroup);
     }
 
     /**
@@ -680,8 +665,9 @@ public class CommonAndroidSteps {
      */
     @Given("^(.*) is unarchived group chat (.*)$")
     public void UserIsUnarchivedGroupChat(String currentUser, String groupChat) throws Exception {
-        currentUser = usrMgr.findUserByNameOrNameAlias(currentUser).getName();
-        commonSteps.UnarchiveConversationWithGroup(currentUser, groupChat);
+        currentUser = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .findUserByNameOrNameAlias(currentUser).getName();
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UnarchiveConversationWithGroup(currentUser, groupChat);
     }
 
     /**
@@ -695,9 +681,10 @@ public class CommonAndroidSteps {
      * @step. ^(.*) has group chat (.*) with (.*)$
      */
     @Given("^(.*) has group chat (.*) with (.*)$")
-    public void UserHasGroupChatWithContacts(String chatOwnerNameAlias, String chatName, String otherParticipantsNameAliases)
-            throws Exception {
-        commonSteps.UserHasGroupChatWithContacts(chatOwnerNameAlias, chatName, otherParticipantsNameAliases);
+    public void UserHasGroupChatWithContacts(String chatOwnerNameAlias, String chatName,
+                                             String otherParticipantsNameAliases) throws Exception {
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserHasGroupChatWithContacts(chatOwnerNameAlias,
+                chatName, otherParticipantsNameAliases);
     }
 
     /**
@@ -709,7 +696,7 @@ public class CommonAndroidSteps {
      */
     @When("^(.*) ignore all requests$")
     public void IgnoreAllIncomingConnectRequest(String userToNameAlias) throws Exception {
-        commonSteps.IgnoreAllIncomingConnectRequest(userToNameAlias);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().IgnoreAllIncomingConnectRequest(userToNameAlias);
     }
 
     /**
@@ -721,7 +708,7 @@ public class CommonAndroidSteps {
      */
     @And("^I wait for\\s*(\\d+) seconds?$")
     public void WaitForTime(int seconds) throws Exception {
-        commonSteps.WaitForTime(seconds);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().WaitForTime(seconds);
     }
 
     /**
@@ -734,7 +721,7 @@ public class CommonAndroidSteps {
      */
     @When("^User (.*) blocks user (.*)$")
     public void BlockContact(String blockAsUserNameAlias, String userToBlockNameAlias) throws Exception {
-        commonSteps.BlockContact(blockAsUserNameAlias, userToBlockNameAlias);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().BlockContact(blockAsUserNameAlias, userToBlockNameAlias);
     }
 
     /**
@@ -745,7 +732,7 @@ public class CommonAndroidSteps {
      */
     @When("^(.*) accept all requests$")
     public void AcceptAllIncomingConnectionRequests(String userToNameAlias) throws Exception {
-        commonSteps.AcceptAllIncomingConnectionRequests(userToNameAlias);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().AcceptAllIncomingConnectionRequests(userToNameAlias);
     }
 
     /**
@@ -758,7 +745,8 @@ public class CommonAndroidSteps {
      */
     @When("^User (\\w+) (?:securely |\\s*)pings? conversation (.*)")
     public void UserPingedConversation(String pingFromUserNameAlias, String dstConversationName) throws Exception {
-        commonSteps.UserPingedConversationOtr(pingFromUserNameAlias, dstConversationName);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserPingedConversationOtr(pingFromUserNameAlias,
+                dstConversationName);
     }
 
     /**
@@ -771,7 +759,8 @@ public class CommonAndroidSteps {
      */
     @When("^User (\\w+) is typing in the conversation (.*)$")
     public void UserTypingInConversation(String fromUserNameAlias, String dstConversationName) throws Exception {
-        commonSteps.UserIsTypingInConversation(fromUserNameAlias, dstConversationName);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserIsTypingInConversation(fromUserNameAlias,
+                dstConversationName);
     }
 
     /**
@@ -792,15 +781,19 @@ public class CommonAndroidSteps {
         final String msgToSend = (msg == null || msg.trim().length() == 0) ? CommonUtils.generateRandomString(10) : msg.trim();
         if (convoType.equals("user")) {
             if (isEncrypted == null) {
-                commonSteps.UserSentMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend);
+                AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserSentMessageToUser(msgFromUserNameAlias,
+                        dstConvoName, msgToSend);
             } else {
-                commonSteps.UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName);
+                AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserSentOtrMessageToUser(msgFromUserNameAlias,
+                        dstConvoName, msgToSend, deviceName);
             }
         } else {
             if (isEncrypted == null) {
-                commonSteps.UserSentMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend);
+                AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserSentMessageToConversation(msgFromUserNameAlias,
+                        dstConvoName, msgToSend);
             } else {
-                commonSteps.UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName);
+                AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserSentOtrMessageToConversation(
+                        msgFromUserNameAlias, dstConvoName, msgToSend, deviceName);
             }
         }
     }
@@ -820,7 +813,8 @@ public class CommonAndroidSteps {
     public void UserSendXMessagesToConversation(String msgFromUserNameAlias, int count, String areEncrypted,
                                                 String deviceName, String dstUserNameAlias) throws Exception {
         for (int i = 0; i < count; i++) {
-            UserSendMessageToConversation(msgFromUserNameAlias, areEncrypted, null, deviceName, "user", dstUserNameAlias);
+            UserSendMessageToConversation(msgFromUserNameAlias, areEncrypted, null, deviceName, "user",
+                    dstUserNameAlias);
         }
     }
 
@@ -836,10 +830,10 @@ public class CommonAndroidSteps {
      */
     @Given("^There (?:are|is) (\\d+) users? where (.*) is me( without unique user name)?$")
     public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias, String withoutUniqueUsername) throws Exception {
-        commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count, myNameAlias);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count, myNameAlias);
         UserHasAnAvatarPicture(myNameAlias, DEFAULT_USER_AVATAR);
         if (withoutUniqueUsername == null) {
-            commonSteps.UsersSetUniqueUsername(myNameAlias);
+            AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UsersSetUniqueUsername(myNameAlias);
         }
     }
 
@@ -856,12 +850,12 @@ public class CommonAndroidSteps {
     @Given("^There (?:are|is) (\\d+) users? with (email address|phone number) only where (.*) is me$")
     public void ThereAreNUsersWithZOnlyWhereXIsMe(int count, String what, String myNameAlias) throws Exception {
         if (what.equals("email address")) {
-            commonSteps.ThereAreNUsersWhereXIsMeRegOnlyByMail(count, myNameAlias);
+            AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().ThereAreNUsersWhereXIsMeRegOnlyByMail(count, myNameAlias);
         } else {
-            commonSteps.ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(count, myNameAlias);
+            AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(count, myNameAlias);
         }
         UserHasAnAvatarPicture(myNameAlias, DEFAULT_USER_AVATAR);
-        commonSteps.UsersSetUniqueUsername(myNameAlias);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UsersSetUniqueUsername(myNameAlias);
     }
 
     /**
@@ -875,7 +869,7 @@ public class CommonAndroidSteps {
      */
     @Given("^There (?:are|is) (\\d+) shared users? with name prefix ([\\w\\.]+)$")
     public void ThereAreNSharedUsersWithNamePrefix(int count, String namePrefix) throws Exception {
-        commonSteps.ThereAreNSharedUsersWithNamePrefix(count, namePrefix);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().ThereAreNSharedUsersWithNamePrefix(count, namePrefix);
     }
 
     /**
@@ -888,7 +882,7 @@ public class CommonAndroidSteps {
      */
     @Given("^User (\\w+) is [Mm]e$")
     public void UserXIsMe(String nameAlias) throws Exception {
-        commonSteps.UserXIsMe(nameAlias);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserXIsMe(nameAlias);
         UserHasAnAvatarPicture(nameAlias, DEFAULT_USER_AVATAR);
     }
 
@@ -902,7 +896,7 @@ public class CommonAndroidSteps {
      */
     @Given("^User (\\w+) is [Mm]e without picture$")
     public void UserXIsMeWoPicture(String nameAlias) throws Exception {
-        commonSteps.UserXIsMe(nameAlias);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserXIsMe(nameAlias);
     }
 
     /**
@@ -917,7 +911,7 @@ public class CommonAndroidSteps {
      */
     @Given("^(\\w+) waits? until (.*) exists in backend search results$")
     public void UserWaitsUntilContactExistsInHisSearchResults(String searchByNameAlias, String query) throws Exception {
-        commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
     }
 
     /**
@@ -936,22 +930,24 @@ public class CommonAndroidSteps {
     @Given("^(\\w+) waits? (\\d+) seconds? until (.*) does not exist in backend search results$")
     public void UserWaitsUntilContactDoesNotExistsInHisSearchResults(String searchByNameAlias, int timeoutSeconds,
                                                                      String query) throws Exception {
-        commonSteps.WaitUntilContactIsNotFoundInSearch(searchByNameAlias, query, timeoutSeconds);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().WaitUntilContactIsNotFoundInSearch(searchByNameAlias,
+                query, timeoutSeconds);
     }
 
     /**
      * Wait until the common friends between A and B are already generated in BE
      *
-     * @param searchByNameAlias A's user name alias
+     * @param searchByNameAlias             A's user name alias
      * @param expectedCountOfCommonContacts B's user name alias
-     * @param contactNameAlias expect count of common users between A and B
+     * @param contactNameAlias              expect count of common users between A and B
      * @throws Exception
      * @step. ^(\w+) waits? until (\d+) common contacts? with (.*) exists in backend
      */
     @Given("^(\\w+) waits? until (\\d+) common contacts? with (.*) exists in backend")
     public void UserWaitUntilCommonContactsInBackend(String searchByNameAlias, int expectedCountOfCommonContacts,
                                                      String contactNameAlias) throws Exception {
-        commonSteps.WaitUntilCommonContactsIsGenerated(searchByNameAlias, contactNameAlias, expectedCountOfCommonContacts);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().WaitUntilCommonContactsIsGenerated(searchByNameAlias,
+                contactNameAlias, expectedCountOfCommonContacts);
     }
 
     /**
@@ -961,7 +957,7 @@ public class CommonAndroidSteps {
      * @param imageSenderUserNameAlias the user to sending the image
      * @param imageFileName            the file path name of the image to send. The path name is
      *                                 defined relative to the image file defined in
-     *                                 Configuration.cnf.
+     *                                 Configuration.properties.
      * @param conversationType         "single user" or "group" conversation.
      * @param dstConversationName      the name of the conversation to send the image to.
      * @throws Exception
@@ -973,9 +969,11 @@ public class CommonAndroidSteps {
         final String imagePath = CommonUtils.getImagesPathFromConfig(getClass()) + imageFileName;
         final boolean isGroup = conversationType.equals("group");
         if (isEncrypted == null) {
-            commonSteps.UserSentImageToConversation(imageSenderUserNameAlias, imagePath, dstConversationName, isGroup);
+            AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserSentImageToConversation(imageSenderUserNameAlias,
+                    imagePath, dstConversationName, isGroup);
         } else {
-            commonSteps.UserSentImageToConversationOtr(imageSenderUserNameAlias, imagePath, dstConversationName, isGroup);
+            AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserSentImageToConversationOtr(imageSenderUserNameAlias,
+                    imagePath, dstConversationName, isGroup);
         }
     }
 
@@ -989,9 +987,9 @@ public class CommonAndroidSteps {
     @When("^I rotate UI to (landscape|portrait)$")
     public void IRotateUI(String direction) throws Exception {
         if (direction.equals("landscape")) {
-            pagesCollection.getCommonPage().rotateLandscape();
+            AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage().rotateLandscape();
         } else {
-            pagesCollection.getCommonPage().rotatePortrait();
+            AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage().rotatePortrait();
         }
         // To let the UI to handle up changes
         Thread.sleep(1000);
@@ -1007,7 +1005,8 @@ public class CommonAndroidSteps {
     @Given("^My device runs Android (.*) or higher$")
     public void MyDeviceRunsAndroid(String targetVersion) throws Exception {
         if (AndroidCommonUtils.compareAndroidVersion(targetVersion) < 0) {
-            throw new PendingException("This test isn't suitable to run on " + "anything lower than Android " + targetVersion);
+            throw new PendingException("This test isn't suitable to run on " + "anything lower than Android " +
+                    targetVersion);
         }
     }
 
@@ -1050,13 +1049,15 @@ public class CommonAndroidSteps {
     public void IImportUserIntoAddressBook(String alias, String withCustomName, String customName, String withInfo,
                                            String infoType) throws Exception {
         //TODO: Robin handle when custom name contains space
-        String name = usrMgr.findUserByNameOrNameAlias(alias).getName();
+        String name = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager().findUserByNameOrNameAlias(alias).getName();
         if (withCustomName != null) {
             name = customName;
         }
         if (withInfo != null) {
-            final String email = usrMgr.findUserByNameOrNameAlias(alias).getEmail();
-            final PhoneNumber phoneNumber = usrMgr.findUserByNameOrNameAlias(alias).getPhoneNumber();
+            final String email = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                    .findUserByNameOrNameAlias(alias).getEmail();
+            final PhoneNumber phoneNumber = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                    .findUserByNameOrNameAlias(alias).getPhoneNumber();
             AndroidCommonUtils.insertContact(name, email, phoneNumber, infoType);
         } else {
             AndroidCommonUtils.insertContact(name);
@@ -1073,7 +1074,8 @@ public class CommonAndroidSteps {
      * @step. ^I add contact with name (.*) and phone (.*) to Address Book$
      */
     @Given("^I add name (.*) and phone (.*) with prefix (.*) to Address Book$")
-    public void IAddContactIntoAddressBook(String contactName, String contactPhoneNumber, String prefix) throws Exception {
+    public void IAddContactIntoAddressBook(String contactName, String contactPhoneNumber, String prefix)
+            throws Exception {
         PhoneNumber phoneNumber = new PhoneNumber(prefix, contactPhoneNumber);
         AndroidCommonUtils.insertContact(contactName, phoneNumber);
     }
@@ -1089,7 +1091,8 @@ public class CommonAndroidSteps {
      */
     @When("^(.*) sends personal invitation to mail (.*) with message (.*)$")
     public void UserXSendsPersonalInvitation(String userToNameAlias, String toMail, String message) throws Exception {
-        commonSteps.UserXSendsPersonalInvitationWithMessageToUserWithMail(userToNameAlias, toMail, message);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserXSendsPersonalInvitationWithMessageToUserWithMail(
+                userToNameAlias, toMail, message);
     }
 
     /**
@@ -1102,7 +1105,7 @@ public class CommonAndroidSteps {
      */
     @Given("^I add (.*) to the list of test case users$")
     public void IAddUserToTheList(String nameAlias) throws Exception {
-        commonSteps.IAddUserToTheListOfTestCaseUsers(nameAlias);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().IAddUserToTheListOfTestCaseUsers(nameAlias);
     }
 
     /**
@@ -1116,10 +1119,11 @@ public class CommonAndroidSteps {
      */
     @Given("^(.*) removes (.*) from group (.*)$")
     public void UserXRemovesUserYFromGroup(String user1, String user2, String group) throws Exception {
-        user1 = usrMgr.findUserByNameOrNameAlias(user1).getName();
-        user2 = usrMgr.findUserByNameOrNameAlias(user2).getName();
-        group = usrMgr.replaceAliasesOccurences(group, ClientUsersManager.FindBy.NAME_ALIAS);
-        commonSteps.UserXRemoveContactFromGroupChat(user1, user2, group);
+        user1 = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager().findUserByNameOrNameAlias(user1).getName();
+        user2 = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager().findUserByNameOrNameAlias(user2).getName();
+        group = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager().replaceAliasesOccurences(group,
+                ClientUsersManager.FindBy.NAME_ALIAS);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserXRemoveContactFromGroupChat(user1, user2, group);
     }
 
     /**
@@ -1132,7 +1136,8 @@ public class CommonAndroidSteps {
      */
     @When("^User (.*) adds a new device (.*) with label (.*)$")
     public void UserAddRemoteDeviceToAccount(String userNameAlias, String deviceName, String label) throws Exception {
-        commonSteps.UserAddsRemoteDeviceToAccount(userNameAlias, deviceName, label);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .UserAddsRemoteDeviceToAccount(userNameAlias, deviceName, Optional.of(label));
     }
 
     /**
@@ -1145,13 +1150,17 @@ public class CommonAndroidSteps {
      */
     @When("^User (.*) adds new devices? (.*)$")
     public void UserAddRemoteDeviceToAccount(String userNameAlias, String deviceNames) throws Exception {
-        final List<String> names = usrMgr.splitAliases(deviceNames);
+        final List<String> names = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .splitAliases(deviceNames);
         final int poolSize = 2;  // Runtime.getRuntime().availableProcessors()
         final ExecutorService pool = Executors.newFixedThreadPool(poolSize);
+        final AtomicInteger createdDevicesCount = new AtomicInteger(0);
         for (String name : names) {
             pool.submit(() -> {
                 try {
-                    commonSteps.UserAddsRemoteDeviceToAccount(userNameAlias, name, CommonUtils.generateRandomString(10));
+                    AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                            .UserAddsRemoteDeviceToAccount(userNameAlias, name, Optional.empty());
+                    createdDevicesCount.incrementAndGet();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1159,7 +1168,7 @@ public class CommonAndroidSteps {
         }
         pool.shutdown();
         final int secondsTimeout = (names.size() / poolSize + 1) * 60;
-        if (!pool.awaitTermination(secondsTimeout, TimeUnit.SECONDS)) {
+        if (!pool.awaitTermination(secondsTimeout, TimeUnit.SECONDS) || createdDevicesCount.get() != names.size()) {
             throw new IllegalStateException(String.format(
                     "Devices '%s' were not created within %s seconds timeout", names, secondsTimeout));
         }
@@ -1173,7 +1182,7 @@ public class CommonAndroidSteps {
      */
     @And("^I tap Send button at Android keyboard$")
     public void ITapSendButton() throws Exception {
-        pagesCollection.getCommonPage().pressKeyboardSendButton();
+        AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage().pressKeyboardSendButton();
     }
 
     /**
@@ -1185,7 +1194,7 @@ public class CommonAndroidSteps {
      */
     @Given("^User (.*) removes all his registered OTR clients$")
     public void UserRemovesAllRegisteredOtrClients(String userAs) throws Exception {
-        commonSteps.UserRemovesAllRegisteredOtrClients(userAs);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserRemovesAllRegisteredOtrClients(userAs);
     }
 
     /**
@@ -1198,7 +1207,7 @@ public class CommonAndroidSteps {
      */
     @Given("^User (.*) only keeps his (\\d+) most recent OTR clients$")
     public void UserKeepsXOtrClients(String userAs, int clientsCount) throws Exception {
-        commonSteps.UserKeepsXOtrClients(userAs, clientsCount);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserKeepsXOtrClients(userAs, clientsCount);
     }
 
     /**
@@ -1212,16 +1221,17 @@ public class CommonAndroidSteps {
     @Then("^I see alert message containing (pure text )?\"(.*)\" in the (title|body)$")
     public void ISeeAlertMessage(String pureText, String expectedMsg, String location) throws Exception {
         if (pureText == null) {
-            expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, ClientUsersManager.FindBy.NAME_ALIAS);
+            expectedMsg = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                    .replaceAliasesOccurences(expectedMsg, ClientUsersManager.FindBy.NAME_ALIAS);
         }
         switch (location.toLowerCase()) {
             case "body":
                 Assert.assertTrue(String.format("An alert containing text '%s' in body is not visible", expectedMsg),
-                        pagesCollection.getCommonPage().isAlertMessageVisible(expectedMsg));
+                        AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage().isAlertMessageVisible(expectedMsg));
                 break;
             case "title":
                 Assert.assertTrue(String.format("An alert containing text '%s' is title not visible", expectedMsg),
-                        pagesCollection.getCommonPage().isAlertTitleVisible(expectedMsg));
+                        AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage().isAlertTitleVisible(expectedMsg));
                 break;
             default:
                 throw new IllegalArgumentException(String.format("'%s' location is unknown", location));
@@ -1239,8 +1249,10 @@ public class CommonAndroidSteps {
      * @step. ^User (.*) deletes? (single user|group) conversation (.*) using device (.*)
      */
     @Given("^User (.*) deletes? (single user|group) conversation (.*) using device (.*)")
-    public void UserDeletedConversation(String userAs, String convoType, String convoName, String deviceName) throws Exception {
-        commonSteps.UserClearsConversation(userAs, convoName, deviceName, convoType.equals("group"));
+    public void UserDeletedConversation(String userAs, String convoType, String convoName, String deviceName)
+            throws Exception {
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserClearsConversation(userAs, convoName, deviceName,
+                convoType.equals("group"));
     }
 
     /**
@@ -1304,7 +1316,7 @@ public class CommonAndroidSteps {
         CommonUtils.createRandomAccessFile(sourceFilePath, size);
 
         boolean isGroup = convoType.equals("group conversation");
-        commonSteps.UserSentFileToConversation(contact, dstConvoName, sourceFilePath,
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserSentFileToConversation(contact, dstConvoName, sourceFilePath,
                 mimeType, deviceName, isGroup);
     }
 
@@ -1333,7 +1345,8 @@ public class CommonAndroidSteps {
         String sourceFilePath = basePath + File.separator + fileFullName;
 
         boolean isGroup = convoType.equals("group conversation");
-        commonSteps.UserSentFileToConversation(contact, dstConvoName, sourceFilePath, mimeType, deviceName, isGroup);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserSentFileToConversation(contact, dstConvoName,
+                sourceFilePath, mimeType, deviceName, isGroup);
     }
 
     /**
@@ -1353,7 +1366,8 @@ public class CommonAndroidSteps {
                                        String deviceName) throws Exception {
         boolean isGroup = convoType.equals("group conversation");
         boolean isDeleteEverywhere = deleteEverywhere != null;
-        commonSteps.UserDeleteLatestMessage(userNameAlias, dstNameAlias, deviceName, isGroup, isDeleteEverywhere);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserDeleteLatestMessage(userNameAlias, dstNameAlias,
+                deviceName, isGroup, isDeleteEverywhere);
     }
 
     /**
@@ -1371,7 +1385,8 @@ public class CommonAndroidSteps {
     public void UserXEditLastMessage(String userNameAlias, String newMessage, String convoType, String dstNameAlias,
                                      String deviceName) throws Exception {
         boolean isGroup = convoType.equals("group conversation");
-        commonSteps.UserUpdateLatestMessage(userNameAlias, dstNameAlias, newMessage, deviceName, isGroup);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserUpdateLatestMessage(userNameAlias, dstNameAlias,
+                newMessage, deviceName, isGroup);
     }
 
     /**
@@ -1389,13 +1404,16 @@ public class CommonAndroidSteps {
                                      String deviceName) throws Exception {
         switch (reactionType.toLowerCase()) {
             case "likes":
-                commonSteps.UserLikeLatestMessage(userNameAlias, dstNameAlias, deviceName);
+                AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserLikeLatestMessage(userNameAlias,
+                        dstNameAlias, deviceName);
                 break;
             case "unlikes":
-                commonSteps.UserUnlikeLatestMessage(userNameAlias, dstNameAlias, deviceName);
+                AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserUnlikeLatestMessage(userNameAlias,
+                        dstNameAlias, deviceName);
                 break;
             case "reads":
-                commonSteps.UserReadLastEphemeralMessage(userNameAlias, dstNameAlias, deviceName,
+                AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserReadLastEphemeralMessage(userNameAlias,
+                        dstNameAlias, deviceName,
                         convoType.equals("group conversation"));
                 break;
             default:
@@ -1416,7 +1434,8 @@ public class CommonAndroidSteps {
     @When("^User (.*) remembers? the recent message from (user|group conversation) (.*) via device (.*)$")
     public void UserXRemembersLastMessage(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
             throws Exception {
-        commonSteps.UserXRemembersLastMessage(userNameAlias, convoType.equals("group conversation"), dstNameAlias, deviceName);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserXRemembersLastMessage(userNameAlias,
+                convoType.equals("group conversation"), dstNameAlias, deviceName);
     }
 
     /**
@@ -1439,11 +1458,11 @@ public class CommonAndroidSteps {
                 : Integer.parseInt(waitDuration.replaceAll("[\\D]", ""));
 
         if (shouldNotChanged == null) {
-            commonSteps.UserXFoundLastMessageChanged(userNameAlias, convoType.equals("group conversation"), dstNameAlias,
-                    deviceName, durationSeconds);
+            AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserXFoundLastMessageChanged(userNameAlias,
+                    convoType.equals("group conversation"), dstNameAlias, deviceName, durationSeconds);
         } else {
-            commonSteps.UserXFoundLastMessageNotChanged(userNameAlias, convoType.equals("group conversation"), dstNameAlias,
-                    deviceName, durationSeconds);
+            AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserXFoundLastMessageNotChanged(userNameAlias,
+                    convoType.equals("group conversation"), dstNameAlias, deviceName, durationSeconds);
         }
 
     }
@@ -1484,7 +1503,7 @@ public class CommonAndroidSteps {
      */
     @And("^I tap (.*) button on the alert$")
     public void ITapAlertButton(String caption) throws Exception {
-        pagesCollection.getCommonPage().tapAlertButton(caption);
+        AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage().tapAlertButton(caption);
     }
 
     /**
@@ -1536,7 +1555,7 @@ public class CommonAndroidSteps {
                 1000,
                 () -> {
                     if (AndroidCommonUtils.isAppNotInForeground(packageId, FOREGROUND_TIMEOUT_MILLIS)) {
-                        pagesCollection.getCommonPage().navigateBack();
+                        AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage().navigateBack();
                     }
                     return AndroidCommonUtils.isAppInForeground(packageId, FOREGROUND_TIMEOUT_MILLIS);
                 }
@@ -1553,7 +1572,7 @@ public class CommonAndroidSteps {
      */
     @When("^I (accept|dismiss) security alert( if it is visible)?$")
     public void IDoAlertAction(String action, String throwIfNotVisible) throws Exception {
-        final SecurityAlertPage dstPage = pagesCollection.getPage(SecurityAlertPage.class);
+        final SecurityAlertPage dstPage = AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection().getPage(SecurityAlertPage.class);
         switch (action.toLowerCase()) {
             case "accept":
                 if (throwIfNotVisible == null) {
@@ -1582,7 +1601,7 @@ public class CommonAndroidSteps {
      */
     @Given("^I am on Android ([\\d\\.]+) or better$")
     public void IAmOnAndroidXOrHigher(String minVersion) throws Exception {
-        final DefaultArtifactVersion currentOsVersion = pagesCollection.getCommonPage().getOSVersion();
+        final DefaultArtifactVersion currentOsVersion = AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage().getOSVersion();
         if (currentOsVersion.compareTo(new DefaultArtifactVersion(minVersion)) < 0) {
             throw new PendingException(String.format("The current Android OS version %s is too low to run this test. %s " +
                     "version is expected.", currentOsVersion, minVersion));
@@ -1643,10 +1662,10 @@ public class CommonAndroidSteps {
     public void ISeeNoInternetBar(String shouldNotSee, int timeoutSeconds) throws Exception {
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("No Internet bar is not visible after %d seconds timeout", timeoutSeconds),
-                    pagesCollection.getCommonPage().waitUntilNoInternetBarVisible(timeoutSeconds));
+                    AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage().waitUntilNoInternetBarVisible(timeoutSeconds));
         } else {
             Assert.assertTrue(String.format("No Internet bar is still visible after %d seconds timeout", timeoutSeconds),
-                    pagesCollection.getCommonPage().waitUntilNoInternetBarInvisible(timeoutSeconds));
+                    AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage().waitUntilNoInternetBarInvisible(timeoutSeconds));
         }
     }
 
@@ -1659,7 +1678,7 @@ public class CommonAndroidSteps {
      */
     @Given("^There (?:is|are) (\\d+) additional users?$")
     public void ThereAreXAdditionalUsers(int count) throws Exception {
-        commonSteps.ThereAreXAdditionalUsers(CURRENT_PLATFORM, count);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().ThereAreXAdditionalUsers(CURRENT_PLATFORM, count);
     }
 
     private static final int PUSH_NOTIFICATION_TIMEOUT_SEC = 30;
@@ -1715,7 +1734,7 @@ public class CommonAndroidSteps {
      */
     @And("^I tap the chathead notification$")
     public void ITapChathead() throws Exception {
-        pagesCollection.getCommonPage().tapChatheadNotification();
+        AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage().tapChatheadNotification();
     }
 
     /**
@@ -1728,10 +1747,10 @@ public class CommonAndroidSteps {
     @Then("^I (do not )?see chathead notification$")
     public void ISeeChatheadNotification(String shouldNotSee) throws Exception {
         if (shouldNotSee == null) {
-            Assert.assertTrue("Chathead notification is not visible", pagesCollection.getCommonPage()
+            Assert.assertTrue("Chathead notification is not visible", AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage()
                     .waitForChatheadNotification().isPresent());
         } else {
-            Assert.assertTrue("Chathead notification is still visible", pagesCollection.getCommonPage()
+            Assert.assertTrue("Chathead notification is still visible", AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage()
                     .waitUntilChatheadNotificationInvisible());
         }
     }
@@ -1749,7 +1768,8 @@ public class CommonAndroidSteps {
     @When("^User (.*) shares? his location to (user|group conversation) (.*) via device (.*)")
     public void UserXSharesLocationTo(String userNameAlias, String convoType, String dstNameAlias, String deviceName) throws
             Exception {
-        commonSteps.UserSharesLocationTo(userNameAlias, dstNameAlias, convoType.equals("group conversation"), deviceName);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserSharesLocationTo(userNameAlias, dstNameAlias,
+                convoType.equals("group conversation"), deviceName);
     }
 
     private static final long LOG_SEARCH_TIMEOUT_MILLIS = 5000;
@@ -1770,7 +1790,7 @@ public class CommonAndroidSteps {
 
         final long msStarted = System.currentTimeMillis();
         do {
-            result = pagesCollection.getCommonPage().countOfLogContain(ListenerType.valueOf(logType), expectedString);
+            result = AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage().countOfLogContain(ListenerType.valueOf(logType), expectedString);
             if (result >= expectedTimes) {
                 break;
             } else {
@@ -1791,8 +1811,9 @@ public class CommonAndroidSteps {
      */
     @When("^User (.*) resets password to \"(.*)\"$")
     public void UserXRestesPassword(String userNmaeAlias, String newPassword) throws Exception {
-        newPassword = usrMgr.replaceAliasesOccurences(newPassword, ClientUsersManager.FindBy.PASSWORD_ALIAS);
-        commonSteps.UserResetsPassword(userNmaeAlias, newPassword);
+        newPassword = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(newPassword, ClientUsersManager.FindBy.PASSWORD_ALIAS);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserResetsPassword(userNmaeAlias, newPassword);
     }
 
     /**
@@ -1805,8 +1826,10 @@ public class CommonAndroidSteps {
      * @step. ^User (.*) cancels the outgoing request to user (\\w+)(?: via device (.*)\s)?$
      */
     @When("^User (.*) cancels the outgoing request to user (\\w+)(?: via device (.*))?$")
-    public void UserXCancelRequestToUserY(String userNameAlias, String canceledUserNameAlias, String deviceName) throws Exception {
-        commonSteps.UserCancelConnection(userNameAlias, canceledUserNameAlias, deviceName);
+    public void UserXCancelRequestToUserY(String userNameAlias, String canceledUserNameAlias, String deviceName)
+            throws Exception {
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserCancelConnection(userNameAlias, canceledUserNameAlias,
+                deviceName);
     }
 
     /**
@@ -1821,11 +1844,12 @@ public class CommonAndroidSteps {
      * @step. Users? (.*) (sets?|changes?) the unique username( to ".*")?(?: via device (.*))?$
      */
     @Given("^Users? (.*) (sets?|changes?) the unique username( to \".*\")?(?: via device (.*))?$")
-    public void UserSetsUniqueUsername(String userAs, String action, String uniqUsername, String deviceName) throws Exception {
+    public void UserSetsUniqueUsername(String userAs, String action, String uniqUsername, String deviceName)
+            throws Exception {
         switch (action.toLowerCase()) {
             case "set":
             case "sets":
-                commonSteps.UsersSetUniqueUsername(userAs);
+                AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UsersSetUniqueUsername(userAs);
                 break;
             case "change":
             case "changes":
@@ -1834,12 +1858,13 @@ public class CommonAndroidSteps {
                 }
                 // Exclude quotes
                 uniqUsername = uniqUsername.substring(5, uniqUsername.length() - 1);
-                uniqUsername = usrMgr.replaceAliasesOccurences(uniqUsername,
+                uniqUsername = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager().replaceAliasesOccurences(uniqUsername,
                         ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
                 if (deviceName == null) {
-                    commonSteps.IChangeUniqueUsername(userAs, uniqUsername);
+                    AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().IChangeUniqueUsername(userAs, uniqUsername);
                 } else {
-                    commonSteps.UpdateUniqueUsername(userAs, uniqUsername, deviceName);
+                    AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UpdateUniqueUsername(userAs, uniqUsername,
+                            deviceName);
                 }
                 break;
             default:
@@ -1858,7 +1883,7 @@ public class CommonAndroidSteps {
     @Given("^User (.*) has (?:emails?|phone numbers?) (.*) in address book$")
     public void UserXHasEmailsInAddressBook(String asUser, String contacts)
             throws Exception {
-        commonSteps.UserXHasContactsInAddressBook(asUser, contacts);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserXHasContactsInAddressBook(asUser, contacts);
     }
 
     private String recentMsgId = null;
@@ -1872,12 +1897,14 @@ public class CommonAndroidSteps {
      */
     @When("^I remember the state of the recent message from user (.*) in the local database$")
     public void IRememberMessageStateInLocalDatabase(String fromContact) throws Exception {
-        final ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(fromContact);
-        final ClientUser myself = usrMgr.getSelfUserOrThrowError();
+        final ClientUser dstUser = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .findUserByNameOrNameAlias(fromContact);
+        final ClientUser myself = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager().getSelfUserOrThrowError();
         final WireDatabase db = new WireDatabase();
         this.recentMsgId = db.getRecentMessageId(myself, dstUser).orElseThrow(
                 () -> new IllegalStateException(
-                        String.format("No messages from user %s have been found in the local database", dstUser.getName()))
+                        String.format("No messages from user %s have been found in the local database",
+                                dstUser.getName()))
         );
     }
 
@@ -1921,7 +1948,7 @@ public class CommonAndroidSteps {
         // Wait for 10 seconds until SE register TOKEN on BE
         // Because we still need to wait several seconds after it retrieve the GCM InstanceID from device.
         Thread.sleep(10000);
-        commonSteps.UnregisterPushToken(pushToken.orElseThrow(() -> new IllegalStateException("Cannot find GCM Token from " +
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UnregisterPushToken(pushToken.orElseThrow(() -> new IllegalStateException("Cannot find GCM Token from " +
                 "logcat")));
     }
 
@@ -1957,19 +1984,23 @@ public class CommonAndroidSteps {
         switch (action.toLowerCase()) {
             case "mutes":
             case "mute":
-                commonSteps.UserMutesConversation(userToNameAlias, dstUserNameAlias, deviceName, isGroup);
+                AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserMutesConversation(userToNameAlias,
+                        dstUserNameAlias, deviceName, isGroup);
                 break;
             case "unmutes":
             case "unmute":
-                commonSteps.UserUnmutesConversation(userToNameAlias, dstUserNameAlias, deviceName, isGroup);
+                AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserUnmutesConversation(userToNameAlias,
+                        dstUserNameAlias, deviceName, isGroup);
                 break;
             case "archives":
             case "archive":
-                commonSteps.UserArchiveConversation(userToNameAlias, dstUserNameAlias, deviceName, isGroup);
+                AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserArchiveConversation(userToNameAlias,
+                        dstUserNameAlias, deviceName, isGroup);
                 break;
             case "unarchives":
             case "unarchive":
-                commonSteps.UserUnarchiveConversation(userToNameAlias, dstUserNameAlias, deviceName, isGroup);
+                AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserUnarchiveConversation(userToNameAlias,
+                        dstUserNameAlias, deviceName, isGroup);
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Cannot identify action '%s'", action));
@@ -2004,7 +2035,8 @@ public class CommonAndroidSteps {
     public void UserSwitchesToEphemeralMode(String userAs, String isGroup, String convoName, String deviceName, int timeout,
                                             String timeMetrics) throws Exception {
         final long timeoutMs = timeMetrics.startsWith("minute") ? timeout * 60 * 1000 : timeout * 1000;
-        commonSteps.UserSwitchesToEphemeralMode(userAs, convoName, timeoutMs, isGroup.equals("group conversation"), deviceName);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserSwitchesToEphemeralMode(userAs, convoName, timeoutMs,
+                isGroup.equals("group conversation"), deviceName);
     }
 
     /**
@@ -2018,8 +2050,8 @@ public class CommonAndroidSteps {
      */
     @When("^User (.*) switches assets to (V2|V3) (?:via device (.*))?$")
     public void UserSwitchAssetMode(String userAs, String mode, String deviceName) throws Exception {
-        AssetProtocol asset = AssetProtocol.valueOf(mode.toUpperCase());
-        commonSteps.UserSetAssetMode(userAs, asset, deviceName);
+        AssetsVersion asset = AssetsVersion.valueOf(mode.toUpperCase());
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserSetAssetMode(userAs, asset, deviceName);
     }
 
 
@@ -2038,20 +2070,21 @@ public class CommonAndroidSteps {
     public void UserSendsGiphy(String userAs, String convoType, String convName, String query, String deviceName)
             throws Exception {
         boolean isGroup = convoType.equals("group conversation");
-        commonSteps.UserSendsGiphy(userAs, convName, query, deviceName, isGroup);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().UserSendsGiphy(userAs, convName,
+                query, deviceName, isGroup);
     }
 
     /**
      * Upload self user properties (name and email) to /onboarding endpoint.
      * This is mandatory to be able to get matches
      *
-     * @step. ^Users? (.*) uploads? own details$
      * @param aliases self users alias(es)
      * @throws Exception
+     * @step. ^Users? (.*) uploads? own details$
      */
     @Given("^Users? (.*) uploads? own details$")
     public void uploadSelfUser(String aliases) throws Exception {
-        commonSteps.uploadSelfContact(aliases);
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps().uploadSelfContact(aliases);
     }
 
 

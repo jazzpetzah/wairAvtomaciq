@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.LoginPage;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
@@ -13,9 +13,9 @@ public class LoginPageSteps {
 
     private static final Logger LOG = ZetaLogger.getLog(LoginPageSteps.class.getName());
 
-    private final TestContext webContext;
+    private final WebAppTestContext webContext;
 
-    public LoginPageSteps(TestContext webContext) {
+    public LoginPageSteps(WebAppTestContext webContext) {
         this.webContext = webContext;
     }
 
@@ -23,17 +23,17 @@ public class LoginPageSteps {
     public void ISignInUsingLoginAndPassword(String login, String password)
             throws Exception {
         try {
-            login = webContext.getUserManager().findUserByEmailOrEmailAlias(login).getEmail();
+            login = webContext.getUsersManager().findUserByEmailOrEmailAlias(login).getEmail();
         } catch (NoSuchUserException e) {
             try {
                 // search for email by name aliases in case name is specified
-                login = webContext.getUserManager().findUserByNameOrNameAlias(login).getEmail();
+                login = webContext.getUsersManager().findUserByNameOrNameAlias(login).getEmail();
             } catch (NoSuchUserException ex) {
             }
         }
 
         try {
-            password = webContext.getUserManager().findUserByPasswordAlias(password).getPassword();
+            password = webContext.getUsersManager().findUserByPasswordAlias(password).getPassword();
         } catch (NoSuchUserException e) {
             // Ignore silently
         }
@@ -55,7 +55,7 @@ public class LoginPageSteps {
     @When("^I enter email (\\S+)$")
     public void IEnterEmail(String email) throws Exception {
         try {
-            email = webContext.getUserManager().findUserByEmailOrEmailAlias(email).getEmail();
+            email = webContext.getUsersManager().findUserByEmailOrEmailAlias(email).getEmail();
         } catch (NoSuchUserException e) {
             // Ignore silently
         }
@@ -65,7 +65,7 @@ public class LoginPageSteps {
     @When("^I enter password \"([^\"]*)\"$")
     public void IEnterPassword(String password) throws Exception {
         try {
-            password = webContext.getUserManager().findUserByPasswordAlias(password).getPassword();
+            password = webContext.getUsersManager().findUserByPasswordAlias(password).getPassword();
         } catch (NoSuchUserException e) {
             // Ignore silently
         }

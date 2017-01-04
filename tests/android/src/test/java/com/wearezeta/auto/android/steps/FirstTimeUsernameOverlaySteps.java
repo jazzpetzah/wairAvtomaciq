@@ -1,25 +1,17 @@
 package com.wearezeta.auto.android.steps;
 
-import com.wearezeta.auto.android.pages.ConversationsListPage;
+import com.wearezeta.auto.android.common.AndroidTestContextHolder;
 import com.wearezeta.auto.android.pages.FirstTimeUsernameOverlay;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 
 public class FirstTimeUsernameOverlaySteps {
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
-
     private FirstTimeUsernameOverlay getFirstTimeUsernameOverlay() throws Exception {
-        return pagesCollection.getPage(FirstTimeUsernameOverlay.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(FirstTimeUsernameOverlay.class);
     }
-
-    private ConversationsListPage getConversationsListPage() throws Exception {
-        return pagesCollection.getPage(ConversationsListPage.class);
-    }
-
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     /**
      * Confirms the Unique Username Takeover page is visible or not
@@ -77,10 +69,10 @@ public class FirstTimeUsernameOverlaySteps {
     @Then("^I( do not)? see username on Unique Username Takeover page$")
     public void ISeeUsername(String shouldNotBeVisible) throws Exception {
         if (shouldNotBeVisible == null) {
-            Assert.assertTrue(String.format("There is no username on Unique Username Takeover page"),
+            Assert.assertTrue("There is no username on Unique Username Takeover page",
                     getFirstTimeUsernameOverlay().isOfferedUsernameVisible());
         } else {
-            Assert.assertTrue(String.format("There is username on Unique Username Takeover page"),
+            Assert.assertTrue("There is username on Unique Username Takeover page",
                     getFirstTimeUsernameOverlay().isOfferedUsernameInvisible());
         }
     }

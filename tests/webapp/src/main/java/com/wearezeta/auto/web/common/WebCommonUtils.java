@@ -417,7 +417,7 @@ public class WebCommonUtils extends CommonUtils {
 
     /**
      * The UI uses left zero padding for device IDs but for internal processing we need a format without leading zeros. Note:
-     * The SEBridge is returning device IDs with left zero padding as well
+     * The RemoteDevicesManager is returning device IDs with left zero padding as well
      *
      * @param deviceId device ID with leading zeros
      * @return device ID without leading zeros

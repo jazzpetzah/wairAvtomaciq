@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import com.wearezeta.auto.ios.pages.UniqueUsernameTakeoverPage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -8,11 +9,9 @@ import org.junit.Assert;
 
 
 public class UniqueUsernameTakeoverPageSteps {
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
     private UniqueUsernameTakeoverPage getPage() throws Exception {
-        return pagesCollection.getPage(UniqueUsernameTakeoverPage.class);
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(UniqueUsernameTakeoverPage.class);
     }
 
     /**
@@ -40,9 +39,10 @@ public class UniqueUsernameTakeoverPageSteps {
     @Then("^I (do not )?see (unique )?username (starts with )?(.*) on Unique Username Takeover page$")
     public void ISeeUniqueUsername(String shouldNotSee, String isUnique, String startsWith, String expectedUsername)
             throws Exception {
-        expectedUsername = usrMgr.replaceAliasesOccurences(expectedUsername, ClientUsersManager.FindBy.NAME_ALIAS);
-        expectedUsername = usrMgr.replaceAliasesOccurences(expectedUsername,
-                ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
+        expectedUsername = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(expectedUsername, ClientUsersManager.FindBy.NAME_ALIAS);
+        expectedUsername = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(expectedUsername, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
         if (isUnique == null) {
             if (shouldNotSee == null) {
                 Assert.assertTrue(String.format("Name '%s' is not visible", expectedUsername),

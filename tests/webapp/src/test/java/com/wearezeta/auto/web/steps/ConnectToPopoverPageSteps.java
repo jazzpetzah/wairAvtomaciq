@@ -2,7 +2,7 @@ package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.popovers.ConnectToPopoverContainer;
 
 import cucumber.api.java.en.And;
@@ -13,9 +13,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ConnectToPopoverPageSteps {
 
-    private final TestContext context;
+    private final WebAppTestContext context;
 
-    public ConnectToPopoverPageSteps(TestContext context) {
+    public ConnectToPopoverPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 
@@ -72,7 +72,7 @@ public class ConnectToPopoverPageSteps {
 
     @When("^I see unique username on Pending Outgoing Connection popover to user (.*)")
     public void ICanSeeUniqueUsernameToUser(String userAlias) throws Exception {
-        ClientUser user = context.getUserManager().findUserBy(userAlias, ClientUsersManager.FindBy.NAME_ALIAS);
+        ClientUser user = context.getUsersManager().findUserBy(userAlias, ClientUsersManager.FindBy.NAME_ALIAS);
         // username given. strict check for username
         String uniqueUsername = user.getUniqueUsername();
         assertThat(context.getPagesCollection().getPage(ConnectToPopoverContainer.class).getUniqueUsernameOutgoing(),

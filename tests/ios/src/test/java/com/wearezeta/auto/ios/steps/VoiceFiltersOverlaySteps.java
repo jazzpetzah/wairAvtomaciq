@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import com.wearezeta.auto.ios.pages.VoiceFiltersOverlay;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
@@ -7,11 +8,9 @@ import cucumber.api.java.en.When;
 import org.jcodec.common.Assert;
 
 public class VoiceFiltersOverlaySteps {
-
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-
     private VoiceFiltersOverlay getVoiceFiltersOverlay() throws Exception {
-        return pagesCollection.getPage(VoiceFiltersOverlay.class);
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(VoiceFiltersOverlay.class);
     }
 
     /**

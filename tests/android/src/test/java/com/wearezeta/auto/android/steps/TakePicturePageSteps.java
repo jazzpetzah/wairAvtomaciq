@@ -1,17 +1,17 @@
 package com.wearezeta.auto.android.steps;
 
+import com.wearezeta.auto.android.common.AndroidTestContextHolder;
+import com.wearezeta.auto.android.pages.AndroidPagesCollection;
 import com.wearezeta.auto.android.pages.TakePicturePage;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 
 public class TakePicturePageSteps {
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
-
     private TakePicturePage getTakePicturePage() throws Exception {
-        return pagesCollection.getPage(TakePicturePage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(TakePicturePage.class);
     }
 
     /**

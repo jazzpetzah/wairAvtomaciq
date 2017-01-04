@@ -1,16 +1,16 @@
 package com.wearezeta.auto.android_tablet.steps.details_overlay.group;
 
+import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContextHolder;
 import com.wearezeta.auto.android_tablet.pages.details_overlay.group.TabletGroupConnectedUserDetailsOverlayPage;
-import com.wearezeta.auto.android_tablet.steps.AndroidTabletPagesCollection;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 
 public class GroupConnectedUserDetailsOverlayPageSteps {
-    private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection.getInstance();
 
     private TabletGroupConnectedUserDetailsOverlayPage getGroupConnectedUserDetailsOverlayPage() throws Exception {
-        return pagesCollection.getPage(TabletGroupConnectedUserDetailsOverlayPage.class);
+        return AndroidTabletTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(TabletGroupConnectedUserDetailsOverlayPage.class);
     }
 
     /**

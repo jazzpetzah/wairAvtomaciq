@@ -1,15 +1,15 @@
 package com.wearezeta.auto.android.steps;
 
+import com.wearezeta.auto.android.common.AndroidTestContextHolder;
 import com.wearezeta.auto.android.pages.ShareLocationPage;
 import cucumber.api.java.en.When;
 
 public class ShareLocationPageSteps {
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
-
-    private static int LOAD_MAP_TIMEOUT_SECONDS = 15;
+    private static final int LOAD_MAP_TIMEOUT_SECONDS = 15;
 
     private ShareLocationPage getShareLocationPage() throws Exception {
-        return pagesCollection.getPage(ShareLocationPage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(ShareLocationPage.class);
     }
 
     /**

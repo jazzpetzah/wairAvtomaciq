@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.external.PasswordChangePage;
 import com.wearezeta.auto.web.pages.external.PasswordChangeSuccessfullPage;
 
@@ -21,9 +21,9 @@ public class PasswordChangeSteps {
     private static final Logger log = ZetaLogger.getLog(PasswordChangeSteps.class.getSimpleName());
     private static final int VISIBILITY_TIMEOUT_SECONDS = 15;
     
-    private final TestContext context;
+    private final WebAppTestContext context;
 
-    public PasswordChangeSteps(TestContext context) {
+    public PasswordChangeSteps(WebAppTestContext context) {
         this.context = context;
     }
 
@@ -35,7 +35,7 @@ public class PasswordChangeSteps {
 
     @When("^I enter password (\\S+) on Password Change page$")
     public void IEnterPassword(String passwordOrAlias) throws Exception {
-        passwordOrAlias = context.getUserManager().replaceAliasesOccurences(passwordOrAlias,
+        passwordOrAlias = context.getUsersManager().replaceAliasesOccurences(passwordOrAlias,
                 FindBy.PASSWORD_ALIAS);
         context.getPagesCollection().getPage(PasswordChangePage.class).setNewPassword(
                 passwordOrAlias);

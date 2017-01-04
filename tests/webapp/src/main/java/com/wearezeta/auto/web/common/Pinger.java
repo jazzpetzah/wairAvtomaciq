@@ -16,7 +16,7 @@ public class Pinger {
 
     private final ScheduledThreadPoolExecutor PING_EXECUTOR = new ScheduledThreadPoolExecutor(1);
     private ScheduledFuture<?> RUNNING_PINGER;
-    private TestContext context;
+    private WebAppTestContext context;
     private final Runnable PINGER = new Runnable() {
         @Override
         public void run() {
@@ -29,7 +29,7 @@ public class Pinger {
         }
     };
 
-    public Pinger(TestContext context) {
+    public Pinger(WebAppTestContext context) {
         PING_EXECUTOR.setRemoveOnCancelPolicy(true);
         this.context = context;
     }

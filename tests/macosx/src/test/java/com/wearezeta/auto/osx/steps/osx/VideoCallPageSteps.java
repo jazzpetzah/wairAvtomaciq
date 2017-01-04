@@ -7,7 +7,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.osx.pages.osx.MainWirePage;
 import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.VideoCallPage;
 import cucumber.api.java.en.Then;
 import java.awt.image.BufferedImage;
@@ -24,9 +24,9 @@ public class VideoCallPageSteps {
 
     private static final Logger LOG = ZetaLogger.getLog(VideoCallPageSteps.class.getName());
 
-    private final TestContext webContext;
+    private final WebAppTestContext webContext;
 
-    public VideoCallPageSteps(TestContext webContext) {
+    public VideoCallPageSteps(WebAppTestContext webContext) {
         this.webContext = webContext;
     }
 
@@ -81,8 +81,8 @@ public class VideoCallPageSteps {
 
     @Then("^I verify (.*) sees my screen$")
     public void IVerifyUserXVideoShowsScreen(String callees) throws Exception {
-        for (String callee : webContext.getUserManager().splitAliases(callees)) {
-            final ClientUser userAs = webContext.getUserManager().findUserByNameOrNameAlias(callee);
+        for (String callee : webContext.getUsersManager().splitAliases(callees)) {
+            final ClientUser userAs = webContext.getUsersManager().findUserByNameOrNameAlias(callee);
 
             // get screenshot from remote user
             BufferedImage remoteScreenshot = webContext.getCallingManager().getScreenshot(userAs);

@@ -14,7 +14,7 @@ import com.wearezeta.auto.common.email.MessagingUtils;
 import com.wearezeta.auto.common.email.WireMessage;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.external.DeleteAccountPage;
 
 import cucumber.api.java.en.Then;
@@ -25,15 +25,15 @@ public class DeleteAccountPageSteps {
     private static final int DELETION_RECEIVING_TIMEOUT = 120;
 
     private String deleteLink = null;
-    private final TestContext context;
+    private final WebAppTestContext context;
 
-    public DeleteAccountPageSteps(TestContext context) {
+    public DeleteAccountPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 
     @Then("^I delete account of user (.*) via email on (.*)$")
     public void IDeleteAccountViaEmaiOn(String alias, String agent) throws Throwable {
-        final ClientUser user = context.getUserManager().findUserByNameOrNameAlias(alias);
+        final ClientUser user = context.getUsersManager().findUserByNameOrNameAlias(alias);
         IMAPSMailbox mbox = IMAPSMailbox.getInstance(user.getEmail(), user.getPassword());
         Map<String, String> expectedHeaders = new HashMap<>();
         expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, user.getEmail());
@@ -57,7 +57,7 @@ public class DeleteAccountPageSteps {
         String newUrl = "";
         int position = 0;
 
-        final ClientUser user = context.getUserManager().findUserByNameOrNameAlias(alias);
+        final ClientUser user = context.getUsersManager().findUserByNameOrNameAlias(alias);
         IMAPSMailbox mbox = IMAPSMailbox.getInstance(user.getEmail(), user.getPassword());
         Map<String, String> expectedHeaders = new HashMap<>();
         expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, user.getEmail());
@@ -109,7 +109,7 @@ public class DeleteAccountPageSteps {
 
     @Then("^I remember delete link of user (.*)$")
     public void IRememberDeleteLinkOfUser(String alias) throws Throwable {
-        final ClientUser user = context.getUserManager().findUserByNameOrNameAlias(alias);
+        final ClientUser user = context.getUsersManager().findUserByNameOrNameAlias(alias);
         IMAPSMailbox mbox = IMAPSMailbox.getInstance(user.getEmail(), user.getPassword());
         Map<String, String> expectedHeaders = new HashMap<>();
         expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, user.getEmail());

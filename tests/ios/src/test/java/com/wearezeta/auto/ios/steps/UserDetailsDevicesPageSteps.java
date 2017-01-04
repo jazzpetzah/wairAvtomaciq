@@ -1,6 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
-import com.wearezeta.auto.common.CommonSteps;
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import com.wearezeta.auto.ios.pages.details_overlay.common.UserDetailsDevicesPage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -9,10 +9,9 @@ import org.junit.Assert;
 import java.util.List;
 
 public class UserDetailsDevicesPageSteps {
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-
     private UserDetailsDevicesPage getUserDetailsDevicesPage() throws Exception {
-        return pagesCollection.getPage(UserDetailsDevicesPage.class);
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(UserDetailsDevicesPage.class);
     }
 
     /**
@@ -37,7 +36,8 @@ public class UserDetailsDevicesPageSteps {
      */
     @Then("^I see user (.*) devices? IDs? (?:is|are) present on Devices tab$")
     public void ISeeUserDevicesIDPresentOnDetailsPage(String name) throws Exception {
-        List<String> deviceIDs = CommonSteps.getInstance().GetDevicesIDsForUser(name);
+        List<String> deviceIDs = IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .GetDevicesIDsForUser(name);
         for (String id : deviceIDs) {
             Assert.assertTrue(String.format("Device ID '%s' is not visible", id),
                     getUserDetailsDevicesPage().isUserDeviceIdVisible(id));

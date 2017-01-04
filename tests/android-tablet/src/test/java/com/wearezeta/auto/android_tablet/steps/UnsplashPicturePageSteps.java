@@ -1,16 +1,15 @@
 package com.wearezeta.auto.android_tablet.steps;
 
+import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContextHolder;
 import com.wearezeta.auto.android_tablet.pages.registration.TabletUnsplashPicturePage;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 
 public class UnsplashPicturePageSteps {
-	private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection
-			.getInstance();
-
 	private TabletUnsplashPicturePage getUnsplashPicturePage() throws Exception {
-		return pagesCollection.getPage(TabletUnsplashPicturePage.class);
+		return AndroidTabletTestContextHolder.getInstance().getTestContext().getPagesCollection()
+				.getPage(TabletUnsplashPicturePage.class);
 	}
 
 	/**

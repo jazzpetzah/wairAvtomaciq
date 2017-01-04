@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android.steps;
 
+import com.wearezeta.auto.android.common.AndroidTestContextHolder;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.registration.AddNamePage;
@@ -8,7 +9,6 @@ import com.wearezeta.auto.android.pages.registration.PhoneNumberVerificationPage
 import com.wearezeta.auto.android.pages.registration.WelcomePage;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import com.wearezeta.auto.common.CommonUtils;
 
@@ -17,25 +17,25 @@ import cucumber.api.java.en.When;
 import cucumber.api.java.en.Then;
 
 public class WelcomePageSteps {
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
-
     private WelcomePage getWelcomePage() throws Exception {
-        return pagesCollection.getPage(WelcomePage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(WelcomePage.class);
     }
 
     private AreaCodePage getAreaCodePage() throws Exception {
-        return pagesCollection.getPage(AreaCodePage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(AreaCodePage.class);
     }
 
     private PhoneNumberVerificationPage getVerificationPage() throws Exception {
-        return pagesCollection.getPage(PhoneNumberVerificationPage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(PhoneNumberVerificationPage.class);
     }
 
     private AddNamePage getAddNamePage() throws Exception {
-        return pagesCollection.getPage(AddNamePage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(AddNamePage.class);
     }
-
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     private static final String ERROR_CODE_ALERT_HEADER = "Invalid code";
     private static final String ERROR_CODE_ALERT_MESSAGE = "Please enter a valid code.";
@@ -75,7 +75,8 @@ public class WelcomePageSteps {
         getWelcomePage().tapAreaCodeSelector();
         getAreaCodePage().selectAreaCode(PhoneNumber.WIRE_COUNTRY_PREFIX);
 
-        this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
+        this.userToRegister = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .findUserByNameOrNameAlias(name);
         getWelcomePage().inputPhoneNumber(this.userToRegister.getPhoneNumber());
         getWelcomePage().tapConfirm();
     }

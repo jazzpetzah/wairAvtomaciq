@@ -19,16 +19,7 @@ public class FastLoginContainer {
     public static final String CAPABILITY_NAME = "fastLogin";
     public static final String TAG_NAME = "@" + CAPABILITY_NAME;
 
-    private FastLoginContainer() {
-    }
-
-    private static FastLoginContainer instance = null;
-
-    public synchronized static FastLoginContainer getInstance() {
-        if (instance == null) {
-            instance = new FastLoginContainer();
-        }
-        return instance;
+    public FastLoginContainer() {
     }
 
     private boolean isFastLoginEnabled = false;

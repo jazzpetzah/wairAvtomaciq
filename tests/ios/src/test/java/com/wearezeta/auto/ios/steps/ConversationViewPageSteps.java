@@ -6,6 +6,7 @@ import java.util.Optional;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.misc.Timedelta;
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import cucumber.api.java.en.And;
 import org.apache.commons.lang3.text.WordUtils;
 import org.junit.Assert;
@@ -18,14 +19,11 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class ConversationViewPageSteps {
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-
     private ElementState previousAssetsContainerState = null;
 
     private ConversationViewPage getConversationViewPage() throws Exception {
-        return pagesCollection.getPage(ConversationViewPage.class);
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(ConversationViewPage.class);
     }
 
     @When("^I see conversation view page$")
@@ -89,7 +87,8 @@ public class ConversationViewPageSteps {
      */
     @Then("^I (do not )?see \"(.*)\" system message in the conversation view$")
     public void ISeeSystemMessage(String shouldNotSee, String expectedMsg) throws Exception {
-        expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
+        expectedMsg = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("The expected system message '%s' is not visible in the conversation",
                     expectedMsg), getConversationViewPage().isSystemMessageVisible(expectedMsg));
@@ -193,7 +192,8 @@ public class ConversationViewPageSteps {
 
     @Then("^I see last message in the conversation view (is|contains) expected message (.*)")
     public void ThenISeeLasMessageIsd(String operation, String msg) throws Exception {
-        msg = usrMgr.replaceAliasesOccurences(msg, FindBy.EMAIL_ALIAS);
+        msg = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(msg, FindBy.EMAIL_ALIAS);
         if (operation.equals("is")) {
             Assert.assertTrue(
                     String.format("The last message in the conversation is different from the expected one '%s'",
@@ -215,7 +215,8 @@ public class ConversationViewPageSteps {
      */
     @Then("^I (do not )?see the conversation view contains message (.*)")
     public void ISeeConversationMessage(String shouldNot, String expectedMsg) throws Exception {
-        expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
+        expectedMsg = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
         if (shouldNot == null) {
             Assert.assertTrue(
                     String.format("The expected message '%s' is not visible in the conversation view", expectedMsg),
@@ -450,7 +451,8 @@ public class ConversationViewPageSteps {
      */
     @When("^I see missed call from contact (.*)$")
     public void ISeeMissedCall(String contact) throws Exception {
-        String username = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+        String username = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format("Missed call message for '%s' is missing in conversation view", username),
                 getConversationViewPage().isMissedCallButtonVisibleFor(username));
     }
@@ -464,7 +466,8 @@ public class ConversationViewPageSteps {
      */
     @When("^I tap missed call button to call contact (.*)")
     public void IClickMissedCallButton(String contact) throws Exception {
-        contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+        contact = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .findUserByNameOrNameAlias(contact).getName();
         getConversationViewPage().clickOnCallButtonForContact(contact.toUpperCase());
     }
 
@@ -499,7 +502,8 @@ public class ConversationViewPageSteps {
      */
     @When("^I see the conversation with (.*)$")
     public void ISeeConversationWith(String contact) throws Exception {
-        contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+        contact = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format("Conversation with %s is not visible", contact),
                 getConversationViewPage().isUserNameInUpperToolbarVisible(contact));
     }
@@ -1269,9 +1273,10 @@ public class ConversationViewPageSteps {
      */
     @Then("^I see (?:group |\\s*)conversation with users? (.*)")
     public void ISeeConversationPageWithUsers(String participantNameAliases) throws Exception {
-        participantNameAliases = usrMgr.replaceAliasesOccurences(participantNameAliases,
-                ClientUsersManager.FindBy.NAME_ALIAS);
-        final List<String> participantNames = usrMgr.splitAliases(participantNameAliases);
+        participantNameAliases = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(participantNameAliases, ClientUsersManager.FindBy.NAME_ALIAS);
+        final List<String> participantNames = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .splitAliases(participantNameAliases);
         Assert.assertTrue(
                 String.format("Users '%s' are not displayed on Upper Toolbar", participantNameAliases),
                 getConversationViewPage().isUpperToolbarContainNames(participantNames)
@@ -1289,8 +1294,10 @@ public class ConversationViewPageSteps {
      */
     @Then("^I (do not )?see (unique username|Address Book name|common friends count) (\".*\" |\\s*)on Conversation view page$")
     public void ISeeLabel(String shouldNotSee, String fieldType, String value) throws Exception {
-        value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.NAME_ALIAS);
-        value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
+        value = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(value, ClientUsersManager.FindBy.NAME_ALIAS);
+        value = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(value, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
         if (shouldNotSee == null) {
             if (value.startsWith("\"")) {
                 value = value.trim().replaceAll("^\"|\"$", "");

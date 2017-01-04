@@ -1,6 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.GiphyPage;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -12,9 +12,9 @@ import cucumber.api.java.en.When;
 
 public class GiphyPageSteps {
 
-    private final TestContext context;
+    private final WebAppTestContext context;
 
-    public GiphyPageSteps(TestContext context) {
+    public GiphyPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 

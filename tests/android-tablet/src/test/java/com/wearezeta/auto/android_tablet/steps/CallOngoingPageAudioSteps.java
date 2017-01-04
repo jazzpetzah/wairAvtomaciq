@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android_tablet.steps;
 
+import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContextHolder;
 import com.wearezeta.auto.android_tablet.pages.TabletCallOngoingAudioPage;
 import com.wearezeta.auto.common.misc.ElementState;
 
@@ -12,13 +13,11 @@ import org.junit.Assert;
 import static org.junit.Assert.assertTrue;
 
 public class CallOngoingPageAudioSteps {
-
-    private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection.getInstance();
-
     private final ElementState muteButtonState = new ElementState(() -> getPage().getMuteButtonScreenshot());
 
     private TabletCallOngoingAudioPage getPage() throws Exception {
-        return pagesCollection.getPage(TabletCallOngoingAudioPage.class);
+        return AndroidTabletTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(TabletCallOngoingAudioPage.class);
     }
 
     /**

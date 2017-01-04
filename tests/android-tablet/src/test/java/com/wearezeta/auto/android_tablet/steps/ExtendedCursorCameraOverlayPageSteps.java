@@ -1,16 +1,13 @@
 package com.wearezeta.auto.android_tablet.steps;
 
-
+import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContextHolder;
 import com.wearezeta.auto.android_tablet.pages.TabletExtendedCursorCameraOverlayPage;
 import cucumber.api.java.en.When;
 
 public class ExtendedCursorCameraOverlayPageSteps {
-
-    private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection
-            .getInstance();
-
     private TabletExtendedCursorCameraOverlayPage getExtendedCursorCameraOverlayPage() throws Exception {
-        return pagesCollection.getPage(TabletExtendedCursorCameraOverlayPage.class);
+        return AndroidTabletTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(TabletExtendedCursorCameraOverlayPage.class);
     }
 
     /**

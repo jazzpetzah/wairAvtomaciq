@@ -1,6 +1,6 @@
 package com.wearezeta.auto.win.steps.win;
 
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.win.pages.win.ContactContextMenuPage;
 import com.wearezeta.auto.win.pages.win.WinPagesCollection;
 
@@ -8,9 +8,9 @@ import cucumber.api.java.en.When;
 
 public class ContactContextMenuPageSteps {
 
-    private final TestContext webContext;
+    private final WebAppTestContext webContext;
 
-    public ContactContextMenuPageSteps(TestContext webContext) {
+    public ContactContextMenuPageSteps(WebAppTestContext webContext) {
         this.webContext = webContext;
     }
 

@@ -1,18 +1,15 @@
 package com.wearezeta.auto.android_tablet.steps;
 
-
+import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContextHolder;
 import com.wearezeta.auto.android_tablet.pages.TabletEditMessageOverlayPage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 
 public class EditMessageOverlayPageSteps {
-
-    private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection
-            .getInstance();
-
     private TabletEditMessageOverlayPage getEditMessageOverlayPage() throws Exception {
-        return pagesCollection.getPage(TabletEditMessageOverlayPage.class);
+        return AndroidTabletTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(TabletEditMessageOverlayPage.class);
     }
 
     /**

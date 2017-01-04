@@ -4,7 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.DeviceLimitPage;
 
 import cucumber.api.java.en.Then;
@@ -12,9 +12,9 @@ import cucumber.api.java.en.When;
 
 public class DeviceLimitPageSteps {
 
-    private final TestContext context;
+    private final WebAppTestContext context;
 
-    public DeviceLimitPageSteps(TestContext context) {
+    public DeviceLimitPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 
@@ -74,7 +74,7 @@ public class DeviceLimitPageSteps {
     @Then("I enter password \"([^\"]*)\" to remove device named (.*) on the device limit page")
     public void IEnterPassword(String password, String deviceName) throws Exception {
         try {
-            password = context.getUserManager().findUserByPasswordAlias(password).getPassword();
+            password = context.getUsersManager().findUserByPasswordAlias(password).getPassword();
         } catch (NoSuchUserException e) {
             // Ignore silently
         }

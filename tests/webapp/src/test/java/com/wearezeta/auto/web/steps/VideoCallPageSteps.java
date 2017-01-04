@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Optional;
 
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.VideoCallPage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -18,9 +18,9 @@ import static org.junit.Assert.assertTrue;
 
 public class VideoCallPageSteps {
 
-    private final TestContext context;
+    private final WebAppTestContext context;
 
-    public VideoCallPageSteps(TestContext context) {
+    public VideoCallPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 

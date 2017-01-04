@@ -1,6 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import org.junit.Assert;
 
 import com.wearezeta.auto.web.pages.WarningPage;
@@ -9,9 +9,9 @@ import cucumber.api.java.en.Then;
 
 public class WarningPageSteps {
 
-    private final TestContext context;
+    private final WebAppTestContext context;
 
-    public WarningPageSteps(TestContext context) {
+    public WarningPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 

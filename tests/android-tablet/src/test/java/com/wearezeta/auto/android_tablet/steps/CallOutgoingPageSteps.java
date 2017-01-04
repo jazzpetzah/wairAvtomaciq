@@ -1,6 +1,7 @@
 package com.wearezeta.auto.android_tablet.steps;
 
 
+import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContextHolder;
 import com.wearezeta.auto.android_tablet.pages.TabletCallOutgoingAudioPage;
 import com.wearezeta.auto.android_tablet.pages.TabletCallOutgoingVideoPage;
 import com.wearezeta.auto.common.misc.ElementState;
@@ -13,19 +14,18 @@ import org.junit.Assert;
 import static org.junit.Assert.assertTrue;
 
 public class CallOutgoingPageSteps {
-
-    private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection.getInstance();
-
     private final ElementState videoButtonState = new ElementState(() -> getAudioPage().getSpecialButtonScreenshot());
     private final ElementState muteButtonState = new ElementState(() -> getAudioPage().getMuteButtonScreenshot());
 
 
     private TabletCallOutgoingAudioPage getAudioPage() throws Exception {
-        return pagesCollection.getPage(TabletCallOutgoingAudioPage.class);
+        return AndroidTabletTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(TabletCallOutgoingAudioPage.class);
     }
 
     private TabletCallOutgoingVideoPage getVideoPage() throws Exception {
-        return pagesCollection.getPage(TabletCallOutgoingVideoPage.class);
+        return AndroidTabletTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(TabletCallOutgoingVideoPage.class);
     }
 
     /**

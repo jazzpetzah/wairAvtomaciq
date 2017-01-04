@@ -12,11 +12,9 @@ import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.Message;
 
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
-import com.wearezeta.auto.web.locators.WebAppLocators;
-import com.wearezeta.auto.web.pages.AccountPage;
 import com.wearezeta.auto.web.pages.ConversationPage;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.pages.WebPage;
@@ -27,10 +25,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 import java.net.URI;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
@@ -52,11 +47,11 @@ public class CommonWebAppSteps {
     private static final String DEFAULT_USER_PICTURE = "/images/aqaPictureContact600_800.jpg";
     private static final String VIDEO_MESSAGE_IMAGE = "example.png";
 
-    private final TestContext context;
+    private final WebAppTestContext context;
     private String rememberedPage = null;
     private String rememberedMessageId = null;
 
-    public CommonWebAppSteps(TestContext context) {
+    public CommonWebAppSteps(WebAppTestContext context) {
         this.context = context;
     }
 
@@ -293,7 +288,7 @@ public class CommonWebAppSteps {
     @When("^Contact (.*) sends? (\\d+) messages with prefix (.*) via device (.*) to (user|group conversation) (.*)$")
     public void UserSendAmountOfMessages(String msgFromUserNameAlias, int amount, String prefix, String deviceName,
             String convoType, String dstConvoName) throws Exception {
-        ClientUser user = context.getUserManager().findUserByNameOrNameAlias(msgFromUserNameAlias);
+        ClientUser user = context.getUsersManager().findUserByNameOrNameAlias(msgFromUserNameAlias);
         if (convoType.equals("user")) {
             for (int i = 0; i < amount; i++) {
                 context.getConversationStates().addMessage(dstConvoName, new Message(prefix + i, user.getId()));
@@ -352,8 +347,8 @@ public class CommonWebAppSteps {
 
     @When("^I break the session with device (.*) of user (.*)$")
     public void IBreakTheSession(String deviceName, String userAlias) throws Exception {
-        ClientUser user = context.getUserManager().findUserByNameOrNameAlias(userAlias);
-        String deviceId = context.getDeviceManager().getDeviceId(user, deviceName + context.getTestname().hashCode());
+        ClientUser user = context.getUsersManager().findUserByNameOrNameAlias(userAlias);
+        String deviceId = context.getDevicesManager().getDeviceId(user, deviceName + context.getTestname().hashCode());
         deviceId = WebCommonUtils.removeDeviceIdPadding(deviceId);
         context.getPagesCollection().getPage(WebPage.class).breakSession(deviceId);
     }
@@ -530,7 +525,7 @@ public class CommonWebAppSteps {
     @Then("^I verify user (.*) has received (?:an |\\s*)email invitation$")
     public void IVerifyUserReceiverInvitation(String alias) throws Throwable {
         context.startPinging();
-        final ClientUser user = context.getUserManager().findUserByNameOrNameAlias(alias);
+        final ClientUser user = context.getUsersManager().findUserByNameOrNameAlias(alias);
         assertTrue(
                 String.format("Invitation email for %s is not valid", user.getEmail()),
                 BackendAPIWrappers
@@ -545,7 +540,7 @@ public class CommonWebAppSteps {
 
     @Then("^I delete account of user (.*) via email$")
     public void IDeleteAccountViaEmail(String alias) throws Throwable {
-        final ClientUser user = context.getUserManager().findUserByNameOrNameAlias(alias);
+        final ClientUser user = context.getUsersManager().findUserByNameOrNameAlias(alias);
         IMAPSMailbox mbox = IMAPSMailbox.getInstance(user.getEmail(), user.getPassword());
         Map<String, String> expectedHeaders = new HashMap<>();
         expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, user.getEmail());
@@ -563,7 +558,7 @@ public class CommonWebAppSteps {
 
     @Then("^(.*) navigates to personal invitation registration page$")
     public void INavigateToPersonalInvitationRegistrationPage(String alias) throws Throwable {
-        final ClientUser user = context.getUserManager().findUserByNameOrNameAlias(alias);
+        final ClientUser user = context.getUsersManager().findUserByNameOrNameAlias(alias);
         String url = BackendAPIWrappers
                 .getInvitationMessage(user)
                 .orElseThrow(
@@ -620,8 +615,8 @@ public class CommonWebAppSteps {
     public void UserAddRemoteDeviceToAccount(String userNameAlias,
             String deviceName, String label) throws Exception {
         context.startPinging();
-        context.getCommonSteps().UserAddsRemoteDeviceToAccount(userNameAlias, deviceName + context.getTestname().hashCode(),
-                label);
+        context.getCommonSteps().UserAddsRemoteDeviceToAccount(userNameAlias,
+                deviceName + context.getTestname().hashCode(), Optional.of(label));
         context.stopPinging();
     }
 

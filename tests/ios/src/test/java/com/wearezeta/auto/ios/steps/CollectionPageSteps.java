@@ -1,15 +1,14 @@
 package com.wearezeta.auto.ios.steps;
 
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import com.wearezeta.auto.ios.pages.CollectionPage;
 import cucumber.api.java.en.Then;
 import org.junit.Assert;
 
 public class CollectionPageSteps {
-
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-
     private CollectionPage getCollectionPage() throws Exception {
-        return pagesCollection.getPage(CollectionPage.class);
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(CollectionPage.class);
     }
 
     /**

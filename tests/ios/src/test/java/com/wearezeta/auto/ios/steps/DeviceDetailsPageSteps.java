@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import com.wearezeta.auto.ios.pages.details_overlay.common.DeviceDetailsPage;
 import org.junit.Assert;
 
@@ -7,11 +8,9 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class DeviceDetailsPageSteps {
-
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-
     private DeviceDetailsPage getDeviceDetailsPage() throws Exception {
-        return pagesCollection.getPage(DeviceDetailsPage.class);
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(DeviceDetailsPage.class);
     }
 
     @When("^I tap (Verify|Back|Remove Device) (?:button|switcher) on Device Details page$")

@@ -1,7 +1,7 @@
 package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.external.DownloadPage;
 
 import cucumber.api.java.en.Then;
@@ -11,9 +11,9 @@ import static org.hamcrest.Matchers.*;
 
 public class DownloadPageSteps {
 
-    private final TestContext context;
+    private final WebAppTestContext context;
 
-    public DownloadPageSteps(TestContext context) {
+    public DownloadPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 

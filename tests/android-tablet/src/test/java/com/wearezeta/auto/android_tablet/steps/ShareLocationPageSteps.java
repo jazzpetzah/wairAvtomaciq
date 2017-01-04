@@ -1,13 +1,13 @@
 package com.wearezeta.auto.android_tablet.steps;
 
+import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContextHolder;
 import com.wearezeta.auto.android_tablet.pages.TabletShareLocationPage;
 import cucumber.api.java.en.When;
 
 public class ShareLocationPageSteps {
-    private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection.getInstance();
-
     private TabletShareLocationPage getShareLocationPage() throws Exception {
-        return pagesCollection.getPage(TabletShareLocationPage.class);
+        return AndroidTabletTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(TabletShareLocationPage.class);
     }
 
     /**

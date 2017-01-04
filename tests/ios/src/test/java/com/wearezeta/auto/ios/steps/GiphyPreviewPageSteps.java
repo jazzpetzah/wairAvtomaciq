@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import org.junit.Assert;
 
 import com.wearezeta.auto.ios.pages.GiphyPreviewPage;
@@ -7,11 +8,9 @@ import com.wearezeta.auto.ios.pages.GiphyPreviewPage;
 import cucumber.api.java.en.When;
 
 public class GiphyPreviewPageSteps {
-
-    private final IOSPagesCollection pagesCollecton = IOSPagesCollection.getInstance();
-
     private GiphyPreviewPage getGiphyPreviewPage() throws Exception {
-        return pagesCollecton.getPage(GiphyPreviewPage.class);
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(GiphyPreviewPage.class);
     }
 
     /**

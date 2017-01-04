@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.android.pages.ConversationsListPage;
-import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
+import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContextHolder;
 import org.openqa.selenium.By;
 import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.ScreenOrientation;
@@ -27,7 +27,8 @@ public class TabletConversationsListPage extends AndroidTabletPage {
     }
 
     public void verifyConversationsListIsLoaded() throws Exception {
-        if (ScreenOrientationHelper.getInstance().fixOrientation(getDriver()) == ScreenOrientation.PORTRAIT) {
+        if (AndroidTabletTestContextHolder.getInstance().getTestContext().getScreenOrientationHelper()
+                .fixOrientation(getDriver()) == ScreenOrientation.PORTRAIT) {
             try {
                 DriverUtils.swipeByCoordinates(getDriver(), 1500, 45, 50, 90, 50);
                 getConversationListPage().verifyContactListIsFullyLoaded();

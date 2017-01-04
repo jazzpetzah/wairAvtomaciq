@@ -1,16 +1,13 @@
 package com.wearezeta.auto.ios.steps;
 
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import com.wearezeta.auto.ios.pages.ShareContactsOverlay;
-import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.junit.Assert;
 
 public class ShareContactsOverlaySteps {
-
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-
     private ShareContactsOverlay getShareContactsOverlay() throws Exception {
-        return pagesCollection.getPage(ShareContactsOverlay.class);
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(ShareContactsOverlay.class);
     }
 
     /**

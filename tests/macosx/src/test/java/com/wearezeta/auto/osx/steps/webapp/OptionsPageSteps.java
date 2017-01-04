@@ -1,15 +1,15 @@
 package com.wearezeta.auto.osx.steps.webapp;
 
 import com.wearezeta.auto.osx.pages.webapp.OptionsPage;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import cucumber.api.java.en.When;
 
 
 public class OptionsPageSteps {
     
-    private final TestContext webContext;
+    private final WebAppTestContext webContext;
     
-    public OptionsPageSteps(TestContext webContext) {
+    public OptionsPageSteps(WebAppTestContext webContext) {
         this.webContext = webContext;
     }
     

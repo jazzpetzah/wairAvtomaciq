@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android.steps;
 
+import com.wearezeta.auto.android.common.AndroidTestContextHolder;
 import com.wearezeta.auto.android.pages.FirstTimeOverlay;
 import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
 import cucumber.api.java.en.And;
@@ -8,15 +9,14 @@ import cucumber.api.java.en.When;
 import org.junit.Assert;
 
 public class FirstTimeOverlaySteps {
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
-            .getInstance();
-
     private FirstTimeOverlay getFirstTimeOverlay() throws Exception {
-        return pagesCollection.getPage(FirstTimeOverlay.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(FirstTimeOverlay.class);
     }
 
     private EmailSignInPage getEmailSignInPage() throws Exception {
-        return pagesCollection.getPage(EmailSignInPage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(EmailSignInPage.class);
     }
 
     /**

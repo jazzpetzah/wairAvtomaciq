@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import cucumber.api.java.en.Then;
@@ -20,11 +20,11 @@ public class LocalyticsSteps {
 
     private static final Logger log = ZetaLogger.getLog(LocalyticsSteps.class.getSimpleName());
 
-    private final TestContext context;
+    private final WebAppTestContext context;
 
     private int rememberedEvents = -1;
 
-    public LocalyticsSteps(TestContext context) {
+    public LocalyticsSteps(WebAppTestContext context) {
         this.context = context;
     }
 

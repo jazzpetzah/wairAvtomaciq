@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.misc.Timedelta;
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import cucumber.api.java.en.Then;
 
 import org.junit.Assert;
@@ -12,12 +13,9 @@ import com.wearezeta.auto.ios.pages.details_overlay.single.SingleConnectedUserPr
 import cucumber.api.java.en.When;
 
 public class SingleConnectedUserProfilePageSteps {
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-
     private SingleConnectedUserProfilePage getPage() throws Exception {
-        return pagesCollection.getPage(SingleConnectedUserProfilePage.class);
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(SingleConnectedUserProfilePage.class);
     }
 
     /**
@@ -43,8 +41,10 @@ public class SingleConnectedUserProfilePageSteps {
      */
     @When("^I (do not )?see (name|unique username|Address Book name|common friends count) (\".*\" |\\s*)on Single user profile page$")
     public void ISeeLabel(String shouldNotSee, String fieldType, String value) throws Exception {
-        value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.NAME_ALIAS);
-        value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
+        value = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(value, ClientUsersManager.FindBy.NAME_ALIAS);
+        value = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(value, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
         if (shouldNotSee == null) {
             if (value.startsWith("\"")) {
                 value = value.trim().replaceAll("^\"|\"$", "");
@@ -77,7 +77,8 @@ public class SingleConnectedUserProfilePageSteps {
      */
     @When("^I remember the name of user (.*) in Address Book$")
     public void IRememberTheUsersAddressBookName(String addressbookName) throws Exception {
-        userAddressBookName = usrMgr.replaceAliasesOccurences(addressbookName, ClientUsersManager.FindBy.NAME_ALIAS);
+        userAddressBookName = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(addressbookName, ClientUsersManager.FindBy.NAME_ALIAS);
     }
 
     /**

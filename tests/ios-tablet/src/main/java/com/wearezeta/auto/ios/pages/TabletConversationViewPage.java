@@ -1,10 +1,10 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.util.Arrays;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
-import edu.emory.mathcs.backport.java.util.Arrays;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
