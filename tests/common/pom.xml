@@ -31,6 +31,7 @@
         <rcTestsCommentPath></rcTestsCommentPath>
         <syncIsAutomated>False</syncIsAutomated>
         <syncIsMuted>False</syncIsMuted>
+        <zmessaging.actor.version>88.596</zmessaging.actor.version>
         <backendType>staging</backendType>
         <actors.server.url>http://192.168.10.44:21080/wire-actors/api/v1</actors.server.url>
         <actors.server.url.internal>http://192.168.2.120:10080/wire-actors/api/v1</actors.server.url.internal>
