@@ -652,8 +652,7 @@ Feature: Unique Usernames
       | NameAlias | Name |
       | user1Name | 😼   |
 
-
-  @C368978 @staging @fastLogin
+  @C368978 @regression @fastLogin
   Scenario Outline: Verify impossibility of autogenerating reserved username (e.g. admin)
     Given There is 1 user
     Given User <NameAlias> is me
@@ -665,11 +664,10 @@ Feature: Unique Usernames
     Given I tap X button on Search UI page
     When I see username <NameAlias> on Unique Username Takeover page
     Then I do not see unique username <Name> on Unique Username Takeover page
+    When I remember the unique username on Unique Username Takeover page
     When I tap Keep This One button on Unique Username Takeover page
-    And I tap settings gear button
-    And I select settings item Account
-    Then I see "<User1UniqueName>" unique username is displayed on Settings Page
+    Then I verify my unique username on the backend is equal to the one which was visible on Unique Username Takeover page
 
     Examples:
-      | NameAlias | Name  | User1UniqueName     |
-      | user1Name | admin | user1UniqueUsername |
+      | NameAlias | Name  |
+      | user1Name | admin |
