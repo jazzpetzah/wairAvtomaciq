@@ -71,7 +71,7 @@ public class RemoteDevicesManager {
 
     private Device getDeviceOwnedBy(ClientUser owner, String name) throws InterruptedException {
         synchronized (owner.getEmail()) {
-            final List<Device> devices = getDevicesOwnedBy(owner, Optional.empty());
+            final List<Device> devices = getDevicesOwnedBy(owner, Optional.ofNullable(name));
             if (devices.isEmpty()) {
                 throw new IllegalStateException(String.format("There is no device '%s' owned by user '%s'",
                         name, owner.getName()));
