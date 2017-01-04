@@ -117,7 +117,7 @@ public class StartUIPageSteps {
 
     @When("^I( do not)? see user (.*) found in Top People$")
     public void ISeeUserFoundInTopPeople (String doNot, String name) throws Exception {
-        name = context.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        name = context.getUsersManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         if (doNot == null) {
             Assert.assertTrue(context.getPagesCollection().getPage(StartUIPage.class).isUserFoundInTopPeople(name));
         } else {
@@ -127,8 +127,8 @@ public class StartUIPageSteps {
 
     @When("^I do not see username (.*) of user (.*) in Top People")
     public void IDontSeeUsernameInTopPeople(String uniqueUsername, String name) throws Exception {
-        uniqueUsername = context.getUserManager().replaceAliasesOccurences(uniqueUsername, FindBy.UNIQUE_USERNAME_ALIAS);
-        name = context.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        uniqueUsername = context.getUsersManager().replaceAliasesOccurences(uniqueUsername, FindBy.UNIQUE_USERNAME_ALIAS);
+        name = context.getUsersManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 
         Assert.assertTrue(context.getPagesCollection().getPage(StartUIPage.class).isUsernameNotVisible(name, uniqueUsername));
     }
