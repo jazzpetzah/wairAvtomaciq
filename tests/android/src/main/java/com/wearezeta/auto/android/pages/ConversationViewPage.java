@@ -830,8 +830,8 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
                                            MessageIndexLocator messageIndexLocator) throws Exception {
         final By locator = By.xpath(xpathStrConversationMessageByText.apply(expectedMessage));
         return CommonUtils.waitUntilTrue(
-                timeoutSeconds,
-                500,
+                Timedelta.fromSeconds(timeoutSeconds),
+                Timedelta.fromMilliSeconds(500),
                 () -> {
                     final Optional<WebElement> msgElement = getElementIfDisplayed(locator, Timedelta.fromSeconds(1));
                     if (msgElement.isPresent()) {

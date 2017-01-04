@@ -831,31 +831,32 @@ public class CommonUtils {
     /**
      * Wait until the block do not throw exception or timeout
      */
-    public static <T> Optional<T> waitUntil(int timeoutSeconds, long interval, Callable<T> function) throws Exception {
-        final long millisecondsStarted = System.currentTimeMillis();
+    public static <T> Optional<T> waitUntil(Timedelta timeout, Timedelta interval, Callable<T> function) throws Exception {
+        final Timedelta started = Timedelta.now();
         do {
             try {
                 return Optional.ofNullable(function.call());
             } catch (Exception e) {
                 log.debug(String.format("Wait until block catch exception : %s", e.getMessage()));
             }
-            Thread.sleep(interval);
-        } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
+            Thread.sleep(interval.asMilliSeconds());
+        } while (Timedelta.now().isDiffLessOrEqual(started, timeout));
         return Optional.empty();
     }
 
     /**
      * Wait until the block get true
      */
-    public static boolean waitUntilTrue(int timeoutSeconds, long interval, Callable<Boolean> function)
+    public static boolean waitUntilTrue(Timedelta timeout, Timedelta interval, Callable<Boolean> function)
             throws Exception {
-        final long millisecondsStarted = System.currentTimeMillis();
-        boolean result;
+        final Timedelta started = Timedelta.now();
         do {
-            result = function.call();
-            Thread.sleep(interval);
-        } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000 && !result);
-        return result;
+            if (function.call()) {
+                return true;
+            }
+            Thread.sleep(interval.asMilliSeconds());
+        } while (Timedelta.now().isDiffLessOrEqual(started, timeout));
+        return function.call();
     }
 
     private static final int BUFFER_SIZE = 4096;

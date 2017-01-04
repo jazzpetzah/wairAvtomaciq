@@ -1454,7 +1454,7 @@ public class CommonAndroidSteps {
     public void UserXFoundLastMessageChanged(String userNameAlias, String convoType, String dstNameAlias,
                                              String deviceName, String shouldNotChanged, String waitDuration)
             throws Exception {
-        final int durationSeconds = (waitDuration == null) ? CommonSteps.DEFAULT_WAIT_UNTIL_TIMEOUT_SECONDS
+        final int durationSeconds = (waitDuration == null) ? CommonSteps.DEFAULT_WAIT_UNTIL_TIMEOUT.asSeconds()
                 : Integer.parseInt(waitDuration.replaceAll("[\\D]", ""));
 
         if (shouldNotChanged == null) {
@@ -1483,8 +1483,8 @@ public class CommonAndroidSteps {
         final String filePath = AndroidCommonUtils.getBuildPathFromConfig(CommonAndroidSteps.class) +
                 File.separator + fileFullName;
 
-        boolean fileDownloaded = CommonUtils.waitUntilTrue(timeoutSeconds,
-                CommonSteps.DEFAULT_WAIT_UNTIL_INTERVAL_MILLISECONDS,
+        boolean fileDownloaded = CommonUtils.waitUntilTrue(Timedelta.fromSeconds(timeoutSeconds),
+                CommonSteps.DEFAULT_WAIT_UNTIL_INTERVAL,
                 () -> {
                     AndroidCommonUtils.pullFileFromSdcardDownload(fileFullName);
                     FileInfo fileInfo = CommonUtils.retrieveFileInfo(filePath);
@@ -1551,8 +1551,8 @@ public class CommonAndroidSteps {
     public void ITapBackButtonUntilWireAppInForeground(int timeoutSeconds) throws Exception {
         final String packageId = AndroidCommonUtils.getAndroidPackageFromConfig(getClass());
         CommonUtils.waitUntilTrue(
-                timeoutSeconds,
-                1000,
+                Timedelta.fromSeconds(timeoutSeconds),
+                Timedelta.fromMilliSeconds(1000),
                 () -> {
                     if (AndroidCommonUtils.isAppNotInForeground(packageId, FOREGROUND_TIMEOUT_MILLIS)) {
                         AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage().navigateBack();
@@ -1932,8 +1932,8 @@ public class CommonAndroidSteps {
      */
     @When("^I unregister GCM push token in (\\d+) seconds$")
     public void IUnresgisterGCMToekn(int timeoutSeconds) throws Exception {
-        Optional<String> pushToken = CommonUtils.waitUntil(timeoutSeconds,
-                CommonSteps.DEFAULT_WAIT_UNTIL_INTERVAL_MILLISECONDS,
+        Optional<String> pushToken = CommonUtils.waitUntil(Timedelta.fromSeconds(timeoutSeconds),
+                CommonSteps.DEFAULT_WAIT_UNTIL_INTERVAL,
                 () -> {
                     String GCMTokenOutput = AndroidLogListener.getInstance(ListenerType.GCMToken).getStdOut();
                     final Pattern p = Pattern.compile(GCM_TOKEN_PATTERN, Pattern.MULTILINE);

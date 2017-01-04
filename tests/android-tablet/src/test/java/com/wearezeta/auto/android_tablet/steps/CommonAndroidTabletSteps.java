@@ -966,8 +966,8 @@ public class CommonAndroidTabletSteps {
     public void IPressBackButtonUntilWireAppInForeground(int timeoutSeconds) throws Exception {
         final String packageId = AndroidCommonUtils.getAndroidPackageFromConfig(getClass());
         CommonUtils.waitUntilTrue(
-                timeoutSeconds,
-                1000,
+                Timedelta.fromSeconds(timeoutSeconds),
+                Timedelta.fromMilliSeconds(1000),
                 () -> {
                     if (AndroidCommonUtils.isAppNotInForeground(packageId, FOREGROUND_TIMEOUT_MILLIS)) {
                         AndroidTabletTestContextHolder.getInstance().getTestContext().getPagesCollection()
@@ -1081,7 +1081,7 @@ public class CommonAndroidTabletSteps {
     public void UserXFoundLastMessageChanged(String userNameAlias, String convoType, String dstNameAlias,
                                              String deviceName, String waitDuration) throws Exception {
         final int durationSeconds = (waitDuration == null) ?
-                CommonSteps.DEFAULT_WAIT_UNTIL_TIMEOUT_SECONDS
+                CommonSteps.DEFAULT_WAIT_UNTIL_TIMEOUT.asSeconds()
                 : Integer.parseInt(waitDuration.replaceAll("[\\D]", ""));
         AndroidTabletTestContextHolder.getInstance().getTestContext().getCommonSteps().UserXFoundLastMessageChanged(userNameAlias, convoType.equals("group conversation"), dstNameAlias,
                 deviceName, durationSeconds);

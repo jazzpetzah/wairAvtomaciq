@@ -1547,7 +1547,7 @@ public class CommonIOSSteps {
                                              String deviceName, String shouldNotBeChanged, String waitDuration)
             throws Exception {
         final int durationSeconds = (waitDuration == null) ?
-                CommonSteps.DEFAULT_WAIT_UNTIL_TIMEOUT_SECONDS
+                CommonSteps.DEFAULT_WAIT_UNTIL_TIMEOUT.asSeconds()
                 : Integer.parseInt(waitDuration.replaceAll("[\\D]", ""));
         final boolean isGroup = convoType.equals("group conversation");
         if (shouldNotBeChanged == null) {
