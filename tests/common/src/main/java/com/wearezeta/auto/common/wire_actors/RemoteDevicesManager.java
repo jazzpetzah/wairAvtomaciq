@@ -1,6 +1,5 @@
 package com.wearezeta.auto.common.wire_actors;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
@@ -351,8 +350,7 @@ public class RemoteDevicesManager {
     }
 
     private static ExecutorService removeDevicesAsync(List<String> uuids) {
-        final int poolSize = CommonUtils.getOptimalThreadsCount();
-        final ExecutorService pool = Executors.newFixedThreadPool(poolSize);
+        final ExecutorService pool = Executors.newFixedThreadPool(uuids.size());
         for (String uuid : uuids) {
             pool.submit(() -> {
                 try {

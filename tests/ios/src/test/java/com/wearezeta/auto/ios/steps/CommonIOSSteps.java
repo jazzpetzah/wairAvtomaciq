@@ -1209,8 +1209,7 @@ public class CommonIOSSteps {
     public void UserAddRemoteDeviceToAccount(String userNameAlias, String deviceNames) throws Exception {
         final List<String> names = IOSTestContextHolder.getInstance().getTestContext()
                 .getUsersManager().splitAliases(deviceNames);
-        final int poolSize = CommonUtils.getOptimalThreadsCount();
-        final ExecutorService pool = Executors.newFixedThreadPool(poolSize);
+        final ExecutorService pool = Executors.newFixedThreadPool(names.size());
         final AtomicInteger createdDevicesCount = new AtomicInteger(0);
         for (String name : names) {
             pool.submit(() -> {
@@ -1224,7 +1223,7 @@ public class CommonIOSSteps {
             });
         }
         pool.shutdown();
-        final int secondsTimeout = (names.size() / poolSize + 1) * 60;
+        final int secondsTimeout = names.size() * 60;
         if (!pool.awaitTermination(secondsTimeout, TimeUnit.SECONDS) || createdDevicesCount.get() != names.size()) {
             throw new IllegalStateException(String.format(
                     "Devices '%s' were not created within %s seconds timeout", names, secondsTimeout));
