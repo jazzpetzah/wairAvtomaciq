@@ -42,7 +42,7 @@ Feature: Delivery
       | user1Name | user2Name | M1  | Sent           | D1            | Delivered      |
 
   @C232574 @regression
-  Scenario Outline: Delivery status in group for the last sent message is not shown by default and when I open it - it is 'Sent'
+  Scenario Outline: (AN-4844) Delivery status in group for the last sent message is not shown by default and when I open it - it is 'Sent'
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <Group> with <Contact1>,<Contact2>
@@ -74,11 +74,11 @@ Feature: Delivery
     When I long tap the Text message "<Msg>" in the conversation view
     And I tap Like button on the message bottom menu
     Then I see 1 Message status in conversation view
-    And I see Like description with expected text "Myself" in conversation view
+    And I see Like description with expected text "you" in conversation view
     And I see Like button in conversation view
     When I type the message "<Msg3>" and send it by cursor Send button
     Then I see 1 Message status in conversation view
-    And I see Like description with expected text "Myself" in conversation view
+    And I see Like description with expected text "you" in conversation view
     And I see Like button in conversation view
 
     Examples:

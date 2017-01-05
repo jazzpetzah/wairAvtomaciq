@@ -95,11 +95,11 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     private static final FunctionalInterfaces.FunctionFor2Parameters<String, String, String> xpathStrTemplateIdValue
             = (id, value) -> String.format("//*[@id='%s' and contains(@value,'%s')]", id, value);
 
-    private static final String strIdMessageMetaLikeButton = "gtv__footer__like__button";
-    private static final String strIdMessageMetaLikeDescription = "tv__footer__like__description";
-    private static final String strIdMessageMetaStatus = "tv__footer__message_status";
-    private static final String strIdMessageMetaFirstLike = "cv__first_like_chathead";
-    private static final String strIdMessageMetaSecondLike = "cv__first_like_chathead";
+    private static final String strIdMessageMetaLikeButton = "like__button";
+    private static final String strIdMessageMetaLikeDescription = "like__description";
+    private static final String strIdMessageMetaStatus = "timestamp_and_status";
+    private static final String strIdMessageMetaFirstLike = "like_chathead_container";
+    private static final String strIdMessageMetaSecondLike = "like_chathead_container";
 
     private static final By idResendButton = By.xpath(
             String.format("//*[@id='%s' and @value='Sending failed. Resend']", strIdMessageMetaStatus));
@@ -185,13 +185,13 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
             .format("//*[@id='%s' and @value='%s']", idStrNewConversationNameMessage, value);
 
     private static final By xpathStrOtrVerifiedMessage = By
-            .xpath("//*[@id='ttv__otr_added_new_device__message' and @value='ALL FINGERPRINTS ARE VERIFIED']");
+            .xpath("//*[@id='ttv__system_message__text' and @value='ALL FINGERPRINTS ARE VERIFIED']");
 
     private static final By xpathStrOtrNonVerifiedMessage = By
-            .xpath("//*[@id='ttv__otr_added_new_device__message' and contains(@value,'STARTED USING A NEW DEVICE')]");
+            .xpath("//*[@id='ttv__system_message__text' and contains(@value,'STARTED USING A NEW DEVICE')]");
 
     private static final Function<String, String> xpathStrOtrNonVerifiedMessageByValue = value -> String.format(
-            "//*[@id='ttv__otr_added_new_device__message' and @value='%s STARTED USING A NEW DEVICE']", value
+            "//*[@id='ttv__system_message__text' and @value='%s STARTED USING A NEW DEVICE']", value
                     .toUpperCase());
 
     public static final String idStrConversationRoot = "clv__conversation_list_view";
@@ -203,19 +203,19 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
             .format("//*[starts-with(@id,'ttv_message_notification_chathead__label') and @value='%s']", value);
 
     private static final Function<String, String> xpathConversationPeopleChangedByExp = exp -> String
-            .format("//*[@id='ttv__row_conversation__people_changed__text' and %s]", exp);
+            .format("//*[@id='ttv__system_message__text' and %s]", exp);
 
     private static final Function<String, String> xpathLinkPreviewUrlByValue = value -> String
             .format("//*[@id='ttv__row_conversation__link_preview__url' and @value='%s']", value);
 
-    private static final String idStrSeparatorName = "ttv__row_conversation__separator__name";
+    private static final String idStrSeparatorName = "tvName";
 
     private static final Function<String, String> xpathTrashcanByName = name -> String
             .format("//*[@id='%s' and @value='%s']/following-sibling::*[@id='gtv__message_recalled']",
                     idStrSeparatorName, name.toLowerCase());
 
     private static final Function<String, String> xpathPenByName = name -> String
-            .format("//*[@id='%s' and @value='%s']/following-sibling::*[@id='gtv__message_edited']",
+            .format("//*[@id='%s' and @value='%s']/following-sibling::*[@id='gtvStateGlyph']",
                     idStrSeparatorName, name.toLowerCase());
 
     private static final Function<String, String> xpathMessageSeparator = name -> String
@@ -233,23 +233,23 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
 
     private static final By idAudioMessagePlaceholder = By.id("pdv__row_conversation__audio_placeholder_dots");
 
-    private static final By idAudioContainerButton = By.id("aab__row_conversation__audio_button");
+    private static final By idAudioContainerButton = By.id("action_button");
 
     private static final By idShareLocationContainer = By.id("lpv__message_location");
 
     private static final By idLinkPreviewContainer = By.id("cv__row_conversation__link_preview__container");
 
-    private static final By idAudioContainerSeekbar = By.id("sb__audio_progress");
+    private static final By idAudioContainerSeekbar = By.id("progress");
 
     private static final By idAudioMessagePreviewSeekbar = By.id("sb__voice_message__recording__seekbar");
 
-    private static final By idImageContainerSketchButton = By.id("gtv__row_conversation__drawing_button__sketch");
+    private static final By idImageContainerSketchButton = By.id("button_sketch");
 
-    private static final By idImageContainerFullScreenButton = By.id("gtv__row_conversation__image_fullscreen");
+    private static final By idImageContainerFullScreenButton = By.id("button_fullscreenValue");
 
-    private static final By idImageContainerSketchEmojiButton = By.id("gtv__row_conversation__drawing_button__emoji");
+    private static final By idImageContainerSketchEmojiButton = By.id("button_emoji");
 
-    private static final By idImageContainerSketchTextButton = By.id("gtv__row_conversation__drawing_button__text");
+    private static final By idImageContainerSketchTextButton = By.id("button_text");
 
     private static final int MAX_CLICK_RETRIES = 5;
 
