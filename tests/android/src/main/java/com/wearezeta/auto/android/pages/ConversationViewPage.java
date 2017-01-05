@@ -49,7 +49,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     private static final String xpathStrLastImage = String.format("(//*[@id='%s'])[last()]", idStrConversationImages);
 
     // System message
-    private static final String idStrMissedCallMesage = "ttv__row_conversation__missed_call";
+    private static final String idStrMissedCallMesage = "tvMessage";
     private static final Function<String, String> xpathStrMissedCallMesageByText = text -> String
             .format("//*[@id='%s' and @value='%s']", idStrMissedCallMesage, text.toUpperCase());
 
