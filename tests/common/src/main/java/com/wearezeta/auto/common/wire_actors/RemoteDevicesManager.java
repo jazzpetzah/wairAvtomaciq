@@ -165,6 +165,7 @@ public class RemoteDevicesManager {
                         return uuid;
                     }
             );
+            pool.shutdown();
             final Device newDevice = new Device(uuidPromise);
             name.ifPresent(newDevice::setName);
             newDevice.setOwner(owner);
