@@ -11,7 +11,7 @@ import org.junit.Assert;
 
 public class LocalyticsSteps {
     private static final Timedelta TIMEOUT = Timedelta.fromSeconds(15);
-    private static final Timedelta INTERVAL = Timedelta.fromMilliSeconds(1000);
+    private static final Timedelta INTERVAL = Timedelta.fromSeconds(3);
 
     private static String getDeviceLogs() throws Exception {
         if (CommonUtils.getIsSimulatorFromConfig(LocalyticsSteps.class)) {
