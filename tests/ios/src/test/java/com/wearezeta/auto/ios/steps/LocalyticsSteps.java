@@ -41,19 +41,18 @@ public class LocalyticsSteps {
     @Then("^I see \"(.*)\" event (?:with (.*) attributes? )?is sent to Localytics (at least|exactly) (\\d+) times?$")
     public void IVerifyEventsCount(String expectedEvent, String expectedAttributes,
                                    String comparator, int expectedCount) throws Exception {
-        final String deviceLog = getDeviceLogs();
         final boolean result;
         switch (comparator.toLowerCase()) {
             case "at least":
                 result = CommonUtils.waitUntilTrue(TIMEOUT, INTERVAL,
-                        () -> getOccurrencesCount(deviceLog, expectedEvent, expectedAttributes) >= expectedCount
+                        () -> getOccurrencesCount(getDeviceLogs(), expectedEvent, expectedAttributes) >= expectedCount
                 );
                 Assert.assertTrue(String.format("The actual count of '%s' event occurrences in the log " +
                         "is less than the expected count %d", expectedEvent, expectedCount), result);
                 break;
             case "exactly":
                 result = CommonUtils.waitUntilTrue(TIMEOUT, INTERVAL,
-                        () -> getOccurrencesCount(deviceLog, expectedEvent, expectedAttributes) == expectedCount
+                        () -> getOccurrencesCount(getDeviceLogs(), expectedEvent, expectedAttributes) == expectedCount
                 );
                 Assert.assertTrue(String.format("The actual count of '%s' event occurrences in the log " +
                         "is not equal to the expected count %d", expectedEvent, expectedCount), result);

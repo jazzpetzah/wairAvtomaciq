@@ -40,24 +40,24 @@ Feature: Localytics
     When I tap Ping button from input tools
     And I see "YOU PINGED" system message in the conversation view
     Then I see "media.completed_media_action" event with {"action": "ping", "conversation_type": "one_to_one", "with_bot": "false"} attributes is sent to Localytics at least 1 time
-#    When I tap Sketch button from input tools
-#    And I draw a random sketch
-#    And I tap Send button on Sketch page
-#    Then I see "media.completed_media_action" event with {"action": "sketch", "conversation_type": "one_to_one", "with_bot": "false"} attributes is sent to Localytics at least 1 time
-#    And I see "media.sent_picture" event with {"source": "sketch"} attribute is sent to Localytics at least 1 time
+    When I tap Sketch button from input tools
+    And I draw a random sketch
+    And I tap Send button on Sketch page
+    Then I see "media.completed_media_action" event with {"action": "sketch", "conversation_type": "one_to_one", "with_bot": "false"} attributes is sent to Localytics at least 1 time
+    And I see "media.sent_picture" event with {"source": "sketch"} attribute is sent to Localytics at least 1 time
     When I type the "hello" message
     And I tap GIF button from input tools
     And I wait for 10 seconds
     And I select the first item from Giphy grid
     And I tap Send button on Giphy preview page
-    Then I see "media.completed_media_action" event with {"action": "photo", "conversation_type": "one_to_one", "with_bot": "false"} attributes is sent to Localytics at least 1 time
+    Then I see "media.completed_media_action" event with {"action": "photo", "conversation_type": "one_to_one", "with_bot": "false"} attributes is sent to Localytics at least 2 times
     And I see "media.sent_picture" event with {"source": "giphy"} attribute is sent to Localytics at least 1 time
     When I tap Add Picture button from input tools
     And I accept alert if visible
     And I accept alert if visible
     And I select the first picture from Keyboard Gallery
     And I tap Confirm button on Picture preview page
-    Then I see "media.completed_media_action" event with {"action": "photo", "conversation_type": "one_to_one", "with_bot": "false"} attributes is sent to Localytics at least 2 times
+    Then I see "media.completed_media_action" event with {"action": "photo", "conversation_type": "one_to_one", "with_bot": "false"} attributes is sent to Localytics at least 3 times
     And I see "media.sent_picture" event with {"source": "gallery"} attribute is sent to Localytics at least 1 time
     When I long tap Audio Message button from input tools
     And I tap Send record control button
