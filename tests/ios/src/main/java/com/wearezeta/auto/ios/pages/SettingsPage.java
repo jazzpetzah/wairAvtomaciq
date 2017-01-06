@@ -117,13 +117,17 @@ public class SettingsPage extends IOSPage {
     }
 
     public void clearSelfName() throws Exception {
-        final WebElement selfName = getElement(fbXpathSelfNameEditField);
+        final WebElement selfName = getElementIfExists(fbXpathSelfNameEditField).orElseThrow(
+                () -> new IllegalStateException("Name input is not present on the page")
+        );
         selfName.click();
         selfName.clear();
     }
 
     public void setSelfName(String newName) throws Exception {
-        final WebElement selfName = getElement(fbXpathSelfNameEditField);
+        final WebElement selfName = getElementIfExists(fbXpathSelfNameEditField).orElseThrow(
+                () -> new IllegalStateException("Name input is not present on the page")
+        );
         selfName.click();
         selfName.clear();
         selfName.sendKeys(newName);
