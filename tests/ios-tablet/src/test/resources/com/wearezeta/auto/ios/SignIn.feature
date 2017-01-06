@@ -107,21 +107,6 @@ Feature: Sign In
       | Name      |
       | user1Name |
 
-  @C3140 @regression
-  Scenario Outline: Verify impossibility to resend code within 10 min [LANDSCAPE]
-    Given There is 1 user where <Name> is me
-    Given I rotate UI to landscape
-    Given I see sign in screen
-    Given I switch to Log In tab
-    Given I switch to Phone Log In tab
-    Given I enter phone number for Myself
-    When I tap RESEND code button
-    Then I see Resend will be possible after 10 min alert
-
-    Examples:
-      | Name      |
-      | user1Name |
-
   @C3141 @regression
   Scenario Outline: Verify impossibility to login with unregistered phone number [LANDSCAPE]
     Given There is 1 user where <Name> is me
