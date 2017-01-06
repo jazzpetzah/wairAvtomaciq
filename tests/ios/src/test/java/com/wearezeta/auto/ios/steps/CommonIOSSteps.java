@@ -1223,10 +1223,9 @@ public class CommonIOSSteps {
             });
         }
         pool.shutdown();
-        final int secondsTimeout = names.size() * 60;
-        if (!pool.awaitTermination(secondsTimeout, TimeUnit.SECONDS) || createdDevicesCount.get() != names.size()) {
+        if (!pool.awaitTermination(5, TimeUnit.MINUTES) || createdDevicesCount.get() != names.size()) {
             throw new IllegalStateException(String.format(
-                    "Devices '%s' were not created within %s seconds timeout", names, secondsTimeout));
+                    "Devices '%s' were not created after the timeout", names));
         }
     }
 
