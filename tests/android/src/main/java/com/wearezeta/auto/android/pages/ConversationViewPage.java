@@ -179,7 +179,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
 
     public static final By idCursorCloseButton = By.id("cursor_button_close");
 
-    private static final String idStrNewConversationNameMessage = "ttv__row_conversation__new_conversation_name";
+    private static final String idStrNewConversationNameMessage = "ttv__new_conversation_name";
 
     private static Function<String, String> xpathStrNewConversationNameByValue = value -> String
             .format("//*[@id='%s' and @value='%s']", idStrNewConversationNameMessage, value);
