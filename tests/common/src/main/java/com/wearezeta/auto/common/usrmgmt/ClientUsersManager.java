@@ -586,8 +586,7 @@ public class ClientUsersManager {
             otherUsers.remove(getSelfUserOrThrowError());
             return otherUsers.stream().map(ClientUser::getName).collect(Collectors.toList());
         }
-        return Arrays.asList(aliases.split(ALIASES_SEPARATOR))
-                .stream()
+        return Arrays.stream(aliases.split(ALIASES_SEPARATOR))
                 .map(String::trim)
                 .collect(Collectors.toList());
     }
