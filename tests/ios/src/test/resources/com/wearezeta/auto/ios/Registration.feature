@@ -1,6 +1,6 @@
 Feature: Registration
 
-  @C1019 @clumsy @regression @rc
+  @C1019 @clumsy @regression @rc @torun
   Scenario Outline: Register new user using photo album
     Given I see sign in screen
     When I enter phone number for <Name>
@@ -19,6 +19,9 @@ Feature: Registration
     And I accept alert if visible
     And I tap Keep This One button on Unique Username Takeover page
     Then I see conversations list
+    And I tap settings gear button
+    And I select settings item Account
+    Then I see settings Profile Picture preview
 
     Examples:
       | Name      |
