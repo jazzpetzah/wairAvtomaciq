@@ -150,17 +150,15 @@ Feature: Delete Message
     Given I sign in using my email or phone number
     Given User Myself adds new device <Device>
     Given User <Contact1> adds new device <ContactDevice>
+    Given User Myself sends 1 encrypted message using device <Device> to user <Contact1>
+    Given User <Contact1> sends 1 encrypted message using device <ContactDevice> to group conversation <GroupChatName>
     Given I see conversations list
     Given I tap on contact name <Contact1>
-    Given User Myself sends 1 encrypted message using device <Device> to user <Contact1>
-    Given I see 1 default message in the conversation view
-    When User Myself delete the recent message from user <Contact1>
+    When User Myself deletes the recent message from user <Contact1>
     Then I see 0 default message in the conversation view
     When I navigate back to conversations list
     And I tap on group chat with name <GroupChatName>
-    And User <Contact1> sends 1 encrypted message using device <ContactDevice> to group conversation <GroupChatName>
-    Then I see 1 default message in the conversation view
-    When User Myself delete the recent message from group conversation <GroupChatName>
+    And User Myself deletes the recent message from group conversation <GroupChatName>
     Then I see 0 default message in the conversation view
 
     Examples:
