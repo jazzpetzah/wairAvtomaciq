@@ -50,6 +50,9 @@ public class SettingsPage extends IOSPage {
     private static final Function<String, String> xpathStrUniqueUsernameInSettings = name ->
             String.format("//XCUIElementTypeStaticText[@name='%s']", name.startsWith("@") ? name : "@" + name);
 
+    private static final String xpathStrSettingsProfilePicturePreview = "//XCUIElementTypeImage[@name='imagePreview' and @value='image']";
+    private static final By xpathSettingsProfilePicturePreview = By.xpath(xpathStrSettingsProfilePicturePreview);
+
     public SettingsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -143,5 +146,12 @@ public class SettingsPage extends IOSPage {
     public boolean isUniqueUsernameInSettingsDisplayed(String uniqueName) throws Exception {
         By locator = By.xpath(xpathStrUniqueUsernameInSettings.apply(uniqueName));
         return isLocatorDisplayed(locator);
+    }
+
+    public boolean isProfilePicturePreviewVisible() throws Exception {
+        //By locator = By.xpath(xpathStrSettingsProfilePicturePreview);
+        final WebElement picturePreview = getElement(xpathSettingsProfilePicturePreview);
+        return isElementVisible(picturePreview);
+        //return isLocatorDisplayed(locator);
     }
 }

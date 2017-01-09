@@ -11,6 +11,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import com.wearezeta.auto.ios.pages.SettingsPage;
 
+import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -284,5 +285,16 @@ public class SettingsPageSteps {
             Assert.assertTrue(String.format("New previously set unique username %s is not displayed on Settings Page", name),
                     getSettingsPage().isUniqueUsernameInSettingsDisplayed(name));
         }
+    }
+
+    /**
+     * Vefifies that a preview of the profile picture is there, and with that that one got set during registration
+     *
+     * @throws Exception
+     * @step. ^I see settings Profile Picture preview$
+     */
+    @Then("^I see settings Profile Picture preview$")
+    public void ISeeSettingsPicturePreview() throws Exception {
+        Assert.assertTrue("There is no preview of the profile picture shown", getSettingsPage().isProfilePicturePreviewVisible());
     }
 }
