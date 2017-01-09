@@ -72,7 +72,7 @@ Feature: Self Profile
       | Login      | Password      | Name      | PictureName              |
       | user1Email | user1Password | user1Name | userpicture_portrait.jpg |
 
-  @C3266 @regression @WEBAPP-3358
+  @C3266 @regression @WEBAPP-3444
   Scenario Outline: Verify you can change your profile picture
     Given There is 1 user where <Name> is me
     Given Myself take snapshot of current profile picture

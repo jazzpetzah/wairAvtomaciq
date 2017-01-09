@@ -206,4 +206,9 @@ public class ClientUser {
     public String toString() {
         return this.getName();
     }
+
+    @Override
+    public boolean equals(Object other) {
+        return (other instanceof ClientUser) && ((ClientUser) other).getEmail().equals(getEmail());
+    }
 }

@@ -43,7 +43,7 @@ Feature: Localytics
     When I tap Sketch button from input tools
     And I draw a random sketch
     And I tap Send button on Sketch page
-    Then I see "media.completed_media_action" event with {"action": "photo", "conversation_type": "one_to_one", "with_bot": "false"} attributes is sent to Localytics at least 1 time
+    Then I see "media.completed_media_action" event with {"action": "sketch", "conversation_type": "one_to_one", "with_bot": "false"} attributes is sent to Localytics at least 1 time
     And I see "media.sent_picture" event with {"source": "sketch"} attribute is sent to Localytics at least 1 time
     When I type the "hello" message
     And I tap GIF button from input tools
