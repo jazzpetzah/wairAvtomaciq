@@ -243,7 +243,9 @@ public class CommonWebAppSteps {
 
     @Given("^(\\w+) waits? until (\\w+) has (\\d+) common friends? on the backend$")
     public void UserWaitsForCommonFriends(String usrAsAlias, String query, int expectedFriendsCount) throws Exception {
+        context.startPinging();
         context.getCommonSteps().WaitUntilCommonContactsIsGenerated(usrAsAlias, query, expectedFriendsCount);
+        context.stopPinging();
     }
 
     @When("^I wait for (\\d+) seconds?$")
