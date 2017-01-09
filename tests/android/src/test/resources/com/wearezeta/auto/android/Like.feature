@@ -402,7 +402,7 @@ Feature: Like
       | Name      | Contact   | YoutubeLink                                 |
       | user1Name | user2Name | https://www.youtube.com/watch?v=wTcNtgA6gHs |
 
-  @C226026 @regression @rc
+  @C226026 @outdate_regression @outdate_rc
   Scenario Outline: I can like Soundcloud
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

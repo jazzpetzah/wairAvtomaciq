@@ -172,6 +172,8 @@ Feature: Conversations list
     And I tap DELETE button on Confirm overlay page
     Then I do not see Conversations list with name <GroupChatName>
     When User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
+    # Wait for SE sync
+    And I wait for 5 seconds
     Then I see Conversations list with name <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I tap DELETE button on Group conversation options menu

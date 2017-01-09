@@ -69,13 +69,13 @@ Feature: Delete Message
     And I tap Delete button on the alert
     Then I do not see the message "<YoutubeLink>" in the conversation view
     And I do not see Youtube container in the conversation view
-    When I type the message "<SoundcloudLink>" and send it by cursor Send button
-    And I hide keyboard
-    And I long tap Soundcloud container in the conversation view
-    And I tap Delete only for me button on the message bottom menu
-    And I tap Delete button on the alert
-    Then I do not see the message "<SoundcloudLink>" in the conversation view
-    And I do not see Soundcloud container in the conversation view
+    #When I type the message "<SoundcloudLink>" and send it by cursor Send button
+    #And I hide keyboard
+    #And I long tap Soundcloud container in the conversation view
+    #And I tap Delete only for me button on the message bottom menu
+    #And I tap Delete button on the alert
+    #Then I do not see the message "<SoundcloudLink>" in the conversation view
+    #And I do not see Soundcloud container in the conversation view
 
     Examples:
       | Name      | Contact   | YoutubeLink                                 | SoundcloudLink                                                      |
@@ -102,7 +102,7 @@ Feature: Delete Message
       | user1Name | user2Name | DeleteTextMessage |
 
   @C111643 @regression @rc
-  Scenario Outline: Verify deleting ping
+  Scenario Outline: (AN-4835) Verify deleting ping
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given <Contact> starts instance using <CallBackend>

@@ -337,10 +337,18 @@ Feature: Recall Message
     And I tap Delete button on the alert
     Then I do not see Youtube container in the conversation view
     And User <Contact> see the recent message from user Myself via device <ContactDevice> is changed in 15 seconds
+    # Soundcloud
+    #When I type the message "<SoundCloudLink>" and send it by cursor Send button
+    #And User <Contact> remember the recent message from user Myself via device <ContactDevice>
+    #And I long tap Soundcloud container in the conversation view
+    #And I tap Delete for everyone button on the message bottom menu
+    #And I tap Delete button on the alert
+    #Then I do not see Soundcloud container in the conversation view
+    #And User <Contact> see the recent message from user Myself via device <ContactDevice> is changed in 15 seconds
 
     Examples:
-      | Name      | Contact   | YoutubeLink                                 | ContactDevice |
-      | user1Name | user2Name | https://www.youtube.com/watch?v=gIQS9uUVmgk | Device1       |
+      | Name      | Contact   | YoutubeLink                                 | SoundCloudLink                                                      | ContactDevice |
+      | user1Name | user2Name | https://www.youtube.com/watch?v=gIQS9uUVmgk | https://soundcloud.com/scottisbell/scott-isbell-tonight-feat-adessi | Device1       |
 
   @C206266 @regression @rc
   Scenario Outline: Verify I cannot delete for everyone/edit message received from other user

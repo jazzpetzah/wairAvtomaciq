@@ -31,8 +31,6 @@ public class ConversationViewPageSteps {
             () -> getConversationViewPage().getShieldStateScreenshot());
     private final ElementState topToolbarState = new ElementState(
             () -> getConversationViewPage().getTopToolbarState());
-    private final ElementState filePlaceHolderActionButtonState = new ElementState(
-            () -> getConversationViewPage().getFilePlaceholderActionButtonState());
     private final ElementState audiomessageSeekbarState = new ElementState(
             () -> getConversationViewPage().getAudioMessageSeekbarState());
     private final ElementState audiomessagePreviewSeekbarState = new ElementState(
@@ -716,18 +714,6 @@ public class ConversationViewPageSteps {
         messageLikeButtonState.remember();
     }
 
-    //TODO: Delete this out-date step, Robin
-    /**
-     * Store the screenshot of current file placeholder action button
-     *
-     * @throws Exception
-     * @step. ^I remember the state of (?:Download|View) button on file (?:upload|download) placeholder$
-     */
-    @When("^I remember the state of (?:Download|View) button on file (?:upload|download) placeholder$")
-    public void IRememberFileTransferActionBtnState() throws Exception {
-        filePlaceHolderActionButtonState.remember();
-    }
-
     /**
      * Store the screenshot of current audio message seekbar
      *
@@ -748,29 +734,6 @@ public class ConversationViewPageSteps {
     @When("^I remember the state of audio message preview seekbar$")
     public void IRememberAudioMessagePreviewSeekbar() throws Exception {
         audiomessagePreviewSeekbarState.remember();
-    }
-
-    /**
-     * Wait to check whether the file placeholder action button is changed
-     *
-     * @param timeout            timeout in seconds
-     * @param shouldNotBeChanged is not null if the button should not be changed
-     * @throws Exception
-     * @step. ^I wait up to (\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download)
-     * placeholder is changed$
-     */
-    @When("^I wait up to (\\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download)" +
-            " placeholder is (not )?changed$")
-    public void IWaitFileTransferActionButtonChanged(int timeout, String shouldNotBeChanged) throws Exception {
-        if (shouldNotBeChanged == null) {
-            Assert.assertTrue(String.format("State of file transfer action button has not been changed after %s seconds",
-                    timeout), filePlaceHolderActionButtonState.isChanged(Timedelta.fromSeconds(timeout),
-                    FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE));
-        } else {
-            Assert.assertTrue(String.format("State of file transfer action button has been changed after %s seconds",
-                    timeout), filePlaceHolderActionButtonState.isNotChanged(Timedelta.fromSeconds(timeout),
-                    FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE));
-        }
     }
 
     /**

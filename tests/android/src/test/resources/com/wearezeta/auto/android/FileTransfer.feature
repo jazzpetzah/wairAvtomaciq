@@ -110,9 +110,6 @@ Feature: File Transfer
     When I tap on conversation name <Contact1>
     When <Contact1> sends <FileSize><FileSizeType> file having name "<FileName>.<FileExtension>" and MIME type "<MIMEType>" via device Device1 to user Myself
     And I see the result of "<FileSize> <FileSizeType>" file received having name "<FileName>.<FileExtension>" and extension "<FileExtension>" in <ReceivingTimeout> seconds
-    And I remember the state of Download button on file download placeholder
-    And I tap Download button on file download placeholder
-    And I wait up to <DownloadTimeout> seconds until the state of Download button on file download placeholder is not changed
     And I tap View button on file download placeholder
     And I save file from file dialog
     Then I wait up <DownloadTimeout> seconds until <FileExactSize> file having name "<FileName>.<FileExtension>" is downloaded to the device
