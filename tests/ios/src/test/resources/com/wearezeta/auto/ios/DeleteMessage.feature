@@ -141,3 +141,28 @@ Feature: Delete Message
     Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
+
+  @C111327 @staging @fastLogin
+  Scenario Outline: Verify deleting is synchronised across own devices when they are online
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given User Myself adds new device <Device>
+    Given User <Contact1> adds new device <ContactDevice>
+    Given I see conversations list
+    Given I tap on contact name <Contact1>
+    Given User Myself sends 1 encrypted message using device <Device> to user <Contact1>
+    Given I see 1 default message in the conversation view
+    When User Myself delete the recent message from user <Contact1>
+    Then I see 0 default message in the conversation view
+    When I navigate back to conversations list
+    And I tap on group chat with name <GroupChatName>
+    And User <Contact1> sends 1 encrypted message using device <ContactDevice> to group conversation <GroupChatName>
+    Then I see 1 default message in the conversation view
+    When User Myself delete the recent message from group conversation <GroupChatName>
+    Then I see 0 default message in the conversation view
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Device  | ContactDevice | GroupChatName |
+      | user1Name | user2Name | user3Name | Device1 | Device2       | MyGroup       |
