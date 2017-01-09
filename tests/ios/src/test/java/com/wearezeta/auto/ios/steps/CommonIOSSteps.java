@@ -1351,7 +1351,7 @@ public class CommonIOSSteps {
         }
         IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
                 .UserSentFileToConversation(sender, convoName, root + File.separator + fileName, mimeType,
-                deviceName, convoType.equals("group"));
+                        deviceName, convoType.equals("group"));
     }
 
     /**
@@ -1427,7 +1427,7 @@ public class CommonIOSSteps {
             throws Exception {
         IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
                 .UserSharesLocationTo(userNameAlias, dstNameAlias, convoType.equals("group conversation"),
-                deviceName);
+                        deviceName);
     }
 
     /**
@@ -1523,7 +1523,7 @@ public class CommonIOSSteps {
             throws Exception {
         IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
                 .UserXRemembersLastMessage(userNameAlias, convoType.equals("group conversation"),
-                dstNameAlias, deviceName);
+                        dstNameAlias, deviceName);
     }
 
     /**
@@ -1551,11 +1551,11 @@ public class CommonIOSSteps {
         if (shouldNotBeChanged == null) {
             IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
                     .UserXFoundLastMessageChanged(userNameAlias, isGroup, dstNameAlias, deviceName,
-                    durationSeconds);
+                            durationSeconds);
         } else {
             IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
                     .UserXFoundLastMessageNotChanged(userNameAlias, isGroup, dstNameAlias, deviceName,
-                    durationSeconds);
+                            durationSeconds);
         }
     }
 
@@ -1755,7 +1755,7 @@ public class CommonIOSSteps {
             case "reads":
                 IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
                         .UserReadLastEphemeralMessage(userNameAlias, dstNameAlias, null,
-                        convType.equals("group conversation"));
+                                convType.equals("group conversation"));
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Cannot identify the reaction type '%s'",
@@ -1801,7 +1801,7 @@ public class CommonIOSSteps {
         final long timeoutMs = timeMetrics.startsWith("minute") ? timeout * 60 * 1000 : timeout * 1000;
         IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
                 .UserSwitchesToEphemeralMode(userAs, convoName, timeoutMs, isGroup.equals("group conversation"),
-                null);
+                        null);
     }
 
     /**
@@ -1869,5 +1869,19 @@ public class CommonIOSSteps {
     @Given("^Users? (.*) uploads? own details$")
     public void uploadSelfUser(String aliases) throws Exception {
         IOSTestContextHolder.getInstance().getTestContext().getCommonSteps().uploadSelfContact(aliases);
+    }
+
+    /**
+     * Simulates isTyping event from the other user
+     *
+     * @param userAs       user name/alias
+     * @param conversation conversation name
+     * @throws Exception
+     * @step. ^User (.*) starts typing in conversation (.*)
+     */
+    @When("^User (.*) starts typing in conversation (.*)")
+    public void UserXStartsTyping(String userAs, String conversation) throws Exception {
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps().
+                UserIsTypingInConversation(userAs, conversation);
     }
 }
