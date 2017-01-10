@@ -142,7 +142,7 @@ Feature: Delete Message
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C111327 @staging @fastLogin
+  @C111327 @regression @fastLogin
   Scenario Outline: Verify deleting is synchronised across own devices when they are online
     Given There are 3 users where <Name> is me
     Given User Myself adds new device <Device>
