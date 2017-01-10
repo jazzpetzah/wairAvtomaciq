@@ -9,7 +9,6 @@ import com.wearezeta.auto.ios.tools.ABProvisioner.ABProvisionerAPI;
 import com.wearezeta.auto.common.driver.device_helpers.IOSSimulatorHelpers;
 import cucumber.api.java.en.Given;
 
-
 import java.util.*;
 
 

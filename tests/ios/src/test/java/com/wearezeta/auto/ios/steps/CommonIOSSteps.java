@@ -25,7 +25,6 @@ import com.wearezeta.auto.common.driver.facebook_ios_driver.FBDriverAPI;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.IOSDistributable;
 import com.wearezeta.auto.common.misc.Timedelta;
-import com.wearezeta.auto.common.process.UnixProcessHelpers;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.wire_actors.models.AssetsVersion;
 import com.wearezeta.auto.ios.common.IOSPagesCollection;
