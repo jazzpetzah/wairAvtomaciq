@@ -1,6 +1,6 @@
 Feature: Registration
 
-  @C1019 @clumsy @regression @rc @torun
+  @C1019 @clumsy @regression @rc
   Scenario Outline: Register new user using photo album
     Given I see sign in screen
     When I enter phone number for <Name>
