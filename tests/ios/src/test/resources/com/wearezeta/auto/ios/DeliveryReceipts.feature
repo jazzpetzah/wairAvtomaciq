@@ -1,6 +1,6 @@
 Feature: Delivery Receipts
 
-  @C226452 @staging @fastLogin @torun
+  @C226452 @staging @fastLogin
   Scenario Outline: Verify status is changed to Sent with a timestamp when message reached the server
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
