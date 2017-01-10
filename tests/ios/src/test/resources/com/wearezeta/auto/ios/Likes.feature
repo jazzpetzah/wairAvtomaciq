@@ -90,6 +90,7 @@ Feature: Likes
   Scenario Outline: Verify deleted for myself my message doesn't reappear after someone liked it
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> adds new device D1
     Given I sign in using my email or phone number
     Given User Myself sends 1 encrypted message to user <Contact>
     Given I see conversations list
