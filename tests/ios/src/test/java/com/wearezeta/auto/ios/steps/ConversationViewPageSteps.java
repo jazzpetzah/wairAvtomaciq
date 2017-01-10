@@ -1318,5 +1318,20 @@ public class ConversationViewPageSteps {
             }
         }
     }
+
+    /**
+     * Verify whether isTyping message is visible for a particular user
+     *
+     * @step. ^I see typing indicator for (.*) in the conversation$
+     * @param forUser user name/alias
+     * @throws Exception
+     */
+    @Then("^I see typing indicator for (.*) in the conversation$")
+    public void ISeeTypingLabel(String forUser) throws Exception {
+        forUser = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(forUser, ClientUsersManager.FindBy.NAME_ALIAS);
+        Assert.assertTrue(String.format("IsTyping message has not been shown for '%s'", forUser),
+                getConversationViewPage().isTypingIndicatorVisibleFor(forUser));
+    }
 }
 

@@ -340,7 +340,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | ExpectedMessage                   |
       | user1Email | user1Password | user1Name | user2Name | ('a' * 100)('LF' * 10)('b' * 100) |
 
-  @C131207 @regression
+  @C131207 @regression @CM-1127
   Scenario Outline: Receive a really long message to group conversation
     Given There is a known user <Contact> with email <ContactEmail> and password <Password>
     Given User <Contact> removes all his registered OTR clients

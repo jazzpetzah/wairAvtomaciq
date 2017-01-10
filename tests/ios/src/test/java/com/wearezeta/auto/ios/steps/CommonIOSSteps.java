@@ -212,7 +212,6 @@ public class CommonIOSSteps {
                     if (entry.getKey().equals(CAPABILITY_NAME_ADDRESSBOOK) &&
                             (entry.getValue() instanceof Boolean) && (Boolean) entry.getValue()) {
                         processArgs.addAll(Arrays.asList(
-                                "--debug-log-network",
                                 "--addressbook-on-simulator",
                                 "--addressbook-search-delay=2"
                         ));
@@ -1353,7 +1352,7 @@ public class CommonIOSSteps {
         }
         IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
                 .UserSentFileToConversation(sender, convoName, root + File.separator + fileName, mimeType,
-                deviceName, convoType.equals("group"));
+                        deviceName, convoType.equals("group"));
     }
 
     /**
@@ -1429,7 +1428,7 @@ public class CommonIOSSteps {
             throws Exception {
         IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
                 .UserSharesLocationTo(userNameAlias, dstNameAlias, convoType.equals("group conversation"),
-                deviceName);
+                        deviceName);
     }
 
     /**
@@ -1525,7 +1524,7 @@ public class CommonIOSSteps {
             throws Exception {
         IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
                 .UserXRemembersLastMessage(userNameAlias, convoType.equals("group conversation"),
-                dstNameAlias, deviceName);
+                        dstNameAlias, deviceName);
     }
 
     /**
@@ -1553,11 +1552,11 @@ public class CommonIOSSteps {
         if (shouldNotBeChanged == null) {
             IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
                     .UserXFoundLastMessageChanged(userNameAlias, isGroup, dstNameAlias, deviceName,
-                    durationSeconds);
+                            durationSeconds);
         } else {
             IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
                     .UserXFoundLastMessageNotChanged(userNameAlias, isGroup, dstNameAlias, deviceName,
-                    durationSeconds);
+                            durationSeconds);
         }
     }
 
@@ -1757,7 +1756,7 @@ public class CommonIOSSteps {
             case "reads":
                 IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
                         .UserReadLastEphemeralMessage(userNameAlias, dstNameAlias, null,
-                        convType.equals("group conversation"));
+                                convType.equals("group conversation"));
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Cannot identify the reaction type '%s'",
@@ -1803,7 +1802,7 @@ public class CommonIOSSteps {
         final long timeoutMs = timeMetrics.startsWith("minute") ? timeout * 60 * 1000 : timeout * 1000;
         IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
                 .UserSwitchesToEphemeralMode(userAs, convoName, timeoutMs, isGroup.equals("group conversation"),
-                null);
+                        null);
     }
 
     /**
@@ -1873,50 +1872,17 @@ public class CommonIOSSteps {
         IOSTestContextHolder.getInstance().getTestContext().getCommonSteps().uploadSelfContact(aliases);
     }
 
-    private final Map<String, Object> savedCaps = new HashMap<>();
-
     /**
-     * Quits Wire on the simulator
+     * Simulates isTyping event from the other user
      *
+     * @param userAs       user name/alias
+     * @param conversation conversation name
      * @throws Exception
-     * @step. ^I quit Wire$
+     * @step. ^User (.*) starts typing in conversation (.*)
      */
-    @Given("^I quit Wire$")
-    public void IQuitWire() throws Exception {
-        if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
-            final RemoteWebDriver currentDriver = PlatformDrivers.getInstance().getDriver(CURRENT_PLATFORM).get();
-            final Map<String, ?> currentCapabilities = currentDriver.getCapabilities().asMap();
-            for (Map.Entry<String, ?> capabilityItem : currentCapabilities.entrySet()) {
-                savedCaps.put(capabilityItem.getKey(), capabilityItem.getValue());
-            }
-            try {
-                PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            UnixProcessHelpers.killProcessesGracefully("Wire");
-        }
+    @When("^User (.*) starts typing in conversation (.*)")
+    public void UserXStartsTyping(String userAs, String conversation) throws Exception {
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps().
+                UserIsTypingInConversation(userAs, conversation);
     }
-
-    /**
-     * Relaunches Wire on the simulator
-     *
-     * @throws Exception
-     * @step. ^I relaunch Wire$
-     */
-    @Given("^I relaunch Wire$")
-    public void IRelaunchWire() throws Exception {
-        if (savedCaps.isEmpty()) {
-            throw new IllegalStateException("Quit Wire App first!");
-        }
-        savedCaps.put("noReset", true);
-        savedCaps.put("fullReset", false);
-        final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(getAppPath(), Optional.of(savedCaps), 1);
-        updateDriver(lazyDriver);
-        savedCaps.clear();
-    }
-
-
-
-
 }

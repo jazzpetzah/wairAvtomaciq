@@ -216,6 +216,10 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
 
     private static final By nameFileActionsMenu = MobileBy.AccessibilityId("ActivityListView");
 
+    private static final Function<String, String> xpathStrTypingLabelByName = name ->
+            String.format("//*[@name='typingIndicator' and .//XCUIElementTypeStaticText[@name='%s'] ]",
+                    name.toUpperCase());
+
     public static final String[] UPLOAD_MENU_ITEMS = new String[]{
             "Record a video", "Videos", "20 MB file", "Big file",
             "group-icon@3x.png", "CountryCodes.plist", "iCloud"
@@ -968,5 +972,10 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
 
     public boolean waitUntilFileActionsMenuVisible() throws Exception {
         return isLocatorDisplayed(nameFileActionsMenu);
+    }
+
+    public boolean isTypingIndicatorVisibleFor(String forUser) throws Exception {
+        final By locator = By.xpath(xpathStrTypingLabelByName.apply(forUser));
+        return isLocatorDisplayed(locator);
     }
 }

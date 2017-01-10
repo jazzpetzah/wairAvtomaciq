@@ -499,11 +499,16 @@ public class CallingSteps {
             IOSTestContextHolder.getInstance().getTestContext().getCallingManager()
                     .callToConversation(calleeList, conversationName);
 
+            if (callIndex == 0) {
+                IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                        .WaitForTime(5);
+            }
             boolean isVisible = IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
                     .getPage(CallKitOverlayPage.class).isVisible("Audio");
             if (!isVisible) {
                 throw new CallIterationError(callIndex, "Audio Call Kit overlay should be visible");
             }
+
             LOG.info("Audio Call Kit overlay is visible");
             IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
                     .getPage(CallKitOverlayPage.class).tapButton(CALLKIT_ACCEPT_BUTTON);

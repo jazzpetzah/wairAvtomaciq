@@ -7,6 +7,7 @@ Feature: E2EE
     Given User <Contact1> adds new devices <DeviceName1>,<DeviceName2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
+    Given User <Contact1> sends 1 encrypted message to user Myself
     Given I see conversations list
     When I tap on contact name <Contact1>
     Then I do not see shield icon in the conversation view
