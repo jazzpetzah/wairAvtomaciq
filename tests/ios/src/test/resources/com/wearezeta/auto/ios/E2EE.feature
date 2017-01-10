@@ -65,6 +65,7 @@ Feature: E2EE
     Given Myself is connected to <Contact1>
     Given User <Contact1> adds new devices <DeviceName1>,<DeviceName2>
     Given I sign in using my email
+    Given User <Contact1> sends 1 encrypted message to user Myself
     Given I see conversations list
     And I tap on contact name <Contact1>
     And I open conversation details
@@ -90,6 +91,8 @@ Feature: E2EE
     Given User <Contact1> adds a new device <DeviceName1> with label <DeviceLabel1>
     Given User <Contact2> adds a new device <DeviceName2> with label <DeviceLabel2>
     Given I sign in using my email
+    Given User <Contact1> sends 1 encrypted message to user Myself
+    Given User <Contact2> sends 1 encrypted message to user Myself
     Given I see conversations list
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     When I tap on contact name <GroupChatName>
@@ -287,6 +290,7 @@ Feature: E2EE
     Given Myself is connected to <Contact1>
     Given User <Contact1> adds new devices <DeviceName1>,<DeviceName2>
     Given I sign in using my email
+    Given User <Contact1> sends 1 encrypted message to user Myself
     Given I see conversations list
     When I tap on contact name <Contact1>
     Then I do not see shield icon in the conversation view
@@ -420,6 +424,7 @@ Feature: E2EE
     Given Myself is connected to <Contact1>
     Given User <Contact1> adds new devices <DeviceName1>,<DeviceName2>
     Given I sign in using my email
+    Given User <Contact1> sends 1 encrypted message to user Myself
     Given I see conversations list
     When I tap on contact name <Contact1>
     Then I do not see shield icon in the conversation view
@@ -464,8 +469,8 @@ Feature: E2EE
   Scenario Outline: Verify unverifying of the device in verified conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Contact1> sends 1 encrypted message to user Myself
     Given I sign in using my email
+    Given User <Contact1> sends 1 encrypted message to user Myself
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
