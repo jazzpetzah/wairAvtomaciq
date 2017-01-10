@@ -381,6 +381,11 @@ Feature: Likes
   @C226011 @rc @regression @fastLogin
   Scenario Outline: Verify total number of likers is shown, when names are too wide
     Given There are 7 users where <Name> is me
+    Given User <Contact2> changes name to <LongName>2
+    Given User <Contact3> changes name to <LongName>3
+    Given User <Contact4> changes name to <LongName>4
+    Given User <Contact5> changes name to <LongName>5
+    Given User <Contact6> changes name to <LongName>6
     Given User <Contact2> adds new device D2
     Given User <Contact3> adds new device D3
     Given User <Contact4> adds new device D4
@@ -402,5 +407,5 @@ Feature: Likes
     Then I see "5 people" on the message toolbox in conversation view
 
     Examples:
-      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Group    |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | BigGroup |
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Group    | LongName                                 |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | BigGroup | VeeeeeeeeerrrrrrryyyyyyyLooooongNaaaaame |
