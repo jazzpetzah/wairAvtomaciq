@@ -331,6 +331,8 @@ Feature: E2EE
     Given User <Contact1> adds new devices <DeviceName1>,<DeviceName2>
     Given User <Contact2> adds new devices <DeviceName3>,<DeviceName4>
     Given I sign in using my email
+    Given User <Contact1> sends 1 encrypted message to user Myself
+    Given User <Contact2> sends 1 encrypted message to user Myself
     Given I see conversations list
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     When I tap on contact name <GroupChatName>
