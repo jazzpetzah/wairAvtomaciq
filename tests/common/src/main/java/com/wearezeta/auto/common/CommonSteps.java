@@ -5,6 +5,7 @@ import com.wearezeta.auto.common.backend.*;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.Timedelta;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.wire_actors.RemoteDevicesManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -100,6 +101,11 @@ public final class CommonSteps {
             BackendAPIWrappers.sendConnectionRequest(usrTo, asUser);
             BackendAPIWrappers.acceptIncomingConnectionRequest(asUser, usrTo);
         }
+    }
+
+    public int UserHasConversationsCount(String userFromNameAlias) throws Exception {
+        final ClientUser user = getUsersManager().findUserByNameOrNameAlias(userFromNameAlias);
+        return BackendAPIWrappers.getConversations(user).length();
     }
 
     public void ThereIsAKnownUser(String name, String email, String password) throws Exception {

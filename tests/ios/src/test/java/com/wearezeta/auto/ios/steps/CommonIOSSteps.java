@@ -25,6 +25,7 @@ import com.wearezeta.auto.common.driver.facebook_ios_driver.FBDriverAPI;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.IOSDistributable;
 import com.wearezeta.auto.common.misc.Timedelta;
+import com.wearezeta.auto.common.process.UnixProcessHelpers;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.wire_actors.models.AssetsVersion;
 import com.wearezeta.auto.ios.common.IOSPagesCollection;
@@ -211,6 +212,7 @@ public class CommonIOSSteps {
                     if (entry.getKey().equals(CAPABILITY_NAME_ADDRESSBOOK) &&
                             (entry.getValue() instanceof Boolean) && (Boolean) entry.getValue()) {
                         processArgs.addAll(Arrays.asList(
+                                "--debug-log-network",
                                 "--addressbook-on-simulator",
                                 "--addressbook-search-delay=2"
                         ));
@@ -1870,4 +1872,51 @@ public class CommonIOSSteps {
     public void uploadSelfUser(String aliases) throws Exception {
         IOSTestContextHolder.getInstance().getTestContext().getCommonSteps().uploadSelfContact(aliases);
     }
+
+    private final Map<String, Object> savedCaps = new HashMap<>();
+
+    /**
+     * Quits Wire on the simulator
+     *
+     * @throws Exception
+     * @step. ^I quit Wire$
+     */
+    @Given("^I quit Wire$")
+    public void IQuitWire() throws Exception {
+        if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
+            final RemoteWebDriver currentDriver = PlatformDrivers.getInstance().getDriver(CURRENT_PLATFORM).get();
+            final Map<String, ?> currentCapabilities = currentDriver.getCapabilities().asMap();
+            for (Map.Entry<String, ?> capabilityItem : currentCapabilities.entrySet()) {
+                savedCaps.put(capabilityItem.getKey(), capabilityItem.getValue());
+            }
+            try {
+                PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            UnixProcessHelpers.killProcessesGracefully("Wire");
+        }
+    }
+
+    /**
+     * Relaunches Wire on the simulator
+     *
+     * @throws Exception
+     * @step. ^I relaunch Wire$
+     */
+    @Given("^I relaunch Wire$")
+    public void IRelaunchWire() throws Exception {
+        if (savedCaps.isEmpty()) {
+            throw new IllegalStateException("Quit Wire App first!");
+        }
+        savedCaps.put("noReset", true);
+        savedCaps.put("fullReset", false);
+        final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(getAppPath(), Optional.of(savedCaps), 1);
+        updateDriver(lazyDriver);
+        savedCaps.clear();
+    }
+
+
+
+
 }

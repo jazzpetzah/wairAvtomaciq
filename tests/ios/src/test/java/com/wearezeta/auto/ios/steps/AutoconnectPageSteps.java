@@ -2,18 +2,45 @@ package com.wearezeta.auto.ios.steps;
 
 
 import com.wearezeta.auto.common.misc.IOSDistributable;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.RegistrationStrategy;
+import com.wearezeta.auto.common.wire_actors.RemoteDevicesManager;
 import com.wearezeta.auto.ios.common.IOSTestContextHolder;
+import com.wearezeta.auto.ios.pages.ConversationsListPage;
 import com.wearezeta.auto.ios.tools.ABProvisioner.ABContact;
 import com.wearezeta.auto.ios.tools.ABProvisioner.ABProvisionerAPI;
 import com.wearezeta.auto.common.driver.device_helpers.IOSSimulatorHelpers;
+import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
+import org.junit.Assert;
 
 import java.util.*;
 
 
 public class AutoconnectPageSteps {
     private final ABProvisionerAPI addressbookProvisioner = ABProvisionerAPI.getInstance();
+    private final ClientUsersManager usersManager;
+    private final RemoteDevicesManager devicesManager;
+
+    private ClientUsersManager getUsersManager() {
+        return this.usersManager;
+    }
+
+    private RemoteDevicesManager getDevicesManager() {
+        return this.devicesManager;
+    }
+
+    public AutoconnectPageSteps(ClientUsersManager usersManager, RemoteDevicesManager devicesManager) {
+        this.usersManager = usersManager;
+        this.devicesManager = devicesManager;
+    }
+
+    private ConversationsListPage getConversationsListPage() throws Exception {
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(ConversationsListPage.class);
+    }
 
     /**
      * Installs the Addressbook helper app on to the simulator
@@ -96,5 +123,120 @@ public class AutoconnectPageSteps {
                 .replaceAliasesOccurences(email, ClientUsersManager.FindBy.EMAIL_ALIAS);
         ABContact contact = new ABContact(name, Optional.of(Collections.singletonList(email)), Optional.empty());
         addressbookProvisioner.addContacts(Collections.singletonList(contact));
+    }
+
+    //save all contacts that are in AB
+    private List<ABContact> contactsInAddressbook = new ArrayList<>();
+
+    /**
+     * Reads the list of contacts out of the Address Book
+     *
+     * @throws Exception
+     * @step. ^I read list of contacts in Address Book$
+     */
+    @Given("^I read list of contacts in Address Book$")
+    public void IReadListOfContactsInAddressbook() throws Exception {
+        contactsInAddressbook = addressbookProvisioner.getContacts();
+    }
+
+    //save the batches of users they get devided in to
+    private List<List<ABContact>> contactBatches = new ArrayList<>();
+
+    /**
+     * Separates the address book contacts list into number of chunks
+     *
+     * @param numberOfChunks number of chunks adressbook get divided into
+     * @throws Exception
+     * @step. ^I separate list of contacts into (\d+) chunks$
+     */
+    @Given("^I separate list of contacts into (\\d+) chunks$")
+    public void ISeparateListOfContactsIntoChunks(int numberOfChunks) throws Exception {
+        if (contactsInAddressbook.isEmpty()) {
+            throw new IllegalStateException("Read list of contacts in Address Book first!");
+        }
+        int sizeOfBatch = contactsInAddressbook.size() / numberOfChunks;
+        for (int i = 0; i < contactsInAddressbook.size(); i += sizeOfBatch) {
+            contactBatches.add(contactsInAddressbook.subList(i, Math.min(i + sizeOfBatch, contactsInAddressbook.size())));
+        }
+    }
+
+    //save the users that are registered at BE to verify they get autoconnected
+    private List<ClientUser> usersToAutoconnect = new ArrayList<>();
+
+    /**
+     * Picks a number of random user of a specific batch to register at the BE
+     *
+     * @param numberContactsToRegister number of contacts to register
+     * @param numberOfChunk            number of the batch to register from. the index starts at 0
+     * @throws Exception
+     * @step. ^I pick (\d+) random contact? from chunk (\d+) to register at BE$
+     */
+    @Then("^I pick (\\d+) random contact? from chunk (\\d+) to register at BE$")
+    public void IPickRandomContactFromChunkToRegisterAtBE(int numberContactsToRegister, int numberOfChunk)
+            throws Exception {
+        if (contactBatches.isEmpty()) {
+            throw new IllegalStateException("Separate the list of contacts into batches first!");
+        }
+        for (int i = 1; i <= numberContactsToRegister; i++) {
+            int randomNumber = new Random().nextInt(contactBatches.get(numberOfChunk - 1).size());
+            ABContact contactToRegister = contactBatches.get(numberOfChunk - 1).get(randomNumber);
+            ClientUser userToRegsiter = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                    .findUserByNameOrNameAlias(contactToRegister.getName());
+            getUsersManager().createSpecificUsersOnBackend(Collections.singletonList(userToRegsiter), RegistrationStrategy.ByPhoneNumberOnly);
+            usersToAutoconnect.add(userToRegsiter);
+        }
+    }
+
+    @Given("^I register (\\d+) at BE$")
+    public void IRegisterNumberOfUsersFromChunkAtBE(int numberOfContacts) throws Throwable {
+        for (int i = 0; i < numberOfContacts; i++) {
+            ABContact contactToRegister = contactsInAddressbook.get(i);
+            ClientUser userToRegsiter = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                    .findUserByNameOrNameAlias(contactToRegister.getName());
+            getUsersManager().createSpecificUsersOnBackend(Collections.singletonList(userToRegsiter), RegistrationStrategy.ByPhoneNumberOnly);
+            usersToAutoconnect.add(userToRegsiter);
+        }
+    }
+
+    /**
+     * Checks that the i-th autoconnected user is seen in list
+     *
+     * @param numberOfUserToGetAutoconnected the number of the user that gets autoconnected and should appear at the list
+     * @throws Exception
+     * @step. ^I see (\d+) autoconnection in conversations list$
+     */
+    @Then("^I see (\\d+)(?:st|nd|rd|th) autoconnection in conversations list$")
+    public void ISeeAutoconnectionInConversationsList(int numberOfUserToGetAutoconnected) throws Exception {
+        if (usersToAutoconnect.isEmpty()) {
+            throw new IllegalStateException("Pick a contact first from a batch to register at BE to get autoconnected!");
+        }
+
+        String user = IOSTestContextHolder.getInstance().getTestContext().getUsersManager().replaceAliasesOccurences(usersToAutoconnect.get(numberOfUserToGetAutoconnected - 1).toString(),
+                ClientUsersManager.FindBy.NAME_ALIAS);
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps().WaitUntilContactIsFoundInSearch(IOSTestContextHolder.getInstance().getTestContext().getUsersManager().getSelfUserOrThrowError().getName(), user);
+        Assert.assertTrue(String.format("The conversation '%s' is not visible in the conversation list",
+                user), getConversationsListPage().isConversationInList(user));
+
+    }
+
+    @Given("^I add (\\d+) users to Address Book$")
+    public void IAddNumberOfUsersUsersToAddressBook(int numberOfContacts) throws Exception {
+        for (int i = 2; i <= numberOfContacts+1; i++){
+            ClientUser user = IOSTestContextHolder.getInstance().getTestContext().getUsersManager().findUserByNameOrNameAlias(String.format("user%sName",i));
+            String name = user.getName();
+            String phoneNumber = user.getPhoneNumber().toString();
+            ABContact contact = new ABContact(name, Optional.empty(), Optional.of(Collections.singletonList(phoneNumber)));
+            addressbookProvisioner.addContacts(Collections.singletonList(contact));
+        }
+
+    }
+
+
+    @Then("^(.*) has (\\d+) in conversation list$")
+    public void IHaveNumberOfUsersInMyConversationList(String userFromNameAlias, int numberOfContacts) throws Throwable {
+        int actualNumber = IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .UserHasConversationsCount(userFromNameAlias);
+        Assert.assertEquals(String.format("Should be %s contacts. But actual number is %s.",numberOfContacts, actualNumber),
+                numberOfContacts,actualNumber);
     }
 }
