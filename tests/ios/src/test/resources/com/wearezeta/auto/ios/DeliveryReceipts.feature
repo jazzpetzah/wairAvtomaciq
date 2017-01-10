@@ -1,7 +1,7 @@
 Feature: Delivery Receipts
 
-  @C228501 @regression @fastLogin
-  Scenario Outline: Verify Delivered status isn't shown if receiver is on the old build
+  @C226452 @staging @fastLogin
+  Scenario Outline: Verify status is changed to Sent with a timestamp when message reached the server
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
