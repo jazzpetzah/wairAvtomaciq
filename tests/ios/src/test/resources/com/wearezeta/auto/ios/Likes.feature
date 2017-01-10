@@ -380,32 +380,26 @@ Feature: Likes
 
   @C226011 @rc @regression @fastLogin
   Scenario Outline: Verify total number of likers is shown, when names are too wide
-    Given There are 7 users where <Name> is me
+    Given There are 5 users where <Name> is me
     Given User <Contact2> changes name to <LongName>2
     Given User <Contact3> changes name to <LongName>3
     Given User <Contact4> changes name to <LongName>4
-    Given User <Contact5> changes name to <LongName>5
-    Given User <Contact6> changes name to <LongName>6
     Given User <Contact2> adds new device D2
     Given User <Contact3> adds new device D3
     Given User <Contact4> adds new device D4
-    Given User <Contact5> adds new device D5
-    Given User <Contact6> adds new device D6
     Given Myself is connected to all other
     Given Myself has group chat <Group> with all other
     Given I sign in using my email or phone number
     Given User <Contact1> sends 1 encrypted message to group conversation <Group>
     # Wait for sync
-    Given I wait for 3 seconds
+    Given I wait for 5 seconds
     Given User <Contact2> likes the recent message from group conversation <Group>
     Given User <Contact3> likes the recent message from group conversation <Group>
     Given User <Contact4> likes the recent message from group conversation <Group>
-    Given User <Contact5> likes the recent message from group conversation <Group>
-    Given User <Contact6> likes the recent message from group conversation <Group>
     Given I see conversations list
     When I tap on contact name <Group>
-    Then I see "5 people" on the message toolbox in conversation view
+    Then I see "<LikersLabel>" on the message toolbox in conversation view
 
     Examples:
-      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Group    | LongName                                 |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | BigGroup | VeeeeeeeeerrrrrrryyyyyyyLooooongNaaaaame |
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Group    | LikersLabel | LongName                                 |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | BigGroup | 3 people    | VeeeeeeeeerrrrrrryyyyyyyLooooongNaaaaame |
