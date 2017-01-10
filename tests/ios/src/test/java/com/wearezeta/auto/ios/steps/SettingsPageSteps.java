@@ -292,8 +292,9 @@ public class SettingsPageSteps {
      * @throws Exception
      * @step. ^I see settings Profile Picture preview$
      */
-    @Then("^I see settings Profile Picture preview$")
+    @Then("^I see profile picture preview in Settings$")
     public void ISeeSettingsPicturePreview() throws Exception {
-        Assert.assertTrue("There is no preview of the profile picture shown", getSettingsPage().isProfilePicturePreviewVisible());
+        Assert.assertTrue("There is no preview of the profile picture shown",
+                getSettingsPage().isProfilePicturePreviewVisible());
     }
 }

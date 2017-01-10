@@ -50,7 +50,8 @@ public class SettingsPage extends IOSPage {
     private static final Function<String, String> xpathStrUniqueUsernameInSettings = name ->
             String.format("//XCUIElementTypeStaticText[@name='%s']", name.startsWith("@") ? name : "@" + name);
 
-    private static final By xpathSettingsProfilePicturePreview = By.xpath("//XCUIElementTypeImage[@name='imagePreview' and @value='image']");
+    private static final By xpathSettingsProfilePicturePreview = By.xpath("//XCUIElementTypeImage[" +
+            "@name='imagePreview' and @value='image']");
 
     public SettingsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
