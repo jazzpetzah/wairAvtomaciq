@@ -20,7 +20,7 @@ Feature: E2EE
     And I tap Verify switcher on Device Details page
     And I dismiss popover on iPad
     Then I see shield icon in the conversation view
-    And I see 2 conversation entries
+    And I see 3 conversation entries
 
     Examples:
       | Name      | Contact1  | DeviceName1 | DeviceName2 |
