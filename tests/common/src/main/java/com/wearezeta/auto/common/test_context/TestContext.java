@@ -46,11 +46,7 @@ public class TestContext {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        try {
-            this.getDevicesManager().reset();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.getDevicesManager().reset();
         try {
             this.getCallingManager().cleanup();
         } catch (Exception e) {

@@ -48,7 +48,7 @@ public class SettingsPage extends IOSPage {
             String.format("%s/XCUIElementTypeCell[%s]", xpathStrColorPicker, idx);
 
     private static final Function<String, String> xpathStrUniqueUsernameInSettings = name ->
-            String.format("//XCUIElementTypeStaticText[@name='%s']", name.startsWith("@") ? name : "@" + name);
+            String.format("//XCUIElementTypeStaticText[@name='@%s']", name);
 
     private static final By xpathSettingsProfilePicturePreview = By.xpath("//XCUIElementTypeImage[" +
             "@name='imagePreview' and @value='image']");
@@ -120,17 +120,13 @@ public class SettingsPage extends IOSPage {
     }
 
     public void clearSelfName() throws Exception {
-        final WebElement selfName = getElementIfExists(fbXpathSelfNameEditField).orElseThrow(
-                () -> new IllegalStateException("Name input is not present on the page")
-        );
+        final WebElement selfName = getElement(fbXpathSelfNameEditField);
         selfName.click();
         selfName.clear();
     }
 
     public void setSelfName(String newName) throws Exception {
-        final WebElement selfName = getElementIfExists(fbXpathSelfNameEditField).orElseThrow(
-                () -> new IllegalStateException("Name input is not present on the page")
-        );
+        final WebElement selfName = getElement(fbXpathSelfNameEditField);
         selfName.click();
         selfName.clear();
         selfName.sendKeys(newName);

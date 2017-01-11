@@ -32,8 +32,8 @@ public final class CommonSteps {
 
     private static final String CONNECTION_NAME = "CONNECT TO ";
     public static final String CONNECTION_MESSAGE = "Hello!";
-    public static final Timedelta DEFAULT_WAIT_UNTIL_INTERVAL = Timedelta.fromMilliSeconds(1000);
-    public static final Timedelta DEFAULT_WAIT_UNTIL_TIMEOUT = Timedelta.fromSeconds(10);
+    public static final long DEFAULT_WAIT_UNTIL_INTERVAL_MILLISECONDS = 1000;
+    public static final int DEFAULT_WAIT_UNTIL_TIMEOUT_SECONDS = 10;
 
     private static final int BACKEND_USER_SYNC_TIMEOUT = 180; // seconds
 
@@ -992,8 +992,8 @@ public final class CommonSteps {
     private Optional<String> getUserXLastMessageId(String rememberedMessage, String userNameAlias, boolean isGroup,
                                                    String dstNameAlias, String deviceName, int durationSeconds)
             throws Exception {
-        return CommonUtils.waitUntil(Timedelta.fromSeconds(durationSeconds),
-                CommonSteps.DEFAULT_WAIT_UNTIL_INTERVAL,
+        return CommonUtils.waitUntil(durationSeconds,
+                CommonSteps.DEFAULT_WAIT_UNTIL_INTERVAL_MILLISECONDS,
                 () -> {
                     Optional<String> messageId = UserGetRecentMessageId(userNameAlias,
                             dstNameAlias, deviceName, isGroup);

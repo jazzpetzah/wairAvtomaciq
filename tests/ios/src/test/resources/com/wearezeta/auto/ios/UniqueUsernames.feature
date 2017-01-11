@@ -651,23 +651,3 @@ Feature: Unique Usernames
     Examples:
       | NameAlias | Name |
       | user1Name | 😼   |
-
-  @C368978 @regression @fastLogin
-  Scenario Outline: Verify impossibility of autogenerating reserved username (e.g. admin)
-    Given There is 1 user
-    Given User <NameAlias> is me
-    Given User <NameAlias> changes name to <Name>
-    Given I prepare Wire to perform fast log in by email as <Name>
-    Given I sign in using my email or phone number
-    Given I open search UI
-    Given I accept alert if visible
-    Given I tap X button on Search UI page
-    When I see username <NameAlias> on Unique Username Takeover page
-    Then I do not see unique username <Name> on Unique Username Takeover page
-    When I remember the unique username on Unique Username Takeover page
-    When I tap Keep This One button on Unique Username Takeover page
-    Then I verify my unique username on the backend is equal to the one which was visible on Unique Username Takeover page
-
-    Examples:
-      | NameAlias | Name  |
-      | user1Name | admin |

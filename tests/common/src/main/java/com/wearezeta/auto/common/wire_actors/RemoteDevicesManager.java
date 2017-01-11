@@ -7,7 +7,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUser;
 
 import java.io.File;
 import java.util.*;
-import java.util.concurrent.*;
+import java.util.concurrent.Semaphore;
 import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.wire_actors.models.AssetsVersion;
@@ -20,22 +20,16 @@ public class RemoteDevicesManager {
     private static final Logger LOG = ZetaLogger.getLog(RemoteDevicesManager.class.getSimpleName());
 
     private static class Device {
-        private Future<String> uuid;
+        private String uuid;
         private Optional<String> name = Optional.empty();
         private Optional<ClientUser> owner = Optional.empty();
 
-        Device(Future<String> uuid) {
+        Device(String uuid) {
             this.uuid = uuid;
         }
 
         String getUUID() {
-            try {
-                return uuid.get();
-            } catch (Exception e) {
-                Throwables.propagate(e);
-                e.printStackTrace();
-            }
-            return "";
+            return uuid;
         }
 
         Optional<String> getName() {
@@ -59,13 +53,7 @@ public class RemoteDevicesManager {
     private Semaphore devicesGuard = new Semaphore(1);
 
     public RemoteDevicesManager() {
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            try {
-                this.reset();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }));
+        Runtime.getRuntime().addShutdownHook(new Thread(this::reset));
     }
 
     private List<Device> getDevicesOwnedBy(ClientUser owner) throws InterruptedException {
@@ -73,18 +61,13 @@ public class RemoteDevicesManager {
     }
 
     private Device getDeviceOwnedBy(ClientUser owner, String name) throws InterruptedException {
-        devicesGuard.acquire();
-        try {
-            return registeredDevices.stream()
-                    .filter(x -> x.getOwner().isPresent() && x.getOwner().get().equals(owner)
-                            && x.getName().isPresent() && x.getName().get().equals(name))
-                    .findFirst()
-                    .orElseThrow(
-                            () -> new IllegalStateException(String.format("There is no device '%s' owned by user '%s'",
-                                    name, owner.getName()))
-                    );
-        } finally {
-            devicesGuard.release();
+        synchronized (owner.getEmail()) {
+            final List<Device> devices = getDevicesOwnedBy(owner, Optional.empty());
+            if (devices.isEmpty()) {
+                throw new IllegalStateException(String.format("There is no device '%s' owned by user '%s'",
+                        name, owner.getName()));
+            }
+            return devices.get(0);
         }
     }
 
@@ -92,7 +75,8 @@ public class RemoteDevicesManager {
         devicesGuard.acquire();
         try {
             final List<Device> ownedDevices = registeredDevices.stream()
-                    .filter(x -> x.getOwner().isPresent() && x.getOwner().get().equals(owner))
+                    .filter(x -> x.getOwner().isPresent()
+                            && x.getOwner().get().getEmail().equals(owner.getEmail()))
                     .collect(Collectors.toList());
             return byName.map(s -> ownedDevices.stream()
                     .filter(x -> x.getName().isPresent() && x.getName().get().equals(s))
@@ -132,7 +116,17 @@ public class RemoteDevicesManager {
         }
     }
 
-    private Device fetchDeviceOwnedBy(ClientUser owner) throws InterruptedException {
+    private Device registerDevice(Device newDevice) throws InterruptedException {
+        devicesGuard.acquire();
+        try {
+            registeredDevices.add(newDevice);
+            return newDevice;
+        } finally {
+            devicesGuard.release();
+        }
+    }
+
+    private Device fetchDeviceOwnedBy(ClientUser owner) throws Exception {
         return fetchDeviceOwnedBy(owner, Optional.empty());
     }
 
@@ -145,34 +139,18 @@ public class RemoteDevicesManager {
      * @return
      * @throws InterruptedException
      */
-    private Device fetchDeviceOwnedBy(ClientUser owner, Optional<String> name) throws InterruptedException {
-        devicesGuard.acquire();
-        try {
-            final Device result = registeredDevices.stream()
-                    .filter(x -> x.getOwner().isPresent() && x.getOwner().get().equals(owner)
-                            && (name.isPresent() && x.getName().isPresent() && x.getName().get().equals(name.get())
-                            || !name.isPresent()))
-                    .findFirst()
-                    .orElse(null);
-            if (result != null) {
-                return result;
+    private Device fetchDeviceOwnedBy(ClientUser owner, Optional<String> name) throws Exception {
+        synchronized (owner.getEmail()) {
+            final List<Device> existingDevices = getDevicesOwnedBy(owner, name);
+            if (!existingDevices.isEmpty()) {
+                return existingDevices.get(0);
             }
-            final ExecutorService pool = Executors.newSingleThreadExecutor();
-            final Future<String> uuidPromise = pool.submit(
-                    () -> {
-                        final String uuid = ActorsRESTWrapper.createDevice(name);
-                        ActorsRESTWrapper.loginToDevice(uuid, owner);
-                        return uuid;
-                    }
-            );
-            pool.shutdown();
-            final Device newDevice = new Device(uuidPromise);
+            final String uuid = ActorsRESTWrapper.createDevice(name);
+            ActorsRESTWrapper.loginToDevice(uuid, owner);
+            final Device newDevice = new Device(uuid);
             name.ifPresent(newDevice::setName);
             newDevice.setOwner(owner);
-            registeredDevices.add(newDevice);
-            return newDevice;
-        } finally {
-            devicesGuard.release();
+            return this.registerDevice(newDevice);
         }
     }
 
@@ -206,8 +184,6 @@ public class RemoteDevicesManager {
     public void addRemoteDeviceToAccount(ClientUser userFrom, String deviceName, Optional<String> label)
             throws Exception {
         final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
-        // !!! Do not remove this line. This is to wait until the device object is returned from the backend
-        LOG.info(String.format("Successfully created a new device with uuid '%s'", dstDevice.getUUID()));
         if (label.isPresent()) {
             LOG.info(String.format("Setting label '%s' to device '%s'", label.get(), deviceName));
             ActorsRESTWrapper.setDeviceLabel(dstDevice.getUUID(), label.get());
@@ -365,52 +341,36 @@ public class RemoteDevicesManager {
         ActorsRESTWrapper.setUniqueUsername(dstDevice.getUUID(), uniqueUserName);
     }
 
-    private static ExecutorService removeDevicesAsync(List<String> uuids) {
-        final ExecutorService pool = Executors.newFixedThreadPool(uuids.size());
-        for (String uuid : uuids) {
-            pool.submit(() -> {
+    public void reset() {
+        List<String> uuids = new ArrayList<>();
+        try {
+            uuids = getRegisteredDevices().stream()
+                    .map(Device::getUUID)
+                    .collect(Collectors.toList());
+            unregisterAllDevices();
+        } catch (InterruptedException e) {
+            Throwables.propagate(e);
+        } finally {
+            for (String uuid : uuids) {
                 try {
                     ActorsRESTWrapper.removeDevice(uuid);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            });
-        }
-        pool.shutdown();
-        return pool;
-    }
-
-    private static final Timedelta DEVICES_REMOVAL_TIMEOUT = Timedelta.fromSeconds(5);
-
-    public void reset() throws InterruptedException {
-        final List<String> uuids = getRegisteredDevices().stream()
-                .map(Device::getUUID)
-                .collect(Collectors.toList());
-        if (uuids.isEmpty()) {
-            return;
-        }
-        LOG.info(String.format("Cleaning %d devices from remote devices manager...", uuids.size()));
-        try {
-            unregisterAllDevices();
-        } finally {
-            removeDevicesAsync(uuids).awaitTermination(DEVICES_REMOVAL_TIMEOUT.asSeconds(), TimeUnit.SECONDS);
-        }
-    }
-
-    public void releaseDevicesOfUsers(List<ClientUser> owners) throws InterruptedException {
-        final List<String> uuids = new ArrayList<>();
-        try {
-            for (ClientUser owner : owners) {
-                final List<Device> ownedDevices = getDevicesOwnedBy(owner);
-                for (Device ownedDevice : ownedDevices) {
-                    this.unregisterDevice(ownedDevice);
-                    uuids.add(ownedDevice.getUUID());
-                }
             }
-        } finally {
-            if (!uuids.isEmpty()) {
-                LOG.info(String.format("Cleaning %d devices from remote devices manager...", uuids.size()));
-                removeDevicesAsync(uuids).awaitTermination(DEVICES_REMOVAL_TIMEOUT.asSeconds(), TimeUnit.SECONDS);
+        }
+    }
+
+    public void releaseDevicesOfUsers(List<ClientUser> owners) throws Exception {
+        for (ClientUser owner : owners) {
+            final List<Device> ownedDevices = getDevicesOwnedBy(owner);
+            for (Device ownedDevice : ownedDevices) {
+                try {
+                    this.unregisterDevice(ownedDevice);
+                    ActorsRESTWrapper.removeDevice(ownedDevice.getUUID());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

@@ -26,7 +26,6 @@ Feature: E2EE
     Given Myself is connected to <Contact1>
     Given User <Contact1> adds new devices <DeviceName1>,<DeviceName2>,<DeviceName3>
     Given I sign in using my email
-    Given User <Contact1> sends 1 encrypted message to user Myself
     Given I see conversations list
     Given I tap on contact name <Contact1>
     Given I open conversation details

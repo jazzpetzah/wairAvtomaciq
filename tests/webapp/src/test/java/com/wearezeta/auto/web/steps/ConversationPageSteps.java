@@ -137,6 +137,11 @@ public class ConversationPageSteps {
         }
     }
 
+    @When("^I click collection button in conversation$")
+    public void WhenIClickCollectionsButton() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).clickCollectionButton();
+    }
+
     @When("^I click People button in one to one conversation$")
     public void WhenIClickPeopleButtonIn1to1() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickPeopleButton();

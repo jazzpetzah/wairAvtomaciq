@@ -456,7 +456,7 @@ public class IOSSimulatorHelpers {
         }
         log.debug(getCommandOutput("/usr/bin/open", "-Fn", getApplicationPath(),
                 "--args",
-                "-ConnectHardwareKeyboard", "0",
+                "-ConnectHardwareKeyboard", "1",
                 "-CurrentDeviceUDID", getId(),
                 String.format("-SimulatorWindowLastScale-%s", getInternalDeviceType()), getDefaultScaleFactor())
         );

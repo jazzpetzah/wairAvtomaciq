@@ -1,6 +1,5 @@
 package com.wearezeta.auto.ios.steps;
 
-import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import com.wearezeta.auto.ios.pages.UniqueUsernameTakeoverPage;
@@ -72,37 +71,5 @@ public class UniqueUsernameTakeoverPageSteps {
     @Then("^I see unique username on Unique Username Takeover page contains latin characters only$")
     public void ISeeUniqueNameIsLatingCharsString() throws Exception {
         Assert.assertTrue("Unique Username contains non-alpha values", getPage().isUniqueUserNameAlphaString());
-    }
-
-    private String previousUniqueUsername = null;
-
-    /**
-     * Remember the unique username currently shown on takeover page
-     *
-     * @throws Exception
-     * @step. ^I remember the unique username on Unique Username Takeover page$"
-     */
-    @When("^I remember the unique username on Unique Username Takeover page$")
-    public void IRememberUniqueUsername() throws Exception {
-        previousUniqueUsername = getPage().getUniqueNameValue();
-    }
-
-    /**
-     * Verify whether the previously remebered username is properly applied to the backed
-     *
-     * @throws Exception
-     * @step. ^I verify my unique username on the backend is equal to the one which was visible on Unique Username Takeover page$"
-     */
-    @Then("^I verify my unique username on the backend is equal to the one which was visible on Unique Username Takeover page$")
-    public void IVerifyBackendUniqueUsername() throws Exception {
-        if (previousUniqueUsername == null) {
-            throw new IllegalStateException("The previous unique username should be remembered first");
-        }
-        final String currentUniqueUsername = "@" + BackendAPIWrappers.getUniqueUsername(
-                IOSTestContextHolder.getInstance().getTestContext().getUsersManager().getSelfUserOrThrowError()
-        ).orElse("<NOT_SET>");
-        Assert.assertEquals(
-                String.format("The current unique username '%s' is not equal to the previously remembered one '%s'",
-                        currentUniqueUsername, previousUniqueUsername), previousUniqueUsername, currentUniqueUsername);
     }
 }

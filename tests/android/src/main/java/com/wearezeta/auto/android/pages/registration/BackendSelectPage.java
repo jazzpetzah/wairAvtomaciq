@@ -17,8 +17,8 @@ public class BackendSelectPage extends AndroidPage {
 
     private static final By idBackendSelectDialog = By.id("select_dialog_listview");
 
-    private static final Timedelta DEFAULT_BACKEND_SELECTION_TIMEOUT = Timedelta.fromSeconds(20);
-    private static final Timedelta DEFAULT_BACKEND_SELECTION_INTERVAL = Timedelta.fromMilliSeconds(500);
+    private static final int DEFAULT_BACKEND_SELECTION_TIMEOUT_IN_SECONDS = 20;
+    private static final int DEFAULT_BACKEND_SELECTION_INTERVAL_IN_MILLISECONDS = 500;
     private static final Function<String, String> xpathBackendSelectButton = text -> String
             .format("//*[@value='%s']", text.toLowerCase());
 
@@ -36,8 +36,8 @@ public class BackendSelectPage extends AndroidPage {
         String backEndType = CommonUtils.getBackendType(getClass());
         By locator = By.xpath(xpathBackendSelectButton.apply(backEndType.toLowerCase()));
         CommonUtils.waitUntilTrue(
-                DEFAULT_BACKEND_SELECTION_TIMEOUT,
-                DEFAULT_BACKEND_SELECTION_INTERVAL,
+                DEFAULT_BACKEND_SELECTION_TIMEOUT_IN_SECONDS,
+                DEFAULT_BACKEND_SELECTION_INTERVAL_IN_MILLISECONDS,
                 () -> {
                     Optional<WebElement> element = getElementIfDisplayed(locator, Timedelta.fromSeconds(1));
                     if(element.isPresent()) {

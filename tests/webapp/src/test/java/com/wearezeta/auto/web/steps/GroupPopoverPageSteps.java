@@ -251,19 +251,6 @@ public class GroupPopoverPageSteps {
                 .setConversationTitle(title);
     }
 
-    @When("I click on titlebar$")
-    public void IClickOnTitlebar() throws Exception {
-        context.getPagesCollection().getPage(GroupPopoverContainer.class)
-                .clickTitlebar();
-    }
-
-    @When("I can not change group conversation title on Group Participants popover$")
-    public void ICanNotChangeGroupChatTitle() throws Exception {
-        Assert.assertTrue("",
-                context.getPagesCollection().getPage(GroupPopoverContainer.class)
-                .isTitleTextareaNotVisible());
-    }
-
     @Then("^I see conversation title (.*) on Group Participants popover$")
     public void ISeeConversationTitle(String title) throws Exception {
         Assert.assertEquals(title,

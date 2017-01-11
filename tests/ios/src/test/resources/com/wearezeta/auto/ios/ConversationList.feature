@@ -389,8 +389,6 @@ Feature: Conversation List
     And I tap input field on Search UI page
     And I type "<GroupChatName>" in Search UI input field
     And I tap on conversation <GroupChatName> in search result
-    # Wait for animation
-    And I wait for 2 seconds
     Then I see 0 conversation entries
     When I type the default message and send it
     Then I see 1 default message in the conversation view

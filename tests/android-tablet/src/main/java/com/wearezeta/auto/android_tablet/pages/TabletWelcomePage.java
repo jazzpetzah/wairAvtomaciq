@@ -5,7 +5,6 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.misc.Timedelta;
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -13,8 +12,8 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import org.openqa.selenium.WebElement;
 
 public class TabletWelcomePage extends AndroidTabletPage {
-    private final static Timedelta SIGN_IN_TIMEOUT = Timedelta.fromSeconds(10);
-    private final static Timedelta SIGN_IN_INTERVAL = Timedelta.fromMilliSeconds(1000);
+    private final static int SIGN_IN_TIMEOUT_IN_SECONDS = 10;
+    private final static long SIGN_IN_INTERVAL_IN_MILLISECONDS = 1000L;
 
     private static final By idRegisterButton = By.id("zb__welcome__create_account");
     private static final By idHaveAccountButton = By.id("zb__welcome__sign_in");
@@ -31,8 +30,8 @@ public class TabletWelcomePage extends AndroidTabletPage {
 
     public void tapSignInButton() throws Exception {
         CommonUtils.waitUntilTrue(
-                SIGN_IN_TIMEOUT,
-                SIGN_IN_INTERVAL,
+                SIGN_IN_TIMEOUT_IN_SECONDS,
+                SIGN_IN_INTERVAL_IN_MILLISECONDS,
                 () -> {
                     Optional<WebElement> el = DriverUtils.getElementIfDisplayed(getDriver(), idHaveAccountButton);
                     if (el.isPresent()) {

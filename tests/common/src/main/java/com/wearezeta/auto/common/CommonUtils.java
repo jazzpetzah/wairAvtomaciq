@@ -831,32 +831,31 @@ public class CommonUtils {
     /**
      * Wait until the block do not throw exception or timeout
      */
-    public static <T> Optional<T> waitUntil(Timedelta timeout, Timedelta interval, Callable<T> function) throws Exception {
-        final Timedelta started = Timedelta.now();
+    public static <T> Optional<T> waitUntil(int timeoutSeconds, long interval, Callable<T> function) throws Exception {
+        final long millisecondsStarted = System.currentTimeMillis();
         do {
             try {
                 return Optional.ofNullable(function.call());
             } catch (Exception e) {
                 log.debug(String.format("Wait until block catch exception : %s", e.getMessage()));
             }
-            Thread.sleep(interval.asMilliSeconds());
-        } while (Timedelta.now().isDiffLessOrEqual(started, timeout));
+            Thread.sleep(interval);
+        } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
         return Optional.empty();
     }
 
     /**
      * Wait until the block get true
      */
-    public static boolean waitUntilTrue(Timedelta timeout, Timedelta interval, Callable<Boolean> function)
+    public static boolean waitUntilTrue(int timeoutSeconds, long interval, Callable<Boolean> function)
             throws Exception {
-        final Timedelta started = Timedelta.now();
+        final long millisecondsStarted = System.currentTimeMillis();
+        boolean result;
         do {
-            if (function.call()) {
-                return true;
-            }
-            Thread.sleep(interval.asMilliSeconds());
-        } while (Timedelta.now().isDiffLessOrEqual(started, timeout));
-        return function.call();
+            result = function.call();
+            Thread.sleep(interval);
+        } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000 && !result);
+        return result;
     }
 
     private static final int BUFFER_SIZE = 4096;
@@ -908,10 +907,5 @@ public class CommonUtils {
                 () -> new IllegalArgumentException(String.format("Cannot find a compressed .app inside %s",
                         ipaFile.getAbsolutePath()))
         );
-    }
-
-    public static int getOptimalThreadsCount() {
-        final int coresCount = Runtime.getRuntime().availableProcessors();
-        return coresCount > 2 ? coresCount - 1 : 2;
     }
 }

@@ -9,7 +9,6 @@ import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.calling2.v1.model.Call;
 import com.wearezeta.auto.common.calling2.v1.model.Flow;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.misc.Timedelta;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.apache.log4j.Logger;
@@ -214,17 +213,16 @@ public class CallingSteps {
     /**
      * Executes consecutive calls without logging out etc.
      *
-     * @param callDuration
+     * @param callDurationMinutes
      * @param times               number of consecutive calls
      * @param callees             participants which will wait for a call
      * @throws java.lang.Throwable
      * @step. ^I call (\\d+) times for (\\d+) minutes with (.*)$
      */
-    @Then("^I call (\\d+) times for (\\d+) (minutes?|seconds?) with (.*)$")
-    public void ICallXTimes(int times, int callDuration, String time, String callees)
+    @Then("^I call (\\d+) times for (\\d+) minutes with (.*)$")
+    public void ICallXTimes(int times, int callDurationMinutes, String callees)
             throws Throwable {
         final int timeBetweenCall = 10;
-        if (time.toLowerCase().startsWith("min")) callDuration = Timedelta.fromMinutes(callDuration).asSeconds();
         final List<String> calleeList = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .splitAliases(callees);
         final ConversationViewPageSteps convSteps = new ConversationViewPageSteps();
@@ -233,14 +231,12 @@ public class CallingSteps {
         final CommonAndroidSteps commonAndroidSteps = new CommonAndroidSteps();
         final Map<Integer, Throwable> failures = new HashMap<>();
         for (int i = 0; i < times; i++) {
-            LOG.info(String.format("\n\nSTARTING CALL %s", i));
+            LOG.info("\n\nSTARTING CALL " + i);
             try {
                 convSteps.ITapTopToolbarButton("Audio Call");
-                LOG.info("Checking outgoing call page");
                 callOutgoingPageSteps.ISeeOutgoingCall(null, null);
 
                 for (String callee : calleeList) {
-                    LOG.info(String.format("%s accepts incoming call", callee));
                     UserXAcceptsNextIncomingCallAutomatically(callee, null);
                     UserXVerifesCallStatusToUserY(callee, "active", 20);
                 }
@@ -249,7 +245,7 @@ public class CallingSteps {
                 callOngoingPageSteps.ISeeOngoingCall(null);
                 LOG.info("Calling overlay is visible");
 
-                commonAndroidSteps.WaitForTime(callDuration);
+                commonAndroidSteps.WaitForTime(callDurationMinutes * 60);
 
                 callOngoingPageSteps.IHangUp();
 
@@ -260,25 +256,25 @@ public class CallingSteps {
 
                 callOngoingPageSteps.ISeeOngoingCall("do not");
                 LOG.info("Calling overlay is NOT visible");
-                LOG.info(String.format("CALL %s SUCCESSFUL", i));
+                LOG.info("CALL " + i + " SUCCESSFUL");
                 commonAndroidSteps.WaitForTime(timeBetweenCall);
 
             } catch (Throwable t) {
-                LOG.info(String.format("CALL %s FAILED", i));
-                LOG.error(String.format("Can not stop waiting call %s %s", i, t));
+                LOG.info("CALL " + i + " FAILED");
+                LOG.error("Can not stop waiting call " + i + " " + t);
                 try {
                     callOngoingPageSteps.IHangUp();
                     convSteps.ISeeVideoCallButtonInUpperToolbar(null, "audio");
-                } catch (Throwable throwable) {
-                    LOG.error(String.format("Can not stop call %s %s", i, throwable));
+                } catch (Throwable ex) {
+                    LOG.error("Can not stop call " + i + " " + ex);
                 }
                 failures.put(i, t);
             }
 
         }
 
-        String resultMessage = String.format("%s failures happened during %s calls", failures.size(), times);
-        LOG.info(resultMessage);
+        LOG.info(failures.size() + " failures happened during " + times
+                + " calls");
         failures.forEach((Integer i, Throwable t) -> {
             LOG.error(i + ": " + t.getMessage());
         });
@@ -286,9 +282,7 @@ public class CallingSteps {
         for (Map.Entry<Integer, Throwable> entrySet : failures.entrySet()) {
             // will just throw the first exception to indicate failed calls in
             // test results
-            throw new AssertionError(
-                    String.format("\n---------------------\n\n%s\n\n---------------------", resultMessage),
-                    entrySet.getValue());
+            throw entrySet.getValue();
         }
     }
 }

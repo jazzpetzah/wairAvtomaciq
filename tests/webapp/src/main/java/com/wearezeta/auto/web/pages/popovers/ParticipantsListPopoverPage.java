@@ -40,15 +40,6 @@ class ParticipantsListPopoverPage extends AbstractPopoverPage {
 		conversationTitleInput.sendKeys(Keys.ENTER);
 	}
 
-	public void clickTitlebar() {
-		conversationTitle.click();
-	}
-
-	public boolean isTitleTextareaNotVisible() throws Exception {
-		final By locator = By.xpath(PopoverLocators.GroupPopover.ParticipantsListPage.xpathConversationTitleInput);
-		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
-	}
-
 	public void clickLeaveGroupChat() {
 		leaveButton.click();
 	}

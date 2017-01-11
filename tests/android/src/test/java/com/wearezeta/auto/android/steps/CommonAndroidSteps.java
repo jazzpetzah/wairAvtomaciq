@@ -1152,7 +1152,8 @@ public class CommonAndroidSteps {
     public void UserAddRemoteDeviceToAccount(String userNameAlias, String deviceNames) throws Exception {
         final List<String> names = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .splitAliases(deviceNames);
-        final ExecutorService pool = Executors.newFixedThreadPool(names.size());
+        final int poolSize = 2;  // Runtime.getRuntime().availableProcessors()
+        final ExecutorService pool = Executors.newFixedThreadPool(poolSize);
         final AtomicInteger createdDevicesCount = new AtomicInteger(0);
         for (String name : names) {
             pool.submit(() -> {
@@ -1166,9 +1167,10 @@ public class CommonAndroidSteps {
             });
         }
         pool.shutdown();
-        if (!pool.awaitTermination(5, TimeUnit.MINUTES) || createdDevicesCount.get() != names.size()) {
+        final int secondsTimeout = (names.size() / poolSize + 1) * 60;
+        if (!pool.awaitTermination(secondsTimeout, TimeUnit.SECONDS) || createdDevicesCount.get() != names.size()) {
             throw new IllegalStateException(String.format(
-                    "Devices '%s' were not created after the timeout", names));
+                    "Devices '%s' were not created within %s seconds timeout", names, secondsTimeout));
         }
     }
 
@@ -1452,7 +1454,7 @@ public class CommonAndroidSteps {
     public void UserXFoundLastMessageChanged(String userNameAlias, String convoType, String dstNameAlias,
                                              String deviceName, String shouldNotChanged, String waitDuration)
             throws Exception {
-        final int durationSeconds = (waitDuration == null) ? CommonSteps.DEFAULT_WAIT_UNTIL_TIMEOUT.asSeconds()
+        final int durationSeconds = (waitDuration == null) ? CommonSteps.DEFAULT_WAIT_UNTIL_TIMEOUT_SECONDS
                 : Integer.parseInt(waitDuration.replaceAll("[\\D]", ""));
 
         if (shouldNotChanged == null) {
@@ -1481,8 +1483,8 @@ public class CommonAndroidSteps {
         final String filePath = AndroidCommonUtils.getBuildPathFromConfig(CommonAndroidSteps.class) +
                 File.separator + fileFullName;
 
-        boolean fileDownloaded = CommonUtils.waitUntilTrue(Timedelta.fromSeconds(timeoutSeconds),
-                CommonSteps.DEFAULT_WAIT_UNTIL_INTERVAL,
+        boolean fileDownloaded = CommonUtils.waitUntilTrue(timeoutSeconds,
+                CommonSteps.DEFAULT_WAIT_UNTIL_INTERVAL_MILLISECONDS,
                 () -> {
                     AndroidCommonUtils.pullFileFromSdcardDownload(fileFullName);
                     FileInfo fileInfo = CommonUtils.retrieveFileInfo(filePath);
@@ -1549,8 +1551,8 @@ public class CommonAndroidSteps {
     public void ITapBackButtonUntilWireAppInForeground(int timeoutSeconds) throws Exception {
         final String packageId = AndroidCommonUtils.getAndroidPackageFromConfig(getClass());
         CommonUtils.waitUntilTrue(
-                Timedelta.fromSeconds(timeoutSeconds),
-                Timedelta.fromMilliSeconds(1000),
+                timeoutSeconds,
+                1000,
                 () -> {
                     if (AndroidCommonUtils.isAppNotInForeground(packageId, FOREGROUND_TIMEOUT_MILLIS)) {
                         AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage().navigateBack();
@@ -1930,8 +1932,8 @@ public class CommonAndroidSteps {
      */
     @When("^I unregister GCM push token in (\\d+) seconds$")
     public void IUnresgisterGCMToekn(int timeoutSeconds) throws Exception {
-        Optional<String> pushToken = CommonUtils.waitUntil(Timedelta.fromSeconds(timeoutSeconds),
-                CommonSteps.DEFAULT_WAIT_UNTIL_INTERVAL,
+        Optional<String> pushToken = CommonUtils.waitUntil(timeoutSeconds,
+                CommonSteps.DEFAULT_WAIT_UNTIL_INTERVAL_MILLISECONDS,
                 () -> {
                     String GCMTokenOutput = AndroidLogListener.getInstance(ListenerType.GCMToken).getStdOut();
                     final Pattern p = Pattern.compile(GCM_TOKEN_PATTERN, Pattern.MULTILINE);
