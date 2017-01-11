@@ -33,3 +33,19 @@ Feature: Delivery Receipts
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName  | SentLabel |
       | user1Name | user2Name | user3Name | MessageToGroup | Sent      |
+
+  @C226453 @staging @fastLogin
+  Scenario Outline: Verify status is changed to Delivered when message has reached at least one of the other person's devices
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User <Contact> adds new device D1
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I type the default message and send it
+    And I see 1 default message in the conversation view
+    Then I see "<DeliveredLabel>" on the message toolbox in conversation view
+
+    Examples:
+      | Name      | Contact   | DeliveredLabel |
+      | user1Name | user2Name | Delivered      |
