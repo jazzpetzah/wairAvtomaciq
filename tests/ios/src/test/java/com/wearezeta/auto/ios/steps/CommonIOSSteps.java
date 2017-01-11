@@ -191,7 +191,7 @@ public class CommonIOSSteps {
                 // https://wearezeta.atlassian.net/browse/ZIOS-5259
                 , "-AnalyticsUserDefaultsDisabledKey", "0"
                 // ,"--debug-log-network"
-                // , "-com.apple.CoreData.ConcurrencyDebug", "1"
+                 , "-com.apple.CoreData.ConcurrencyDebug", "1"
         ));
 
         if (additionalCaps.isPresent()) {
