@@ -490,11 +490,11 @@ public final class WebAppLocators {
 
         //Link preview
 
-        public static final String cssLinkTitle = ".link-preview-title";
+        public static final String cssLinkTitle = "[data-uie-name='link-preview-title']";
 
-        public static final String cssLinkPreviewImage = ".link-preview-image img";
+        public static final String cssLinkPreviewImage = "[data-uie-name='link-preview-image']";
 
-        public static final String cssLinkPreviewLink = ".link-preview-site";
+        public static final String cssLinkPreviewLink = "[data-uie-name='link-preview-url']";
 
         //Location sharing
 
