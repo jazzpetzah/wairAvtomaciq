@@ -34,7 +34,7 @@ Feature: Delivery Receipts
       | Name      | Contact1  | Contact2  | GroupChatName  | SentLabel |
       | user1Name | user2Name | user3Name | MessageToGroup | Sent      |
 
-  @C226453 @staging @fastLogin
+  @C226453 @rc @clumsy @staging @fastLogin
   Scenario Outline: Verify status is changed to Delivered when message has reached at least one of the other person's devices
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
