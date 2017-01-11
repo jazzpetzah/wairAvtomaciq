@@ -44,7 +44,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
             String.format("//*[@id='cv__row_conversation__link_preview__text_message' and @value='%s']", text);
 
     // Image
-    private static final String idStrConversationImages = "ipv__message_image";
+    private static final String idStrConversationImages = "message_image";
     public static final By idConversationImageContainer = By.id(idStrConversationImages);
     private static final String xpathStrLastImage = String.format("(//*[@id='%s'])[last()]", idStrConversationImages);
 
@@ -155,7 +155,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     //region File transfer
     private static final By idFileActionBtn = By.id("action_button");
 
-    private static final By idFileTransferContainer = By.id("fapv__message_file_asset");
+    private static final By idFileTransferContainer = By.id("message_file_asset");
 
     private static final By idFileTransferPlaceholder = By.id("pdv__row_conversation__file_placeholder_dots");
 
@@ -210,32 +210,28 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
 
     private static final String idStrSeparatorName = "tvName";
 
-    private static final Function<String, String> xpathTrashcanByName = name -> String
-            .format("//*[@id='%s' and @value='%s']/following-sibling::*[@id='gtv__message_recalled']",
-                    idStrSeparatorName, name.toLowerCase());
-
-    private static final Function<String, String> xpathPenByName = name -> String
+    private static final Function<String, String> xpathMessageStateGlyphByName = name -> String
             .format("//*[@id='%s' and @value='%s']/following-sibling::*[@id='gtvStateGlyph']",
                     idStrSeparatorName, name.toLowerCase());
 
     private static final Function<String, String> xpathMessageSeparator = name -> String
             .format("//*[@id='%s' and @value='%s']", idStrSeparatorName, name.toLowerCase());
 
-    private static final By idYoutubeContainer = By.id("ytpv__message_youtube");
+    private static final By idYoutubeContainer = By.id("message_youtube");
 
     private static final By idSoundcloudContainer = By.id("mpv__row_conversation__message_media_player");
 
-    private static final By idVideoMessageContainer = By.id("vapv__message_video_asset");
+    private static final By idVideoMessageContainer = By.id("message_video_asset");
 
     private static final By idVideoContainerButton = By.id("action_button");
 
-    private static final By idAudioMessageContainer = By.id("aapv__message_audio_asset");
+    private static final By idAudioMessageContainer = By.id("message_audio_asset");
 
     private static final By idAudioMessagePlaceholder = By.id("pdv__row_conversation__audio_placeholder_dots");
 
     private static final By idAudioContainerButton = By.id("action_button");
 
-    private static final By idShareLocationContainer = By.id("lpv__message_location");
+    private static final By idShareLocationContainer = By.id("message_location");
 
     private static final By idLinkPreviewContainer = By.id("cv__row_conversation__link_preview__container");
 
@@ -1197,23 +1193,24 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     //endregion
 
     //region Contact name icon
+    //TODO: ROBIN - refactoring waitUntilTrash + waitUntilPen, also for tablet
     public boolean waitUntilTrashIconVisible(String name) throws Exception {
-        final By locator = By.xpath(xpathTrashcanByName.apply(name));
+        final By locator = By.xpath(xpathMessageStateGlyphByName.apply(name));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean waitUntilTrashIconInvisible(String name) throws Exception {
-        final By locator = By.xpath(xpathTrashcanByName.apply(name));
+        final By locator = By.xpath(xpathMessageStateGlyphByName.apply(name));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
     public boolean waitUntilPenIconVisible(String name) throws Exception {
-        final By locator = By.xpath(xpathPenByName.apply(name));
+        final By locator = By.xpath(xpathMessageStateGlyphByName.apply(name));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean waitUntilPenIconInvisible(String name) throws Exception {
-        final By locator = By.xpath(xpathPenByName.apply(name));
+        final By locator = By.xpath(xpathMessageStateGlyphByName.apply(name));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 

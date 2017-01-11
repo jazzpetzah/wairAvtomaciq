@@ -287,7 +287,7 @@ Feature: Edit Message
       | user1Name | user2Name | Device1       | ohno       |
 
   @C206277 @regression
-  Scenario Outline: (AN-4847) Verify edit message offline mode
+  Scenario Outline: Verify edit message offline mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given User <Contact1> adds new device <ContactDevice>

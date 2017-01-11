@@ -42,7 +42,7 @@ Feature: Delivery
       | user1Name | user2Name | M1  | Sent           | D1            | Delivered      |
 
   @C232574 @regression
-  Scenario Outline: (AN-4844) Delivery status in group for the last sent message is not shown by default and when I open it - it is 'Sent'
+  Scenario Outline: Delivery status in group for the last sent message is not shown by default and when I open it - it is 'Sent'
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <Group> with <Contact1>,<Contact2>

@@ -1,7 +1,7 @@
 Feature: Recall Message
 
   @C202326 @regression @rc
-  Scenario Outline: (AN-4853)Verify I can delete my message everywhere and I see others delete the message everywhere(1:1)
+  Scenario Outline: Verify I can delete my message everywhere and I see others delete the message everywhere(1:1)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given User <Contact1> adds new device <ContactDevice>
@@ -54,7 +54,7 @@ Feature: Recall Message
       | user1Name | user2Name | Hi   |
 
   @C202327 @regression @rc
-  Scenario Outline: (AN-4853)Verify I can delete my message everywhere and I see others delete the message everywhere(group)
+  Scenario Outline: Verify I can delete my message everywhere and I see others delete the message everywhere(group)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
     Given Myself has group chat <Group> with <Contact1>,<Contact2>
