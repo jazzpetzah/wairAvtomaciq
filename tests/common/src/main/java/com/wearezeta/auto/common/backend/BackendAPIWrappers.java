@@ -709,6 +709,14 @@ public final class BackendAPIWrappers {
         user.setUniqueUsername(username);
     }
 
+    public static Optional<String> getUniqueUsername(ClientUser user) throws Exception {
+        final JSONObject userInfo = BackendREST.getUserInfo(receiveAuthToken(user));
+        if (userInfo.has("handle")) {
+            return Optional.of(userInfo.getString("handle"));
+        }
+        return Optional.empty();
+    }
+
     public static void changeGroupChatName(ClientUser asUser, String conversationIDToRename, String newConversationName)
             throws Exception {
         BackendREST.changeConversationName(receiveAuthToken(asUser), conversationIDToRename, newConversationName);

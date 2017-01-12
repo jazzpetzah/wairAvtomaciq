@@ -17,6 +17,21 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
+  @C905 @regression @rc @fastLogin
+  Scenario Outline: Verify isTyping appears immediately after starting typing
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <DeviceName1>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    When User <Contact> starts typing in conversation <Name>
+    Then I see typing indicator for <Contact> in the conversation
+
+    Examples:
+      | Name      | Contact   | DeviceName1 |
+      | user1Name | user2Name | device1     |
+
   @C3181 @rc @regression @clumsy @IPv6 @fastLogin
   Scenario Outline: Send Message to contact
     Given There are 2 users where <Name> is me

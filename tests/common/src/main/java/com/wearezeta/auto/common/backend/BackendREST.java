@@ -56,7 +56,7 @@ final class BackendREST {
     private static final Timedelta CONNECT_TIMEOUT = Timedelta.fromSeconds(5);
     private static final Timedelta READ_TIMEOUT = Timedelta.fromSeconds(60);
     private static String backendUrl = null;
-    private static Client client;
+    private static final Client client;
 
     static {
         java.security.Security.setProperty("networkaddress.cache.ttl", "10800");

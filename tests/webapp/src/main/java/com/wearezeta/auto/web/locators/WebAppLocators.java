@@ -589,9 +589,6 @@ public final class WebAppLocators {
         // This is needed for IE workaround
         public static final String classNameShowParticipantsButton = "show-participants";
 
-        //public static final String cssCollectionsButton = "[data-uie-name='do-collections']";
-        public static final String cssCollectionsButton = ".icon-collection";
-
         public static final String cssShowParticipantsButton = "[data-uie-name='do-participants']";
 
         public static final String idConversationInput = "conversation-input-text";
@@ -671,27 +668,6 @@ public final class WebAppLocators {
                 "]//div[contains(@class, 'modal-close')]";
 
         public static final String cssFirstTimeExperienceMessage = "[data-uie-name='start-conversation-hint']";
-    }
-
-    public static final class CollectionPage {
-        public static final String cssPictures = "[data-uie-name='collection-section-image'] image-component";
-
-        public static final String cssPictureCollectionSize = "[data-uie-name='collection-section-image'] [data-uie-name='collection-size']";
-
-        public static final String cssVideos = "[data-uie-name='collection-section-video'] video-asset";
-
-        public static final String cssVideoCollectionSize = "[data-uie-name='collection-section-video'] [data-uie-name='collection-size']";
-
-        public static final String cssFiles = "[data-uie-name='collection-section-file'] [data-uie-name='file-name']";
-
-        public static final String cssFileCollectionSize = "[data-uie-name='collection-section-file'] [data-uie-name='collection-size']";
-
-        public static final String cssLinks = "[data-uie-name='collection-section-link'] image-component";
-
-        public static final String cssLinkCollectionSize = "[data-uie-name='collection-section-link'] [data-uie-name='collection-size']";
-
-        public static final String cssNoItemsPlaceholder = "[data-uie-name='collection-no-items']";
-
     }
 
     public static final class ConnectToPage {

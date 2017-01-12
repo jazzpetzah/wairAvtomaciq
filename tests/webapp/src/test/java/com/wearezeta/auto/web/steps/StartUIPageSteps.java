@@ -115,6 +115,24 @@ public class StartUIPageSteps {
         }
     }
 
+    @When("^I( do not)? see user (.*) found in Top People$")
+    public void ISeeUserFoundInTopPeople (String doNot, String name) throws Exception {
+        name = context.getUsersManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        if (doNot == null) {
+            Assert.assertTrue(context.getPagesCollection().getPage(StartUIPage.class).isUserFoundInTopPeople(name));
+        } else {
+            Assert.assertFalse(context.getPagesCollection().getPage(StartUIPage.class).isUserFoundInTopPeople(name));
+        }
+    }
+
+    @When("^I do not see username (.*) of user (.*) in Top People")
+    public void IDontSeeUsernameInTopPeople(String uniqueUsername, String name) throws Exception {
+        uniqueUsername = context.getUsersManager().replaceAliasesOccurences(uniqueUsername, FindBy.UNIQUE_USERNAME_ALIAS);
+        name = context.getUsersManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+
+        Assert.assertTrue(context.getPagesCollection().getPage(StartUIPage.class).isUsernameNotVisible(name, uniqueUsername));
+    }
+
     @When("^I remove user (.*) from suggestions in People Picker$")
     public void IClickRemoveButton(String contact) throws Exception {
         contact = context.getUsersManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
