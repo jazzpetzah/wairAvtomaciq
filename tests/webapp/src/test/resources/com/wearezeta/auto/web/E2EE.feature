@@ -569,8 +569,8 @@ Feature: E2EE
     Given There are 3 users where <Name> is me
     Given user <Contact1> adds a new device Device1 with label Label1
     Given user <Contact1> adds a new device Device2 with label Label2
-    Given user <Contact2> adds a new device Device1 with label Label1
-    Given user <Contact2> adds a new device Device2 with label Label2
+    Given user <Contact2> adds a new device Device3 with label Label3
+    Given user <Contact2> adds a new device Device4 with label Label4
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
@@ -599,21 +599,21 @@ Feature: E2EE
     And I see user <Contact1> in verified section
     When I click on participant <Contact2> on Group Participants popover
     And I switch to Devices tab on Single User Profile popover
-    And I click on device Device1 of user <Contact2> on Single User Profile popover
+    And I click on device Device3 of user <Contact2> on Single User Profile popover
     And I wait for 1 seconds
     And I verify device on Device Detail popover
     And I click back button on the Device Detail popover
-    Then I see device Device1 of user <Contact2> is verified on Single User Profile popover
+    Then I see device Device3 of user <Contact2> is verified on Single User Profile popover
     Then I do not see user verified icon on Single User Profile popover
     And I click back button on Group Participants popover
     And I do not see user <Contact2> in verified section
     And I click on participant <Contact2> on Group Participants popover
     And I switch to Devices tab on Single User Profile popover
-    And I click on device Device2 of user <Contact2> on Single User Profile popover
+    And I click on device Device4 of user <Contact2> on Single User Profile popover
     And I wait for 1 seconds
     And I verify device on Device Detail popover
     And I click back button on the Device Detail popover
-    Then I see device Device2 of user <Contact2> is verified on Single User Profile popover
+    Then I see device Device4 of user <Contact2> is verified on Single User Profile popover
     Then I see user verified icon on Single User Profile popover
     When I click back button on Group Participants popover
     Then I see user <Contact2> in verified section
