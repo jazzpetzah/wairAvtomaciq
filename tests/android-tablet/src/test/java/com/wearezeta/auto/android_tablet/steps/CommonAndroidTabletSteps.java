@@ -258,7 +258,6 @@ public class CommonAndroidTabletSteps {
         }
         AndroidLogListener.forceStopAll();
 
-        AndroidTestContextHolder.getInstance().getTestContext().reset();
         AndroidTabletTestContextHolder.getInstance().getTestContext().reset();
     }
 

@@ -28,8 +28,8 @@ import javax.ws.rs.NotSupportedException;
 
 public class ConversationViewPage extends BaseUserDetailsOverlay {
 
-    public static final By xpathConfirmOKButton = By.xpath("//*[@id='ttv__confirmation__confirm' and @value='OK']");
-    private static final By idClickedImageSendingIndicator = By.id("v__row_conversation__pending");
+    public static final String idStrConversationRoot = "messages_list_view";
+    public static final By idConversationRoot = By.id(idStrConversationRoot);
 
     //region Conversation Row Locators
     // Text
@@ -46,12 +46,27 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     // Image
     private static final String idStrConversationImages = "message_image";
     public static final By idConversationImageContainer = By.id(idStrConversationImages);
-    private static final String xpathStrLastImage = String.format("(//*[@id='%s'])[last()]", idStrConversationImages);
+    private static final By idClickedImageSendingIndicator = By.id("v__row_conversation__pending");
 
-    // System message
+    // Missed call message
     private static final String idStrMissedCallMesage = "tvMessage";
     private static final Function<String, String> xpathStrMissedCallMesageByText = text -> String
             .format("//*[@id='%s' and @value='%s']", idStrMissedCallMesage, text.toUpperCase());
+
+    //region System message
+    private static final String strIdSystemMessage = "ttv__system_message__text";
+    private static final By xpathOtrVerifiedMessage = By
+            .xpath(String.format("//*[@id='%s' and @value='ALL FINGERPRINTS ARE VERIFIED']", strIdSystemMessage));
+
+    private static final By xpathSystemMessageNewDevice = By
+            .xpath(String.format("//*[@id='%s' and contains(@value,'STARTED USING A NEW DEVICE')]", strIdSystemMessage));
+
+    private static final Function<String, String> xpathStrSystemMessageNewDeviceByValue = value -> String.format(
+            "//*[@id='$s' and @value='%s STARTED USING A NEW DEVICE']", strIdSystemMessage, value.toUpperCase());
+
+    private static final Function<String, String> xpathStrSystemMessageByExp = exp -> String
+            .format("//*[@id='%s' and %s]", strIdSystemMessage, exp);
+    //endregion
 
     // Ping
     private static final String strIdPingMessage = "ttv__row_conversation__ping_message";
@@ -184,26 +199,9 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     private static Function<String, String> xpathStrNewConversationNameByValue = value -> String
             .format("//*[@id='%s' and @value='%s']", idStrNewConversationNameMessage, value);
 
-    private static final By xpathStrOtrVerifiedMessage = By
-            .xpath("//*[@id='ttv__system_message__text' and @value='ALL FINGERPRINTS ARE VERIFIED']");
-
-    private static final By xpathStrOtrNonVerifiedMessage = By
-            .xpath("//*[@id='ttv__system_message__text' and contains(@value,'STARTED USING A NEW DEVICE')]");
-
-    private static final Function<String, String> xpathStrOtrNonVerifiedMessageByValue = value -> String.format(
-            "//*[@id='ttv__system_message__text' and @value='%s STARTED USING A NEW DEVICE']", value
-                    .toUpperCase());
-
-    public static final String idStrConversationRoot = "clv__conversation_list_view";
-    public static final By idConversationRoot = By.id(idStrConversationRoot);
-    private static final By xpathConversationContent = By.xpath("//*[@id='" + idStrConversationRoot + "']/*/*/*");
-
     private static final String strIdUserName = "tv__conversation_toolbar__title";
     private static final Function<String, String> xpathMessageNotificationByValue = value -> String
             .format("//*[starts-with(@id,'ttv_message_notification_chathead__label') and @value='%s']", value);
-
-    private static final Function<String, String> xpathConversationPeopleChangedByExp = exp -> String
-            .format("//*[@id='ttv__system_message__text' and %s]", exp);
 
     private static final Function<String, String> xpathLinkPreviewUrlByValue = value -> String
             .format("//*[@id='ttv__row_conversation__link_preview__url' and @value='%s']", value);
@@ -299,12 +297,6 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     }
 
     // region Screeshot buffer
-    public BufferedImage getConvoViewStateScreenshot() throws Exception {
-        return this.getElementScreenshot(getElement(idConversationRoot)).orElseThrow(
-                () -> new IllegalStateException("Cannot get a screenshot of conversation view")
-        );
-    }
-
     public BufferedImage getShieldStateScreenshot() throws Exception {
         return this.getElementScreenshot(getElement(idVerifiedConversationShield)).orElseThrow(
                 () -> new IllegalStateException("Cannot get a screenshot of verification shield")
@@ -673,16 +665,16 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     }
 
     public boolean waitForOtrVerifiedMessage() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathStrOtrVerifiedMessage);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathOtrVerifiedMessage);
     }
 
     public boolean waitForOtrNonVerifiedMessage() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathStrOtrNonVerifiedMessage);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathSystemMessageNewDevice);
     }
 
     public boolean waitForOtrNonVerifiedMessageCausedByUser(String userName) throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.xpath(xpathStrOtrNonVerifiedMessageByValue.apply(userName)));
+                By.xpath(xpathStrSystemMessageNewDeviceByValue.apply(userName)));
     }
 
     public boolean waitUntilLinkPreviewMessageVisible(String text) throws Exception {
@@ -695,27 +687,14 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
-    public boolean waitForPeopleMessage(String text) throws Exception {
-        final By locator = By.xpath(xpathConversationPeopleChangedByExp.apply(String.format("contains(@value, '%s')",
-                text.toUpperCase())));
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
+    public boolean waitUntilSystemMessageVisible(String text) throws Exception {
+        final By locator = By.xpath(xpathStrSystemMessageByExp.apply(String.format("contains(@value, '%s')", text)));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean isImageVisible() throws Exception {
         return DriverUtils.waitUntilLocatorAppears(this.getDriver(), idConversationImageContainer) &&
                 DriverUtils.waitUntilLocatorDissapears(getDriver(), idClickedImageSendingIndicator, 20);
-    }
-
-    public void confirm() throws Exception {
-        final By locator = xpathConfirmOKButton;
-        final WebElement okBtn = getElement(locator, "OK button is not visible");
-        if (!DriverUtils.waitUntilElementClickable(getDriver(), okBtn)) {
-            throw new IllegalStateException("OK button is not clickable");
-        }
-        okBtn.click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), locator)) {
-            throw new IllegalStateException("OK button is still present on the screen after being clicked");
-        }
     }
 
     /**
@@ -731,7 +710,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
         final String xpathExpr = String.join(" and ", names.stream().map(
                 name -> String.format("contains(@value, '%s')", name.toUpperCase())
         ).collect(Collectors.toList()));
-        final By locator = By.xpath(xpathConversationPeopleChangedByExp.apply(xpathExpr));
+        final By locator = By.xpath(xpathStrSystemMessageByExp.apply(xpathExpr));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
@@ -867,10 +846,6 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
             swipeNum++;
         }
         return false;
-    }
-
-    public int getCurrentNumberOfItemsInConversation() throws Exception {
-        return selectVisibleElements(xpathConversationContent).size();
     }
 
     private static final long IMAGES_VISIBILITY_TIMEOUT = 10000; // seconds;

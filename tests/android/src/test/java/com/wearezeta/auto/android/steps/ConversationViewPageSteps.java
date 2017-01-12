@@ -25,8 +25,6 @@ import org.junit.Assert;
 public class ConversationViewPageSteps {
     private final ElementState mediaButtonState = new ElementState(
             () -> getConversationViewPage().getMediaButtonState());
-    private final ElementState conversationViewState = new ElementState(
-            () -> getConversationViewPage().getConvoViewStateScreenshot());
     private final ElementState verifiedConversationShieldState = new ElementState(
             () -> getConversationViewPage().getShieldStateScreenshot());
     private final ElementState topToolbarState = new ElementState(
@@ -595,7 +593,7 @@ public class ConversationViewPageSteps {
                 .findUserByNameOrNameAlias(contact).getName();
         final String expectedMsg = message + " " + contact;
         Assert.assertTrue(String.format("The message '%s' is not visible in the conversation view", expectedMsg),
-                getConversationViewPage().waitForPeopleMessage(expectedMsg));
+                getConversationViewPage().waitUntilSystemMessageVisible(expectedMsg.toUpperCase()));
     }
 
     /**
@@ -859,47 +857,6 @@ public class ConversationViewPageSteps {
                 Assert.assertTrue(String.format("The picture in the image preview view seems to be static (%.2f >= %.2f)",
                         avgThreshold, MAX_SIMILARITY_THRESHOLD), avgThreshold < MAX_SIMILARITY_THRESHOLD);
                 break;
-        }
-    }
-
-    /**
-     * Verifies that after deleting there is no content in the conversation view
-     *
-     * @throws Exception
-     * @step. ^I see there is no content in the conversation$
-     */
-    @Then("^I see there is no content in the conversation$")
-    public void ISeeThereIsNoContentInTheConversation() throws Exception {
-        int actualValue = getConversationViewPage().getCurrentNumberOfItemsInConversation();
-        Assert.assertEquals("It looks like the conversation has some content", actualValue, 0);
-    }
-
-    /**
-     * Store the screenshot of current convo view into internal variable
-     *
-     * @throws Exception
-     * @step. ^I remember the conversation view$
-     */
-    @And("^I remember the conversation view$")
-    public void IRememberConvoViewState() throws Exception {
-        conversationViewState.remember();
-    }
-
-    /**
-     * Verify that conversation view is different from what was remembered before
-     *
-     * @param shouldNotBeChanged equals to null is the view should be changed
-     * @throws Exception
-     * @step. ^I see the conversation view is (not )?changed$
-     */
-    @Then("^I see the conversation view is (not )?changed$")
-    public void ISeeTheConvoViewISChanged(String shouldNotBeChanged) throws Exception {
-        if (shouldNotBeChanged == null) {
-            Assert.assertTrue("State of conversation view has not been changed",
-                    conversationViewState.isChanged(CONVO_VIEW_STATE_CHANGE_TIMEOUT, CONVO_VIEW_MIN_SIMILARITY_SCORE));
-        } else {
-            Assert.assertTrue("State of conversation view has been changed",
-                    conversationViewState.isNotChanged(CONVO_VIEW_STATE_CHANGE_TIMEOUT, CONVO_VIEW_MIN_SIMILARITY_SCORE));
         }
     }
 

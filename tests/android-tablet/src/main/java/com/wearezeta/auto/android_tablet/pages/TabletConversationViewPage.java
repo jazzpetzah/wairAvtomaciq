@@ -13,25 +13,8 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class TabletConversationViewPage extends AndroidTabletPage {
 
-    public static final Function<String, String> xpathStrSystemMessageByContent = content -> String
-            .format("//*[starts-with(@id, 'ttv__row_conversation') and contains(@value, '%s')]", content.toUpperCase());
-
-    private static final Function<String, String> xpathStrOutgoingInvitationMessageByContent = content -> String
-            .format("//*[@id='ttv__connect_request__first_message' and @value='%s']", content);
-
-    private static final Function<String, String> xpathStrSystemConnectionMessageByContent = content -> String
-            .format("//*[@id='ttv__row_conversation__connect_request__chathead_footer__label' and contains(@value, '%s')]",
-                    content);
-
     private static final Function<String, String> xpathStrSystemConvoNameMessageByContent = content -> String
-            .format("//*[@id='ttv__row_conversation__new_conversation_name' and @value='%s']", content);
-
-    private static final By idMissedCallImage = By.id("ttv__row_conversation__missed_call");
-
-    private static final By idSketchButtonOnPicturePreviewOverlay = By.id("gtv__single_image_message__sketch");
-
-    public static final Function<String, String> xpathConversationMessageByValue = value -> String
-            .format("//*[@id='tmltv__row_conversation__message' and @value='%s']", value);
+            .format("//*[@id='ttv__new_conversation_name' and @value='%s']", content);
 
     public TabletConversationViewPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -45,9 +28,8 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), ConversationViewPage.idConversationRoot);
     }
 
-    public boolean waitForSystemMessageContains(String expectedMessage) throws Exception {
-        final By locator = By.xpath(xpathStrSystemMessageByContent.apply(expectedMessage));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    public boolean waitUntilSystemMessageVisible(String systemMessage) throws Exception {
+        return getConversationViewPage().waitUntilSystemMessageVisible(systemMessage);
     }
 
     public void tapTextInput() throws Exception {
@@ -71,9 +53,12 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         }
     }
 
-    public boolean waitUntilMessageIsVisible(String expectedMessage) throws Exception {
-        final By locator = By.xpath(xpathConversationMessageByValue.apply(expectedMessage));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    public boolean waitUntilMessageWithTextVisible(String text) throws Exception {
+        return getConversationViewPage().waitUntilMessageWithTextVisible(text);
+    }
+
+    public boolean waitUntilMessageWithTextInvisible(String text) throws Exception {
+        return getConversationViewPage().waitUntilMessageWithTextInvisible(text);
     }
 
     public void tapCursorToolButton(String name) throws Exception {
@@ -88,18 +73,8 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), ConversationViewPage.idConversationImageContainer);
     }
 
-    public boolean waitUntilGCNIsVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idMissedCallImage);
-    }
-
-    public boolean waitUntilMessageIsNotVisible(String expectedMessage) throws Exception {
-        final By locator = By.xpath(xpathConversationMessageByValue.apply(expectedMessage));
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
-    }
-
-    public boolean waitForOutgoingInvitationMessage(String expectedMessage) throws Exception {
-        final By locator = By.xpath(xpathStrOutgoingInvitationMessageByContent.apply(expectedMessage));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    public boolean waitUntilMissedCallMessageIsVisible(String expectedMessage) throws Exception {
+        return getConversationViewPage().waitUntilMissedCallMessageIsVisible(expectedMessage);
     }
 
     public boolean waitUntilPingMessageIsInvisible(String expectedMessage) throws Exception {
@@ -130,13 +105,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         getConversationViewPage().tapContainer(tapType, containerName);
     }
 
-    public boolean waitForSystemConnectionMessageContains(String expectedMessage) throws Exception {
-        final By locator = By.xpath(xpathStrSystemConnectionMessageByContent
-                .apply(expectedMessage));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-    }
-
-    public boolean waitForConversationNameSystemMessage(String expectedMessage) throws Exception {
+    public boolean waitUntilNewConversationNameSystemMessage(String expectedMessage) throws Exception {
         final By locator = By.xpath(xpathStrSystemConvoNameMessageByContent.apply(expectedMessage));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
@@ -253,10 +222,6 @@ public class TabletConversationViewPage extends AndroidTabletPage {
                                               boolean isSuccess, int lookUpTimeoutSeconds) throws Exception {
         return getConversationViewPage().isFilePlaceHolderInvisible(fileFullName, size, extension, isUpload, isSuccess,
                 lookUpTimeoutSeconds);
-    }
-
-    public void tapSketchOnPicturePreviewOverlay() throws Exception {
-        getElement(idSketchButtonOnPicturePreviewOverlay).click();
     }
 
     public boolean waitUntilMessageMetaItemVisible(String itemType) throws Exception {
