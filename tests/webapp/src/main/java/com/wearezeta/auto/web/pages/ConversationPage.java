@@ -1475,11 +1475,12 @@ public class ConversationPage extends WebPage {
     }
 
     public boolean isLastMessageReplaced() {
-        return lastGenericMessage.findElement(By.cssSelector(".bg-color-ephemeral")).isDisplayed();
+        return lastGenericMessage.getAttribute("data-uie-expired-status").contains("true");
     }
 
-    public boolean isOrangeBlockInLastMessageNotVisible() throws Exception {
-        return !lastGenericMessage.getAttribute("class").contains("bg-color-ephemeral");
+    public boolean isLastMessageNotReplaced() throws Exception {
+        final String attribute = lastGenericMessage.getAttribute("data-uie-expired-status");
+        return attribute == null ? true : !attribute.contains("true");
     }
 
     /**
