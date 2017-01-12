@@ -98,7 +98,7 @@ Feature: Collections
     And I see placeholder of conversation input is Timed message
 #picture
     When I send picture <PictureName> to the current conversation
-   #Then I see sent picture <PictureName> in the conversation view
+    Then I see sent picture <PictureName> in the conversation view
     And I see only 1 picture in the conversation
     And I see timer next to the last message
     When I wait for <Time> seconds
@@ -112,7 +112,7 @@ Feature: Collections
     And I see timer next to the last message
     When I wait for <Time> seconds
     And I do not see video message <VideoFile> in the conversation view
-   #Then I see block replaces the last message in the conversation view
+    Then I see block replaces the last message in the conversation view
     And I see 3 messages in conversation
 #audio
     When I send audio file with length <AudioTime> and name <AudioFile> to the current conversation
@@ -120,14 +120,14 @@ Feature: Collections
     Then I see audio message <AudioFile> in the conversation view
     And I see timer next to the last message
     When I wait for <Time> seconds
-   #Then I see block replaces the last message in the conversation view
+    Then I see block replaces the last message in the conversation view
     And I see 4 messages in conversation
  #file
     When I send <SizeFile> sized file with name <File> to the current conversation
     And I wait until file <File> is uploaded completely
     And I see timer next to the last message
     When I wait for <Time> seconds
-   #Then I see block replaces the last message in the conversation view
+    Then I see block replaces the last message in the conversation view
     And I see 5 messages in conversation
     When I click collection button in conversation
     Then I see info about no collection items
