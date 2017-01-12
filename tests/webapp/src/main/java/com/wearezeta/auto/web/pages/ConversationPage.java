@@ -64,9 +64,6 @@ public class ConversationPage extends WebPage {
     @FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idConversationInput)
     private WebElement conversationInput;
 
-    @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssCollectionsButton)
-    private WebElement collectionButton;
-
     @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssShowParticipantsButton)
     private WebElement showParticipants;
 
@@ -415,11 +412,6 @@ public class ConversationPage extends WebPage {
         } else {
             return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
         }
-    }
-
-    public void clickCollectionButton() throws Exception {
-        DriverUtils.waitUntilElementClickable(this.getDriver(), collectionButton);
-        collectionButton.click();
     }
 
     public void clickPeopleButton() throws Exception {

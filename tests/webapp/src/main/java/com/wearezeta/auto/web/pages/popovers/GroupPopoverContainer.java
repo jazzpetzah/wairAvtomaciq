@@ -69,6 +69,14 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
         this.participantsListPopoverPage.setConversationTitle(newTitle);
     }
 
+    public void clickTitlebar() {
+        this.participantsListPopoverPage.clickTitlebar();
+    }
+
+    public boolean isTitleTextareaNotVisible() throws  Exception{
+        return this.participantsListPopoverPage.isTitleTextareaNotVisible();
+    }
+
     public void clickLeaveGroupChat() {
         this.participantsListPopoverPage.clickLeaveGroupChat();
     }
