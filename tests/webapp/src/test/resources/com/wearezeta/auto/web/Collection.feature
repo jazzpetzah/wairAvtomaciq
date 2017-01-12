@@ -82,3 +82,56 @@ Feature: Collections
     Examples:
       | Email      | Password      | Name      | Contact   | Gif         | Text |
       | user1Email | user1Password | user1Name | user2Name | example.gif | test |
+
+  @C378054 @collection @staging
+  Scenario Outline: Verify ephemeral messages aren't shown in collection
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Email> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <Contact>
+    And I click on ephemeral button
+    And I set the timer for ephemeral to <TimeLong>
+#timer
+    Then I see <Time> with unit <TimeShortUnit> on ephemeral button
+    And I see placeholder of conversation input is Timed message
+#picture
+    When I send picture <PictureName> to the current conversation
+   #Then I see sent picture <PictureName> in the conversation view
+    And I see only 1 picture in the conversation
+    And I see timer next to the last message
+    When I wait for <Time> seconds
+    Then I see block replaces the last message in the conversation view
+    And I see 2 messages in conversation
+#video
+    When I see file transfer button in conversation input
+    When I send <SizeVideo> sized video with name <VideoFile> to the current conversation
+    And I wait until video <VideoFile> is uploaded completely
+    And I see video message <VideoFile> in the conversation view
+    And I see timer next to the last message
+    When I wait for <Time> seconds
+    And I do not see video message <VideoFile> in the conversation view
+   #Then I see block replaces the last message in the conversation view
+    And I see 3 messages in conversation
+#audio
+    When I send audio file with length <AudioTime> and name <AudioFile> to the current conversation
+    And I wait until audio <AudioFile> is uploaded completely
+    Then I see audio message <AudioFile> in the conversation view
+    And I see timer next to the last message
+    When I wait for <Time> seconds
+   #Then I see block replaces the last message in the conversation view
+    And I see 4 messages in conversation
+ #file
+    When I send <SizeFile> sized file with name <File> to the current conversation
+    And I wait until file <File> is uploaded completely
+    And I see timer next to the last message
+    When I wait for <Time> seconds
+   #Then I see block replaces the last message in the conversation view
+    And I see 5 messages in conversation
+    When I click collection button in conversation
+    Then I see info about no collection items
+
+    Examples:
+      | Email      | Password      | Name      | Contact   | Time | TimeLong   | TimeShortUnit | PictureName               | VideoFile   | SizeVideo | AudioFile   | AudioTime | File         | SizeFile |
+      | user1Email | user1Password | user1Name | user2Name | 5    | 5 seconds  | s             | userpicture_landscape.jpg | C261733.mp4 | 1 MB      | example.wav | 00:20     | C261733.zip  | 512KB    |
