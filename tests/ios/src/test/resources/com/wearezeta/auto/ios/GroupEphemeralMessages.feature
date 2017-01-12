@@ -146,8 +146,7 @@ Feature: Group Ephemeral Messages
     And I wait for <EphemeralTimeout> seconds
     Then I do not see audio message container in the conversation view
     # Link Preview
-    When User <Contact1> switches user <Contact1> to ephemeral mode with 15 seconds timeout
-    And User <Contact1> sends encrypted message "<Link>" to group conversation <GroupChatName>
+    When User <Contact1> sends encrypted message "<Link>" to group conversation <GroupChatName>
     And I wait for <SyncTimeout> seconds
     And I see link preview container in the conversation view
     And I wait for <EphemeralTimeout> seconds
