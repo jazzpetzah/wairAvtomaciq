@@ -1,6 +1,6 @@
 Feature: Delivery Receipts
 
-  @C226452 @staging @fastLogin
+  @C226452 @rc @regression @fastLogin
   Scenario Outline: Verify status is changed to Sent with a timestamp when message reached the server
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -15,7 +15,7 @@ Feature: Delivery Receipts
       | Name      | Contact   | SentLabel |
       | user1Name | user2Name | Sent      |
 
-  @C226460 @staging @fastLogin
+  @C226460 @rc @regression  @fastLogin
   Scenario Outline: Verify Delivered status isn't shown in the group conversation until tap on message
     Given There are 3 users where <Name> is me
     Given User <Contact1> adds new device D1
@@ -34,7 +34,7 @@ Feature: Delivery Receipts
       | Name      | Contact1  | Contact2  | GroupChatName  | SentLabel |
       | user1Name | user2Name | user3Name | MessageToGroup | Sent      |
 
-  @C226453 @rc @clumsy @staging @fastLogin
+  @C226453 @rc @clumsy @regression @fastLogin
   Scenario Outline: Verify status is changed to Delivered when message has reached at least one of the other person's devices
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
