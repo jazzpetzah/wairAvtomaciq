@@ -58,6 +58,7 @@ Feature: Collections
     Examples:
       | Email      | Password      | Name      | Contact1  | Contact2  | Picture                   |
       | user1Email | user1Password | user1Name | user2Name | user3Name | userpicture_landscape.jpg |
+
   @C378053 @collection @staging
   Scenario Outline: Verify GIF pictures are not presented in library
     Given There are 2 users where <Name> is me
