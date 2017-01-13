@@ -76,4 +76,8 @@ public class CollectionPage extends WebPage {
     public String getLabelOfLinkCollectionSize() {
         return linkCollectionSize.getText();
     }
+
+    public void clickFirstPictureInCollection(int index) {
+        pictures.get(index - 1).click();
+    }
 }
