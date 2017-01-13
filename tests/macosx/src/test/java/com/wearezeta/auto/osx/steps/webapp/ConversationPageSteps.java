@@ -48,7 +48,7 @@ public class ConversationPageSteps {
             expectedImage = ImageUtil.resizeImage(expectedImage, scaleMultiplicator);
             actualImage = ImageUtil.resizeImage(actualImage, scaleMultiplicator);
 
-            assertThat("Not enough good matches", ImageUtil.getMatches(expectedImage, actualImage), greaterThan(80));
+            assertThat("Not enough good matches", ImageUtil.getMatches(expectedImage, actualImage), greaterThan(70));
         } else {
             assertThat("I see a picture in the conversation", webContext.getPagesCollection().getPage(ConversationPage.class)
                     .isImageFromLinkPreviewNotVisible());
