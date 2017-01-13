@@ -150,7 +150,7 @@ Feature: Collections
     And I see only 1 picture in the conversation
     When I click collection button in conversation
     And I see 1 picture in collection
-    And I click on first picture in collection
+    And I click on picture 1 in collection
     Then I see picture <PictureName> in fullscreen
 
     Examples:

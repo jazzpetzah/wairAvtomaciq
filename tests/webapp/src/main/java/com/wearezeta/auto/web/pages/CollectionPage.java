@@ -77,7 +77,7 @@ public class CollectionPage extends WebPage {
         return linkCollectionSize.getText();
     }
 
-    public void clickFirstPictureInCollection() {
-        pictures.get(0).click();
+    public void clickFirstPictureInCollection(int index) {
+        pictures.get(index - 1).click();
     }
 }

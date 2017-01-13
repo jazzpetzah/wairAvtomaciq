@@ -66,8 +66,8 @@ public class CollectionPageSteps {
         }
     }
 
-    @When("I click on first picture in collection$")
-    public void IClickOnFirstPictureInCollection() throws Exception {
-        context.getPagesCollection().getPage(CollectionPage.class).clickFirstPictureInCollection();
+    @When("I click on picture (\\d+) in collection$")
+    public void IClickOnFirstPictureInCollection(int index) throws Exception {
+        context.getPagesCollection().getPage(CollectionPage.class).clickFirstPictureInCollection(index);
     }
 }
