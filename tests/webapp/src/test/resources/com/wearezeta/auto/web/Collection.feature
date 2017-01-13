@@ -136,3 +136,22 @@ Feature: Collections
     Examples:
       | Email      | Password      | Name      | Contact   | Time | TimeLong   | TimeShortUnit | PictureName               | VideoFile   | SizeVideo | AudioFile   | AudioTime | File         | SizeFile |
       | user1Email | user1Password | user1Name | user2Name | 5    | 5 seconds  | s             | userpicture_landscape.jpg | C261733.mp4 | 1 MB      | example.wav | 00:20     | C261733.zip  | 512KB    |
+
+  @C378055 @collection @staging @torun
+  Scenario Outline: Verify opening overview of all pictures from sender and receiver in group
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given User <Contact1> sends image <Picture2> to group conversation <ChatName>
+    Given I switch to Sign In page
+    Given I Sign in using login <Email> and password <Password>
+    And I am signed in properly
+    When I open conversation with <ChatName>
+    And I send picture <Picture> to the current conversation
+    #And I see sent picture <Picture> in the conversation view
+    And I click collection button in conversation
+    Then I see 2 pictures in collection
+
+    Examples:
+      | Email      | Password      | Name      | Contact1  | Contact2  | ChatName   | Picture                   | Picture2                 |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | group conv | userpicture_landscape.jpg | userpicture_portrait.jpg |
