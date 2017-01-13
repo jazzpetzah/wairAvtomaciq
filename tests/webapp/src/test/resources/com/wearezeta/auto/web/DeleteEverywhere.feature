@@ -66,7 +66,7 @@ Feature: Delete Everywhere
       | Login      | Password      | Name      | Contact   | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg |
 
-  @C206244 @delete-everywhere @regression
+  @C206244 @linkpreview @delete-everywhere @regression
   Scenario Outline: Verify delete everywhere works for link preview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

@@ -17,7 +17,7 @@ Feature: Collections
       | Email      | Password      | Name      | Contact   | Event                          |
       | user1Email | user1Password | user1Name | user2Name | collections.opened_collections |
 
-  @C378050 @collection @staging
+  @C378050 @linkpreview @collection @staging
   Scenario Outline: Verify main overview shows media from all categories
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
