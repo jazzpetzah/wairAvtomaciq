@@ -1,6 +1,6 @@
 Feature: Link Preview
 
-  @C169241 @regression
+  @C169241 @linkpreview @regression
   Scenario Outline: Verify you can see preview for link sent from mobile
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
@@ -25,7 +25,7 @@ Feature: Link Preview
       | user1Email | user1Password | user1Name | user2Name | user3Name | https://wire.com                                                                                                   | wire.com                                                                                                | Wire · Modern communication, full privacy. For iOS, Android, macOS, Windows, Linux and web. | linkpreview0.png |
       | user1Email | user1Password | user1Name | user2Name | user3Name | http://www.heise.de/newsticker/meldung/Wire-Neuer-WebRTC-Messenger-soll-WhatsApp-Co-Konkurrenz-machen-2477770.html | heise.de/newsticker/meldung/Wire-Neuer-WebRTC-Messenger-soll-WhatsApp-Co-Konkurrenz-machen-2477770.html | Wire: Neuer WebRTC-Messenger soll WhatsApp &amp; Co. Konkurrenz machen                      | linkpreview1.png |
 
-  @C169235 @regression
+  @C169235 @linkpreview @regression
   Scenario Outline: Verify you can delete link preview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -50,7 +50,7 @@ Feature: Link Preview
       | Login      | Password      | Name      | Contact   | Link             | LinkInPreview | LinkTitle                                                                                   | LinkPreviewImage |
       | user1Email | user1Password | user1Name | user2Name | https://wire.com | wire.com      | Wire · Modern communication, full privacy. For iOS, Android, macOS, Windows, Linux and web. | linkpreview0.png |
 
-  @C234615 @edit @regression @WEBAPP-3179
+  @C234615 @linkpreview @edit @regression @WEBAPP-3179
   Scenario Outline: Verify sender can edit link preview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -75,7 +75,7 @@ Feature: Link Preview
       | Login      | Password      | Name      | Contact   | Message       | EditedMessage | Link             | LinkInPreview |
       | user1Email | user1Password | user1Name | user2Name | other message | edited        | https://wire.com | wire.com      |
 
-  @C169238 @regression
+  @C169238 @linkpreview @regression
   Scenario Outline: I see link preview for link mixed with text
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

@@ -3,6 +3,7 @@ package com.wearezeta.auto.web.steps;
 import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.CollectionPage;
 import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -25,8 +26,8 @@ public class CollectionPageSteps {
     public void ISeeXPictures(int amount) throws Exception {
         assertThat("Number of shown pictures", context.getPagesCollection().getPage(CollectionPage.class).getNumberOfPictures(),
                 equalTo(amount));
-        // Label is not shown for less than 11 pictures
-        if (amount > 10) {
+        // Label is not shown for less than 13 pictures
+        if (amount > 12) {
             assertThat("Label to show all", context.getPagesCollection().getPage(CollectionPage.class).getLabelOfPictureCollectionSize(),
                     equalTo("Show all " + String.valueOf(amount)));
         }
@@ -63,5 +64,10 @@ public class CollectionPageSteps {
             assertThat("Label to show all", context.getPagesCollection().getPage(CollectionPage.class).getLabelOfLinkCollectionSize(),
                     equalTo("Show all " + String.valueOf(amount)));
         }
+    }
+
+    @When("I click on picture (\\d+) in collection$")
+    public void IClickOnFirstPictureInCollection(int index) throws Exception {
+        context.getPagesCollection().getPage(CollectionPage.class).clickFirstPictureInCollection(index);
     }
 }
