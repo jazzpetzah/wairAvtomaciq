@@ -76,7 +76,7 @@ public class VideoCallPageSteps {
         // do feature Matching + homography to find objects
         assertThat("Not enough good matches between "
                 + "<a href='" + reportPath + localScreenshotName + "'>screenshot</a> and <a href='" + reportPath + resizedLocalScreenShareVideoName + "'>self video</a>",
-                ImageUtil.getMatches(localScreenshot.get(), resizedLocalVideo), greaterThan(40));
+                ImageUtil.getMatches(localScreenshot.get(), resizedLocalVideo), greaterThan(20));
     }
 
     @Then("^I verify (.*) sees my screen$")
@@ -105,7 +105,7 @@ public class VideoCallPageSteps {
             // do feature Matching + homography to find objects
             assertThat("Not enough good matches between "
                     + "<a href='" + reportPath + localScreenshotName + "'>screenshot</a> and <a href='" + reportPath + resizedRemoteScreenshotName + "'>remote</a>",
-                    ImageUtil.getMatches(localScreenshot.get(), resizedRemoteScreenshot), greaterThan(35));
+                    ImageUtil.getMatches(localScreenshot.get(), resizedRemoteScreenshot), greaterThan(20));
         }
     }
 }
