@@ -166,7 +166,7 @@ Feature: Conversation View
       | user1Name | user2Name |
 
   @C419 @regression
-  Scenario Outline: (AN-4782) I want to exit fullscreen view in landscape (rotations)
+  Scenario Outline: I want to exit fullscreen view in landscape (rotations)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
@@ -191,7 +191,7 @@ Feature: Conversation View
       | user1Name | user2Name |
 
   @C674 @regression @rc
-  Scenario Outline: (AN-4782) Send GIF format pic
+  Scenario Outline: Send GIF format pic
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number

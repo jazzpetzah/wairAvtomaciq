@@ -62,7 +62,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
             .xpath(String.format("//*[@id='%s' and contains(@value,'STARTED USING A NEW DEVICE')]", strIdSystemMessage));
 
     private static final Function<String, String> xpathStrSystemMessageNewDeviceByValue = value -> String.format(
-            "//*[@id='$s' and @value='%s STARTED USING A NEW DEVICE']", strIdSystemMessage, value.toUpperCase());
+            "//*[@id='%s' and @value='%s STARTED USING A NEW DEVICE']", strIdSystemMessage, value.toUpperCase());
 
     private static final Function<String, String> xpathStrSystemMessageByExp = exp -> String
             .format("//*[@id='%s' and %s]", strIdSystemMessage, exp);
@@ -239,7 +239,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
 
     private static final By idImageContainerSketchButton = By.id("button_sketch");
 
-    private static final By idImageContainerFullScreenButton = By.id("button_fullscreenValue");
+    private static final By idImageContainerFullScreenButton = By.id("button_fullscreen");
 
     private static final By idImageContainerSketchEmojiButton = By.id("button_emoji");
 

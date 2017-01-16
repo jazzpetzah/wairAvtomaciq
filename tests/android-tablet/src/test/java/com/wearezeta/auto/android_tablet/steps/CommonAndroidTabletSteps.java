@@ -2,12 +2,15 @@ package com.wearezeta.auto.android_tablet.steps;
 
 import com.google.common.base.Throwables;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
+import com.wearezeta.auto.android.common.AndroidTestContext;
+import com.wearezeta.auto.android.common.AndroidTestContextHolder;
 import com.wearezeta.auto.android.common.logging.AndroidLogListener;
 import com.wearezeta.auto.android.common.logging.AndroidLogListener.ListenerType;
 import com.wearezeta.auto.android.common.logging.LoggingProfile;
 import com.wearezeta.auto.android.common.logging.RegressionFailedLoggingProfile;
 import com.wearezeta.auto.android.common.logging.RegressionPassedLoggingProfile;
 import com.wearezeta.auto.android.pages.AndroidPage;
+import com.wearezeta.auto.android.pages.AndroidPagesCollection;
 import com.wearezeta.auto.android_tablet.common.AndroidTabletPagesCollection;
 import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContext;
 import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContextHolder;
@@ -191,6 +194,14 @@ public class CommonAndroidTabletSteps {
                 new AndroidTabletPagesCollection()
         );
         AndroidTabletTestContextHolder.getInstance().setTestContext(androidTabletTestContext);
+        final AndroidTestContext androidTestContext = new AndroidTestContext(
+                androidTabletTestContext.getUsersManager(),
+                androidTabletTestContext.getDevicesManager(),
+                androidTabletTestContext.getCallingManager(),
+                androidTabletTestContext.getCommonSteps(),
+                scenario, new AndroidPagesCollection()
+        );
+        AndroidTestContextHolder.getInstance().setTestContext(androidTestContext);
 
         AppiumServer.getInstance().resetLog();
 
@@ -248,6 +259,7 @@ public class CommonAndroidTabletSteps {
         }
         AndroidLogListener.forceStopAll();
 
+        AndroidTestContextHolder.getInstance().getTestContext().reset();
         AndroidTabletTestContextHolder.getInstance().getTestContext().reset();
     }
 
