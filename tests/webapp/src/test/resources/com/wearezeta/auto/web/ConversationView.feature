@@ -357,7 +357,7 @@ Feature: Conversation View
       | Login                         | Password   | ChatName       | File           | Contact  | ContactEmail                  |
       | smoketester+68b16b1c@wire.com | aqa123456! | ReceiveLongMsg | loremipsum.txt | db76e9c3 | smoketester+db76e9c3@wire.com |
 
-  @C1702 @regression
+  @C1702 @regression @WEBAPP-3525
   Scenario Outline: Verify you can see conversation images in fullscreen
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

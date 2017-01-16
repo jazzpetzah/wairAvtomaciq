@@ -16,6 +16,8 @@ import com.wearezeta.auto.common.wire_actors.models.MessageInfo;
 import com.wearezeta.auto.common.wire_actors.models.MessageReaction;
 import org.apache.log4j.Logger;
 
+import javax.annotation.Nullable;
+
 public class RemoteDevicesManager {
     private static final Logger LOG = ZetaLogger.getLog(RemoteDevicesManager.class.getSimpleName());
 
@@ -203,7 +205,7 @@ public class RemoteDevicesManager {
         ActorsRESTWrapper.sendMessage(dstDevice.getUUID(), convId, message);
     }
 
-    public void addRemoteDeviceToAccount(ClientUser userFrom, String deviceName, Optional<String> label)
+    public void addRemoteDeviceToAccount(ClientUser userFrom, @Nullable String deviceName, Optional<String> label)
             throws Exception {
         final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
         // !!! Do not remove this line. This is to wait until the device object is returned from the backend
