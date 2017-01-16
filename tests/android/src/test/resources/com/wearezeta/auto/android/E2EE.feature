@@ -353,7 +353,7 @@ Feature: E2EE
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User <Contact1> adds new devices Device1,Device2
+    Given Users add the following devices: {"<Contact1>": [{"name": "<Device1>"}, {"name": "<Device2>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations

@@ -273,7 +273,7 @@ Feature: Like
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new devices <ContactDevice>
+    Given Users add the following devices: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations

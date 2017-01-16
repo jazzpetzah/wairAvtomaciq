@@ -147,7 +147,7 @@ Feature: Ephemeral Group Message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
     Given Myself has group chat <Group> with <Contact>,<Contact1>
-    Given User <Contact> adds new devices <ContactDevice>
+    Given Users add the following devices: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -264,7 +264,7 @@ Feature: Ephemeral Group Message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
     Given Myself has group chat <Group> with <Contact>,<Contact1>
-    Given User <Contact> adds new devices <ContactDevice>
+    Given Users add the following devices: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
