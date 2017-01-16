@@ -642,8 +642,7 @@ public final class WebAppLocators {
         // image fullscreen
         public static final String cssModalDialog = ".modal-show";
 
-        public static final String xpathXButton = "//div[contains(@class, 'detail-view-close-button')" +
-                "]//*[@data-uie-name='do-close-detail-view']";
+        public static final String xpathXButton = "//*[@data-uie-name='do-close-detail-view']";
 
         public static final String idBlackBorder = "detail-view";
 

@@ -908,7 +908,7 @@ public class ConversationPageSteps {
                     context.getPagesCollection().getPage(ConversationPage.class).isLastMessageReplaced());
         } else {
             assertTrue("Replacing block is still shown on the last message",
-                    context.getPagesCollection().getPage(ConversationPage.class).isOrangeBlockInLastMessageNotVisible());
+                    context.getPagesCollection().getPage(ConversationPage.class).isLastMessageNotReplaced());
         }
     }
 
@@ -1290,15 +1290,21 @@ public class ConversationPageSteps {
     @Then("^I (do not )?see a picture (.*) from link preview$")
     public void ISeePictureInLinkPreview(String doNot, String pictureName) throws Exception {
         if (doNot == null) {
-            assertThat("I see a picture from link preview in the conversation",
+            assertThat("I do not see a picture from link preview in the conversation",
                     context.getPagesCollection().getPage(ConversationPage.class).isImageFromLinkPreviewVisible());
-
             final String picturePath = WebCommonUtils.getFullPicturePath(pictureName);
             BufferedImage originalImage = ImageUtil.readImageFromFile(picturePath);
             BufferedImage linkPreviewScreenshot = context.getPagesCollection().getPage(ConversationPage.class).
                     getImageFromLastLinkPreview();
+            
+            // Image matching with SIFT does not work very well on really small images
+            // because it defines the maximum number of matching keys
+            // so we scale them to double size to get enough matching keys
+            final int scaleMultiplicator = 2;
+            originalImage = ImageUtil.resizeImage(originalImage, scaleMultiplicator);
+            linkPreviewScreenshot = ImageUtil.resizeImage(linkPreviewScreenshot, scaleMultiplicator);
 
-            assertThat("Not enough good matches", ImageUtil.getMatches(originalImage, linkPreviewScreenshot), greaterThan(100));
+            assertThat("Not enough good matches", ImageUtil.getMatches(originalImage, linkPreviewScreenshot), greaterThan(80));
         } else {
             assertThat("I see a picture in the conversation", context.getPagesCollection().getPage(ConversationPage.class)
                     .isImageFromLinkPreviewNotVisible());
