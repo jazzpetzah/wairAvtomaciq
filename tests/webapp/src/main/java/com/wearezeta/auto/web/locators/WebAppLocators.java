@@ -639,15 +639,6 @@ public final class WebAppLocators {
 
         public static final String cssLabelOnOutgoingCall = "#call-controls .cc-label-message";
 
-        // image fullscreen
-        public static final String cssModalDialog = ".modal-show";
-
-        public static final String xpathXButton = "//*[@data-uie-name='do-close-detail-view']";
-
-        public static final String idBlackBorder = "detail-view";
-
-        public static final String cssFullscreenImage = ".detail-view-image";
-
         public static final Function<String, String> cssUserAvatarById = id -> String
                 .format("[user-id='%s'].user-avatar-sm", id);
 
@@ -670,6 +661,16 @@ public final class WebAppLocators {
                 "]//div[contains(@class, 'modal-close')]";
 
         public static final String cssFirstTimeExperienceMessage = "[data-uie-name='start-conversation-hint']";
+    }
+    
+    public static final class PictureFullscreenPage {
+        public static final String cssModalDialog = ".modal-show";
+
+        public static final String xpathXButton = "//*[@data-uie-name='do-close-detail-view']";
+
+        public static final String idBlackBorder = "detail-view";
+
+        public static final String cssFullscreenImage = ".detail-view-image";
     }
 
     public static final class CollectionPage {
