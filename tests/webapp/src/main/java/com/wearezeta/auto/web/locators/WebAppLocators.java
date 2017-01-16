@@ -673,6 +673,8 @@ public final class WebAppLocators {
     }
 
     public static final class CollectionPage {
+        public static final String cssCloseButton = "#collection .icon-close";
+
         public static final String cssPictures = "[data-uie-name='collection-section-image'] image-component";
 
         public static final String cssPictureCollectionSize = "[data-uie-name='collection-section-image'] [data-uie-name='collection-size']";
@@ -685,7 +687,13 @@ public final class WebAppLocators {
 
         public static final String cssFileCollectionSize = "[data-uie-name='collection-section-file'] [data-uie-name='collection-size']";
 
-        public static final String cssLinks = "[data-uie-name='collection-section-link'] image-component";
+        public static final String cssLinkPreviewUrls = "[data-uie-name='collection-section-link'] [data-uie-name='link-preview-url']";
+
+        public static final String cssLinkPreviewTitles = "[data-uie-name='collection-section-link'] [data-uie-name='link-preview-title']";
+
+        public static final String cssLinkPreviewImages = "[data-uie-name='collection-section-link'] image-component";
+
+        public static final String cssLinkPreviewFroms = "[data-uie-name='collection-section-link'] asset-header span";
 
         public static final String cssLinkCollectionSize = "[data-uie-name='collection-section-link'] [data-uie-name='collection-size']";
 

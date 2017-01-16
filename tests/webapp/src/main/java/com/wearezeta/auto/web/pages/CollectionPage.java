@@ -1,7 +1,10 @@
 package com.wearezeta.auto.web.pages;
 
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.locators.WebAppLocators;
@@ -9,6 +12,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 public class CollectionPage extends WebPage {
+
+    @FindBy(css = WebAppLocators.CollectionPage.cssCloseButton)
+    private WebElement closeButton;
 
     @FindBy(css = WebAppLocators.CollectionPage.cssNoItemsPlaceholder)
     private WebElement noItemsPlaceholder;
@@ -31,14 +37,27 @@ public class CollectionPage extends WebPage {
     @FindBy(css = WebAppLocators.CollectionPage.cssFileCollectionSize)
     private WebElement fileCollectionSize;
 
-    @FindBy(css = WebAppLocators.CollectionPage.cssLinks)
-    private List<WebElement> links;
+    @FindBy(css = WebAppLocators.CollectionPage.cssLinkPreviewUrls)
+    private List<WebElement> linkPreviewUrls;
+
+    @FindBy(css = WebAppLocators.CollectionPage.cssLinkPreviewTitles)
+    private List<WebElement> linkPreviewTitles;
+
+    @FindBy(css = WebAppLocators.CollectionPage.cssLinkPreviewImages)
+    private List<WebElement> linkPreviewImages;
+
+    @FindBy(css = WebAppLocators.CollectionPage.cssLinkPreviewFroms)
+    private List<WebElement> linkPreviewFroms;
 
     @FindBy(css = WebAppLocators.CollectionPage.cssLinkCollectionSize)
     private WebElement linkCollectionSize;
 
     public CollectionPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
         super(lazyDriver);
+    }
+
+    public void clickClose() {
+        closeButton.click();
     }
 
     public String getNoItemsPlaceholder() {
@@ -70,7 +89,28 @@ public class CollectionPage extends WebPage {
     }
 
     public int getNumberOfLinks() {
-        return links.size();
+        return linkPreviewUrls.size();
+    }
+
+    public List<String> getLinkPreviewUrls() {
+        List<String> urls = new ArrayList<>();
+        for (WebElement element : linkPreviewUrls) {
+            urls.add(element.getText());
+        }
+        return urls;
+    }
+
+    public List<String> getLinkPreviewTitles() {
+        return linkPreviewTitles.stream().map(WebElement::getText).collect(Collectors.toList());
+    }
+
+    public BufferedImage getLinkPreviewImage() throws Exception {
+        return this.getElementScreenshot(linkPreviewImages.get(linkPreviewImages.size() - 1))
+                .orElseThrow(IllegalStateException::new);
+    }
+
+    public List<String> getLinkPreviewFroms() {
+        return linkPreviewFroms.stream().map(e -> e.getText().toLowerCase()).collect(Collectors.toList());
     }
 
     public String getLabelOfLinkCollectionSize() {
