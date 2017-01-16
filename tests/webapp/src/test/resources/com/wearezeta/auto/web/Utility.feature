@@ -109,6 +109,7 @@ Feature: Utility
     Given There is 1 user where <Name> is me
     Given I switch to sign in page
     When I click Change Password button
+    And I switch to Change Password page
     Then I see Password Change Request page
     When I enter email <Email> on Password Change Request page
     And Myself starts listening for password change confirmation
@@ -160,6 +161,7 @@ Feature: Utility
     Given There is 1 user where <Name> is me
     Given I switch to sign in page
     When I click Change Password button
+    And I switch to Change Password page
     Then I see Password Change Request page
     When I enter email <Email> on Password Change Request page
     And Myself starts listening for password change confirmation
