@@ -40,7 +40,7 @@ Feature: E2EE
     And I open details page of device number 1 on Devices tab
     And I tap Verify switcher on Device Details page
     And I dismiss popover on iPad
-    When User Myself adds a new device <DeviceName2> with label <DeviceLabel2>
+    When Users add the following devices: {"Myself": [{"name": "<DeviceName2>", "label": "<DeviceLabel2>"}]]}
     Then I do not see shield icon in the conversation view
     And I see "<StartedUsingMsg>" system message in the conversation view
 

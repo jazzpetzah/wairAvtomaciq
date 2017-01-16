@@ -4,7 +4,7 @@ Feature: Collections
   Scenario Outline: Verify main overview shows media from all categories (picture, file, link)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <ContactDevice>
+    Given Users add the following devices: {"Myself": [{}], "<Contact>": [{"name": "<ContactDevice>"}]}
     Given I create temporary file <FileSize> in size with name "<FileName>" and extension "<FileExt>"
     Given I sign in using my email or phone number
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>

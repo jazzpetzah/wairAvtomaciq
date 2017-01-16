@@ -1130,7 +1130,7 @@ public class CommonIOSSteps {
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
             IOSSimulatorHelpers.clickAt(strX, strY, String.format("%.3f", DriverUtils.SINGLE_TAP_DURATION / 1000.0));
         } else {
-            throw new PendingException("This step is not available for non-simulator devices");
+            throw new PendingException("This step is not available for non-simulator §s");
         }
     }
 
@@ -1183,18 +1183,26 @@ public class CommonIOSSteps {
     }
 
     /**
-     * User adds a remote device to his list of devices
+     * Add one or more remote devices to one or more remote users
+     * @step. ^Users? adds? devices? (.*)
      *
-     * @param userNameAlias user name/alias
-     * @param deviceName    unique name of the device
+     * @param mappingAsJson this should be valid JSON string. Keys are mandatory and
+     *                      are interpreted as user names/aliases and values are device(s) info
+     *                      mapped to these users. Device info objects can include following
+     *                      optional fields:
+     *                      name - device name (will be set to random unique value if not set)
+     *                      label - the device label (will not be set if missing)
+     *                      Examples:
+     *                      {"user1Name" : [{}]}
+     *                      {"user1Name" : [{}], "user2Name" : [{"name": "blabla", "label": "label"},
+     *                                                          {"name": "blabla2", "label": "label2"}]}
+     *
+     * @param mappingAsJson
      * @throws Exception
-     * @step. User (.*) adds a new device (.*)$
      */
-    @When("^User (.*) adds a new device (.*) with label (.*)$")
-    public void UserAddRemoteDeviceToAccount(String userNameAlias,
-                                             String deviceName, String label) throws Exception {
-        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
-                .UserAddsRemoteDeviceToAccount(userNameAlias, deviceName, Optional.of(label));
+    @Given("^Users? adds? the following devices?: (.*)")
+    public void UsersAddDevices(String mappingAsJson) throws Exception {
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps().UsersAddDevices(mappingAsJson);
     }
 
     /**
