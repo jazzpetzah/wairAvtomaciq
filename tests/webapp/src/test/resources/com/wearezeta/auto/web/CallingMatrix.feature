@@ -32,7 +32,7 @@ Feature: Calling_Matrix
       | Login      | Password      | Name      | Contact   | CallBackend          | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome:55.0.2883.75  | 20      |
       | user1Email | user1Password | user1Name | user2Name | chrome:54.0.2840.100 | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:50.0.2       | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:50.1.0       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:49.0.2       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:45.5         | 20      |
 
@@ -64,7 +64,7 @@ Feature: Calling_Matrix
       | Login      | Password      | Name      | Contact   | CallBackend          | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome:55.0.2883.75  | 20      |
       | user1Email | user1Password | user1Name | user2Name | chrome:54.0.2840.100 | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:50.0.2       | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:50.1.0       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:49.0.2       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:45.5         | 20      |
 
@@ -92,6 +92,7 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend     | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | zcall:3.1.3     | 20      |
       | user1Email | user1Password | user1Name | user2Name | zcall:2.9.14    | 20      |
 
   @C5362 @calling_matrix
@@ -120,7 +121,7 @@ Feature: Calling_Matrix
       | Login      | Password      | Name      | Contact   | CallBackend          | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome:55.0.2883.75  | 20      |
       | user1Email | user1Password | user1Name | user2Name | chrome:54.0.2840.100 | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:50.0.2       | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:50.1.0       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:49.0.2       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:45.5         | 20      |
 
@@ -152,7 +153,7 @@ Feature: Calling_Matrix
       | Login      | Password      | Name      | Contact   | CallBackend          | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome:55.0.2883.75  | 20      |
       | user1Email | user1Password | user1Name | user2Name | chrome:54.0.2840.100 | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:50.0.2       | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:50.1.0       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:49.0.2       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:45.5         | 20      |
 
@@ -178,6 +179,7 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend       | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | zcall:3.1.3       | 20      |
       | user1Email | user1Password | user1Name | user2Name | zcall:2.9.14      | 20      |
 
   @C5365 @calling_matrix
@@ -213,7 +215,7 @@ Feature: Calling_Matrix
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName1 | WaitBackend          | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome:55.0.2883.75  | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome:54.0.2840.100 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:50.0.2       | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:50.1.0       | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:49.0.2       | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:45.5         | 30      |
 
@@ -243,6 +245,7 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | WaitBackend    | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:3.1.3    | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:2.9.14   | 30      |
 
   @C5367 @calling_matrix
@@ -280,7 +283,7 @@ Feature: Calling_Matrix
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName1 | Backend              | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome:55.0.2883.75  | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome:54.0.2840.100 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:50.0.2       | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:50.1.0       | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:49.0.2       | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:45.5         | 30      |
       
@@ -326,7 +329,7 @@ Feature: Calling_Matrix
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName1 | Backend      | WaitBackend          | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.14 | chrome:55.0.2883.75  | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.14 | chrome:54.0.2840.100 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.14 | firefox:50.0.2       | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.14 | firefox:50.1.0       | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.14 | firefox:49.0.2       | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.14 | firefox:45.5         | 30      |
 
@@ -361,7 +364,8 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend        | WaitBackend   | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:2.9.3    | zcall:2.9.14  | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:2.9.14   | zcall:3.1.3   | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:3.1.3    | zcall:2.9.14  | 30      |
 
   @C5370 @calling_matrix
   Scenario Outline: Verify I can create, leave and rejoin an audio group call with <WaitBackend>
@@ -393,7 +397,7 @@ Feature: Calling_Matrix
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | WaitBackend          | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | chrome:55.0.2883.75  | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | chrome:54.0.2840.100 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox:50.0.2       | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox:50.1.0       | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox:49.0.2       | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox:45.5         | 30      |
 
@@ -426,6 +430,7 @@ Feature: Calling_Matrix
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | WaitBackend  | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | zcall:3.1.3  | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | zcall:2.9.14 | 30      |
 
   @C5372 @calling_matrix
@@ -462,7 +467,7 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | chrome:55.0.2883.75  | 20      |
       | user1Email | user1Password | user1Name | user2Name | chrome:54.0.2840.100 | 20      |
 # Flakes continuously
-#      | user1Email | user1Password | user1Name | user2Name | firefox:50.0.2       | 20      |
+#      | user1Email | user1Password | user1Name | user2Name | firefox:50.1.0       | 20      |
 #      | user1Email | user1Password | user1Name | user2Name | firefox:49.0.2       | 20      |
 #      | user1Email | user1Password | user1Name | user2Name | firefox:45.5         | 20      |
 
@@ -494,6 +499,7 @@ Feature: Calling_Matrix
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend  | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | zcall:3.1.3  | 20      |
       | user1Email | user1Password | user1Name | user2Name | zcall:2.9.14 | 20      |
 
   @C5374 @calling_matrix
@@ -534,6 +540,6 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | chrome:55.0.2883.75  | 20      |
       | user1Email | user1Password | user1Name | user2Name | chrome:54.0.2840.100 | 20      |
 # fails continuously
-#      | user1Email | user1Password | user1Name | user2Name | firefox:50.0.2       | 20      |
+#      | user1Email | user1Password | user1Name | user2Name | firefox:50.1.0       | 20      |
 #      | user1Email | user1Password | user1Name | user2Name | firefox:49.0.2       | 20      |
 #      | user1Email | user1Password | user1Name | user2Name | firefox:45.5         | 20      |
