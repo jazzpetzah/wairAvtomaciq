@@ -24,7 +24,7 @@ Feature: E2EE
   Scenario Outline: Verify opening device details by clicking on it in person's profile
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Contact1> adds new devices <DeviceName1>,<DeviceName2>,<DeviceName3>
+    Given Users add the following devices: {"<Contact1>": [{"name": "<DeviceName1>"}, {"name": "<DeviceName2>"}, {"name": "<DeviceName3>"}]}
     Given I sign in using my email
     Given User <Contact1> sends 1 encrypted message to user Myself
     Given I see conversations list
@@ -63,7 +63,7 @@ Feature: E2EE
   Scenario Outline: Verify shield appearance on the person's profile after verifying all the clients
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Contact1> adds new devices <DeviceName1>,<DeviceName2>
+    Given Users add the following devices: {"<Contact1>": [{"name": "<DeviceName1>"}, {"name": "<DeviceName2>"}]}
     Given I sign in using my email
     Given User <Contact1> sends 1 encrypted message to user Myself
     Given I see conversations list
@@ -184,7 +184,7 @@ Feature: E2EE
     Given There is 1 user where <Name> is me
     Given I sign in using my email
     Given I see conversations list
-    And User Myself adds new devices <DeviceName>
+    Given Users add the following devices: {"Myself": [{"name": "<DeviceName>"}]}
     When I tap settings gear button
     And I accept alert
     And I select settings item Devices
@@ -287,7 +287,7 @@ Feature: E2EE
   Scenario Outline: Verify conversation is marked as verified after approving all friend's clients in 1-to-1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Contact1> adds new devices <DeviceName1>,<DeviceName2>
+    Given Users add the following devices: {"<Contact1>": [{"name": "<DeviceName1>"}, {"name": "<DeviceName2>"}]}
     Given I sign in using my email
     Given User <Contact1> sends 1 encrypted message to user Myself
     Given I see conversations list
@@ -312,7 +312,7 @@ Feature: E2EE
   @C3291 @rc @regression
   Scenario Outline: Verify device management appearance after 7 sign ins
     Given There is 1 user where <Name> is me
-    Given User Myself adds new devices <DeviceName1>,<DeviceName2>,<DeviceName3>,<DeviceName4>,<DeviceName5>,<DeviceName6>,<DeviceName7>
+    Given Users add the following devices: {"Myself": [{"name": "<DeviceName1>"}, {"name": "<DeviceName2>"}, {"name": "<DeviceName3>"}, {"name": "<DeviceName4>"}, {"name": "<DeviceName5>"}, {"name": "<DeviceName6>"}, {"name": "<DeviceName7>"}]}
     Given I switch to Log In tab
     Given I have entered login <Email>
     Given I have entered password <Password>
@@ -327,8 +327,7 @@ Feature: E2EE
   Scenario Outline: Verify you can see device ids of the other conversation participant in participant details view inside a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given User <Contact1> adds new devices <DeviceName1>,<DeviceName2>
-    Given User <Contact2> adds new devices <DeviceName3>,<DeviceName4>
+    Given Users add the following devices: {"<Contact1>": [{"name": "<DeviceName1>"}, {"name": "<DeviceName2>"}], "<Contact2>": [{"name": "<DeviceName3>"}, {"name": "<DeviceName4>"}]}
     Given I sign in using my email
     Given User <Contact1> sends 1 encrypted message to user Myself
     Given User <Contact2> sends 1 encrypted message to user Myself
@@ -423,7 +422,7 @@ Feature: E2EE
   Scenario Outline: Verify conversation is not verified after checking only one device out of many
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Contact1> adds new devices <DeviceName1>,<DeviceName2>
+    Given Users add the following devices: {"<Contact1>": [{"name": "<DeviceName1>"}, {"name": "<DeviceName2>"}]}
     Given I sign in using my email
     Given User <Contact1> sends 1 encrypted message to user Myself
     Given I see conversations list

@@ -9,11 +9,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import com.google.common.base.Throwables;
@@ -1203,38 +1200,6 @@ public class CommonIOSSteps {
     @Given("^Users? adds? the following devices?: (.*)")
     public void UsersAddDevices(String mappingAsJson) throws Exception {
         IOSTestContextHolder.getInstance().getTestContext().getCommonSteps().UsersAddDevices(mappingAsJson);
-    }
-
-    /**
-     * User adds multiple devices to his list of devices
-     *
-     * @param userNameAlias user name/alias
-     * @param deviceNames   unique name of devices, comma-separated list
-     * @throws Exception
-     * @step. User (.*) adds new devices (.*)
-     */
-    @When("^User (.*) adds new devices? (.*)")
-    public void UserAddRemoteDeviceToAccount(String userNameAlias, String deviceNames) throws Exception {
-        final List<String> names = IOSTestContextHolder.getInstance().getTestContext()
-                .getUsersManager().splitAliases(deviceNames);
-        final ExecutorService pool = Executors.newFixedThreadPool(names.size());
-        final AtomicInteger createdDevicesCount = new AtomicInteger(0);
-        for (String name : names) {
-            pool.submit(() -> {
-                try {
-                    IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
-                            .UserAddsRemoteDeviceToAccount(userNameAlias, name, Optional.empty());
-                    createdDevicesCount.incrementAndGet();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
-        }
-        pool.shutdown();
-        if (!pool.awaitTermination(5, TimeUnit.MINUTES) || createdDevicesCount.get() != names.size()) {
-            throw new IllegalStateException(String.format(
-                    "Devices '%s' were not created after the timeout", names));
-        }
     }
 
     /**
