@@ -1,16 +1,15 @@
 package com.wearezeta.auto.ios.steps;
 
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import com.wearezeta.auto.ios.pages.CameraRollPage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 
 public class CameraRollPageSteps {
-
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-
     private CameraRollPage getCameraRollPage() throws Exception {
-        return pagesCollection.getPage(CameraRollPage.class);
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(CameraRollPage.class);
     }
 
     private Integer cameraRollPhotoCountSave;

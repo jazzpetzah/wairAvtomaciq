@@ -1,15 +1,15 @@
 package com.wearezeta.auto.win.steps.webapp;
 
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.AccountPage;
 import cucumber.api.java.en.When;
 import static org.junit.Assert.assertTrue;
 
 public class AccountPageSteps {
 
-    private final TestContext webContext;
+    private final WebAppTestContext webContext;
 
-    public AccountPageSteps(TestContext webContext) {
+    public AccountPageSteps(WebAppTestContext webContext) {
         this.webContext = webContext;
     }
     

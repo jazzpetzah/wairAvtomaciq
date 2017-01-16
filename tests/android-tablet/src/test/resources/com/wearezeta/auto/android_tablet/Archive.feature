@@ -1,25 +1,25 @@
 Feature: Archive
 
   @C775 @regression @rc
-  Scenario Outline: (AN-2983) Verify you can archive and unarchive conversation (portrait)
+  Scenario Outline: Verify you can archive and unarchive conversation (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to portrait
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    When I swipe right the conversations list item <Contact1>
-    Then I see Conversation Actions overlay
-    When I select <ArchiveItem> menu item on Conversation Actions overlay
-    Then I do not see Conversation Actions overlay
+    When I open options menu of <Contact1> on conversation list page
+    Then I see Single conversation options menu
+    When I tap <ArchiveItem> button on Single conversation options menu
+    Then I do not see Single conversation options menu
     And I swipe right to show the conversations list
     And I do not see conversation <Contact1> in my conversations list
     When I do long swipe up on conversations list
     Then I see the conversation <Contact1> in my conversations list
-    When I swipe right the conversations list item <Contact1>
-    Then I see Conversation Actions overlay
-    When I select <UnarchiveItem> menu item on Conversation Actions overlay
-    Then I do not see Conversation Actions overlay
+    When I open options menu of <Contact1> on conversation list page
+    Then I see Single conversation options menu
+    When I tap <UnarchiveItem> button on Single conversation options menu
+    Then I do not see Single conversation options menu
     And I see the conversation view
     When I swipe right to show the conversations list
     Then I see the conversation <Contact1> in my conversations list
@@ -36,17 +36,17 @@ Feature: Archive
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    When I swipe right the conversations list item <Contact1>
-    Then I see Conversation Actions overlay
-    When I select <ArchiveItem> menu item on Conversation Actions overlay
-    Then I do not see Conversation Actions overlay
+    When I open options menu of <Contact1> on conversation list page
+    Then I see Single conversation options menu
+    When I tap <ArchiveItem> button on Single conversation options menu
+    Then I do not see Single conversation options menu
     And I do not see conversation <Contact1> in my conversations list
     When I do long swipe up on conversations list
     Then I see the conversation <Contact1> in my conversations list
-    When I swipe right the conversations list item <Contact1>
-    Then I see Conversation Actions overlay
-    When I select <UnarchiveItem> menu item on Conversation Actions overlay
-    Then I do not see Conversation Actions overlay
+    When I open options menu of <Contact1> on conversation list page
+    Then I see Single conversation options menu
+    When I tap <UnarchiveItem> button on Single conversation options menu
+    Then I do not see Single conversation options menu
     And I see the conversation view
     And I see the conversation <Contact1> in my conversations list
 

@@ -19,10 +19,10 @@ public class LogManager {
 
     public static final Logger LOG = ZetaLogger.getLog(LogManager.class.getSimpleName());
 
-    private final TestContext context;
+    private final WebAppTestContext context;
     private final List<LogEntry> BROWSER_LOG = new ArrayList<>();
 
-    public LogManager(TestContext context) {
+    public LogManager(WebAppTestContext context) {
         this.context = context;
     }
 

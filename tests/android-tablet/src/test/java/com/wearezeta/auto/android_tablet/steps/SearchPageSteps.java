@@ -1,11 +1,12 @@
 package com.wearezeta.auto.android_tablet.steps;
 
+import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContextHolder;
 import com.wearezeta.auto.android_tablet.pages.TabletContactListPage;
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.Timedelta;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android_tablet.pages.TabletSearchListPage;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 
 import cucumber.api.java.en.And;
@@ -13,16 +14,14 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class SearchPageSteps {
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
-    private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection.getInstance();
-
     private TabletSearchListPage getSearchListPage() throws Exception {
-        return pagesCollection.getPage(TabletSearchListPage.class);
+        return AndroidTabletTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(TabletSearchListPage.class);
     }
 
     private TabletContactListPage getContactListPage() throws Exception {
-        return pagesCollection.getPage(TabletContactListPage.class);
+        return AndroidTabletTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(TabletContactListPage.class);
     }
 
     /**
@@ -53,25 +52,57 @@ public class SearchPageSteps {
      */
     @When("^I enter \"(.*)\" into Search input on [Ss]earch page$")
     public void IEnterStringIntoSearchField(String searchCriteria) throws Exception {
-        searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria, FindBy.EMAIL_ALIAS);
-        searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria, FindBy.NAME_ALIAS);
-        searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria, FindBy.PHONENUMBER_ALIAS);
+        searchCriteria = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(searchCriteria, FindBy.EMAIL_ALIAS);
+        searchCriteria = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(searchCriteria, FindBy.NAME_ALIAS);
+        searchCriteria = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(searchCriteria, FindBy.PHONENUMBER_ALIAS);
+        searchCriteria = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(searchCriteria, FindBy.UNIQUE_USERNAME_ALIAS);
         getContactListPage().typeTextInPeopleSearch(searchCriteria);
     }
 
     /**
-     * Tap one of found items in Search results
+     * Taps on a name found in the Search page
      *
-     * @param item user name/email/phone number or the corresponding aliases
+     * @param contact user name/alias
      * @throws Exception
-     * @step. ^I tap the found item (.*) on [Ss]earch page$
+     * @step. ^I tap on user name found on [Ss]earch page (.*)$
      */
-    @When("^I tap the found item (.*) on [Ss]earch page$")
-    public void ITapUserName(String item) throws Exception {
-        item = usrMgr.replaceAliasesOccurences(item, FindBy.EMAIL_ALIAS);
-        item = usrMgr.replaceAliasesOccurences(item, FindBy.NAME_ALIAS);
-        item = usrMgr.replaceAliasesOccurences(item, FindBy.PHONENUMBER_ALIAS);
-        getSearchListPage().tapOnUserAvatar(item);
+    @When("^I tap on user name found on [Ss]earch page (.*)$")
+    public void ITapOnUserNameFoundOnSearchPage(String contact)
+            throws Exception {
+        contact = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(contact, FindBy.EMAIL_ALIAS);
+        contact = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+        contact = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(contact, FindBy.PHONENUMBER_ALIAS);
+        contact = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(contact, FindBy.UNIQUE_USERNAME_ALIAS);
+        getSearchListPage().tapOnUserName(contact);
+    }
+
+    /**
+     * Taps on a group found in the Search page
+     *
+     * @param contact user name/alias
+     * @throws Exception
+     * @step. ^I tap on group found on [Ss]earch page (.*)$
+     */
+    @When("^I tap on group found on [Ss]earch page (.*)$")
+    public void ITapOnGroupFoundOnSearchPage(String contact)
+            throws Exception {
+        contact = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(contact, FindBy.EMAIL_ALIAS);
+        contact = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+        contact = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(contact, FindBy.PHONENUMBER_ALIAS);
+        contact = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(contact, FindBy.UNIQUE_USERNAME_ALIAS);
+        getSearchListPage().tapOnGroupName(contact);
     }
 
     /**
@@ -88,7 +119,8 @@ public class SearchPageSteps {
     @When("^I (do not )?see \"(.*)\" (group )?avatar in (Search result|Contact)? list$")
     public void ISeeContactAvatar(String shouldNotSee, String name, String isGroupStr, String listType) throws Exception {
         boolean isGroup = (isGroupStr != null);
-        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 
         if (shouldNotSee == null) {
             Assert.assertTrue(
@@ -110,7 +142,7 @@ public class SearchPageSteps {
     }
 
     private ElementState rememberedAvatar = null;
-    final static double MAX_SIMILARITY_VALUE = 0.90;
+    private final static double MAX_SIMILARITY_VALUE = 0.90;
 
     /**
      * Save the screenshot of current user avatar on Search page
@@ -121,7 +153,8 @@ public class SearchPageSteps {
      */
     @When("^I remember (.*) avatar on [Ss]earch page$")
     public void ITakeScreenshotOfContactAvatar(String name) throws Exception {
-        final String convoName = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        final String convoName = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         this.rememberedAvatar = new ElementState(
                 () -> getSearchListPage().getUserAvatarScreenshot(convoName).orElseThrow(IllegalStateException::new)
         ).remember();
@@ -138,13 +171,14 @@ public class SearchPageSteps {
      */
     @Then("^I verify (.*) avatar on [Ss]earch page is not the same as the previous one$")
     public void IVerifyAvatarIsNotTheSame(String name) throws Exception {
-        final String convoName = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        final String convoName = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         if (this.rememberedAvatar == null) {
             throw new IllegalStateException("Please take a previous screenshot of user avatar first");
         }
         Assert.assertTrue(
                 String.format("The current contact avatar of '%s' is very similar to the previous one", convoName),
-                this.rememberedAvatar.isChanged(10, MAX_SIMILARITY_VALUE));
+                this.rememberedAvatar.isChanged(Timedelta.fromSeconds(10), MAX_SIMILARITY_VALUE));
     }
 
     /**
@@ -167,7 +201,8 @@ public class SearchPageSteps {
      */
     @When("^I tap (.*) avatar in Top People$")
     public void ITapAvatarInTopPeople(String name) throws Exception {
-        name = usrMgr.findUserByNameOrNameAlias(name).getName();
+        name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .findUserByNameOrNameAlias(name).getName();
         getContactListPage().tapOnTopPeople(name);
     }
 
@@ -213,5 +248,16 @@ public class SearchPageSteps {
     @When("^I type backspace in Search input on [Ss]earch page$")
     public void ITypeBackspace() throws Exception {
         getSearchListPage().typeBackspaceInSearchInput();
+    }
+
+    /**
+     * Clicks on the Add to conversation button
+     *
+     * @throws Exception
+     * @step. ^I tap on (?:Add to|Create) to conversation button on Search page$
+     */
+    @When("^I tap on (?:Add to|Create) conversation button on Search page$")
+    public void ITapOnAddToConversationButton() throws Exception {
+        getSearchListPage().tapPickUserConfirmationButton();
     }
 }

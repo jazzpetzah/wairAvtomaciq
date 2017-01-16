@@ -7,7 +7,7 @@ import static com.wearezeta.auto.osx.common.OSXCommonUtils.isHibernateBlocked;
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.killAllApps;
 import com.wearezeta.auto.osx.pages.osx.MainWirePage;
 import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import static org.hamcrest.Matchers.lessThan;
@@ -19,9 +19,9 @@ public class CommonOSXSteps {
 
     public static final Logger LOG = ZetaLogger.getLog(CommonOSXSteps.class.getName());
 
-    private final TestContext webContext;
+    private final WebAppTestContext webContext;
 
-    public CommonOSXSteps(TestContext webContext) {
+    public CommonOSXSteps(WebAppTestContext webContext) {
         this.webContext = webContext;
     }
 

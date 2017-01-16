@@ -32,10 +32,10 @@ Feature: Rotations
     Given I wait until <Contact2> exists in backend search results
     When I open Search UI
     And I enter "<Contact2>" into Search input on Search page
-    And I tap the found item <Contact2> on Search page
-    Then I see Outgoing Connection popover
+    And I tap on user name found on Search page <Contact2>
+    Then I see Single unconnected user details popover
     When I rotate UI to landscape
-    Then I do not see Outgoing Connection popover
+    Then I do not see Single unconnected user details popover
 #    When I rotate UI to portrait
 #    Then I see Outgoing Connection popover
 

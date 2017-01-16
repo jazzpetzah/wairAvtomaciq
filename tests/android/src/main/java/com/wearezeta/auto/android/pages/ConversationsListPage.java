@@ -4,6 +4,7 @@ import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.misc.Timedelta;
 import io.appium.java_client.android.AndroidElement;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -46,26 +47,15 @@ public class ConversationsListPage extends AndroidPage {
             .format("%s/parent::*//*[@id='tv_conv_list_media_player']", xpathStrContactByName.apply(convoName));
 
     private static final Function<String, String> xpathStrMissedCallNotificationByConvoName = convoName -> String
-            .format("%s/parent::*//*[@id='sci__list__missed_call']", xpathStrContactByName.apply(convoName));
+            .format("%s/parent::*//*[@id='gtv__list__call_indicator']", xpathStrContactByName.apply(convoName));
 
     private static final By idConversationListFrame = By.id(idStrConversationListFrame);
-
-//    private static final String xpathStrNonEmptyContacts =
-//            String.format("%s[@value and string-length(@value) > 0 and not(starts-with(@value, '%s'))]",
-//                    xpathStrConvoListNames, LOADING_CONVERSATION_NAME);
-
-//    private static final Function<Integer, String> xpathStrNonEmptyContactByIdx = idx -> String
-//            .format("(%s)[%d]", xpathStrNonEmptyContacts, idx);
 
     private static final By idListSettingsButton = By.id("gtv__list_actions__settings");
 
     public static final By idListActionsAvatar = By.id("gtv__list_actions__avatar");
 
     private static final By idConversationListHintContainer = By.id("ll__conversation_list__hint_container");
-
-    private static final By xpathConfirmDeleteConversationButton = By.xpath("//*[@id='positive' and @value='DELETE']");
-
-    private static final By xpathLeaveCheckbox = By.xpath("//*[@id='gtv__checkbox_icon']");
 
     private static final String xpathSpinnerConversationsListLoadingIndicator =
             "//*[@id='liv__conversations__loading_indicator']/*";
@@ -108,8 +98,8 @@ public class ConversationsListPage extends AndroidPage {
         return getElementIfDisplayed(By.xpath(xpathStrContactByName.apply(name)));
     }
 
-    public Optional<WebElement> findConversationInList(String name, int timeoutSeconds) throws Exception {
-        return getElementIfDisplayed(By.xpath(xpathStrContactByName.apply(name)), timeoutSeconds);
+    public Optional<WebElement> findConversationInList(String name, Timedelta timeout) throws Exception {
+        return getElementIfDisplayed(By.xpath(xpathStrContactByName.apply(name)), timeout);
     }
 
     public void swipeRightOnConversation(int durationMilliseconds, String name)
@@ -142,8 +132,8 @@ public class ConversationsListPage extends AndroidPage {
         getElement(idListActionsAvatar).click();
     }
 
-    public boolean isConversationVisible(String name, int timeoutSeconds) throws Exception {
-        return findConversationInList(name, timeoutSeconds).isPresent();
+    public boolean isConversationVisible(String name, Timedelta timeout) throws Exception {
+        return findConversationInList(name, timeout).isPresent();
     }
 
     public boolean isConversationVisible(String name) throws Exception {
@@ -155,9 +145,9 @@ public class ConversationsListPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
-    public boolean waitUntilConversationDisappears(String name, int timeoutSeconds) throws Exception {
+    public boolean waitUntilConversationDisappears(String name, Timedelta timeout) throws Exception {
         final By locator = By.xpath(xpathStrContactByName.apply(name));
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, timeoutSeconds);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, timeout.asSeconds());
     }
 
     public boolean isPlayPauseMediaButtonVisible(String convoName) throws Exception {
@@ -263,18 +253,6 @@ public class ConversationsListPage extends AndroidPage {
         final int w = elSize.width <= fullScreen.getWidth() ? elSize.width / 6 : fullScreen.getWidth() / 6;
         final int h = elSize.height;
         return fullScreen.getSubimage(x, y, w, h);
-    }
-
-    public void confirmDeleteConversationAlert() throws Exception {
-        getElement(xpathConfirmDeleteConversationButton).click();
-    }
-
-    public void checkLeaveWhileDeleteCheckbox() throws Exception {
-        getElement(xpathLeaveCheckbox).click();
-    }
-
-    public boolean isLeaveCheckBoxVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathLeaveCheckbox);
     }
 
     public boolean isThreeDotButtonVisible() throws Exception {

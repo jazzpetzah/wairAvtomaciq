@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -12,6 +13,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
+import com.wearezeta.auto.common.misc.Timedelta;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.Dimension;
@@ -80,21 +82,28 @@ public abstract class BasePage {
     public Optional<BufferedImage> getElementScreenshot(WebElement element) throws Exception {
         final Point elementLocation = element.getLocation();
         final Dimension elementSize = element.getSize();
-        final Optional<BufferedImage> screenshot = takeScreenshot();
-        if (screenshot.isPresent()) {
-            return Optional.of(screenshot.get().getSubimage(
-                    elementLocation.x, elementLocation.y, elementSize.width, elementSize.height));
-        }
-        return Optional.empty();
+        return this.getElementScreenshot(
+                new Rectangle(elementLocation.x, elementLocation.y, elementSize.width, elementSize.height)
+        );
     }
 
     public Optional<BufferedImage> getElementScreenshot(Rectangle elementRect) throws Exception {
         final Optional<BufferedImage> screenshot = takeScreenshot();
-        if (screenshot.isPresent()) {
-            return Optional.of(screenshot.get().getSubimage(
-                    elementRect.x, elementRect.y, elementRect.width, elementRect.height));
+        if (!screenshot.isPresent()) {
+            return screenshot;
         }
-        return Optional.empty();
+        final Rectangle dstArea = elementRect.intersection(
+                new Rectangle(0, 0, screenshot.get().getWidth(), screenshot.get().getHeight())
+        );
+        if (dstArea.isEmpty()) {
+            throw new IllegalArgumentException(
+                    String.format("Cannot take a screenshot of the element, which is located outside of the viewport\n"
+                            + "(%s x %s == <empty rect>)", elementRect,
+                            new Rectangle(0, 0, screenshot.get().getWidth(), screenshot.get().getHeight()))
+            );
+        }
+        log.info(String.format("Taking the screenshot of %s area...", dstArea));
+        return Optional.of(screenshot.get().getSubimage(dstArea.x, dstArea.y, dstArea.width, dstArea.height));
     }
 
     protected List<WebElement> getElements(By locator) throws Exception {
@@ -102,12 +111,12 @@ public abstract class BasePage {
     }
 
     protected List<WebElement> selectVisibleElements(By locator) throws Exception {
-        return this.selectVisibleElements(locator, DriverUtils.getDefaultLookupTimeoutSeconds());
+        return this.selectVisibleElements(locator, Timedelta.fromSeconds(DriverUtils.getDefaultLookupTimeoutSeconds()));
     }
 
-    protected List<WebElement> selectVisibleElements(By locator, int timeoutSeconds) throws Exception {
+    protected List<WebElement> selectVisibleElements(By locator, Timedelta timeout) throws Exception {
         final List<WebElement> result = new ArrayList<>();
-        if (DriverUtils.waitUntilLocatorAppears(getDriver(), locator, timeoutSeconds)) {
+        if (DriverUtils.waitUntilLocatorAppears(getDriver(), locator, timeout.asSeconds())) {
             for (WebElement el : getDriver().findElements(locator)) {
                 if (DriverUtils.isElementPresentAndDisplayed(getDriver(), el)) {
                     result.add(el);
@@ -129,20 +138,20 @@ public abstract class BasePage {
         return DriverUtils.verifyPresence(getDriver(), locator, message);
     }
 
-    protected WebElement getElement(By locator, String message, int timeoutSeconds) throws Exception {
-        return DriverUtils.verifyPresence(getDriver(), locator, message, timeoutSeconds);
+    protected WebElement getElement(By locator, String message, Timedelta timeout) throws Exception {
+        return DriverUtils.verifyPresence(getDriver(), locator, message, timeout.asSeconds());
     }
 
-    protected Optional<WebElement> getElementIfDisplayed(By locator, int timeoutSeconds) throws Exception {
-        return DriverUtils.getElementIfDisplayed(getDriver(), locator, timeoutSeconds);
+    protected Optional<WebElement> getElementIfDisplayed(By locator, Timedelta timeout) throws Exception {
+        return DriverUtils.getElementIfDisplayed(getDriver(), locator, timeout.asSeconds());
     }
 
     protected Optional<WebElement> getElementIfExists(By locator) throws Exception {
         return DriverUtils.getElementIfPresentInDOM(getDriver(), locator);
     }
 
-    protected Optional<WebElement> getElementIfExists(By locator, int timeoutSeconds) throws Exception {
-        return DriverUtils.getElementIfPresentInDOM(getDriver(), locator, timeoutSeconds);
+    protected Optional<WebElement> getElementIfExists(By locator, Timedelta timeout) throws Exception {
+        return DriverUtils.getElementIfPresentInDOM(getDriver(), locator, timeout.asSeconds());
     }
 
     /**

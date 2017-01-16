@@ -7,6 +7,7 @@ import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.DummyElement;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
+import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
@@ -31,9 +32,6 @@ public class LoginPage extends IOSPage {
     private static final By nameWrongCredentialsNotification = MobileBy.AccessibilityId("Please verify your details and try again.");
 
     private static final By nameMaybeLater = MobileBy.AccessibilityId("MAYBE LATER");
-
-    public static final By nameResentIn10min = MobileBy.AccessibilityId(
-            "We already sent you a code via SMS. Tap Resend after 10 minutes to get a new one.");
 
     private static final By nameInvalidEmail = MobileBy.AccessibilityId("Please enter a valid email address");
 
@@ -74,7 +72,7 @@ public class LoginPage extends IOSPage {
     }
 
     public void waitForLoginToFinish() throws Exception {
-        if (!isLocatorInvisible(nameSwitchToLoginButton, LOGIN_TIMEOUT_SECONDS)) {
+        if (!isLocatorInvisible(nameSwitchToLoginButton, LOGIN_TIMEOUT)) {
             throw new IllegalStateException("Login button is still visible after the timeout");
         }
     }
@@ -97,13 +95,13 @@ public class LoginPage extends IOSPage {
         el.sendKeys(password);
     }
 
-    public static final int LOGIN_TIMEOUT_SECONDS = 30;
+    public static final Timedelta LOGIN_TIMEOUT = Timedelta.fromSeconds(30);
 
     public void dismissSettingsWarning() throws Exception {
         final WebElement maybeLaterBtn = getElement(nameMaybeLater, "MAYBE LATER link is not visible",
-                LOGIN_TIMEOUT_SECONDS);
+                LOGIN_TIMEOUT);
         maybeLaterBtn.click();
-        if (!isLocatorInvisible(nameMaybeLater, 3)) {
+        if (!isLocatorInvisible(nameMaybeLater, Timedelta.fromSeconds(3))) {
             maybeLaterBtn.click();
         }
     }
@@ -113,7 +111,7 @@ public class LoginPage extends IOSPage {
     }
 
     public boolean isContactsButtonVisible() throws Exception {
-        return isLocatorDisplayed(ConversationsListPage.nameContactsButton, LOGIN_TIMEOUT_SECONDS);
+        return isLocatorDisplayed(ConversationsListPage.nameContactsButton, LOGIN_TIMEOUT);
     }
 
     public void tapHoldEmailInput() throws Exception {
@@ -127,11 +125,7 @@ public class LoginPage extends IOSPage {
     }
 
     public boolean wrongCredentialsNotificationIsShown() throws Exception {
-        return isLocatorDisplayed(nameWrongCredentialsNotification, 30);
-    }
-
-    public boolean isResendIn10minAlertVisible() throws Exception {
-        return readAlertText().isPresent() && isLocatorDisplayed(nameResentIn10min);
+        return isLocatorDisplayed(nameWrongCredentialsNotification, Timedelta.fromSeconds(30));
     }
 
     public boolean isInvalidEmailAlertShown() throws Exception {
@@ -165,6 +159,7 @@ public class LoginPage extends IOSPage {
                 "Login code input is not visible");
         final String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(forNumber);
         codeInput.sendKeys(code);
-        getElement(RegistrationPage.nameConfirmButton, "Confirm button is not visible", 2).click();
+        getElement(RegistrationPage.nameConfirmButton, "Confirm button is not visible",
+                Timedelta.fromSeconds(2)).click();
     }
 }

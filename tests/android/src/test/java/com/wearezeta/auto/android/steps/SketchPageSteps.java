@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android.steps;
 
+import com.wearezeta.auto.android.common.AndroidTestContextHolder;
 import com.wearezeta.auto.android.pages.cursor.EmojiKeyboardOverlayPage;
 import com.wearezeta.auto.android.pages.SketchPage;
 
@@ -8,18 +9,16 @@ import cucumber.api.java.en.When;
 import org.junit.Assert;
 
 public class SketchPageSteps {
-
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
-            .getInstance();
-
     private static final String EMOJI_UNICODE = "\uD83D\uDE00";
 
     private SketchPage getSketchPage() throws Exception {
-        return pagesCollection.getPage(SketchPage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(SketchPage.class);
     }
 
     private EmojiKeyboardOverlayPage getEmojiKeyboardOverlayPage() throws Exception {
-        return pagesCollection.getPage(EmojiKeyboardOverlayPage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(EmojiKeyboardOverlayPage.class);
     }
 
     /**

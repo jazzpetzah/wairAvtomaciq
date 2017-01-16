@@ -1,12 +1,11 @@
 package com.wearezeta.auto.android.steps.details_overlay.common;
 
 
+import com.wearezeta.auto.android.common.AndroidTestContextHolder;
 import com.wearezeta.auto.android.pages.details_overlay.common.DeviceDetailsPage;
 import com.wearezeta.auto.android.pages.details_overlay.common.DeviceListPage;
-import com.wearezeta.auto.android.steps.AndroidPagesCollection;
 import com.wearezeta.auto.common.misc.ElementState;
-import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.misc.Timedelta;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
@@ -18,16 +17,16 @@ import java.util.Map;
 import static org.hamcrest.Matchers.is;
 
 public class DeviceListPageSteps {
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     private final Map<Integer, ElementState> savedDeviceShieldStates = new HashMap<>();
 
     private DeviceListPage getDeviceListPage() throws Exception {
-        return pagesCollection.getPage(DeviceListPage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(DeviceListPage.class);
     }
 
     private DeviceDetailsPage getDeviceDetailPage() throws Exception {
-        return pagesCollection.getPage(DeviceDetailsPage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(DeviceDetailsPage.class);
     }
 
     /**
@@ -41,7 +40,7 @@ public class DeviceListPageSteps {
     public void IVerifyDeviceX(int deviceIndex) throws Exception {
         getDeviceListPage().tapOnDevice(deviceIndex);
         Assert.assertTrue("Not verified switch is not visible", getDeviceDetailPage().verifyDevice());
-        pagesCollection.getCommonPage().navigateBack();
+        AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage().navigateBack();
     }
 
     /**
@@ -89,11 +88,13 @@ public class DeviceListPageSteps {
     public void ICheckDeviceShieldStateIsChanged(int deviceNum) throws Exception {
         if (!savedDeviceShieldStates.containsKey(deviceNum)) {
             throw new IllegalStateException(String.format(
-                    "Please call the corresponding step to take the screenshot of shield state for device '%s' first", deviceNum));
+                    "Please call the corresponding step to take the screenshot of shield state for device '%s' first",
+                    deviceNum));
         }
         Assert.assertTrue(
                 String.format("Shield state for device '%s' seems not changed", deviceNum),
-                savedDeviceShieldStates.get(deviceNum).isChanged(10, SHIELD_STATE_OVERLAP_MAX_SCORE));
+                savedDeviceShieldStates.get(deviceNum).isChanged(Timedelta.fromSeconds(10),
+                        SHIELD_STATE_OVERLAP_MAX_SCORE));
     }
 
     /**
@@ -105,7 +106,9 @@ public class DeviceListPageSteps {
      */
     @Then("^I verify all device ids of user (.*) are shown on Device list page$")
     public void IVerifyAllDeviceIdsOfUserXAreShown(String user) throws Exception {
-        List<String> expectedDeviceIds = SEBridge.getInstance().getDeviceIds(usrMgr.findUserByNameOrNameAlias(user));
+        List<String> expectedDeviceIds = AndroidTestContextHolder.getInstance().getTestContext().getDevicesManager()
+                .getDeviceIds(AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                        .findUserByNameOrNameAlias(user));
         List<String> actualDeviceIds = getDeviceListPage().getParticipantDevices();
         Assert.assertThat("List does not contain all device ids", actualDeviceIds, is(expectedDeviceIds));
     }

@@ -16,7 +16,7 @@ import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.external.PasswordChangePage;
 import com.wearezeta.auto.web.pages.external.PasswordChangeRequestPage;
 import com.wearezeta.auto.web.pages.external.PasswordChangeRequestSuccessfullPage;
@@ -33,9 +33,9 @@ public class PasswordChangeRequestSteps {
     private static final Logger log = ZetaLogger.getLog(PasswordChangeRequestSteps.class.getSimpleName());
 
     private Future<String> passwordChangeMessage = null;
-    private final TestContext context;
+    private final WebAppTestContext context;
 
-    public PasswordChangeRequestSteps(TestContext context) {
+    public PasswordChangeRequestSteps(WebAppTestContext context) {
         this.context = context;
     }
 
@@ -54,7 +54,7 @@ public class PasswordChangeRequestSteps {
 
     @When("^I enter email (\\S+) on Password Change Request page$")
     public void IEnterEmail(String emailOrAlias) throws Exception {
-        emailOrAlias = context.getUserManager().replaceAliasesOccurences(emailOrAlias,
+        emailOrAlias = context.getUsersManager().replaceAliasesOccurences(emailOrAlias,
                 FindBy.EMAIL_ALIAS);
         context.getPagesCollection().getPage(PasswordChangeRequestPage.class)
                 .setEmail(emailOrAlias);
@@ -74,9 +74,9 @@ public class PasswordChangeRequestSteps {
             throws Exception {
         ClientUser user;
         try {
-            user = context.getUserManager().findUserByEmailOrEmailAlias(emailOrName);
+            user = context.getUsersManager().findUserByEmailOrEmailAlias(emailOrName);
         } catch (NoSuchUserException e) {
-            user = context.getUserManager().findUserByNameOrNameAlias(emailOrName);
+            user = context.getUsersManager().findUserByNameOrNameAlias(emailOrName);
         }
         IMAPSMailbox mbox = IMAPSMailbox.getInstance(user.getEmail(), user.getPassword());
         Map<String, String> expectedHeaders = new HashMap<>();

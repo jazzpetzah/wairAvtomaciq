@@ -22,7 +22,7 @@ public class SearchListPage extends AbstractPickUserPage {
 
     public static final Function<String, String> xpathStrUserAvatarByName = name -> String
             .format("//*[@id='%s' and @value='%s']"
-                    + "/preceding-sibling::*[@id='cv_pickuser__searchuser_chathead']",  strIdUserName, name);
+                    + "/parent::*/parent::*/parent::*//*[@id='cv_pickuser__searchuser_chathead']",  strIdUserName, name);
 
     public static final BiFunction<String, String, String> xpathStrSearchResultUserNameAndAddressBook = (name, details) -> String
             .format("//*[@id='%s' and @value='%s']"

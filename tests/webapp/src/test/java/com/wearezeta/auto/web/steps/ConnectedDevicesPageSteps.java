@@ -1,6 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.ConnectedDevicesPage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -10,9 +10,9 @@ import static org.hamcrest.Matchers.containsString;
 
 public class ConnectedDevicesPageSteps {
 
-    private final TestContext context;
+    private final WebAppTestContext context;
 
-    public ConnectedDevicesPageSteps(TestContext context) {
+    public ConnectedDevicesPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 

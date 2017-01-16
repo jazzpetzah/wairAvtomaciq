@@ -17,23 +17,20 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C3181 @rc @regression @clumsy @IPv6 @fastLogin
-  Scenario Outline: Send Message to contact
+  @C905 @regression @rc @fastLogin
+  Scenario Outline: Verify isTyping appears immediately after starting typing
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given User <Contact> adds new device <DeviceName1>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on contact name <Contact>
-    And I type the default message and send it
-    Then I see 1 default message in the conversation view
-    # Wait for message delivery
-    When I wait for 5 seconds
-    Then I see "<DeliveredLabel>" on the message toolbox in conversation view
+    Given I tap on contact name <Contact>
+    When User <Contact> starts typing in conversation <Name>
+    Then I see typing indicator for <Contact> in the conversation
 
     Examples:
-      | Name      | Contact   | DeviceName1 | DeliveredLabel |
-      | user1Name | user2Name | device1     | Delivered      |
+      | Name      | Contact   | DeviceName1 |
+      | user1Name | user2Name | device1     |
 
   @C923 @regression @fastLogin
   Scenario Outline: Send Hello to contact

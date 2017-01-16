@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.android.pages.ConversationsListPage;
-import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
+import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContextHolder;
 import org.openqa.selenium.By;
 import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.ScreenOrientation;
@@ -22,18 +22,19 @@ public class TabletConversationsListPage extends AndroidTabletPage {
         super(lazyDriver);
     }
 
-    private ConversationsListPage getContactListPage() throws Exception {
+    private ConversationsListPage getConversationListPage() throws Exception {
         return this.getAndroidPageInstance(ConversationsListPage.class);
     }
 
     public void verifyConversationsListIsLoaded() throws Exception {
-        if (ScreenOrientationHelper.getInstance().fixOrientation(getDriver()) == ScreenOrientation.PORTRAIT) {
+        if (AndroidTabletTestContextHolder.getInstance().getTestContext().getScreenOrientationHelper()
+                .fixOrientation(getDriver()) == ScreenOrientation.PORTRAIT) {
             try {
                 DriverUtils.swipeByCoordinates(getDriver(), 1500, 45, 50, 90, 50);
-                getContactListPage().verifyContactListIsFullyLoaded();
+                getConversationListPage().verifyContactListIsFullyLoaded();
             } catch (IllegalStateException e) {
                 DriverUtils.swipeByCoordinates(getDriver(), 1500, 45, 50, 90, 50);
-                getContactListPage().verifyContactListIsFullyLoaded();
+                getConversationListPage().verifyContactListIsFullyLoaded();
             }
         }
     }
@@ -65,19 +66,19 @@ public class TabletConversationsListPage extends AndroidTabletPage {
     }
 
     public boolean isAnyConversationVisible() throws Exception {
-        return getContactListPage().isAnyConversationVisible();
+        return getConversationListPage().isAnyConversationVisible();
     }
 
     public boolean isNoConversationsVisible() throws Exception {
-        return getContactListPage().isNoConversationsVisible();
+        return getConversationListPage().isNoConversationsVisible();
     }
 
     public boolean waitUntilMissedCallNotificationVisible(String convoName) throws Exception {
-        return getContactListPage().waitUntilMissedCallNotificationVisible(convoName);
+        return getConversationListPage().waitUntilMissedCallNotificationVisible(convoName);
     }
 
     public boolean waitUntilMissedCallNotificationInvisible(String convoName) throws Exception {
-        return getContactListPage().waitUntilMissedCallNotificationInvisible(convoName);
+        return getConversationListPage().waitUntilMissedCallNotificationInvisible(convoName);
     }
 
     public void doSwipeLeft() throws Exception {
@@ -86,7 +87,7 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 
     public boolean waitUntilPlayPauseButtonVisibleNextTo(String convoName) throws Exception {
         try {
-            return getContactListPage().isPlayPauseMediaButtonVisible(convoName);
+            return getConversationListPage().isPlayPauseMediaButtonVisible(convoName);
         } catch (InvalidElementStateException e) {
             // Workaround for Selendroid (or application) bug
             return true;
@@ -115,19 +116,18 @@ public class TabletConversationsListPage extends AndroidTabletPage {
     }
 
     public void doLongSwipeUp() throws Exception {
-        getContactListPage().doLongSwipeUp();
-    }
-
-    public void swipeRightListItem(String name) throws Exception {
-        final By locator = By.xpath(ConversationsListPage.xpathStrContactByName.apply(name));
-        DriverUtils.swipeElementPointToPoint(getDriver(), getElement(locator), 1000, 20, 50, 100, 50);
+        getConversationListPage().doLongSwipeUp();
     }
 
     public void tapListActionsAvatar() throws Exception {
-        getContactListPage().tapListActionsAvatar();
+        getConversationListPage().tapListActionsAvatar();
     }
 
     public void tapListSettingsButton() throws Exception {
-        getContactListPage().tapListSettingsButton();
+        getConversationListPage().tapListSettingsButton();
+    }
+
+    public void longTapOnName(final String name, int durationMilliseconds) throws Exception {
+        getConversationListPage().longTapOnName(name, durationMilliseconds);
     }
 }

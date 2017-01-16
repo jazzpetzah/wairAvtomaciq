@@ -6,8 +6,8 @@ import com.wearezeta.auto.common.driver.ZetaWinWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.rc.BasicScenarioResultToTestrailTransformer;
 import com.wearezeta.auto.common.testrail.TestrailSyncUtilities;
-import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 import static com.wearezeta.auto.win.common.WinCommonUtils.clearAppData;
 import static com.wearezeta.auto.win.common.WinCommonUtils.killAllApps;
@@ -45,8 +45,8 @@ public class Lifecycle {
     
     private static final Logger LOG = ZetaLogger.getLog(Lifecycle.class.getName());
 
-    private TestContext webContext;
-    private TestContext wrapperContext;
+    private WebAppTestContext webContext;
+    private WebAppTestContext wrapperContext;
     private ChromeDriverService service;
     private String testname;
 
@@ -55,7 +55,7 @@ public class Lifecycle {
      *
      * @return
      */
-    public TestContext getWebContext() {
+    public WebAppTestContext getWebContext() {
         return webContext;
     }
 
@@ -124,7 +124,7 @@ public class Lifecycle {
         webappDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         
         LOG.debug("Waiting for App to be started");
-        webContext = new TestContext(testname, webDriverFuture);
+        webContext = new WebAppTestContext(testname, webDriverFuture);
         wrapperContext = webContext.fromPrimaryContext(winDriverFuture, new WinPagesCollection());
         LOG.debug("Setting first Win Page");
         wrapperContext.getPagesCollection(WinPagesCollection.class).setFirstPage(new MainWirePage(winDriverFuture));
@@ -185,8 +185,8 @@ public class Lifecycle {
         } finally {
             try {
                 LOG.debug("Releasing devices");
-                LOG.debug(webContext.getUserManager().getCreatedUsers());
-                webContext.getDeviceManager().releaseDevicesOfUsers(webContext.getUserManager().getCreatedUsers());
+                LOG.debug(webContext.getUsersManager().getCreatedUsers());
+                webContext.getDevicesManager().releaseDevicesOfUsers(webContext.getUsersManager().getCreatedUsers());
             } catch (Exception e) {
                 LOG.warn(e);
             }
@@ -216,7 +216,7 @@ public class Lifecycle {
             }
             try {
                 LOG.debug("Resetting users");
-                webContext.getUserManager().resetUsers();
+                webContext.getUsersManager().resetUsers();
             } catch (Exception e) {
                 LOG.warn(e);
             }

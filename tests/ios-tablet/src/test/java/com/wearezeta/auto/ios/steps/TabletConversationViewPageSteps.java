@@ -1,14 +1,14 @@
 package com.wearezeta.auto.ios.steps;
 
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import com.wearezeta.auto.ios.pages.TabletConversationViewPage;
 
 import cucumber.api.java.en.When;
 
 public class TabletConversationViewPageSteps {
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-
     private TabletConversationViewPage getTabletConversationViewPage() throws Exception {
-        return pagesCollection.getPage(TabletConversationViewPage.class);
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(TabletConversationViewPage.class);
     }
 
     /**

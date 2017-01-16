@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.pages.AccountPage;
 import com.wearezeta.auto.web.pages.TakeOverPage;
@@ -24,17 +24,17 @@ public class TakeOverPageSteps {
 
     private static final Logger log = ZetaLogger.getLog(TakeOverPageSteps.class.getSimpleName());
 
-    private final TestContext context;
+    private final WebAppTestContext context;
 
     private String rememberedUsername = null;
 
-    public TakeOverPageSteps(TestContext context) {
+    public TakeOverPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 
     @Given("^I see name (.*) on take over screen$")
     public void ISeeNameOnTakeOverScreen(String name) throws Exception {
-        name = context.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        name = context.getUsersManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         Assert.assertEquals(name, context.getPagesCollection().getPage(TakeOverPage.class).getName());
     }
 
@@ -70,7 +70,7 @@ public class TakeOverPageSteps {
 
     @Then("^I see unique username starts with (.*) on take over screen$")
     public void ISeeTextAboutUsernamesSayingX(String name) throws Throwable {
-        name = context.getUserManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        name = context.getUsersManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
         Assert.assertThat("Username on take over screen",
                 context.getPagesCollection().getPage(TakeOverPage.class).getUniqueUsername(), startsWith(name));
     }

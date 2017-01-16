@@ -1,7 +1,7 @@
 package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import cucumber.api.java.en.Then;
 import java.util.Optional;
@@ -20,9 +20,9 @@ public class SoundSteps {
     // but this can weaken the ability to ignore old sound events
     private static final int SOUND_LOG_BACKSCANNING_MILLIS = 0;
     private long lastSoundCheckMillis = 0;
-    private final TestContext context;
+    private final WebAppTestContext context;
 
-    public SoundSteps(TestContext context) {
+    public SoundSteps(WebAppTestContext context) {
         this.context = context;
     }
 

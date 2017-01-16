@@ -8,27 +8,50 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Metrics {
     
     private final boolean success;
-    private final String setupTime;
+    private final long estabTime;
+    private final long setupTime;
+    private final long avgRateU;
+    private final long avgRateD;
 
     @JsonCreator
-    public Metrics(@JsonProperty("success") boolean success, @JsonProperty("setup_time") String setupTime) {
+    public Metrics(@JsonProperty("success") boolean success, @JsonProperty("estab_time") long estabTime,
+                   @JsonProperty("setup_time") long setupTime, @JsonProperty("avg_rate_u") long avgRateU,
+                   @JsonProperty("avg_rate_d") long avgRateD) {
         this.success = success;
+        this.estabTime = estabTime;
         this.setupTime = setupTime;
+        this.avgRateU = avgRateU;
+        this.avgRateD = avgRateD;
     }
 
     public boolean isSuccess() {
         return success;
     }
 
-    public String getSetupTime() {
+    public long getEstabTime() {
+        return estabTime;
+    }
+
+    public long getSetupTime() {
         return setupTime;
+    }
+
+    public long getAvgRateU() {
+        return avgRateU;
+    }
+
+    public long getAvgRateD() {
+        return avgRateD;
     }
 
     @Override
     public String toString() {
         return "Metrics{" +
                 "success=" + success +
-                ", setupTime='" + setupTime + '\'' +
+                ", estabTime=" + estabTime +
+                ", setupTime=" + setupTime +
+                ", avgRateU=" + avgRateU +
+                ", avgRateD=" + avgRateD +
                 '}';
     }
 }

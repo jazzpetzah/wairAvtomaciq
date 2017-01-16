@@ -2,7 +2,7 @@ package com.wearezeta.auto.osx.steps.osx;
 
 import com.wearezeta.auto.osx.pages.osx.MainWirePage;
 import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -17,9 +17,9 @@ public class MainWirePageSteps {
     private final static int OSX_TITLEBAR_HEIGHT = 24;
     private final static int DEVIATION_ALLOWANCE_IN_PX = 16;
 
-    private final TestContext webContext;
+    private final WebAppTestContext webContext;
     
-    public MainWirePageSteps(TestContext webContext) {
+    public MainWirePageSteps(WebAppTestContext webContext) {
         this.webContext = webContext;
     }
 

@@ -5,6 +5,7 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces.FunctionFor2Parameters;
+import com.wearezeta.auto.common.misc.Timedelta;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.*;
 
@@ -47,7 +48,10 @@ public class SettingsPage extends IOSPage {
             String.format("%s/XCUIElementTypeCell[%s]", xpathStrColorPicker, idx);
 
     private static final Function<String, String> xpathStrUniqueUsernameInSettings = name ->
-            String.format("//XCUIElementTypeStaticText[@name='@%s']", name);
+            String.format("//XCUIElementTypeStaticText[@name='%s']", name.startsWith("@") ? name : "@" + name);
+
+    private static final By xpathSettingsProfilePicturePreview = By.xpath("//XCUIElementTypeImage[" +
+            "@name='imagePreview' and @value='image']");
 
     public SettingsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -64,7 +68,7 @@ public class SettingsPage extends IOSPage {
         FBElement optionsRoot = null;
         int nScrolls = 0;
         do {
-            final Optional<WebElement> dstElement = getElementIfDisplayed(locator, 2);
+            final Optional<WebElement> dstElement = getElementIfDisplayed(locator, Timedelta.fromSeconds(2));
             if (dstElement.isPresent()) {
                 return (FBElement) dstElement.get();
             }
@@ -107,7 +111,7 @@ public class SettingsPage extends IOSPage {
     }
 
     public boolean isSupportWebPageVisible() throws Exception {
-        return isLocatorExist(classSupportSearchField, 15);
+        return isLocatorExist(classSupportSearchField, Timedelta.fromSeconds(15));
     }
 
     public boolean isSettingItemValueEqualTo(String itemName, String expectedValue) throws Exception {
@@ -116,13 +120,17 @@ public class SettingsPage extends IOSPage {
     }
 
     public void clearSelfName() throws Exception {
-        final WebElement selfName = getElement(fbXpathSelfNameEditField);
+        final WebElement selfName = getElementIfExists(fbXpathSelfNameEditField).orElseThrow(
+                () -> new IllegalStateException("Name input is not present on the page")
+        );
         selfName.click();
         selfName.clear();
     }
 
     public void setSelfName(String newName) throws Exception {
-        final WebElement selfName = getElement(fbXpathSelfNameEditField);
+        final WebElement selfName = getElementIfExists(fbXpathSelfNameEditField).orElseThrow(
+                () -> new IllegalStateException("Name input is not present on the page")
+        );
         selfName.click();
         selfName.clear();
         selfName.sendKeys(newName);
@@ -142,5 +150,10 @@ public class SettingsPage extends IOSPage {
     public boolean isUniqueUsernameInSettingsDisplayed(String uniqueName) throws Exception {
         By locator = By.xpath(xpathStrUniqueUsernameInSettings.apply(uniqueName));
         return isLocatorDisplayed(locator);
+    }
+
+    public boolean isProfilePicturePreviewVisible() throws Exception {
+        final WebElement picturePreview = getElement(xpathSettingsProfilePicturePreview);
+        return isElementVisible(picturePreview);
     }
 }

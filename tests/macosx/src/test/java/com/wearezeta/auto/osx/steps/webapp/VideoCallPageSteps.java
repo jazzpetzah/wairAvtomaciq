@@ -1,7 +1,7 @@
 package com.wearezeta.auto.osx.steps.webapp;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.VideoCallPage;
 import cucumber.api.java.en.Then;
 import org.apache.log4j.Logger;
@@ -10,9 +10,9 @@ public class VideoCallPageSteps {
 
     private static final Logger LOG = ZetaLogger.getLog(VideoCallPageSteps.class.getName());
 
-    private final TestContext webContext;
+    private final WebAppTestContext webContext;
 
-    public VideoCallPageSteps(TestContext webContext) {
+    public VideoCallPageSteps(WebAppTestContext webContext) {
         this.webContext = webContext;
     }
     

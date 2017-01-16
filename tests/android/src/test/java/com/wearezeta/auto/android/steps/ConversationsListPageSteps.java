@@ -5,10 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.wearezeta.auto.android.common.AndroidTestContextHolder;
 import com.wearezeta.auto.android.pages.details_overlay.ConversationOptionsMenuPage;
 import com.wearezeta.auto.android.pages.ConversationsListPage;
 import com.wearezeta.auto.common.misc.ElementState;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import cucumber.api.java.en.Given;
@@ -18,8 +19,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 
 public class ConversationsListPageSteps {
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
-
     private final ElementState newDeviceIndicatorState = new ElementState(
             () -> getConversationsListPage().getNewDeviceIndicatorState());
 
@@ -27,18 +26,18 @@ public class ConversationsListPageSteps {
             () -> getConversationsListPage().getConversationsListScreenshot());
 
     private ConversationsListPage getConversationsListPage() throws Exception {
-        return pagesCollection.getPage(ConversationsListPage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(ConversationsListPage.class);
     }
 
     private ConversationOptionsMenuPage getConversationListOptionMenuPage() throws Exception {
-        return pagesCollection.getPage(ConversationOptionsMenuPage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(ConversationOptionsMenuPage.class);
     }
-
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     private static final double CONVERSATIONS_LIST_BACKGROUND_MIN_SCORE = 0.9;
 
-    private static final int CONVERSATIONS_LIST_BACKGROUND_CHANGE_TIMEOUT = 3;
+    private static final Timedelta CONVERSATIONS_LIST_BACKGROUND_CHANGE_TIMEOUT = Timedelta.fromSeconds(3);
 
     /**
      * Verify whether conversations list is visible or not
@@ -73,7 +72,7 @@ public class ConversationsListPageSteps {
     }
 
     private static final double MIN_NEW_DEVICE_INDICATOR_SCORE = 0.95;
-    private static final int NEW_DEVICE_INDICATOR_STATE_CHANGE_TIMEOUT = 10; //seconds
+    private static final Timedelta NEW_DEVICE_INDICATOR_STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(10);
 
     /**
      * Verify whether the new device indicator is changed
@@ -109,7 +108,8 @@ public class ConversationsListPageSteps {
     @When("^I tap on conversation name (.*)$")
     public void ITapOnContactName(String conversationName) throws Exception {
         try {
-            conversationName = usrMgr.findUserByNameOrNameAlias(conversationName).getName();
+            conversationName = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                    .findUserByNameOrNameAlias(conversationName).getName();
         } catch (NoSuchUserException e) {
             // Ignore silently
         }
@@ -139,7 +139,8 @@ public class ConversationsListPageSteps {
     @When("^I swipe right on a (.*)$")
     public void ISwipeRightOnContact(String contact) throws Exception {
         try {
-            contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+            contact = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                    .findUserByNameOrNameAlias(contact).getName();
         } catch (NoSuchUserException e) {
             // Ignore silently - seems bad...
         }
@@ -155,7 +156,8 @@ public class ConversationsListPageSteps {
      */
     @When("^I short swipe right on a (.*)$")
     public void IShortSwipeRightOnAUser(String contact) throws Exception {
-        contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+        contact = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .findUserByNameOrNameAlias(contact).getName();
         getConversationsListPage().swipeShortRightOnConversation(1000, contact);
     }
 
@@ -168,7 +170,8 @@ public class ConversationsListPageSteps {
      */
     @When("^I open options menu of (.*) on conversation list page$")
     public void iLongPressOnAUser(String contact) throws Exception {
-        contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+        contact = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         int nTies = 3;
         //Just because it is not stable
         while (nTies > 0) {
@@ -217,8 +220,10 @@ public class ConversationsListPageSteps {
     @Then("^I (do not )?see group conversation with (.*) in conversations list$")
     public void ISeeGroupChatInContactList(String shouldNotSee, String contacts) throws Exception {
         final List<String> users = new ArrayList<>();
-        for (String alias : usrMgr.splitAliases(contacts)) {
-            users.add(usrMgr.findUserByNameOrNameAlias(alias).getName());
+        for (String alias : AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .splitAliases(contacts)) {
+            users.add(AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                    .findUserByNameOrNameAlias(alias).getName());
         }
         if (shouldNotSee == null) {
             Assert.assertTrue(
@@ -262,7 +267,8 @@ public class ConversationsListPageSteps {
     public void ISeeUserNameInContactList(String shouldNotSee, String userName)
             throws Exception {
         try {
-            userName = usrMgr.findUserByNameOrNameAlias(userName).getName();
+            userName = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                    .findUserByNameOrNameAlias(userName).getName();
         } catch (NoSuchUserException e) {
             // Ignore silently
         }
@@ -287,13 +293,16 @@ public class ConversationsListPageSteps {
      */
     @Then("^I wait up to (\\d+) seconds? until conversation (.*) (appears in|disappears from) the list$")
     public void IWaitForConvo(int timeoutSeconds, String convoName, String expectedAction) throws Exception {
-        convoName = usrMgr.replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
+        convoName = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
         if (expectedAction.equals("appears in")) {
             Assert.assertTrue(String.format("The conversation '%s' is not visible in the list",
-                    convoName), getConversationsListPage().isConversationVisible(convoName, timeoutSeconds));
+                    convoName), getConversationsListPage().isConversationVisible(convoName,
+                    Timedelta.fromSeconds(timeoutSeconds)));
         } else {
             Assert.assertTrue(String.format("The conversation '%s' is  visible in the list, but should be hidden",
-                    convoName), getConversationsListPage().waitUntilConversationDisappears(convoName, timeoutSeconds));
+                    convoName), getConversationsListPage().waitUntilConversationDisappears(convoName,
+                    Timedelta.fromSeconds(timeoutSeconds)));
         }
     }
 
@@ -308,7 +317,8 @@ public class ConversationsListPageSteps {
     @Then("^Conversation (.*) is (not )?muted$")
     public void ContactIsMutedOrNot(String contact, String shouldNotBeMuted)
             throws Exception {
-        contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+        contact = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         if (shouldNotBeMuted == null) {
             Assert.assertTrue(
                     String.format("The conversation '%s' is supposed to be muted, but it is not", contact),
@@ -334,14 +344,15 @@ public class ConversationsListPageSteps {
     @When("^I remember the state of PlayPause button next to the (.*) conversation$")
     public void IRememberTheStateOfPlayPauseButton(String convoName)
             throws Exception {
-        final String name = usrMgr.replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
+        final String name = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
         previousPlayPauseBtnState = new ElementState(
                 () -> getConversationsListPage().getScreenshotOfPlayPauseButtonNextTo(name).orElseThrow(
                         IllegalStateException::new)).remember();
     }
 
     private final static double MAX_SIMILARITY_THRESHOLD = 0.6;
-    private final static int STATE_CHANGE_TIMEOUT_SECONDS = 5;
+    private final static Timedelta STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(5);
 
     /**
      * Verify whether the current screenshot of PlayPause button is different
@@ -357,12 +368,13 @@ public class ConversationsListPageSteps {
         if (previousPlayPauseBtnState == null) {
             throw new IllegalStateException("Please take a screenshot of previous button state first");
         }
-        convoName = usrMgr.findUserByNameOrNameAlias(convoName).getName();
+        convoName = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .findUserByNameOrNameAlias(convoName).getName();
         Assert.assertTrue(String.format(
                 "The current and previous states of PlayPause button for '%s' conversation " +
-                        "seems to be very similar after %d seconds",
-                convoName, STATE_CHANGE_TIMEOUT_SECONDS),
-                previousPlayPauseBtnState.isChanged(STATE_CHANGE_TIMEOUT_SECONDS, MAX_SIMILARITY_THRESHOLD));
+                        "seems to be very similar after %s",
+                convoName, STATE_CHANGE_TIMEOUT.toString()),
+                previousPlayPauseBtnState.isChanged(STATE_CHANGE_TIMEOUT, MAX_SIMILARITY_THRESHOLD));
     }
 
     /**
@@ -375,8 +387,8 @@ public class ConversationsListPageSteps {
     @Then("^I see PlayPause media content button for conversation (.*)")
     public void ThenISeePlayPauseButtonForConvo(String convoName)
             throws Exception {
-        convoName = usrMgr.replaceAliasesOccurences(convoName,
-                FindBy.NAME_ALIAS);
+        convoName = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
         Assert.assertTrue(getConversationsListPage().isPlayPauseMediaButtonVisible(
                 convoName));
     }
@@ -390,8 +402,8 @@ public class ConversationsListPageSteps {
      */
     @When("^I tap PlayPause button next to the (.*) conversation$")
     public void ITapPlayPauseButton(String convoName) throws Exception {
-        convoName = usrMgr.replaceAliasesOccurences(convoName,
-                FindBy.NAME_ALIAS);
+        convoName = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
         getConversationsListPage().tapPlayPauseMediaButton(convoName);
     }
 
@@ -407,7 +419,8 @@ public class ConversationsListPageSteps {
      */
     @When("^I remember unread messages indicator state for conversation (.*)")
     public void IRememberUnreadIndicatorState(String name) throws Exception {
-        final String convoName = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        final String convoName = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         this.previousUnreadIndicatorState.put(convoName,
                 new ElementState(() -> getConversationsListPage().getMessageIndicatorScreenshot(convoName)).remember()
         );
@@ -427,7 +440,8 @@ public class ConversationsListPageSteps {
      */
     @Then("^I see unread messages indicator state is (not )?changed for conversation (.*)")
     public void ISeeUnreadIndicatorStateIsChanged(String notChanged, String name) throws Exception {
-        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        name = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager().replaceAliasesOccurences(name,
+                FindBy.NAME_ALIAS);
         if (!this.previousUnreadIndicatorState.containsKey(name)) {
             throw new IllegalStateException(
                     String.format(
@@ -438,50 +452,14 @@ public class ConversationsListPageSteps {
             Assert.assertTrue(String.format(
                     "The current and previous states of Unread Dot for conversation '%s' seems to be very similar",
                     name),
-                    this.previousUnreadIndicatorState.get(name).isChanged(10, MAX_UNREAD_DOT_SIMILARITY_THRESHOLD));
+                    this.previousUnreadIndicatorState.get(name).isChanged(Timedelta.fromSeconds(10),
+                            MAX_UNREAD_DOT_SIMILARITY_THRESHOLD));
         } else {
             Assert.assertTrue(String.format(
                     "The current and previous states of Unread Dot for conversation '%s' seems to be very similar",
                     name),
-                    this.previousUnreadIndicatorState.get(name).isNotChanged(5, MIN_UNREAD_DOT_THRESHOLD));
-        }
-    }
-
-    /**
-     * Tap Delete on the delete confirmation alert
-     *
-     * @throws Exception
-     * @step. ^I tap DELETE on the confirm alert$
-     */
-    @When("^I tap DELETE on the confirm alert$")
-    public void ITapDELETEOnTheConfirmAlert() throws Exception {
-        getConversationsListPage().confirmDeleteConversationAlert();
-    }
-
-    /**
-     * Tap the leave as well during delete checkbox
-     *
-     * @throws Exception
-     * @step. ^I tap the Leave check box$
-     */
-    @When("^I tap the Leave check box$")
-    public void ITapLeave() throws Exception {
-        getConversationsListPage().checkLeaveWhileDeleteCheckbox();
-    }
-
-    /**
-     * Verifies if Leave check box is visible or not
-     *
-     * @param shouldNotSee equals to null if "do not" part does not exist
-     * @throws Exception
-     * @step. ^I( do not)? see the Leave check box$
-     */
-    @Then("^I( do not)? see the Leave check box$")
-    public void ISeeTheLeaveCheckBox(String shouldNotSee) throws Exception {
-        if (shouldNotSee == null) {
-            Assert.assertTrue(getConversationsListPage().isLeaveCheckBoxVisible());
-        } else {
-            Assert.assertFalse(getConversationsListPage().isLeaveCheckBoxVisible());
+                    this.previousUnreadIndicatorState.get(name).isNotChanged(Timedelta.fromSeconds(5),
+                            MIN_UNREAD_DOT_THRESHOLD));
         }
     }
 
@@ -529,11 +507,11 @@ public class ConversationsListPageSteps {
     @Then("^I verify Conversations list backgroud is (not )?changed$")
     public void IVerifyConversationsListBackgroundChanged(String shouldNotBeChanged) throws Exception {
         if (shouldNotBeChanged == null) {
-            Assert.assertTrue(String.format("State of conversations list has not been changed after timeout"),
+            Assert.assertTrue("State of conversations list has not been changed after timeout",
                     conversationsListBackgroundState.isChanged(CONVERSATIONS_LIST_BACKGROUND_CHANGE_TIMEOUT,
                     CONVERSATIONS_LIST_BACKGROUND_MIN_SCORE));
         } else {
-            Assert.assertTrue(String.format("State of conversations list has not been changed after timeout"),
+            Assert.assertTrue("State of conversations list has not been changed after timeout",
                     conversationsListBackgroundState.isNotChanged(CONVERSATIONS_LIST_BACKGROUND_CHANGE_TIMEOUT,
                     CONVERSATIONS_LIST_BACKGROUND_MIN_SCORE));
         }

@@ -202,6 +202,8 @@ Feature: Connect
     When I tap Send Invite button on Search UI page
     And I tap Invite Others button on Contacts UI page
     And I tap Copy Invite button on Search UI page
+    # Wait for animation
+    And I wait for 3 seconds
     And I tap X button on Contacts UI page
     # Wait for animation
     And I wait for 3 seconds

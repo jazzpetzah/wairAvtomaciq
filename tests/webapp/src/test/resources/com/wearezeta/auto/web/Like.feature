@@ -115,7 +115,7 @@ Feature: Like
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | ChatName | Message1 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | GC1      | like me  |
 
-  @C226427 @regression
+  @C226427 @linkpreview @regression
   Scenario Outline: Verify liking someone's link preview in 1:1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

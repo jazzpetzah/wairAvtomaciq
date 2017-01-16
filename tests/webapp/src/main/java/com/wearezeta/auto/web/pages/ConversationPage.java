@@ -64,6 +64,9 @@ public class ConversationPage extends WebPage {
     @FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idConversationInput)
     private WebElement conversationInput;
 
+    @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssCollectionsButton)
+    private WebElement collectionButton;
+
     @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssShowParticipantsButton)
     private WebElement showParticipants;
 
@@ -412,6 +415,11 @@ public class ConversationPage extends WebPage {
         } else {
             return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
         }
+    }
+
+    public void clickCollectionButton() throws Exception {
+        DriverUtils.waitUntilElementClickable(this.getDriver(), collectionButton);
+        collectionButton.click();
     }
 
     public void clickPeopleButton() throws Exception {
@@ -1467,11 +1475,12 @@ public class ConversationPage extends WebPage {
     }
 
     public boolean isLastMessageReplaced() {
-        return lastGenericMessage.findElement(By.cssSelector(".bg-color-ephemeral")).isDisplayed();
+        return lastGenericMessage.getAttribute("data-uie-expired-status").contains("true");
     }
 
-    public boolean isOrangeBlockInLastMessageNotVisible() throws Exception {
-        return !lastGenericMessage.getAttribute("class").contains("bg-color-ephemeral");
+    public boolean isLastMessageNotReplaced() throws Exception {
+        final String attribute = lastGenericMessage.getAttribute("data-uie-expired-status");
+        return attribute == null ? true : !attribute.contains("true");
     }
 
     /**

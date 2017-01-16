@@ -1,6 +1,6 @@
 Feature: Unique Usernames
 
-  @C352028 @regression
+  @C352028 @regression @rc
   Scenario Outline: Verify autogeneration of a username for a user with latin characters only
     Given I see sign in screen
     Given I enter phone number for <Name>
@@ -25,6 +25,7 @@ Feature: Unique Usernames
   @C352060 @addressbookStart @forceReset @regression
   Scenario Outline: Verify incoming connection view
     Given There are 7 users where <Name> is me
+    Given Users <Name>,<Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact5WithSameNameInAB>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact6Common> upload own details
     Given <Contact1WithABEmail> sent connection request to Me
     Given <Contact2WithABPhoneNumber> sent connection request to Me
     Given <Contact3WithUniqueUserName> sent connection request to Me
@@ -100,9 +101,7 @@ Feature: Unique Usernames
     And I enter "<MinChars>" name on Unique Username page
     Then I see Save button state is Disabled on Unique Username page
     When I tap Save button on Unique Username page
-    And I attempt to enter <MaxChars> random latin alphanumeric chars as name on Unique Username page
-    Then I see that name length is less than <MaxChars> chars on Unique Username page
-    And I type unique usernames from the data table and verify they cannot be committed on Unique Username page
+    Then I type unique usernames from the data table and verify they cannot be committed on Unique Username page
       | Charset      | Chars  |
       | Cyrillic     | МоёИмя |
       | Arabic       | اسمي   |
@@ -110,12 +109,28 @@ Feature: Unique Usernames
       | SpecialChars | %^&@#$ |
 
     Examples:
-      | Name      | Empty | MinChars | MaxChars |
-      | user1Name | ""    | 1        | 22       |
+      | Name      | Empty | MinChars |
+      | user1Name | ""    | 1        |
+
+  @C375777 @regression @fastLogin
+  Scenario Outline: Verify impossibility to enter too long username
+    Given There is 1 user where <Name> is me
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I tap settings gear button
+    Given I select settings item Account
+    Given I select settings item Username
+    When I attempt to enter <MaxChars> random latin alphanumeric chars as name on Unique Username page
+    Then I see that name length is less than <MaxChars> chars on Unique Username page
+
+    Examples:
+      | Name      | MaxChars |
+      | user1Name | 22       |
 
   @C352059 @addressbookStart @forceReset @regression
   Scenario Outline: Verify outgoing connection request view
     Given There are 7 users where <Name> is me
+    Given Users <Name>,<Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact5WithSameNameInAB>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact6Common> upload own details
     Given Myself sent connection request to <Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact5WithSameNameInAB>
     Given User <Contact3WithUniqueUserName> sets the unique username
     Given <Contact4WithCommonFriends> is connected to <Contact6Common>
@@ -176,7 +191,7 @@ Feature: Unique Usernames
       | Name      | Contact1WithABEmail | Contact1ABName | Contact1Email | Contact2WithABPhoneNumber | Contact2ABName | Contact2PhoneNumber | Contact3WithUniqueUserName | Contact3UniqueUserName | Contact4WithCommonFriends | Contact5WithSameNameInAB | Contact5Email | Contact6Common |
       | user1Name | user2Name           | user2ABName    | user2Email    | user3Name                 | user3ABName    | user3PhoneNumber    | user4Name                  | user4UniqueUsername    | user5Name                 | user6Name                | user6Email    | user7Name      |
 
-  @C352036 @regression @fastLogin
+  @C352036 @regression @fastLogin @rc
   Scenario Outline: Verify setting correct user name
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -200,7 +215,7 @@ Feature: Unique Usernames
       | Name      | RegularLength | MinLength | MaxLength |
       | user1Name | 6             | 2         | 21        |
 
-  @C352027 @regression @fastLogin
+  @C352027 @regression @fastLogin @rc
   Scenario Outline: Verify Settings are opened on choosing generating your own username
     Given There is 1 user
     Given User <Name> is me
@@ -247,6 +262,7 @@ Feature: Unique Usernames
   @C352058 @addressbookStart @forceReset @regression
   Scenario Outline: Verify 1-to-1 conversation details
     Given There are 7 users where <Name> is me
+    Given Users <Name>,<Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact5WithSameNameInAB>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact6Common> upload own details
     Given Myself is connected to <Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact5WithSameNameInAB>,<Contact6Common>
     Given User <Contact3WithUniqueUserName> sets the unique username
     Given <Contact4WithCommonFriends> is connected to <Contact6Common>
@@ -319,7 +335,7 @@ Feature: Unique Usernames
       | Name      | Contact   | ContactUniqueUserName |
       | user1Name | user2Name | user2UniqueUsername   |
 
-  @C352054 @regression @fastLogin
+  @C352054 @regression @fastLogin @rc
   Scenario Outline: Verify search by full and partial user name
     Given There are 2 users where <Name> is me
     Given User <Contact> sets the unique username
@@ -341,6 +357,7 @@ Feature: Unique Usernames
   @C352052 @addressbookStart @forceReset @regression
   Scenario Outline: Verify search for connected users returns proper results
     Given There are 8 users where <Name> is me
+    Given Users <Name>,<Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact5WithSameNameInAB>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact6Common>,<Contact7WoCF> upload own details
     Given Myself is connected to <Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact5WithSameNameInAB>,<Contact6Common>,<Contact7WoCF>
     Given User <Contact3WithUniqueUserName> sets the unique username
     Given User <Contact1WithABEmail> sets the unique username
@@ -365,13 +382,13 @@ Feature: Unique Usernames
     When I open search UI
     And I accept alert
     Then I verify correct details are shown for the found users
-      | Name                         | Details                                                      |
-      | <Contact7WoCF>               |                                                              |
-      | <Contact4WithCommonFriends>  |                                                              |
-      | <Contact1WithABEmail>        | @<Contact1UniqueUsername> · <Contact1ABName> in Address Book |
-      | <Contact2WithABPhoneNumber>  | <Contact2ABName> in Address Book                             |
-      | <Contact3WithUniqueUserName> | @<Contact3UniqueUserName>                                    |
-      | <Contact5WithSameNameInAB>   | in Address Book                                              |
+      | Name                         | Details                                                  |
+      | <Contact1WithABEmail>        | @<Contact1UniqueUsername> · <Contact1ABName> in Contacts |
+      | <Contact2WithABPhoneNumber>  | <Contact2ABName> in Contacts                             |
+      | <Contact3WithUniqueUserName> | @<Contact3UniqueUserName>                                |
+      | <Contact5WithSameNameInAB>   | in Contacts                                              |
+      | <Contact7WoCF>               |                                                          |
+      | <Contact4WithCommonFriends>  |                                                          |
 
     Examples:
       | Name      | Contact1WithABEmail | Contact1ABName | Contact1UniqueUsername | Contact1Email | Contact2WithABPhoneNumber | Contact2ABName | Contact2PhoneNumber | Contact3WithUniqueUserName | Contact3UniqueUserName | Contact4WithCommonFriends | Contact5WithSameNameInAB | Contact5Email | Contact6Common | Contact7WoCF |
@@ -402,6 +419,7 @@ Feature: Unique Usernames
   @C352049 @addressbookStart @forceReset @regression
   Scenario Outline: Verify search for unconnected users returns proper results
     Given There are 8 users where <Name> is me
+    Given Users <Name>,<Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact5WithSameNameInAB>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact6Common>,<Contact7WoCF> upload own details
     Given Myself is connected to <Contact6Common>
     Given User <Contact3WithUniqueUserName> sets the unique username
     Given User <Contact1WithABEmail> sets the unique username
@@ -429,13 +447,13 @@ Feature: Unique Usernames
     Given I see conversation <Contact2WithABPhoneNumber> in conversations list
     When I open search UI
     Then I verify correct details are shown for the found users
-      | Name                         | Details                                                      |
-      | <Contact7WoCF>               |                                                              |
-      | <Contact1WithABEmail>        | @<Contact1UniqueUsername> · <Contact1ABName> in Address Book |
-      | <Contact2WithABPhoneNumber>  | <Contact2ABName> in Address Book                             |
-      | <Contact3WithUniqueUserName> | @<Contact3UniqueUserName>                                    |
-      | <Contact4WithCommonFriends>  | 1 person in common                                           |
-      | <Contact5WithSameNameInAB>   | in Address Book                                              |
+      | Name                         | Details                                                  |
+      | <Contact7WoCF>               |                                                          |
+      | <Contact1WithABEmail>        | @<Contact1UniqueUsername> · <Contact1ABName> in Contacts |
+      | <Contact2WithABPhoneNumber>  | <Contact2ABName> in Contacts                             |
+      | <Contact3WithUniqueUserName> | @<Contact3UniqueUserName>                                |
+      | <Contact4WithCommonFriends>  | 1 person in common                                       |
+      | <Contact5WithSameNameInAB>   | in Contacts                                              |
 
     Examples:
       | Name      | Contact1WithABEmail | Contact1ABName | Contact1UniqueUsername | Contact1Email | Contact2WithABPhoneNumber | Contact2ABName | Contact2PhoneNumber | Contact3WithUniqueUserName | Contact3UniqueUserName | Contact4WithCommonFriends | Contact5WithSameNameInAB | Contact5Email | Contact6Common | Contact7WoCF |
@@ -482,6 +500,7 @@ Feature: Unique Usernames
   @C352061 @addressbookStart @forceReset @regression
   Scenario Outline: Verify user info from Contact List->Options (swipe)
     Given There are 8 users where <Name> is me
+    Given Users <Name>,<Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact5WithSameNameInAB>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact6Common> upload own details
     Given Myself is connected to <Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact5WithSameNameInAB>,<Contact6Common>
     Given Myself sent connection request to <Contact7Unconnected>
     Given User <Contact3WithUniqueUserName> sets the unique username
@@ -555,6 +574,7 @@ Feature: Unique Usernames
   @C352062 @addressbookStart @forceReset @regression
   Scenario Outline: Verify connected user in 1-to-1 conversation view
     Given There are 7 users where <Name> is me
+    Given Users <Name>,<Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact5WithSameNameInAB>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact6Common> upload own details
     Given Myself is connected to <Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact5WithSameNameInAB>,<Contact6Common>
     Given User <Contact3WithUniqueUserName> sets the unique username
     Given <Contact4WithCommonFriends> is connected to <Contact6Common>
@@ -631,3 +651,23 @@ Feature: Unique Usernames
     Examples:
       | NameAlias | Name |
       | user1Name | 😼   |
+
+  @C368978 @regression @fastLogin
+  Scenario Outline: Verify impossibility of autogenerating reserved username (e.g. admin)
+    Given There is 1 user
+    Given User <NameAlias> is me
+    Given User <NameAlias> changes name to <Name>
+    Given I prepare Wire to perform fast log in by email as <Name>
+    Given I sign in using my email or phone number
+    Given I open search UI
+    Given I accept alert if visible
+    Given I tap X button on Search UI page
+    When I see username <NameAlias> on Unique Username Takeover page
+    Then I do not see unique username <Name> on Unique Username Takeover page
+    When I remember the unique username on Unique Username Takeover page
+    When I tap Keep This One button on Unique Username Takeover page
+    Then I verify my unique username on the backend is equal to the one which was visible on Unique Username Takeover page
+
+    Examples:
+      | NameAlias | Name  |
+      | user1Name | admin |

@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android.steps;
 
+import com.wearezeta.auto.android.common.AndroidTestContextHolder;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.AboutPage;
@@ -8,10 +9,9 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class AboutPageSteps {
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
-
     private AboutPage getAboutPage() throws Exception {
-        return pagesCollection.getPage(AboutPage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext()
+                .getPagesCollection().getPage(AboutPage.class);
     }
 
     /**

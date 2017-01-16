@@ -1,6 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.OptionsPage;
 import cucumber.api.java.en.When;
 
@@ -11,9 +11,9 @@ import static org.junit.Assert.assertFalse;
 
 public class OptionsPageSteps {
 
-    private final TestContext context;
+    private final WebAppTestContext context;
 
-    public OptionsPageSteps(TestContext context) {
+    public OptionsPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 

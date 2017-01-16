@@ -490,11 +490,11 @@ public final class WebAppLocators {
 
         //Link preview
 
-        public static final String cssLinkTitle = ".link-preview-title";
+        public static final String cssLinkTitle = "[data-uie-name='link-preview-title']";
 
-        public static final String cssLinkPreviewImage = ".link-preview-image img";
+        public static final String cssLinkPreviewImage = "[data-uie-name='link-preview-image']";
 
-        public static final String cssLinkPreviewLink = ".link-preview-site";
+        public static final String cssLinkPreviewLink = "[data-uie-name='link-preview-url']";
 
         //Location sharing
 
@@ -589,6 +589,9 @@ public final class WebAppLocators {
         // This is needed for IE workaround
         public static final String classNameShowParticipantsButton = "show-participants";
 
+        //public static final String cssCollectionsButton = "[data-uie-name='do-collections']";
+        public static final String cssCollectionsButton = ".icon-collection";
+
         public static final String cssShowParticipantsButton = "[data-uie-name='do-participants']";
 
         public static final String idConversationInput = "conversation-input-text";
@@ -639,8 +642,7 @@ public final class WebAppLocators {
         // image fullscreen
         public static final String cssModalDialog = ".modal-show";
 
-        public static final String xpathXButton = "//div[contains(@class, 'detail-view-close-button')" +
-                "]//*[@data-uie-name='do-close-detail-view']";
+        public static final String xpathXButton = "//*[@data-uie-name='do-close-detail-view']";
 
         public static final String idBlackBorder = "detail-view";
 
@@ -668,6 +670,27 @@ public final class WebAppLocators {
                 "]//div[contains(@class, 'modal-close')]";
 
         public static final String cssFirstTimeExperienceMessage = "[data-uie-name='start-conversation-hint']";
+    }
+
+    public static final class CollectionPage {
+        public static final String cssPictures = "[data-uie-name='collection-section-image'] image-component";
+
+        public static final String cssPictureCollectionSize = "[data-uie-name='collection-section-image'] [data-uie-name='collection-size']";
+
+        public static final String cssVideos = "[data-uie-name='collection-section-video'] video-asset";
+
+        public static final String cssVideoCollectionSize = "[data-uie-name='collection-section-video'] [data-uie-name='collection-size']";
+
+        public static final String cssFiles = "[data-uie-name='collection-section-file'] [data-uie-name='file-name']";
+
+        public static final String cssFileCollectionSize = "[data-uie-name='collection-section-file'] [data-uie-name='collection-size']";
+
+        public static final String cssLinks = "[data-uie-name='collection-section-link'] image-component";
+
+        public static final String cssLinkCollectionSize = "[data-uie-name='collection-section-link'] [data-uie-name='collection-size']";
+
+        public static final String cssNoItemsPlaceholder = "[data-uie-name='collection-no-items']";
+
     }
 
     public static final class ConnectToPage {
@@ -723,6 +746,8 @@ public final class WebAppLocators {
 
         public static final String xpathRoot = "//div[@id='start-ui']";
 
+        public static final String xpathTopPeopleRoot = "//div[@class='start-ui-list-top-conversations']";
+
         public static final String cssNameSearchInput = "[data-uie-name='enter-users']";
 
         public static final String cssOpenOrCreateConversationButton = "[data-uie-name='do-add-create']," +
@@ -741,10 +766,19 @@ public final class WebAppLocators {
                 + ".//*[contains(@class,'search-list-item-content-name') and text()='%s']"
                 + "/parent::*//*[contains(@class,'search-list-item-content-username') and text()='%s']]";
 
+        public static final String xpathTopPeopleName = xpathTopPeopleRoot + "//*[@data-uie-name='item-user' and "
+                + ".//*[contains(@class,'search-list-item-content-name') and text()='%s']"
+                + "/parent::*//*[not(contains(@class,'search-list-item-content-username') and text()='%s')]]";
+
         public static final Function<String, String> xpathSearchResultGroupByName = (
                 name) -> String.format(
                 "%s//*[@data-uie-name='item-group' and .//*[text()='%s']]",
                 xpathRoot, name);
+
+        public static final Function<String, String> xpathTopPeopleList = (
+                name) -> String.format(
+                "%s//*[@data-uie-name='item-user' and .//*[contains(@class,'search-list-item-content-name') and text()='%s']]",
+                xpathTopPeopleRoot, name);
 
         public static final String cssCloseStartUIButton = ".start-ui-header [data-uie-name='do-close']";
 

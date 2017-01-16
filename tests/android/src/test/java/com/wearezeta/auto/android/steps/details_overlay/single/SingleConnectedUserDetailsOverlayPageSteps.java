@@ -1,20 +1,15 @@
 package com.wearezeta.auto.android.steps.details_overlay.single;
 
-
+import com.wearezeta.auto.android.common.AndroidTestContextHolder;
 import com.wearezeta.auto.android.pages.details_overlay.single.SingleConnectedUserDetailsOverlayPage;
-import com.wearezeta.auto.android.steps.AndroidPagesCollection;
-import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 
 public class SingleConnectedUserDetailsOverlayPageSteps {
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
     private SingleConnectedUserDetailsOverlayPage getSingleConnectedUserDetailsOverlayPage() throws Exception {
-        return pagesCollection.getPage(SingleConnectedUserDetailsOverlayPage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(SingleConnectedUserDetailsOverlayPage.class);
     }
 
     /**

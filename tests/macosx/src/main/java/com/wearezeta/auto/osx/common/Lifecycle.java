@@ -16,7 +16,7 @@ import static com.wearezeta.auto.osx.common.OSXExecutionContext.WIRE_APP_PATH;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.osx.MainWirePage;
 import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wire.picklejar.gherkin.model.Scenario;
@@ -48,8 +48,8 @@ public class Lifecycle {
 
     private static final Logger LOG = ZetaLogger.getLog(Lifecycle.class.getName());
 
-    private TestContext webContext;
-    private TestContext wrapperContext;
+    private WebAppTestContext webContext;
+    private WebAppTestContext wrapperContext;
     private ChromeDriverService service;
     private String testname;
 
@@ -58,7 +58,7 @@ public class Lifecycle {
      *
      * @return
      */
-    public TestContext getWebContext() {
+    public WebAppTestContext getWebContext() {
         return webContext;
     }
 
@@ -127,7 +127,7 @@ public class Lifecycle {
         webDriverFuture = createWebDriver(osxDriverFuture);
         LOG.debug("Init Chrome Driver");
         final ZetaWebAppDriver webappDriver = webDriverFuture.get();
-        webContext = new TestContext(testname, webDriverFuture);
+        webContext = new WebAppTestContext(testname, webDriverFuture);
         wrapperContext = webContext.fromPrimaryContext(osxDriverFuture, new OSXPagesCollection());
         LOG.debug("Setting first OS X Page");
         wrapperContext.getPagesCollection(OSXPagesCollection.class).setFirstPage(new MainWirePage(osxDriverFuture));
@@ -192,8 +192,8 @@ public class Lifecycle {
         } finally {
             try {
                 LOG.debug("Releasing devices");
-                LOG.debug(webContext.getUserManager().getCreatedUsers());
-                webContext.getDeviceManager().releaseDevicesOfUsers(webContext.getUserManager().getCreatedUsers());
+                LOG.debug(webContext.getUsersManager().getCreatedUsers());
+                webContext.getDevicesManager().releaseDevicesOfUsers(webContext.getUsersManager().getCreatedUsers());
             } catch (Exception e) {
                 LOG.warn(e);
             }
@@ -224,7 +224,7 @@ public class Lifecycle {
             }
             try {
                 LOG.debug("Resetting users");
-                webContext.getUserManager().resetUsers();
+                webContext.getUsersManager().resetUsers();
             } catch (Exception e) {
                 LOG.warn(e);
             }

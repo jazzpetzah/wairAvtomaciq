@@ -14,10 +14,9 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.common.Message;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.pages.ContactListPage;
@@ -52,9 +51,9 @@ public class ConversationPageSteps {
 
     private String randomMessage;
     private String rememberedEditTimeStamp;
-    private final TestContext context;
+    private final WebAppTestContext context;
 
-    public ConversationPageSteps(TestContext context) {
+    public ConversationPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 
@@ -138,6 +137,11 @@ public class ConversationPageSteps {
         }
     }
 
+    @When("^I click collection button in conversation$")
+    public void WhenIClickCollectionsButton() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).clickCollectionButton();
+    }
+
     @When("^I click People button in one to one conversation$")
     public void WhenIClickPeopleButtonIn1to1() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickPeopleButton();
@@ -210,7 +214,7 @@ public class ConversationPageSteps {
 
     @Then("^I verify the database is( not)? containing the message (.*) from (.*) in active conversation$")
     public void ISeeNoTraceInDatabase(String not, String message, String nameAlias) throws Exception {
-        String userId = context.getUserManager().findUserByNameOrNameAlias(nameAlias).getId();
+        String userId = context.getUsersManager().findUserByNameOrNameAlias(nameAlias).getId();
         String conversationId = context.getPagesCollection().getPage(ContactListPage.class).getActiveConversationId();
         assertThat("Couldn't get id of active conversation!", conversationId, not(isEmptyOrNullString()));
         if (not != null) {
@@ -226,7 +230,7 @@ public class ConversationPageSteps {
 
     @Then("^I see (\\d+) messages? in database from (.*) in active conversation$")
     public void ISeeXMessagesInDatabase(int numberOfMessages, String nameAlias) throws Exception {
-        String userId = context.getUserManager().findUserByNameOrNameAlias(nameAlias).getId();
+        String userId = context.getUsersManager().findUserByNameOrNameAlias(nameAlias).getId();
         String conversationId = context.getPagesCollection().getPage(ContactListPage.class).getActiveConversationId();
         assertThat("Couldn't get id of active conversation!", conversationId, not(isEmptyOrNullString()));
         assertThat("Number of messages in DB",
@@ -735,10 +739,10 @@ public class ConversationPageSteps {
     @Then("^I see the last message is liked by users? (.*)$")
     public void ISeeLastMessageIsLikedBy(String usersToNameAliases) throws Exception {
         List<String> likers = context.getPagesCollection().getPage(ConversationPage.class).getUsersThatLikeTheLastMessage();
-        List<String> aliases = context.getUserManager().splitAliases(usersToNameAliases);
+        List<String> aliases = context.getUsersManager().splitAliases(usersToNameAliases);
         String[] users = new String[aliases.size()];
         for (int i = 0; i < aliases.size(); i++) {
-            ClientUser userTo = context.getUserManager().findUserByNameOrNameAlias(aliases.get(i));
+            ClientUser userTo = context.getUsersManager().findUserByNameOrNameAlias(aliases.get(i));
             users[i] = userTo.getName();
         }
         assertThat("User not found in like message", likers, hasItems(users));
@@ -748,7 +752,7 @@ public class ConversationPageSteps {
     @Then("^I see (.*) is the most recent liker of last message$")
     public void ISeeMostRecentLiker(String liker) throws Exception {
         List<String> likers = context.getPagesCollection().getPage(ConversationPage.class).getUsersThatLikeTheLastMessage();
-        ClientUser userTo = context.getUserManager().findUserByNameOrNameAlias(liker);
+        ClientUser userTo = context.getUsersManager().findUserByNameOrNameAlias(liker);
         String user = userTo.getName();
         assertThat("User is not the most recent liker", likers.get(likers.size() - 1), is(user));
     }
@@ -783,7 +787,7 @@ public class ConversationPageSteps {
 
     @Then("^I see connecting message for (.*) in conversation$")
     public void ISeeConnectingMessage(String contact) throws Exception {
-        contact = context.getUserManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+        contact = context.getUsersManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         assertThat("User name", context.getPagesCollection().getPage(ConversationPage.class).getConnectedMessageUser(),
                 equalTo(contact));
         assertThat("Label", context.getPagesCollection().getPage(ConversationPage.class).getConnectedMessageLabel(),
@@ -792,7 +796,7 @@ public class ConversationPageSteps {
 
     @Then("^I see connected message for (.*) in conversation$")
     public void ISeeConnectedMessage(String contact) throws Exception {
-        contact = context.getUserManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+        contact = context.getUsersManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         assertThat("User name", context.getPagesCollection().getPage(ConversationPage.class).getConnectedMessageUser(),
                 equalTo(contact));
         assertThat("Label", context.getPagesCollection().getPage(ConversationPage.class).getConnectedMessageLabel(),
@@ -825,17 +829,17 @@ public class ConversationPageSteps {
 
     @And("^I see unique username of (.*) in conversation$")
     public void ISeeUniqueUsernameOnSelfProfilePage(String nameAlias) throws Exception {
-        String username = context.getUserManager().findUserByNameOrNameAlias(nameAlias).getUniqueUsername();
+        String username = context.getUsersManager().findUserByNameOrNameAlias(nameAlias).getUniqueUsername();
         Assert.assertThat("Username in conversation",
                 context.getPagesCollection().getPage(ConversationPage.class).getUniqueUsername(), equalTo(username));
     }
 
     @Then("^I see (.*) action (\\d+) times for (.*) in conversation$")
     public void ThenISeeActionForContactInConversation(String message, int times, String contacts) throws Exception {
-        contacts = context.getUserManager().replaceAliasesOccurences(contacts, FindBy.NAME_ALIAS);
+        contacts = context.getUsersManager().replaceAliasesOccurences(contacts, FindBy.NAME_ALIAS);
         Set<String> parts = new HashSet<String>();
         parts.add(message);
-        parts.addAll(context.getUserManager().splitAliases(contacts));
+        parts.addAll(context.getUsersManager().splitAliases(contacts));
         assertThat(message + " action for " + contacts, context.getPagesCollection().getPage(ConversationPage.class)
                 .waitForNumberOfMessageHeadersContain(parts), equalTo(times));
     }
@@ -904,7 +908,7 @@ public class ConversationPageSteps {
                     context.getPagesCollection().getPage(ConversationPage.class).isLastMessageReplaced());
         } else {
             assertTrue("Replacing block is still shown on the last message",
-                    context.getPagesCollection().getPage(ConversationPage.class).isOrangeBlockInLastMessageNotVisible());
+                    context.getPagesCollection().getPage(ConversationPage.class).isLastMessageNotReplaced());
         }
     }
 
@@ -1141,7 +1145,7 @@ public class ConversationPageSteps {
 
     @And("^I click on avatar of user (.*) in conversation view$")
     public void IClickOnUserAvatar(String userAlias) throws Exception {
-        ClientUser user = context.getUserManager().findUserBy(userAlias, FindBy.NAME_ALIAS);
+        ClientUser user = context.getUsersManager().findUserBy(userAlias, FindBy.NAME_ALIAS);
         context.getPagesCollection().getPage(ConversationPage.class).clickUserAvatar(user.getId());
     }
 
@@ -1286,15 +1290,21 @@ public class ConversationPageSteps {
     @Then("^I (do not )?see a picture (.*) from link preview$")
     public void ISeePictureInLinkPreview(String doNot, String pictureName) throws Exception {
         if (doNot == null) {
-            assertThat("I see a picture from link preview in the conversation",
+            assertThat("I do not see a picture from link preview in the conversation",
                     context.getPagesCollection().getPage(ConversationPage.class).isImageFromLinkPreviewVisible());
-
             final String picturePath = WebCommonUtils.getFullPicturePath(pictureName);
             BufferedImage originalImage = ImageUtil.readImageFromFile(picturePath);
             BufferedImage linkPreviewScreenshot = context.getPagesCollection().getPage(ConversationPage.class).
                     getImageFromLastLinkPreview();
+            
+            // Image matching with SIFT does not work very well on really small images
+            // because it defines the maximum number of matching keys
+            // so we scale them to double size to get enough matching keys
+            final int scaleMultiplicator = 2;
+            originalImage = ImageUtil.resizeImage(originalImage, scaleMultiplicator);
+            linkPreviewScreenshot = ImageUtil.resizeImage(linkPreviewScreenshot, scaleMultiplicator);
 
-            assertThat("Not enough good matches", ImageUtil.getMatches(originalImage, linkPreviewScreenshot), greaterThan(100));
+            assertThat("Not enough good matches", ImageUtil.getMatches(originalImage, linkPreviewScreenshot), greaterThan(80));
         } else {
             assertThat("I see a picture in the conversation", context.getPagesCollection().getPage(ConversationPage.class)
                     .isImageFromLinkPreviewNotVisible());

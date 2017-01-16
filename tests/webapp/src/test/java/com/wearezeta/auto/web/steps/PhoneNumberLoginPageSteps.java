@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.PhoneNumberLoginPage;
 
 import cucumber.api.java.en.Then;
@@ -19,15 +19,15 @@ public class PhoneNumberLoginPageSteps {
     @SuppressWarnings("unused")
     private static final Logger log = ZetaLogger.getLog(PhoneNumberLoginPageSteps.class.getSimpleName());
 
-    private final TestContext context;
+    private final WebAppTestContext context;
 
-    public PhoneNumberLoginPageSteps(TestContext context) {
+    public PhoneNumberLoginPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 
     @When("^I sign in using phone number of user (.*)$")
     public void ISignInUsignPhoneNumberOfUser(String name) throws Exception {
-        ClientUser user = context.getUserManager().findUserByNameOrNameAlias(name);
+        ClientUser user = context.getUsersManager().findUserByNameOrNameAlias(name);
         context.getPagesCollection().getPage(PhoneNumberLoginPage.class).enterCountryCode(user.getPhoneNumber().getPrefix());
         context.getPagesCollection().getPage(PhoneNumberLoginPage.class).enterPhoneNumber(user.getPhoneNumber().withoutPrefix());
     }

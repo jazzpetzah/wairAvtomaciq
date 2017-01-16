@@ -1,6 +1,8 @@
 package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.Timedelta;
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import com.wearezeta.auto.ios.pages.VideoCallingOverlayPage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -9,16 +11,15 @@ import org.junit.Assert;
 
 public class VideoCallingOverlayPageSteps {
 
-    private static final int STATE_CHANGE_TIMEOUT = 15;
+    private static final Timedelta STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(15);
     private static final double MIN_BUTTON_SIMILARITY_SCORE = 0.9;
 
     private final ElementState muteButtonState = new ElementState(() -> getVideoCallingOverlayPage().getMuteButtonScreenshot());
     private final ElementState videoButtonState = new ElementState(() -> getVideoCallingOverlayPage().getVideoButtonScreenshot());
 
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-
-    public VideoCallingOverlayPage getVideoCallingOverlayPage() throws Exception {
-        return pagesCollection.getPage(VideoCallingOverlayPage.class);
+    private VideoCallingOverlayPage getVideoCallingOverlayPage() throws Exception {
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(VideoCallingOverlayPage.class);
     }
 
     /**

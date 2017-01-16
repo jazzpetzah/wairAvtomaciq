@@ -1,15 +1,15 @@
 package com.wearezeta.auto.android.steps;
 
+import com.wearezeta.auto.android.common.AndroidTestContextHolder;
 import com.wearezeta.auto.android.pages.GroupConvoCreationErrorOverlay;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 
 public class GroupConvoCreationErrorOverlaySteps {
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
-
     private GroupConvoCreationErrorOverlay getConvoCreationErrorOverlay() throws Exception {
-        return pagesCollection.getPage(GroupConvoCreationErrorOverlay.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(GroupConvoCreationErrorOverlay.class);
     }
 
     /**

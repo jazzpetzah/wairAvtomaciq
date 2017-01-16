@@ -3,6 +3,7 @@ package com.wearezeta.auto.ios.pages;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.driver.device_helpers.IOSSimulatorHelpers;
+import com.wearezeta.auto.common.misc.Timedelta;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
@@ -51,7 +52,7 @@ public class CameraRollPage extends IOSPage {
     }
 
     private void tapFirstLibraryFolder() throws Exception {
-        getElementIfExists(xpathCameraLibraryFirstFolder, 3).orElseThrow(
+        getElementIfExists(xpathCameraLibraryFirstFolder, Timedelta.fromSeconds(3)).orElseThrow(
                 () -> new IllegalStateException("Cannot find a library to select")
         ).click();
     }

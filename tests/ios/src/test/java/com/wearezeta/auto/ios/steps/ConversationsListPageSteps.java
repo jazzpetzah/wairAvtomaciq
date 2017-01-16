@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.Timedelta;
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import org.junit.Assert;
 
 import cucumber.api.java.en.*;
@@ -14,16 +16,14 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.ios.pages.*;
 
 public class ConversationsListPageSteps {
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-
     private ConversationsListPage getConversationsListPage() throws Exception {
-        return pagesCollection.getPage(ConversationsListPage.class);
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(ConversationsListPage.class);
     }
 
     private LoginPage getLoginPage() throws Exception {
-        return pagesCollection.getPage(LoginPage.class);
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(LoginPage.class);
     }
 
     @Given("^I see conversations list$")
@@ -42,7 +42,8 @@ public class ConversationsListPageSteps {
      */
     @When("^I remember the state of (.*) conversation item$")
     public void IRememberConvoItemState(String nameAlias) throws Exception {
-        final String name = usrMgr.replaceAliasesOccurences(nameAlias, FindBy.NAME_ALIAS);
+        final String name = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(nameAlias, FindBy.NAME_ALIAS);
         this.savedConvoItemStates.put(name,
                 new ElementState(() -> getConversationsListPage().getConversationEntryScreenshot(name)).remember()
         );
@@ -58,7 +59,8 @@ public class ConversationsListPageSteps {
      */
     @Then("^I see the state of (.*) conversation item is (not )?changed$")
     public void IVerifyConvoState(String nameAlias, String shouldNotBeChanged) throws Exception {
-        final String name = usrMgr.replaceAliasesOccurences(nameAlias, FindBy.NAME_ALIAS);
+        final String name = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(nameAlias, FindBy.NAME_ALIAS);
         if (!this.savedConvoItemStates.containsKey(name)) {
             throw new IllegalStateException(String.format(
                     "Please take a screenshot of '%s' conversation entry first", name));
@@ -67,10 +69,10 @@ public class ConversationsListPageSteps {
         final int timeoutSeconds = 10;
         if (shouldNotBeChanged == null) {
             Assert.assertTrue(String.format("The state of '%s' conversation item seems to be the same", name),
-                    this.savedConvoItemStates.get(name).isChanged(timeoutSeconds, minScore));
+                    this.savedConvoItemStates.get(name).isChanged(Timedelta.fromSeconds(timeoutSeconds), minScore));
         } else {
             Assert.assertTrue(String.format("The state of '%s' conversation item seems to be changed", name),
-                    this.savedConvoItemStates.get(name).isNotChanged(timeoutSeconds, minScore));
+                    this.savedConvoItemStates.get(name).isNotChanged(Timedelta.fromSeconds(timeoutSeconds), minScore));
         }
     }
 
@@ -108,10 +110,12 @@ public class ConversationsListPageSteps {
         final int timeoutSeconds = 10;
         if (shouldNotBeChanged == null) {
             Assert.assertTrue(String.format("The state of conversation item number %s item seems to be the same", convoIdx),
-                    this.savedConvoItemStatesByIdx.get(convoIdx).isChanged(timeoutSeconds, minScore));
+                    this.savedConvoItemStatesByIdx.get(convoIdx).isChanged(Timedelta.fromSeconds(timeoutSeconds),
+                            minScore));
         } else {
             Assert.assertTrue(String.format("The state of conversation item number %s item seems to be changed", convoIdx),
-                    this.savedConvoItemStatesByIdx.get(convoIdx).isNotChanged(timeoutSeconds, minScore));
+                    this.savedConvoItemStatesByIdx.get(convoIdx).isNotChanged(Timedelta.fromSeconds(timeoutSeconds),
+                            minScore));
         }
     }
 
@@ -145,7 +149,8 @@ public class ConversationsListPageSteps {
 
     @When("^I tap on contact name (.*)")
     public void WhenITapOnContactName(String name) throws Exception {
-        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        name = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         getConversationsListPage().tapOnName(name);
     }
 
@@ -177,7 +182,7 @@ public class ConversationsListPageSteps {
         getConversationsListPage().tapContactsButton();
     }
 
-    private final static long CONVO_LIST_UPDATE_TIMEOUT = 10000; // milliseconds
+    private final static Timedelta CONVO_LIST_UPDATE_TIMEOUT = Timedelta.fromSeconds(10);
 
     /**
      * Verify whether the first items in conversations list is the given item
@@ -188,17 +193,18 @@ public class ConversationsListPageSteps {
      */
     @Then("^I see first item in contact list named (.*)")
     public void ISeeUserNameFirstInContactList(String convoName) throws Exception {
-        convoName = usrMgr.replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
-        final long millisecondsStarted = System.currentTimeMillis();
+        convoName = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
+        final Timedelta started = Timedelta.now();
         do {
             Thread.sleep(500);
             if (getConversationsListPage().isFirstConversationName(convoName)) {
                 return;
             }
-        } while (System.currentTimeMillis() - millisecondsStarted <= CONVO_LIST_UPDATE_TIMEOUT);
+        } while (Timedelta.now().isDiffLessOrEqual(started, CONVO_LIST_UPDATE_TIMEOUT));
         throw new AssertionError(
                 String.format("The conversation '%s' is not the first conversation in the list after " +
-                        "%s seconds timeout", convoName, CONVO_LIST_UPDATE_TIMEOUT / 1000));
+                        "%s timeout", convoName, CONVO_LIST_UPDATE_TIMEOUT.toString()));
 
     }
 
@@ -212,7 +218,8 @@ public class ConversationsListPageSteps {
      */
     @Then("^I (do not )?see conversation (.*) in conversations list$")
     public void ISeeUserInContactList(String shouldNotSee, String value) throws Exception {
-        value = usrMgr.replaceAliasesOccurences(value, FindBy.NAME_ALIAS);
+        value = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(value, FindBy.NAME_ALIAS);
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("The conversation '%s' is not visible in the conversation list",
                     value), getConversationsListPage().isConversationInList(value));
@@ -234,20 +241,24 @@ public class ConversationsListPageSteps {
      */
     @Then("^I wait up to (\\d+) seconds? until conversation (.*) (appears in|disappears from) the list$")
     public void IWaitForConvo(int timeoutSeconds, String convoName, String expectedState) throws Exception {
-        convoName = usrMgr.replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
+        convoName = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
         if (expectedState.equals("appears in")) {
             Assert.assertTrue(String.format("The conversation '%s' is not visible in the conversation list",
-                    convoName), getConversationsListPage().isConversationInList(convoName, timeoutSeconds));
+                    convoName), getConversationsListPage().isConversationInList(convoName,
+                    Timedelta.fromSeconds(timeoutSeconds)));
         } else {
             Assert.assertTrue(
                     String.format("The conversation '%s' is still visible in the conversation list, but should be hidden",
-                            convoName), getConversationsListPage().isConversationNotInList(convoName, timeoutSeconds));
+                            convoName), getConversationsListPage().isConversationNotInList(convoName,
+                            Timedelta.fromSeconds(timeoutSeconds)));
         }
     }
 
     @When("^I swipe right on a (.*)$")
     public void ISwipeRightOnContact(String contact) throws Exception {
-        contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+        contact = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         getConversationsListPage().swipeRightConversationToRevealActionButtons(contact);
     }
 
@@ -306,13 +317,15 @@ public class ConversationsListPageSteps {
 
     @When("^I tap (?:Play|Pause) button in conversations list next to (.*)")
     public void ITapPlayPauseButtonInContactListNextTo(String contact) throws Exception {
-        String name = usrMgr.findUserByNameOrNameAlias(contact).getName();
+        String name = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .findUserByNameOrNameAlias(contact).getName();
         getConversationsListPage().tapPlayPauseButtonNextTo(name);
     }
 
     @Then("^I (do not )?see (?:Play|Pause) button in conversations list next to (.*)")
     public void ISeePlayPauseButtonInContactListNextTo(String shouldNotBeVisible, String contact) throws Exception {
-        String name = usrMgr.findUserByNameOrNameAlias(contact).getName();
+        String name = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .findUserByNameOrNameAlias(contact).getName();
         if (shouldNotBeVisible == null) {
             Assert.assertTrue(String.format("Play/Pause button is expected to be visible next to '%s' conversation",
                     contact), getConversationsListPage().isPlayPauseButtonVisibleNextTo(name));
@@ -340,15 +353,19 @@ public class ConversationsListPageSteps {
 
     @When("I (don't )?see in conversations list group chat with (.*)")
     public void ISeeInContactsGroupChatWith(String shouldNotSee, String participantNameAliases) throws Exception {
-        participantNameAliases = usrMgr.replaceAliasesOccurences(participantNameAliases,
+        participantNameAliases = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(participantNameAliases,
                 ClientUsersManager.FindBy.NAME_ALIAS);
-        final List<String> participantNames = usrMgr.splitAliases(participantNameAliases);
+        final List<String> participantNames = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .splitAliases(participantNameAliases);
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("There is no conversation with '%s' in the list", participantNames),
-                    getConversationsListPage().isConversationWithUsersExist(participantNames, 5));
+                    getConversationsListPage().isConversationWithUsersExist(participantNames,
+                            Timedelta.fromSeconds(5)));
         } else {
             Assert.assertFalse(String.format("There is conversation with '%s' in the list, which should be hidden",
-                    participantNames), getConversationsListPage().isConversationWithUsersExist(participantNames, 2));
+                    participantNames), getConversationsListPage().isConversationWithUsersExist(participantNames,
+                    Timedelta.fromSeconds(2)));
         }
     }
 
@@ -381,14 +398,15 @@ public class ConversationsListPageSteps {
         }
         final int timeoutSeconds = 10;
         final double minScore = 0.97;
-        if (shouldNotChange == null) {
+        final Timedelta timeout = Timedelta.fromSeconds(timeoutSeconds);
+         if (shouldNotChange == null) {
             Assert.assertTrue(String.format("The previous and the current state of settings gear " +
-                            "icon seems to be equal after %s seconds", timeoutSeconds),
-                    previousSettingsGearState.isChanged(timeoutSeconds, minScore));
+                            "icon seems to be equal after %s", timeout),
+                    previousSettingsGearState.isChanged(timeout, minScore));
         } else {
             Assert.assertTrue(String.format("The previous and the current state of settings gear " +
-                            "icon seems to be different after %s seconds", timeoutSeconds),
-                    previousSettingsGearState.isNotChanged(timeoutSeconds, minScore));
+                            "icon seems to be different after %s", timeout),
+                    previousSettingsGearState.isNotChanged(timeout, minScore));
         }
     }
 

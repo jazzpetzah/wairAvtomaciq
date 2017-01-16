@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android_tablet.steps;
 
+import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContextHolder;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android_tablet.pages.TabletWelcomePage;
@@ -9,10 +10,9 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class WelcomePageSteps {
-	private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection.getInstance();
-
 	private TabletWelcomePage getWelcomePage() throws Exception {
-		return pagesCollection.getPage(TabletWelcomePage.class);
+		return AndroidTabletTestContextHolder.getInstance().getTestContext().getPagesCollection()
+				.getPage(TabletWelcomePage.class);
 	}
 
 	/**

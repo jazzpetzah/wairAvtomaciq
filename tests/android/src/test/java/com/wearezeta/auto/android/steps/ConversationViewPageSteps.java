@@ -8,14 +8,14 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
+import com.wearezeta.auto.android.common.AndroidTestContextHolder;
 import com.wearezeta.auto.android.pages.ConversationViewPage;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces;
-import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
@@ -23,9 +23,6 @@ import cucumber.api.java.en.When;
 import org.junit.Assert;
 
 public class ConversationViewPageSteps {
-
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     private final ElementState mediaButtonState = new ElementState(
             () -> getConversationViewPage().getMediaButtonState());
     private final ElementState conversationViewState = new ElementState(
@@ -49,27 +46,27 @@ public class ConversationViewPageSteps {
     private static final String ANDROID_LONG_MESSAGE = CommonUtils.generateRandomString(300);
     private static final String LONG_MESSAGE_ALIAS = "LONG_MESSAGE";
     private static final String ANY_MESSAGE = "*ANY MESSAGE*";
-    private static final int SWIPE_DURATION_MILLISECONDS = 1300;
+    private static final Timedelta SWIPE_DURATION = Timedelta.fromMilliSeconds(1300);
     private static final int MAX_SWIPES = 5;
-    private static final int MEDIA_BUTTON_STATE_CHANGE_TIMEOUT = 15;
+    private static final Timedelta MEDIA_BUTTON_STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(15);
     private static final double MEDIA_BUTTON_MIN_SIMILARITY_SCORE = 0.97;
     private static final double MAX_SIMILARITY_THRESHOLD = 0.97;
-    private static final int CONVO_VIEW_STATE_CHANGE_TIMEOUT = 15;
+    private static final Timedelta CONVO_VIEW_STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(15);
     private static final double CONVO_VIEW_MIN_SIMILARITY_SCORE = 0.5;
-    private static final int SHIELD_STATE_CHANGE_TIMEOUT = 15;
+    private static final Timedelta SHIELD_STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(15);
     private static final double SHIELD_MIN_SIMILARITY_SCORE = 0.97;
-    private static final int TOP_TOOLBAR_STATE_CHANGE_TIMEOUT = 15;
+    private static final Timedelta TOP_TOOLBAR_STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(15);
     private static final double TOP_TOOLBAR_MIN_SIMILARITY_SCORE = 0.97;
-    private static final int LIKE_BUTTON_CHANGE_TIMEOUT = 15;
+    private static final Timedelta LIKE_BUTTON_CHANGE_TIMEOUT = Timedelta.fromSeconds(15);
     private static final double LIKE_BUTTON_MIN_SIMILARITY_SCORE = 0.6;
     private static final double LIKE_BUTTON_NOT_CHANGED_MIN_SCORE = -0.5;
     private static final double FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE = 0.4;
-    private static final int MESSAGE_CONTAINER_CHANGE_TIMEOUT = 15;
+    private static final Timedelta MESSAGE_CONTAINER_CHANGE_TIMEOUT = Timedelta.fromSeconds(15);
     private static final double MESSAGE_CONTAINER_MIN_SIMILARITY_SCORE = 0.6;
     private static final double MESSAGE_CONTAINER_NOT_CHANGED_MIN_SCORE = -0.5;
     private static final double MIN_UPLOAD_TO_PLAY_SCORE = 0.75;
     private static final double MIN_PLAY_BUTTON_SCORE = 0.82;
-    private static final int PLAY_BUTTON_STATE_CHANGE_TIMEOUT = 20; //seconds
+    private static final Timedelta PLAY_BUTTON_STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(20);
 
     private static String expandMessage(String message) {
         final Map<String, String> specialStrings = new HashMap<>();
@@ -82,7 +79,8 @@ public class ConversationViewPageSteps {
     }
 
     private ConversationViewPage getConversationViewPage() throws Exception {
-        return pagesCollection.getPage(ConversationViewPage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(ConversationViewPage.class);
     }
 
     /**
@@ -343,7 +341,8 @@ public class ConversationViewPageSteps {
      */
     @Then("^I (do not )?see Ping message \"(.*)\" in the conversation view$")
     public void ISeePingMessageInTheDialog(String doNotSee, String message) throws Exception {
-        message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
+        message = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
         if (doNotSee == null) {
             Assert.assertTrue(String.format("Ping message '%s' is not visible after the timeout", message),
                     getConversationViewPage().waitUntilPingMessageWithTextVisible(message));
@@ -482,10 +481,10 @@ public class ConversationViewPageSteps {
     public void IScroll(String swipeDirection) throws Exception {
         switch (swipeDirection.toLowerCase()) {
             case "up":
-                getConversationViewPage().dialogsPagesSwipeUp(SWIPE_DURATION_MILLISECONDS);
+                getConversationViewPage().dialogsPagesSwipeUp(SWIPE_DURATION);
                 break;
             case "down":
-                getConversationViewPage().dialogsPagesSwipeDown(SWIPE_DURATION_MILLISECONDS);
+                getConversationViewPage().dialogsPagesSwipeDown(SWIPE_DURATION);
                 break;
             default:
                 throw new IllegalArgumentException((String.format("Unknonwn swipe direction '%s'", swipeDirection)));
@@ -500,7 +499,8 @@ public class ConversationViewPageSteps {
      */
     @When("^I swipe down on conversation until Mediabar appears$")
     public void ISwipedownOnDialogPageUntilMediaBarAppears() throws Exception {
-        Assert.assertTrue("Media Bar is not visible", getConversationViewPage().scrollUpUntilMediaBarVisible(MAX_SWIPES));
+        Assert.assertTrue("Media Bar is not visible",
+                getConversationViewPage().scrollUpUntilMediaBarVisible(MAX_SWIPES));
     }
 
     /**
@@ -511,7 +511,7 @@ public class ConversationViewPageSteps {
      */
     @When("^I navigate back from conversation$")
     public void INavigateBackFromConversation() throws Exception {
-        getConversationViewPage().navigateBack(1000);
+        getConversationViewPage().navigateBack(Timedelta.fromMilliSeconds(1000));
     }
 
     /**
@@ -574,8 +574,10 @@ public class ConversationViewPageSteps {
     @Then("^I see group chat page with users (.*)$")
     public void ISeeGroupChatPage(String participantNameAliases) throws Exception {
         List<String> participantNames = new ArrayList<>();
-        for (String nameAlias : usrMgr.splitAliases(participantNameAliases)) {
-            participantNames.add(usrMgr.findUserByNameOrNameAlias(nameAlias).getName());
+        for (String nameAlias : AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .splitAliases(participantNameAliases)) {
+            participantNames.add(AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                    .findUserByNameOrNameAlias(nameAlias).getName());
         }
         Assert.assertTrue(String.format("Group chat view with names %s is not visible", participantNames),
                 getConversationViewPage().isConversationPeopleChangedMessageContainsNames(participantNames));
@@ -591,7 +593,8 @@ public class ConversationViewPageSteps {
      */
     @Then("^I see message (.*) contact (.*) on group page$")
     public void ISeeMessageContactOnGroupPage(String message, String contact) throws Exception {
-        contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+        contact = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .findUserByNameOrNameAlias(contact).getName();
         final String expectedMsg = message + " " + contact;
         Assert.assertTrue(String.format("The message '%s' is not visible in the conversation view", expectedMsg),
                 getConversationViewPage().waitForPeopleMessage(expectedMsg));
@@ -629,7 +632,8 @@ public class ConversationViewPageSteps {
             Assert.assertTrue("The otr non verified conversation message has been shown in the conversation view",
                     getConversationViewPage().waitForOtrNonVerifiedMessage());
         } else {
-            userName = usrMgr.findUserByNameOrNameAlias(userName).getName();
+            userName = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                    .findUserByNameOrNameAlias(userName).getName();
             Assert.assertTrue(String.format(
                     "The otr non verified conversation message caused by user '%s' has been shown in the conversation view",
                     userName), getConversationViewPage().waitForOtrNonVerifiedMessageCausedByUser(userName));
@@ -759,11 +763,11 @@ public class ConversationViewPageSteps {
     public void IWaitFileTransferActionButtonChanged(int timeout, String shouldNotBeChanged) throws Exception {
         if (shouldNotBeChanged == null) {
             Assert.assertTrue(String.format("State of file transfer action button has not been changed after %s seconds",
-                    timeout), filePlaceHolderActionButtonState.isChanged(timeout,
+                    timeout), filePlaceHolderActionButtonState.isChanged(Timedelta.fromSeconds(timeout),
                     FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE));
         } else {
             Assert.assertTrue(String.format("State of file transfer action button has been changed after %s seconds",
-                    timeout), filePlaceHolderActionButtonState.isNotChanged(timeout,
+                    timeout), filePlaceHolderActionButtonState.isNotChanged(Timedelta.fromSeconds(timeout),
                     FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE));
         }
     }
@@ -855,9 +859,11 @@ public class ConversationViewPageSteps {
      */
     @Then("^I see missed call from (.*) in the conversation$")
     public void ISeeMissedCallFrom(String contact) throws Exception {
-        contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+        contact = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         final String expectedMessage = contact + " CALLED";
-        Assert.assertTrue(String.format("Missed call message '%s' is not visible in the conversation view", expectedMessage),
+        Assert.assertTrue(String.format("Missed call message '%s' is not visible in the conversation view",
+                expectedMessage),
                 getConversationViewPage().waitUntilMissedCallMessageIsVisible(expectedMessage));
     }
 
@@ -877,8 +883,8 @@ public class ConversationViewPageSteps {
         final int maxFrames = 4;
         switch (dst) {
             case CONVERSATION:
-                avgThreshold = ImageUtil.getAnimationThreshold(getConversationViewPage()::getRecentPictureScreenshot, maxFrames,
-                        screenshotingDelay);
+                avgThreshold = ImageUtil.getAnimationThreshold(getConversationViewPage()::getRecentPictureScreenshot,
+                        maxFrames, screenshotingDelay);
                 Assert.assertTrue(String.format("The picture in the conversation view seems to be static (%.2f >= %.2f)",
                         avgThreshold, MAX_SIMILARITY_THRESHOLD), avgThreshold < MAX_SIMILARITY_THRESHOLD);
                 break;
@@ -1141,9 +1147,11 @@ public class ConversationViewPageSteps {
     @Then("^I( do not)? see text input$")
     public void ISeeTextInput(String doNotSee) throws Exception {
         if (doNotSee == null) {
-            Assert.assertTrue("The text input should be visible", getConversationViewPage().isTextInputVisible());
+            Assert.assertTrue("The text input should be visible",
+                    getConversationViewPage().isTextInputVisible());
         } else {
-            Assert.assertTrue("The text input should be invisible", getConversationViewPage().isTextInputInvisible());
+            Assert.assertTrue("The text input should be invisible",
+                    getConversationViewPage().isTextInputInvisible());
         }
     }
 
@@ -1207,12 +1215,10 @@ public class ConversationViewPageSteps {
             throws Exception {
         if (isObfuscated == null) {
             getConversationViewPage().tapMessage(messageType,
-                    Optional.of(usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS)),
-                    tapType);
+                    Optional.of(AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                            .replaceAliasesOccurences(message, FindBy.NAME_ALIAS)), tapType);
         } else {
-            getConversationViewPage().tapMessage(messageType,
-                    Optional.empty(),
-                    tapType);
+            getConversationViewPage().tapMessage(messageType, Optional.empty(), tapType);
         }
     }
 
@@ -1401,14 +1407,15 @@ public class ConversationViewPageSteps {
     @Then("^I wait up to (\\d+) seconds? until (video message|audio message) (?:download|upload) is completed$")
     public void IWaitUntilMessageUploaded(int timeoutSeconds, String buttonType) throws Exception {
         FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
+        final Timedelta timeout = Timedelta.fromSeconds(timeoutSeconds);
         switch (buttonType.toLowerCase()) {
             case "video message":
-                verificationFunc = () -> videoMessagePlayButtonState.isChanged(timeoutSeconds,
+                verificationFunc = () -> videoMessagePlayButtonState.isChanged(timeout,
                         MIN_PLAY_BUTTON_SCORE);
                 videoMessagePlayButtonState.remember();
                 break;
             case "audio message":
-                verificationFunc = () -> audioMessagePlayButtonState.isChanged(timeoutSeconds,
+                verificationFunc = () -> audioMessagePlayButtonState.isChanged(timeout,
                         MIN_UPLOAD_TO_PLAY_SCORE);
                 final BufferedImage cancelBntInitialState = ImageUtil.readImageFromFile(
                         AndroidCommonUtils.getImagesPathFromConfig(AndroidCommonUtils.class)
@@ -1418,8 +1425,8 @@ public class ConversationViewPageSteps {
             default:
                 throw new IllegalArgumentException(String.format("Cannot identify the button type '%s'", buttonType));
         }
-        Assert.assertTrue(String.format("The current and previous state of the %s button seems to be the same", buttonType),
-                verificationFunc.call());
+        Assert.assertTrue(String.format("The current and previous state of the %s button seems to be the same",
+                buttonType), verificationFunc.call());
     }
 
     /**
@@ -1436,7 +1443,7 @@ public class ConversationViewPageSteps {
                         + "android_audio_msg_pause_btn.png");
         audioMessagePlayButtonState.remember(pauseBntInitialState);
         Assert.assertTrue("Audio message pause button is not visible",
-                audioMessagePlayButtonState.isNotChanged(timeoutSeconds, MIN_PLAY_BUTTON_SCORE));
+                audioMessagePlayButtonState.isNotChanged(Timedelta.fromSeconds(timeoutSeconds), MIN_PLAY_BUTTON_SCORE));
     }
 
     /**
@@ -1476,7 +1483,7 @@ public class ConversationViewPageSteps {
     }
 
     private static final double MIN_AUDIOMESSAGE_SEEKBAR_SCORE = 0.8;
-    private static final int AUDIOMESSAGE_SEEKBAR_STATE_CHANGE_TIMEOUT = 20; //seconds
+    private static final Timedelta AUDIOMESSAGE_SEEKBAR_STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(20);
 
     /**
      * Verify whether current audio message seekbar differs from the previous one
@@ -1505,7 +1512,7 @@ public class ConversationViewPageSteps {
     }
 
     private static final double MIN_AUDIOMESSAGE_MICROPHONE_SCORE = 0.9;
-    private static final int AUDIOMESSAGE_MICROPHONE_STATE_CHANGE_TIMEOUT = 10; //seconds
+    private static final Timedelta AUDIOMESSAGE_MICROPHONE_STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(10);
 
     /**
      * Verify whether current audio message microphone button differs from the previous one
@@ -1594,7 +1601,8 @@ public class ConversationViewPageSteps {
      */
     @Then("^I (do not )?see the trashcan next to the name of (.*) in the conversation view$")
     public void ISeeTrashNextToName(String shouldNotSee, String name) throws Exception {
-        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        name = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("Cannot see the trashcan next to the name '%s'", name),
                     getConversationViewPage().waitUntilTrashIconVisible(name));
@@ -1614,7 +1622,8 @@ public class ConversationViewPageSteps {
      */
     @Then("^I (do not )?see the pen icon next to the name of (.*) in the conversation view$")
     public void ISeePenNextToName(String shouldNotSee, String name) throws Exception {
-        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        name = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("Cannot see the Pen icon next to the name '%s'", name),
                     getConversationViewPage().waitUntilPenIconVisible(name));
@@ -1634,7 +1643,7 @@ public class ConversationViewPageSteps {
      */
     @Then("^I (do not )?see the message separator of (.*) in (\\d+) seconds$")
     public void ISeeMessageFromUser(String shouldNotSee, String name, int timeOutSeconds) throws Exception {
-        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        name = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("The message separator of user %s should be visible", name),
                     getConversationViewPage().waitUntilMessageSeparatorVisible(name, timeOutSeconds));
@@ -1666,7 +1675,8 @@ public class ConversationViewPageSteps {
                 expectedMsg = ANY_MESSAGE;
                 isVisible = getConversationViewPage().waitUntilMessageMetaItemVisible(itemType);
             } else {
-                expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
+                expectedMsg = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                        .replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
                 isVisible = getConversationViewPage().waitUntilMessageMetaItemVisible(itemType, expectedMsg);
             }
         } else {
@@ -1674,7 +1684,8 @@ public class ConversationViewPageSteps {
                 expectedMsg = ANY_MESSAGE;
                 isVisible = !getConversationViewPage().waitUntilMessageMetaItemInvisible(itemType);
             } else {
-                expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
+                expectedMsg = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                        .replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
                 isVisible = !getConversationViewPage().waitUntilMessageMetaItemInvisible(itemType, expectedMsg);
             }
         }
@@ -1718,7 +1729,8 @@ public class ConversationViewPageSteps {
      */
     @Then("^I see (.*) (?:is|are) typing$")
     public void ISeeTyping(String userNames) throws Exception {
-        String names = usrMgr.replaceAliasesOccurences(userNames, FindBy.NAME_ALIAS);
+        String names = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(userNames, FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format("%s are expected to be visible in typing list", userNames),
                 getConversationViewPage().waitUntilTypingVisible(names));
     }

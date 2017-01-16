@@ -1,7 +1,7 @@
 package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.AddEmailAddressPage;
 
 import cucumber.api.java.en.Then;
@@ -11,16 +11,16 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class AddEmailAddressPageSteps {
 
-    private final TestContext context;
+    private final WebAppTestContext context;
 
-    public AddEmailAddressPageSteps(TestContext context) {
+    public AddEmailAddressPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 
     @When("^I enter email of user (.*) on add email address dialog$")
     public void IEnterEmailOfUserOnAddEmailAddressDialog(String name)
             throws Throwable {
-        ClientUser user = context.getUserManager().findUserByNameOrNameAlias(name);
+        ClientUser user = context.getUsersManager().findUserByNameOrNameAlias(name);
         context.getPagesCollection().getPage(AddEmailAddressPage.class).setEmail(
                 user.getEmail());
     }

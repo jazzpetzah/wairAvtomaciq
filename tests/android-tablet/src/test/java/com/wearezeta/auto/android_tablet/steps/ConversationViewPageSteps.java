@@ -1,12 +1,13 @@
 package com.wearezeta.auto.android_tablet.steps;
 
+import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContextHolder;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.Timedelta;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android_tablet.pages.TabletConversationViewPage;
 import com.wearezeta.auto.common.ImageUtil;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 
 import cucumber.api.java.en.And;
@@ -14,18 +15,16 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class ConversationViewPageSteps {
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
-    private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection.getInstance();
-    private static final String ANY_MESSAGE = "*ANY MESSAGE*";
-    private static final int LIKE_BUTTON_CHANGE_TIMEOUT = 15;
+   private static final String ANY_MESSAGE = "*ANY MESSAGE*";
+    private static final Timedelta LIKE_BUTTON_CHANGE_TIMEOUT = Timedelta.fromSeconds(15);
     private static final double LIKE_BUTTON_MIN_SIMILARITY_SCORE = 0.6;
     private static final double LIKE_BUTTON_NOT_CHANGED_MIN_SCORE = -0.5;
 
     private ElementState messageLikeButtonState;
 
     private TabletConversationViewPage getConversationViewPage() throws Exception {
-        return pagesCollection.getPage(TabletConversationViewPage.class);
+        return AndroidTabletTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(TabletConversationViewPage.class);
     }
 
     /**
@@ -69,8 +68,8 @@ public class ConversationViewPageSteps {
     @Then("^I see the system message contains \"(.*)\" text on [Cc]onversation view page$")
     public void ISeeTheLastSystemMessage(String expectedMessage)
             throws Exception {
-        expectedMessage = usrMgr.replaceAliasesOccurences(expectedMessage,
-                FindBy.NAME_ALIAS);
+        expectedMessage = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(expectedMessage, FindBy.NAME_ALIAS);
         Assert.assertTrue(
                 String.format(
                         "The system message containing text '%s' is not visible in the conversation view",
@@ -89,8 +88,8 @@ public class ConversationViewPageSteps {
     @Then("^I see the conversation name system message \"(.*)\" on [Cc]onversation view page$")
     public void ISeeTheConversationNameSystemMessage(String expectedMessage)
             throws Exception {
-        expectedMessage = usrMgr.replaceAliasesOccurences(expectedMessage,
-                FindBy.NAME_ALIAS);
+        expectedMessage = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(expectedMessage, FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format(
                 "The conversation name system message does not equal to '%s'",
                 expectedMessage), getConversationViewPage()
@@ -108,8 +107,8 @@ public class ConversationViewPageSteps {
     @Then("^I see the system connection message contains \"(.*)\" text on [Cc]onversation view page$")
     public void ISeeTheSystemConnectionMessage(String expectedMessage)
             throws Exception {
-        expectedMessage = usrMgr.replaceAliasesOccurences(expectedMessage,
-                FindBy.NAME_ALIAS);
+        expectedMessage = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(expectedMessage, FindBy.NAME_ALIAS);
         Assert.assertTrue(
                 String.format(
                         "The system connection message containing text '%s' is not visible in the conversation view",
@@ -130,8 +129,8 @@ public class ConversationViewPageSteps {
     @Then("^I see the outgoing invitation message \"(.*)\" on [Cc]onversation view page$")
     public void ISeeOutgoungInvitationMessage(String expectedMessage)
             throws Exception {
-        expectedMessage = usrMgr.replaceAliasesOccurences(expectedMessage,
-                FindBy.NAME_ALIAS);
+        expectedMessage = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(expectedMessage, FindBy.NAME_ALIAS);
         Assert.assertTrue(
                 String.format(
                         "The outgoing invitation message containing text '%s' is not visible in the conversation view",
@@ -291,8 +290,8 @@ public class ConversationViewPageSteps {
     @Then("^I (do not )?see the [Pp]ing message \"(.*)\" in (?:the |\\s*)[Cc]onversation view$")
     public void ISeePingMessage(String shouldNotBeVisible,
                                 String expectedMessage) throws Exception {
-        expectedMessage = usrMgr.replaceAliasesOccurences(expectedMessage,
-                FindBy.NAME_ALIAS);
+        expectedMessage = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(expectedMessage, FindBy.NAME_ALIAS);
         if (shouldNotBeVisible == null) {
             Assert.assertTrue(
                     String.format(
@@ -476,7 +475,7 @@ public class ConversationViewPageSteps {
                 .scrollUpUntilMediaBarVisible(MAX_SWIPES));
     }
 
-    private static final int MEDIA_BUTTON_STATE_CHANGE_TIMEOUT = 15;
+    private static final Timedelta MEDIA_BUTTON_STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(15);
     private static final double MEDIA_BUTTON_MIN_SIMILARITY_SCORE = 0.97;
 
     private ElementState mediaButtonState = new ElementState(
@@ -522,13 +521,13 @@ public class ConversationViewPageSteps {
      *
      * @param message     the message to tap
      * @param messageType the type of message which could be Ping or Text
-     * @param isLongTap   equals to null if the tap should be simple tap
      * @throws Exception
      * @step. ^I (long )?tap the (Ping|Text) message "(.*)" in the conversation view
      */
     @When("^I (long tap|double tap|tap) the (Ping|Text) message \"(.*)\" in the conversation view$")
     public void ITapTheNonTextMessage(String tapType, String messageType, String message) throws Exception {
-        message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
+        message = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
         getConversationViewPage().tapMessage(messageType, message, tapType);
     }
 
@@ -697,7 +696,7 @@ public class ConversationViewPageSteps {
     /**
      * Wait to check whether the file placeholder action button is changed
      *
-     * @param timeout            timeout in seconds
+     * @param timeoutSeconds     timeout in seconds
      * @param shouldNotBeChanged is not null if the button should not be changed
      * @throws Exception
      * @step. ^I wait up to (\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download)
@@ -705,13 +704,14 @@ public class ConversationViewPageSteps {
      */
     @When("^I wait up to (\\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download)" +
             " placeholder is (not )?changed$")
-    public void IWaitFileTransferActionButtonChanged(int timeout, String shouldNotBeChanged) throws Exception {
+    public void IWaitFileTransferActionButtonChanged(int timeoutSeconds, String shouldNotBeChanged) throws Exception {
+        final Timedelta timeout = Timedelta.fromSeconds(timeoutSeconds);
         if (shouldNotBeChanged == null) {
-            Assert.assertTrue(String.format("State of file transfer action button has not been changed after %s seconds",
+            Assert.assertTrue(String.format("State of file transfer action button has not been changed after %s",
                     timeout), filePlaceHolderActionButtonState.isChanged(timeout,
                     FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE));
         } else {
-            Assert.assertTrue(String.format("State of file transfer action button has been changed after %s seconds",
+            Assert.assertTrue(String.format("State of file transfer action button has been changed after %s",
                     timeout), filePlaceHolderActionButtonState.isNotChanged(timeout,
                     FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE));
         }
@@ -735,7 +735,6 @@ public class ConversationViewPageSteps {
      * @param itemType       Message Meta Item type
      * @param hasExpectedMsg equals null means you don't specify the expceted content for item
      * @param expectedMsg    specified expected content for item
-     * @param messageType    the message type
      * @throws Exception
      * @step. ^I (do not )?see (Like button|Like description|Message status|First like avatar|Second like avatar)
      * (with expected text "(.*)" )?in conversation view$
@@ -751,7 +750,8 @@ public class ConversationViewPageSteps {
                 expectedMsg = ANY_MESSAGE;
                 isVisible = getConversationViewPage().waitUntilMessageMetaItemVisible(itemType);
             } else {
-                expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
+                expectedMsg = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
+                        .replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
                 isVisible = getConversationViewPage().waitUntilMessageMetaItemVisible(itemType, expectedMsg);
             }
         } else {
@@ -759,7 +759,8 @@ public class ConversationViewPageSteps {
                 expectedMsg = ANY_MESSAGE;
                 isVisible = !getConversationViewPage().waitUntilMessageMetaItemInvisible(itemType);
             } else {
-                expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
+                expectedMsg = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
+                        .replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
                 isVisible = !getConversationViewPage().waitUntilMessageMetaItemInvisible(itemType, expectedMsg);
             }
         }
@@ -771,7 +772,6 @@ public class ConversationViewPageSteps {
     /**
      * Remember the state of like button
      *
-     * @param messageType Specified message type
      * @throws Exception
      * @step. ^I remember the state of like button$
      */
@@ -804,7 +804,6 @@ public class ConversationViewPageSteps {
      * Tap on Any msg meta item
      *
      * @param itemType    Message Meta Item type
-     * @param messageType The message type
      * @throws Exception
      * @step. ^^I tap (Like button|Like description|Message status|First like avatar|Second like avatar)
      * in conversation view$
@@ -819,7 +818,6 @@ public class ConversationViewPageSteps {
      * Verify the count of Message status within current conversation
      *
      * @param expectedCount expect apperance count
-     * @param expectedText  the expected text within Message Status
      * @throws Exception
      * @step. ^I see (\d+) Message statu(?:s|ses) with expected text "(.*)" in conversation view$
      */
@@ -841,7 +839,8 @@ public class ConversationViewPageSteps {
      */
     @Then("^I (do not )?see the trashcan next to the name of (.*) in the conversation view$")
     public void ISeeTrashNextToName(String shouldNotSee, String name) throws Exception {
-        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("Cannot see the trashcan next to the name '%s'", name),
                     getConversationViewPage().waitUntilTrashIconVisible(name));
@@ -861,7 +860,8 @@ public class ConversationViewPageSteps {
      */
     @Then("^I (do not )?see the pen icon next to the name of (.*) in the conversation view$")
     public void ISeePenNextToName(String shouldNotSee, String name) throws Exception {
-        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("Cannot see the Pen icon next to the name '%s'", name),
                     getConversationViewPage().waitUntilPenIconVisible(name));

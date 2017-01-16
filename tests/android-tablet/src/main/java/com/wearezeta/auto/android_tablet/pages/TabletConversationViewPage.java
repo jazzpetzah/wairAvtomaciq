@@ -26,7 +26,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     private static final Function<String, String> xpathStrSystemConvoNameMessageByContent = content -> String
             .format("//*[@id='ttv__row_conversation__new_conversation_name' and @value='%s']", content);
 
-    private static final By idMissedCallImage = By.id("sci__conversation__missed_call__image");
+    private static final By idMissedCallImage = By.id("ttv__row_conversation__missed_call");
 
     private static final By idSketchButtonOnPicturePreviewOverlay = By.id("gtv__single_image_message__sketch");
 

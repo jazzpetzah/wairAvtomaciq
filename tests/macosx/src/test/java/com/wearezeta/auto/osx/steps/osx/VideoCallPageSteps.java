@@ -7,7 +7,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.osx.pages.osx.MainWirePage;
 import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.VideoCallPage;
 import cucumber.api.java.en.Then;
 import java.awt.image.BufferedImage;
@@ -24,9 +24,9 @@ public class VideoCallPageSteps {
 
     private static final Logger LOG = ZetaLogger.getLog(VideoCallPageSteps.class.getName());
 
-    private final TestContext webContext;
+    private final WebAppTestContext webContext;
 
-    public VideoCallPageSteps(TestContext webContext) {
+    public VideoCallPageSteps(WebAppTestContext webContext) {
         this.webContext = webContext;
     }
 
@@ -63,49 +63,49 @@ public class VideoCallPageSteps {
         BufferedImage localScreenShareVideo = localScreenshot.get().getSubimage(x + elementX, y + elementY,
                 elementWidth, elementHeight);
 
-        // resize local screenshot to cutout
-        BufferedImage resizedScreenshot = ImageUtil.scaleTo(localScreenshot.get(), elementWidth, elementHeight);
+        // resize local video cutout to full screenshot
+        BufferedImage resizedLocalVideo = ImageUtil.resizeImage(localScreenShareVideo, 4);
 
         // Write images to disk
-        String resizedScreenshotName = "target/resizedScreenshot" + System.currentTimeMillis() + ".png";
-        String localScreenShareVideoName = "target/localScreenshare" + System.currentTimeMillis() + ".png";
-        ImageUtil.storeImage(resizedScreenshot, new File(resizedScreenshotName));
-        ImageUtil.storeImage(localScreenShareVideo, new File(localScreenShareVideoName));
+        String localScreenshotName = "target/mySelfVideo-localScreenshot" + System.currentTimeMillis() + ".png";
+        String resizedLocalScreenShareVideoName = "target/mySelfVideo-resizedLocalScreenshare" + System.currentTimeMillis() + ".png";
+        ImageUtil.storeImage(localScreenshot.get(), new File(localScreenshotName));
+        ImageUtil.storeImage(resizedLocalVideo, new File(resizedLocalScreenShareVideoName));
         String reportPath = "../artifact/tests/macosx/";
 
         // do feature Matching + homography to find objects
         assertThat("Not enough good matches between "
-                + "<a href='" + reportPath + resizedScreenshotName + "'>screenshot</a> and <a href='" + reportPath + localScreenShareVideoName + "'>self video</a>",
-                ImageUtil.getMatches(resizedScreenshot, localScreenShareVideo), greaterThan(5));
+                + "<a href='" + reportPath + localScreenshotName + "'>screenshot</a> and <a href='" + reportPath + resizedLocalScreenShareVideoName + "'>self video</a>",
+                ImageUtil.getMatches(localScreenshot.get(), resizedLocalVideo), greaterThan(20));
     }
 
     @Then("^I verify (.*) sees my screen$")
     public void IVerifyUserXVideoShowsScreen(String callees) throws Exception {
-        for (String callee : webContext.getUserManager().splitAliases(callees)) {
-            final ClientUser userAs = webContext.getUserManager().findUserByNameOrNameAlias(callee);
+        for (String callee : webContext.getUsersManager().splitAliases(callees)) {
+            final ClientUser userAs = webContext.getUsersManager().findUserByNameOrNameAlias(callee);
 
             // get screenshot from remote user
             BufferedImage remoteScreenshot = webContext.getCallingManager().getScreenshot(userAs);
 
-            // get local screenshot and resize to remote size
+            // get local screenshot
             Optional<BufferedImage> localScreenshot = webContext.getChildContext().getPagesCollection(OSXPagesCollection.class).
                     getPage(MainWirePage.class).getScreenshot();
             Assert.assertTrue("Fullscreen screenshot cannot be captured", localScreenshot.isPresent());
-            BufferedImage resizedScreenshot = ImageUtil.scaleTo(localScreenshot.get(), remoteScreenshot.getWidth(),
-                    remoteScreenshot.getHeight());
+
+            BufferedImage resizedRemoteScreenshot = ImageUtil.resizeImage(remoteScreenshot, 2);
 
             // Write images to disk
             long currentTimeMillis = System.currentTimeMillis();
-            String resizedScreenshotName = "target/resizedScreenshot" + currentTimeMillis + ".png";
-            String remoteScreenshotName = "target/remoteScreenshot" + currentTimeMillis + ".png";
-            ImageUtil.storeImage(resizedScreenshot, new File(resizedScreenshotName));
-            ImageUtil.storeImage(remoteScreenshot, new File(remoteScreenshotName));
+            String localScreenshotName = "target/seesMyScreen-localScreenshot" + currentTimeMillis + ".png";
+            String resizedRemoteScreenshotName = "target/seesMyScreen-resizedRemoteScreenshot" + currentTimeMillis + ".png";
+            ImageUtil.storeImage(localScreenshot.get(), new File(localScreenshotName));
+            ImageUtil.storeImage(resizedRemoteScreenshot, new File(resizedRemoteScreenshotName));
             String reportPath = "../artifact/tests/macosx/";
 
             // do feature Matching + homography to find objects
             assertThat("Not enough good matches between "
-                    + "<a href='" + reportPath + resizedScreenshotName + "'>screenshot</a> and <a href='" + reportPath + remoteScreenshotName + "'>remote</a>",
-                    ImageUtil.getMatches(resizedScreenshot, remoteScreenshot), greaterThan(38));
+                    + "<a href='" + reportPath + localScreenshotName + "'>screenshot</a> and <a href='" + reportPath + resizedRemoteScreenshotName + "'>remote</a>",
+                    ImageUtil.getMatches(localScreenshot.get(), resizedRemoteScreenshot), greaterThan(20));
         }
     }
 }

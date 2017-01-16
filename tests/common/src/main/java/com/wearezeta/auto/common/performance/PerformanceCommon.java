@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.wearezeta.auto.common.wire_actors.RemoteDevicesManager;
 import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -12,11 +13,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
 public final class PerformanceCommon {
-
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
-    private final Logger logger = ZetaLogger.getLog(PerformanceCommon.class
-            .getSimpleName());
+    private final Logger logger = ZetaLogger.getLog(PerformanceCommon.class.getSimpleName());
 
     public Logger getLogger() {
         return this.logger;
@@ -25,27 +22,32 @@ public final class PerformanceCommon {
     private static final int MIN_WAIT_SECONDS = 2;
     private static final int MAX_WAIT_SECONDS = 5;
 
-    private static PerformanceCommon instance = null;
+    private final ClientUsersManager usersManager;
+    private final RemoteDevicesManager devicesManager;
 
-    private PerformanceCommon() {
+    public PerformanceCommon(ClientUsersManager usersManager, RemoteDevicesManager devicesManager) {
+        this.usersManager = usersManager;
+        this.devicesManager = devicesManager;
     }
 
-    public synchronized static PerformanceCommon getInstance() {
-        if (instance == null) {
-            instance = new PerformanceCommon();
-        }
-        return instance;
+    private ClientUsersManager getUsersManager() {
+        return this.usersManager;
+    }
+
+    private RemoteDevicesManager getDevicesManager() {
+        return this.devicesManager;
     }
 
     public void sendMultipleMessagesIntoConversation(String convoName, int msgsCount) throws Exception {
-        convoName = usrMgr.replaceAliasesOccurences(convoName, ClientUsersManager.FindBy.NAME_ALIAS);
-        final String convo_id = BackendAPIWrappers.getConversationIdByName(usrMgr.getSelfUserOrThrowError(), convoName);
+        convoName = getUsersManager().replaceAliasesOccurences(convoName, ClientUsersManager.FindBy.NAME_ALIAS);
+        final String convo_id = BackendAPIWrappers.getConversationIdByName(getUsersManager().getSelfUserOrThrowError(),
+                convoName);
         final List<String> msgsToSend = new ArrayList<>();
         for (int i = 0; i < msgsCount; i++) {
             msgsToSend.add(CommonUtils.generateGUID());
         }
-        BackendAPIWrappers.sendConversationMessagesOtr(usrMgr.findUserByNameOrNameAlias(convoName),
-                convo_id, msgsToSend);
+        BackendAPIWrappers.sendConversationMessagesOtr(getUsersManager().findUserByNameOrNameAlias(convoName),
+                convo_id, msgsToSend, getDevicesManager());
     }
 
     public interface PerformanceLoop {

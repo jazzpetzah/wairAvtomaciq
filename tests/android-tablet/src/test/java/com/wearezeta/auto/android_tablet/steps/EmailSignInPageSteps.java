@@ -1,23 +1,18 @@
 package com.wearezeta.auto.android_tablet.steps;
 
+import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContextHolder;
 import com.wearezeta.auto.android_tablet.pages.TabletEmailSignInPage;
 import com.wearezeta.auto.android_tablet.pages.TabletWelcomePage;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 
 import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class EmailSignInPageSteps {
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
-	private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection
-			.getInstance();
-
 	private TabletEmailSignInPage getEmailSignInPage() throws Exception {
-		return pagesCollection.getPage(TabletEmailSignInPage.class);
+		return AndroidTabletTestContextHolder.getInstance().getTestContext().getPagesCollection()
+				.getPage(TabletEmailSignInPage.class);
 	}
 
 	/**
@@ -31,9 +26,10 @@ public class EmailSignInPageSteps {
 	 */
 	@Given("^I sign in using my email$")
 	public void ISignInUsingMyEmail() throws Exception {
-		// just to make sure we are on correct page
-		pagesCollection.getPage(TabletWelcomePage.class).tapSignInButton();
-		final ClientUser selfUser = usrMgr.getSelfUserOrThrowError();
+        AndroidTabletTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(TabletWelcomePage.class).tapSignInButton();
+		final ClientUser selfUser = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .getSelfUserOrThrowError();
 		getEmailSignInPage().setLogin(selfUser.getEmail());
 		getEmailSignInPage().setPassword(selfUser.getPassword());
 		getEmailSignInPage().tapSignInButton();
@@ -51,7 +47,8 @@ public class EmailSignInPageSteps {
 	 */
 	@When("^I enter login \"(.*)\"$")
 	public void IEnterLogin(String login) throws Exception {
-		login = usrMgr.replaceAliasesOccurences(login, FindBy.EMAIL_ALIAS);
+		login = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(login, FindBy.EMAIL_ALIAS);
 		getEmailSignInPage().setLogin(login);
 	}
 
@@ -65,8 +62,8 @@ public class EmailSignInPageSteps {
 	 */
 	@When("^I enter password \"(.*)\"$")
 	public void IEnterPassword(String password) throws Exception {
-		password = usrMgr.replaceAliasesOccurences(password,
-				FindBy.PASSWORD_ALIAS);
+		password = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(password, FindBy.PASSWORD_ALIAS);
 		getEmailSignInPage().setPassword(password);
 	}
 

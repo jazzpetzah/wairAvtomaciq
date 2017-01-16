@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.Timedelta;
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import cucumber.api.java.en.And;
 import org.apache.commons.lang3.text.WordUtils;
 import org.junit.Assert;
@@ -17,14 +19,11 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class ConversationViewPageSteps {
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-
     private ElementState previousAssetsContainerState = null;
 
     private ConversationViewPage getConversationViewPage() throws Exception {
-        return pagesCollection.getPage(ConversationViewPage.class);
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(ConversationViewPage.class);
     }
 
     @When("^I see conversation view page$")
@@ -88,7 +87,8 @@ public class ConversationViewPageSteps {
      */
     @Then("^I (do not )?see \"(.*)\" system message in the conversation view$")
     public void ISeeSystemMessage(String shouldNotSee, String expectedMsg) throws Exception {
-        expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
+        expectedMsg = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("The expected system message '%s' is not visible in the conversation",
                     expectedMsg), getConversationViewPage().isSystemMessageVisible(expectedMsg));
@@ -115,7 +115,7 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. I tap (Send Message|Emoji Keyboard|Text Keyboard|Hourglass) button in conversation view
      */
-    @And("^I tap (Send Message|Emoji Keyboard|Text Keyboard|Hourglass|Time Indicator) button in conversation view$")
+    @And("^I tap (Send Message|Emoji Keyboard|Text Keyboard|Hourglass|Time Indicator|Collection) button in conversation view$")
     public void ITapConvoButton(String btnName) throws Exception {
         getConversationViewPage().tapButton(btnName);
     }
@@ -192,7 +192,8 @@ public class ConversationViewPageSteps {
 
     @Then("^I see last message in the conversation view (is|contains) expected message (.*)")
     public void ThenISeeLasMessageIsd(String operation, String msg) throws Exception {
-        msg = usrMgr.replaceAliasesOccurences(msg, FindBy.EMAIL_ALIAS);
+        msg = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(msg, FindBy.EMAIL_ALIAS);
         if (operation.equals("is")) {
             Assert.assertTrue(
                     String.format("The last message in the conversation is different from the expected one '%s'",
@@ -214,7 +215,8 @@ public class ConversationViewPageSteps {
      */
     @Then("^I (do not )?see the conversation view contains message (.*)")
     public void ISeeConversationMessage(String shouldNot, String expectedMsg) throws Exception {
-        expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
+        expectedMsg = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
         if (shouldNot == null) {
             Assert.assertTrue(
                     String.format("The expected message '%s' is not visible in the conversation view", expectedMsg),
@@ -247,7 +249,7 @@ public class ConversationViewPageSteps {
                 getConversationViewPage().longTapInputToolButtonByName(btnName);
             } else {
                 getConversationViewPage().longTapWithDurationInputToolButtonByName(btnName,
-                        Integer.parseInt(durationSeconds.replaceAll("[\\D]", "")));
+                        Timedelta.fromSeconds(Integer.parseInt(durationSeconds.replaceAll("[\\D]", ""))));
             }
         }
     }
@@ -373,20 +375,20 @@ public class ConversationViewPageSteps {
         if (shouldNotChange == null) {
             Assert.assertTrue(
                     String.format("The current asset container state is not different from the expected one after " +
-                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT_SECONDS),
-                    previousAssetsContainerState.isChanged(MEDIA_STATE_CHANGE_TIMEOUT_SECONDS,
+                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT),
+                    previousAssetsContainerState.isChanged(MEDIA_STATE_CHANGE_TIMEOUT,
                             CONTAINER_COMPARE_MIN_SCORE));
         } else {
             Assert.assertTrue(
                     String.format("The current asset container state is different from the expected one after " +
-                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT_SECONDS),
-                    previousAssetsContainerState.isNotChanged(MEDIA_STATE_CHANGE_TIMEOUT_SECONDS,
+                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT),
+                    previousAssetsContainerState.isNotChanged(MEDIA_STATE_CHANGE_TIMEOUT,
                             CONTAINER_COMPARE_MIN_SCORE));
         }
     }
 
     private static final double CONTAINER_COMPARE_MIN_SCORE = 0.9;
-    private static final int MEDIA_STATE_CHANGE_TIMEOUT_SECONDS = 10;
+    private static final Timedelta MEDIA_STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(10);
 
     /**
      * Verify whether the state of a media container is changed - soundclound play button
@@ -403,13 +405,13 @@ public class ConversationViewPageSteps {
         if (shouldNotChange == null) {
             Assert.assertTrue(
                     String.format("The current media state is not different from the expected one after " +
-                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT_SECONDS),
-                    previousMediaContainerState.isChanged(MEDIA_STATE_CHANGE_TIMEOUT_SECONDS,
+                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT),
+                    previousMediaContainerState.isChanged(MEDIA_STATE_CHANGE_TIMEOUT,
                             CONTAINER_COMPARE_MIN_SCORE));
         } else {
             Assert.assertTrue(String.format("The current media state is different from the expected one after " +
-                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT_SECONDS),
-                    previousMediaContainerState.isNotChanged(MEDIA_STATE_CHANGE_TIMEOUT_SECONDS,
+                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT),
+                    previousMediaContainerState.isNotChanged(MEDIA_STATE_CHANGE_TIMEOUT,
                             CONTAINER_COMPARE_MIN_SCORE));
         }
     }
@@ -449,7 +451,8 @@ public class ConversationViewPageSteps {
      */
     @When("^I see missed call from contact (.*)$")
     public void ISeeMissedCall(String contact) throws Exception {
-        String username = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+        String username = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format("Missed call message for '%s' is missing in conversation view", username),
                 getConversationViewPage().isMissedCallButtonVisibleFor(username));
     }
@@ -463,7 +466,8 @@ public class ConversationViewPageSteps {
      */
     @When("^I tap missed call button to call contact (.*)")
     public void IClickMissedCallButton(String contact) throws Exception {
-        contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+        contact = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .findUserByNameOrNameAlias(contact).getName();
         getConversationViewPage().clickOnCallButtonForContact(contact.toUpperCase());
     }
 
@@ -498,7 +502,8 @@ public class ConversationViewPageSteps {
      */
     @When("^I see the conversation with (.*)$")
     public void ISeeConversationWith(String contact) throws Exception {
-        contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+        contact = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format("Conversation with %s is not visible", contact),
                 getConversationViewPage().isUserNameInUpperToolbarVisible(contact));
     }
@@ -780,7 +785,7 @@ public class ConversationViewPageSteps {
                 "Cannot detect the Download Finished placeholder for a file '%s' in the conversation view after %s seconds",
                 expectedFileName, timeoutSeconds),
                 getConversationViewPage().waitUntilDownloadReadyPlaceholderVisible(expectedFileName, expectedSize,
-                        timeoutSeconds));
+                        Timedelta.fromSeconds(timeoutSeconds)));
     }
 
     /**
@@ -795,7 +800,8 @@ public class ConversationViewPageSteps {
     public void IWaitForFilePreview(int secondsTimeout, String expectedFileName) throws Exception {
         Assert.assertTrue(String.format("The preview was not shown for '%s' after %s seconds timeout", expectedFileName,
                 secondsTimeout),
-                getConversationViewPage().waitUntilFilePreviewIsVisible(secondsTimeout, expectedFileName));
+                getConversationViewPage().waitUntilFilePreviewIsVisible(Timedelta.fromSeconds(secondsTimeout),
+                        expectedFileName));
     }
 
     /**
@@ -821,7 +827,7 @@ public class ConversationViewPageSteps {
     @Then("^I wait up to (\\d+) seconds until I see generic file share menu$")
     public void ISeeGenericFileShareMenu(int timeoutSeconds) throws Exception {
         Assert.assertTrue("Generic file share menu has not been shown",
-                getConversationViewPage().isGenericFileShareMenuVisible(timeoutSeconds));
+                getConversationViewPage().isGenericFileShareMenuVisible(Timedelta.fromSeconds(timeoutSeconds)));
     }
 
     /**
@@ -924,7 +930,7 @@ public class ConversationViewPageSteps {
         playButtonState.remember();
     }
 
-    private static final int PLAY_BUTTON_STATE_CHANGE_TIMEOUT = 7;
+    private static final Timedelta PLAY_BUTTON_STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(7);
     private static final double PLAY_BUTTON_MIN_SIMILARITY = 0.95;
 
     /**
@@ -1120,7 +1126,7 @@ public class ConversationViewPageSteps {
                 getConversationViewPage().isMessageByPositionDisplayed(message, position));
     }
 
-    private static final int LIKE_ICON_STATE_CHANGE_TIMEOUT = 7; //seconds
+    private static final Timedelta LIKE_ICON_STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(7); //seconds
     private static final double LIKE_ICON_MIN_SIMILARITY = 0.9;
     private ElementState likeIconState = new ElementState(
             () -> getConversationViewPage().getLikeIconState()
@@ -1267,9 +1273,10 @@ public class ConversationViewPageSteps {
      */
     @Then("^I see (?:group |\\s*)conversation with users? (.*)")
     public void ISeeConversationPageWithUsers(String participantNameAliases) throws Exception {
-        participantNameAliases = usrMgr.replaceAliasesOccurences(participantNameAliases,
-                ClientUsersManager.FindBy.NAME_ALIAS);
-        final List<String> participantNames = usrMgr.splitAliases(participantNameAliases);
+        participantNameAliases = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(participantNameAliases, ClientUsersManager.FindBy.NAME_ALIAS);
+        final List<String> participantNames = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .splitAliases(participantNameAliases);
         Assert.assertTrue(
                 String.format("Users '%s' are not displayed on Upper Toolbar", participantNameAliases),
                 getConversationViewPage().isUpperToolbarContainNames(participantNames)
@@ -1287,8 +1294,10 @@ public class ConversationViewPageSteps {
      */
     @Then("^I (do not )?see (unique username|Address Book name|common friends count) (\".*\" |\\s*)on Conversation view page$")
     public void ISeeLabel(String shouldNotSee, String fieldType, String value) throws Exception {
-        value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.NAME_ALIAS);
-        value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
+        value = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(value, ClientUsersManager.FindBy.NAME_ALIAS);
+        value = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(value, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
         if (shouldNotSee == null) {
             if (value.startsWith("\"")) {
                 value = value.trim().replaceAll("^\"|\"$", "");
@@ -1308,6 +1317,21 @@ public class ConversationViewPageSteps {
                         getConversationViewPage().isUserDetailInvisible(fieldType));
             }
         }
+    }
+
+    /**
+     * Verify whether isTyping message is visible for a particular user
+     *
+     * @step. ^I see typing indicator for (.*) in the conversation$
+     * @param forUser user name/alias
+     * @throws Exception
+     */
+    @Then("^I see typing indicator for (.*) in the conversation$")
+    public void ISeeTypingLabel(String forUser) throws Exception {
+        forUser = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(forUser, ClientUsersManager.FindBy.NAME_ALIAS);
+        Assert.assertTrue(String.format("IsTyping message has not been shown for '%s'", forUser),
+                getConversationViewPage().isTypingIndicatorVisibleFor(forUser));
     }
 }
 

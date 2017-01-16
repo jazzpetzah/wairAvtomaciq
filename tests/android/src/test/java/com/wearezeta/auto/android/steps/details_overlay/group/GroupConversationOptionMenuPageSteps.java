@@ -1,17 +1,15 @@
 package com.wearezeta.auto.android.steps.details_overlay.group;
 
+import com.wearezeta.auto.android.common.AndroidTestContextHolder;
 import com.wearezeta.auto.android.pages.details_overlay.ConversationOptionsMenuPage;
-import com.wearezeta.auto.android.steps.AndroidPagesCollection;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 
 public class GroupConversationOptionMenuPageSteps {
-
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
-
     private ConversationOptionsMenuPage getGroupConversationOptionMenuPage() throws Exception {
-        return pagesCollection.getPage(ConversationOptionsMenuPage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(ConversationOptionsMenuPage.class);
     }
 
     /**
@@ -19,14 +17,19 @@ public class GroupConversationOptionMenuPageSteps {
      *
      * @param name name of item to check in the menu (ARCHIVE, BLOCK, CANCEL,...)
      * @throws Exception
-     * @step. ^I see (ARCHIVE|UNARCHIVE|LEAVE|DELETE|MUTE|UNMUTE|PICTURE|CALL|CANCEL) button on
-     *          Group conversation options menu$
+     * @step. ^I( do not)?  see (ARCHIVE|UNARCHIVE|LEAVE|DELETE|MUTE|UNMUTE|PICTURE|CALL|CANCEL) button on
+     * Group conversation options menu$
      */
-    @Then("^I see (ARCHIVE|UNARCHIVE|LEAVE|DELETE|MUTE|UNMUTE|PICTURE|CALL|CANCEL|RENAME) button on " +
+    @Then("^I( do not)? see (ARCHIVE|UNARCHIVE|LEAVE|DELETE|MUTE|UNMUTE|PICTURE|CALL|CANCEL|RENAME) button on " +
             "Group conversation options menu$")
-    public void iSeeButtonOnSingleConversationSettingsMenuAtPosition(String name) throws Exception {
-        Assert.assertTrue("The conversation settings menu item is not visible",
-                getGroupConversationOptionMenuPage().waitUntilConversationOptionsMenuItemVisible(name));
+    public void iSeeButtonOnSingleConversationSettingsMenuAtPosition(String shouldNotSee, String name) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("The conversation settings menu '%s' is not visible", name),
+                    getGroupConversationOptionMenuPage().waitUntilConversationOptionsMenuItemVisible(name));
+        } else {
+            Assert.assertTrue(String.format("The conversation settings menu '%s' is not visible", name),
+                    getGroupConversationOptionMenuPage().waitUntilConversationOptionsMenuItemInvisible(name));
+        }
     }
 
     /**
@@ -35,7 +38,7 @@ public class GroupConversationOptionMenuPageSteps {
      * @param itemName menu item name
      * @throws Exception
      * @step. ^I tap (ARCHIVE|UNARCHIVE|LEAVE|DELETE|MUTE|UNMUTE|PICTURE|CALL|CANCEL) button on
-     *          Group conversation options menu$
+     * Group conversation options menu$
      */
     @When("^I tap (ARCHIVE|UNARCHIVE|LEAVE|DELETE|MUTE|UNMUTE|PICTURE|CALL|CANCEL|RENAME) button on " +
             "Group conversation options menu$")

@@ -1,12 +1,9 @@
 package com.wearezeta.auto.web.steps;
 
-import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
-import com.wearezeta.auto.web.pages.AccountPage;
 import com.wearezeta.auto.web.pages.popovers.GroupPopoverContainer;
 
 import cucumber.api.java.en.Then;
@@ -39,9 +36,9 @@ public class GroupPopoverPageSteps {
     private static final String TOOLTIP_UNBLOCK = "Unblock";
     private static final String TOOLTIP_OPEN_YOUR_PROFILE = "Open your profile";
 
-    private final TestContext context;
+    private final WebAppTestContext context;
 
-    public GroupPopoverPageSteps(TestContext context) {
+    public GroupPopoverPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 
@@ -103,7 +100,7 @@ public class GroupPopoverPageSteps {
 
     @When("^I click on participant (.*) on Group Participants popover$")
     public void IClickOnParticipant(String name) throws Exception {
-        name = context.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        name = context.getUsersManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         context.getPagesCollection().getPage(GroupPopoverContainer.class)
                 .clickOnParticipant(name);
     }
@@ -223,9 +220,9 @@ public class GroupPopoverPageSteps {
 
     @When("^I see (.*) displayed on Group Participants popover$")
     public void ISeeContactsDisplayed(String contactsAliases) throws Exception {
-        List<String> contacts = context.getUserManager().splitAliases(contactsAliases);
+        List<String> contacts = context.getUsersManager().splitAliases(contactsAliases);
         for (String contact : contacts) {
-            contact = context.getUserManager().replaceAliasesOccurences(contact,
+            contact = context.getUsersManager().replaceAliasesOccurences(contact,
                     FindBy.NAME_ALIAS);
             Assert.assertTrue(context.getPagesCollection().getPage(
                     GroupPopoverContainer.class).isParticipantVisible(contact));
@@ -234,9 +231,9 @@ public class GroupPopoverPageSteps {
 
     @When("^I( do not)? see user (.*) in verified section$")
     public void ISeeUserInVerifiedSection(String donot, String contactsAliases) throws Exception {
-        List<String> contacts = context.getUserManager().splitAliases(contactsAliases);
+        List<String> contacts = context.getUsersManager().splitAliases(contactsAliases);
         for (String contact : contacts) {
-            contact = context.getUserManager().replaceAliasesOccurences(contact,
+            contact = context.getUsersManager().replaceAliasesOccurences(contact,
                     FindBy.NAME_ALIAS);
             if (donot == null) {
                 Assert.assertTrue(context.getPagesCollection().getPage(
@@ -252,6 +249,19 @@ public class GroupPopoverPageSteps {
     public void IChangeGroupChatTitleTo(String title) throws Exception {
         context.getPagesCollection().getPage(GroupPopoverContainer.class)
                 .setConversationTitle(title);
+    }
+
+    @When("I click on titlebar$")
+    public void IClickOnTitlebar() throws Exception {
+        context.getPagesCollection().getPage(GroupPopoverContainer.class)
+                .clickTitlebar();
+    }
+
+    @When("I can not change group conversation title on Group Participants popover$")
+    public void ICanNotChangeGroupChatTitle() throws Exception {
+        Assert.assertTrue("",
+                context.getPagesCollection().getPage(GroupPopoverContainer.class)
+                .isTitleTextareaNotVisible());
     }
 
     @Then("^I see conversation title (.*) on Group Participants popover$")
@@ -286,14 +296,14 @@ public class GroupPopoverPageSteps {
 
     @When("^I input user name (.*) in search field on Group Participants popover$")
     public void ISearchForUser(String name) throws Exception {
-        name = context.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        name = context.getUsersManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         context.getPagesCollection().getPage(GroupPopoverContainer.class)
                 .searchForUser(name);
     }
 
     @When("^I select user (.*) from Group Participants popover search results$")
     public void ISelectUserFromSearchResults(String user) throws Exception {
-        user = context.getUserManager().replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
+        user = context.getUsersManager().replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
         context.getPagesCollection().getPage(GroupPopoverContainer.class)
                 .selectUserFromSearchResult(user);
     }
@@ -357,7 +367,7 @@ public class GroupPopoverPageSteps {
 
     @When("^I see username (.*) on Group Participants popover$")
     public void IseeUserNameOnUserProfilePage(String name) throws Exception {
-        name = context.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        name = context.getUsersManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         Assert.assertEquals(name,
                 context.getPagesCollection().getPage(GroupPopoverContainer.class)
                         .getUserName());
@@ -374,7 +384,7 @@ public class GroupPopoverPageSteps {
         GroupPopoverContainer groupPopoverContainer = context.getPagesCollection()
                 .getPage(GroupPopoverContainer.class);
         if (not == null) {
-            ClientUser user = context.getUserManager().findUserBy(userAlias, FindBy.NAME_ALIAS);
+            ClientUser user = context.getUsersManager().findUserBy(userAlias, FindBy.NAME_ALIAS);
             assertThat(groupPopoverContainer.getUserMail().toLowerCase(), equalTo(user.getEmail()));
 
         } else {
@@ -413,7 +423,7 @@ public class GroupPopoverPageSteps {
 
     @When("^I see unique username (.*) on Group Participants popover$")
     public void ISeeUniqueUsernameOnGroupParticipants(String userAlias) throws Exception {
-        ClientUser user = context.getUserManager().findUserBy(userAlias, FindBy.NAME_ALIAS);
+        ClientUser user = context.getUsersManager().findUserBy(userAlias, FindBy.NAME_ALIAS);
         // username given. strict check for username
         String uniqueUsername = user.getUniqueUsername();
         Assert.assertThat("Unique username is NOT on Group Participants popover",

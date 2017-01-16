@@ -1,6 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.HistoryInfoPage;
 import cucumber.api.java.en.Then;
 
@@ -8,9 +8,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class HistoryInfoPageSteps {
 
-    private final TestContext context;
+    private final WebAppTestContext context;
 
-    public HistoryInfoPageSteps(TestContext context) {
+    public HistoryInfoPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 

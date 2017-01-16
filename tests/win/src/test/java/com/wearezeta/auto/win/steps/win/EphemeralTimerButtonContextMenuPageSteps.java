@@ -1,15 +1,15 @@
 package com.wearezeta.auto.win.steps.win;
 
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.win.pages.win.EphemeralTimerButtonContextMenuPage;
 import com.wearezeta.auto.win.pages.win.WinPagesCollection;
 import cucumber.api.java.en.When;
 
 public class EphemeralTimerButtonContextMenuPageSteps {
 
-    private final TestContext webContext;
+    private final WebAppTestContext webContext;
 
-    public EphemeralTimerButtonContextMenuPageSteps(TestContext webContext) {
+    public EphemeralTimerButtonContextMenuPageSteps(WebAppTestContext webContext) {
         this.webContext = webContext;
     }
 

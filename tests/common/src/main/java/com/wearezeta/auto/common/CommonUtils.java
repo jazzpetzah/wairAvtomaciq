@@ -15,20 +15,11 @@ import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
 import java.io.Writer;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.net.NetworkInterface;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.MessageDigest;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Properties;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -50,6 +41,7 @@ import javax.sound.sampled.AudioSystem;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver.SurfaceOrientation;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.process.UnixProcessHelpers;
 import com.wearezeta.auto.common.video.SequenceEncoder;
 import org.apache.commons.codec.binary.Base64;
@@ -202,7 +194,7 @@ public class CommonUtils {
         throw savedException;
     }
 
-    private static final String PROJECT_CONFIG = "Configuration.cnf";
+    private static final String PROJECT_CONFIG = "Configuration.properties";
 
     public static Optional<String> getOptionalValueFromConfig(Class<?> c, String key) throws Exception {
         return getValueFromConfigFile(c, key, PROJECT_CONFIG);
@@ -218,7 +210,7 @@ public class CommonUtils {
         }
     }
 
-    private static final String COMMON_CONFIG = "CommonConfiguration.cnf";
+    private static final String COMMON_CONFIG = "CommonConfiguration.properties";
 
     public static Optional<String> getOptionalValueFromCommonConfig(Class<?> c, String key) throws Exception {
         return getValueFromConfigFile(c, key, COMMON_CONFIG);
@@ -437,6 +429,9 @@ public class CommonUtils {
     }
 
     public static String getDefaultCallingServiceUrlFromConfig(Class<?> c) throws Exception {
+        if (isRunningInJenkinsNetwork()) {
+            return getValueFromCommonConfig(c, "defaultInternalCallingServiceUrl");
+        }
         return getValueFromCommonConfig(c, "defaultCallingServiceUrl");
     }
 
@@ -447,12 +442,11 @@ public class CommonUtils {
         return Base64.encodeBase64String(digest);
     }
 
-    public static String getDefaultEmailListenerServiceHostFromConfig(Class<?> c) throws Exception {
-        return getValueFromCommonConfig(c, "defaultEmailListenerServiceHost");
-    }
-
-    public static String getDefaultEmailListenerServicePortFromConfig(Class<?> c) throws Exception {
-        return getValueFromCommonConfig(c, "defaultEmailListenerServicePort");
+    public static String getDefaultEmailListenerUrlFromConfig(Class<?> c) throws Exception {
+        if (isRunningInJenkinsNetwork()) {
+            return getValueFromCommonConfig(c, "defaultInternalEmailListenerUrl");
+        }
+        return getValueFromCommonConfig(c, "defaultEmailListenerUrl");
     }
 
     public static boolean getMakeScreenshotsFromConfig(Class<?> c) throws Exception {
@@ -468,6 +462,9 @@ public class CommonUtils {
     }
 
     public static String getTestrailServerUrlFromConfig(Class<?> c) throws Exception {
+        if (isRunningInJenkinsNetwork()) {
+            return getValueFromCommonConfig(c, "internalTestrailServerUrl");
+        }
         return getValueFromCommonConfig(c, "testrailServerUrl");
     }
 
@@ -519,17 +516,20 @@ public class CommonUtils {
         return getValueFromConfig(cls, "appName");
     }
 
-    public static int getCachedOtrDevicesCount(Class<?> cls) throws Exception {
-        return Integer.parseInt(getValueFromCommonConfig(cls, "cachedOtrDevicesCount"));
+    public static String getActorsServerUrl(Class<?> cls) throws Exception {
+        if (isRunningInJenkinsNetwork()) {
+            return getValueFromCommonConfig(cls, "internalActorsServerUrl");
+        }
+        return getValueFromCommonConfig(cls, "actorsServerUrl");
     }
 
-    public static final int SCREENSHOT_TIMEOUT_SECONDS = 5;
+    private static final Timedelta SCREENSHOT_TIMEOUT = Timedelta.fromSeconds(5);
 
     public static void takeIOSSimulatorScreenshot(File output) throws Exception {
         try {
             executeUIShellScript(new String[]{String.format("mkdir -p $(dirname \"%s\")", output.getCanonicalPath()),
                     String.format("%s/simshot \"%s\"", getIOSToolsRoot(CommonUtils.class), output.getCanonicalPath())})
-                    .get(SCREENSHOT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+                    .get(SCREENSHOT_TIMEOUT.asSeconds(), TimeUnit.SECONDS);
         } catch (TimeoutException e) {
             UnixProcessHelpers.killProcessesGracefully("simshot");
             throw e;
@@ -656,21 +656,35 @@ public class CommonUtils {
         return executeUIShellScript(scriptContent.toArray(asArray));
     }
 
-    public static String getLocalIP4Address() throws UnknownHostException {
-        return InetAddress.getLocalHost().getHostAddress();
+    private static List<String> getLocalIpAddresses() throws Exception {
+        final Enumeration allInterfaces = NetworkInterface.getNetworkInterfaces();
+        final List<String> result = new ArrayList<>();
+        while (allInterfaces.hasMoreElements()) {
+            final NetworkInterface currentInterface = (NetworkInterface) allInterfaces.nextElement();
+            final Enumeration inetAddresses = currentInterface.getInetAddresses();
+            while (inetAddresses.hasMoreElements()) {
+                final InetAddress inetAddress = (InetAddress) inetAddresses.nextElement();
+                result.add(inetAddress.getHostAddress());
+            }
+        }
+        return result;
     }
 
     private static Boolean isInJenkinsNetwork = null;
 
-    public static boolean isRunningInJenkinsNetwork() throws UnknownHostException {
+    public static boolean isRunningInJenkinsNetwork() throws Exception {
         if (isInJenkinsNetwork == null) {
             final Pattern ip4ParsePattern = Pattern.compile("(\\d+)\\.(\\d+)\\.(\\d+)\\.(\\d+)");
-            final Matcher m = ip4ParsePattern.matcher(getLocalIP4Address());
-            isInJenkinsNetwork = m.find()
-                    && Integer.parseInt(m.group(1)) == 192
-                    && Integer.parseInt(m.group(2)) == 168
-                    && Integer.parseInt(m.group(3)) == 2
-                    && Integer.parseInt(m.group(4)) < 200;
+            for (String ip : getLocalIpAddresses()) {
+                final Matcher m = ip4ParsePattern.matcher(ip);
+                isInJenkinsNetwork = m.find()
+                        && Integer.parseInt(m.group(1)) == 192
+                        && Integer.parseInt(m.group(2)) == 168
+                        && Integer.parseInt(m.group(3)) == 2;
+                if (isInJenkinsNetwork) {
+                    break;
+                }
+            }
         }
         return isInJenkinsNetwork;
     }
@@ -817,31 +831,32 @@ public class CommonUtils {
     /**
      * Wait until the block do not throw exception or timeout
      */
-    public static <T> Optional<T> waitUntil(int timeoutSeconds, long interval, Callable<T> function) throws Exception {
-        final long millisecondsStarted = System.currentTimeMillis();
+    public static <T> Optional<T> waitUntil(Timedelta timeout, Timedelta interval, Callable<T> function) throws Exception {
+        final Timedelta started = Timedelta.now();
         do {
             try {
                 return Optional.ofNullable(function.call());
             } catch (Exception e) {
                 log.debug(String.format("Wait until block catch exception : %s", e.getMessage()));
             }
-            Thread.sleep(interval);
-        } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
+            Thread.sleep(interval.asMilliSeconds());
+        } while (Timedelta.now().isDiffLessOrEqual(started, timeout));
         return Optional.empty();
     }
 
     /**
      * Wait until the block get true
      */
-    public static boolean waitUntilTrue(int timeoutSeconds, long interval, Callable<Boolean> function)
+    public static boolean waitUntilTrue(Timedelta timeout, Timedelta interval, Callable<Boolean> function)
             throws Exception {
-        final long millisecondsStarted = System.currentTimeMillis();
-        boolean result;
+        final Timedelta started = Timedelta.now();
         do {
-            result = function.call();
-            Thread.sleep(interval);
-        } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000 && !result);
-        return result;
+            if (function.call()) {
+                return true;
+            }
+            Thread.sleep(interval.asMilliSeconds());
+        } while (Timedelta.now().isDiffLessOrEqual(started, timeout));
+        return function.call();
     }
 
     private static final int BUFFER_SIZE = 4096;
@@ -893,5 +908,10 @@ public class CommonUtils {
                 () -> new IllegalArgumentException(String.format("Cannot find a compressed .app inside %s",
                         ipaFile.getAbsolutePath()))
         );
+    }
+
+    public static int getOptimalThreadsCount() {
+        final int coresCount = Runtime.getRuntime().availableProcessors();
+        return coresCount > 2 ? coresCount - 1 : 2;
     }
 }

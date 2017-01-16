@@ -12,7 +12,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import com.wearezeta.auto.common.onboarding.AddressBook;
 import com.wearezeta.auto.common.onboarding.Card;
-import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
+import com.wearezeta.auto.common.wire_actors.RemoteDevicesManager;
 import com.wearezeta.auto.common.usrmgmt.*;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -306,10 +306,10 @@ public final class BackendAPIWrappers {
         BackendREST.sendPicture(receiveAuthToken(userFrom), convId, srcImageAsByteArray, getImageMimeType(path));
     }
 
-    public static void sendPictureToSingleUserConversationOtr(ClientUser userFrom, ClientUser userTo, String path)
-            throws Exception {
+    public static void sendPictureToSingleUserConversationOtr(ClientUser userFrom, ClientUser userTo, String path,
+                                                              RemoteDevicesManager remoteDevicesManager) throws Exception {
         final String convId = getConversationWithSingleUser(userFrom, userTo);
-        SEBridge.getInstance().sendImage(userFrom, convId, path);
+        remoteDevicesManager.sendImage(userFrom, convId, path);
     }
 
     private static String getImageMimeType(String path) {
@@ -333,10 +333,10 @@ public final class BackendAPIWrappers {
                 srcImageAsByteArray, getImageMimeType(path));
     }
 
-    public static void sendPictureToChatByNameOtr(ClientUser userFrom,
-                                                  String chatName, String path) throws Exception {
+    public static void sendPictureToChatByNameOtr(ClientUser userFrom, String chatName, String path,
+                                                  RemoteDevicesManager remoteDevicesManager) throws Exception {
         final String convId = getConversationIdByName(userFrom, chatName);
-        SEBridge.getInstance().sendImage(userFrom, convId, path);
+        remoteDevicesManager.sendImage(userFrom, convId, path);
     }
 
     public static String getConversationIdByName(ClientUser ownerUser, String conversationName) throws Exception {
@@ -557,16 +557,25 @@ public final class BackendAPIWrappers {
         BackendREST.sendConversationMessage(receiveAuthToken(userFrom), convId, message);
     }
 
-    public static void sendConversationMessagesOtr(ClientUser userFrom,
-                                                   String convId, List<String> messages) throws Exception {
+    public static void sendConversationMessagesOtr(ClientUser userFrom, String convId, List<String> messages,
+                                                   RemoteDevicesManager remoteDevicesManager) throws Exception {
         for (String message : messages) {
-            SEBridge.getInstance().sendConversationMessage(userFrom, convId, message);
+            remoteDevicesManager.sendConversationMessage(userFrom, convId, message);
             Thread.sleep(50);
         }
     }
 
+    public static void uploadSelfContact(ClientUser selfUser) throws Exception {
+        final AddressBook addressBook = new AddressBook();
+        final List<String> selfData = new ArrayList<>();
+        selfData.add(selfUser.getEmail());
+        selfData.add(selfUser.getPhoneNumber().toString());
+        addressBook.setSelfData(selfData);
+        BackendREST.uploadAddressBook(receiveAuthToken(selfUser), addressBook);
+    }
+
     public static void uploadAddressBookWithContacts(ClientUser user, List<String> emailsToAdd) throws Exception {
-        AddressBook addressBook = new AddressBook();
+        final AddressBook addressBook = new AddressBook();
         for (String email : emailsToAdd) {
             Card card = new Card();
             card.addContact(email);
@@ -698,6 +707,14 @@ public final class BackendAPIWrappers {
     public static void updateUniqueUsername(ClientUser user, String username) throws Exception {
         BackendREST.updateSelfHandle(receiveAuthToken(user), username);
         user.setUniqueUsername(username);
+    }
+
+    public static Optional<String> getUniqueUsername(ClientUser user) throws Exception {
+        final JSONObject userInfo = BackendREST.getUserInfo(receiveAuthToken(user));
+        if (userInfo.has("handle")) {
+            return Optional.of(userInfo.getString("handle"));
+        }
+        return Optional.empty();
     }
 
     public static void changeGroupChatName(ClientUser asUser, String conversationIDToRename, String newConversationName)

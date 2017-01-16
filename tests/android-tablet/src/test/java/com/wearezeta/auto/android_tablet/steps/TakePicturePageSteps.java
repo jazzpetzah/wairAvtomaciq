@@ -1,18 +1,16 @@
 package com.wearezeta.auto.android_tablet.steps;
 
+import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContextHolder;
 import com.wearezeta.auto.android_tablet.pages.TabletTakePicturePage;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 
 public class TakePicturePageSteps {
-
-    private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection.getInstance();
-
     private TabletTakePicturePage getTakePicturePage() throws Exception {
-        return pagesCollection.getPage(TabletTakePicturePage.class);
+        return AndroidTabletTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(TabletTakePicturePage.class);
     }
 
     /**

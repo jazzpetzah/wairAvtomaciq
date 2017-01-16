@@ -1,10 +1,11 @@
 package com.wearezeta.auto.android.steps;
 
 
-import com.wearezeta.auto.android.pages.AbstractCallOutgoingPage;
+import com.wearezeta.auto.android.common.AndroidTestContextHolder;
 import com.wearezeta.auto.android.pages.CallOutgoingAudioPage;
 import com.wearezeta.auto.android.pages.CallOutgoingVideoPage;
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.Timedelta;
 import cucumber.api.java.en.Then;
 
 import cucumber.api.java.en.When;
@@ -13,19 +14,18 @@ import org.junit.Assert;
 import static org.junit.Assert.assertTrue;
 
 public class CallOutgoingPageSteps {
-
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
-
     private final ElementState videoButtonState = new ElementState(() -> getAudioPage().getSpecialButtonScreenshot());
     private final ElementState speakerButtonState = new ElementState(() -> getAudioPage().getSpecialButtonScreenshot());
     private final ElementState muteButtonState = new ElementState(() -> getAudioPage().getMuteButtonScreenshot());
 
     private CallOutgoingVideoPage getVideoPage() throws Exception {
-        return pagesCollection.getPage(CallOutgoingVideoPage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(CallOutgoingVideoPage.class);
     }
 
     private CallOutgoingAudioPage getAudioPage() throws Exception {
-        return pagesCollection.getPage(CallOutgoingAudioPage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(CallOutgoingAudioPage.class);
     }
 
     /**
@@ -108,7 +108,7 @@ public class CallOutgoingPageSteps {
         }
     }
 
-    private static final int STATE_CHANGE_TIMEOUT = 15;
+    private static final Timedelta STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(15);
     private static final double MIN_BUTTON_SIMILARITY_SCORE = 0.4;
 
     /**

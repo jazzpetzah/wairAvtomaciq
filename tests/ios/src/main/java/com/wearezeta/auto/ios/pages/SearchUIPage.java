@@ -6,6 +6,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
+import com.wearezeta.auto.common.misc.Timedelta;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.*;
 
@@ -144,7 +145,7 @@ public class SearchUIPage extends IOSPage {
 
     public boolean isElementNotFoundInSearch(String name) throws Exception {
         final By locator = By.xpath(xpathStrFoundContactByName.apply(name));
-        return !isLocatorDisplayed(locator, 2);
+        return !isLocatorDisplayed(locator, Timedelta.fromSeconds(2));
     }
 
     public void selectElementInSearchResults(String name) throws Exception {
@@ -165,7 +166,7 @@ public class SearchUIPage extends IOSPage {
     }
 
     public boolean isTopPeopleLabelVisible() throws Exception {
-        return isLocatorDisplayed(nameTopPeopleLabel, 2);
+        return isLocatorDisplayed(nameTopPeopleLabel, Timedelta.fromSeconds(2));
     }
 
     public void pressBackspaceKeyboardButton() throws Exception {

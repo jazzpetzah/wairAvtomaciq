@@ -340,7 +340,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | ExpectedMessage                   |
       | user1Email | user1Password | user1Name | user2Name | ('a' * 100)('LF' * 10)('b' * 100) |
 
-  @C131207 @regression
+  @C131207 @regression @CM-1127
   Scenario Outline: Receive a really long message to group conversation
     Given There is a known user <Contact> with email <ContactEmail> and password <Password>
     Given User <Contact> removes all his registered OTR clients
@@ -566,6 +566,7 @@ And I wait for 60 seconds
     Then I see text message <Message1>
     Then I see text message <Message2>
     And I see 3 messages in conversation
+    And I wait for 3 seconds
     When <Contact1> removes Myself from group conversation <ChatName>
     Then I see <MessageAction> action for <Contact1> in conversation
     When I see 4 messages in conversation
@@ -588,7 +589,8 @@ And I wait for 60 seconds
     When I click People button in group conversation
     #editing group name - should be disabled, but not implemented yet. So for now the name stays the same as before editing
     And I see titlebar with <ChatName>
-    And I change group conversation title to <ChatNameEdit> on Group Participants popover
+    And I click on titlebar
+    And I can not change group conversation title on Group Participants popover
     And I see titlebar with <ChatName>
     Then I see Group Participants popover
     And I see <Contact1>,<Contact2> displayed on Group Participants popover

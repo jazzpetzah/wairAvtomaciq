@@ -1,14 +1,14 @@
 package com.wearezeta.auto.web.steps;
 
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.AboutPage;
 import cucumber.api.java.en.When;
 
 public class AboutPageSteps {
 
-    private final TestContext context;
+    private final WebAppTestContext context;
 
-    public AboutPageSteps(TestContext context) {
+    public AboutPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 

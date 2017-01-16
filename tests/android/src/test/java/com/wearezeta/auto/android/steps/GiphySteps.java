@@ -1,6 +1,8 @@
 package com.wearezeta.auto.android.steps;
 
+import com.wearezeta.auto.android.common.AndroidTestContextHolder;
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.Timedelta;
 import cucumber.api.java.en.Then;
 import org.junit.Assert;
 
@@ -9,10 +11,9 @@ import com.wearezeta.auto.android.pages.GiphyPreviewPage;
 import cucumber.api.java.en.When;
 
 public class GiphySteps {
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
-
     private GiphyPreviewPage getGiphyPreviewPage() throws Exception {
-        return pagesCollection.getPage(GiphyPreviewPage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(GiphyPreviewPage.class);
     }
 
     private final ElementState giphyImageContainerState = new ElementState(
@@ -156,7 +157,7 @@ public class GiphySteps {
     }
 
     private static final double MIN_GIPHY_IMPAGE_CONTAINER_SCORE = 0.4;
-    private static final int MIN_GIPHY_IMPAGE_CONTAINER_CHANGE_TIMEOUT = 20; //seconds
+    private static final Timedelta MIN_GIPHY_IMPAGE_CONTAINER_CHANGE_TIMEOUT = Timedelta.fromSeconds(20);
 
     /**
      * Verify whether current Giphy Image Container differs from the previous one
@@ -172,7 +173,7 @@ public class GiphySteps {
     }
 
     private static final double MIN_GIPHY_IMPAGE_PREVIEW_SCORE = 0.55;
-    private static final int MIN_GIPHY_IMPAGE_PREVIEW_CHANGE_TIMEOUT = 20; //seconds
+    private static final Timedelta MIN_GIPHY_IMPAGE_PREVIEW_CHANGE_TIMEOUT = Timedelta.fromSeconds(20);
 
     /**
      * Verify whether current Giphy Image Preview differs from the previous one

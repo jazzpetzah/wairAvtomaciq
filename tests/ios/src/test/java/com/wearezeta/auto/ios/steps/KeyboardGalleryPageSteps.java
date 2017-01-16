@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import com.wearezeta.auto.ios.pages.KeyboardGalleryPage;
 
 import cucumber.api.java.en.Then;
@@ -7,11 +8,9 @@ import cucumber.api.java.en.When;
 import org.junit.Assert;
 
 public class KeyboardGalleryPageSteps {
-
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-
     private KeyboardGalleryPage getKeyboardGalleryPage() throws Exception {
-        return pagesCollection.getPage(KeyboardGalleryPage.class);
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(KeyboardGalleryPage.class);
     }
 
     /**

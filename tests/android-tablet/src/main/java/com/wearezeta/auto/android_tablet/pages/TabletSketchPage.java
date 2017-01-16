@@ -5,7 +5,7 @@ import java.util.Optional;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.android.pages.SketchPage;
-import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
+import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContextHolder;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class TabletSketchPage extends AndroidTabletPage {
@@ -32,6 +32,7 @@ public class TabletSketchPage extends AndroidTabletPage {
 
 	public void tapSendButton() throws Exception {
 		getAndroidSketchPage().tapSendButton();
-		ScreenOrientationHelper.getInstance().fixOrientation(getDriver());
+		AndroidTabletTestContextHolder.getInstance().getTestContext().getScreenOrientationHelper()
+				.fixOrientation(getDriver());
 	}
 }

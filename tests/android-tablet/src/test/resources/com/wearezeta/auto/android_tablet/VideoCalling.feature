@@ -4,6 +4,7 @@ Feature: Video Calling
   Scenario Outline: Verify I can start Video call from the conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I rotate UI to landscape
     Given I sign in using my email
@@ -27,6 +28,7 @@ Feature: Video Calling
   Scenario Outline: Verify the video call is not terminated if I lock and unlock device
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I rotate UI to landscape
     Given I sign in using my email
@@ -51,6 +53,7 @@ Feature: Video Calling
   Scenario Outline: Verify I can accept Video call from locked device (app in background)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I rotate UI to landscape
     Given I sign in using my email
@@ -72,6 +75,7 @@ Feature: Video Calling
   Scenario Outline: I can accept Video call with the app in the foreground
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I rotate UI to landscape
     Given I sign in using my email

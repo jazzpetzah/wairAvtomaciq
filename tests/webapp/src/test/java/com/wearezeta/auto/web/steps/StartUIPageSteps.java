@@ -7,7 +7,7 @@ import com.wearezeta.auto.web.pages.ConversationPage;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.ContactListPage;
 import com.wearezeta.auto.web.pages.StartUIPage;
 import com.wearezeta.auto.web.pages.external.GoogleLoginPage;
@@ -23,11 +23,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class StartUIPageSteps {
 
-    private final TestContext context;
+    private final WebAppTestContext context;
 
     private static String rememberedUser;
 
-    public StartUIPageSteps(TestContext context) {
+    public StartUIPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 
@@ -35,7 +35,7 @@ public class StartUIPageSteps {
     public void ISelectUserFromStartUIResults(String group, String user)
             throws Exception {
         if (group == null) {
-            user = context.getUserManager().replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
+            user = context.getUsersManager().replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
             context.getPagesCollection().getPage(StartUIPage.class)
                     .selectUserFromSearchResult(user);
         } else {
@@ -52,11 +52,11 @@ public class StartUIPageSteps {
 
     @When("^I type (.*) in search field of People Picker$")
     public void ISearchForUser(String nameOrEmailOrUniqueUsername) throws Exception {
-        nameOrEmailOrUniqueUsername = context.getUserManager().replaceAliasesOccurences(nameOrEmailOrUniqueUsername,
+        nameOrEmailOrUniqueUsername = context.getUsersManager().replaceAliasesOccurences(nameOrEmailOrUniqueUsername,
                 FindBy.NAME_ALIAS);
-        nameOrEmailOrUniqueUsername = context.getUserManager().replaceAliasesOccurences(nameOrEmailOrUniqueUsername,
+        nameOrEmailOrUniqueUsername = context.getUsersManager().replaceAliasesOccurences(nameOrEmailOrUniqueUsername,
                 FindBy.EMAIL_ALIAS);
-        nameOrEmailOrUniqueUsername = context.getUserManager().replaceAliasesOccurences(nameOrEmailOrUniqueUsername,
+        nameOrEmailOrUniqueUsername = context.getUsersManager().replaceAliasesOccurences(nameOrEmailOrUniqueUsername,
                 FindBy.UNIQUE_USERNAME_ALIAS);
         // adding spaces to ensure trimming of input
         context.getPagesCollection().getPage(StartUIPage.class).searchForUser(" " + nameOrEmailOrUniqueUsername + " ");
@@ -64,11 +64,11 @@ public class StartUIPageSteps {
 
     @When("^I type (.*) in search field of People Picker in uppercase$")
     public void ISearchForUserInUppercase(String nameOrEmailOrUniqueUsername) throws Exception {
-        nameOrEmailOrUniqueUsername = context.getUserManager().replaceAliasesOccurences(nameOrEmailOrUniqueUsername,
+        nameOrEmailOrUniqueUsername = context.getUsersManager().replaceAliasesOccurences(nameOrEmailOrUniqueUsername,
                 FindBy.NAME_ALIAS);
-        nameOrEmailOrUniqueUsername = context.getUserManager().replaceAliasesOccurences(nameOrEmailOrUniqueUsername,
+        nameOrEmailOrUniqueUsername = context.getUsersManager().replaceAliasesOccurences(nameOrEmailOrUniqueUsername,
                 FindBy.EMAIL_ALIAS);
-        nameOrEmailOrUniqueUsername = context.getUserManager().replaceAliasesOccurences(nameOrEmailOrUniqueUsername,
+        nameOrEmailOrUniqueUsername = context.getUsersManager().replaceAliasesOccurences(nameOrEmailOrUniqueUsername,
                 FindBy.UNIQUE_USERNAME_ALIAS);
         // adding spaces to ensure trimming of input
         context.getPagesCollection().getPage(StartUIPage.class).searchForUser(" " + nameOrEmailOrUniqueUsername.toUpperCase() + " ");
@@ -76,11 +76,11 @@ public class StartUIPageSteps {
 
     @When("^I type (.*) in search field of People Picker only partially$")
     public void ISearchForUserOnlyPartially(String nameOrEmailOrUniqueUsername) throws Exception {
-        nameOrEmailOrUniqueUsername = context.getUserManager().replaceAliasesOccurences(nameOrEmailOrUniqueUsername,
+        nameOrEmailOrUniqueUsername = context.getUsersManager().replaceAliasesOccurences(nameOrEmailOrUniqueUsername,
                 FindBy.NAME_ALIAS);
-        nameOrEmailOrUniqueUsername = context.getUserManager().replaceAliasesOccurences(nameOrEmailOrUniqueUsername,
+        nameOrEmailOrUniqueUsername = context.getUsersManager().replaceAliasesOccurences(nameOrEmailOrUniqueUsername,
                 FindBy.EMAIL_ALIAS);
-        nameOrEmailOrUniqueUsername = context.getUserManager().replaceAliasesOccurences(nameOrEmailOrUniqueUsername,
+        nameOrEmailOrUniqueUsername = context.getUsersManager().replaceAliasesOccurences(nameOrEmailOrUniqueUsername,
                 FindBy.UNIQUE_USERNAME_ALIAS);
         // adding spaces to ensure trimming of input
         context.getPagesCollection().getPage(StartUIPage.class).searchForUser(" " + nameOrEmailOrUniqueUsername.substring(0,
@@ -95,7 +95,7 @@ public class StartUIPageSteps {
     @When("^I( do not)? see user (.*) found in People Picker$")
     public void ISeeUserFoundInStartUI(String donot, String name)
             throws Exception {
-        name = context.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        name = context.getUsersManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 
         if (donot == null) {
             Assert.assertTrue(context.getPagesCollection().getPage(StartUIPage.class).isUserFound(name));
@@ -106,8 +106,8 @@ public class StartUIPageSteps {
 
     @When("^I( do not)? see user (.*) with username (.*) found in People Picker$")
     public void ISeeUserFoundInStartUI(String donot, String name, String uniqueUsername) throws Exception {
-        name = context.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-        uniqueUsername = context.getUserManager().replaceAliasesOccurences(uniqueUsername, FindBy.UNIQUE_USERNAME_ALIAS);
+        name = context.getUsersManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        uniqueUsername = context.getUsersManager().replaceAliasesOccurences(uniqueUsername, FindBy.UNIQUE_USERNAME_ALIAS);
 
         if (donot == null) {
             Assert.assertTrue(context.getPagesCollection().getPage(StartUIPage.class).isUserFound(name, uniqueUsername));
@@ -116,16 +116,34 @@ public class StartUIPageSteps {
         }
     }
 
+    @When("^I( do not)? see user (.*) found in Top People$")
+    public void ISeeUserFoundInTopPeople (String doNot, String name) throws Exception {
+        name = context.getUsersManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        if (doNot == null) {
+            Assert.assertTrue(context.getPagesCollection().getPage(StartUIPage.class).isUserFoundInTopPeople(name));
+        } else {
+            Assert.assertFalse(context.getPagesCollection().getPage(StartUIPage.class).isUserFoundInTopPeople(name));
+        }
+    }
+
+    @When("^I do not see username (.*) of user (.*) in Top People")
+    public void IDontSeeUsernameInTopPeople(String uniqueUsername, String name) throws Exception {
+        uniqueUsername = context.getUsersManager().replaceAliasesOccurences(uniqueUsername, FindBy.UNIQUE_USERNAME_ALIAS);
+        name = context.getUsersManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+
+        Assert.assertTrue(context.getPagesCollection().getPage(StartUIPage.class).isUsernameNotVisible(name, uniqueUsername));
+    }
+
     @When("^I remove user (.*) from suggestions in People Picker$")
     public void IClickRemoveButton(String contact) throws Exception {
-        contact = context.getUserManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+        contact = context.getUsersManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         context.getPagesCollection().getPage(StartUIPage.class)
                 .clickRemoveButtonOnSuggestion(contact);
     }
 
     @When("^I make a connection request for user (.*) directly from People Picker$")
     public void IClickPlusButton(String contact) throws Exception {
-        contact = context.getUserManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+        contact = context.getUsersManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         context.getPagesCollection().getPage(StartUIPage.class)
                 .clickPlusButtonOnSuggestion(contact);
     }
@@ -138,7 +156,7 @@ public class StartUIPageSteps {
     @When("^I click on (not connected|pending) user (.*) found in People Picker$")
     public void IClickNotConnecteUserFoundInStartUI(String userType,
             String name) throws Exception {
-        name = context.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        name = context.getUsersManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         if (userType.equalsIgnoreCase("not connected")) {
             context.getPagesCollection().getPage(StartUIPage.class)
                     .clickNotConnectedUserName(name);
@@ -150,7 +168,7 @@ public class StartUIPageSteps {
 
     @When("^I click on remembered (not connected|pending) contact found in People Picker$")
     public void IClickRememberedNotConnecteUserFoundInStartUI(String userType) throws Exception {
-        rememberedUser = context.getUserManager().replaceAliasesOccurences(rememberedUser, FindBy.NAME_ALIAS);
+        rememberedUser = context.getUsersManager().replaceAliasesOccurences(rememberedUser, FindBy.NAME_ALIAS);
         if (userType.equalsIgnoreCase("not connected")) {
             context.getPagesCollection().getPage(StartUIPage.class)
                     .clickNotConnectedUserName(rememberedUser);
@@ -232,8 +250,8 @@ public class StartUIPageSteps {
 
     @When("^I select (.*) from Top People$")
     public void ISelectUsersFromTopPeople(String namesOfTopPeople) throws Exception {
-        for (String alias : context.getUserManager().splitAliases(namesOfTopPeople)) {
-            final String userName = context.getUserManager().findUserByNameOrNameAlias(alias).getName();
+        for (String alias : context.getUsersManager().splitAliases(namesOfTopPeople)) {
+            final String userName = context.getUsersManager().findUserByNameOrNameAlias(alias).getName();
             context.getPagesCollection().getPage(StartUIPage.class).clickNameInTopPeople(userName);
         }
     }
@@ -266,14 +284,14 @@ public class StartUIPageSteps {
 
     @When("^I remove first remembered user from suggestions in People Picker$")
     public void IRemoveFirstRememberedUser() throws Exception {
-        rememberedUser = context.getUserManager().replaceAliasesOccurences(rememberedUser, FindBy.NAME_ALIAS);
+        rememberedUser = context.getUsersManager().replaceAliasesOccurences(rememberedUser, FindBy.NAME_ALIAS);
         context.getPagesCollection().getPage(StartUIPage.class)
                 .clickRemoveButtonOnSuggestion(rememberedUser);
     }
 
     @When("^I make a connection request for remembered user directly from People Picker$")
     public void IMakeAConnectionRequestForSecondRememberedUser() throws Exception {
-        rememberedUser = context.getUserManager().replaceAliasesOccurences(rememberedUser, FindBy.NAME_ALIAS);
+        rememberedUser = context.getUsersManager().replaceAliasesOccurences(rememberedUser, FindBy.NAME_ALIAS);
         context.getPagesCollection().getPage(StartUIPage.class)
                 .clickPlusButtonOnSuggestion(rememberedUser);
     }

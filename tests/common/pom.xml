@@ -14,14 +14,16 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- note there's no trailing slash -->
         <defaultCallingServiceUrl>https://192.168.10.44:35443</defaultCallingServiceUrl>
+        <defaultCallingServiceUrl.internal>https://192.168.2.25:443</defaultCallingServiceUrl.internal>
         <!-- JavaX | REST -->
         <mailboxHandlerType>REST</mailboxHandlerType>
-        <defaultEmailListenerServiceHost>192.168.10.44</defaultEmailListenerServiceHost>
-        <defaultEmailListenerServicePort>21990</defaultEmailListenerServicePort>
+        <defaultEmailListenerUrl>http://192.168.10.44:21990</defaultEmailListenerUrl>
+        <defaultEmailListenerUrl.internal>http://192.168.2.120:9080</defaultEmailListenerUrl.internal>
         <makeScreenshots>true</makeScreenshots>
         <makeScreenshotOnPassedSteps>true</makeScreenshotOnPassedSteps>
         <initNodeIp>true</initNodeIp>
         <testrailServerUrl>http://192.168.10.44:29082/testrail</testrailServerUrl>
+        <testrailServerUrl.internal>http://192.168.2.180:80/testrail</testrailServerUrl.internal>
         <testrailProjectName></testrailProjectName>
         <testrailPlanName></testrailPlanName>
         <testrailRunName></testrailRunName>
@@ -29,9 +31,10 @@
         <rcTestsCommentPath></rcTestsCommentPath>
         <syncIsAutomated>False</syncIsAutomated>
         <syncIsMuted>False</syncIsMuted>
-        <cachedOtrDevicesCount>3</cachedOtrDevicesCount>
-        <zmessaging.actor.version>88.593</zmessaging.actor.version>
+        <zmessaging.actor.version>88.596</zmessaging.actor.version>
         <backendType>staging</backendType>
+        <actors.server.url>http://192.168.10.44:21080/wire-actors/api/v1</actors.server.url>
+        <actors.server.url.internal>http://192.168.2.120:10080/wire-actors/api/v1</actors.server.url.internal>
     </properties>
 
     <dependencies>
@@ -168,9 +171,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.wire</groupId>
-            <artifactId>zmessaging-actor</artifactId>
-            <version>${zmessaging.actor.version}</version>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>3.0.0</version>
         </dependency>
 
     </dependencies>
@@ -232,14 +235,4 @@
             </resource>
         </resources>
     </build>
-
-    <repositories>
-        <!-- New SE actor repository -->
-        <repository>
-            <id>bintray</id>
-            <name>Bintray</name>
-            <url>https://dl.bintray.com/wire-android/snapshots/</url>
-            <layout>default</layout>
-        </repository>
-    </repositories>
 </project>

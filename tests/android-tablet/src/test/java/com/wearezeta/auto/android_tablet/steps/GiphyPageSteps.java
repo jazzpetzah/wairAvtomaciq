@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android_tablet.steps;
 
+import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContextHolder;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android_tablet.pages.TabletGiphyPage;
@@ -8,11 +9,9 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class GiphyPageSteps {
-    private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection
-            .getInstance();
-
     private TabletGiphyPage getGiphyPage() throws Exception {
-        return pagesCollection.getPage(TabletGiphyPage.class);
+        return AndroidTabletTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(TabletGiphyPage.class);
     }
 
     /**

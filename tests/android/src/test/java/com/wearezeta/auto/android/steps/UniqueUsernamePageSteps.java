@@ -1,8 +1,7 @@
 package com.wearezeta.auto.android.steps;
 
+import com.wearezeta.auto.android.common.AndroidTestContextHolder;
 import com.wearezeta.auto.android.pages.UniqueUsernamePage;
-import com.wearezeta.auto.common.CommonSteps;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import cucumber.api.java.en.Then;
 import org.junit.Assert;
 
@@ -12,13 +11,9 @@ import java.util.List;
 import static com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 
 public class UniqueUsernamePageSteps {
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
-
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-    private final CommonSteps commonSteps = CommonSteps.getInstance();
-
     private UniqueUsernamePage getUniqueUsernamePage() throws Exception {
-        return pagesCollection.getPage(UniqueUsernamePage.class);
+        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(UniqueUsernamePage.class);
     }
 
     /**
@@ -34,7 +29,11 @@ public class UniqueUsernamePageSteps {
     @Then("^I( do not)? see [Uu]nique [Uu]sername (\"(.*)\")?( in )?edit field on Settings page$")
     public void iSeeUsernameEdit(String shouldNotSee, String uniqueUsernameExpected, String uniqueUsername, String
             in) throws Exception {
-        uniqueUsername = usrMgr.replaceAliasesOccurences(uniqueUsername, FindBy.UNIQUE_USERNAME_ALIAS);
+        if (uniqueUsernameExpected != null) {
+            uniqueUsername = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                    .replaceAliasesOccurences(uniqueUsername, FindBy.UNIQUE_USERNAME_ALIAS);
+        }
+
         if (shouldNotSee == null) {
             if (uniqueUsernameExpected == null) {
                 Assert.assertTrue("Username edit should be visible", getUniqueUsernamePage()
@@ -94,8 +93,10 @@ public class UniqueUsernamePageSteps {
      */
     @Then("^I set new [Uu]nique [Uu]sername \"(.*)\" on Settings page$")
     public void iEnterNewUsernameOnSettingsPage(String username) throws Exception {
-        username = usrMgr.replaceAliasesOccurences(username, FindBy.NAME_ALIAS);
-        username = usrMgr.replaceAliasesOccurences(username, FindBy.UNIQUE_USERNAME_ALIAS);
+        username = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(username, FindBy.NAME_ALIAS);
+        username = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(username, FindBy.UNIQUE_USERNAME_ALIAS);
         UniqueUsernamePage uniqueUsernamePage = getUniqueUsernamePage();
         uniqueUsernamePage.enterNewUsername(username);
         uniqueUsernamePage.tapButton("OK");
@@ -130,9 +131,11 @@ public class UniqueUsernamePageSteps {
             uniqueUsernamePage.tapButton("OK");
             Assert.assertTrue("Username edit is visible", getUniqueUsernamePage().isUsernameEditInvisible());
         } finally {
-            uniqueUsername = usrMgr.replaceAliasesOccurences(uniqueUsername,
+            uniqueUsername = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+                    .replaceAliasesOccurences(uniqueUsername,
                     FindBy.UNIQUE_USERNAME_ALIAS);
-            commonSteps.IChangeUniqueUsername("Myself", uniqueUsername);
+            AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                    .IChangeUniqueUsername("Myself", uniqueUsername);
         }
     }
 

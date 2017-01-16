@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import cucumber.api.java.en.Then;
 import org.junit.Assert;
 
@@ -8,11 +9,9 @@ import com.wearezeta.auto.ios.pages.VideoPlayerPage;
 import cucumber.api.java.en.When;
 
 public class VideoPlayerPageSteps {
-
-	private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-
 	private VideoPlayerPage getVideoPlayerPage() throws Exception {
-		return pagesCollection.getPage(VideoPlayerPage.class);
+		return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+				.getPage(VideoPlayerPage.class);
 	}
 
 	@When("I see video player page is opened")

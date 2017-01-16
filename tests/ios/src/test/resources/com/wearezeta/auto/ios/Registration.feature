@@ -19,6 +19,9 @@ Feature: Registration
     And I accept alert if visible
     And I tap Keep This One button on Unique Username Takeover page
     Then I see conversations list
+    When I tap settings gear button
+    And I select settings item Account
+    Then I see profile picture preview in Settings
 
     Examples:
       | Name      |

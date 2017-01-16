@@ -1,6 +1,6 @@
 package com.wearezeta.auto.win.steps.win;
 
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.win.pages.win.MainWirePage;
 import com.wearezeta.auto.win.pages.win.WinPagesCollection;
 
@@ -10,9 +10,9 @@ import org.junit.Assert;
 
 public class MainWirePageSteps {
 
-    private final TestContext webContext;
+    private final WebAppTestContext webContext;
 
-    public MainWirePageSteps(TestContext webContext) {
+    public MainWirePageSteps(WebAppTestContext webContext) {
         this.webContext = webContext;
     }
 

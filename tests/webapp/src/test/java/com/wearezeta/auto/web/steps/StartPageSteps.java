@@ -2,7 +2,7 @@ package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.LoginPage;
 import com.wearezeta.auto.web.pages.WebPage;
 import com.wearezeta.auto.web.pages.external.StartPage;
@@ -24,9 +24,9 @@ public class StartPageSteps {
 
     private static final Logger log = ZetaLogger.getLog(StartPageSteps.class.getSimpleName());
 
-    private final TestContext context;
+    private final WebAppTestContext context;
 
-    public StartPageSteps(TestContext context) {
+    public StartPageSteps(WebAppTestContext context) {
         this.context = context;
     }
 

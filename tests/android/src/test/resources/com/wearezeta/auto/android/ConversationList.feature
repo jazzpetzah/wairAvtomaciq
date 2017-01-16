@@ -68,7 +68,7 @@ Feature: Conversations list
     Given I navigate back from conversation
     When I swipe right on a <Contact1>
     And I tap DELETE button on Single conversation options menu
-    And I tap DELETE on the confirm alert
+    And I tap DELETE button on Confirm overlay page
     Then I see Conversations list with no conversations
     When I wait until <Contact1> exists in backend search results
     And I open Search UI
@@ -117,7 +117,7 @@ Feature: Conversations list
     And I navigate back from conversation
     And I swipe right on a <GroupChatName>
     And I tap DELETE button on Group conversation options menu
-    And I tap DELETE on the confirm alert
+    And I tap DELETE button on Confirm overlay page
     Then I do not see Conversations list with name <GroupChatName>
     And I open Search UI
     And I type group name "<GroupChatName>" in search field
@@ -142,8 +142,8 @@ Feature: Conversations list
     Given I see Conversations list with conversations
     When I swipe right on a <GroupChatName>
     And I tap DELETE button on Group conversation options menu
-    And I tap the Leave check box
-    And I tap DELETE on the confirm alert
+    And I tap on leave checkbox on Confirm overlay page
+    And I tap DELETE button on Confirm overlay page
     Then I do not see Conversations list with name <GroupChatName>
     And I open Search UI
     And I type group name "<GroupChatName>" in search field
@@ -169,19 +169,19 @@ Feature: Conversations list
     Given I see Conversations list with conversations
     When I swipe right on a <GroupChatName>
     And I tap DELETE button on Group conversation options menu
-    And I tap DELETE on the confirm alert
+    And I tap DELETE button on Confirm overlay page
     Then I do not see Conversations list with name <GroupChatName>
     When User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
     Then I see Conversations list with name <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I tap DELETE button on Group conversation options menu
-    And I tap DELETE on the confirm alert
+    And I tap DELETE button on Confirm overlay page
     Then I do not see Conversations list with name <GroupChatName>
     When User <Contact1> securely pings conversation <GroupChatName>
     Then I see Conversations list with name <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I tap DELETE button on Group conversation options menu
-    And I tap DELETE on the confirm alert
+    And I tap DELETE button on Confirm overlay page
     Then I do not see Conversations list with name <GroupChatName>
     When <Contact1> calls <GroupChatName>
     And I see incoming call
@@ -350,7 +350,7 @@ Feature: Conversations list
     Given I see Conversations list with conversations
     When I swipe right on a <GroupChatName>
     And I tap DELETE button on Group conversation options menu
-    Then I do not see the Leave check box
+    Then I do not see leave checkbox on Confirm overlay page
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |

@@ -1,20 +1,17 @@
 package com.wearezeta.auto.ios.steps;
 
+import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.TabletGroupConversationInfoPopoverPage;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class TabletGroupConversationInfoPopoverPageSteps {
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-
     private TabletGroupConversationInfoPopoverPage getTabletGroupConversationDetailPopoverPage() throws Exception {
-        return pagesCollection.getPage(TabletGroupConversationInfoPopoverPage.class);
+        return IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(TabletGroupConversationInfoPopoverPage.class);
     }
 
     /**
@@ -26,7 +23,8 @@ public class TabletGroupConversationInfoPopoverPageSteps {
      */
     @When("^I select user on iPad group popover (.*)$")
     public void ISelectUserOniPadGroupPopover(String name) throws Exception {
-        name = usrMgr.findUserByNameOrNameAlias(name).getName();
+        name = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .findUserByNameOrNameAlias(name).getName();
         getTabletGroupConversationDetailPopoverPage().selectUserByNameOniPadPopover(name);
     }
 

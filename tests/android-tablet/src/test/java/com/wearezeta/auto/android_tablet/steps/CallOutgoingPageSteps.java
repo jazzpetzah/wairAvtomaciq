@@ -1,9 +1,11 @@
 package com.wearezeta.auto.android_tablet.steps;
 
 
+import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContextHolder;
 import com.wearezeta.auto.android_tablet.pages.TabletCallOutgoingAudioPage;
 import com.wearezeta.auto.android_tablet.pages.TabletCallOutgoingVideoPage;
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.Timedelta;
 import cucumber.api.java.en.Then;
 
 import cucumber.api.java.en.When;
@@ -12,19 +14,18 @@ import org.junit.Assert;
 import static org.junit.Assert.assertTrue;
 
 public class CallOutgoingPageSteps {
-
-    private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection.getInstance();
-
     private final ElementState videoButtonState = new ElementState(() -> getAudioPage().getSpecialButtonScreenshot());
     private final ElementState muteButtonState = new ElementState(() -> getAudioPage().getMuteButtonScreenshot());
 
 
     private TabletCallOutgoingAudioPage getAudioPage() throws Exception {
-        return pagesCollection.getPage(TabletCallOutgoingAudioPage.class);
+        return AndroidTabletTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(TabletCallOutgoingAudioPage.class);
     }
 
     private TabletCallOutgoingVideoPage getVideoPage() throws Exception {
-        return pagesCollection.getPage(TabletCallOutgoingVideoPage.class);
+        return AndroidTabletTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(TabletCallOutgoingVideoPage.class);
     }
 
     /**
@@ -100,7 +101,7 @@ public class CallOutgoingPageSteps {
         }
     }
 
-    private static final int STATE_CHANGE_TIMEOUT = 15;
+    private static final Timedelta STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(15);
     private static final double MIN_BUTTON_SIMILARITY_SCORE = 0.4;
 
     /**

@@ -1,16 +1,16 @@
 package com.wearezeta.auto.osx.steps.webapp;
 
 import com.wearezeta.auto.osx.pages.webapp.StartUIPage;
-import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.external.GoogleLoginPage;
 import cucumber.api.java.en.When;
 import org.openqa.selenium.WebDriverException;
 
 public class StartUIPageSteps {
 
-    private final TestContext webContext;
+    private final WebAppTestContext webContext;
     
-    public StartUIPageSteps(TestContext webContext) {
+    public StartUIPageSteps(WebAppTestContext webContext) {
         this.webContext = webContext;
     }
 
