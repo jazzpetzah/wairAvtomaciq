@@ -1,6 +1,6 @@
 Feature: Rich Media
 
-  @C714 @outdate_regression @outdate_rc @legacy
+  @C714 @soundcloud @legacy
   Scenario Outline: (load bug AN-4559) Verify you can play/pause SoundCloud media from the Media Bar which is shown below the upper toolbar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -31,7 +31,7 @@ Feature: Rich Media
       | Name      | Contact1  | SoundCloudLink                                   |
       | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme |
 
-  @C717 @outdate_regression @outdate_rc
+  @C717 @soundcloud
   Scenario Outline: Verify Conversations list play/pause controls can change playing SoundCloud media state
     Given There are 2 users where <Name> is me
     Given <Name> is connected to <Contact1>
@@ -52,7 +52,7 @@ Feature: Rich Media
       | Name      | Contact1  | SoudCloudLink                                    |
       | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme |
 
-  @C412 @outdate_regression
+  @C412 @soundcloud
   Scenario Outline: Verify play/pause controls are visible in the list if there is active media item in other conversation (SoundCloud)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -93,7 +93,7 @@ Feature: Rich Media
       | Name      | Contact1  | YoutubeLink                                 |
       | user1Name | user2Name | https://www.youtube.com/watch?v=wTcNtgA6gHs |
 
-  @C139848 @outdate_regression
+  @C139848 @soundcloud
   Scenario Outline: AN-4152 Verify that play of soundcloud track will be stopped by incoming voice call
     Given There are 2 users where <Name> is me
     Given <Name> is connected to <Contact>
@@ -117,7 +117,7 @@ Feature: Rich Media
       | Name      | Contact   | SoundCloudLink                                   | CallBackend |
       | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme | zcall       |
 
-  @C139850 @outdate_regression
+  @C139850 @soundcloud
   Scenario Outline: Verify that play of soundcloud track will be stopped by incoming video call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

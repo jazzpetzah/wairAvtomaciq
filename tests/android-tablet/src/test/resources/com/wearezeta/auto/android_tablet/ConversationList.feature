@@ -112,7 +112,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | ItemSilence | ItemNotify |
       | user1Name | user2Name | user3Name | MUTE        | UNMUTE     |
 
-  @C771 @regression @rc
+  @C771 @soundcloud
   Scenario Outline: (AN-4030) Verify play/pause controls are visible in the list if there is active media item in other conversation (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me

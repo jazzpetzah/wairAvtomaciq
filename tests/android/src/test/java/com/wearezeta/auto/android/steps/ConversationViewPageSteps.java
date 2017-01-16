@@ -593,7 +593,7 @@ public class ConversationViewPageSteps {
                 .findUserByNameOrNameAlias(contact).getName();
         final String expectedMsg = message + " " + contact;
         Assert.assertTrue(String.format("The message '%s' is not visible in the conversation view", expectedMsg),
-                getConversationViewPage().waitUntilSystemMessageVisible(expectedMsg.toUpperCase()));
+                getConversationViewPage().waitUntilSystemMessageVisible(expectedMsg));
     }
 
     /**

@@ -12,7 +12,7 @@ Feature: File Transfer
     When I tap the conversation <Contact>
     And I tap File button from cursor toolbar
     And I wait up to <UploadingTimeout> seconds until <FileSize> <FileSizeType> file with extension "<FileExtension>" is uploaded
-    Then I see the result of "<FileSize> <FileSizeType>" file upload having name "<FileName>.<FileExtension>" and extension "<FileExtension>"
+    Then I see the result of "<FileSize><FileSizeType>" file upload having name "<FileName>.<FileExtension>" and extension "<FileExtension>"
 
     Examples:
       | Name      | Contact   | FileName  | FileExtension | FileSize | UploadingTimeout | FileSizeType |

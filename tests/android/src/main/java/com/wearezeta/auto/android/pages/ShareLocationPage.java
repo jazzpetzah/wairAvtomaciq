@@ -38,12 +38,11 @@ public class ShareLocationPage extends AndroidPage {
                 WAIT_UNTIL_INTERVAL,
                 () -> {
                     Optional<WebElement> el = getElementIfDisplayed(getButtonLocator(btnName), Timedelta.fromSeconds(1));
-                    if(el.isPresent()) {
+                    if (el.isPresent()) {
                         el.get().click();
                         return DriverUtils.waitUntilLocatorDissapears(getDriver(), getButtonLocator(btnName), 2);
-                    } else {
-                        return false;
                     }
+                    return false;
                 }
         );
 

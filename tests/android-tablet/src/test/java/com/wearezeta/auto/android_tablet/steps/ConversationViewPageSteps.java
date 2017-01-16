@@ -74,7 +74,7 @@ public class ConversationViewPageSteps {
                 String.format(
                         "The system message containing text '%s' is not visible in the conversation view",
                         expectedMessage), getConversationViewPage()
-                        .waitUntilSystemMessageVisible(expectedMessage.toUpperCase()));
+                        .waitUntilSystemMessageVisible(expectedMessage));
     }
 
     /**

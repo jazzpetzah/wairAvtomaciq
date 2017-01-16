@@ -28,8 +28,7 @@ import javax.ws.rs.NotSupportedException;
 
 public class ConversationViewPage extends BaseUserDetailsOverlay {
 
-    public static final String idStrConversationRoot = "messages_list_view";
-    public static final By idConversationRoot = By.id(idStrConversationRoot);
+    public static final By idConversationRoot = By.id("messages_list_view");
 
     //region Conversation Row Locators
     // Text
@@ -688,7 +687,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     }
 
     public boolean waitUntilSystemMessageVisible(String text) throws Exception {
-        final By locator = By.xpath(xpathStrSystemMessageByExp.apply(String.format("contains(@value, '%s')", text)));
+        final By locator = By.xpath(xpathStrSystemMessageByExp.apply(String.format("contains(@value, '%s')", text.toUpperCase())));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
@@ -1021,7 +1020,8 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
                 getDriver().longTap(getElement(locator), DriverUtils.LONG_TAP_DURATION);
                 break;
             case "double tap":
-                getDriver().doubleTap(getElement(locator));
+                Point location = getElement(locator).getLocation();
+                getDriver().doubleTap(location.getX(), location.getY());
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Cannot identify the tap type '%s'", tapType));
