@@ -373,7 +373,7 @@ public class StartUIPageSteps {
 
     @When("^I see (\\d+) common friends on search list for user (.*) found in People Picker$")
     public void ISeeCommonFriendsForUserFoundInStartUI(int amount, String nameAlias) throws Exception {
-        ClientUser user = context.getUserManager().findUserBy(nameAlias, FindBy.NAME_ALIAS);
+        ClientUser user = context.getUsersManager().findUserByNameOrNameAlias(nameAlias);
         assertThat(context.getPagesCollection().getPage(StartUIPage.class)
                         .getCommonFriendsForUser(user.getId()),
                 equalTo(amount));
