@@ -2,14 +2,10 @@ package com.wearezeta.auto.ios.pages;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
-import com.wearezeta.auto.common.driver.facebook_ios_driver.FBDragArguments;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
-import com.wearezeta.auto.common.misc.Timedelta;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
-import java.awt.*;
 import java.util.concurrent.Future;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -35,7 +31,7 @@ public class CollectionPage extends IOSPage {
             String.format("//XCUIElementTypeStaticText[@name='%s']/" +
                     "preceding-sibling::XCUIElementTypeButton[@name='open all']", name);
 
-    private static final By fbClassRootElement = FBBy.className("XCUIElementTypeCollectionView");
+    private static final By fbClassCollectionViewRoot = FBBy.className("XCUIElementTypeCollectionView");
 
     public CollectionPage(Future<ZetaIOSDriver> driver) throws Exception {
         super(driver);
@@ -89,7 +85,7 @@ public class CollectionPage extends IOSPage {
     }
 
     public void scroll(String direction) throws Exception {
-        final FBElement root = (FBElement) getElement(fbClassRootElement);
+        final FBElement root = (FBElement) getElement(fbClassCollectionViewRoot);
         switch (direction.toLowerCase()) {
             case "up":
                 root.scrollUp();

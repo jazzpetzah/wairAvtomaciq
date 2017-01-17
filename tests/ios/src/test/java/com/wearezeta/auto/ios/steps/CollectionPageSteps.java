@@ -98,7 +98,7 @@ public class CollectionPageSteps {
      * @param fileType            one of possible file types
      * @param dstConversationName destination conversation name
      * @throws Exception
-     * @step. ^User (.*) sends (\d+) (images?|videos?) (.*) to conversation (.*)
+     * @step. ^User (.*) sends (\d+) (image|video|audio|temporary) files? (.*) to conversation (.*)
      */
     @Given("^User (.*) sends (\\d+) (image|video|audio|temporary) files? (.*) to conversation (.*)")
     public void UserSendsMultiplePictures(String senderUserNameAlias, int count,
