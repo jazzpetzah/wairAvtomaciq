@@ -74,7 +74,7 @@ Feature: Edit Message
   Scenario Outline: Verify I can edit my message in 1:1 (from other view)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Contact1> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact1>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given User <Contact1> sends encrypted message "<Message>" via device <ContactDevice> to user Myself
     Given I accept First Time overlay as soon as it is visible
@@ -95,7 +95,7 @@ Feature: Edit Message
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given User Myself adds new device <Device>
+    Given User adds the following device: {"Myself": [{"name": "<Device>"}]}
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     And User Myself send encrypted message "<Message>" via device <Device> to user <Contact1>
@@ -115,7 +115,7 @@ Feature: Edit Message
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given User Myself adds new device <Device>
+    Given User adds the following device: {"Myself": [{"name": "<Device>"}]}
     Given I see Conversations list with conversations
     When I tap on conversation name <GroupChatName>
     And User Myself send encrypted message "<Message>" via device <Device> to group conversation <GroupChatName>
@@ -132,7 +132,7 @@ Feature: Edit Message
   Scenario Outline: Verify I can edit my message in Group (from my view)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Contact1> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact1>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -156,7 +156,7 @@ Feature: Edit Message
   Scenario Outline: Verify I can edit a message multiple times in a row (my view)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Contact1> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact1>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -187,7 +187,7 @@ Feature: Edit Message
   Scenario Outline: Verify the message is deleted everywhere when it is edited to empty or empty spaces
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Contact1> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact1>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -270,7 +270,7 @@ Feature: Edit Message
   Scenario Outline:  Verify editing a message does not create unread dot
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Contact1> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact1>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -290,7 +290,7 @@ Feature: Edit Message
   Scenario Outline: Verify edit message offline mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Contact1> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact1>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations

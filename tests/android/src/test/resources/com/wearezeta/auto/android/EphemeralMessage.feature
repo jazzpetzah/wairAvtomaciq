@@ -6,7 +6,7 @@ Feature: Ephemeral Message
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given User Myself adds new device <Mydevice>
+    Given User adds the following device: {"Myself": [{"name": "<Mydevice>"}]}
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
     When User Myself remembers the recent message from user <Contact> via device <Mydevice>
@@ -220,7 +220,7 @@ Feature: Ephemeral Message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
-    Given Users add the following devices: {"<Contact>": [{"name": "<ContactDevice>"}]}
+    Given User adds the following devices: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations

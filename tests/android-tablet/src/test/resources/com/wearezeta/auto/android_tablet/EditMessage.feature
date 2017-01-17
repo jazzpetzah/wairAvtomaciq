@@ -5,7 +5,7 @@ Feature: Edit message
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
     Given Myself is connected to <Contact1>
-    Given User <Contact1> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact1>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email
     Given User <Contact1> sends encrypted message "<Message>" via device <ContactDevice> to user Myself
     Given I accept First Time overlay as soon as it is visible
@@ -24,7 +24,7 @@ Feature: Edit message
   Scenario Outline: Verify I can edit my message in Group (from my view)
     Given There are 3 users where <Name> is me
     Given I rotate UI to portrait
-    Given User <Contact1> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact1>": [{"name": "<ContactDevice>"}]}
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email

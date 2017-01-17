@@ -88,7 +88,7 @@ Feature: Conversations list
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     And I see Conversations list with name <Contact>
-    When User Myself adds new device <DeviceName>
+    When User adds the following device: {"Myself": [{"name": "<DeviceName>"}]}
     And User <Contact> sends encrypted message blabla to user Myself
     And User Myself deletes single user conversation <Contact> using device <DeviceName>
     Then I wait up to <Timeout> seconds until conversation <Contact> disappears from the list

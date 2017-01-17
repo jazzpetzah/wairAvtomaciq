@@ -1,6 +1,6 @@
 Feature: Collection
 
-  @C378049 @collection @staging
+  @C378049 @collection @regression
   Scenario Outline: Verify message is shown if no media is in collection
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -59,7 +59,7 @@ Feature: Collection
       | Email      | Password      | Name      | Contact1  | Contact2  | Picture                   |
       | user1Email | user1Password | user1Name | user2Name | user3Name | userpicture_landscape.jpg |
 
-  @C378053 @collection @staging
+  @C378053 @collection @regression
   Scenario Outline: Verify GIF pictures are not presented in library
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -84,7 +84,7 @@ Feature: Collection
       | Email      | Password      | Name      | Contact   | Gif         | Text |
       | user1Email | user1Password | user1Name | user2Name | example.gif | test |
 
-  @C378054 @collection @staging
+  @C378054 @collection @ephemeral @regression
   Scenario Outline: Verify ephemeral messages aren't shown in collection
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -137,6 +137,33 @@ Feature: Collection
       | Email      | Password      | Name      | Contact   | Time | TimeLong   | TimeShortUnit | PictureName               | VideoFile   | SizeVideo | AudioFile   | AudioTime | File         | SizeFile |
       | user1Email | user1Password | user1Name | user2Name | 5    | 5 seconds  | s             | userpicture_landscape.jpg | C261733.mp4 | 1 MB      | example.wav | 00:20     | C261733.zip  | 512KB    |
 
+  @C378055 @collection @staging
+  Scenario Outline: Verify opening overview of all pictures from sender and receiver in group
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Email> and password <Password>
+    When User <Contact1> sends 6 images <Picture> to group conversation <ChatName>
+    And I am signed in properly
+    When I open conversation with <ChatName>
+    When User <Contact2> sends 8 images <Picture2> to group conversation <ChatName>
+    And I send picture <Picture> to the current conversation
+    #And I see sent picture <Picture> in the conversation view
+    And I wait for 10 seconds
+    And I see 16 messages in conversation
+    And I click collection button in conversation
+    Then I see 15 pictures in collection
+    When I click on Show all pictures button in collections
+    Then I see 15 pictures in pictures details in collections
+    And I see conversation <ChatName> is on the top
+    When I click on back button on collection details page
+    Then I see 15 pictures in collection
+
+    Examples:
+      | Email      | Password      | Name      | Contact1  | Contact2  | ChatName   | Picture                   | Picture2                 |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | group conv | userpicture_landscape.jpg | userpicture_portrait.jpg |
+
   @C382595 @collection @staging
   Scenario Outline: Verify opening overview of all links
     Given There are 2 users where <Name> is me
@@ -184,7 +211,7 @@ Feature: Collection
     When I click collection button in conversation
     And I see 1 picture in collection
     And I click on picture 1 in collection
-    Then I see picture <PictureName> in fullscreen
+    Then I see picture <PictureName> in picture fullscreen
 
     Examples:
       | Email      | Password      | Name      | Contact   | PictureName               |

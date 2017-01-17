@@ -4,7 +4,7 @@ Feature: Assets V2 and V3
   Scenario Outline: Verify I can receive V3 assets
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <DeviceName>
+    Given User adds the following device: {"<Contact>": [{"name": "<DeviceName>"}]}
     Given User <Contact> switches assets to V3 via device <DeviceName>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
