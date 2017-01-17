@@ -4,7 +4,7 @@ Feature: Like
   Scenario Outline: I can like/unlike message from message tool menu
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new devices <ContactDevice>
+    Given Users add the following devices: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -28,7 +28,7 @@ Feature: Like
   Scenario Outline: I can unlike/like text message by tap on like icon which is revealed by tapping on text
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new devices <ContactDevice>
+    Given Users add the following devices: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -52,7 +52,7 @@ Feature: Like
   Scenario Outline: I can double tap on txt to like and unlike
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new devices <ContactDevice>
+    Given Users add the following devices: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -74,7 +74,7 @@ Feature: Like
   Scenario Outline: If message was liked by somebody, like icon is visible and sorted liker name next to the like icon, and I could like it.
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new devices <ContactDevice>
+    Given Users add the following devices: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -96,7 +96,7 @@ Feature: Like
   Scenario Outline: Verify I can like an edited message whose like list is reseted after edition
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Contact1> adds new devices <ContactDevice>
+    Given Users add the following devices: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given User Myself adds new device <Device>

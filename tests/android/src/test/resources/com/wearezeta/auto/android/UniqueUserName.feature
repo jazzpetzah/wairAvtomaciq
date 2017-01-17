@@ -430,7 +430,7 @@ Feature: Unique Username
     Given I tap Choose Your Own button on Unique Username Takeover page
     Given I see unique username edit field on Settings page
     Given I tap OK on Unique Username Settings page
-    Given User Myself adds a new device <Device1> with label <Device1>
+    Given Users add the following devices: {"Myself": [{"name": "<Device1>"}]}
     When User Myself changes the unique username to "<UniqueUsername1>" via device <Device1>
     Then I select "Username" settings menu item
     And I see Unique Username "<UniqueUsername1>" in edit field on Settings page
