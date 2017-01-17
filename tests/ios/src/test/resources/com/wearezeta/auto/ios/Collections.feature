@@ -101,19 +101,18 @@ Feature: Collections
     Given Users add the following devices: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
     Given User <Contact> sends encrypted image <Picture1> to single user conversation Myself
-    Given User <Contact> sends encrypted image <Picture3> to single user conversation Myself
     Given User Myself sends encrypted image <Picture2> to single user conversation <Contact>
     Given I see conversations list
     Given I tap on contact name <Contact>
     Given I tap Collection button in conversation view
-    When I tap the item number 1 in collection category PICTURES
-    Then I see full-screen image preview in collection view
-    And I remember current picture preview state
-    And I swipe left on full-screen image preview in collection view
-    And I verify that current picture preview similarity score is less than 0.2 within 1 second
-    And I swipe right on full-screen image preview in collection view
-    And I verify that current picture preview similarity score is more than 0.8 within 1 second
+    Given I tap the item number 1 in collection category PICTURES
+    Given I see full-screen image preview in collection view
+    Given I remember current picture preview state
+    When I swipe left on full-screen image preview in collection view
+    Then I verify that current picture preview similarity score is less than 0.2 within 1 second
+    When I swipe right on full-screen image preview in collection view
+    Then I verify that current picture preview similarity score is more than 0.8 within 1 second
 
     Examples:
-      | Name      | Contact   | Picture1    | Picture2                 | Picture3                  |
-      | user1Name | user2Name | testing.jpg | userpicture_portrait.jpg | userpicture_landscape.jpg |
+      | Name      | Contact   | Picture1    | Picture2                 |
+      | user1Name | user2Name | testing.jpg | userpicture_portrait.jpg |

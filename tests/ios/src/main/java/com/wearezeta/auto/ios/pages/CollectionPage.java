@@ -18,9 +18,7 @@ public class CollectionPage extends IOSPage {
     private static final By nameBackButton = MobileBy.AccessibilityId("back");
     private static final By nameXbutton = MobileBy.AccessibilityId("close");
 
-    private static String strFullScreenPage = "fullScreenPage";
-    private static final By nameFullScreenPage = MobileBy.AccessibilityId(strFullScreenPage);
-    private static final By fbNameFullScreenPage = FBBy.AccessibilityId(strFullScreenPage);
+    private static final By fbNameFullScreenPage = FBBy.AccessibilityId("fullScreenPage");
 
     private static final BiFunction<String, Integer, String> xpathStrCollectionItemBuIndex = (categoryName, idx) ->
             String.format("//XCUIElementTypeStaticText[@name='%s']/" +
@@ -52,7 +50,7 @@ public class CollectionPage extends IOSPage {
     }
 
     public boolean isFullScreenImagePreviewVisible() throws Exception {
-        return isLocatorDisplayed(nameFullScreenPage);
+        return isLocatorDisplayed(fbNameFullScreenPage);
     }
 
     private static By getButtonLocatorByName(String name) {
