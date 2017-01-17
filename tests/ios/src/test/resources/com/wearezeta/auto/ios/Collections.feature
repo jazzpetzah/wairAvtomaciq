@@ -77,7 +77,7 @@ Feature: Collections
   Scenario Outline: Verify ephemeral messages are not shown in the collection view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given Users add the following devices: {"<Contact>": [{"name": "<ContactDevice>"}]}
+    Given User adds the following device: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I create temporary file <FileSize> in size with name "<FileName>" and extension "<FileExt>"
     Given I sign in using my email or phone number
     Given User <Contact> switches user Myself to ephemeral mode with 1 minute timeout
