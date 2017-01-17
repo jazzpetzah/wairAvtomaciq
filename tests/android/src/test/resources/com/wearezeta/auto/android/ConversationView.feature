@@ -399,7 +399,7 @@ Feature: Conversation View
   @C250856 @regression
   Scenario Outline: Verify I see someone is typing in 1:1 conversation
     Given There are 2 users where <Name> is me
-    Given User <Contact> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -416,8 +416,7 @@ Feature: Conversation View
   Scenario Outline: Verify I see someone are typing in group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given User <Contact1> adds new device <D1>
-    Given User <Contact2> adds new device <D2>
+    Given Users add the following devices: {"<Contact1>": [{"name": "<D1>"}], "<Contact2>": [{"name": "<D2>"}]}
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible

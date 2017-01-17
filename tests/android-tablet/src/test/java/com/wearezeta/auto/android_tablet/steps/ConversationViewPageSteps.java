@@ -629,10 +629,10 @@ public class ConversationViewPageSteps {
      * @param timeout       (optional) to define the validation should be complete within timeout
      * @param actionFailed  equals null means current action successfully
      * @throws Exception
-     * @step. ^I( do not)? see the result of (.*) file (upload|received)? having name "(.*)" and extension "(\w+)"( in \d+
+     * @step. ^I( do not)? see the result of \"(.*)\" file (upload|received)? having name "(.*)" and extension "(\w+)"( in \d+
      * seconds)?( failed)?$
      */
-    @Then("^I( do not)? see the result of (.*) file (upload|received)? having name \"(.*)\"" +
+    @Then("^I( do not)? see the result of \"(.*)\" file (upload|received)? having name \"(.*)\"" +
             " and extension \"(\\w+)\"( in \\d+ seconds)?( failed)?$")
     public void ThenISeeTheResultOfXFileUpload(String doNotSee, String size, String loadDirection, String fileFullName,
                                                String extension, String timeout, String actionFailed) throws Exception {

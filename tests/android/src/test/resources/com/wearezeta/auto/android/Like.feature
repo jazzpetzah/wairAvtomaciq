@@ -96,10 +96,10 @@ Feature: Like
   Scenario Outline: Verify I can like an edited message whose like list is reseted after edition
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given Users add the following devices: {"<Contact>": [{"name": "<ContactDevice>"}]}
+    Given Users add the following devices: {"<Contact1>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given User Myself adds new device <Device>
+    Given User adds the following device: {"Myself": [{"name": "<Device>"}]}
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     And I type the message "<Message>" and send it by cursor Send button
@@ -124,7 +124,7 @@ Feature: Like
   Scenario Outline: Verify local delete for my/others message doesn't reappear after someone liked it (negative)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <Device>
+    Given User adds the following device: {"<Contact>": [{"name": "<Device>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -150,7 +150,7 @@ Feature: Like
   Scenario Outline: Verify receiving a like in a conversation which history was removed (negative)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <Device>
+    Given User adds the following device: {"<Contact>": [{"name": "<Device>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -171,7 +171,7 @@ Feature: Like
   Scenario Outline: Verify sending like to a person who block me in a 1:1 conversation (negative)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <Device>
+    Given User adds the following device: {"<Contact>": [{"name": "<Device>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -193,10 +193,7 @@ Feature: Like
     Given There are 5 users where <Name> is me
     Given <Contact1> is connected to Myself,<Contact2>,<Contact3>,<Contact4>
     Given <Contact1> has group chat <Group> with Myself,<Contact2>,<Contact3>,<Contact4>
-    Given User <Contact1> adds new device <D1>
-    Given User <Contact2> adds new device <D2>
-    Given User <Contact3> adds new device <D3>
-    Given User <Contact4> adds new device <D4>
+    Given Users add the following device: {"<Contact1>": [{"name": "<D1>"}], "<Contact2>": [{"name": "<D2>"}],"<Contact3>": [{"name": "<D3>"}],"<Contact4>": [{"name": "<D4>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -425,7 +422,7 @@ Feature: Like
   @C226051 @regression @rc
   Scenario Outline: Verify receiving like from a blocked person in a group conversation
     Given There are 3 users where <Name> is me
-    Given User <Contact1> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact1>": [{"name": "<ContactDevice>"}]}
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <Group> with <Contact1>,<Contact2>
     Given User Myself blocks user <Contact1>
@@ -444,7 +441,7 @@ Feature: Like
   @C255425 @regression
   Scenario Outline: Verify conversation lists ordering is not changed if someone likes any message in the conversation
     Given There are 3 users where <Name> is me
-    Given User <Contact1> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact1>": [{"name": "<ContactDevice>"}]}
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
