@@ -347,6 +347,18 @@ public class CommonWebAppSteps {
                 isGroup);
     }
 
+    @When("^User (.*) sends (\\d+)? images? (.*) to (single user|group) conversation (.*)")
+    public void ContactSendImageToConversation(String imageSenderUserNameAlias, int quantity,
+                                               String imageFileName, String conversationType,
+                                               String dstConversationName) throws Exception {
+        final String imagePath = WebCommonUtils.getFullPicturePath(imageFileName);
+        final boolean isGroup = conversationType.equals("group");
+        for (int i = 0; i < quantity; i++) {
+            context.getCommonSteps().UserSentImageToConversationOtr(imageSenderUserNameAlias, imagePath, dstConversationName,
+                    isGroup);
+        }
+    }
+
     @When("^I break the session with device (.*) of user (.*)$")
     public void IBreakTheSession(String deviceName, String userAlias) throws Exception {
         ClientUser user = context.getUsersManager().findUserByNameOrNameAlias(userAlias);

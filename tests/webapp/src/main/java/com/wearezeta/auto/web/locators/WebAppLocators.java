@@ -680,7 +680,7 @@ public final class WebAppLocators {
 
         public static final String cssPictures = "[data-uie-name='collection-section-image'] image-component";
 
-        public static final String cssPictureCollectionSize = "[data-uie-name='collection-section-image'] [data-uie-name='collection-size']";
+        public static final String cssPictureCollectionSize = "[data-uie-name='collection-section-image'] [data-uie-name='collection-show-all']";
 
         public static final String cssVideos = "[data-uie-name='collection-section-video'] video-asset";
 
@@ -701,6 +701,14 @@ public final class WebAppLocators {
         public static final String cssLinkCollectionSize = "[data-uie-name='collection-section-link'] [data-uie-name='collection-size']";
 
         public static final String cssNoItemsPlaceholder = "[data-uie-name='collection-no-items']";
+
+        public static final String cssShowAllPictures = "[data-uie-name='collection-section-image'] [data-uie-name='collection-show-all']";
+
+        public static final String idCollectionDetails = "collection-details";
+
+        public static final String cssBackToCollectionButton = "[data-uie-name='do-collection-details-close']";
+
+        public static final String cssPicturesOnCollectionDetails = "#collection-details image-component";
 
     }
 
