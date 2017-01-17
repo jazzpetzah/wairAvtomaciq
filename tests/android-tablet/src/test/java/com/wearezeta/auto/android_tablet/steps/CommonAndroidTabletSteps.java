@@ -10,6 +10,7 @@ import com.wearezeta.auto.android.common.logging.LoggingProfile;
 import com.wearezeta.auto.android.common.logging.RegressionFailedLoggingProfile;
 import com.wearezeta.auto.android.common.logging.RegressionPassedLoggingProfile;
 import com.wearezeta.auto.android.pages.AndroidPage;
+import com.wearezeta.auto.android.pages.AndroidPagesCollection;
 import com.wearezeta.auto.android_tablet.common.AndroidTabletPagesCollection;
 import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContext;
 import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContextHolder;
@@ -48,7 +49,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class CommonAndroidTabletSteps {
     static {
@@ -198,7 +198,7 @@ public class CommonAndroidTabletSteps {
                 androidTabletTestContext.getDevicesManager(),
                 androidTabletTestContext.getCallingManager(),
                 androidTabletTestContext.getCommonSteps(),
-                scenario, new AndroidTabletPagesCollection()
+                scenario, new AndroidPagesCollection()
         );
         AndroidTestContextHolder.getInstance().setTestContext(androidTestContext);
 
@@ -882,35 +882,26 @@ public class CommonAndroidTabletSteps {
     }
 
     /**
-     * User adds multiple devices to his list of devices
+     * Add one or more remote devices to one or more remote users
+     * @step. ^Users? adds? devices? (.*)
      *
-     * @param userNameAlias user name/alias
-     * @param deviceNames   unique name of devices, comma-separated list
+     * @param mappingAsJson this should be valid JSON string. Keys are mandatory and
+     *                      are interpreted as user names/aliases and values are device(s) info
+     *                      mapped to these users. Device info objects can include following
+     *                      optional fields:
+     *                      name - device name (will be set to random unique value if not set)
+     *                      label - the device label (will not be set if missing)
+     *                      Examples:
+     *                      {"user1Name" : [{}]}
+     *                      {"user1Name" : [{}], "user2Name" : [{"name": "blabla", "label": "label"},
+     *                                                          {"name": "blabla2", "label": "label2"}]}
+     *
+     * @param mappingAsJson
      * @throws Exception
-     * @step. User (.*) adds new devices (.*)$
      */
-    @When("^User (.*) adds new devices? (.*)$")
-    public void UserAddRemoteDeviceToAccount(String userNameAlias, String deviceNames) throws Exception {
-        final List<String> names = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
-                .splitAliases(deviceNames);
-        final ExecutorService pool = Executors.newFixedThreadPool(names.size());
-        final AtomicInteger createdDevicesCount = new AtomicInteger(0);
-        for (String name : names) {
-            pool.submit(() -> {
-                try {
-                    AndroidTabletTestContextHolder.getInstance().getTestContext().getCommonSteps()
-                            .UserAddsRemoteDeviceToAccount(userNameAlias, name, Optional.empty());
-                    createdDevicesCount.incrementAndGet();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
-        }
-        pool.shutdown();
-        if (!pool.awaitTermination(5, TimeUnit.MINUTES) || createdDevicesCount.get() != names.size()) {
-            throw new IllegalStateException(String.format(
-                    "Devices '%s' were not created after the  timeout", names));
-        }
+    @Given("^Users? adds? the following devices?: (.*)")
+    public void UsersAddDevices(String mappingAsJson) throws Exception {
+        AndroidTabletTestContextHolder.getInstance().getTestContext().getCommonSteps().UsersAddDevices(mappingAsJson);
     }
 
     /**

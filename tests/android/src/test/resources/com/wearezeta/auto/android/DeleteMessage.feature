@@ -34,8 +34,7 @@ Feature: Delete Message
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given User Myself adds new device <Device>
-    Given User <Contact1> adds new device <ContactDevice>
+    Given Users add the following devices: {"Myself": [{"name": "<Device>"}], "<Contact1>": [{"name": "<ContactDevice>"}]}
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     And User Myself send encrypted message "<Message>" via device <Device> to user <Contact1>
@@ -69,13 +68,13 @@ Feature: Delete Message
     And I tap Delete button on the alert
     Then I do not see the message "<YoutubeLink>" in the conversation view
     And I do not see Youtube container in the conversation view
-    When I type the message "<SoundcloudLink>" and send it by cursor Send button
-    And I hide keyboard
-    And I long tap Soundcloud container in the conversation view
-    And I tap Delete only for me button on the message bottom menu
-    And I tap Delete button on the alert
-    Then I do not see the message "<SoundcloudLink>" in the conversation view
-    And I do not see Soundcloud container in the conversation view
+    #When I type the message "<SoundcloudLink>" and send it by cursor Send button
+    #And I hide keyboard
+    #And I long tap Soundcloud container in the conversation view
+    #And I tap Delete only for me button on the message bottom menu
+    #And I tap Delete button on the alert
+    #Then I do not see the message "<SoundcloudLink>" in the conversation view
+    #And I do not see Soundcloud container in the conversation view
 
     Examples:
       | Name      | Contact   | YoutubeLink                                 | SoundcloudLink                                                      |
@@ -102,7 +101,7 @@ Feature: Delete Message
       | user1Name | user2Name | DeleteTextMessage |
 
   @C111643 @regression @rc
-  Scenario Outline: Verify deleting ping
+  Scenario Outline: (AN-4835) Verify deleting ping
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given <Contact> starts instance using <CallBackend>
@@ -159,7 +158,7 @@ Feature: Delete Message
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    When User Myself adds new device <Device>
+    When User adds the following device: {"Myself": [{"name": "<Device>"}]}
     And I see Conversations list with conversations
     And I tap on conversation name <Contact1>
     And User Myself send encrypted message "<Message>" via device <Device> to user <Contact1>

@@ -332,12 +332,14 @@ Feature: Connect
     When I tap the conversation <Contact>
     Then I see user name "<Contact>" on Single pending outgoing connection page
     When <Contact> accepts all requests
+    # Workaround for AN-2897 with following 2 lines
+    And I navigate back
+    And I tap the conversation <Contact>
     Then I see the conversation view
-    And I see the system connection message contains "<SysMessage>" text on Conversation view page
 
     Examples:
-      | Name      | Contact   | SysMessage             |
-      | user1Name | user2Name | Connected to user2Name |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @C523 @regression
   Scenario Outline: (AN-2897) I want to see that the other person has accepted the connect request in the conversation view (landscape)
@@ -350,12 +352,14 @@ Feature: Connect
     When I tap the conversation <Contact>
     Then I see user name "<Contact>" on Single pending outgoing connection page
     When <Contact> accepts all requests
+    # Workaround for AN-2897 with following 2 lines
+    And I navigate back
+    And I tap the conversation <Contact>
     Then I see the conversation view
-    And I see the system connection message contains "<SysMessage>" text on Conversation view page
 
     Examples:
-      | Name      | Contact   | SysMessage             |
-      | user1Name | user2Name | Connected to user2Name |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @C493 @regression
   Scenario Outline: I would not know other person has ignored my connection request

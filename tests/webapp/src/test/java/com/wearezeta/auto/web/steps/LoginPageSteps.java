@@ -1,5 +1,9 @@
 package com.wearezeta.auto.web.steps;
 
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
+import com.wearezeta.auto.common.driver.DriverUtils;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
@@ -12,6 +16,11 @@ import com.wearezeta.auto.web.pages.LoginPage;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
 
@@ -140,6 +149,24 @@ public class LoginPageSteps {
     public void IClickChangePassword() throws Exception {
         context.getPagesCollection().getPage(LoginPage.class)
                 .clickChangePasswordButton(context.getPagesCollection());
+    }
+
+    @When("^I switch to Change Password page$")
+    public void ISwitchToChangePasswordPage() throws Exception {
+        WebDriver driver = context.getDriver();
+        Wait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(
+                DriverUtils.getDefaultLookupTimeoutSeconds(), TimeUnit.SECONDS)
+                .pollingEvery(1, TimeUnit.SECONDS);
+        try {
+            wait.until(drv -> {
+                return (drv.getWindowHandles().size() > 1);
+            });
+        } catch (TimeoutException e) {
+            throw new TimeoutException("No password change page was found", e);
+        }
+        Set<String> handles = driver.getWindowHandles();
+        handles.remove(driver.getWindowHandle());
+        driver.switchTo().window(handles.iterator().next());
     }
 
     @Then("^I see login error \"(.*)\"$")

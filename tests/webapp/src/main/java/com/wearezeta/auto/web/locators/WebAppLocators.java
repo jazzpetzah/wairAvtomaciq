@@ -639,15 +639,6 @@ public final class WebAppLocators {
 
         public static final String cssLabelOnOutgoingCall = "#call-controls .cc-label-message";
 
-        // image fullscreen
-        public static final String cssModalDialog = ".modal-show";
-
-        public static final String xpathXButton = "//*[@data-uie-name='do-close-detail-view']";
-
-        public static final String idBlackBorder = "detail-view";
-
-        public static final String cssFullscreenImage = ".detail-view-image";
-
         public static final Function<String, String> cssUserAvatarById = id -> String
                 .format("[user-id='%s'].user-avatar-sm", id);
 
@@ -671,8 +662,22 @@ public final class WebAppLocators {
 
         public static final String cssFirstTimeExperienceMessage = "[data-uie-name='start-conversation-hint']";
     }
+    
+    public static final class PictureFullscreenPage {
+        public static final String cssModalDialog = ".modal-show";
+        
+        public static final String cssModalBackground = "#detail-view.modal";
+
+        public static final String cssXButton = "[data-uie-name='do-close-detail-view']";
+
+        public static final String idBlackBorder = "detail-view";
+
+        public static final String cssFullscreenImage = ".detail-view-image";
+    }
 
     public static final class CollectionPage {
+        public static final String cssCloseButton = "#collection .icon-close";
+
         public static final String cssPictures = "[data-uie-name='collection-section-image'] image-component";
 
         public static final String cssPictureCollectionSize = "[data-uie-name='collection-section-image'] [data-uie-name='collection-show-all']";
@@ -685,7 +690,13 @@ public final class WebAppLocators {
 
         public static final String cssFileCollectionSize = "[data-uie-name='collection-section-file'] [data-uie-name='collection-size']";
 
-        public static final String cssLinks = "[data-uie-name='collection-section-link'] image-component";
+        public static final String cssLinkPreviewUrls = "[data-uie-name='collection-section-link'] [data-uie-name='link-preview-url']";
+
+        public static final String cssLinkPreviewTitles = "[data-uie-name='collection-section-link'] [data-uie-name='link-preview-title']";
+
+        public static final String cssLinkPreviewImages = "[data-uie-name='collection-section-link'] image-component";
+
+        public static final String cssLinkPreviewFroms = "[data-uie-name='collection-section-link'] asset-header span";
 
         public static final String cssLinkCollectionSize = "[data-uie-name='collection-section-link'] [data-uie-name='collection-size']";
 

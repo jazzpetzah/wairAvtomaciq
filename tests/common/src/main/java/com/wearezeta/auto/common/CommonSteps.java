@@ -14,11 +14,18 @@ import com.wearezeta.auto.common.wire_actors.models.AssetsVersion;
 import com.wearezeta.auto.common.wire_actors.models.MessageInfo;
 import com.wearezeta.auto.common.wire_actors.models.MessageReaction;
 import org.apache.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.Assert;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import static javax.xml.bind.DatatypeConverter.parseDateTime;
@@ -254,7 +261,7 @@ public final class CommonSteps {
     }
 
     public void UserAddsRemoteDeviceToAccount(String userNameAlias,
-                                              String deviceName, Optional<String> label) throws Exception {
+                                              @Nullable String deviceName, Optional<String> label) throws Exception {
         ClientUser user = getUsersManager().findUserByNameOrNameAlias(userNameAlias);
         getDevicesManager().addRemoteDeviceToAccount(user, deviceName, label);
     }
@@ -268,7 +275,7 @@ public final class CommonSteps {
     }
 
     public void UserSendsGiphy(String sendingFromUserNameAlias, String dstConversationName, String searchQuery,
-                               String deviceName, boolean isGroup) throws Exception {
+                               @Nullable String deviceName, boolean isGroup) throws Exception {
         final ClientUser userFrom = getUsersManager().findUserByNameOrNameAlias(sendingFromUserNameAlias);
         String dstConvId;
         if (isGroup) {
@@ -1058,6 +1065,46 @@ public final class CommonSteps {
         for (String alias : getUsersManager().splitAliases(userAliases)) {
             final ClientUser selfUser = getUsersManager().findUserByNameOrNameAlias(alias);
             BackendAPIWrappers.uploadSelfContact(selfUser);
+        }
+    }
+
+    private static final Timedelta DEVICES_CREATION_TIMEOUT = Timedelta.fromMinutes(5);
+
+    public void UsersAddDevices(String usersToDevicesMappingAsJson) throws Exception {
+        final JSONObject mappingAsJson = new JSONObject(usersToDevicesMappingAsJson);
+        final Map<String, List<JSONObject>> devicesMapping = new LinkedHashMap<>();
+        int expectedDevicesCount = 0;
+        for (String user : mappingAsJson.keySet()) {
+            final JSONArray devices = mappingAsJson.getJSONArray(user);
+            final List<JSONObject> devicesInfo = new ArrayList<>();
+            for (int deviceIdx = 0; deviceIdx < devices.length(); deviceIdx++) {
+                devicesInfo.add(devices.getJSONObject(deviceIdx));
+                ++expectedDevicesCount;
+            }
+            devicesMapping.put(getUsersManager().replaceAliasesOccurences(user, FindBy.NAME_ALIAS), devicesInfo);
+        }
+        final ExecutorService pool = Executors.newFixedThreadPool(expectedDevicesCount);
+        final AtomicInteger createdDevicesCount = new AtomicInteger(0);
+        for (Map.Entry<String, List<JSONObject>> entry : devicesMapping.entrySet()) {
+            for (JSONObject devInfo : entry.getValue()) {
+                pool.submit(() -> {
+                    try {
+                        UserAddsRemoteDeviceToAccount(entry.getKey(),
+                                devInfo.has("name") ? devInfo.getString("name") : null,
+                                devInfo.has("label") ? Optional.of(devInfo.getString("label")) : Optional.empty());
+                        createdDevicesCount.incrementAndGet();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+        }
+        pool.shutdown();
+        if (!pool.awaitTermination(DEVICES_CREATION_TIMEOUT.asMinutes(), TimeUnit.MINUTES)
+                || createdDevicesCount.get() != expectedDevicesCount) {
+            throw new IllegalStateException(String.format(
+                    "%d devices for users '%s' were not created after %s timeout",
+                    expectedDevicesCount, devicesMapping.keySet(), DEVICES_CREATION_TIMEOUT));
         }
     }
 }

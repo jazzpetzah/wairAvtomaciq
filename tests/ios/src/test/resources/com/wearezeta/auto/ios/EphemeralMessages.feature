@@ -329,7 +329,7 @@ Feature: Ephemeral Messages
   Scenario Outline: Verify edit/delete/like/copy/forward are switched off
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds a new device <DeviceName> with label <DeviceLabel>
+    Given Users add the following devices: {"<Contact>": [{"name": "<DeviceName>", "label": "<DeviceLabel>"}]}
     Given I sign in using my email or phone number
     Given User <Contact> switches user Myself to ephemeral mode with <EphemeralTimeout> seconds timeout
     Given I see conversations list

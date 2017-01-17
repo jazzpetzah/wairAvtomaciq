@@ -1,4 +1,4 @@
-Feature: Collections
+Feature: Collection
 
   @C378049 @collection @staging
   Scenario Outline: Verify message is shown if no media is in collection
@@ -163,6 +163,39 @@ Feature: Collections
     Examples:
       | Email      | Password      | Name      | Contact1  | Contact2  | ChatName   | Picture                   | Picture2                 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | group conv | userpicture_landscape.jpg | userpicture_portrait.jpg |
+
+  @C382595 @collection @staging
+  Scenario Outline: Verify opening overview of all links
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Email> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <Contact>
+    And Contact <Contact> sends message <Link> via device Device1 to user me
+    Then I see link <LinkInPreview> in link preview message
+    And I see a title <LinkTitle> in link preview in the conversation view
+    And I see a picture <LinkPreviewImage> from link preview
+    And I see 2 messages in conversation
+    When I click collection button in conversation
+    Then I see 1 link in collection
+    And I see link with link <LinkInPreview> in collection overview
+    And I see link with title <LinkTitle> in collection overview
+    And I see link with image <LinkPreviewImage> in collection overview
+    And I see link from contact <Contact> in collection overview
+    When I close collection overview
+    And Contact <Contact> sends message <LinkWithoutImage> via device Device1 to user me
+    Then I see link <LinkWithoutImage> in link preview message
+    And I see 3 messages in conversation
+    When I click collection button in conversation
+    Then I see 2 link in collection
+    And I see link with link <LinkWithoutImage> in collection overview
+    And I see link with title <LinkTitleWithoutImage> in collection overview
+    And I see link from contact <Contact> in collection overview
+
+    Examples:
+      | Email      | Password      | Name      | Contact   | Link                 | LinkInPreview | LinkTitle | LinkPreviewImage | LinkWithoutImage                                                              | LinkTitleWithoutImage                                 |
+      | user1Email | user1Password | user1Name | user2Name | https://app.wire.com | app.wire.com  | Wire      | linkpreview0.png | medium.com/wire-news/simple-privacy-policy-72-hour-log-retention-33d183ea0fb3 | Simpler Privacy Policy, 72h log retention – Wire News |
 
   @C378056 @collection @staging
   Scenario Outline: Verify opening single picture from all shared media overview

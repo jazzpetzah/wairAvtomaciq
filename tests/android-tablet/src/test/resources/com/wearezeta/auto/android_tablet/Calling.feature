@@ -15,7 +15,7 @@ Feature: Calling
     And I see incoming call
     And <Contact1> stops calling <GroupChatName>
     Then I do not see incoming call
-    And I see missed group call notification in the conversation view
+    And I see missed call from <Contact1> in the conversation
 
     Examples:
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
@@ -120,7 +120,7 @@ Feature: Calling
     When I swipe right to show the conversations list
     Then I see missed call notification near <Contact2> conversations list item
     When I tap the conversation <Contact2>
-    Then I see missed call notification in the conversation view
+    Then I see missed call from <Contact2> in the conversation
     When I navigate back
     Then I do not see missed call notification near <Contact2> conversations list item
 
@@ -144,7 +144,7 @@ Feature: Calling
     Then I do not see incoming call
     And I see missed call notification near <Contact2> conversations list item
     When I tap the conversation <Contact2>
-    Then I see missed call notification in the conversation view
+    Then I see missed call from <Contact2> in the conversation
     And I do not see missed call notification near <Contact2> conversations list item
 
     Examples:

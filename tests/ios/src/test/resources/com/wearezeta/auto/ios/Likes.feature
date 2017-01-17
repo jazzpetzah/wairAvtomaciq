@@ -162,7 +162,7 @@ Feature: Likes
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <Group> with <Contact1>,<Contact2>
-    Given User <Contact1> adds a new device <Contact1Device> with label <Contact1DeviceLabel>
+    Given Users add the following devices: {"<Contact1>": [{"name": "<Contact1Device>", "label": "<Contact1DeviceLabel>"}]}
     Given User Myself blocks user <Contact1>
     Given I sign in using my email or phone number
     Given User Myself sends file <FileName> having MIME type <FileMIME> to group conversation <Group> using device <MyDevice>
