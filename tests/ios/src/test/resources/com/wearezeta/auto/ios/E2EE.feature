@@ -202,7 +202,7 @@ Feature: E2EE
     Given There is 1 user where <Name> is me
     Given I sign in using my email
     Given I see conversations list
-    Given Users add the following devices: {"Myself": [{"name": "<DeviceName>", "label": "<DeviceLabel>"}]]}
+    Given Users add the following devices: {"Myself": [{"name": "<DeviceName>", "label": "<DeviceLabel>"}]}
     When I tap settings gear button
     And I accept alert
     And I select settings item Devices
