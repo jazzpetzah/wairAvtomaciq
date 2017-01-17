@@ -37,7 +37,7 @@ public class PictureFullscreenPageSteps {
 
     @When("^I click on black border to close fullscreen mode$")
     public void IClickOnBlackBorderToCloseFullscreen() throws Exception {
-        context.getPagesCollection().getPage(PictureFullscreenPage.class).clickOnBlackBorder();
+        context.getPagesCollection().getPage(PictureFullscreenPage.class).clickOnModalBackground();
     }
 
 }
