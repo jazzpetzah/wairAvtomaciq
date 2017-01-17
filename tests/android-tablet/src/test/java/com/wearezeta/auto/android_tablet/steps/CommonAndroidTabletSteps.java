@@ -10,6 +10,7 @@ import com.wearezeta.auto.android.common.logging.LoggingProfile;
 import com.wearezeta.auto.android.common.logging.RegressionFailedLoggingProfile;
 import com.wearezeta.auto.android.common.logging.RegressionPassedLoggingProfile;
 import com.wearezeta.auto.android.pages.AndroidPage;
+import com.wearezeta.auto.android.pages.AndroidPagesCollection;
 import com.wearezeta.auto.android_tablet.common.AndroidTabletPagesCollection;
 import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContext;
 import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContextHolder;
@@ -197,7 +198,7 @@ public class CommonAndroidTabletSteps {
                 androidTabletTestContext.getDevicesManager(),
                 androidTabletTestContext.getCallingManager(),
                 androidTabletTestContext.getCommonSteps(),
-                scenario, new AndroidTabletPagesCollection()
+                scenario, new AndroidPagesCollection()
         );
         AndroidTestContextHolder.getInstance().setTestContext(androidTestContext);
 

@@ -55,7 +55,7 @@ Feature: Conversation View
       | user1Name | user2Name |
 
   @C466 @regression
-  Scenario Outline: (AN-4540) Add people to 1:1 chat in portrait mode
+  Scenario Outline: Add people to 1:1 chat in portrait mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to portrait
@@ -74,11 +74,11 @@ Feature: Conversation View
     And I see the system message contains "<Contact2>" text on conversation view page
 
     Examples:
-      | Name      | Contact1  | Contact2  | Action                     |
-      | user1Name | user2Name | user3Name | You started a conversation |
+      | Name      | Contact1  | Contact2  | Action    |
+      | user1Name | user2Name | user3Name | You added |
 
   @C462 @regression
-  Scenario Outline: (AN-4540) Add people to 1:1 chat in landscape mode
+  Scenario Outline: Add people to 1:1 chat in landscape mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to landscape
@@ -98,8 +98,8 @@ Feature: Conversation View
     And I see the system message contains "<Contact2>" text on conversation view page
 
     Examples:
-      | Name      | Contact1  | Contact2  | Action                     |
-      | user1Name | user2Name | user3Name | You started a conversation |
+      | Name      | Contact1  | Contact2  | Action    |
+      | user1Name | user2Name | user3Name | You added |
 
   @C467 @regression
   Scenario Outline: Send message to group chat in portrait mode
@@ -247,7 +247,7 @@ Feature: Conversation View
     When I rename group conversation to <NewGroupChatName> on Group info popover
     And I press Back button 2 time
     Then I do not see Group info popover
-    And I see the conversation name system message "<NewGroupChatName>" on conversation view page
+    And I see the system message of new conversation name "<NewGroupChatName>" on Conversation view page
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | NewGroupChatName |
@@ -268,7 +268,7 @@ Feature: Conversation View
     When I rename group conversation to <NewGroupChatName> on Group info popover
     And I press Back button 2 time
     Then I do not see Group info popover
-    And I see the conversation name system message "<NewGroupChatName>" on conversation view page
+    And I see the system message of new conversation name "<NewGroupChatName>" on Conversation view page
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | NewGroupChatName |

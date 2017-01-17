@@ -90,9 +90,6 @@ Feature: Conversation View
     And I tap on user name found on Search page <Contact2>
     And I see Add to conversation button
     And I tap on Add to conversation button
-    # Workaround for AN-4011, for following two steps
-    And I tap conversation name from top toolbar
-    And I tap back button
     Then I see group chat page with users <Contact1>,<Contact2>
     And I navigate back from conversation
     And I see group conversation with <Contact1>,<Contact2> in conversations list
@@ -169,7 +166,7 @@ Feature: Conversation View
       | user1Name | user2Name |
 
   @C419 @regression
-  Scenario Outline: (AN-4782) I want to exit fullscreen view in landscape (rotations)
+  Scenario Outline: I want to exit fullscreen view in landscape (rotations)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
