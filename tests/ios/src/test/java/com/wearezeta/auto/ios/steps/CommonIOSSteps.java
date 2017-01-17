@@ -188,7 +188,7 @@ public class CommonIOSSteps {
                 // https://wearezeta.atlassian.net/browse/ZIOS-5259
                 , "-AnalyticsUserDefaultsDisabledKey", "0"
                 // ,"--debug-log-network"
-                 , "-com.apple.CoreData.ConcurrencyDebug", "1"
+                , "-com.apple.CoreData.ConcurrencyDebug", "1"
         ));
 
         if (additionalCaps.isPresent()) {
@@ -1086,6 +1086,24 @@ public class CommonIOSSteps {
     }
 
     /**
+     * Send Giphy image to a conversation
+     *
+     * @param senderNameAlias     sender name/alias
+     * @param giphyTag            Giphy search tag
+     * @param conversationType    either 'single user' or 'group'
+     * @param dstConversationName conversation name
+     * @throws Exception
+     * @step. User (.*) sends Giphy animation with tag "(.*)" to (single user|group) conversation (.*)
+     */
+    @Given("^User (.*) sends Giphy animation with tag \"(.*)\" to (single user|group) conversation (.*)")
+    public void UserSendsGiphy(String senderNameAlias, String giphyTag, String conversationType,
+                               String dstConversationName) throws Exception {
+        final boolean isGroup = conversationType.equals("group");
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .UserSendsGiphy(senderNameAlias, dstConversationName, giphyTag, null, isGroup);
+    }
+
+    /**
      * Rotate device to landscape
      *
      * @param orientation must be landscape or portrait
@@ -1181,7 +1199,6 @@ public class CommonIOSSteps {
 
     /**
      * Add one or more remote devices to one or more remote users
-     * @step. ^Users? adds? devices? (.*)
      *
      * @param mappingAsJson this should be valid JSON string. Keys are mandatory and
      *                      are interpreted as user names/aliases and values are device(s) info
@@ -1192,10 +1209,10 @@ public class CommonIOSSteps {
      *                      Examples:
      *                      {"user1Name" : [{}]}
      *                      {"user1Name" : [{}], "user2Name" : [{"name": "blabla", "label": "label"},
-     *                                                          {"name": "blabla2", "label": "label2"}]}
-     *
+     *                      {"name": "blabla2", "label": "label2"}]}
      * @param mappingAsJson
      * @throws Exception
+     * @step. ^Users? adds? devices? (.*)
      */
     @Given("^Users? adds? the following devices?: (.*)")
     public void UsersAddDevices(String mappingAsJson) throws Exception {

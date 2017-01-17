@@ -275,7 +275,7 @@ public final class CommonSteps {
     }
 
     public void UserSendsGiphy(String sendingFromUserNameAlias, String dstConversationName, String searchQuery,
-                               String deviceName, boolean isGroup) throws Exception {
+                               @Nullable String deviceName, boolean isGroup) throws Exception {
         final ClientUser userFrom = getUsersManager().findUserByNameOrNameAlias(sendingFromUserNameAlias);
         String dstConvId;
         if (isGroup) {
