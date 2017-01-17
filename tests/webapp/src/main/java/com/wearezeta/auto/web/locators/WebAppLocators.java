@@ -665,8 +665,10 @@ public final class WebAppLocators {
     
     public static final class PictureFullscreenPage {
         public static final String cssModalDialog = ".modal-show";
+        
+        public static final String cssModalBackground = "#detail-view.modal";
 
-        public static final String xpathXButton = "//*[@data-uie-name='do-close-detail-view']";
+        public static final String cssXButton = "[data-uie-name='do-close-detail-view']";
 
         public static final String idBlackBorder = "detail-view";
 
