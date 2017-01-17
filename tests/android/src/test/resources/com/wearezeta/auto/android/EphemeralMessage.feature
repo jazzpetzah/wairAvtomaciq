@@ -312,11 +312,11 @@ Feature: Ephemeral Message
     And I wait for <EphemeralTimeout> seconds
     Then I do not see Link Preview container in the conversation view
     # Soundcloud
-    When User <Contact> send encrypted message "<SoundCloud>" to user Myself
-    And I wait for <SyncTimeout> seconds
-    And I see Soundcloud container in the conversation view
-    And I wait for <EphemeralTimeout> seconds
-    Then I do not see Soundcloud container in the conversation view
+    #When User <Contact> send encrypted message "<SoundCloud>" to user Myself
+    #And I wait for <SyncTimeout> seconds
+    #And I see Soundcloud container in the conversation view
+    #And I wait for <EphemeralTimeout> seconds
+    #Then I do not see Soundcloud container in the conversation view
     # Youtube
     When User <Contact> send encrypted message "<Youtube>" to user Myself
     And I wait for <SyncTimeout> seconds

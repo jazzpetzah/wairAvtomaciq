@@ -58,7 +58,6 @@ Feature: Conversations list
     Given I see Conversations list with conversations
     # Workaround for AN-4115, need to open conversation view before receiving message
     Given I tap on conversation name <Contact1>
-    Given User <Contact1> sends encrypted message <SpotifyLink> to user Myself
     Given User <Contact1> sends encrypted image <Image> to single user conversation Myself
     Given User <Contact1> sends encrypted message <Message> to user Myself
     # Wait for all messages are syned
@@ -78,8 +77,8 @@ Feature: Conversations list
     Then I see conversation view
 
     Examples:
-      | Name      | Contact1  | Message    | Image       | SpotifyLink                                           |
-      | user1Name | user2Name | Tschuessii | testing.jpg | https://open.spotify.com/track/0p6GeAWS4VCZddxNbBtEss |
+      | Name      | Contact1  | Message    | Image       |
+      | user1Name | user2Name | Tschuessii | testing.jpg |
 
   @C95626 @regression
   Scenario Outline: Verify deleting a conversation is synchronised to all devices
@@ -172,6 +171,8 @@ Feature: Conversations list
     And I tap DELETE button on Confirm overlay page
     Then I do not see Conversations list with name <GroupChatName>
     When User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
+    # Wait for SE sync
+    And I wait for 5 seconds
     Then I see Conversations list with name <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I tap DELETE button on Group conversation options menu

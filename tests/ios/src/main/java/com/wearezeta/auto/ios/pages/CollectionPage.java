@@ -8,8 +8,9 @@ import org.openqa.selenium.WebElement;
 import java.util.concurrent.Future;
 
 public class CollectionPage extends IOSPage {
-
     private static final By classCollectionViewRoot = By.className("XCUIElementTypeCollectionView");
+
+    private static final By nameNoItemsPlaceholder = MobileBy.AccessibilityId("no items");
 
     public CollectionPage(Future<ZetaIOSDriver> driver) throws Exception {
         super(driver);
@@ -25,5 +26,9 @@ public class CollectionPage extends IOSPage {
         final WebElement category = getElement(classCollectionViewRoot).findElement(
                 MobileBy.AccessibilityId(categoryName));
         return isElementInvisible(category);
+    }
+
+    public boolean isNoItemsPlaceholderVisible() throws Exception {
+        return isLocatorDisplayed(nameNoItemsPlaceholder);
     }
 }

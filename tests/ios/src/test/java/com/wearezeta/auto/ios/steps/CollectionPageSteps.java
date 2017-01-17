@@ -25,9 +25,20 @@ public class CollectionPageSteps {
             Assert.assertTrue(String.format("Collection category %s is not visible", categoryName),
                     getCollectionPage().isCollectionCategoryVisible(categoryName));
         } else {
-            Assert.assertTrue(String.format("Collection category %s is visible, but should not be there",categoryName),
+            Assert.assertTrue(String.format("Collection category %s is visible, but should not be there", categoryName),
                     getCollectionPage().isCollectioncategoryInvisible(categoryName));
         }
+    }
 
+    /**
+     * Verify whether "No Items" placeholder is visible in collection
+     *
+     * @throws Exception
+     * @step. ^I see "No Items" placeholder in collection view$
+     */
+    @Then("^I see \"No Items\" placeholder in collection view$")
+    public void ISeeNoItemsPlaceholder() throws Exception {
+        Assert.assertTrue("No Items placeholder is expoected to be visible",
+                getCollectionPage().isNoItemsPlaceholderVisible());
     }
 }

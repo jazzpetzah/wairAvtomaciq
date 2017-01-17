@@ -146,6 +146,7 @@ Feature: Localization
     And I click logout button on clear data dialog
     And I see Sign In page
     And I click Change Password button
+    And I switch to Change Password page
     And I see Password Change Request page
     And I enter email <Email> on Password Change Request page
     And <Name> starts listening for password change confirmation

@@ -28,12 +28,11 @@ import javax.ws.rs.NotSupportedException;
 
 public class ConversationViewPage extends BaseUserDetailsOverlay {
 
-    public static final By xpathConfirmOKButton = By.xpath("//*[@id='ttv__confirmation__confirm' and @value='OK']");
-    private static final By idClickedImageSendingIndicator = By.id("v__row_conversation__pending");
+    public static final By idConversationRoot = By.id("messages_list_view");
 
     //region Conversation Row Locators
     // Text
-    private static final String idStrRowConversationMessage = "tmltv__row_conversation__message";
+    private static final String idStrRowConversationMessage = "ltv__row_conversation__message";
     private static final Function<String, String> xpathStrConversationMessageByText = text -> String
             .format("//*[@id='%s' and @value='%s']", idStrRowConversationMessage, text);
     private static final By xpathLastConversationMessage =
@@ -44,14 +43,29 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
             String.format("//*[@id='cv__row_conversation__link_preview__text_message' and @value='%s']", text);
 
     // Image
-    private static final String idStrConversationImages = "fl__row_conversation__message_image_container";
+    private static final String idStrConversationImages = "message_image";
     public static final By idConversationImageContainer = By.id(idStrConversationImages);
-    private static final String xpathStrLastImage = String.format("(//*[@id='%s'])[last()]", idStrConversationImages);
+    private static final By idClickedImageSendingIndicator = By.id("v__row_conversation__pending");
 
-    // System message
-    private static final String idStrMissedCallMesage = "ttv__row_conversation__missed_call";
+    // Missed call message
+    private static final String idStrMissedCallMesage = "tvMessage";
     private static final Function<String, String> xpathStrMissedCallMesageByText = text -> String
             .format("//*[@id='%s' and @value='%s']", idStrMissedCallMesage, text.toUpperCase());
+
+    //region System message
+    private static final String strIdSystemMessage = "ttv__system_message__text";
+    private static final By xpathOtrVerifiedMessage = By
+            .xpath(String.format("//*[@id='%s' and @value='ALL FINGERPRINTS ARE VERIFIED']", strIdSystemMessage));
+
+    private static final By xpathSystemMessageNewDevice = By
+            .xpath(String.format("//*[@id='%s' and contains(@value,'STARTED USING A NEW DEVICE')]", strIdSystemMessage));
+
+    private static final Function<String, String> xpathStrSystemMessageNewDeviceByValue = value -> String.format(
+            "//*[@id='%s' and @value='%s STARTED USING A NEW DEVICE']", strIdSystemMessage, value.toUpperCase());
+
+    private static final Function<String, String> xpathStrSystemMessageByExp = exp -> String
+            .format("//*[@id='%s' and %s]", strIdSystemMessage, exp);
+    //endregion
 
     // Ping
     private static final String strIdPingMessage = "ttv__row_conversation__ping_message";
@@ -95,11 +109,11 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     private static final FunctionalInterfaces.FunctionFor2Parameters<String, String, String> xpathStrTemplateIdValue
             = (id, value) -> String.format("//*[@id='%s' and contains(@value,'%s')]", id, value);
 
-    private static final String strIdMessageMetaLikeButton = "gtv__footer__like__button";
-    private static final String strIdMessageMetaLikeDescription = "tv__footer__like__description";
-    private static final String strIdMessageMetaStatus = "tv__footer__message_status";
-    private static final String strIdMessageMetaFirstLike = "cv__first_like_chathead";
-    private static final String strIdMessageMetaSecondLike = "cv__first_like_chathead";
+    private static final String strIdMessageMetaLikeButton = "like__button";
+    private static final String strIdMessageMetaLikeDescription = "like__description";
+    private static final String strIdMessageMetaStatus = "timestamp_and_status";
+    private static final String strIdMessageMetaFirstLike = "like_chathead_container";
+    private static final String strIdMessageMetaSecondLike = "like_chathead_container";
 
     private static final By idResendButton = By.xpath(
             String.format("//*[@id='%s' and @value='Sending failed. Resend']", strIdMessageMetaStatus));
@@ -152,11 +166,23 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     private static final By xpathAudioMessageDurationText =
             By.xpath("//*[@id='ttv__audio_message__recording__duration' and not(text())]");
 
-    private static final By idFileActionBtn = By.id("aab__row_conversation__action_button");
+    //region File transfer
+    private static final By idFileActionBtn = By.id("action_button");
+
+    private static final By idFileTransferContainer = By.id("message_file_asset");
+
+    private static final By idFileTransferPlaceholder = By.id("pdv__row_conversation__file_placeholder_dots");
+
+    private static final Function<String, String> xpathFileNamePlaceHolderByValue = value -> String
+            .format("//*[@id='file_name' and @value='%s']", value);
+
+    private static final Function<String, String> xpathFileInfoPlaceHolderByValue = value -> String
+            .format("//*[@id='file_info' and @value='%s']", value);
 
     private static final By idFileDialogActionOpenBtn = By.id("ttv__file_action_dialog__open");
 
     private static final By idFileDialogActionSaveBtn = By.id("ttv__file_action_dialog__save");
+    //endregion
 
     private static final String xpathStrConversationToolbar = "//*[@id='t_conversation_toolbar']";
 
@@ -167,87 +193,56 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
 
     public static final By idCursorCloseButton = By.id("cursor_button_close");
 
-    private static final String idStrNewConversationNameMessage = "ttv__row_conversation__new_conversation_name";
+    private static final String idStrNewConversationNameMessage = "ttv__new_conversation_name";
 
     private static Function<String, String> xpathStrNewConversationNameByValue = value -> String
             .format("//*[@id='%s' and @value='%s']", idStrNewConversationNameMessage, value);
-
-    private static final By xpathStrOtrVerifiedMessage = By
-            .xpath("//*[@id='ttv__otr_added_new_device__message' and @value='ALL FINGERPRINTS ARE VERIFIED']");
-
-    private static final By xpathStrOtrNonVerifiedMessage = By
-            .xpath("//*[@id='ttv__otr_added_new_device__message' and contains(@value,'STARTED USING A NEW DEVICE')]");
-
-    private static final Function<String, String> xpathStrOtrNonVerifiedMessageByValue = value -> String.format(
-            "//*[@id='ttv__otr_added_new_device__message' and @value='%s STARTED USING A NEW DEVICE']", value
-                    .toUpperCase());
-
-    public static final String idStrConversationRoot = "clv__conversation_list_view";
-    public static final By idConversationRoot = By.id(idStrConversationRoot);
-    private static final By xpathConversationContent = By.xpath("//*[@id='" + idStrConversationRoot + "']/*/*/*");
 
     private static final String strIdUserName = "tv__conversation_toolbar__title";
     private static final Function<String, String> xpathMessageNotificationByValue = value -> String
             .format("//*[starts-with(@id,'ttv_message_notification_chathead__label') and @value='%s']", value);
 
-    private static final Function<String, String> xpathFileNamePlaceHolderByValue = value -> String
-            .format("//*[@id='ttv__row_conversation__file__filename' and @value='%s']", value);
-
-    private static final Function<String, String> xpathFileInfoPlaceHolderByValue = value -> String
-            .format("//*[@id='ttv__row_conversation__file__fileinfo' and @value='%s']", value);
-
-    private static final Function<String, String> xpathConversationPeopleChangedByExp = exp -> String
-            .format("//*[@id='ttv__row_conversation__people_changed__text' and %s]", exp);
-
     private static final Function<String, String> xpathLinkPreviewUrlByValue = value -> String
             .format("//*[@id='ttv__row_conversation__link_preview__url' and @value='%s']", value);
 
-    private static final String idStrSeparatorName = "ttv__row_conversation__separator__name";
+    private static final String idStrSeparatorName = "tvName";
 
-    private static final Function<String, String> xpathTrashcanByName = name -> String
-            .format("//*[@id='%s' and @value='%s']/following-sibling::*[@id='gtv__message_recalled']",
-                    idStrSeparatorName, name.toLowerCase());
-
-    private static final Function<String, String> xpathPenByName = name -> String
-            .format("//*[@id='%s' and @value='%s']/following-sibling::*[@id='gtv__message_edited']",
+    private static final Function<String, String> xpathMessageStateGlyphByName = name -> String
+            .format("//*[@id='%s' and @value='%s']/following-sibling::*[@id='gtvStateGlyph']",
                     idStrSeparatorName, name.toLowerCase());
 
     private static final Function<String, String> xpathMessageSeparator = name -> String
             .format("//*[@id='%s' and @value='%s']", idStrSeparatorName, name.toLowerCase());
 
-    private static final By idYoutubeContainer = By.id("iv__row_conversation__youtube_image");
+    private static final By idYoutubeContainer = By.id("message_youtube");
 
     private static final By idSoundcloudContainer = By.id("mpv__row_conversation__message_media_player");
 
-    private static final By idFileTransferContainer = By.id("ll__row_conversation__file__message_container");
+    private static final By idVideoMessageContainer = By.id("message_video_asset");
 
-    private static final By idFileTransferPlaceholder = By.id("pdv__row_conversation__file_placeholder_dots");
+    private static final By idVideoContainerButton = By.id("action_button");
 
-    private static final By idVideoMessageContainer = By.id("fl__video_message_container");
-
-    private static final By idVideoContainerButton = By.id("gpv__row_conversation__video_button");
-
-    private static final By idAudioMessageContainer = By.id("tfll__audio_message_container");
+    private static final By idAudioMessageContainer = By.id("message_audio_asset");
 
     private static final By idAudioMessagePlaceholder = By.id("pdv__row_conversation__audio_placeholder_dots");
 
-    private static final By idAudioContainerButton = By.id("aab__row_conversation__audio_button");
+    private static final By idAudioContainerButton = By.id("action_button");
 
-    private static final By idShareLocationContainer = By.id("fl__row_conversation__map_image_container");
+    private static final By idShareLocationContainer = By.id("message_location");
 
     private static final By idLinkPreviewContainer = By.id("cv__row_conversation__link_preview__container");
 
-    private static final By idAudioContainerSeekbar = By.id("sb__audio_progress");
+    private static final By idAudioContainerSeekbar = By.id("progress");
 
     private static final By idAudioMessagePreviewSeekbar = By.id("sb__voice_message__recording__seekbar");
 
-    private static final By idImageContainerSketchButton = By.id("gtv__row_conversation__drawing_button__sketch");
+    private static final By idImageContainerSketchButton = By.id("button_sketch");
 
-    private static final By idImageContainerFullScreenButton = By.id("gtv__row_conversation__image_fullscreen");
+    private static final By idImageContainerFullScreenButton = By.id("button_fullscreen");
 
-    private static final By idImageContainerSketchEmojiButton = By.id("gtv__row_conversation__drawing_button__emoji");
+    private static final By idImageContainerSketchEmojiButton = By.id("button_emoji");
 
-    private static final By idImageContainerSketchTextButton = By.id("gtv__row_conversation__drawing_button__text");
+    private static final By idImageContainerSketchTextButton = By.id("button_text");
 
     private static final int MAX_CLICK_RETRIES = 5;
 
@@ -301,12 +296,6 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     }
 
     // region Screeshot buffer
-    public BufferedImage getConvoViewStateScreenshot() throws Exception {
-        return this.getElementScreenshot(getElement(idConversationRoot)).orElseThrow(
-                () -> new IllegalStateException("Cannot get a screenshot of conversation view")
-        );
-    }
-
     public BufferedImage getShieldStateScreenshot() throws Exception {
         return this.getElementScreenshot(getElement(idVerifiedConversationShield)).orElseThrow(
                 () -> new IllegalStateException("Cannot get a screenshot of verification shield")
@@ -675,16 +664,16 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     }
 
     public boolean waitForOtrVerifiedMessage() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathStrOtrVerifiedMessage);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathOtrVerifiedMessage);
     }
 
     public boolean waitForOtrNonVerifiedMessage() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathStrOtrNonVerifiedMessage);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathSystemMessageNewDevice);
     }
 
     public boolean waitForOtrNonVerifiedMessageCausedByUser(String userName) throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.xpath(xpathStrOtrNonVerifiedMessageByValue.apply(userName)));
+                By.xpath(xpathStrSystemMessageNewDeviceByValue.apply(userName)));
     }
 
     public boolean waitUntilLinkPreviewMessageVisible(String text) throws Exception {
@@ -697,27 +686,14 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
-    public boolean waitForPeopleMessage(String text) throws Exception {
-        final By locator = By.xpath(xpathConversationPeopleChangedByExp.apply(String.format("contains(@value, '%s')",
-                text.toUpperCase())));
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
+    public boolean waitUntilSystemMessageVisible(String text) throws Exception {
+        final By locator = By.xpath(xpathStrSystemMessageByExp.apply(String.format("contains(@value, '%s')", text.toUpperCase())));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean isImageVisible() throws Exception {
         return DriverUtils.waitUntilLocatorAppears(this.getDriver(), idConversationImageContainer) &&
                 DriverUtils.waitUntilLocatorDissapears(getDriver(), idClickedImageSendingIndicator, 20);
-    }
-
-    public void confirm() throws Exception {
-        final By locator = xpathConfirmOKButton;
-        final WebElement okBtn = getElement(locator, "OK button is not visible");
-        if (!DriverUtils.waitUntilElementClickable(getDriver(), okBtn)) {
-            throw new IllegalStateException("OK button is not clickable");
-        }
-        okBtn.click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), locator)) {
-            throw new IllegalStateException("OK button is still present on the screen after being clicked");
-        }
     }
 
     /**
@@ -733,7 +709,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
         final String xpathExpr = String.join(" and ", names.stream().map(
                 name -> String.format("contains(@value, '%s')", name.toUpperCase())
         ).collect(Collectors.toList()));
-        final By locator = By.xpath(xpathConversationPeopleChangedByExp.apply(xpathExpr));
+        final By locator = By.xpath(xpathStrSystemMessageByExp.apply(xpathExpr));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
@@ -869,10 +845,6 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
             swipeNum++;
         }
         return false;
-    }
-
-    public int getCurrentNumberOfItemsInConversation() throws Exception {
-        return selectVisibleElements(xpathConversationContent).size();
     }
 
     private static final long IMAGES_VISIBILITY_TIMEOUT = 10000; // seconds;
@@ -1048,7 +1020,8 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
                 getDriver().longTap(getElement(locator), DriverUtils.LONG_TAP_DURATION);
                 break;
             case "double tap":
-                getDriver().doubleTap(getElement(locator));
+                Point location = getElement(locator).getLocation();
+                getDriver().doubleTap(location.getX(), location.getY());
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Cannot identify the tap type '%s'", tapType));
@@ -1195,23 +1168,24 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     //endregion
 
     //region Contact name icon
+    //TODO: ROBIN - refactoring waitUntilTrash + waitUntilPen, also for tablet
     public boolean waitUntilTrashIconVisible(String name) throws Exception {
-        final By locator = By.xpath(xpathTrashcanByName.apply(name));
+        final By locator = By.xpath(xpathMessageStateGlyphByName.apply(name));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean waitUntilTrashIconInvisible(String name) throws Exception {
-        final By locator = By.xpath(xpathTrashcanByName.apply(name));
+        final By locator = By.xpath(xpathMessageStateGlyphByName.apply(name));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
     public boolean waitUntilPenIconVisible(String name) throws Exception {
-        final By locator = By.xpath(xpathPenByName.apply(name));
+        final By locator = By.xpath(xpathMessageStateGlyphByName.apply(name));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean waitUntilPenIconInvisible(String name) throws Exception {
-        final By locator = By.xpath(xpathPenByName.apply(name));
+        final By locator = By.xpath(xpathMessageStateGlyphByName.apply(name));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 

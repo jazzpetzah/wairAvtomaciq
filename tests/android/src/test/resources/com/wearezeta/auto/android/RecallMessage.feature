@@ -338,13 +338,13 @@ Feature: Recall Message
     Then I do not see Youtube container in the conversation view
     And User <Contact> see the recent message from user Myself via device <ContactDevice> is changed in 15 seconds
     # Soundcloud
-    When I type the message "<SoundCloudLink>" and send it by cursor Send button
-    And User <Contact> remember the recent message from user Myself via device <ContactDevice>
-    And I long tap Soundcloud container in the conversation view
-    And I tap Delete for everyone button on the message bottom menu
-    And I tap Delete button on the alert
-    Then I do not see Soundcloud container in the conversation view
-    And User <Contact> see the recent message from user Myself via device <ContactDevice> is changed in 15 seconds
+    #When I type the message "<SoundCloudLink>" and send it by cursor Send button
+    #And User <Contact> remember the recent message from user Myself via device <ContactDevice>
+    #And I long tap Soundcloud container in the conversation view
+    #And I tap Delete for everyone button on the message bottom menu
+    #And I tap Delete button on the alert
+    #Then I do not see Soundcloud container in the conversation view
+    #And User <Contact> see the recent message from user Myself via device <ContactDevice> is changed in 15 seconds
 
     Examples:
       | Name      | Contact   | YoutubeLink                                 | SoundCloudLink                                                      | ContactDevice |

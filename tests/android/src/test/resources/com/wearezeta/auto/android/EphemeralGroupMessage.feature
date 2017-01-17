@@ -243,11 +243,11 @@ Feature: Ephemeral Group Message
     And I wait for <EphemeralTimeout> seconds
     Then I do not see Link Preview container in the conversation view
     # Soundcloud
-    When User <Contact> send encrypted message "<SoundCloud>" to group conversation <Group>
-    And I wait for <SyncTimeout> seconds
-    And I see Soundcloud container in the conversation view
-    And I wait for <EphemeralTimeout> seconds
-    Then I do not see Soundcloud container in the conversation view
+    #When User <Contact> send encrypted message "<SoundCloud>" to group conversation <Group>
+    #And I wait for <SyncTimeout> seconds
+    #And I see Soundcloud container in the conversation view
+    #And I wait for <EphemeralTimeout> seconds
+    #Then I do not see Soundcloud container in the conversation view
     # Youtube
     When User <Contact> send encrypted message "<Youtube>" to group conversation <Group>
     And I wait for <SyncTimeout> seconds
@@ -314,7 +314,7 @@ Feature: Ephemeral Group Message
       | user1Name | user2Name | user3Name | 5 seconds        | 15             | Yo      | Sending failed. Resend | YoGroup |
 
   @C321208 @regression
-  Scenario Outline: (Group) Verify the message is not deleted for users that didn't read the message
+  Scenario Outline: (AN-4848) (Group) Verify the message is not deleted for users that didn't read the message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
     Given Myself has group chat <Group> with <Contact>,<Contact1>

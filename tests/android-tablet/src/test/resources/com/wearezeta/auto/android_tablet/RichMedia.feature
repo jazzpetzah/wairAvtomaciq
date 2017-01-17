@@ -42,7 +42,7 @@ Feature: Rich Media
       | Name      | Contact   | GifName      |
       | user1Name | user2Name | animated.gif |
 
-  @C774 @regression @rc
+  @C774 @soundcloud
   Scenario Outline: Verify you can play/pause media from the conversation list (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -67,7 +67,7 @@ Feature: Rich Media
       | Name      | Contact   | SoundCloudLink                                                      |
       | user1Name | user2Name | https://soundcloud.com/scottisbell/scott-isbell-tonight-feat-adessi |
 
-  @C798 @regression @rc
+  @C798 @soundcloud
   Scenario Outline: (AN-3300) Verify you can play/pause media from the conversation list (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
