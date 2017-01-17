@@ -673,6 +673,20 @@ public final class WebAppLocators {
         public static final String idBlackBorder = "detail-view";
 
         public static final String cssFullscreenImage = ".detail-view-image";
+        
+        public static final String cssIsLiked = "[data-uie-name='do-like-fullscreen-picture'] .text-red";
+        
+        public static final String cssSender = "[data-uie-name='fullscreen-picture-sender']";
+        
+        public static final String cssTimestamp = ".detail-view-header [data-timestamp]";
+        
+        public static final String cssLikeButton = "[data-uie-name='do-like-fullscreen-picture']";
+        
+        public static final String cssDownloadButton = "[data-uie-name='do-download-fullscreen-picture']";
+        
+        public static final String cssDeleteForMeButton = "[data-uie-name='do-delete-fullscreen-picture']";
+        
+        public static final String cssDeleteEverywhereButton = "[data-uie-name='do-delete-everywhere-fullscreen-picture']";
     }
 
     public static final class CollectionPage {

@@ -368,13 +368,13 @@ Feature: Conversation View
     And I send picture <PictureName> to the current conversation
     And I see sent picture <PictureName> in the conversation view
     When I click on picture
-    Then I see picture <PictureName> in fullscreen
-    When I click x button to close fullscreen mode
-    Then I do not see picture <PictureName> in fullscreen
+    Then I see picture <PictureName> in picture fullscreen
+    When I click x button to close picture fullscreen mode
+    Then I do not see picture <PictureName> in picture fullscreen
     When I click on picture
-    Then I see picture <PictureName> in fullscreen
-    When I click on black border to close fullscreen mode
-    Then I do not see picture <PictureName> in fullscreen
+    Then I see picture <PictureName> in picture fullscreen
+    When I click on black border to close picture fullscreen mode
+    Then I do not see picture <PictureName> in picture fullscreen
 
     Examples: 
       | Login      | Password      | Name      | Contact   | PictureName               |

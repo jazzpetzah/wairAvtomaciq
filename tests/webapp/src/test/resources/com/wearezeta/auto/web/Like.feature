@@ -169,6 +169,53 @@ Feature: Like
       | Login      | Password      | Name      | Contact   | ImageName                |
       | user1Email | user1Password | user1Name | user2Name | userpicture_portrait.jpg |
 
+  @C395990 @staging
+  Scenario Outline: Verify I can like an image from fullscreen view
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given user <Contact> adds a new device Device1 with label Label1
+    Given I am signed in properly
+    When I open conversation with <Contact>
+    When User <Contact> sends image <ImageName> to single user conversation <Name>
+    And I see sent picture <ImageName> in the conversation view
+# No likes
+    And I do not see likes below the last message
+    When I click on picture
+    Then I see picture <ImageName> in picture fullscreen
+    And I see like button in picture fullscreen
+    And I see the picture in fullscreen is not liked by me
+# Only liked by me
+    When I click like button in picture fullscreen
+    Then I see the picture in fullscreen is liked by me
+    When I click x button to close picture fullscreen mode
+    And I do not see likes below the last message
+    Then I see the last message is only liked by me
+# Liked by others and me
+    When User <Contact> likes the recent message from user <Name> via device Device1
+    And I see likes below the last message
+    And I see the last message is liked by others and me
+    When I click on picture
+    Then I see picture <ImageName> in picture fullscreen
+    Then I see the picture in fullscreen is liked by me
+# Only liked by others
+    When I click like button in picture fullscreen
+    Then I see the picture in fullscreen is not liked by me
+    When I click x button to close picture fullscreen mode
+    Then I see likes below the last message
+    And I see the last message is only liked by others
+# Everything unliked
+    When User <Contact> unlikes the recent message from user <Name> via device Device1
+    And I do not see likes below the last message
+    When I click on picture
+    Then I see picture <ImageName> in picture fullscreen
+    And I see the picture in fullscreen is not liked by me
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | ImageName                |
+      | user1Email | user1Password | user1Name | user2Name | userpicture_portrait.jpg |
+
   @C226429 @like @regression
   Scenario Outline: Verify liking someone's audio message
     Given There are 2 users where <Name> is me
