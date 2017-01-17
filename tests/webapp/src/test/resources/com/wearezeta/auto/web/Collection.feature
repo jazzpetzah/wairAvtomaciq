@@ -137,7 +137,7 @@ Feature: Collection
       | Email      | Password      | Name      | Contact   | Time | TimeLong   | TimeShortUnit | PictureName               | VideoFile   | SizeVideo | AudioFile   | AudioTime | File         | SizeFile |
       | user1Email | user1Password | user1Name | user2Name | 5    | 5 seconds  | s             | userpicture_landscape.jpg | C261733.mp4 | 1 MB      | example.wav | 00:20     | C261733.zip  | 512KB    |
 
-  @C378055 @collection @staging @torun
+  @C378055 @collection @staging
   Scenario Outline: Verify opening overview of all pictures from sender and receiver in group
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

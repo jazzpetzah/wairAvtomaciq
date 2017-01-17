@@ -708,7 +708,7 @@ public final class WebAppLocators {
 
         public static final String cssBackToCollectionButton = "[data-uie-name='do-collection-details-close']";
 
-        public static final String cssPicturesOnCollectionDetails = "[data-uie-name='collection-section-image'] image-component";
+        public static final String cssPicturesOnCollectionDetails = "#collection-details image-component";
 
     }
 
