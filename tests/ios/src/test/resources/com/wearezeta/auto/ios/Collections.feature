@@ -20,3 +20,17 @@ Feature: Collections
     Examples:
       | Name      | Contact   | Picture     | Link                  | FileName | FileExt | FileSize | FileMIME                 | ContactDevice |
       | user1Name | user2Name | testing.jpg | https://www.wire.com/ | testing  | bin     | 240 KB   | application/octet-stream | device1       |
+
+  @C368980 @staging @fastLogin
+  Scenario Outline: Verify message is shown if no media in collection
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    When I tap Collection button in conversation view
+    Then I see "No Items" placeholder in collection view
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
