@@ -1,6 +1,6 @@
 Feature: Collection
 
-  @C378049 @collection @staging
+  @C378049 @collection @regression
   Scenario Outline: Verify message is shown if no media is in collection
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -59,7 +59,7 @@ Feature: Collection
       | Email      | Password      | Name      | Contact1  | Contact2  | Picture                   |
       | user1Email | user1Password | user1Name | user2Name | user3Name | userpicture_landscape.jpg |
 
-  @C378053 @collection @staging
+  @C378053 @collection @regression
   Scenario Outline: Verify GIF pictures are not presented in library
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -84,7 +84,7 @@ Feature: Collection
       | Email      | Password      | Name      | Contact   | Gif         | Text |
       | user1Email | user1Password | user1Name | user2Name | example.gif | test |
 
-  @C378054 @collection @staging
+  @C378054 @collection @ephemeral @regression
   Scenario Outline: Verify ephemeral messages aren't shown in collection
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
