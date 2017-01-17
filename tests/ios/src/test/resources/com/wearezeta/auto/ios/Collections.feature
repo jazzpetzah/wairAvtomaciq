@@ -1,6 +1,6 @@
 Feature: Collections
 
-  @C368979 @staging @fastLogin
+  @C368979 @regression @fastLogin
   Scenario Outline: Verify main overview shows media from all categories (picture, file, link)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
