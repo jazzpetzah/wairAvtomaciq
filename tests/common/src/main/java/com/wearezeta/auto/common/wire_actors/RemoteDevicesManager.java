@@ -199,8 +199,8 @@ public class RemoteDevicesManager {
         ActorsRESTWrapper.sendMessage(fetchDeviceOwnedBy(userFrom).getUUID(), convId, message);
     }
 
-    public void sendConversationMessage(ClientUser userFrom, String convId, String message, String deviceName) throws
-            Exception {
+    public void sendConversationMessage(ClientUser userFrom, String convId, String message,
+                                        @Nullable String deviceName) throws Exception {
         final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
         ActorsRESTWrapper.sendMessage(dstDevice.getUUID(), convId, message);
     }
@@ -221,7 +221,8 @@ public class RemoteDevicesManager {
         ActorsRESTWrapper.sendImage(dstDevice.getUUID(), convId, new File(path));
     }
 
-    public void sendGiphy(ClientUser userFrom, String convId, String searchQuery, String deviceName) throws Exception {
+    public void sendGiphy(ClientUser userFrom, String convId, String searchQuery,
+                          @Nullable String deviceName) throws Exception {
         final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
         ActorsRESTWrapper.sendGiphy(dstDevice.getUUID(), convId, searchQuery);
     }
@@ -236,7 +237,8 @@ public class RemoteDevicesManager {
         ActorsRESTWrapper.sendTyping(dstDevice.getUUID(), convId);
     }
 
-    public void clearConversation(ClientUser userFrom, String convId, String deviceName) throws Exception {
+    public void clearConversation(ClientUser userFrom, String convId,
+                                  @Nullable String deviceName) throws Exception {
         final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
         ActorsRESTWrapper.clearConversation(dstDevice.getUUID(), convId);
     }
@@ -246,7 +248,8 @@ public class RemoteDevicesManager {
         ActorsRESTWrapper.muteConversation(dstDevice.getUUID(), convId);
     }
 
-    public void muteConversation(ClientUser userFrom, String convId, String deviceName) throws Exception {
+    public void muteConversation(ClientUser userFrom, String convId,
+                                 @Nullable String deviceName) throws Exception {
         final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
         ActorsRESTWrapper.muteConversation(dstDevice.getUUID(), convId);
     }
@@ -256,7 +259,8 @@ public class RemoteDevicesManager {
         ActorsRESTWrapper.unmuteConversation(dstDevice.getUUID(), convId);
     }
 
-    public void unmuteConversation(ClientUser userFrom, String convId, String deviceName) throws Exception {
+    public void unmuteConversation(ClientUser userFrom, String convId,
+                                   @Nullable String deviceName) throws Exception {
         final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
         ActorsRESTWrapper.unmuteConversation(dstDevice.getUUID(), convId);
     }
@@ -266,7 +270,8 @@ public class RemoteDevicesManager {
         ActorsRESTWrapper.archiveConversation(dstDevice.getUUID(), convId);
     }
 
-    public void archiveConversation(ClientUser userFrom, String convId, String deviceName) throws Exception {
+    public void archiveConversation(ClientUser userFrom, String convId,
+                                    @Nullable String deviceName) throws Exception {
         final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
         ActorsRESTWrapper.archiveConversation(dstDevice.getUUID(), convId);
     }
@@ -276,13 +281,14 @@ public class RemoteDevicesManager {
         ActorsRESTWrapper.unarchiveConversation(dstDevice.getUUID(), convId);
     }
 
-    public void unarchiveConversation(ClientUser userFrom, String convId, String deviceName) throws Exception {
+    public void unarchiveConversation(ClientUser userFrom, String convId,
+                                      @Nullable String deviceName) throws Exception {
         final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
         ActorsRESTWrapper.unarchiveConversation(dstDevice.getUUID(), convId);
     }
 
-    public void sendFile(ClientUser userFrom, String convId, String path, String mime, String deviceName)
-            throws Exception {
+    public void sendFile(ClientUser userFrom, String convId, String path, String mime,
+                         @Nullable String deviceName) throws Exception {
         final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
         ActorsRESTWrapper.sendFile(dstDevice.getUUID(), convId, new File(path), mime);
     }
@@ -295,14 +301,14 @@ public class RemoteDevicesManager {
         );
     }
 
-    public void deleteMessage(ClientUser userFrom, String convId, String messageId, String deviceName)
-            throws Exception {
+    public void deleteMessage(ClientUser userFrom, String convId, String messageId,
+                              @Nullable String deviceName) throws Exception {
         final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
         ActorsRESTWrapper.deleteMessage(dstDevice.getUUID(), convId, messageId);
     }
 
-    public void deleteMessageEverywhere(ClientUser userFrom, String convId, String messageId, String deviceName)
-            throws Exception {
+    public void deleteMessageEverywhere(ClientUser userFrom, String convId, String messageId,
+                                        @Nullable String deviceName) throws Exception {
         final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
         ActorsRESTWrapper.deleteMessageEverywhere(dstDevice.getUUID(), convId, messageId);
     }
@@ -319,25 +325,26 @@ public class RemoteDevicesManager {
         ActorsRESTWrapper.reactMessage(dstDevice.getUUID(), convId, messageId, reactionType);
     }
 
-    public void shareDefaultLocation(ClientUser userFrom, String convId, String deviceName) throws Exception {
+    public void shareDefaultLocation(ClientUser userFrom, String convId,
+                                     @Nullable String deviceName) throws Exception {
         final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
         ActorsRESTWrapper.sendLocation(dstDevice.getUUID(), convId);
     }
 
-    public void setEphemeralMode(ClientUser userFrom, String convId, Timedelta expirationTimeout, String deviceName)
-            throws Exception {
+    public void setEphemeralMode(ClientUser userFrom, String convId, Timedelta expirationTimeout,
+                                 @Nullable String deviceName) throws Exception {
         final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
         ActorsRESTWrapper.setEphemeralTimeout(dstDevice.getUUID(), convId, expirationTimeout);
     }
 
-    public void markEphemeralRead(ClientUser userFrom, String convId, String messageId, String deviceName)
-            throws Exception {
+    public void markEphemeralRead(ClientUser userFrom, String convId, String messageId,
+                                  @Nullable String deviceName) throws Exception {
         final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
         ActorsRESTWrapper.readEphemeralMessage(dstDevice.getUUID(), convId, messageId);
     }
 
     public List<MessageInfo> getConversationMessages(ClientUser userFrom, String convId,
-                                                     String deviceName) throws Exception {
+                                                     @Nullable String deviceName) throws Exception {
         final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
         return ActorsRESTWrapper.getMessagesInfo(dstDevice.getUUID(), convId);
     }
@@ -347,22 +354,26 @@ public class RemoteDevicesManager {
         ActorsRESTWrapper.setDeviceAssetsVersion(dstDevice.getUUID(), AssetsVersion.V3);
     }
 
-    public void setAssetToV2(ClientUser userFrom, String deviceName) throws Exception {
+    public void setAssetToV2(ClientUser userFrom,
+                             @Nullable String deviceName) throws Exception {
         final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
         ActorsRESTWrapper.setDeviceAssetsVersion(dstDevice.getUUID(), AssetsVersion.V2);
     }
 
-    public void cancelConnection(ClientUser userFrom, ClientUser userDst, String deviceName) throws Exception {
+    public void cancelConnection(ClientUser userFrom, ClientUser userDst,
+                                 @Nullable String deviceName) throws Exception {
         final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
         ActorsRESTWrapper.cancelConnection(dstDevice.getUUID(), userDst.getId());
     }
 
-    public String getUniqueUsername(ClientUser userFrom, String deviceName) throws Exception {
+    public String getUniqueUsername(ClientUser userFrom,
+                                    @Nullable String deviceName) throws Exception {
         final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
         return ActorsRESTWrapper.getUniqueUsername(dstDevice.getUUID());
     }
 
-    public void updateUniqueUsername(ClientUser userFrom, String uniqueUserName, String deviceName) throws Exception {
+    public void updateUniqueUsername(ClientUser userFrom, String uniqueUserName,
+                                     @Nullable String deviceName) throws Exception {
         final Device dstDevice = fetchDeviceOwnedBy(userFrom, Optional.ofNullable(deviceName));
         ActorsRESTWrapper.setUniqueUsername(dstDevice.getUUID(), uniqueUserName);
     }

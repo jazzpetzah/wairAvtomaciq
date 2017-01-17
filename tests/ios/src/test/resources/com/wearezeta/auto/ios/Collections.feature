@@ -36,3 +36,20 @@ Feature: Collections
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @C375779 @staging @fastLogin
+  Scenario Outline: Verify GIF pictures are not presented in Collection
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given Users add the following devices: {"Myself": [{}], "<Contact>": [{}]}
+    Given I sign in using my email or phone number
+    Given User Myself sends Giphy animation with tag "<GiphyTag1>" to single user conversation <Contact>
+    Given User <Contact> sends Giphy animation with tag "<GiphyTag2>" to single user conversation Myself
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    When I tap Collection button in conversation view
+    Then I see "No Items" placeholder in collection view
+
+    Examples:
+      | Name      | Contact   | GiphyTag1 | GiphyTag2 |
+      | user1Name | user2Name | happy     | hello     |
