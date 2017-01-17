@@ -130,7 +130,7 @@ Feature: E2EE
     And I tap Verify switcher on Device Details page
     And I tap Back button on Device Details page
     And I tap X button on Single user profile page
-    When Users add the following devices: {"<Contact1>": [{"name": "<DeviceName2>", "label": "<DeviceLabel2>"}]]}
+    When Users add the following devices: {"<Contact1>": [{"name": "<DeviceName2>", "label": "<DeviceLabel2>"}]}
     And User <Contact1> sends 1 encrypted message using device <DeviceName2> to user Myself
     # Wait for sync
     And I wait for 4 seconds
@@ -155,7 +155,7 @@ Feature: E2EE
     Given I tap Verify switcher on Device Details page
     Given I tap Back button on Device Details page
     Given I tap X button on Single user profile page
-    When Users add the following devices: {"<Contact1>": [{"name": "<DeviceName2>", "label": "<DeviceLabel2>"}]]}
+    When Users add the following devices: {"<Contact1>": [{"name": "<DeviceName2>", "label": "<DeviceLabel2>"}]}
     And I type the default message and send it
     Then I see the label "<Contact1> <ExpectedSuffix>" on New Device overlay
 
@@ -166,7 +166,7 @@ Feature: E2EE
   @C14310 @regression
   Scenario Outline: On first login on 2nd device there should be an explanation that user will not see previous messages
     Given There are 1 user where <Name> is me
-    Given Users add the following devices: {"Myself": [{"name": "<DeviceName>", "label": "<DeviceLabel>"}]]}
+    Given Users add the following devices: {"Myself": [{"name": "<DeviceName>", "label": "<DeviceLabel>"}]}
     Given I see sign in screen
     When I switch to Log In tab
     And I have entered login <Login>
@@ -249,7 +249,7 @@ Feature: E2EE
     Given I tap Verify switcher on Device Details page
     Given I tap Back button on Device Details page
     Given I tap X button on Single user profile page
-    When Users add the following devices: {"<Contact1>": [{"name": "<DeviceName2>", "label": "<DeviceLabel2>"}]]}
+    When Users add the following devices: {"<Contact1>": [{"name": "<DeviceName2>", "label": "<DeviceLabel2>"}]}
     And I type the default message and send it
     And I close New Device overlay
     And I resend the last message in the conversation with Resend button
@@ -275,7 +275,7 @@ Feature: E2EE
     Given I tap Verify switcher on Device Details page
     Given I tap Back button on Device Details page
     Given I tap X button on Single user profile page
-    When Users add the following devices: {"Myself": [{"name": "<DeviceName2>", "label": "<DeviceLabel2>"}]]}
+    When Users add the following devices: {"Myself": [{"name": "<DeviceName2>", "label": "<DeviceLabel2>"}]}
     Then I do not see shield icon in the conversation view
     And I see "<ExpectedMsg>" system message in the conversation view
 
@@ -371,7 +371,7 @@ Feature: E2EE
     Given I tap Back button on Device Details page
     Given I tap X button on Single user profile page
     Given I tap X button on Group info page
-    When Users add the following devices: {"<Contact1>": [{"name": "<DeviceName2>", "label": "<DeviceLabel2>"}]]}
+    When Users add the following devices: {"<Contact1>": [{"name": "<DeviceName2>", "label": "<DeviceLabel2>"}]}
     And I type the default message and send it
     And I close New Device overlay
     And I resend the last message in the conversation with Resend button
@@ -403,7 +403,7 @@ Feature: E2EE
     Given There is 1 user where <Name> is me
     Given I sign in using my email
     Given I see conversations list
-    And User Myself adds new device <DeviceName>
+    Given Users add the following devices: {"Myself": [{"name": "<DeviceName>"}]}
     When I tap settings gear button
     And I accept alert
     And I select settings item Devices
