@@ -72,3 +72,24 @@ Feature: Collections
     Examples:
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
+
+  @C368982 @staging @fastLogin
+  Scenario Outline: Verify ephemeral messages are not shown in the collection view
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{"name": "<ContactDevice>"}]}
+    Given I create temporary file <FileSize> in size with name "<FileName>" and extension "<FileExt>"
+    Given I sign in using my email or phone number
+    Given User <Contact> switches user Myself to ephemeral mode with 1 minute timeout
+    Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
+    Given User <Contact> sends file <FileNameVideo> having MIME type <MIMEType> to single user conversation <Name> using device <ContactDevice>
+    Given User <Contact> sends temporary file <FileName>.<FileExt> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    Given User <Contact> sends encrypted message "<Link>" to user Myself
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    When I tap Collection button in conversation view
+    Then I see "No Items" placeholder in collection view
+
+    Examples:
+      | Name      | Contact   | Picture     | Link                  | FileName | FileExt | FileSize | FileMIME                 | ContactDevice | FileNameVideo  | MIMEType  |
+      | user1Name | user2Name | testing.jpg | https://www.wire.com/ | testing  | bin     | 240 KB   | application/octet-stream | device1       | testing.mp4    | video/mp4 |
