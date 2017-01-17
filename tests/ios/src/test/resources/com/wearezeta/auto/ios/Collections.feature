@@ -20,8 +20,8 @@ Feature: Collections
     And I see collection category LINKS
 
     Examples:
-      | Name      | Contact   | Picture     | Link                  | FileName | FileExt | FileSize | FileMIME                 | ContactDevice | FileNameVideo  | MIMEType  |
-      | user1Name | user2Name | testing.jpg | https://www.wire.com/ | testing  | bin     | 240 KB   | application/octet-stream | device1       | testing.mp4    | video/mp4 |
+      | Name      | Contact   | Picture     | Link                  | FileName | FileExt | FileSize | FileMIME                 | ContactDevice | FileNameVideo | MIMEType  |
+      | user1Name | user2Name | testing.jpg | https://www.wire.com/ | testing  | bin     | 240 KB   | application/octet-stream | device1       | testing.mp4   | video/mp4 |
 
   @C368980 @staging @fastLogin
   Scenario Outline: Verify message is shown if no media in collection
@@ -91,5 +91,29 @@ Feature: Collections
     Then I see "No Items" placeholder in collection view
 
     Examples:
-      | Name      | Contact   | Picture     | Link                  | FileName | FileExt | FileSize | FileMIME                 | ContactDevice | FileNameVideo  | MIMEType  |
-      | user1Name | user2Name | testing.jpg | https://www.wire.com/ | testing  | bin     | 240 KB   | application/octet-stream | device1       | testing.mp4    | video/mp4 |
+      | Name      | Contact   | Picture     | Link                  | FileName | FileExt | FileSize | FileMIME                 | ContactDevice | FileNameVideo | MIMEType  |
+      | user1Name | user2Name | testing.jpg | https://www.wire.com/ | testing  | bin     | 240 KB   | application/octet-stream | device1       | testing.mp4   | video/mp4 |
+
+  @C368988 @staging @fastLogin
+  Scenario Outline: Verify swiping between the pictures in collection view
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given Users add the following devices: {"<Contact>": [{}]}
+    Given I sign in using my email or phone number
+    Given User <Contact> sends encrypted image <Picture1> to single user conversation Myself
+    Given User <Contact> sends encrypted image <Picture3> to single user conversation Myself
+    Given User Myself sends encrypted image <Picture2> to single user conversation <Contact>
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    Given I tap Collection button in conversation view
+    When I tap the item number 1 in collection category PICTURES
+    Then I see full-screen image preview in collection view
+    And I remember current picture preview state
+    And I swipe left on full-screen image preview in collection view
+    And I verify that current picture preview similarity score is less than 0.2 within 1 second
+    And I swipe right on full-screen image preview in collection view
+    And I verify that current picture preview similarity score is more than 0.8 within 1 second
+
+    Examples:
+      | Name      | Contact   | Picture1    | Picture2                 | Picture3                  |
+      | user1Name | user2Name | testing.jpg | userpicture_portrait.jpg | userpicture_landscape.jpg |

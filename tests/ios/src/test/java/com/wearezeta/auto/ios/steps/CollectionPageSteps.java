@@ -80,4 +80,16 @@ public class CollectionPageSteps {
     public void ITapButton(String name) throws Exception {
         getCollectionPage().tapButton(name);
     }
+
+    /**
+     * Swipe left/right on full-screen image preview in collection view
+     *
+     * @param swipeDirection left or right
+     * @throws Exception
+     * @step. ^I swipe (left|right) on full-screen image preview in collection view$
+     */
+    @When("^I swipe (left|right) on full-screen image preview in collection view$")
+    public void ISwipeOnImageFullscreenInCollectionView(String swipeDirection) throws Exception {
+        getCollectionPage().swipeOnImageFullscreen(swipeDirection);
+    }
 }

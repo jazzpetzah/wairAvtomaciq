@@ -1,6 +1,8 @@
 package com.wearezeta.auto.ios.pages;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -16,7 +18,9 @@ public class CollectionPage extends IOSPage {
     private static final By nameBackButton = MobileBy.AccessibilityId("back");
     private static final By nameXbutton = MobileBy.AccessibilityId("close");
 
-    private static final By nameFullScreenPage = MobileBy.AccessibilityId("fullScreenPage");
+    private static String strFullScreenPage = "fullScreenPage";
+    private static final By nameFullScreenPage = MobileBy.AccessibilityId(strFullScreenPage);
+    private static final By fbNameFullScreenPage = FBBy.AccessibilityId(strFullScreenPage);
 
     private static final BiFunction<String, Integer, String> xpathStrCollectionItemBuIndex = (categoryName, idx) ->
             String.format("//XCUIElementTypeStaticText[@name='%s']/" +
@@ -65,5 +69,19 @@ public class CollectionPage extends IOSPage {
     public void tapButton(String name) throws Exception {
         final By locator = getButtonLocatorByName(name);
         getElement(locator).click();
+    }
+
+    public void swipeOnImageFullscreen(String direction) throws Exception {
+        final FBElement image = (FBElement) getElement(fbNameFullScreenPage);
+        switch (direction.toLowerCase()) {
+            case "right":
+                image.scrollLeft();
+                return;
+            case "left":
+                image.scrollRight();
+                return;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown swipe direction '%s'", direction));
+        }
     }
 }
