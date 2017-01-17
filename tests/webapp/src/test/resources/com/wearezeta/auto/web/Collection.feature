@@ -142,15 +142,23 @@ Feature: Collections
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
-    Given User <Contact1> sends image <Picture2> to group conversation <ChatName>
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
+    When User <Contact1> sends 6 images <Picture> to group conversation <ChatName>
     And I am signed in properly
     When I open conversation with <ChatName>
+    When User <Contact2> sends 8 images <Picture2> to group conversation <ChatName>
     And I send picture <Picture> to the current conversation
     #And I see sent picture <Picture> in the conversation view
+    And I wait for 10 seconds
+    And I see 16 messages in conversation
     And I click collection button in conversation
-    Then I see 2 pictures in collection
+    Then I see 15 pictures in collection
+    When I click on Show all pictures button in collections
+    Then I see 15 pictures in pictures details in collections
+    And I see conversation <ChatName> is on the top
+    When I click on back button on collection details page
+    Then I see 15 pictures in collection
 
     Examples:
       | Email      | Password      | Name      | Contact1  | Contact2  | ChatName   | Picture                   | Picture2                 |
