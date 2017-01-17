@@ -357,7 +357,7 @@ Feature: Conversation View
       | Login                         | Password   | ChatName       | File           | Contact  | ContactEmail                  |
       | smoketester+68b16b1c@wire.com | aqa123456! | ReceiveLongMsg | loremipsum.txt | db76e9c3 | smoketester+db76e9c3@wire.com |
 
-  @C1702 @regression @WEBAPP-3525
+  @C1702 @regression
   Scenario Outline: Verify you can see conversation images in fullscreen
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -368,13 +368,13 @@ Feature: Conversation View
     And I send picture <PictureName> to the current conversation
     And I see sent picture <PictureName> in the conversation view
     When I click on picture
-    Then I see picture <PictureName> in fullscreen
-    When I click x button to close fullscreen mode
-    Then I do not see picture <PictureName> in fullscreen
+    Then I see picture <PictureName> in picture fullscreen
+    When I click x button to close picture fullscreen mode
+    Then I do not see picture <PictureName> in picture fullscreen
     When I click on picture
-    Then I see picture <PictureName> in fullscreen
-    When I click on black border to close fullscreen mode
-    Then I do not see picture <PictureName> in fullscreen
+    Then I see picture <PictureName> in picture fullscreen
+    When I click on black border to close picture fullscreen mode
+    Then I do not see picture <PictureName> in picture fullscreen
 
     Examples: 
       | Login      | Password      | Name      | Contact   | PictureName               |

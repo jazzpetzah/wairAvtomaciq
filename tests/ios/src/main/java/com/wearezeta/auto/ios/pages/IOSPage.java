@@ -32,6 +32,8 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 
+import javax.annotation.Nullable;
+
 import static com.wearezeta.auto.common.CommonUtils.getIosApplicationPathFromConfig;
 
 
@@ -503,12 +505,24 @@ public abstract class IOSPage extends BasePage {
 
     //region Elements location
 
+    protected WebElement getElement(WebElement parent, By locator) throws Exception {
+        return this.getElement(parent, locator,
+                String.format("The element '%s' is not visible", locator),
+                Timedelta.fromSeconds(DriverUtils.getDefaultLookupTimeoutSeconds())
+        );
+    }
+
     @Override
     protected WebElement getElement(By locator) throws Exception {
         return this.getElement(locator,
                 String.format("The element '%s' is not visible", locator),
                 Timedelta.fromSeconds(DriverUtils.getDefaultLookupTimeoutSeconds())
         );
+    }
+
+    protected WebElement getElement(WebElement parent, By locator, String message) throws Exception {
+        return this.getElement(parent, locator, message,
+                Timedelta.fromSeconds(DriverUtils.getDefaultLookupTimeoutSeconds()));
     }
 
     @Override
@@ -519,14 +533,19 @@ public abstract class IOSPage extends BasePage {
     private static final double MAX_EXISTENCE_DELAY_MS = 3000.0;
     private static final long MIN_EXISTENCE_ITERATIONS_COUNT = 2;
 
-    @Override
-    protected WebElement getElement(By locator, String message, Timedelta timeout) throws Exception {
+    protected WebElement getElement(@Nullable WebElement parent, By locator, String message,
+                                    Timedelta timeout) throws Exception {
         WebDriverException savedException;
         final Timedelta started = Timedelta.now();
         int iterationNumber = 1;
         do {
             try {
-                final WebElement el = getDriver().findElement(locator);
+                final WebElement el;
+                if (parent == null) {
+                    el = getDriver().findElement(locator);
+                } else {
+                    el = parent.findElement(locator);
+                }
                 if (el.isDisplayed()) {
                     return el;
                 }
@@ -541,6 +560,11 @@ public abstract class IOSPage extends BasePage {
         } while (Timedelta.now().isDiffLessOrEqual(started, timeout) ||
                 iterationNumber <= MIN_EXISTENCE_ITERATIONS_COUNT);
         throw new IllegalStateException(message, savedException);
+    }
+
+    @Override
+    protected WebElement getElement(By locator, String message, Timedelta timeout) throws Exception {
+        return getElement(null, locator, message, timeout);
     }
 
     protected boolean isLocatorExist(By locator) throws Exception {
@@ -568,16 +592,26 @@ public abstract class IOSPage extends BasePage {
         return false;
     }
 
+    protected boolean isLocatorDisplayed(WebElement parent, By locator) throws Exception {
+        return this.isLocatorDisplayed(parent, locator,
+                Timedelta.fromSeconds(DriverUtils.getDefaultLookupTimeoutSeconds()));
+    }
+
     protected boolean isLocatorDisplayed(By locator) throws Exception {
         return this.isLocatorDisplayed(locator, Timedelta.fromSeconds(DriverUtils.getDefaultLookupTimeoutSeconds()));
     }
 
-    protected boolean isLocatorDisplayed(By locator, Timedelta timeout) throws Exception {
+    protected boolean isLocatorDisplayed(@Nullable WebElement parent, By locator, Timedelta timeout) throws Exception {
         final Timedelta started = Timedelta.now();
         int iterationNumber = 1;
         do {
             try {
-                final WebElement el = getDriver().findElement(locator);
+                final WebElement el;
+                if (parent == null) {
+                    el = getDriver().findElement(locator);
+                } else {
+                    el = parent.findElement(locator);
+                }
                 if (el.isDisplayed()) {
                     return true;
                 }
@@ -593,16 +627,25 @@ public abstract class IOSPage extends BasePage {
         return false;
     }
 
+    protected boolean isLocatorDisplayed(By locator, Timedelta timeout) throws Exception {
+        return isLocatorDisplayed(null, locator, timeout);
+    }
+
     protected boolean isLocatorInvisible(By locator) throws Exception {
         return this.isLocatorInvisible(locator, Timedelta.fromSeconds(DriverUtils.getDefaultLookupTimeoutSeconds()));
     }
 
-    protected boolean isLocatorInvisible(By locator, Timedelta timeout) throws Exception {
+    protected boolean isLocatorInvisible(@Nullable WebElement parent, By locator, Timedelta timeout) throws Exception {
         final Timedelta started = Timedelta.now();
         int iterationNumber = 1;
         do {
             try {
-                final WebElement el = getDriver().findElement(locator);
+                final WebElement el;
+                if (parent == null) {
+                    el = getDriver().findElement(locator);
+                } else {
+                    el = parent.findElement(locator);
+                }
                 if (!el.isDisplayed()) {
                     return true;
                 }
@@ -616,6 +659,10 @@ public abstract class IOSPage extends BasePage {
         } while (Timedelta.now().isDiffLessOrEqual(started, timeout) ||
                 iterationNumber <= MIN_EXISTENCE_ITERATIONS_COUNT);
         return false;
+    }
+
+    protected boolean isLocatorInvisible(By locator, Timedelta timeout) throws Exception {
+        return isLocatorInvisible(null, locator, timeout);
     }
 
     protected boolean isElementInvisible(WebElement element) throws Exception {

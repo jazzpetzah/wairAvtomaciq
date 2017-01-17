@@ -91,8 +91,47 @@ Feature: Collections
     Then I see "No Items" placeholder in collection view
 
     Examples:
-      | Name      | Contact   | Picture     | Link                  | FileName | FileExt | FileSize | FileMIME                 | ContactDevice | FileNameVideo | MIMEType  |
-      | user1Name | user2Name | testing.jpg | https://www.wire.com/ | testing  | bin     | 240 KB   | application/octet-stream | device1       | testing.mp4   | video/mp4 |
+      | Name      | Contact   | Picture     | Link                  | FileName | FileExt | FileSize | FileMIME                 | ContactDevice | FileNameVideo  | MIMEType  |
+      | user1Name | user2Name | testing.jpg | https://www.wire.com/ | testing  | bin     | 240 KB   | application/octet-stream | device1       | testing.mp4    | video/mp4 |
+
+  @C368981 @staging @fastLogin
+  Scenario Outline: Verify opening overview of all shared media categories
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given Users add the following devices: {"Myself": [{}], "<Contact>": [{}]}
+    Given I create temporary file <FileSize> in size with name "<FileName>" and extension "<FileExt>"
+    Given I sign in using my email or phone number
+    Given User <Contact> sends 5 video files <VideoFileName> to conversation Myself
+    Given User Myself sends 5 video files <VideoFileName> to conversation <Contact>
+    Given User Myself sends 7 image files <Picture> to conversation <Contact>
+    Given User <Contact> sends 7 image files <Picture> to conversation Myself
+    Given User Myself sends 5 temporary files <FileName>.<FileExt> to conversation <Contact>
+    Given User <Contact> sends 5 audio files <AudioFileName> to conversation Myself
+    Given User <Contact> sends 5 "<Link>" messages to conversation Myself
+    Given User Myself sends 5 "<Link>" messages to conversation <Contact>
+    # Wait for sync
+    Given I wait for 10 seconds
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    Given I tap Collection button in conversation view
+    # Wait for sync
+    Given I wait for 5 seconds
+    When I tap Show All label next to collection category PICTURES
+    Then I see the count of tiles in collection category equals to 14
+    When I tap Back button in collection view
+    And I tap Show All label next to collection category VIDEOS
+    Then I see the count of tiles in collection category equals to 10
+    When I tap Back button in collection view
+    And I tap Show All label next to collection category LINKS
+    Then I see the count of tiles in collection category equals to 10
+    When I tap Back button in collection view
+    And I scroll collection view down
+    And I tap Show All label next to collection category FILES
+    Then I see the count of tiles in collection category equals to 10
+
+    Examples:
+      | Name      | Contact   | Picture     | Link                  | FileName | FileExt | FileSize | VideoFileName | AudioFileName |
+      | user1Name | user2Name | testing.jpg | https://www.wire.com/ | testing  | bin     | 240 KB   | testing.mp4   | test.m4a      |
 
   @C368988 @staging @fastLogin
   Scenario Outline: Verify swiping between the pictures in collection view

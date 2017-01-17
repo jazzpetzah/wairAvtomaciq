@@ -29,10 +29,48 @@ public class PictureFullscreenPage extends WebPage {
     
     @FindBy(css = WebAppLocators.PictureFullscreenPage.cssModalBackground)
     private WebElement modalBackground;
+    
+    @FindBy(css = WebAppLocators.PictureFullscreenPage.cssLikeButton)
+    private WebElement likeButton;
+    
+    @FindBy(css = WebAppLocators.PictureFullscreenPage.cssDownloadButton)
+    private WebElement downloadButton;
+    
+    @FindBy(css = WebAppLocators.PictureFullscreenPage.cssDeleteForMeButton)
+    private WebElement deleteForMeButton;
+    
+    @FindBy(css = WebAppLocators.PictureFullscreenPage.cssDeleteEverywhereButton)
+    private WebElement deleteEverywhereButton;
+    
+    @FindBy(css = WebAppLocators.PictureFullscreenPage.cssSender)
+    private WebElement senderElement;
+    
+    @FindBy(css = WebAppLocators.PictureFullscreenPage.cssTimestamp)
+    private WebElement timestampElement;
 
 
     public PictureFullscreenPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
         super(lazyDriver);
+    }
+    
+    public String getSenderId() throws Exception {
+        return senderElement.getAttribute("data-uie-uid");
+    }
+    
+    public String getSenderName() throws Exception {
+        return senderElement.getAttribute("data-uie-value");
+    }
+    
+    public String getSenderText() throws Exception {
+        return senderElement.getText();
+    }
+    
+    public String getTimestamp() throws Exception {
+        return timestampElement.getAttribute("data-timestamp");
+    }
+    
+    public String getTimestampText() throws Exception {
+        return timestampElement.getText();
     }
     
     public boolean isPictureInModalDialog() throws Exception {
@@ -48,6 +86,72 @@ public class PictureFullscreenPage extends WebPage {
     public boolean isPictureNotInModalDialog() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
                 By.cssSelector(WebAppLocators.PictureFullscreenPage.cssModalDialog));
+    }
+    
+    public boolean isLikedByMeVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+                By.cssSelector(WebAppLocators.PictureFullscreenPage.cssIsLiked));
+    }
+    
+    public boolean isLikedByMeInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+                By.cssSelector(WebAppLocators.PictureFullscreenPage.cssIsLiked));
+    }
+    
+    public boolean isLikeButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+                By.cssSelector(WebAppLocators.PictureFullscreenPage.cssLikeButton));
+    }
+    
+    public boolean isDownloadButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+                By.cssSelector(WebAppLocators.PictureFullscreenPage.cssDownloadButton));
+    }
+    
+    public boolean isDeleteForMeButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+                By.cssSelector(WebAppLocators.PictureFullscreenPage.cssDeleteForMeButton));
+    }
+    
+    public boolean isDeleteEverywhereButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+                By.cssSelector(WebAppLocators.PictureFullscreenPage.cssDeleteEverywhereButton));
+    }
+    
+    public boolean isLikeButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+                By.cssSelector(WebAppLocators.PictureFullscreenPage.cssLikeButton));
+    }
+    
+    public boolean isDownloadButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+                By.cssSelector(WebAppLocators.PictureFullscreenPage.cssDownloadButton));
+    }
+    
+    public boolean isDeleteForMeButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+                By.cssSelector(WebAppLocators.PictureFullscreenPage.cssDeleteForMeButton));
+    }
+    
+    public boolean isDeleteEverywhereButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+                By.cssSelector(WebAppLocators.PictureFullscreenPage.cssDeleteEverywhereButton));
+    }
+    
+    public void clickLikeButton() throws Exception {
+        likeButton.click();
+    }
+    
+    public void clickDownloadButton() throws Exception {
+        downloadButton.click();
+    }
+    
+    public void clickDeleteForMeButton() throws Exception {
+        deleteForMeButton.click();
+    }
+    
+    public void clickDeleteEverywhereButton() throws Exception {
+        deleteEverywhereButton.click();
     }
 
     public void clickXButton() throws Exception {
