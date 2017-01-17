@@ -137,7 +137,7 @@ Feature: Sign In
   @C3230 @regression @C145960
   Scenario Outline: AN-4162 When I see too many devices screen - I can remove devices without filling password every time and log in successfully
     Given There is 1 user where <Name> is me
-    Given User <Name> adds new devices <DeviceToRemove>,<DeviceToRemoveWithoutPassword>,<OtherDevice>,Device4,Device5,Device6,Device7
+    Given Users add the following devices: {"Myself": [{"name": "<DeviceToRemove>", {"name": "<DeviceToRemoveWithoutPassword>", "name": "<OtherDevice>", {"name": "Device4"}, {"name": "Device5"}, {"name": "Device6"}, {"name": "Device7"}]}
     # Workaround for AN-3281
     # Given I sign in using my email or phone number
     Given I sign in using my email

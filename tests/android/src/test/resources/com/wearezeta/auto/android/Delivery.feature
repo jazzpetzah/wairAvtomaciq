@@ -4,7 +4,7 @@ Feature: Delivery
   Scenario Outline: Verify I can see message status for latest message and the previous no-like message will hide status completely
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new devices <ContactDevice>
+    Given Users add the following devices: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -32,7 +32,7 @@ Feature: Delivery
     Given I tap on conversation name <Contact>
     When I type the message "<Msg>" and send it by cursor Send button
     Then I see Message status with expected text "<MessageStatus1>" in conversation view
-    When User <Contact> adds new devices <ContactDevice>
+    When Users add the following devices: {"<Contact>": [{"name": "<ContactDevice>"}]}
     # Wait until Sync
     And I wait for 5 seconds
     Then I see Message status with expected text "<MessageStatus1>" in conversation view
@@ -63,7 +63,7 @@ Feature: Delivery
   Scenario Outline: Verify the message status of not last message is changed when someone likes the message in 1:1 conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -74,11 +74,11 @@ Feature: Delivery
     When I long tap the Text message "<Msg>" in the conversation view
     And I tap Like button on the message bottom menu
     Then I see 1 Message status in conversation view
-    And I see Like description with expected text "Myself" in conversation view
+    And I see Like description with expected text "you" in conversation view
     And I see Like button in conversation view
     When I type the message "<Msg3>" and send it by cursor Send button
     Then I see 1 Message status in conversation view
-    And I see Like description with expected text "Myself" in conversation view
+    And I see Like description with expected text "you" in conversation view
     And I see Like button in conversation view
 
     Examples:

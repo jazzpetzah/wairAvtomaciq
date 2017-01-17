@@ -5,7 +5,7 @@ Feature: Recall Message
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
     Given Myself is connected to <Contact1>
-    Given User <Contact1> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact1>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -17,7 +17,7 @@ Feature: Recall Message
     Then I do not see the message "<Message>" in the conversation view
     And I see the trashcan next to the name of <Contact1> in the conversation view
     # Delete from my view
-    When User Myself adds new device <MySecondDevice>
+    When User adds the following device: {"Myself": [{"name": "<MySecondDevice>"}]}
     And User Myself send encrypted message "<Message2>" via device <MySecondDevice> to user <Contact1>
     And I see the message "<Message2>" in the conversation view
     And User <Contact1> remember the recent message from user Myself via device <ContactDevice>
@@ -38,7 +38,7 @@ Feature: Recall Message
     Given I rotate UI to landscape
     Given Myself is connected to <Contact1>, <Contact2>
     Given Myself has group chat <Group> with <Contact1>,<Contact2>
-    Given User <Contact1> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact1>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -50,7 +50,7 @@ Feature: Recall Message
     Then I do not see the message "<Message>" in the conversation view
     And I see the trashcan next to the name of <Contact1> in the conversation view
    # Delete from my view
-    When User Myself adds new device <MySecondDevice>
+    When User adds the following device: {"Myself": [{"name": "<MySecondDevice>"}]}
     And User Myself send encrypted message "<Message2>" via device <MySecondDevice> to group conversation <Group>
     And I see the message "<Message2>" in the conversation view
     And User <Contact1> remember the recent message from group conversation <Group> via device <ContactDevice>
@@ -72,7 +72,7 @@ Feature: Recall Message
     Given I push local file named "<FileName>" to the device
     Given I rotate UI to landscape
     Given <Contact> is connected to me
-    Given User <Contact> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -96,7 +96,7 @@ Feature: Recall Message
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
     Given <Contact> is connected to me
-    Given User <Contact> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -124,7 +124,7 @@ Feature: Recall Message
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -148,7 +148,7 @@ Feature: Recall Message
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -171,7 +171,7 @@ Feature: Recall Message
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email
     Given I push <FileSize> file having name "<FileName>.<FileExtension>" to the device
     Given I accept First Time overlay as soon as it is visible
@@ -195,7 +195,7 @@ Feature: Recall Message
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -220,7 +220,7 @@ Feature: Recall Message
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email
     Given I push <FileSize> video file having name "<FileFullName>" to the device
     Given I accept First Time overlay as soon as it is visible

@@ -5,7 +5,11 @@ import java.awt.image.BufferedImage;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.web.common.WebAppTestContext;
+
+import com.wearezeta.auto.web.pages.CollectionDetailsPage;
+
 import com.wearezeta.auto.web.common.WebCommonUtils;
+
 import com.wearezeta.auto.web.pages.CollectionPage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -36,13 +40,15 @@ public class CollectionPageSteps {
 
     @Then("^I see (\\d+) pictures? in collection$")
     public void ISeeXPictures(int amount) throws Exception {
-        assertThat("Number of shown pictures", context.getPagesCollection().getPage(CollectionPage.class).getNumberOfPictures(),
-                equalTo(amount));
+        if (amount <= 12) {
+            assertThat("Number of shown pictures", context.getPagesCollection().getPage(CollectionPage.class).getNumberOfPictures(),
+                    equalTo(amount));
+        }
         // Label is not shown for less than 13 pictures
-        if (amount > 12) {
+
             assertThat("Label to show all", context.getPagesCollection().getPage(CollectionPage.class).getLabelOfPictureCollectionSize(),
                     equalTo("Show all " + String.valueOf(amount)));
-        }
+
     }
 
     @Then("^I see (\\d+) videos? in collection$")
@@ -118,5 +124,21 @@ public class CollectionPageSteps {
     @When("I click on picture (\\d+) in collection$")
     public void IClickOnFirstPictureInCollection(int index) throws Exception {
         context.getPagesCollection().getPage(CollectionPage.class).clickFirstPictureInCollection(index);
+    }
+
+    @When("I click on Show all pictures button in collections$")
+    public void IClickOnAllPicturesButtonInCollections() throws Exception{
+        context.getPagesCollection().getPage(CollectionPage.class).clickShowAllPicturesInCollection();
+    }
+
+    @Then("^I see (\\d+) pictures? in pictures details in collections$")
+    public void ISeeXPicturesInDetails(int amount) throws Exception {
+        assertThat("Number of shown pictures", context.getPagesCollection().getPage(CollectionDetailsPage.class).getNumberOfPictures(),
+                    equalTo(amount));
+    }
+
+    @When("^I click on back button on collection details page$")
+    public void IClickOnBackButtonOnCollectionDetails() throws Exception{
+        context.getPagesCollection().getPage(CollectionDetailsPage.class).clickBackButtonCollectionDetails();
     }
 }

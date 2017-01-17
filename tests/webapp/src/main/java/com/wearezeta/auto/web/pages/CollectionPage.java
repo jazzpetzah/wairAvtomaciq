@@ -52,6 +52,9 @@ public class CollectionPage extends WebPage {
     @FindBy(css = WebAppLocators.CollectionPage.cssLinkCollectionSize)
     private WebElement linkCollectionSize;
 
+    @FindBy(css = WebAppLocators.CollectionPage.cssShowAllPictures)
+    private WebElement showAllPictures;
+
     public CollectionPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -119,5 +122,9 @@ public class CollectionPage extends WebPage {
 
     public void clickFirstPictureInCollection(int index) {
         pictures.get(index - 1).click();
+    }
+
+    public void clickShowAllPicturesInCollection() {
+        showAllPictures.click();
     }
 }

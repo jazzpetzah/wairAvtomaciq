@@ -71,7 +71,7 @@ Feature: Ephemeral Group Message
     Given Myself has group chat <Group> with <Contact>,<Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given User Myself adds new device <Mydevice>
+    Given User adds the following device: {"Myself": [{"name": "<Mydevice>"}]}
     Given I see Conversations list with conversations
     Given I tap on conversation name <Group>
     When User Myself remembers the recent message from group conversation <Group> via device <Mydevice>
@@ -147,7 +147,7 @@ Feature: Ephemeral Group Message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
     Given Myself has group chat <Group> with <Contact>,<Contact1>
-    Given User <Contact> adds new devices <ContactDevice>
+    Given Users add the following devices: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -174,10 +174,10 @@ Feature: Ephemeral Group Message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
     Given Myself has group chat <Group> with <Contact>,<Contact1>
-    Given User <Contact> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given User Myself adds new device <OwnDevice>
+    Given User adds the following device: {"Myself": [{"name": "<OwnDevice>"}]}
     Given I see Conversations list with conversations
     When User <Contact> switches group conversation <Group> to ephemeral mode via device <ContactDevice> with <EphemeralTimeout> timeout
     And User Myself remember the recent message from group conversation <Group> via device <OwnDevice>
@@ -200,7 +200,7 @@ Feature: Ephemeral Group Message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
     Given Myself has group chat <Group> with <Contact>,<Contact1>
-    Given User <Contact> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -243,11 +243,11 @@ Feature: Ephemeral Group Message
     And I wait for <EphemeralTimeout> seconds
     Then I do not see Link Preview container in the conversation view
     # Soundcloud
-    When User <Contact> send encrypted message "<SoundCloud>" to group conversation <Group>
-    And I wait for <SyncTimeout> seconds
-    And I see Soundcloud container in the conversation view
-    And I wait for <EphemeralTimeout> seconds
-    Then I do not see Soundcloud container in the conversation view
+    #When User <Contact> send encrypted message "<SoundCloud>" to group conversation <Group>
+    #And I wait for <SyncTimeout> seconds
+    #And I see Soundcloud container in the conversation view
+    #And I wait for <EphemeralTimeout> seconds
+    #Then I do not see Soundcloud container in the conversation view
     # Youtube
     When User <Contact> send encrypted message "<Youtube>" to group conversation <Group>
     And I wait for <SyncTimeout> seconds
@@ -264,7 +264,7 @@ Feature: Ephemeral Group Message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
     Given Myself has group chat <Group> with <Contact>,<Contact1>
-    Given User <Contact> adds new devices <ContactDevice>
+    Given Users add the following devices: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -314,12 +314,11 @@ Feature: Ephemeral Group Message
       | user1Name | user2Name | user3Name | 5 seconds        | 15             | Yo      | Sending failed. Resend | YoGroup |
 
   @C321208 @regression
-  Scenario Outline: (Group) Verify the message is not deleted for users that didn't read the message
+  Scenario Outline: (AN-4848) (Group) Verify the message is not deleted for users that didn't read the message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
     Given Myself has group chat <Group> with <Contact>,<Contact1>
-    Given User <Contact> adds new device <ContactDevice>
-    Given User <Contact1> adds new device <ContactDevice2>
+    Given Users add the following devices: {"<Contact>": [{"name": "<ContactDevice>"}], "<Contact1>": [{"name": "<ContactDevice2>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations

@@ -4,7 +4,7 @@ Feature: Recall Message
   Scenario Outline: Verify I can delete my message everywhere and I see others delete the message everywhere(1:1)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Contact1> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact1>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -17,7 +17,7 @@ Feature: Recall Message
     # C202328
     And I see the trashcan next to the name of <Contact1> in the conversation view
     # Delete from my view
-    When User Myself adds new device <MySecondDevice>
+    When User adds the following device: {"Myself": [{"name": "<MySecondDevice>"}]}
     And User Myself send encrypted message "<Message2>" via device <MySecondDevice> to user <Contact1>
     And I see the message "<Message2>" in the conversation view
     And User <Contact1> remember the recent message from user Myself via device <ContactDevice>
@@ -58,7 +58,7 @@ Feature: Recall Message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
     Given Myself has group chat <Group> with <Contact1>,<Contact2>
-    Given User <Contact1> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact1>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -71,7 +71,7 @@ Feature: Recall Message
     # C202329
     And I see the trashcan next to the name of <Contact1> in the conversation view
    # Delete from my view
-    When User Myself adds new device <MySecondDevice>
+    When User adds the following device: {"Myself": [{"name": "<MySecondDevice>"}]}
     And User Myself send encrypted message "<Message2>" via device <MySecondDevice> to group conversation <Group>
     And I see the message "<Message2>" in the conversation view
     And User <Contact1> remember the recent message from group conversation <Group> via device <ContactDevice>
@@ -90,7 +90,7 @@ Feature: Recall Message
   Scenario Outline: Verify I can delete everywhere works for images
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
-    Given User <Contact> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -113,7 +113,7 @@ Feature: Recall Message
   Scenario Outline: Verify delete everywhere works for giphy
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
-    Given User <Contact> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -144,7 +144,7 @@ Feature: Recall Message
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given User <Contact> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
     When I type the message "<Link>" and send it by cursor Send button
@@ -164,7 +164,7 @@ Feature: Recall Message
     Given I am on Android with Google Location Service
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -186,7 +186,7 @@ Feature: Recall Message
   Scenario Outline: Verify delete everywhere works for file sharing
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I push <FileSize> file having name "<FileName>.<FileExtension>" to the device
     Given I accept First Time overlay as soon as it is visible
@@ -209,7 +209,7 @@ Feature: Recall Message
   Scenario Outline: Verify delete everywhere works for audio messages
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -232,7 +232,7 @@ Feature: Recall Message
   Scenario Outline: Verify delete everywhere works for video messages
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I push <FileSize> video file having name "<FileFullName>" to the device
     Given I accept First Time overlay as soon as it is visible
@@ -257,10 +257,10 @@ Feature: Recall Message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User <Contact1> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact1>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given User Myself adds new device <Device>
+    Given User adds the following device: {"Myself": [{"name": "<Device>"}]}
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     And User Myself send encrypted message "<Message>" via device <Device> to user <Contact1>
@@ -282,7 +282,7 @@ Feature: Recall Message
   Scenario Outline: Verify I do not see unread dot if a message was deleted from someone in a conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Contact1> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact1>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -321,10 +321,10 @@ Feature: Recall Message
       | user1Name | user2Name | user3Name | RemoveFromGroupChat | YO      |
 
   @C206264 @regression @rc
-  Scenario Outline: Verify delete everywhere works for Soundcloud, YouTube
+  Scenario Outline: Verify delete everywhere works for YouTube
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -338,13 +338,13 @@ Feature: Recall Message
     Then I do not see Youtube container in the conversation view
     And User <Contact> see the recent message from user Myself via device <ContactDevice> is changed in 15 seconds
     # Soundcloud
-    When I type the message "<SoundCloudLink>" and send it by cursor Send button
-    And User <Contact> remember the recent message from user Myself via device <ContactDevice>
-    And I long tap Soundcloud container in the conversation view
-    And I tap Delete for everyone button on the message bottom menu
-    And I tap Delete button on the alert
-    Then I do not see Soundcloud container in the conversation view
-    And User <Contact> see the recent message from user Myself via device <ContactDevice> is changed in 15 seconds
+    #When I type the message "<SoundCloudLink>" and send it by cursor Send button
+    #And User <Contact> remember the recent message from user Myself via device <ContactDevice>
+    #And I long tap Soundcloud container in the conversation view
+    #And I tap Delete for everyone button on the message bottom menu
+    #And I tap Delete button on the alert
+    #Then I do not see Soundcloud container in the conversation view
+    #And User <Contact> see the recent message from user Myself via device <ContactDevice> is changed in 15 seconds
 
     Examples:
       | Name      | Contact   | YoutubeLink                                 | SoundCloudLink                                                      | ContactDevice |
@@ -372,7 +372,7 @@ Feature: Recall Message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given Myself is connected to <Contact2>
-    Given User <Contact1> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact1>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given User <Contact1> send encrypted message "<Message>" via device <ContactDevice> to user Myself
@@ -400,7 +400,7 @@ Feature: Recall Message
   Scenario Outline: Verify delete message everywhere offline mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Contact1> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact1>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations

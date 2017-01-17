@@ -275,7 +275,7 @@ public final class CommonSteps {
     }
 
     public void UserSendsGiphy(String sendingFromUserNameAlias, String dstConversationName, String searchQuery,
-                               String deviceName, boolean isGroup) throws Exception {
+                               @Nullable String deviceName, boolean isGroup) throws Exception {
         final ClientUser userFrom = getUsersManager().findUserByNameOrNameAlias(sendingFromUserNameAlias);
         String dstConvId;
         if (isGroup) {
@@ -496,14 +496,15 @@ public final class CommonSteps {
     public void UserSentImageToConversationOtr(String imageSenderUserNameAlias,
                                                String imagePath, String dstConversationName, boolean isGroup)
             throws Exception {
-        ClientUser imageSender = getUsersManager()
-                .findUserByNameOrNameAlias(imageSenderUserNameAlias);
+        ClientUser imageSender = getUsersManager().findUserByNameOrNameAlias(imageSenderUserNameAlias);
         if (!isGroup) {
             ClientUser imageReceiver = getUsersManager().findUserByNameOrNameAlias(dstConversationName);
-            BackendAPIWrappers.sendPictureToSingleUserConversationOtr(imageSender, imageReceiver, imagePath, getDevicesManager());
+            BackendAPIWrappers.sendPictureToSingleUserConversationOtr(imageSender, imageReceiver, imagePath,
+                    getDevicesManager());
         } else {
             dstConversationName = getUsersManager().replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
-            BackendAPIWrappers.sendPictureToChatByNameOtr(imageSender, dstConversationName, imagePath, getDevicesManager());
+            BackendAPIWrappers.sendPictureToChatByNameOtr(imageSender, dstConversationName, imagePath,
+                    getDevicesManager());
         }
     }
 

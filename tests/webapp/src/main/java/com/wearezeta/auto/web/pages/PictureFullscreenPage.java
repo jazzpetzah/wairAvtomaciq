@@ -20,17 +20,57 @@ public class PictureFullscreenPage extends WebPage {
 
     @SuppressWarnings("unused")
     private static final Logger LOG = ZetaLogger.getLog(PictureFullscreenPage.class.getSimpleName());
-    private static final int TIMEOUT_IMAGE_MESSAGE_UPLOAD = 40; // seconds
     
     @FindBy(css = WebAppLocators.PictureFullscreenPage.cssFullscreenImage)
     private WebElement fullscreenImage;
 
-    @FindBy(xpath = WebAppLocators.PictureFullscreenPage.xpathXButton)
+    @FindBy(css = WebAppLocators.PictureFullscreenPage.cssXButton)
     private WebElement xButton;
+    
+    @FindBy(css = WebAppLocators.PictureFullscreenPage.cssModalBackground)
+    private WebElement modalBackground;
+    
+    @FindBy(css = WebAppLocators.PictureFullscreenPage.cssLikeButton)
+    private WebElement likeButton;
+    
+    @FindBy(css = WebAppLocators.PictureFullscreenPage.cssDownloadButton)
+    private WebElement downloadButton;
+    
+    @FindBy(css = WebAppLocators.PictureFullscreenPage.cssDeleteForMeButton)
+    private WebElement deleteForMeButton;
+    
+    @FindBy(css = WebAppLocators.PictureFullscreenPage.cssDeleteEverywhereButton)
+    private WebElement deleteEverywhereButton;
+    
+    @FindBy(css = WebAppLocators.PictureFullscreenPage.cssSender)
+    private WebElement senderElement;
+    
+    @FindBy(css = WebAppLocators.PictureFullscreenPage.cssTimestamp)
+    private WebElement timestampElement;
 
 
     public PictureFullscreenPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
         super(lazyDriver);
+    }
+    
+    public String getSenderId() throws Exception {
+        return senderElement.getAttribute("data-uie-uid");
+    }
+    
+    public String getSenderName() throws Exception {
+        return senderElement.getAttribute("data-uie-value");
+    }
+    
+    public String getSenderText() throws Exception {
+        return senderElement.getText();
+    }
+    
+    public String getTimestamp() throws Exception {
+        return timestampElement.getAttribute("data-timestamp");
+    }
+    
+    public String getTimestampText() throws Exception {
+        return timestampElement.getText();
     }
     
     public boolean isPictureInModalDialog() throws Exception {
@@ -47,39 +87,94 @@ public class PictureFullscreenPage extends WebPage {
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
                 By.cssSelector(WebAppLocators.PictureFullscreenPage.cssModalDialog));
     }
+    
+    public boolean isLikedByMeVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+                By.cssSelector(WebAppLocators.PictureFullscreenPage.cssIsLiked));
+    }
+    
+    public boolean isLikedByMeInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+                By.cssSelector(WebAppLocators.PictureFullscreenPage.cssIsLiked));
+    }
+    
+    public boolean isLikeButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+                By.cssSelector(WebAppLocators.PictureFullscreenPage.cssLikeButton));
+    }
+    
+    public boolean isDownloadButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+                By.cssSelector(WebAppLocators.PictureFullscreenPage.cssDownloadButton));
+    }
+    
+    public boolean isDeleteForMeButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+                By.cssSelector(WebAppLocators.PictureFullscreenPage.cssDeleteForMeButton));
+    }
+    
+    public boolean isDeleteEverywhereButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+                By.cssSelector(WebAppLocators.PictureFullscreenPage.cssDeleteEverywhereButton));
+    }
+    
+    public boolean isLikeButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+                By.cssSelector(WebAppLocators.PictureFullscreenPage.cssLikeButton));
+    }
+    
+    public boolean isDownloadButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+                By.cssSelector(WebAppLocators.PictureFullscreenPage.cssDownloadButton));
+    }
+    
+    public boolean isDeleteForMeButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+                By.cssSelector(WebAppLocators.PictureFullscreenPage.cssDeleteForMeButton));
+    }
+    
+    public boolean isDeleteEverywhereButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+                By.cssSelector(WebAppLocators.PictureFullscreenPage.cssDeleteEverywhereButton));
+    }
+    
+    public void clickLikeButton() throws Exception {
+        likeButton.click();
+    }
+    
+    public void clickDownloadButton() throws Exception {
+        downloadButton.click();
+    }
+    
+    public void clickDeleteForMeButton() throws Exception {
+        deleteForMeButton.click();
+    }
+    
+    public void clickDeleteEverywhereButton() throws Exception {
+        deleteEverywhereButton.click();
+    }
 
     public void clickXButton() throws Exception {
         xButton.click();
     }
 
-    public void clickOnBlackBorder() throws Exception {
+    public void clickOnModalBackground() throws Exception {
         if (WebAppExecutionContext.getBrowser().isSupportingNativeMouseActions()) {
             Actions builder = new Actions(getDriver());
             builder.moveToElement(fullscreenImage, -10, -10).click().build().perform();
         } else {
-            WebElement blackBorder = getDriver().findElement(By.cssSelector("#detail-view.modal"));
             getDriver().executeScript("var evt = new MouseEvent('click', {view: window});arguments[0].dispatchEvent(evt);",
-                    blackBorder);
+                    modalBackground);
         }
     }
     
     public double getOverlapScoreOfFullscreenImage(String pictureName) throws Exception {
-        final String picturePath = WebCommonUtils
-                .getFullPicturePath(pictureName);
-        if (!isImageMessageFound()) {
-            return 0.0;
-        }
+        final String picturePath = WebCommonUtils.getFullPicturePath(pictureName);
         // comparison of the fullscreen image and sent picture
         BufferedImage actualImage = this.getElementScreenshot(fullscreenImage).orElseThrow(IllegalStateException::new);
         BufferedImage expectedImage = ImageUtil.readImageFromFile(picturePath);
         return ImageUtil.getOverlapScore(actualImage, expectedImage,
                 ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-    }
-    
-    public boolean isImageMessageFound() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                By.cssSelector(WebAppLocators.ConversationPage.cssFirstImage),
-                TIMEOUT_IMAGE_MESSAGE_UPLOAD);
     }
 
 }

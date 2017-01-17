@@ -8,6 +8,7 @@ import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import org.openqa.selenium.WebElement;
 
 
 public class TabletConversationsListPage extends ConversationsListPage {
@@ -21,8 +22,9 @@ public class TabletConversationsListPage extends ConversationsListPage {
     }
 
     public BufferedImage getConversationEntryScreenshot(EntrySide side, String name) throws Exception {
-        final By entryLocator = FBBy.xpath(xpathStrConvoListEntryByName.apply(name));
-        final FBElement entryElement = (FBElement) getElement(entryLocator,
+        final WebElement convoListRoot = getElement(fbClassConversationsListRoot);
+        final By locator = FBBy.xpath(xpathStrConvoListRelativeEntryByName.apply(name));
+        final FBElement entryElement = (FBElement) getElement(convoListRoot, locator,
                 String.format("Conversation list entry '%s' is not visible", name));
         final BufferedImage entryScreenshot =
                 this.getElementScreenshot(entryElement).orElseThrow(IllegalStateException::new);

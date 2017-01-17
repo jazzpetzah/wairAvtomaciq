@@ -71,7 +71,7 @@ Feature: Audio Message
       | user1Name | user2Name | user3Name | test.m4a | audio/mp4 | Device1    | Shared an audio message |
 
   @C131189 @regression @rc @legacy
-  Scenario Outline: Verify receiving/downloading/re-downloading a voice message
+  Scenario Outline: (AN-4839) Verify receiving/downloading/re-downloading a voice message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number

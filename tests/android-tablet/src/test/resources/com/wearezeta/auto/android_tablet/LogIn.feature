@@ -99,7 +99,7 @@ Feature: Log In
   @C162658 @regression @rc
   Scenario Outline: Verify you can remove extra devices and log in successfully if too many devices are registered for your account
     Given There is 1 user where <Name> is me
-    Given User <Name> adds new devices Device1,<DeviceToRemove>,<DeviceToRemoveWithoutPassword>,<OtherDevice>,Device5,Device6,Device7
+    Given Users add the following devices: {"Myself": [{"name": "Device1", "name": "<DeviceToRemove>", {"name": "<DeviceToRemoveWithoutPassword>", "name": "<OtherDevice>", {"name": "Device5"}, {"name": "Device6"}, {"name": "Device7"}]}
     Given I rotate UI to landscape
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
