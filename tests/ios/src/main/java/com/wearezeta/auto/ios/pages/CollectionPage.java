@@ -18,7 +18,7 @@ public class CollectionPage extends IOSPage {
     private static final By nameBackButton = MobileBy.AccessibilityId("back");
     private static final By nameXbutton = MobileBy.AccessibilityId("close");
 
-    private static final By nameFullScreenPage = MobileBy.AccessibilityId("fullScreenPage");
+    private static final By fbNameFullScreenPage = FBBy.AccessibilityId("fullScreenPage");
 
     private static final BiFunction<String, Integer, String> xpathStrCollectionItemBuIndex = (categoryName, idx) ->
             String.format("//XCUIElementTypeStaticText[@name='%s']/" +
@@ -55,7 +55,7 @@ public class CollectionPage extends IOSPage {
     }
 
     public boolean isFullScreenImagePreviewVisible() throws Exception {
-        return isLocatorDisplayed(nameFullScreenPage);
+        return isLocatorDisplayed(fbNameFullScreenPage);
     }
 
     private static By getButtonLocatorByName(String name) {
@@ -95,6 +95,20 @@ public class CollectionPage extends IOSPage {
                 break;
             default:
                 throw new IllegalArgumentException(String.format("'%s' scroll direction is not supported", direction));
+        }
+    }
+
+    public void swipeOnImageFullscreen(String direction) throws Exception {
+        final FBElement image = (FBElement) getElement(fbNameFullScreenPage);
+        switch (direction.toLowerCase()) {
+            case "right":
+                image.scrollLeft();
+                return;
+            case "left":
+                image.scrollRight();
+                return;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown swipe direction '%s'", direction));
         }
     }
 }
