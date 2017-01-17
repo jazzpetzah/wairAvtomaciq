@@ -19,7 +19,7 @@ public class CollectionPageSteps {
      * @throws Exception
      * @step. ^I (do not )?see collection category (PICTURES|LINKS|FILES)$
      */
-    @Then("^I (do not )?see collection category (PICTURES|LINKS|FILES)$")
+    @Then("^I (do not )?see collection category (PICTURES|VIDEOS|LINKS|FILES)$")
     public void ISeeCollectionCategory(String shouldNotBeVisible, String categoryName) throws Exception {
         if (shouldNotBeVisible == null) {
             Assert.assertTrue(String.format("Collection category %s is not visible", categoryName),
