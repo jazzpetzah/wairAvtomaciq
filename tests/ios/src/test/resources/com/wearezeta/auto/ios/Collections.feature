@@ -110,8 +110,8 @@ Feature: Collections
     Then I see "No Items" placeholder in collection view
 
     Examples:
-      | Name      | Contact   | Picture     | Link                  | FileName | FileExt | FileSize | FileMIME                 | ContactDevice | FileNameVideo  | MIMEType  |
-      | user1Name | user2Name | testing.jpg | https://www.wire.com/ | testing  | bin     | 240 KB   | application/octet-stream | device1       | testing.mp4    | video/mp4 |
+      | Name      | Contact   | Picture     | Link                  | FileName | FileExt | FileSize | FileMIME                 | ContactDevice | FileNameVideo | MIMEType  |
+      | user1Name | user2Name | testing.jpg | https://www.wire.com/ | testing  | bin     | 240 KB   | application/octet-stream | device1       | testing.mp4   | video/mp4 |
 
   @C368981 @regression @fastLogin
   Scenario Outline: Verify opening overview of all shared media categories
@@ -175,24 +175,52 @@ Feature: Collections
       | Name      | Contact   | Picture1    | Picture2                 |
       | user1Name | user2Name | testing.jpg | userpicture_portrait.jpg |
 
-  @C368985 @staging @fastLogin @torun
+  @C368985 @staging @fastLogin
   Scenario Outline: Share picture, link, file into one different conversation
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given Users add the following devices: {"Myself": [{}], "<Contact>": [{"name": "<ContactDevice>"}]}
-    Given I create temporary file <FileSize> in size with name "<FileName>" and extension "<FileExt>"
+    Given There are 6 users where <Name> is me
+    Given Myself is connected to all other users
+    Given User add the following device: {"<Contact1Sender>": [{}]}
     Given I sign in using my email or phone number
-    Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
-    Given User <Contact> sends file <FileNameVideo> having MIME type <MIMEType> to single user conversation <Name> using device <ContactDevice>
-    Given User <Contact> sends temporary file <FileName>.<FileExt> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    Given User Myself sends encrypted message "<Link>" to user <Contact>
+    Given User <Contact1Sender> sends 1 video file <VideoFileName> to conversation Myself
+    Given User <Contact1Sender> sends 1 image file <Picture> to conversation Myself
+    Given User <Contact1Sender> sends 1 audio file <AudioFileName> to conversation Myself
+    Given User <Contact1Sender> sends 1 "<Link>" message to conversation Myself
     Given I see conversations list
-    Given I tap on contact name <Contact>
+    Given I tap on contact name <Contact1Sender>
     Given I tap Collection button in conversation view
     When I long tap the item number 1 in collection category PICTURES
-
+    And I tap on Forward badge item
+    And I select <Contact2> conversation on Forward page
+    And I tap Send button on Forward page
+    And I tap Collection button in conversation view
+    And I long tap the item number 1 in collection category VIDEOS
+    And I tap on Forward badge item
+    And I select <Contact3> conversation on Forward page
+    And I tap Send button on Forward page
+    And I tap Collection button in conversation view
+    And I long tap the item number 1 in collection category LINKS
+    And I tap on Forward badge item
+    And I select <Contact4> conversation on Forward page
+    And I tap Send button on Forward page
+    And I tap Collection button in conversation view
+    And I long tap the item number 1 in collection category FILES
+    And I tap on Forward badge item
+    And I select <Contact5> conversation on Forward page
+    And I tap Send button on Forward page
+    Then I see conversation with user <Contact1Sender>
+    When I navigate back to conversations list
+    And I tap on contact name <Contact2>
+    Then I see 1 photo in the conversation view
+    When I navigate back to conversations list
+    And I tap on contact name <Contact3>
+    Then I see video message container in the conversation view
+    When I navigate back to conversations list
+    And I tap on contact name <Contact4>
+    Then I see link preview container in the conversation view
+    When I navigate back to conversations list
+    And I tap on contact name <Contact5>
+    Then I see audio message container in the conversation view
 
     Examples:
-      | Name      | Contact   | Picture     | Link                  | FileName | FileExt | FileSize | FileMIME                 | ContactDevice | FileNameVideo | MIMEType  |
-      | user1Name | user2Name | testing.jpg | https://www.wire.com/ | testing  | bin     | 240 KB   | application/octet-stream | device1       | testing.mp4   | video/mp4 |
-
+      | Name      | Contact1Sender | Contact2  | Contact3  | Contact4  | Contact5  | Picture     | Link                  | VideoFileName | AudioFileName |
+      | user1Name | user2Name      | user3Name | user4Name | user5Name | user6Name | testing.jpg | https://www.wire.com/ | testing.mp4   | test.m4a      |
