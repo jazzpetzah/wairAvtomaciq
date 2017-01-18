@@ -49,9 +49,14 @@ public class CollectionPage extends IOSPage {
         return isLocatorDisplayed(nameNoItemsPlaceholder);
     }
 
-    public void tapCategoryItemByIndex(String categoryName, int index) throws Exception {
-        final By locator = By.xpath(xpathStrCollectionItemBuIndex.apply(categoryName, index));
-        getElement(locator).click();
+    public void tapCategoryItemByIndex(String categoryName, int index, boolean isLongTap) throws Exception {
+        final By locator = FBBy.xpath(xpathStrCollectionItemBuIndex.apply(categoryName, index));
+        final FBElement dstElement = (FBElement) getElement(locator);
+        if (isLongTap) {
+            dstElement.longTap();
+        } else {
+            dstElement.click();
+        }
     }
 
     public boolean isFullScreenImagePreviewVisible() throws Exception {
