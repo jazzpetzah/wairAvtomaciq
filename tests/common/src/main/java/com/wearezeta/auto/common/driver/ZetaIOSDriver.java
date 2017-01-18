@@ -32,7 +32,7 @@ import org.openqa.selenium.security.Credentials;
 
 
 public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, FindsByFBPredicate,
-        FindsByFBAccessibilityId, FindsByFBXPath, FindsByFBClassName {
+        FindsByFBAccessibilityId, FindsByFBXPath, FindsByFBClassName, FindsByFBClassChain {
     public static final Timedelta MAX_COMMAND_DURATION = Timedelta.fromSeconds(90);
     public static final Timedelta MAX_SESSION_INIT_DURATION = Timedelta.fromSeconds(120);
     public static final Timedelta MAX_GET_SOURCE_DURATION = Timedelta.fromSeconds(15);
@@ -299,6 +299,26 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
     @Override
     public Options manage() {
         return new ZetaRemoteWebDriverOptions();
+    }
+
+    @Override
+    public WebElement findElementByFBClassChain(String value) {
+        try {
+            return getFbDriverAPI().findElementByFBClassChain(value)
+                    .orElseThrow(() -> new NotFoundException(String.format("Cannot find %s using class chain '%s'",
+                            FBElement.class.getSimpleName(), value)));
+        } catch (RESTError e) {
+            throw new WebDriverException(e);
+        }
+    }
+
+    @Override
+    public List findElementsByFBClassChain(String value) {
+        try {
+            return getFbDriverAPI().findElementsByFBClassChain(value);
+        } catch (RESTError e) {
+            throw new WebDriverException(e);
+        }
     }
 
     protected class ZetaRemoteWebDriverOptions extends RemoteWebDriverOptions {

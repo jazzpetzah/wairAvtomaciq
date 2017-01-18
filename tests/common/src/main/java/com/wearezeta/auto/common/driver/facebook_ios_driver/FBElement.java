@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByFBClassName,
-        FindsByFBPredicate, FindsByFBXPath {
+        FindsByFBPredicate, FindsByFBXPath, FindsByFBClassChain {
     private FBDriverAPI fbDriverAPI;
 
     private String uuid;
@@ -349,5 +349,26 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
                 (int) wdRect.getDouble("y"),
                 (int) wdRect.getDouble("width"),
                 (int) wdRect.getDouble("height"));
+    }
+
+    @Override
+    public WebElement findElementByFBClassChain(String value) {
+        try {
+            return fbDriverAPI.findChildElementByFBClassChain(this.uuid, value)
+                    .orElseThrow(() -> new NotFoundException(
+                            String.format("Cannot find nested %s using class chain '%s'",
+                                    getClass().getSimpleName(), value)));
+        } catch (RESTError e) {
+            throw new WebDriverException(e);
+        }
+    }
+
+    @Override
+    public List findElementsByFBClassChain(String value) {
+        try {
+            return fbDriverAPI.findChildElementsByFBClassChain(this.uuid, value);
+        } catch (RESTError e) {
+            throw new WebDriverException(e);
+        }
     }
 }

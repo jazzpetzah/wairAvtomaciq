@@ -23,6 +23,7 @@ public class FBDriverAPI {
     private static final String BY_CLASS_NAME_STRING = "class name";
     private static final String BY_XPATH_STRING = "xpath";
     private static final String BY_ACCESSIBILITY_ID_STRING = "accessibility id";
+    private static final String BY_CLASS_CHAIN_STRING = "class chain";
 
     private static final String OBJC_YES = "true";
     public static final String NULL_VALUE = "null";
@@ -151,6 +152,22 @@ public class FBDriverAPI {
 
     public void deactivateApp(Timedelta duration) throws RESTError, StatusNotZeroError {
         parseResponseWithStatus(client.deactivateApp(getSessionId(), duration));
+    }
+
+    public Optional<FBElement> findElementByFBClassChain(String query) throws RESTError {
+        return parseFindElementOutput(client.findElement(getSessionId(), BY_CLASS_CHAIN_STRING, query));
+    }
+
+    public List<FBElement> findElementsByFBClassChain(String query) throws RESTError {
+        return parseFindElementsOutput(client.findElements(getSessionId(), BY_CLASS_CHAIN_STRING, query));
+    }
+
+    public Optional<FBElement> findChildElementByFBClassChain(String uuid, String value) throws RESTError {
+        return parseFindElementOutput(client.findElement(getSessionId(), uuid, BY_CLASS_CHAIN_STRING, value));
+    }
+
+    public List<FBElement> findChildElementsByFBClassChain(String uuid, String value) throws RESTError {
+        return parseFindElementsOutput(client.findElements(getSessionId(), uuid, BY_CLASS_CHAIN_STRING, value));
     }
 
     public static class StatusNotZeroError extends Exception {
