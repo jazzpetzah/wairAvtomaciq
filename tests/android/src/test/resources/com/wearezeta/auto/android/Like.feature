@@ -246,7 +246,7 @@ Feature: Like
     And I draw a sketch with 2 colors
     And I send my sketch
     And I do not see Message status with expected text "Sending" in conversation view
-    And I tap Image container in the conversation view
+    And I scroll to the bottom of conversation view
     And I remember the state of like button
     # Tap heart like
     And I tap Like button in conversation view
@@ -329,6 +329,10 @@ Feature: Like
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
+    And I see Audio Message container in the conversation view
+    And I tap Audio Message container in the conversation view
+    # Wait until message footer animation
+    And I wait for 3 seconds
     And I scroll to the bottom of conversation view
     And I remember the state of like button
     And I tap Like button in conversation view
@@ -348,6 +352,10 @@ Feature: Like
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
+    And I see Video Message container in the conversation view
+    And I tap Video Message container in the conversation view
+    # Wait until message footer animation
+    And I wait for 3 seconds
     And I scroll to the bottom of conversation view
     And I remember the state of like button
     And I tap Like button in conversation view
