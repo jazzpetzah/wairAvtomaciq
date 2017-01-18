@@ -300,3 +300,29 @@ Feature: Collections
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName   | Picture     | Link                  |
       | user1Name | user2Name | user3Name | GroupCollection | testing.jpg | https://www.wire.com/ |
+
+  @C395994 @staging @fastLogin
+  Scenario Outline: Verify you can Reveal collection item
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given Users add the following devices: {"<Contact>": [{}]}
+    Given I sign in using my email or phone number
+    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    Given User <Contact> sends <MsgCount> default messages to conversation Myself
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    Given I see 0 photos in the conversation view
+    Given I tap Collection button in conversation view
+    When I long tap the item number 1 in collection category PICTURES
+    And I tap on Reveal badge item
+    Then I see 1 photo in the conversation view
+    When I tap on text input
+    Then I see 0 photos in the conversation view
+    When I tap Collection button in conversation view
+    And I tap the item number 1 in collection category PICTURES
+    And I tap Reveal button in collection view
+    Then I see 1 photo in the conversation view
+
+    Examples:
+      | Name      | Contact   | Picture     | MsgCount |
+      | user1Name | user2Name | testing.jpg | 20       |

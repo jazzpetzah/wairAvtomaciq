@@ -1576,9 +1576,9 @@ public class CommonIOSSteps {
      *
      * @param itemName the badge item name
      * @throws Exception
-     * @step. ^I tap on (Select All|Copy|Save|Delete|Paste|Edit|Like|Unlike|Forward) badge item$
+     * @step. ^I tap on (Select All|Copy|Save|Delete|Paste|Edit|Like|Unlike|Forward|Reveal) badge item$
      */
-    @When("^I tap on (Select All|Copy|Save|Delete|Paste|Edit|Like|Unlike|Forward) badge item$")
+    @When("^I tap on (Select All|Copy|Save|Delete|Paste|Edit|Like|Unlike|Forward|Reveal) badge item$")
     public void ITapBadge(String itemName) throws Exception {
         IOSTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage().tapBadgeItem(itemName);
     }

@@ -16,6 +16,7 @@ public class CollectionPage extends IOSPage {
 
     private static final By nameBackButton = MobileBy.AccessibilityId("back");
     private static final By nameXbutton = MobileBy.AccessibilityId("close");
+    private static final By nameRevealButton = MobileBy.AccessibilityId("reveal in conversation");
 
     private static final By fbNameFullScreenPage = FBBy.AccessibilityId("fullScreenPage");
 
@@ -95,6 +96,8 @@ public class CollectionPage extends IOSPage {
                 return nameBackButton;
             case "x":
                 return nameXbutton;
+            case "reveal":
+                return nameRevealButton;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", name));
         }
