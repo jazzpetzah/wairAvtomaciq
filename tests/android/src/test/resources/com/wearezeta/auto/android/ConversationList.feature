@@ -24,7 +24,7 @@ Feature: Conversations list
       | user1Name |
 
   @C719 @regression @rc
-  Scenario Outline: (AN-4024) Verify messages are marked as read as you look at them so that you can know when there is unread content in a conversation
+  Scenario Outline: Verify messages are marked as read as you look at them so that you can know when there is unread content in a conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number

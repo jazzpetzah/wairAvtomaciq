@@ -373,7 +373,7 @@ Feature: Conversation View
     Then I do not see picture <PictureName> in picture fullscreen
     When I click on picture
     Then I see picture <PictureName> in picture fullscreen
-    When I click on black border to close picture fullscreen mode
+    When I click on black border to picture close fullscreen mode
     Then I do not see picture <PictureName> in picture fullscreen
 
     Examples: 

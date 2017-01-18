@@ -7,7 +7,6 @@ import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
 import java.util.concurrent.Future;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class CollectionPage extends IOSPage {
@@ -17,12 +16,23 @@ public class CollectionPage extends IOSPage {
 
     private static final By nameBackButton = MobileBy.AccessibilityId("back");
     private static final By nameXbutton = MobileBy.AccessibilityId("close");
+    private static final By nameRevealButton = MobileBy.AccessibilityId("reveal in conversation");
 
     private static final By fbNameFullScreenPage = FBBy.AccessibilityId("fullScreenPage");
 
-    private static final BiFunction<String, Integer, String> xpathStrCollectionItemBuIndex = (categoryName, idx) ->
-            String.format("//XCUIElementTypeStaticText[@name='%s']/" +
-                    "ancestor::XCUIElementTypeCollectionView/XCUIElementTypeCell[%s]", categoryName, idx);
+    private static final Function<Integer, String> xpathStrPictureCollectionItemByIndex = idx ->
+            String.format("(//XCUIElementTypeCell[ " +
+                    "count(.//XCUIElementTypeImage[not(@name)])=1 ])[%s]", idx);
+    private static final Function<Integer, String> xpathStrVideoCollectionItemByIndex = idx ->
+            String.format("(//XCUIElementTypeCell[ " +
+                    ".//XCUIElementTypeButton[@name='VideoActionButton'] ])[%s]", idx);
+    private static final Function<Integer, String> xpathStrLinkCollectionItemByIndex = idx ->
+            String.format("(//XCUIElementTypeCell[ " +
+                    ".//*[@name='linkPreview'] ])[%s]", idx);
+    // Audio messages are also in files
+    private static final Function<Integer, String> xpathStrFileCollectionItemByIndex = idx ->
+            String.format("(//XCUIElementTypeCell[ " +
+                    ".//*[@name='AudioActionButton' or @name='FileTransferBottomLabel'] ])[%s]", idx);
 
     private static final Function<Integer, String> xpathStrTilesByCount = count ->
             String.format("//XCUIElementTypeCollectionView[count(XCUIElementTypeCell)=%s]", count + 1);
@@ -49,9 +59,31 @@ public class CollectionPage extends IOSPage {
         return isLocatorDisplayed(nameNoItemsPlaceholder);
     }
 
-    public void tapCategoryItemByIndex(String categoryName, int index) throws Exception {
-        final By locator = By.xpath(xpathStrCollectionItemBuIndex.apply(categoryName, index));
-        getElement(locator).click();
+    public void tapCategoryItemByIndex(String categoryName, int index, boolean isLongTap) throws Exception {
+        final By locator;
+        switch (categoryName.toUpperCase()) {
+            case "PICTURES":
+                locator = FBBy.xpath(xpathStrPictureCollectionItemByIndex.apply(index));
+                break;
+            case "VIDEOS":
+                locator = FBBy.xpath(xpathStrVideoCollectionItemByIndex.apply(index));
+                break;
+            case "LINKS":
+                locator = FBBy.xpath(xpathStrLinkCollectionItemByIndex.apply(index));
+                break;
+            case "FILES":
+                locator = FBBy.xpath(xpathStrFileCollectionItemByIndex.apply(index));
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown category name '%s'", categoryName));
+        }
+        final FBElement rootElement = (FBElement) getElement(fbClassCollectionViewRoot);
+        final FBElement dstElement = (FBElement) getElement(rootElement, locator);
+        if (isLongTap) {
+            dstElement.longTap();
+        } else {
+            dstElement.click();
+        }
     }
 
     public boolean isFullScreenImagePreviewVisible() throws Exception {
@@ -64,6 +96,8 @@ public class CollectionPage extends IOSPage {
                 return nameBackButton;
             case "x":
                 return nameXbutton;
+            case "reveal":
+                return nameRevealButton;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", name));
         }

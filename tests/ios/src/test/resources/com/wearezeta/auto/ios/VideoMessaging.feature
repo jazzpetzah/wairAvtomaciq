@@ -4,7 +4,7 @@ Feature: Video Messaging
   Scenario Outline: Verify recording a video
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <DeviceName1>
+    Given User adds the following device: {"<Contact>": [{"name": "<DeviceName1>"}]}
     Given I prepare <FileName> to be uploaded as a video message
     Given I sign in using my email or phone number
     Given I see conversations list

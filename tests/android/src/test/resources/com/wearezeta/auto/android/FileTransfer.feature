@@ -1,7 +1,7 @@
 Feature: File Transfer
 
   @C87628 @rc @regression
-  Scenario Outline: Verify placeholder is shown for the sender and the message bottom menu for sended file
+  Scenario Outline: (AN-4830) Verify placeholder is shown for the sender and the message bottom menu for sended file
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
@@ -109,7 +109,7 @@ Feature: File Transfer
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     When <Contact1> sends <FileSize><FileSizeType> file having name "<FileName>.<FileExtension>" and MIME type "<MIMEType>" via device Device1 to user Myself
-    And I see the result of "<FileSize> <FileSizeType>" file received having name "<FileName>.<FileExtension>" and extension "<FileExtension>" in <ReceivingTimeout> seconds
+    And I see the result of "<FileSize><FileSizeType>" file received having name "<FileName>.<FileExtension>" and extension "<FileExtension>" in <ReceivingTimeout> seconds
     And I tap View button on file download placeholder
     And I save file from file dialog
     Then I wait up <DownloadTimeout> seconds until <FileExactSize> file having name "<FileName>.<FileExtension>" is downloaded to the device
