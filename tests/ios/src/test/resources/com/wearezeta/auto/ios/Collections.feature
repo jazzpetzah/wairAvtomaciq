@@ -274,3 +274,29 @@ Feature: Collections
     Examples:
       | Name      | MySecondDevice | Contact   | Picture     | Link                  | FileName | FileExt | FileSize | FileMIME                 | ContactDevice | FileNameVideo | MIMEType  |
       | user1Name | SecondDev      | user2Name | testing.jpg | https://www.wire.com/ | testing  | bin     | 240 KB   | application/octet-stream | device1       | testing.mp4   | video/mp4 |
+
+  @C395992 @staging @fastLogin
+  Scenario Outline: Verify collection content is updated after reopen if new media item appears in chat
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given Users add the following devices: {"<Contact1>": [{}], "<Contact2>": [{}]}
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I tap on group chat with name <GroupChatName>
+    Given I tap Collection button in conversation view
+    Given I see "No Items" placeholder in collection view
+    When User <Contact1> sends 1 image file <Picture> to conversation <GroupChatName>
+    Then I see "No Items" placeholder in collection view
+    When I tap X button in collection view
+    And I tap Collection button in conversation view
+    Then I see collection category PICTURES
+    When User <Contact2> sends 1 "<Link>" message to conversation <GroupChatName>
+    Then I do not see collection category LINKS
+    When I tap X button in collection view
+    And I tap Collection button in conversation view
+    Then I see collection category LINKS
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName   | Picture     | Link                  |
+      | user1Name | user2Name | user3Name | GroupCollection | testing.jpg | https://www.wire.com/ |
