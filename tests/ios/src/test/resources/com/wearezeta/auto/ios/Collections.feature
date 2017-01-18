@@ -73,6 +73,25 @@ Feature: Collections
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
+  @C368983 @staging @fastLogin
+  Scenario Outline: Opening single picture from media overview
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given Users add the following devices: {"<Contact>": [{}]}
+    Given I sign in using my email or phone number
+    Given User <Contact> sends 10 image files <Picture> to conversation Myself
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    Given I tap Collection button in conversation view
+    Given I tap Show All label next to collection category PICTURES
+    When I tap the item number 1 in collection category PICTURES
+    Then I see full-screen image preview in collection view
+
+    Examples:
+      | Name      | Contact   | Picture     |
+      | user1Name | user2Name | testing.jpg |
+
+
   @C368982 @regression @fastLogin
   Scenario Outline: Verify ephemeral messages are not shown in the collection view
     Given There are 2 users where <Name> is me
