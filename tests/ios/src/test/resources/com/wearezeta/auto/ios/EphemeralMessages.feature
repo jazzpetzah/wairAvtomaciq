@@ -4,7 +4,7 @@ Feature: Ephemeral Messages
   Scenario Outline: Verify ephemeral messages don't leave a trace in the database
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <DeviceName>
+    Given User adds the following device: {"<Contact>": [{"name": "<DeviceName>"}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I tap on contact name <Contact>
@@ -52,7 +52,7 @@ Feature: Ephemeral Messages
   Scenario Outline: Verify the message is deleted on the sender side when it's read on the receiver side
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <DeviceName>
+    Given User adds the following device: {"<Contact>": [{"name": "<DeviceName>"}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I tap on contact name <Contact>
@@ -275,7 +275,7 @@ Feature: Ephemeral Messages
   Scenario Outline: Verify the message is deleted on the receiver side when timer is over
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <DeviceName>
+    Given User adds the following device: {"<Contact>": [{"name": "<DeviceName>"}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     Given User <Contact> switches user Myself to ephemeral mode with <Timeout> seconds timeout
@@ -293,7 +293,7 @@ Feature: Ephemeral Messages
   Scenario Outline: Verify receiving ephemeral assets (picture, video, audio, link preview, location)
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <DeviceName>
+    Given User adds the following device: {"<Contact>": [{"name": "<DeviceName>"}]}
     Given I sign in using my email or phone number
     Given User <Contact> switches user Myself to ephemeral mode with <EphemeralTimeout> seconds timeout
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
@@ -352,7 +352,7 @@ Feature: Ephemeral Messages
   Scenario Outline: Verify ephemeral messages are not sent to my other devices
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
-    Given User Myself adds new device <DeviceName>
+    Given User adds the following device: {"Myself": [{"name": "<DeviceName>"}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I tap on contact name <Contact>
@@ -396,7 +396,7 @@ Feature: Ephemeral Messages
   Scenario Outline: Verify missed call didn't disappear after receiver saw it
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <DeviceName>
+    Given User adds the following device: {"<Contact>": [{"name": "<DeviceName>"}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I tap on contact name <Contact>

@@ -54,14 +54,15 @@ public class CollectionPageSteps {
     /**
      * Tap the corresponding item in collection by index
      *
+     * @param isLongTap    this is equal to non-null value if long tap should be performed
      * @param index        item index, starts at 1
      * @param categoryName one of available category names
      * @throws Exception
-     * @step. ^I tap the item number (\d+) in collection category (PICTURES|VIDEOS|LINKS|FILES)$
+     * @step. ^I (long )?tap the item number (\d+) in collection category (PICTURES|VIDEOS|LINKS|FILES)$
      */
-    @When("^I tap the item number (\\d+) in collection category (PICTURES|VIDEOS|LINKS|FILES)$")
-    public void ITapItemByIndex(int index, String categoryName) throws Exception {
-        getCollectionPage().tapCategoryItemByIndex(categoryName, index);
+    @When("^I (long )?tap the item number (\\d+) in collection category (PICTURES|VIDEOS|LINKS|FILES)$")
+    public void ITapItemByIndex(String isLongTap, int index, String categoryName) throws Exception {
+        getCollectionPage().tapCategoryItemByIndex(categoryName, index, isLongTap != null);
     }
 
     /**
@@ -162,8 +163,10 @@ public class CollectionPageSteps {
         for (int i = 0; i < count; ++i) {
             IOSTestContextHolder.getInstance().getTestContext().getDevicesManager().
                     sendConversationMessage(srcUser, dstConvoId, msg);
-            // TODO: Remove the delay after multiple links generation for single domain is fixed on SE side
-            Thread.sleep(3000);
+            if (msg.startsWith("http")) {
+                // TODO: Remove the delay after multiple links generation for single domain is fixed on SE side
+                Thread.sleep(3000);
+            }
         }
     }
 
@@ -195,12 +198,24 @@ public class CollectionPageSteps {
     /**
      * Emulate scrolling in collection view
      *
-     * @step. I scroll collection view (up|down)
      * @param direction
      * @throws Exception
+     * @step. I scroll collection view (up|down)
      */
     @And("^I scroll collection view (up|down)$")
     public void ISwipe(String direction) throws Exception {
         getCollectionPage().scroll(direction);
+    }
+
+    /**
+     * Swipe left/right on full-screen image preview in collection view
+     *
+     * @param swipeDirection left or right
+     * @throws Exception
+     * @step. ^I swipe (left|right) on full-screen image preview in collection view$
+     */
+    @When("^I swipe (left|right) on full-screen image preview in collection view$")
+    public void ISwipeOnImageFullscreenInCollectionView(String swipeDirection) throws Exception {
+        getCollectionPage().swipeOnImageFullscreen(swipeDirection);
     }
 }

@@ -87,7 +87,7 @@ Feature: Edit Message
   Scenario Outline: Verify I can delete message for everyone editing it with nothing/space
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <DeviceName>
+    Given User adds the following device: {"<Contact>": [{"name": "<DeviceName>"}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
@@ -155,7 +155,7 @@ Feature: Edit Message
   Scenario Outline: Verify I can edit a message multiple times in a row (group)
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
-    Given User <Contact1> adds new device <DeviceName>
+    Given User adds the following device: {"<Contact1>": [{"name": "<DeviceName>"}]}
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -211,8 +211,8 @@ Feature: Edit Message
   Scenario Outline: Verify I see changed message if message was edited from another device (1:1)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given User adds the following device: {"Myself": [{"name": "<Device>"}]}
     Given I sign in using my email or phone number
-    Given User Myself adds new device <Device>
     Given User Myself sends encrypted message "<Message>" to user <Contact1>
     Given I see conversations list
     When I tap on contact name <Contact1>
@@ -230,8 +230,8 @@ Feature: Edit Message
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User adds the following device: {"Myself": [{"name": "<Device>"}]}
     Given I sign in using my email or phone number
-    Given User Myself adds new device <Device>
     Given User Myself sends encrypted message "<Message>" to group conversation <GroupChatName>
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>

@@ -81,7 +81,8 @@ Feature: Analytics
     Then I verify that <LogType> log contains string "ACTION=location"
     # Video message
     When I tap Video message button from cursor toolbar
-    # Issue: Autoscroll
+    # Issue: Autoscroll, and wait for video message animation
+    And I wait for 3 seconds
     And I scroll to the bottom of conversation view
     And I see Video Message container in the conversation view
     And I wait for 10 seconds

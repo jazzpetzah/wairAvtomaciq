@@ -1,7 +1,7 @@
 Feature: File Transfer
 
   @C87628 @rc @regression
-  Scenario Outline: Verify placeholder is shown for the sender and the message bottom menu for sended file
+  Scenario Outline: (AN-4830) Verify placeholder is shown for the sender and the message bottom menu for sended file
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number

@@ -524,7 +524,7 @@ Feature: Conversation List
     Given I sign in using my email or phone number
     Given I see conversations list
     And I see conversation <Contact1> in conversations list
-    When User Myself adds new device <DeviceName>
+    When User adds the following device: {"Myself": [{"name": "<DeviceName>"}]}
     And User <Contact1> sends 1 encrypted message to user Myself
     And User Myself deletes single user conversation <Contact1> using device <DeviceName>
     # Let the stuff to sync up

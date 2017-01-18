@@ -145,8 +145,7 @@ Feature: Delete Message
   @C111327 @regression @fastLogin
   Scenario Outline: Verify deleting is synchronised across own devices when they are online
     Given There are 3 users where <Name> is me
-    Given User Myself adds new device <Device>
-    Given User <Contact1> adds new device <ContactDevice>
+    Given Users add the following devices: {"Myself": [{"name": "<Device>"}], "<Contact1>": [{"name": "<ContactDevice>"}]}
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
