@@ -137,7 +137,7 @@ public abstract class FBBy extends MobileBy {
         }
     }
 
-    public static By Predicate(String predicate) {
+    public static By predicate(String predicate) {
         if (predicate == null) {
             throw new IllegalArgumentException("Must supply a valid predicate string");
         } else {
@@ -175,6 +175,47 @@ public abstract class FBBy extends MobileBy {
         @Override
         public String toString() {
             return "FBBy.Predicate: " + this.predicateText;
+        }
+    }
+
+    public static By classChain(String value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Must supply a valid class chain string");
+        } else {
+            return new ByClassChain(value);
+        }
+    }
+
+    public static class ByClassChain extends By implements Serializable {
+        private final String query;
+
+        public ByClassChain(String query) {
+            this.query = query;
+        }
+
+        @Override
+        public List<WebElement> findElements(SearchContext context) {
+            if (context instanceof FindsByFBClassChain) {
+                return ((FindsByFBClassChain) context).findElementsByFBClassChain(this.query);
+            } else {
+                throw new IllegalArgumentException(String.format("%s context is not supported for element search",
+                        context.getClass().getSimpleName()));
+            }
+        }
+
+        @Override
+        public WebElement findElement(SearchContext context) {
+            if (context instanceof FindsByFBClassChain) {
+                return ((FindsByFBClassChain) context).findElementByFBClassChain(this.query);
+            } else {
+                throw new IllegalArgumentException(String.format("%s context is not supported for element search",
+                        context.getClass().getSimpleName()));
+            }
+        }
+
+        @Override
+        public String toString() {
+            return "FBBy.ClassChain: " + this.query;
         }
     }
 }
