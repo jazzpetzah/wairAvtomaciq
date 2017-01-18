@@ -43,7 +43,7 @@ Feature: Share Location
   Scenario Outline: Verify sending location from a map view in and opening the map on clicking on map icon (1to1)
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <DeviceName1>
+    Given User adds the following device: {"<Contact>": [{"name": "<DeviceName1>"}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
