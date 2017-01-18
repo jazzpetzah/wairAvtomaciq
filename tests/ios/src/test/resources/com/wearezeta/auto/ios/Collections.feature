@@ -235,14 +235,14 @@ Feature: Collections
     Given User <Contact> sends <MsgCount> default messages to conversation Myself
     Given I see conversations list
     Given I tap on contact name <Contact>
-    Given I see 0 photo in the conversation view
+    Given I see 0 photos in the conversation view
     Given I tap Collection button in conversation view
     When I long tap the item number 1 in collection category PICTURES
     And I tap on Reveal badge item
     Then I see 1 photo in the conversation view
     When I tap on text input
-    And I see 0 photo in the conversation view
-    And I tap Collection button in conversation view
+    Then I see 0 photos in the conversation view
+    When I tap Collection button in conversation view
     And I tap the item number 1 in collection category PICTURES
     And I tap Reveal button in collection view
     Then I see 1 photo in the conversation view

@@ -82,7 +82,7 @@ public class CollectionPageSteps {
      *
      * @param name one of available button names
      * @throws Exception
-     * @step. @step. ^I tap (Back|X|Reveal) button in collection view$
+     * @step. ^I tap (Back|X|Reveal) button in collection view$
      */
     @And("^I tap (Back|X|Reveal) button in collection view$")
     public void ITapButton(String name) throws Exception {
@@ -149,7 +149,7 @@ public class CollectionPageSteps {
      */
     @Given("^User (.*) sends (\\d+) (default|\".*\") messages? to conversation (.*)")
     public void UserSendsMultipleMessages(String senderUserNameAlias, int count,
-                                        String msg, String dstConversationName) throws Exception {
+                                          String msg, String dstConversationName) throws Exception {
         if (msg.equals("default")) {
             msg = CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE;
         } else {
