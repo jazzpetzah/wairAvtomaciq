@@ -78,9 +78,9 @@ public class GroupInfoPopoverSteps {
      *
      * @param name expected conversation name
      * @throws Exception
-     * @step. ^I see that the conversation name is (.*) on Group info popover$
+     * @step. ^I see that the conversation name is \"(.*)\" on Group info popover$
      */
-    @Then("^I see the conversation name is (.*) on Group info popover")
+    @Then("^I see the conversation name is \"(.*)\" on Group info popover")
     public void IVerifyCorrectConversationName(String name) throws Exception {
         Assert.assertEquals(getGroupInfoPopover().getConversationName(), name);
     }
