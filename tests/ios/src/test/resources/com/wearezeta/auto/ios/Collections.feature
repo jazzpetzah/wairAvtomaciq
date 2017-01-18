@@ -91,8 +91,8 @@ Feature: Collections
     Then I see "No Items" placeholder in collection view
 
     Examples:
-      | Name      | Contact   | Picture     | Link                  | FileName | FileExt | FileSize | FileMIME                 | ContactDevice | FileNameVideo  | MIMEType  |
-      | user1Name | user2Name | testing.jpg | https://www.wire.com/ | testing  | bin     | 240 KB   | application/octet-stream | device1       | testing.mp4    | video/mp4 |
+      | Name      | Contact   | Picture     | Link                  | FileName | FileExt | FileSize | FileMIME                 | ContactDevice | FileNameVideo | MIMEType  |
+      | user1Name | user2Name | testing.jpg | https://www.wire.com/ | testing  | bin     | 240 KB   | application/octet-stream | device1       | testing.mp4   | video/mp4 |
 
   @C368981 @staging @fastLogin
   Scenario Outline: Verify opening overview of all shared media categories
@@ -132,3 +132,28 @@ Feature: Collections
     Examples:
       | Name      | Contact   | Picture     | Link                  | FileName | FileExt | FileSize | VideoFileName | AudioFileName |
       | user1Name | user2Name | testing.jpg | https://www.wire.com/ | testing  | bin     | 240 KB   | testing.mp4   | test.m4a      |
+
+  @C395991 @staging @fastLogin
+  Scenario Outline: Verify collection is available for a group conversation
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact>,<Contact2>
+    Given Users add the following devices: {"Myself": [{}], "<Contact>": [{}]}
+    Given I create temporary file <FileSize> in size with name "<FileName>" and extension "<FileExt>"
+    Given I sign in using my email or phone number
+    Given User <Contact> sends 1 video file <VideoFileName> to conversation <GroupChatName>
+    Given User Myself sends 1 image file <Picture> to conversation <GroupChatName>
+    Given User Myself sends 1 temporary file <FileName>.<FileExt> to conversation <GroupChatName>
+    Given User <Contact> sends 1 audio file <AudioFileName> to conversation <GroupChatName>
+    Given User <Contact> sends 1 "<Link>" messages to conversation <GroupChatName>
+    Given I see conversations list
+    Given I tap on group chat with name <GroupChatName>
+    When I tap Collection button in conversation view
+    Then I see collection category PICTURES
+    And I see collection category VIDEOS
+    And I see collection category FILES
+    And I see collection category LINKS
+
+    Examples:
+      | Name      | Contact   | Contact2  | GroupChatName   | Picture     | Link                  | FileName | FileExt | FileSize | VideoFileName | AudioFileName |
+      | user1Name | user2Name | user3Name | GroupCollection | testing.jpg | https://www.wire.com/ | testing  | bin     | 240 KB   | testing.mp4   | test.m4a      |
