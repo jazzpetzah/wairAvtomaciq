@@ -162,8 +162,10 @@ public class CollectionPageSteps {
         for (int i = 0; i < count; ++i) {
             IOSTestContextHolder.getInstance().getTestContext().getDevicesManager().
                     sendConversationMessage(srcUser, dstConvoId, msg);
-            // TODO: Remove the delay after multiple links generation for single domain is fixed on SE side
-            Thread.sleep(3000);
+            if (msg.startsWith("http")) {
+                // TODO: Remove the delay after multiple links generation for single domain is fixed on SE side
+                Thread.sleep(3000);
+            }
         }
     }
 
