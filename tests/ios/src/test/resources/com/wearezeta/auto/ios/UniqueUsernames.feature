@@ -620,7 +620,7 @@ Feature: Unique Usernames
     Given There are 2 users where <Name> is me
     Given Myself is connected to user2Name
     Given I sign in using my email or phone number
-    Given User Myself adds new device <DeviceName>
+    Given User adds the following device: {"Myself": [{"name": "<DeviceName>"}]}
     Given I accept alert if visible
     Given I tap settings gear button
     Given I accept alert if visible

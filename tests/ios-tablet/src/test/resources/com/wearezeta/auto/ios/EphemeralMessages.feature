@@ -4,7 +4,7 @@ Feature: Ephemeral Messages
   Scenario Outline: Verify the message is deleted on the sender side when it's read on the receiver side
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <DeviceName>
+    Given User adds the following device: {"<Contact>": [{"name": "<DeviceName>"}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
