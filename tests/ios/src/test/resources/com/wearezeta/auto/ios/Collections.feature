@@ -237,7 +237,7 @@ Feature: Collections
     Given User Myself sends 1 image file <Picture> to conversation <GroupChatName>
     Given User Myself sends 1 temporary file <FileName>.<FileExt> to conversation <GroupChatName>
     Given User <Contact> sends 1 audio file <AudioFileName> to conversation <GroupChatName>
-    Given User <Contact> sends 1 "<Link>" messages to conversation <GroupChatName>
+    Given User <Contact> sends 1 "<Link>" message to conversation <GroupChatName>
     Given I see conversations list
     Given I tap on group chat with name <GroupChatName>
     When I tap Collection button in conversation view
