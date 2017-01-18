@@ -46,8 +46,8 @@ Feature: Collection
     Given I Sign in using login <Email> and password <Password>
     Given I am signed in properly
     When I open conversation with <Contact1>
-    And I send picture <Picture> to the current conversation
     And User <Contact1> sends image <Picture> to single user conversation <Name>
+    And I send picture <Picture> to the current conversation
     Then I see only 2 pictures in the conversation
     When I click collection button in conversation
     Then I see 2 picture in collection
