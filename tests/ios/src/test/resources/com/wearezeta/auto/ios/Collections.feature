@@ -54,7 +54,7 @@ Feature: Collections
       | Name      | Contact   | GiphyTag1 | GiphyTag2 |
       | user1Name | user2Name | happy     | hello     |
 
-  @C368983 @staging @fastLogin
+  @C368984 @staging @fastLogin
   Scenario Outline: Opening single picture from pictures overview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -68,6 +68,24 @@ Feature: Collections
     Then I see full-screen image preview in collection view
     When I tap Back button in collection view
     Then I see collection category PICTURES
+
+    Examples:
+      | Name      | Contact   | Picture     |
+      | user1Name | user2Name | testing.jpg |
+
+  @C368983 @staging @fastLogin
+  Scenario Outline: Opening single picture from media overview
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given Users add the following devices: {"<Contact>": [{}]}
+    Given I sign in using my email or phone number
+    Given User <Contact> sends 10 image files <Picture> to conversation Myself
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    Given I tap Collection button in conversation view
+    Given I tap Show All label next to collection category PICTURES
+    When I tap the item number 1 in collection category PICTURES
+    Then I see full-screen image preview in collection view
 
     Examples:
       | Name      | Contact   | Picture     |
