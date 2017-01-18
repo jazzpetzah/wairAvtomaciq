@@ -23,7 +23,7 @@ Feature: Collections
       | Name      | Contact   | Picture     | Link                  | FileName | FileExt | FileSize | FileMIME                 | ContactDevice | FileNameVideo | MIMEType  |
       | user1Name | user2Name | testing.jpg | https://www.wire.com/ | testing  | bin     | 240 KB   | application/octet-stream | device1       | testing.mp4   | video/mp4 |
 
-  @C368980 @staging @fastLogin
+  @C368980 @regression @fastLogin
   Scenario Outline: Verify message is shown if no media in collection
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -37,7 +37,7 @@ Feature: Collections
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C375779 @staging @fastLogin
+  @C375779 @regression @fastLogin
   Scenario Outline: Verify GIF pictures are not presented in Collection
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -54,7 +54,7 @@ Feature: Collections
       | Name      | Contact   | GiphyTag1 | GiphyTag2 |
       | user1Name | user2Name | happy     | hello     |
 
-  @C368983 @staging @fastLogin
+  @C368983 @regression @fastLogin
   Scenario Outline: Opening single picture from pictures overview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -73,7 +73,7 @@ Feature: Collections
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C368982 @staging @fastLogin
+  @C368982 @regression @fastLogin
   Scenario Outline: Verify ephemeral messages are not shown in the collection view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -94,7 +94,7 @@ Feature: Collections
       | Name      | Contact   | Picture     | Link                  | FileName | FileExt | FileSize | FileMIME                 | ContactDevice | FileNameVideo  | MIMEType  |
       | user1Name | user2Name | testing.jpg | https://www.wire.com/ | testing  | bin     | 240 KB   | application/octet-stream | device1       | testing.mp4    | video/mp4 |
 
-  @C368981 @staging @fastLogin
+  @C368981 @regression @fastLogin
   Scenario Outline: Verify opening overview of all shared media categories
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -133,8 +133,8 @@ Feature: Collections
       | Name      | Contact   | Picture     | Link                  | FileName | FileExt | FileSize | VideoFileName | AudioFileName |
       | user1Name | user2Name | testing.jpg | https://www.wire.com/ | testing  | bin     | 240 KB   | testing.mp4   | test.m4a      |
 
-  @C368988 @staging @fastLogin
-  Scenario Outline: Verify swiping between the pictures in collection view
+  @C368988 @regression @fastLogin
+  Scenario Outline: (ZIOS-7911) Verify swiping between the pictures in collection view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given Users add the following devices: {"<Contact>": [{}]}
