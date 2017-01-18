@@ -45,9 +45,10 @@ public class CollectionPageSteps {
                     equalTo(amount));
         }
         // Label is not shown for less than 13 pictures
-
+            else {
             assertThat("Label to show all", context.getPagesCollection().getPage(CollectionPage.class).getLabelOfPictureCollectionSize(),
                     equalTo("Show all " + String.valueOf(amount)));
+        }
 
     }
 
