@@ -51,8 +51,8 @@ public class CollectionPage extends IOSPage {
         return isLocatorDisplayed(getElement(classCollectionViewRoot), MobileBy.AccessibilityId(categoryName));
     }
 
-    public boolean isCollectioncategoryInvisible(String categoryName) throws Exception {
-        return isLocatorDisplayed(getElement(classCollectionViewRoot), MobileBy.AccessibilityId(categoryName));
+    public boolean isCollectionCategoryInvisible(String categoryName) throws Exception {
+        return isLocatorInvisible(getElement(classCollectionViewRoot), MobileBy.AccessibilityId(categoryName));
     }
 
     public boolean isNoItemsPlaceholderVisible() throws Exception {
