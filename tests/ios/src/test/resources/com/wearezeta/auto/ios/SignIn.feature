@@ -73,27 +73,27 @@ Feature: Sign In
       | Count | ExpectedText               |
       | 16    | enter a valid phone number |
 
-  @C1136 @rc @regression @useSpecialEmail
+  @C1136 @rc @regression @useSpecialEmail @torun
   Scenario Outline: Verify first time phone sign in when email is not assigned
     Given There is 1 user where <Name> is me with phone number only
     Given I see sign in screen
     Given I switch to Log In tab
     Given I switch to Phone Log In tab
     When I enter phone number for Myself
-    And I enter login verification code for Myself
-    And I accept alert if visible
-    And I have entered login <Email>
-    And I start activation email monitoring
-    And I have entered password <Password>
-    And I tap Done keyboard button
-    And I see email verification reminder
-    And I verify registration address
-    And I accept First Time overlay
-    And I dismiss settings warning if visible
-    Then I see conversations list
-    When I tap settings gear button
-    And I select settings item Account
-    Then I verify the value of settings item Email equals to "<Email>"
+#    And I enter login verification code for Myself
+#    And I accept alert if visible
+#    And I have entered login <Email>
+#    And I start activation email monitoring
+#    And I have entered password <Password>
+#    And I tap Done keyboard button
+#    And I see email verification reminder
+#    And I verify registration address
+#    And I accept First Time overlay
+#    And I dismiss settings warning if visible
+#    Then I see conversations list
+#    When I tap settings gear button
+#    And I select settings item Account
+#    Then I verify the value of settings item Email equals to "<Email>"
 
     Examples:
       | Email      | Password      | Name      |

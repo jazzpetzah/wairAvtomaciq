@@ -86,7 +86,16 @@ public class RegistrationPage extends IOSPage {
         if (!isLocatorInvisible(nameCountryPickerButton, Timedelta.fromSeconds(5))) {
             countryPickerBtn.click();
         }
-        final WebElement searchInput = getElement(nameSearchField);
+        WebElement searchInput;
+
+        log.info(">>> by id start");
+        searchInput = getElement(nameSearchField);
+        log.info(">>> by id finish");
+
+        log.info(">>> by class chain start");
+        searchInput = getElement(FBBy.classChain("*/*/*/*/*[2]/*/*/*/*[2]"));
+        log.info(">>> by class chain finish");
+
         searchInput.click();
         searchInput.sendKeys(WIRE_COUNTRY_NAME_PREFIX);
         // Wait for animation
