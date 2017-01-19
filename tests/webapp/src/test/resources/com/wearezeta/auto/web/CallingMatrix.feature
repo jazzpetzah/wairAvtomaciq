@@ -280,12 +280,12 @@ Feature: Calling_Matrix
     And <Contact1> stops calling
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName1 | Backend              | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome:55.0.2883.75  | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome:53.0.2785.116 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:50.1.0       | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:49.0.2       | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:45.5         | 30      |
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend              | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:55.0.2883.75  | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:53.0.2785.116 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:50.1.0       | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:49.0.2       | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:45.5         | 30      |
       
 
   @C5368 @calling_matrix
@@ -326,12 +326,12 @@ Feature: Calling_Matrix
     Then <Contact1> verifies that call to conversation <ChatName1> was successful
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName1 | Backend      | WaitBackend          | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.14 | chrome:55.0.2883.75  | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.14 | chrome:53.0.2785.116 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.14 | firefox:50.1.0       | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.14 | firefox:49.0.2       | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.14 | firefox:45.5         | 30      |
+      | Login      | Password      | Name      | Contact1  | Contact2  |ChatName1 | Backend      | WaitBackend          | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name |GroupCall | zcall:2.9.14 | chrome:55.0.2883.75  | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name |GroupCall | zcall:2.9.14 | chrome:53.0.2785.116 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name |GroupCall | zcall:2.9.14 | firefox:50.1.0       | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name |GroupCall | zcall:2.9.14 | firefox:49.0.2       | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name |GroupCall | zcall:2.9.14 | firefox:45.5         | 30      |
 
   @C5369 @calling_matrix
   Scenario Outline: Verify I can join audio group call with AVS <Backend> and <WaitBackend>
