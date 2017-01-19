@@ -1,12 +1,23 @@
 package com.wearezeta.auto.web.steps;
 
+import java.awt.image.BufferedImage;
+
+import com.wearezeta.auto.common.ImageUtil;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.web.common.WebAppTestContext;
+
+import com.wearezeta.auto.web.pages.CollectionDetailsPage;
+
+import com.wearezeta.auto.web.common.WebCommonUtils;
+
 import com.wearezeta.auto.web.pages.CollectionPage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.hasItem;
 
 public class CollectionPageSteps {
 
@@ -14,6 +25,11 @@ public class CollectionPageSteps {
 
     public CollectionPageSteps(WebAppTestContext context) {
         this.context = context;
+    }
+
+    @When("I close collection overview$")
+    public void ICloseCollectionOverview() throws Exception {
+        context.getPagesCollection().getPage(CollectionPage.class).clickClose();
     }
 
     @Then("^I see info about no collection items$")
@@ -24,13 +40,16 @@ public class CollectionPageSteps {
 
     @Then("^I see (\\d+) pictures? in collection$")
     public void ISeeXPictures(int amount) throws Exception {
-        assertThat("Number of shown pictures", context.getPagesCollection().getPage(CollectionPage.class).getNumberOfPictures(),
-                equalTo(amount));
+        if (amount <= 12) {
+            assertThat("Number of shown pictures", context.getPagesCollection().getPage(CollectionPage.class).getNumberOfPictures(),
+                    equalTo(amount));
+        }
         // Label is not shown for less than 13 pictures
-        if (amount > 12) {
+            else {
             assertThat("Label to show all", context.getPagesCollection().getPage(CollectionPage.class).getLabelOfPictureCollectionSize(),
                     equalTo("Show all " + String.valueOf(amount)));
         }
+
     }
 
     @Then("^I see (\\d+) videos? in collection$")
@@ -66,8 +85,61 @@ public class CollectionPageSteps {
         }
     }
 
+    @Then("^I see link with link (.*) in collection overview$")
+    public void ISeeLinkWithUrl(String url) throws Exception {
+        assertThat("Missing Url in preview overview",
+                context.getPagesCollection().getPage(CollectionPage.class).getLinkPreviewUrls(),
+                hasItem(url));
+    }
+
+    @Then("^I see link with title (.*) in collection overview$")
+    public void ISeeLinkWithTitle(String title) throws Exception {
+        assertThat("Missing title in preview overview",
+                context.getPagesCollection().getPage(CollectionPage.class).getLinkPreviewTitles(),
+                hasItem(title));
+    }
+
+    @Then("^I see link with image (.*) in collection overview$")
+    public void ISeeLinkWithImage(String filename) throws Exception {
+        final String picturePath = WebCommonUtils.getFullPicturePath(filename);
+        BufferedImage originalImage = ImageUtil.readImageFromFile(picturePath);
+        BufferedImage linkPreviewImage = context.getPagesCollection().getPage(CollectionPage.class).getLinkPreviewImage();
+
+        // Image matching with SIFT does not work very well on really small images
+        // because it defines the maximum number of matching keys
+        // so we scale them to double size to get enough matching keys
+        final int scaleMultiplicator = 2;
+        originalImage = ImageUtil.resizeImage(originalImage, scaleMultiplicator);
+        linkPreviewImage = ImageUtil.resizeImage(linkPreviewImage, scaleMultiplicator);
+
+        assertThat("Not enough good matches", ImageUtil.getMatches(originalImage, linkPreviewImage), greaterThan(80));
+    }
+
+    @Then("^I see link from contact (.*) in collection overview$")
+    public void ISeeLinkFromContact(String contact) throws Exception {
+        contact = context.getUsersManager().replaceAliasesOccurences(contact, ClientUsersManager.FindBy.NAME_ALIAS);
+        assertThat("contact in preview overview", context.getPagesCollection().getPage(CollectionPage.class).getLinkPreviewFroms(),
+                hasItem(contact));
+    }
+
     @When("I click on picture (\\d+) in collection$")
     public void IClickOnFirstPictureInCollection(int index) throws Exception {
         context.getPagesCollection().getPage(CollectionPage.class).clickFirstPictureInCollection(index);
+    }
+
+    @When("I click on Show all pictures button in collections$")
+    public void IClickOnAllPicturesButtonInCollections() throws Exception{
+        context.getPagesCollection().getPage(CollectionPage.class).clickShowAllPicturesInCollection();
+    }
+
+    @Then("^I see (\\d+) pictures? in pictures details in collections$")
+    public void ISeeXPicturesInDetails(int amount) throws Exception {
+        assertThat("Number of shown pictures", context.getPagesCollection().getPage(CollectionDetailsPage.class).getNumberOfPictures(),
+                    equalTo(amount));
+    }
+
+    @When("^I click on back button on collection details page$")
+    public void IClickOnBackButtonOnCollectionDetails() throws Exception{
+        context.getPagesCollection().getPage(CollectionDetailsPage.class).clickBackButtonCollectionDetails();
     }
 }

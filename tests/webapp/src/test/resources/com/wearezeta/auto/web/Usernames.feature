@@ -318,7 +318,7 @@ Feature: Usernames
       | Email      | Password      | NameAlias | Name  | Username |
       | user1Email | user1Password | user1Name | admin | admin    |
 
-  @C352084 @usernames @staging
+  @C352084 @usernames @regression
   Scenario Outline: Verify top people are shown without usernames
     Given There are 2 users where <NameAlias> is me
     Given User <Contact> changes unique username to <Contact>

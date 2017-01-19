@@ -6,7 +6,7 @@ Feature: Ephemeral Message
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given User Myself adds new device <Mydevice>
+    Given User adds the following device: {"Myself": [{"name": "<Mydevice>"}]}
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
     When User Myself remembers the recent message from user <Contact> via device <Mydevice>
@@ -153,7 +153,7 @@ Feature: Ephemeral Message
   Scenario Outline: Verify I can receive ephemeral text message which is deleted after timeout and timer starts once I open conversation
     Given There is 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new devices <ContactDevice>
+    Given Users add the following devices: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -174,8 +174,8 @@ Feature: Ephemeral Message
   Scenario Outline: Verify the message is deleted on the sender side when it's read on the receiver side
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given Users add the following devices: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
-    Given User <Contact> adds new devices <ContactDevice>
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
@@ -220,8 +220,8 @@ Feature: Ephemeral Message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
+    Given User adds the following devices: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
-    Given User <Contact> adds new devices <ContactDevice>
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
@@ -244,7 +244,7 @@ Feature: Ephemeral Message
   Scenario Outline: If a user receives multiple ephemeral messages after being offline, all get the same timer
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new devices <ContactDevice>
+    Given Users add the following devices: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -269,7 +269,7 @@ Feature: Ephemeral Message
   Scenario Outline: Verify receiving all types of ephemeral messages
     Given There is 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new devices <ContactDevice>
+    Given Users add the following devices: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -312,11 +312,11 @@ Feature: Ephemeral Message
     And I wait for <EphemeralTimeout> seconds
     Then I do not see Link Preview container in the conversation view
     # Soundcloud
-    When User <Contact> send encrypted message "<SoundCloud>" to user Myself
-    And I wait for <SyncTimeout> seconds
-    And I see Soundcloud container in the conversation view
-    And I wait for <EphemeralTimeout> seconds
-    Then I do not see Soundcloud container in the conversation view
+    #When User <Contact> send encrypted message "<SoundCloud>" to user Myself
+    #And I wait for <SyncTimeout> seconds
+    #And I see Soundcloud container in the conversation view
+    #And I wait for <EphemeralTimeout> seconds
+    #Then I do not see Soundcloud container in the conversation view
     # Youtube
     When User <Contact> send encrypted message "<Youtube>" to user Myself
     And I wait for <SyncTimeout> seconds

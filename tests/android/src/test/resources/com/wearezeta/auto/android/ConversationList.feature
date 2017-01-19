@@ -24,7 +24,7 @@ Feature: Conversations list
       | user1Name |
 
   @C719 @regression @rc
-  Scenario Outline: (AN-4024) Verify messages are marked as read as you look at them so that you can know when there is unread content in a conversation
+  Scenario Outline: Verify messages are marked as read as you look at them so that you can know when there is unread content in a conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
@@ -58,7 +58,6 @@ Feature: Conversations list
     Given I see Conversations list with conversations
     # Workaround for AN-4115, need to open conversation view before receiving message
     Given I tap on conversation name <Contact1>
-    Given User <Contact1> sends encrypted message <SpotifyLink> to user Myself
     Given User <Contact1> sends encrypted image <Image> to single user conversation Myself
     Given User <Contact1> sends encrypted message <Message> to user Myself
     # Wait for all messages are syned
@@ -78,8 +77,8 @@ Feature: Conversations list
     Then I see conversation view
 
     Examples:
-      | Name      | Contact1  | Message    | Image       | SpotifyLink                                           |
-      | user1Name | user2Name | Tschuessii | testing.jpg | https://open.spotify.com/track/0p6GeAWS4VCZddxNbBtEss |
+      | Name      | Contact1  | Message    | Image       |
+      | user1Name | user2Name | Tschuessii | testing.jpg |
 
   @C95626 @regression
   Scenario Outline: Verify deleting a conversation is synchronised to all devices
@@ -89,7 +88,7 @@ Feature: Conversations list
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     And I see Conversations list with name <Contact>
-    When User Myself adds new device <DeviceName>
+    When User adds the following device: {"Myself": [{"name": "<DeviceName>"}]}
     And User <Contact> sends encrypted message blabla to user Myself
     And User Myself deletes single user conversation <Contact> using device <DeviceName>
     Then I wait up to <Timeout> seconds until conversation <Contact> disappears from the list
@@ -172,6 +171,8 @@ Feature: Conversations list
     And I tap DELETE button on Confirm overlay page
     Then I do not see Conversations list with name <GroupChatName>
     When User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
+    # Wait for SE sync
+    And I wait for 5 seconds
     Then I see Conversations list with name <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I tap DELETE button on Group conversation options menu

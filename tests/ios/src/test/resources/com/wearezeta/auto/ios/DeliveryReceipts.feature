@@ -18,7 +18,7 @@ Feature: Delivery Receipts
   @C226460 @rc @regression  @fastLogin
   Scenario Outline: Verify Delivered status isn't shown in the group conversation until tap on message
     Given There are 3 users where <Name> is me
-    Given User <Contact1> adds new device D1
+    Given User adds the following device: {"<Contact1>": [{}]}
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
@@ -38,7 +38,7 @@ Feature: Delivery Receipts
   Scenario Outline: Verify status is changed to Delivered when message has reached at least one of the other person's devices
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device D1
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>

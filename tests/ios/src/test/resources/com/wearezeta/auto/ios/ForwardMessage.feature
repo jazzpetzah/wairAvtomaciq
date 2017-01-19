@@ -4,7 +4,7 @@ Feature: Forward Message
   Scenario Outline: Verify forwarding own picture
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given User <Contact1> adds new device D1
+    Given User adds the following device: {"<Contact1>": [{}]}
     Given I sign in using my email or phone number
     Given User <Contact1> sends encrypted image <Picture> to single user conversation Myself
     Given I see conversations list

@@ -286,13 +286,13 @@ Feature: E2EE
     And I verify 1st device on Device list page
     When I tap back button
     Then I see a message informing me conversation is verified
-    And User <Contact1> adds new device Device2
-    When User <Contact1> sends encrypted message "<Message1>" via device Device2 to user Myself
+    And User adds the following device: {"<Contact1>": [{"name": "<ContactDevice>"}]}
+    When User <Contact1> sends encrypted message "<Message1>" via device <ContactDevice> to user Myself
     Then I see a message informing me conversation is not verified caused by user <Contact1>
 
     Examples:
-      | Name      | Contact1  | Message1 |
-      | user1Name | user2Name | Msg1     |
+      | Name      | Contact1  | Message1 | ContactDevice |
+      | user1Name | user2Name | Msg1     | Device2       |
 
   @C3240 @rc @regression
   Scenario Outline: Verify you get an alert if group conversation participant sends a message from non-verified device
@@ -318,13 +318,13 @@ Feature: E2EE
     And I tap back button
     And I tap back button
     Then I see a message informing me conversation is verified
-    And User <Contact1> adds new device Device2
-    When User <Contact1> sends encrypted message "<Message1>" via device Device2 to group conversation <GroupChatName>
+    And User adds the following device: {"<Contact1>": [{"name": "<ContactDevice>"}]}
+    When User <Contact1> sends encrypted message "<Message1>" via device <ContactDevice> to group conversation <GroupChatName>
     Then I see a message informing me conversation is not verified caused by user <Contact1>
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName | Message1 |
-      | user1Name | user2Name | user3Name | EncryptedGrp  | Msg1     |
+      | Name      | Contact1  | Contact2  | GroupChatName | Message1 | ContactDevice |
+      | user1Name | user2Name | user3Name | EncryptedGrp  | Msg1     | Device2       |
 
   @C12083 @regression
   Scenario Outline: When I'm entering a verified conversation, a green shield will appear at the bottom right
@@ -353,7 +353,7 @@ Feature: E2EE
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User <Contact1> adds new devices Device1,Device2
+    Given Users add the following devices: {"<Contact1>": [{"name": "Device1"}, {"name": "Device2"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -432,7 +432,7 @@ Feature: E2EE
     And I verify 1st device on Device list page
     And I tap Back button 2 times
     Then I see a message informing me conversation is verified
-    When User <Contact1> adds new device Device1
+    When User adds the following device: {"<Contact1>": [{"name": "Device1"}]}
     And I tap on text input
     And I type the message "<Message2>" and send it by cursor Send button without hiding keyboard
     Then I see E2EE confirm overlay page from user "<Contact1>"
@@ -463,7 +463,7 @@ Feature: E2EE
   @C3512 @regression
   Scenario Outline: After login by phone on not 1st device I have to be asked for email login
     Given There is 1 user where <Name> is me
-    Given User Myself adds new device <Device>
+    Given User adds the following device: {"Myself": [{"name": "<Device>"}]}
     Given I sign in using my phone number
     Then I see forced email login page
     And I have entered login <Email>
@@ -491,7 +491,7 @@ Feature: E2EE
     And I verify 1st device on Device list page
     When I tap back button
     Then I see a message informing me conversation is verified
-    And User <Contact1> adds new device <Device>
+    And User adds the following device: {"<Contact1>": [{"name": "<Device>"}]}
     And I tap on text input
     And I type the message "<Message2>"
     And I tap Send button from cursor toolbar
@@ -519,7 +519,7 @@ Feature: E2EE
     And I verify 1st device on Device list page
     When I tap back button
     Then I see a message informing me conversation is verified
-    And User <Contact1> adds new device <Device>
+    And User adds the following device: {"<Contact1>": [{"name": "<Device>"}]}
     And I tap on text input
     And I type the message "<Message2>"
     And I tap Send button from cursor toolbar
@@ -545,7 +545,7 @@ Feature: E2EE
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with no conversations
     When I remember the state of new device indicator on settings button
-    And User Myself adds new device <Device>
+    And User adds the following device: {"Myself": [{"name": "<Device>"}]}
     Then I verify the state of new device indicator is changed
 
     Examples:

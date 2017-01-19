@@ -21,7 +21,7 @@ Feature: Conversation View
   Scenario Outline: Verify isTyping appears immediately after starting typing
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <DeviceName1>
+    Given User adds the following device: {"<Contact>": [{"name": "<DeviceName1>"}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I tap on contact name <Contact>
@@ -50,7 +50,7 @@ Feature: Conversation View
   Scenario Outline: Send a camera roll picture to user from contact list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <DeviceName1>
+    Given User adds the following device: {"<Contact>": [{"name": "<DeviceName1>"}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>

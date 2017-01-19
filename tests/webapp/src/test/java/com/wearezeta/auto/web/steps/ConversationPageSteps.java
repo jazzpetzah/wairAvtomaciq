@@ -1055,29 +1055,6 @@ public class ConversationPageSteps {
         context.getPagesCollection().getPage(ConversationPage.class).clickOnPicture();
     }
 
-    @Then("^I( do not)? see picture (.*) in fullscreen$")
-    public void ISeePictureInFullscreen(String doNot, String pictureName) throws Exception {
-        ConversationPage conversationPage = context.getPagesCollection().getPage(ConversationPage.class);
-        if (doNot == null) {
-            assertTrue(conversationPage.isPictureInModalDialog());
-            assertTrue(conversationPage.isPictureInFullscreen());
-            assertThat("Overlap score of image comparsion", conversationPage.getOverlapScoreOfFullscreenImage(pictureName),
-                    greaterThan(MIN_ACCEPTABLE_IMAGE_SCORE));
-        } else {
-            assertTrue(conversationPage.isPictureNotInModalDialog());
-        }
-    }
-
-    @When("^I click x button to close fullscreen mode$")
-    public void IClickXButtonToCloseFullscreen() throws Exception {
-        context.getPagesCollection().getPage(ConversationPage.class).clickXButton();
-    }
-
-    @When("^I click on black border to close fullscreen mode$")
-    public void IClickOnBlackBorderToCloseFullscreen() throws Exception {
-        context.getPagesCollection().getPage(ConversationPage.class).clickOnBlackBorder();
-    }
-
     @When("^I click GIF button$")
     public void IClickGIFButton() throws Throwable {
         context.getPagesCollection().getPage(ConversationPage.class).clickGIFButton();
