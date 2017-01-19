@@ -988,6 +988,42 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName    | Message             |
       | user1Email | user1Password | user1Name | user2Name | user3Name | unencryptedGroup | unencrypted message |
 
+  @C399349 @e2ee @staging
+  Scenario Outline: Verify conversation degrades when you add participant to verified group
+    Given There are 4 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
+    Given user <Contact2> adds a new device Device1 with label Label1
+    Given user <Contact3> adds a new device Device1 with label Label1
+    Given Myself is connected to <Contact>,<Contact2>,<Contact3>
+    Given Myself has group chat GROUPCHAT with <Contact>,<Contact2>
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+    And I am signed in properly
+    And I open conversation with GROUPCHAT
+    And I click People button in group conversation
+    And I see Group Participants popover
+    And I click on participant <Contact> on Group Participants popover
+    And I switch to Devices tab on Single User Profile popover
+    And I click on device Device1 of user <Contact> on Single User Profile popover
+    And I verify device on Device Detail popover
+    And I click back button on the Device Detail popover
+    And I click back button on Group Participants popover
+    And I click on participant <Contact2> on Group Participants popover
+    And I switch to Devices tab on Single User Profile popover
+    And I click on device Device1 of user <Contact2> on Single User Profile popover
+    And I verify device on Device Detail popover
+    And I click back button on the Device Detail popover
+    And I click back button on Group Participants popover
+    And I click People button in group conversation
+#   And I see <ALL_VERIFIED> action in conversation
+    Then I see verified icon in conversation
+    When I add <Contact3> to group chat
+    Then I do not see verified icon in conversation
+
+    Examples:
+      | Email      | Password      | Name      | Contact   | Contact2  | Contact3  | ALL_VERIFIED                  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | All fingerprints are verified |
+
   @C399346 @staging
   Scenario Outline: Verify conversation gets verified if participant deletes device in 1:1
     Given There are 2 users where <Name> is me
@@ -998,7 +1034,7 @@ Feature: E2EE
     When I Sign in using login <Email> and password <Password>
     And I am signed in properly
     When I open conversation with <Contact>
-    And I click People button in one to one conversation
+    And I click People button in group conversation
     Then I see Single User Profile popover
     When I switch to Devices tab on Single User Profile popover
     And I click on device Device2 of user <Contact> on Single User Profile popover
@@ -1011,10 +1047,10 @@ Feature: E2EE
     # We have to close and reopen the people popover to update the device list
     And I click People button in one to one conversation
     And I wait for 1 seconds
-    And I click People button in one to one conversation
+    And I click People button in group conversation
     And I switch to Devices tab on Single User Profile popover
     Then I see user verified icon on Single User Profile popover
-    When I click People button in one to one conversation
+    When I click People button in group conversation
 #   Then I see <ALL_VERIFIED> action in conversation
     Then I see verified icon in conversation
 
