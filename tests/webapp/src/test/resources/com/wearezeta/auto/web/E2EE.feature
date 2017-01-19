@@ -426,7 +426,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | Message1                                                    | Message2                                     |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat     | is using an old version of Wire. No devices are shown here. | Wire gives every device a unique fingerprint |
 
-  @C12053 @regression
+  @C12053 @e2ee @regression
   Scenario Outline: Verify it is possible to verify 1:1 conversation participants
     Given There are 2 users where <Name> is me
     Given user <Name> adds a new device OwnDevice with label Label1
@@ -471,7 +471,7 @@ Feature: E2EE
     | Email      | Password      | Name      | Contact   | ALL_VERIFIED                  |
     | user1Email | user1Password | user1Name | user2Name | All fingerprints are verified |
 
-  @C95628 @regression
+  @C95628 @e2ee @regression
   Scenario Outline: Verify conversation degrades with warning if participant adds new devices in 1:1
     Given There are 2 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
@@ -525,7 +525,7 @@ Feature: E2EE
     | Email      | Password      | Name      | Contact   | MessageThatTriggersWarning  | ALL_VERIFIED                  |
     | user1Email | user1Password | user1Name | user2Name | This should trigger warning | All fingerprints are verified |
 
-  @C95638 @regression
+  @C95638 @e2ee @regression
   Scenario Outline: Verify conversation degrades with warning if participant adds new devices in group chat
     Given There are 3 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
@@ -593,7 +593,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact   | Contact2  | MessageThatTriggersWarning  | ALL_VERIFIED                  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | This should trigger warning |All fingerprints are verified |
 
-  @C12055 @regression
+  @C12055 @e2ee @regression
   Scenario Outline: Verify it is possible to verify group conversation participants
     Given There are 3 users where <Name> is me
     Given user <Name> adds a new device OwnDevice with label Label1
