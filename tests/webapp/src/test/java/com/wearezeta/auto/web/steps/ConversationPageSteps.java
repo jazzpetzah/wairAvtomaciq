@@ -172,9 +172,35 @@ public class ConversationPageSteps {
         context.getPagesCollection().getPage(ConversationPage.class).clickPeopleButton();
     }
 
-    @When("^I see verified icon in conversation$")
-    public void ISeeVerifiedIconInConversation() throws Throwable {
-        assertThat("No verified icon", context.getPagesCollection().getPage(ConversationPage.class).isConversationVerified());
+    @When("^I( do not)? see verified icon in conversation$")
+    public void ISeeVerifiedIconInConversation(String doNot) throws Throwable {
+        if(doNot == null) {
+            assertThat("No verified icon", context.getPagesCollection().getPage(ConversationPage.class).isConversationVerified());
+        } else {
+            assertThat("verified icon in unverified conversation",
+                    context.getPagesCollection().getPage(ConversationPage.class).isConversationNotVerified());
+        }
+    }
+
+    @Then("^I click cancel button in the new device warning$")
+    public void IClickCancelOnNewDeviceWarning() throws Throwable {
+        context.getPagesCollection().getPage(ConversationPage.class).clickCancelOnNewDeviceWarning();
+    }
+
+    @Then("^I click send anyway button in the new device warning$")
+    public void ISendAnyway() throws Throwable {
+        context.getPagesCollection().getPage(ConversationPage.class).clickSendAnywayOnNewDeviceWarning();
+    }
+
+    @Then("^I( do not)? see the new device warning$")
+    public void ISeeNewDeviceWarning(String doNot) throws Throwable {
+        if (doNot == null) {
+            assertThat("No new device warning modal",
+                    context.getPagesCollection().getPage(ConversationPage.class).isNewDeviceWarningShown());
+        } else {
+            assertThat("A new device warning modal is shown",
+                    context.getPagesCollection().getPage(ConversationPage.class).isNewDeviceWarningNotShown());
+        }
     }
 
     @And("^I see titlebar with (.*)$")

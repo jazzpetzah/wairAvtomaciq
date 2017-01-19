@@ -174,6 +174,12 @@ public class ConversationPage extends WebPage {
     @FindBy(css = WebAppLocators.ConversationPage.cssUsername)
     private WebElement uniqueUsername;
 
+    @FindBy(css = WebAppLocators.ConversationPage.cssCancelNewDeviceWarning)
+    private WebElement cancelNewDeviceWarning;
+
+    @FindBy(css = WebAppLocators.ConversationPage.cssSendAnyway)
+    private WebElement sendAnyway;
+
     public ConversationPage(Future<ZetaWebAppDriver> lazyDriver)
             throws Exception {
         super(lazyDriver);
@@ -727,6 +733,29 @@ public class ConversationPage extends WebPage {
     public boolean isConversationVerified() throws Exception {
         return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(
                 WebAppLocators.ConversationPage.cssConversationVerifiedIcon));
+    }
+
+    public boolean isConversationNotVerified() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), By.cssSelector(
+                WebAppLocators.ConversationPage.cssConversationVerifiedIcon));
+    }
+
+    public boolean isNewDeviceWarningShown() throws Exception {
+        return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(
+                WebAppLocators.ConversationPage.cssNewDeviceWarning));
+    }
+
+    public boolean isNewDeviceWarningNotShown() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), By.cssSelector(
+                WebAppLocators.ConversationPage.cssNewDeviceWarning));
+    }
+
+    public void clickCancelOnNewDeviceWarning() throws Exception {
+        cancelNewDeviceWarning.click();
+    }
+
+    public void clickSendAnywayOnNewDeviceWarning() throws Exception {
+        sendAnyway.click();
     }
 
     //file transfer

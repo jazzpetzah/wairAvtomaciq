@@ -646,7 +646,7 @@ public final class WebAppLocators {
 
         public static final String cssConnectedMessageLabel = ".message-connected .label-xs";
 
-        public static final String cssConversationVerifiedIcon = ".conversation-verified";
+        public static final String cssConversationVerifiedIcon = "#conversation-titlebar .conversation-verified-icon";
 
         public static final String cssTitlebarLabel = ".conversation-titlebar-name-label";
 
@@ -661,6 +661,14 @@ public final class WebAppLocators {
                 "]//div[contains(@class, 'modal-close')]";
 
         public static final String cssFirstTimeExperienceMessage = "[data-uie-name='start-conversation-hint']";
+
+        // New device warning modal
+
+        public static final String cssNewDeviceWarning = "[data-uie-name='modal-new-device']";
+
+        public static final String cssCancelNewDeviceWarning = "[data-uie-name='go-show-device']";
+
+        public static final String cssSendAnyway = "[data-uie-name='go-send']";
     }
     
     public static final class PictureFullscreenPage {
