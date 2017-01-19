@@ -244,6 +244,18 @@ public class ConversationPageSteps {
                 .getNumberOfUnsentMessagesInCurrentConversation(), equalTo(x));
     }
 
+    @Then("^I see (\\d+) unsent images? in conversation$")
+    public void ISeeXUnsentImagesInConversation(int x) throws Exception {
+        assertThat("Number of unsend images in the conversation", context.getPagesCollection().getPage(ConversationPage.class)
+                .getNumberOfUnsentImagesInCurrentConversation(), equalTo(x));
+    }
+
+    @Then("^I see (\\d+) unsent files? in conversation$")
+    public void ISeeXUnsentFilesInConversation(int x) throws Exception {
+        assertThat("Number of unsend files in the conversation", context.getPagesCollection().getPage(ConversationPage.class)
+                .getNumberOfUnsentFilesInCurrentConversation(), equalTo(x));
+    }
+
     @Then("^I verify the database is( not)? containing the message (.*) from (.*) in active conversation$")
     public void ISeeNoTraceInDatabase(String not, String message, String nameAlias) throws Exception {
         String userId = context.getUsersManager().findUserByNameOrNameAlias(nameAlias).getId();

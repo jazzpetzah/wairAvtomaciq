@@ -516,6 +516,8 @@ public final class WebAppLocators {
 
         public static final String cssFilePlaceholder = cssFile + " .asset-placeholder";
 
+        public static final String cssUnsentFileAmount = "[data-uie-name='file'] .asset-placeholder";
+
         public static final String cssFileType = cssFile + " [data-uie-name='file-type']";
 
         public static final String cssFileCancelUpload = cssFile + " .icon-close";
@@ -556,7 +558,9 @@ public final class WebAppLocators {
 
         public static final String cssImageEntries = "[data-uie-name='go-image-detail'][data-uie-visible='true']";
 
-        public static final String cssLoadingImageEntries = "[data-uie-name='go-image-detail'][data-uie-visible='true'].image-loading";
+        public static final String cssUnsentImageAmount = "[data-uie-name='go-image-detail'][data-uie-visible='true'].image-loading";
+
+        // messages
 
         public static final String cssMessageAmount = "[data-uie-name='item-message']";
 
@@ -670,7 +674,7 @@ public final class WebAppLocators {
 
         public static final String cssCancelNewDeviceWarning = "[data-uie-name='go-show-device']";
 
-        public static final String cssSendAnyway = "[data-uie-name='go-send']";
+        public static final String cssSendAnyway = cssNewDeviceWarning + " [data-uie-name='do-send']";
     }
     
     public static final class PictureFullscreenPage {

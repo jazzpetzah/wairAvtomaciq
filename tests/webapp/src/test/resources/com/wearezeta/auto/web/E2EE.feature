@@ -1021,3 +1021,91 @@ Feature: E2EE
   Examples:
     | Email      | Password      | Name      | Contact   | ALL_VERIFIED                  |
     | user1Email | user1Password | user1Name | user2Name | All fingerprints are verified |
+
+  @C399348 @e2ee @staging
+  Scenario Outline: Verify conversation degrades with warning when sending images, files, pings or ephemeral messages to unverified devices
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login2> and password <Password2>
+    Given I am signed in properly
+    Given I click TakeThisOne button on take over screen
+    Given I see Contact list with name <Name>
+    Given I open preferences by clicking the gear button
+    Given I click logout in account preferences
+    Given I see the clear data dialog
+    Given I click logout button on clear data dialog
+    Given I see Sign In page
+    Given I Sign in using login <Email> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <Contact>
+    And I click People button in one to one conversation
+    Then I see Single User Profile popover
+    When I switch to Devices tab on Single User Profile popover
+    And I click on first device of user <Contact> on Single User Profile popover
+    And I verify device on Device Detail popover
+    And I click back button on the Device Detail popover
+    And I click People button in one to one conversation
+    Then I see verified icon in conversation
+    When user <Contact> adds a new device Device2 with label Label2
+    # image
+    And I send picture <PictureName> to the current conversation
+    Then I see the new device warning
+    When I click cancel button in the new device warning
+    Then I see 1 unsent images in conversation
+    And I do not see verified icon in conversation
+    # file
+    When I send <Size> sized file with name <File> to the current conversation
+    Then I see the new device warning
+    When I click cancel button in the new device warning
+    Then I see 1 unsent image in conversation
+    And I see 1 unsent file in conversation
+    And I do not see verified icon in conversation
+    # ping
+    When I click ping button
+    Then I see the new device warning
+    When I click cancel button in the new device warning
+    Then I see 1 unsent image in conversation
+    And I see 1 unsent file in conversation
+    # Not implemented in webapp
+    # And I see 1 unsent ping in conversation
+    And I do not see verified icon in conversation
+    # ephemeral
+    When I click on ephemeral button
+    And I set the timer for ephemeral to <TimeLong>
+    When I write message <EphemeralMessage>
+    And I send message
+    Then I see the new device warning
+    When I click cancel button in the new device warning
+    Then I see 1 unsent image in conversation
+    And I see 1 unsent file in conversation
+    And I see 1 unsent message in conversation
+    And I do not see verified icon in conversation
+    # Finally send anyway
+    When I click on ephemeral button
+    And I set the timer for ephemeral to OFF
+    And I write message <SentAnyway>
+    And I send message
+    Then I see the new device warning
+    When I click send anyway button in the new device warning
+    Then I see 1 unsent image in conversation
+    And I see 1 unsent file in conversation
+    And I see 1 unsent message in conversation
+    And I see text message <SentAnyway>
+    And I do not see verified icon in conversation
+    # Logout and checked received stuff on the other side
+    When I open preferences by clicking the gear button
+    And I click logout in account preferences
+    And I see the clear data dialog
+    And I click logout button on clear data dialog
+    And I see Sign In page
+    And I Sign in using login <Login2> and password <Password2>
+    And I am signed in properly
+    And I open conversation with <Name>
+    Then I do not see text message <EphemeralMessage>
+    And I see 2 message in conversation
+    And I see text message <SentAnyway>
+
+    Examples:
+      | Email      | Password      | Name      | Contact   | Login2     | Password2     |PictureName               | File        | Size | TimeLong  | EphemeralMessage | SentAnyway |
+      | user1Email | user1Password | user1Name | user2Name | user2Email | user2Password |userpicture_landscape.jpg | C399348.zip | 15KB | 5 seconds | UnsentEphemeral  | SentAnyway |

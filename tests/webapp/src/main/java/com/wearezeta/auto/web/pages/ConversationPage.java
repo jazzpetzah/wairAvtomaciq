@@ -57,6 +57,12 @@ public class ConversationPage extends WebPage {
     @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssUnsentMessageAmount)
     private List<WebElement> unsentMessageAmount;
 
+    @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssUnsentImageAmount)
+    private List<WebElement> unsentImageAmount;
+
+    @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssUnsentFileAmount)
+    private List<WebElement> unsentFileAmount;
+
     @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssDeletedMessageAmount)
     private List<WebElement> deletedMessageAmount;
 
@@ -486,6 +492,14 @@ public class ConversationPage extends WebPage {
 
     public int getNumberOfUnsentMessagesInCurrentConversation() {
         return unsentMessageAmount.size();
+    }
+
+    public int getNumberOfUnsentImagesInCurrentConversation() {
+        return unsentImageAmount.size();
+    }
+
+    public int getNumberOfUnsentFilesInCurrentConversation() {
+        return unsentFileAmount.size();
     }
 
     public boolean isEphemeralButtonNotVisible() throws Exception {
