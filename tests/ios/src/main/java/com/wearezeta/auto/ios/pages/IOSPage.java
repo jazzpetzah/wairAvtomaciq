@@ -638,6 +638,11 @@ public abstract class IOSPage extends BasePage {
         return this.isLocatorInvisible(locator, Timedelta.fromSeconds(DriverUtils.getDefaultLookupTimeoutSeconds()));
     }
 
+    protected boolean isLocatorInvisible(WebElement parent, By locator) throws Exception {
+        return this.isLocatorInvisible(parent, locator,
+                Timedelta.fromSeconds(DriverUtils.getDefaultLookupTimeoutSeconds()));
+    }
+
     protected boolean isLocatorInvisible(@Nullable WebElement parent, By locator, Timedelta timeout) throws Exception {
         final Timedelta started = Timedelta.now();
         int iterationNumber = 1;

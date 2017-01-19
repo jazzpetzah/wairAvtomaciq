@@ -35,7 +35,7 @@ public class CollectionPageSteps {
                     getCollectionPage().isCollectionCategoryVisible(categoryName));
         } else {
             Assert.assertTrue(String.format("Collection category %s is visible, but should not be there", categoryName),
-                    getCollectionPage().isCollectioncategoryInvisible(categoryName));
+                    getCollectionPage().isCollectionCategoryInvisible(categoryName));
         }
     }
 

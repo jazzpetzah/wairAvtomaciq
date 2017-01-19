@@ -54,6 +54,15 @@ public class ConversationPage extends WebPage {
     @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssMessageAmount)
     private List<WebElement> messageAmount;
 
+    @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssUnsentMessageAmount)
+    private List<WebElement> unsentMessageAmount;
+
+    @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssUnsentImageAmount)
+    private List<WebElement> unsentImageAmount;
+
+    @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssUnsentFileAmount)
+    private List<WebElement> unsentFileAmount;
+
     @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssDeletedMessageAmount)
     private List<WebElement> deletedMessageAmount;
 
@@ -173,6 +182,12 @@ public class ConversationPage extends WebPage {
 
     @FindBy(css = WebAppLocators.ConversationPage.cssUsername)
     private WebElement uniqueUsername;
+
+    @FindBy(css = WebAppLocators.ConversationPage.cssCancelNewDeviceWarning)
+    private WebElement cancelNewDeviceWarning;
+
+    @FindBy(css = WebAppLocators.ConversationPage.cssSendAnyway)
+    private WebElement sendAnyway;
 
     public ConversationPage(Future<ZetaWebAppDriver> lazyDriver)
             throws Exception {
@@ -475,6 +490,18 @@ public class ConversationPage extends WebPage {
         return messageAmount.size();
     }
 
+    public int getNumberOfUnsentMessagesInCurrentConversation() {
+        return unsentMessageAmount.size();
+    }
+
+    public int getNumberOfUnsentImagesInCurrentConversation() {
+        return unsentImageAmount.size();
+    }
+
+    public int getNumberOfUnsentFilesInCurrentConversation() {
+        return unsentFileAmount.size();
+    }
+
     public boolean isEphemeralButtonNotVisible() throws Exception {
         return !DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
                 By.cssSelector(WebAppLocators.ConversationPage.cssEphemeralButton));
@@ -727,6 +754,29 @@ public class ConversationPage extends WebPage {
     public boolean isConversationVerified() throws Exception {
         return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(
                 WebAppLocators.ConversationPage.cssConversationVerifiedIcon));
+    }
+
+    public boolean isConversationNotVerified() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), By.cssSelector(
+                WebAppLocators.ConversationPage.cssConversationVerifiedIcon));
+    }
+
+    public boolean isNewDeviceWarningShown() throws Exception {
+        return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(
+                WebAppLocators.ConversationPage.cssNewDeviceWarning));
+    }
+
+    public boolean isNewDeviceWarningNotShown() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), By.cssSelector(
+                WebAppLocators.ConversationPage.cssNewDeviceWarning));
+    }
+
+    public void clickCancelOnNewDeviceWarning() throws Exception {
+        cancelNewDeviceWarning.click();
+    }
+
+    public void clickSendAnywayOnNewDeviceWarning() throws Exception {
+        sendAnyway.click();
     }
 
     //file transfer

@@ -54,7 +54,7 @@ Feature: Collections
       | Name      | Contact   | GiphyTag1 | GiphyTag2 |
       | user1Name | user2Name | happy     | hello     |
 
-  @C368984 @staging @fastLogin
+  @C368984 @regression @fastLogin
   Scenario Outline: Opening single picture from pictures overview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -73,7 +73,7 @@ Feature: Collections
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C368983 @staging @fastLogin
+  @C368983 @regression @fastLogin
   Scenario Outline: Opening single picture from media overview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -191,41 +191,31 @@ Feature: Collections
     When I long tap the item number 1 in collection category PICTURES
     And I tap on Forward badge item
     And I select <Contact2> conversation on Forward page
-    And I tap Send button on Forward page
-    And I tap Collection button in conversation view
+    Then I tap Send button on Forward page
+    When I tap Collection button in conversation view
     And I long tap the item number 1 in collection category VIDEOS
-    And I tap on Forward badge item
-    And I select <Contact3> conversation on Forward page
-    And I tap Send button on Forward page
-    And I tap Collection button in conversation view
-    And I long tap the item number 1 in collection category LINKS
+    Then I do not see Forward badge item
+    When I long tap the item number 1 in collection category LINKS
     And I tap on Forward badge item
     And I select <Contact4> conversation on Forward page
-    And I tap Send button on Forward page
-    And I tap Collection button in conversation view
+    Then I tap Send button on Forward page
+    When I tap Collection button in conversation view
     And I long tap the item number 1 in collection category FILES
-    And I tap on Forward badge item
-    And I select <Contact5> conversation on Forward page
-    And I tap Send button on Forward page
+    And I do not see Forward badge item
+    And I tap X button in collection view
     Then I see conversation with user <Contact1Sender>
     When I navigate back to conversations list
     And I tap on contact name <Contact2>
     Then I see 1 photo in the conversation view
     When I navigate back to conversations list
-    And I tap on contact name <Contact3>
-    Then I see video message container in the conversation view
-    When I navigate back to conversations list
     And I tap on contact name <Contact4>
     Then I see link preview container in the conversation view
-    When I navigate back to conversations list
-    And I tap on contact name <Contact5>
-    Then I see audio message container in the conversation view
 
     Examples:
-      | Name      | Contact1Sender | Contact2  | Contact3  | Contact4  | Contact5  | Picture     | Link                  | VideoFileName | AudioFileName |
-      | user1Name | user2Name      | user3Name | user4Name | user5Name | user6Name | testing.jpg | https://www.wire.com/ | testing.mp4   | test.m4a      |
+      | Name      | Contact1Sender | Contact2  | Contact4  | Picture     | Link                  | VideoFileName | AudioFileName |
+      | user1Name | user2Name      | user3Name | user5Name | testing.jpg | https://www.wire.com/ | testing.mp4   | test.m4a      |
 
-  @C395991 @staging @fastLogin
+  @C395991 @regression @fastLogin
   Scenario Outline: Verify collection is available for a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
@@ -250,7 +240,7 @@ Feature: Collections
       | Name      | Contact   | Contact2  | GroupChatName   | Picture     | Link                  | FileName | FileExt | FileSize | VideoFileName | AudioFileName |
       | user1Name | user2Name | user3Name | GroupCollection | testing.jpg | https://www.wire.com/ | testing  | bin     | 240 KB   | testing.mp4   | test.m4a      |
 
-  @C395993 @staging @fastLogin
+  @C395993 @regression @fastLogin
   Scenario Outline: Verify you can see AssetsV3 in collection
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -301,7 +291,7 @@ Feature: Collections
       | Name      | Contact1  | Contact2  | GroupChatName   | Picture     | Link                  |
       | user1Name | user2Name | user3Name | GroupCollection | testing.jpg | https://www.wire.com/ |
 
-  @C395994 @staging @fastLogin
+  @C395994 @regression @fastLogin
   Scenario Outline: Verify you can Reveal collection item
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

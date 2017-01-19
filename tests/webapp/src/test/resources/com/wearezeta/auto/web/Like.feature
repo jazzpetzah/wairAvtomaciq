@@ -169,7 +169,7 @@ Feature: Like
       | Login      | Password      | Name      | Contact   | ImageName                |
       | user1Email | user1Password | user1Name | user2Name | userpicture_portrait.jpg |
 
-  @C395990 @staging
+  @C395990 @regression
   Scenario Outline: Verify I can like an image from fullscreen view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
