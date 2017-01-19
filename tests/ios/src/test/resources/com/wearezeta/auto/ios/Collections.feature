@@ -54,7 +54,7 @@ Feature: Collections
       | Name      | Contact   | GiphyTag1 | GiphyTag2 |
       | user1Name | user2Name | happy     | hello     |
 
-  @C368984 @staging @fastLogin
+  @C368984 @regression @fastLogin
   Scenario Outline: Opening single picture from pictures overview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -73,7 +73,7 @@ Feature: Collections
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C368983 @staging @fastLogin
+  @C368983 @regression @fastLogin
   Scenario Outline: Opening single picture from media overview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -225,7 +225,7 @@ Feature: Collections
       | Name      | Contact1Sender | Contact2  | Contact3  | Contact4  | Contact5  | Picture     | Link                  | VideoFileName | AudioFileName |
       | user1Name | user2Name      | user3Name | user4Name | user5Name | user6Name | testing.jpg | https://www.wire.com/ | testing.mp4   | test.m4a      |
 
-  @C395991 @staging @fastLogin
+  @C395991 @regression @fastLogin
   Scenario Outline: Verify collection is available for a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
@@ -250,7 +250,7 @@ Feature: Collections
       | Name      | Contact   | Contact2  | GroupChatName   | Picture     | Link                  | FileName | FileExt | FileSize | VideoFileName | AudioFileName |
       | user1Name | user2Name | user3Name | GroupCollection | testing.jpg | https://www.wire.com/ | testing  | bin     | 240 KB   | testing.mp4   | test.m4a      |
 
-  @C395993 @staging @fastLogin
+  @C395993 @regression @fastLogin
   Scenario Outline: Verify you can see AssetsV3 in collection
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -301,7 +301,7 @@ Feature: Collections
       | Name      | Contact1  | Contact2  | GroupChatName   | Picture     | Link                  |
       | user1Name | user2Name | user3Name | GroupCollection | testing.jpg | https://www.wire.com/ |
 
-  @C395994 @staging @fastLogin
+  @C395994 @regression @fastLogin
   Scenario Outline: Verify you can Reveal collection item
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
