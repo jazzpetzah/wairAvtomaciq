@@ -17,7 +17,7 @@ Feature: Collection
       | Email      | Password      | Name      | Contact   | Event                          |
       | user1Email | user1Password | user1Name | user2Name | collections.opened_collections |
 
-  @C378050 @linkpreview @collection @staging
+  @C378050 @linkpreview @collection @regression
   Scenario Outline: Verify main overview shows media from all categories
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -137,7 +137,7 @@ Feature: Collection
       | Email      | Password      | Name      | Contact   | Time | TimeLong   | TimeShortUnit | PictureName               | VideoFile   | SizeVideo | AudioFile   | AudioTime | File         | SizeFile |
       | user1Email | user1Password | user1Name | user2Name | 5    | 5 seconds  | s             | userpicture_landscape.jpg | C261733.mp4 | 1 MB      | example.wav | 00:20     | C261733.zip  | 512KB    |
 
-  @C378055 @collection @staging
+  @C378055 @collection @regression
   Scenario Outline: Verify opening overview of all pictures from sender and receiver in group
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -197,7 +197,7 @@ Feature: Collection
       | Email      | Password      | Name      | Contact   | Link                 | LinkInPreview | LinkTitle | LinkPreviewImage | LinkWithoutImage                                                              | LinkTitleWithoutImage                                 |
       | user1Email | user1Password | user1Name | user2Name | https://app.wire.com | app.wire.com  | Wire      | linkpreview0.png | medium.com/wire-news/simple-privacy-policy-72-hour-log-retention-33d183ea0fb3 | Simpler Privacy Policy, 72h log retention – Wire News |
 
-  @C378056 @collection @staging
+  @C378056 @collection @regression
   Scenario Outline: Verify opening single picture from all shared media overview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
