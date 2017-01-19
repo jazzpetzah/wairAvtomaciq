@@ -191,39 +191,29 @@ Feature: Collections
     When I long tap the item number 1 in collection category PICTURES
     And I tap on Forward badge item
     And I select <Contact2> conversation on Forward page
-    And I tap Send button on Forward page
-    And I tap Collection button in conversation view
+    Then I tap Send button on Forward page
+    When I tap Collection button in conversation view
     And I long tap the item number 1 in collection category VIDEOS
-    And I tap on Forward badge item
-    And I select <Contact3> conversation on Forward page
-    And I tap Send button on Forward page
-    And I tap Collection button in conversation view
-    And I long tap the item number 1 in collection category LINKS
+    Then I do not see Forward badge item
+    When I long tap the item number 1 in collection category LINKS
     And I tap on Forward badge item
     And I select <Contact4> conversation on Forward page
-    And I tap Send button on Forward page
-    And I tap Collection button in conversation view
+    Then I tap Send button on Forward page
+    When I tap Collection button in conversation view
     And I long tap the item number 1 in collection category FILES
-    And I tap on Forward badge item
-    And I select <Contact5> conversation on Forward page
-    And I tap Send button on Forward page
+    And I do not see Forward badge item
+    And I tap X button in collection view
     Then I see conversation with user <Contact1Sender>
     When I navigate back to conversations list
     And I tap on contact name <Contact2>
     Then I see 1 photo in the conversation view
     When I navigate back to conversations list
-    And I tap on contact name <Contact3>
-    Then I see video message container in the conversation view
-    When I navigate back to conversations list
     And I tap on contact name <Contact4>
     Then I see link preview container in the conversation view
-    When I navigate back to conversations list
-    And I tap on contact name <Contact5>
-    Then I see audio message container in the conversation view
 
     Examples:
-      | Name      | Contact1Sender | Contact2  | Contact3  | Contact4  | Contact5  | Picture     | Link                  | VideoFileName | AudioFileName |
-      | user1Name | user2Name      | user3Name | user4Name | user5Name | user6Name | testing.jpg | https://www.wire.com/ | testing.mp4   | test.m4a      |
+      | Name      | Contact1Sender | Contact2  | Contact4  | Picture     | Link                  | VideoFileName | AudioFileName |
+      | user1Name | user2Name      | user3Name | user5Name | testing.jpg | https://www.wire.com/ | testing.mp4   | test.m4a      |
 
   @C395991 @regression @fastLogin
   Scenario Outline: Verify collection is available for a group conversation
