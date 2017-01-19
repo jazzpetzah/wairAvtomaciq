@@ -560,6 +560,8 @@ public final class WebAppLocators {
 
         public static final String cssMessageAmount = "[data-uie-name='item-message']";
 
+        public static final String cssUnsentMessageAmount = "[data-uie-name='item-message'] .message-body .text-graphite";
+
         public static final String cssDeletedMessageAmount = "[data-uie-name='item-message'][data-uie-value='delete']";
 
         public static final String cssPingMessage = ".pinged";

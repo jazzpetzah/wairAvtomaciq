@@ -472,7 +472,7 @@ Feature: E2EE
     | user1Email | user1Password | user1Name | user2Name | All fingerprints are verified |
 
   @C95628 @regression
-  Scenario Outline: Verify conversation degrades with warning if participant deletes or adds new devices in 1:1
+  Scenario Outline: Verify conversation degrades with warning if participant adds new devices in 1:1
     Given There are 2 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
     Given user <Contact> adds a new device Device2 with label Label2
@@ -504,7 +504,7 @@ Feature: E2EE
     And I send message
     Then I see the new device warning
     When I click cancel button in the new device warning
-# TODO: check if message was not send
+    And I see 1 unsent messages in conversation
     Then I do not see verified icon in conversation
     And I click People button in one to one conversation
     And I see Single User Profile popover
@@ -526,7 +526,7 @@ Feature: E2EE
     | user1Email | user1Password | user1Name | user2Name | This should trigger warning | All fingerprints are verified |
 
   @C95638 @regression
-  Scenario Outline: Verify conversation degrades with warning if participant deletes or adds new devices in group chat
+  Scenario Outline: Verify conversation degrades with warning if participant adds new devices in group chat
     Given There are 3 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
     Given user <Contact> adds a new device Device2 with label Label2
@@ -567,8 +567,9 @@ Feature: E2EE
     When user <Contact> adds a new device Device3 with label Label3
     And I write message <MessageThatTriggersWarning>
     And I send message
-# TODO: check for warning modal when sending message to degraded conversation
-# TODO: check if message was not send
+    Then I see the new device warning
+    When I click cancel button in the new device warning
+    And I see 1 unsent messages in conversation
     Then I do not see verified icon in conversation
     When I click People button in group conversation
     Then I see Group Participants popover

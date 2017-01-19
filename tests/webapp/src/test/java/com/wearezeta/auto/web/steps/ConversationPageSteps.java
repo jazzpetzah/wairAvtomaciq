@@ -238,6 +238,12 @@ public class ConversationPageSteps {
                 .getNumberOfMessagesInCurrentConversation(), equalTo(x));
     }
 
+    @Then("^I see (\\d+) unsent messages? in conversation$")
+    public void ISeeXUnsentMessagesInConversation(int x) throws Exception {
+        assertThat("Number of unsend messages in the conversation", context.getPagesCollection().getPage(ConversationPage.class)
+                .getNumberOfUnsentMessagesInCurrentConversation(), equalTo(x));
+    }
+
     @Then("^I verify the database is( not)? containing the message (.*) from (.*) in active conversation$")
     public void ISeeNoTraceInDatabase(String not, String message, String nameAlias) throws Exception {
         String userId = context.getUsersManager().findUserByNameOrNameAlias(nameAlias).getId();

@@ -54,6 +54,9 @@ public class ConversationPage extends WebPage {
     @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssMessageAmount)
     private List<WebElement> messageAmount;
 
+    @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssUnsentMessageAmount)
+    private List<WebElement> unsentMessageAmount;
+
     @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssDeletedMessageAmount)
     private List<WebElement> deletedMessageAmount;
 
@@ -479,6 +482,10 @@ public class ConversationPage extends WebPage {
 
     public int getNumberOfMessagesInCurrentConversation() {
         return messageAmount.size();
+    }
+
+    public int getNumberOfUnsentMessagesInCurrentConversation() {
+        return unsentMessageAmount.size();
     }
 
     public boolean isEphemeralButtonNotVisible() throws Exception {
