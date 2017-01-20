@@ -506,7 +506,7 @@ Feature: E2EE
       | Name      |
       | user1Name |
 
-  @C395996 @staging @fastLogin
+  @C395996 @staging @fastLogin @torun
   Scenario Outline: Verify forwarding message into downgraded conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
