@@ -521,17 +521,16 @@ Feature: E2EE
     Given I tap Back button on Device Details page
     Given I tap X button on Single user profile page
     Given I navigate back to conversations list
-    When Users add the following devices: {"<Contact1>": [{"name": "<DeviceName2>", "label": "<DeviceLabel2>"}]}
-    And I tap on contact name <Contact2>
-    And User <Contact2> sends 1 encrypted message to user Myself
-    And I see 1 default message in the conversation view
-    And I long tap default message in conversation view
+    Given Users add the following devices: {"<Contact1>": [{"name": "<DeviceName2>", "label": "<DeviceLabel2>"}]}
+    Given I tap on contact name <Contact2>
+    Given User <Contact2> sends 1 encrypted message to user Myself
+    Given I see 1 default message in the conversation view
+    When I long tap default message in conversation view
     And I tap on Forward badge item
     And I select <Contact1> conversation on Forward page
     And I tap Send button on Forward page
     And I navigate back to conversations list
     And I tap on contact name <Contact1>
-    And I close New Device overlay
     And I resend the last message in the conversation with Resend button
 # Wait until the message is sent
     And I wait for 3 seconds
