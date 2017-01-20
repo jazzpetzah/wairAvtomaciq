@@ -1,6 +1,6 @@
 Feature: Collection
 
-  @C378049 @collection @regression
+  @C378049 @collection @localytics @regression
   Scenario Outline: Verify message is shown if no media is in collection
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -10,12 +10,12 @@ Feature: Collection
     And I am signed in properly
     When I open conversation with <Contact>
     And I click collection button in conversation
-    #And I see localytics event <Event> without attributes
+    And I see localytics event <Event> with attributes <Attributes>
     Then I see info about no collection items
 
     Examples:
-      | Email      | Password      | Name      | Contact   | Event                          |
-      | user1Email | user1Password | user1Name | user2Name | collections.opened_collections |
+      | Email      | Password      | Name      | Contact   | Event                          | Attributes                                                                   |
+      | user1Email | user1Password | user1Name | user2Name | collections.opened_collections | {\"is_empty\":true,\"conversation_type\":\"one_to_one\",\"with_bot\":false}" |
 
   @C378050 @linkpreview @collection @regression
   Scenario Outline: Verify main overview shows media from all categories
@@ -197,10 +197,11 @@ Feature: Collection
       | Email      | Password      | Name      | Contact   | Link                 | LinkInPreview | LinkTitle | LinkPreviewImage | LinkWithoutImage                                                              | LinkTitleWithoutImage                                 |
       | user1Email | user1Password | user1Name | user2Name | https://app.wire.com | app.wire.com  | Wire      | linkpreview0.png | medium.com/wire-news/simple-privacy-policy-72-hour-log-retention-33d183ea0fb3 | Simpler Privacy Policy, 72h log retention – Wire News |
 
-  @C378056 @collection @regression
+  @C378056 @collection @localytics @regression
   Scenario Outline: Verify opening single picture from all shared media overview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I enable localytics via URL parameter
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
     Given I am signed in properly
@@ -210,12 +211,14 @@ Feature: Collection
     And I see only 1 picture in the conversation
     When I click collection button in conversation
     And I see 1 picture in collection
+    And I see localytics event <Event1> with attributes <Attributes1>
     And I click on picture 1 in collection
     Then I see picture <PictureName> in picture fullscreen
+    And I see localytics event <Event2> with attributes <Attributes2>
 
     Examples:
-      | Email      | Password      | Name      | Contact   | PictureName               |
-      | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg |
+      | Email      | Password      | Name      | Contact   | PictureName               | Event1                         | Attributes1                                                                    | Event2                 | Attributes2                                                                   |
+      | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg | collections.opened_collections | {\"is_empty\":false,\"conversation_type\":\"one_to_one\",\"with_bot\":false}" | collections.opened_item | {\"type\":\"image\",\"conversation_type\":\"one_to_one\",\"with_bot\":false}" |
 
   @C378058 @collection @staging
   Scenario Outline: Verify opening overview of all files
