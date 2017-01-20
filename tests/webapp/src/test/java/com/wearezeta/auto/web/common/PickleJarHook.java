@@ -207,6 +207,11 @@ public class PickleJarHook implements PickleJarTestHook {
                     //filter youtube javascript error
                     .filter((entry)
                             -> !entry.getMessage().contains("ytcfg is not defined"))
+                    // filter degraded conversation errors for C95638 and C95628
+                    .filter((entry)
+                            -> !entry.getMessage().contains("Error while sending text message: Unknown ConversationError"))
+                    .filter((entry)
+                            -> !entry.getMessage().contains("Uncaught a: Unknown ConversationError"))
                     .collect(Collectors.toList());
 
         } catch (Exception e) {

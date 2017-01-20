@@ -4,7 +4,7 @@ Feature: Assets
   Scenario Outline: Receive V3 assets
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <DeviceName>
+    Given User adds the following device: {"<Contact>": [{"name": "<DeviceName>"}]}
     Given User <Contact> switches assets to V3 protocol via device <DeviceName>
     Given I create temporary file <BinaryFileSize> in size with name "<BinaryFileName>" and extension "<BinaryFileExt>"
     Given I sign in using my email or phone number

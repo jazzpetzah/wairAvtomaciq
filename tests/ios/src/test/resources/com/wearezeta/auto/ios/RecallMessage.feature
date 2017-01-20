@@ -4,8 +4,7 @@ Feature: Recall Message
   Scenario Outline: Verify I can delete my message everywhere (1:1)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <HisDevice>
-    Given User Myself adds new device <MySecondDevice>
+    Given Users add the following devices: {"<Contact>": [{"name": "<HisDevice>"}], "Myself": [{"name": "<MySecondDevice>"}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
@@ -40,8 +39,7 @@ Feature: Recall Message
   Scenario Outline: Verify delete everywhere works for file sharing
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <HisDevice>
-    Given User Myself adds new device <MySecondDevice>
+    Given Users add the following devices: {"<Contact>": [{"name": "<HisDevice>"}], "Myself": [{"name": "<MySecondDevice>"}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
@@ -68,8 +66,7 @@ Feature: Recall Message
   Scenario Outline: Verify delete everywhere works for images
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <HisDevice>
-    Given User Myself adds new device <MySecondDevice>
+    Given Users add the following devices: {"<Contact>": [{"name": "<HisDevice>"}], "Myself": [{"name": "<MySecondDevice>"}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
@@ -100,9 +97,7 @@ Feature: Recall Message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <Group> with <Contact1>,<Contact2>
-    Given User Myself adds new device <MySecondDevice>
-    Given User <Contact1> adds new device <Contact1Device>
-    Given User <Contact2> adds new device <Contact2Device>
+    Given Users add the following devices: {"<Contact1>": [{"name": "<Contact1Device>"}], "<Contact2>": [{"name": "<Contact2Device>"}], "Myself": [{"name": "<MySecondDevice>"}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Group>
@@ -139,8 +134,7 @@ Feature: Recall Message
   Scenario Outline: Verify delete everywhere works for video messages
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <HisDevice>
-    Given User Myself adds new device <MySecondDevice>
+    Given Users add the following devices: {"<Contact>": [{"name": "<HisDevice>"}], "Myself": [{"name": "<MySecondDevice>"}]}
     Given I prepare <FileName> to be uploaded as a video message
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -166,7 +160,7 @@ Feature: Recall Message
   Scenario Outline: Verify I see status message if other user deletes his message everywhere (1:1)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Contact1> adds new device <Contact1Device>
+    Given User adds the following device: {"<Contact1>": [{"name": "<Contact1Device>"}]}
     Given I sign in using my email or phone number
     Given User <Contact1> sends 1 encrypted message to user Myself
     Given I see conversations list
@@ -184,7 +178,7 @@ Feature: Recall Message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <Group> with <Contact1>,<Contact2>
-    Given User <Contact1> adds new device <Contact1Device>
+    Given User adds the following device: {"<Contact1>": [{"name": "<Contact1Device>"}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     Given User <Contact1> sends 1 encrypted message to group conversation <Group>
@@ -201,8 +195,7 @@ Feature: Recall Message
   Scenario Outline: Verify delete everywhere works for Soundcloud, YouTube, Vimeo
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <HisDevice>
-    Given User Myself adds new device <MySecondDevice>
+    Given Users add the following devices: {"<Contact>": [{"name": "<HisDevice>"}], "Myself": [{"name": "<MySecondDevice>"}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
@@ -253,7 +246,7 @@ Feature: Recall Message
   Scenario Outline: Verify delete everywhere works for giphy
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <HisDevice>
+    Given User adds the following device: {"<Contact>": [{"name": "<HisDevice>"}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
@@ -283,7 +276,7 @@ Feature: Recall Message
   Scenario Outline: Verify delete everywhere works for link preview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <HisDevice>
+    Given User adds the following device: {"<Contact>": [{"name": "<HisDevice>"}]}
     Given I sign in using my email or phone number
     Given User Myself sends encrypted message "Try this app <Link>" to user <Contact>
     Given I see conversations list
@@ -324,7 +317,7 @@ Feature: Recall Message
   Scenario Outline: Verify delete everywhere works for audio messages
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <DeviceName>
+    Given User adds the following device: {"<Contact>": [{"name": "<DeviceName>"}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
@@ -347,7 +340,7 @@ Feature: Recall Message
     Given There are 2 users where <Name> is me
     Given User Myself removes his avatar picture
     Given Myself is connected to <Contact1>
-    Given User <Contact1> adds new device <DeviceName>
+    Given User adds the following device: {"<Contact1>": [{"name": "<DeviceName>"}]}
     Given I sign in using my email or phone number
     Given User <Contact1> sends 1 encrypted message to user Myself
     # Wait for message to be delivered
@@ -372,7 +365,7 @@ Feature: Recall Message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <Group> with <Contact1>,<Contact2>
-    Given User <Contact1> adds new device <Contact1Device>
+    Given User adds the following device: {"<Contact1>": [{"name": "<Contact1Device>"}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     Given User <Contact1> sends 1 encrypted message to group conversation <Group>

@@ -5,7 +5,7 @@ Feature: Group Ephemeral Messages
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User Myself adds new device <DeviceName>
+    Given User adds the following device: {"Myself": [{"name": "<DeviceName>"}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I tap on group chat with name <GroupChatName>
@@ -60,7 +60,7 @@ Feature: Group Ephemeral Messages
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User Myself adds new device <DeviceName>
+    Given User adds the following device: {"Myself": [{"name": "<DeviceName>"}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I tap on group chat with name <GroupChatName>
@@ -79,7 +79,7 @@ Feature: Group Ephemeral Messages
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User <Contact1> adds new devices <ContactDevice>
+    Given Users add the following devices: {"<Contact1>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I tap on group chat with name <GroupChatName>
@@ -122,7 +122,7 @@ Feature: Group Ephemeral Messages
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User <Contact1> adds new device <DeviceName>
+    Given User adds the following device: {"<Contact1>": [{"name": "<DeviceName>"}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I tap on group chat with name <GroupChatName>
@@ -162,8 +162,7 @@ Feature: Group Ephemeral Messages
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User <Contact1> adds new device <DeviceName1>
-    Given User <Contact2> adds new device <DeviceName2>
+    Given Users add the following devices: {"<Contact1>": [{"name": "<DeviceName1>"}], "<Contact2>": [{"name": "<DeviceName2>"}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     Given User <Contact1> switches group conversation <GroupChatName> to ephemeral mode with <Timeout> seconds timeout

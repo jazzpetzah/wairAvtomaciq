@@ -4,7 +4,7 @@ Feature: E2EE
   Scenario Outline: Verify device verification [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Contact1> adds new devices <DeviceName1>,<DeviceName2>
+    Given Users add the following devices: {"<Contact1>": [{"name": "<DeviceName1>"}, {"name": "<DeviceName2>"}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given User <Contact1> sends 1 encrypted message to user Myself
@@ -40,7 +40,7 @@ Feature: E2EE
     And I open details page of device number 1 on Devices tab
     And I tap Verify switcher on Device Details page
     And I dismiss popover on iPad
-    When User Myself adds a new device <DeviceName2> with label <DeviceLabel2>
+    When Users add the following devices: {"Myself": [{"name": "<DeviceName2>", "label": "<DeviceLabel2>"}]}
     Then I do not see shield icon in the conversation view
     And I see "<StartedUsingMsg>" system message in the conversation view
 

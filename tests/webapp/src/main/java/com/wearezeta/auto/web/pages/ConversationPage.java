@@ -14,7 +14,6 @@ import cucumber.api.PendingException;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -54,6 +53,15 @@ public class ConversationPage extends WebPage {
 
     @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssMessageAmount)
     private List<WebElement> messageAmount;
+
+    @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssUnsentMessageAmount)
+    private List<WebElement> unsentMessageAmount;
+
+    @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssUnsentImageAmount)
+    private List<WebElement> unsentImageAmount;
+
+    @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssUnsentFileAmount)
+    private List<WebElement> unsentFileAmount;
 
     @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssDeletedMessageAmount)
     private List<WebElement> deletedMessageAmount;
@@ -115,12 +123,6 @@ public class ConversationPage extends WebPage {
     @FindBy(css = WebAppLocators.ConversationPage.cssFirstImage)
     private WebElement firstPicture;
 
-    @FindBy(css = WebAppLocators.ConversationPage.cssFullscreenImage)
-    private WebElement fullscreenImage;
-
-    @FindBy(xpath = WebAppLocators.ConversationPage.xpathXButton)
-    private WebElement xButton;
-
     @FindBy(css = WebAppLocators.ConversationPage.cssUserAvatar)
     private WebElement userAvatar;
 
@@ -180,6 +182,12 @@ public class ConversationPage extends WebPage {
 
     @FindBy(css = WebAppLocators.ConversationPage.cssUsername)
     private WebElement uniqueUsername;
+
+    @FindBy(css = WebAppLocators.ConversationPage.cssCancelNewDeviceWarning)
+    private WebElement cancelNewDeviceWarning;
+
+    @FindBy(css = WebAppLocators.ConversationPage.cssSendAnyway)
+    private WebElement sendAnyway;
 
     public ConversationPage(Future<ZetaWebAppDriver> lazyDriver)
             throws Exception {
@@ -468,20 +476,6 @@ public class ConversationPage extends WebPage {
                 ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
     }
 
-    public double getOverlapScoreOfFullscreenImage(String pictureName)
-            throws Exception {
-        final String picturePath = WebCommonUtils
-                .getFullPicturePath(pictureName);
-        if (!isImageMessageFound()) {
-            return 0.0;
-        }
-        // comparison of the fullscreen image and sent picture
-        BufferedImage actualImage = this.getElementScreenshot(fullscreenImage).orElseThrow(IllegalStateException::new);
-        BufferedImage expectedImage = ImageUtil.readImageFromFile(picturePath);
-        return ImageUtil.getOverlapScore(actualImage, expectedImage,
-                ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-    }
-
     public boolean isImageMessageFound() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
                 By.cssSelector(WebAppLocators.ConversationPage.cssFirstImage),
@@ -494,6 +488,18 @@ public class ConversationPage extends WebPage {
 
     public int getNumberOfMessagesInCurrentConversation() {
         return messageAmount.size();
+    }
+
+    public int getNumberOfUnsentMessagesInCurrentConversation() {
+        return unsentMessageAmount.size();
+    }
+
+    public int getNumberOfUnsentImagesInCurrentConversation() {
+        return unsentImageAmount.size();
+    }
+
+    public int getNumberOfUnsentFilesInCurrentConversation() {
+        return unsentFileAmount.size();
     }
 
     public boolean isEphemeralButtonNotVisible() throws Exception {
@@ -660,38 +666,6 @@ public class ConversationPage extends WebPage {
         firstPicture.click();
     }
 
-    public boolean isPictureInModalDialog() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                By.cssSelector(WebAppLocators.ConversationPage.cssModalDialog));
-    }
-
-    public boolean isPictureInFullscreen() throws Exception {
-        return DriverUtils
-                .waitUntilLocatorIsDisplayed(
-                        this.getDriver(),
-                        By.cssSelector(WebAppLocators.ConversationPage.cssFullscreenImage));
-    }
-
-    public boolean isPictureNotInModalDialog() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-                By.cssSelector(WebAppLocators.ConversationPage.cssModalDialog));
-    }
-
-    public void clickXButton() throws Exception {
-        xButton.click();
-    }
-
-    public void clickOnBlackBorder() throws Exception {
-        if (WebAppExecutionContext.getBrowser().isSupportingNativeMouseActions()) {
-            Actions builder = new Actions(getDriver());
-            builder.moveToElement(fullscreenImage, -10, -10).click().build().perform();
-        } else {
-            WebElement blackBorder = getDriver().findElement(By.cssSelector("#detail-view.modal"));
-            getDriver().executeScript("var evt = new MouseEvent('click', {view: window});arguments[0].dispatchEvent(evt);",
-                    blackBorder);
-        }
-    }
-
     public void clickGIFButton() throws Exception {
         gifButton.click();
     }
@@ -780,6 +754,29 @@ public class ConversationPage extends WebPage {
     public boolean isConversationVerified() throws Exception {
         return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(
                 WebAppLocators.ConversationPage.cssConversationVerifiedIcon));
+    }
+
+    public boolean isConversationNotVerified() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), By.cssSelector(
+                WebAppLocators.ConversationPage.cssConversationVerifiedIcon));
+    }
+
+    public boolean isNewDeviceWarningShown() throws Exception {
+        return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(
+                WebAppLocators.ConversationPage.cssNewDeviceWarning));
+    }
+
+    public boolean isNewDeviceWarningNotShown() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), By.cssSelector(
+                WebAppLocators.ConversationPage.cssNewDeviceWarning));
+    }
+
+    public void clickCancelOnNewDeviceWarning() throws Exception {
+        cancelNewDeviceWarning.click();
+    }
+
+    public void clickSendAnywayOnNewDeviceWarning() throws Exception {
+        sendAnyway.click();
     }
 
     //file transfer

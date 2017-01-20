@@ -151,12 +151,7 @@ public class LoginPage extends WebPage {
     public void clickChangePasswordButton(WebappPagesCollection webappPagesCollection) throws Exception {
         assert DriverUtils.waitUntilElementClickable(getDriver(),
                 changePasswordButton);
-
-        // TODO: This is commented because the button always redirects to
-        // production site and we usually need staging one
-        //changePasswordButton.click();
-        webappPagesCollection.getPage(PasswordChangeRequestPage.class)
-                .navigateTo();
+        changePasswordButton.click();
     }
 
     public String getErrorMessage() throws InterruptedException, Exception {

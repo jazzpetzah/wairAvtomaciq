@@ -1,7 +1,7 @@
 Feature: Unique Username
 
   @C352018 @regression
-  Scenario Outline: Verify I see Unique User Name and AB name within Incoming Request and Conversation View in different condition
+  Scenario Outline: (AN-4845)Verify I see Unique User Name and AB name within Incoming Request and Conversation View in different condition
     Given I delete all contacts from Address Book
     Given There are 4 users where <Name> is me
     Given I add <ContactInABEmail> having custom name "<ABNameEmail>" into Address Book with email
@@ -34,6 +34,7 @@ Feature: Unique Username
     And I see Conversations list with name <ContactInABSameName>
     # Conversation for AB with Email
     When I tap on conversation name <ContactInABEmail>
+    And I swipe down from 20%
     And I see unique user name "<ContactINABEmailUniqueUsername>" on Conversation view
     And I see user info "<ABNameEmail> in Contacts" on Conversation view
     Then I navigate back from conversation
@@ -69,7 +70,7 @@ Feature: Unique Username
       | user1Name | user2Name | user3Name | user4Name | 1 person waiting | 2             |
 
   @C352020 @regression
-  Scenario Outline: Verify I see Unique User Name and AB name within outgoing Request in different condition
+  Scenario Outline: (AN-4784)Verify I see Unique User Name and AB name within outgoing Request in different condition
     Given I delete all contacts from Address Book
     Given There are 4 users where <Name> is me
     Given I add <ContactInABEmail> having custom name "<ABNameEmail>" into Address Book with email
@@ -154,7 +155,7 @@ Feature: Unique Username
       | user1Name | user2Name | user2Email    | user2UniqueUsername    | user3UniqueUsername    |
 
   @C352075 @regression
-  Scenario Outline: Verify search shows correct user info for unconnected user
+  Scenario Outline: (AN-4784)Verify search shows correct user info for unconnected user
     Given There are 9 users where <Name> is me
     Given I add <Contact1InABWithCF> having custom name "<Contact1NameInAB>" into Address Book with email
     Given I add <Contact2InABWoCF> having custom name "<Contact2NameInAB>" into Address Book with email
@@ -295,11 +296,11 @@ Feature: Unique Username
     Given I see Conversations list
     When I open Search UI
     And I type the first <NameFirstPartCount> chars of unique user name "<Contact2UniqueUsername>" in search field
-    Then I see user <Contact2> in Search result list
+    Then I do not see user <Contact2> in Search result list
     And I tap Clear button
     When I open Search UI
     And I type the last <NameLastPartCount> chars of unique user name "<Contact2UniqueUsername>" in search field
-    Then I see user <Contact2> in Search result list
+    Then I do not see user <Contact2> in Search result list
     And I tap Clear button
     When I open Search UI
     And I type unique user name "<Contact2UniqueUsername>" in uppercase in search field
@@ -430,7 +431,7 @@ Feature: Unique Username
     Given I tap Choose Your Own button on Unique Username Takeover page
     Given I see unique username edit field on Settings page
     Given I tap OK on Unique Username Settings page
-    Given User Myself adds a new device <Device1> with label <Device1>
+    Given Users add the following devices: {"Myself": [{"name": "<Device1>"}]}
     When User Myself changes the unique username to "<UniqueUsername1>" via device <Device1>
     Then I select "Username" settings menu item
     And I see Unique Username "<UniqueUsername1>" in edit field on Settings page

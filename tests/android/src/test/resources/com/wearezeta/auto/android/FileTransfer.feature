@@ -1,18 +1,17 @@
 Feature: File Transfer
 
   @C87628 @rc @regression
-  Scenario Outline: Verify placeholder is shown for the sender and the message bottom menu for sended file
+  Scenario Outline: (AN-4830) Verify placeholder is shown for the sender and the message bottom menu for sended file
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
-    Given I push <FileSize> file having name "<FileName>.<FileExtension>" to the device
+    Given I push <FileSize><FileSizeType> file having name "<FileName>.<FileExtension>" to the device
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     And I tap File button from cursor toolbar
-    And I remember the state of View button on file upload placeholder
-    And I wait up to <UploadingTimeout> seconds until <FileSize> file with extension "<FileExtension>" is uploaded
-    Then I see the result of <FileSize> file upload having name "<FileName>.<FileExtension>" and extension "<FileExtension>"
+    And I wait up to <UploadingTimeout> seconds until <FileSize> <FileSizeType> file with extension "<FileExtension>" is uploaded
+    Then I see the result of "<FileSize><FileSizeType>" file upload having name "<FileName>.<FileExtension>" and extension "<FileExtension>"
     # Verify Sender side message bottom menu
     When I long tap File Upload container in the conversation view
     Then I see Delete only for me button on the message bottom menu
@@ -22,8 +21,8 @@ Feature: File Transfer
     And I see Open button on the message bottom menu
 
     Examples:
-      | Name      | Contact1  | FileName  | FileExtension | FileSize | UploadingTimeout |
-      | user1Name | user2Name | qa_random | txt           | 1.00MB   | 20               |
+      | Name      | Contact1  | FileName  | FileExtension | FileSize | UploadingTimeout | FileSizeType |
+      | user1Name | user2Name | qa_random | txt           | 1.00     | 20               | MB           |
 
   @C87636 @rc @regression
   Scenario Outline: Verify warning is shown for file size more than 25Mb
@@ -62,23 +61,23 @@ Feature: File Transfer
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
-    Given I push <FileSize> file having name "<FileName>.<FileExtension>" to the device
+    Given I push <FileSize><FileSizeType> file having name "<FileName>.<FileExtension>" to the device
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I enable Airplane mode on the device
     And I wait for 5 seconds
     And I tap on conversation name <Contact1>
     And I tap File button from cursor toolbar
-    Then I see the result of <FileSize> file upload having name "<FileName>.<FileExtension>" and extension "<FileExtension>" in <UploadingTimeout> seconds failed
+    Then I see the result of "<FileSize><FileSizeType>" file upload having name "<FileName>.<FileExtension>" and extension "<FileExtension>" in <UploadingTimeout> seconds failed
     When I disable Airplane mode on the device
     And I do not see No Internet bar in 15 seconds
     And I tap Retry button on file upload placeholder
     And I wait up to <UploadingTimeout> seconds until <FileSize> file with extension "<FileExtension>" is uploaded
-    Then I see the result of <FileSize> file upload having name "<FileName>.<FileExtension>" and extension "<FileExtension>"
+    Then I see the result of "<FileSize><FileSizeType>" file upload having name "<FileName>.<FileExtension>" and extension "<FileExtension>"
 
     Examples:
-      | Name      | Contact1  | FileName  | FileExtension | FileSize | UploadingTimeout |
-      | user1Name | user2Name | qa_random | txt           | 2.00MB   | 20               |
+      | Name      | Contact1  | FileName  | FileExtension | FileSize | UploadingTimeout | FileSizeType |
+      | user1Name | user2Name | qa_random | txt           | 2.00     | 20               | MB           |
 
   @C87635 @rc @regression
   Scenario Outline: Verify downloading file by sender
@@ -109,35 +108,32 @@ Feature: File Transfer
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
-    When <Contact1> sends <FileSize> file having name "<FileName>.<FileExtension>" and MIME type "<MIMEType>" via device Device1 to user Myself
-    And I see the result of <FileSize> file received having name "<FileName>.<FileExtension>" and extension "<FileExtension>" in <ReceivingTimeout> seconds
-    And I remember the state of Download button on file download placeholder
-    And I tap Download button on file download placeholder
-    And I wait up to <DownloadTimeout> seconds until the state of Download button on file download placeholder is not changed
+    When <Contact1> sends <FileSize><FileSizeType> file having name "<FileName>.<FileExtension>" and MIME type "<MIMEType>" via device Device1 to user Myself
+    And I see the result of "<FileSize><FileSizeType>" file received having name "<FileName>.<FileExtension>" and extension "<FileExtension>" in <ReceivingTimeout> seconds
     And I tap View button on file download placeholder
     And I save file from file dialog
     Then I wait up <DownloadTimeout> seconds until <FileExactSize> file having name "<FileName>.<FileExtension>" is downloaded to the device
 
     Examples:
-      | Name      | Contact1  | FileName  | FileExtension | FileSize | MIMEType   | DownloadTimeout | FileExactSize | ReceivingTimeout |
-      | user1Name | user2Name | qa_random | txt           | 1.00MB   | text/plain | 10              | 1.00MB        | 60               |
+      | Name      | Contact1  | FileName  | FileExtension | FileSize | FileSizeType | MIMEType   | DownloadTimeout | FileExactSize | ReceivingTimeout |
+      | user1Name | user2Name | qa_random | txt           | 1.00     | MB           | text/plain | 10              | 1.00MB        | 60               |
 
   @C87638 @rc @regression
   Scenario Outline: Verify canceling sending a file
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
-    Given I push <FileSize> file having name "<FileName>.<FileExtension>" to the device
+    Given I push <FileSize><FileSizeType> file having name "<FileName>.<FileExtension>" to the device
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     And I tap File button from cursor toolbar
     And I tap Cancel button on file upload placeholder
-    Then I do not see the result of <FileSize> file upload having name "<FileName>.<FileExtension>" and extension "<FileExtension>"
+    Then I do not see the result of "<FileSize><FileSizeType>" file upload having name "<FileName>.<FileExtension>" and extension "<FileExtension>"
 
     Examples:
-      | Name      | Contact1  | FileName  | FileExtension | FileSize |
-      | user1Name | user2Name | qa_random | txt           | 24.00MB  |
+      | Name      | Contact1  | FileName  | FileExtension | FileSize | FileSizeType |
+      | user1Name | user2Name | qa_random | txt           | 24.00    | MB           |
 
   @C87645 @regression
   Scenario Outline: Verify I see usual image if it was sent by file transfer

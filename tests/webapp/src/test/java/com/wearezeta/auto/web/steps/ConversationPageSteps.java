@@ -172,9 +172,35 @@ public class ConversationPageSteps {
         context.getPagesCollection().getPage(ConversationPage.class).clickPeopleButton();
     }
 
-    @When("^I see verified icon in conversation$")
-    public void ISeeVerifiedIconInConversation() throws Throwable {
-        assertThat("No verified icon", context.getPagesCollection().getPage(ConversationPage.class).isConversationVerified());
+    @When("^I( do not)? see verified icon in conversation$")
+    public void ISeeVerifiedIconInConversation(String doNot) throws Throwable {
+        if(doNot == null) {
+            assertThat("No verified icon", context.getPagesCollection().getPage(ConversationPage.class).isConversationVerified());
+        } else {
+            assertThat("verified icon in unverified conversation",
+                    context.getPagesCollection().getPage(ConversationPage.class).isConversationNotVerified());
+        }
+    }
+
+    @Then("^I click cancel button in the new device warning$")
+    public void IClickCancelOnNewDeviceWarning() throws Throwable {
+        context.getPagesCollection().getPage(ConversationPage.class).clickCancelOnNewDeviceWarning();
+    }
+
+    @Then("^I click send anyway button in the new device warning$")
+    public void ISendAnyway() throws Throwable {
+        context.getPagesCollection().getPage(ConversationPage.class).clickSendAnywayOnNewDeviceWarning();
+    }
+
+    @Then("^I( do not)? see the new device warning$")
+    public void ISeeNewDeviceWarning(String doNot) throws Throwable {
+        if (doNot == null) {
+            assertThat("No new device warning modal",
+                    context.getPagesCollection().getPage(ConversationPage.class).isNewDeviceWarningShown());
+        } else {
+            assertThat("A new device warning modal is shown",
+                    context.getPagesCollection().getPage(ConversationPage.class).isNewDeviceWarningNotShown());
+        }
     }
 
     @And("^I see titlebar with (.*)$")
@@ -210,6 +236,24 @@ public class ConversationPageSteps {
     public void ISeeXMessagesInConversation(int x) throws Exception {
         assertThat("Number of messages in the conversation", context.getPagesCollection().getPage(ConversationPage.class)
                 .getNumberOfMessagesInCurrentConversation(), equalTo(x));
+    }
+
+    @Then("^I see (\\d+) unsent messages? in conversation$")
+    public void ISeeXUnsentMessagesInConversation(int x) throws Exception {
+        assertThat("Number of unsend messages in the conversation", context.getPagesCollection().getPage(ConversationPage.class)
+                .getNumberOfUnsentMessagesInCurrentConversation(), equalTo(x));
+    }
+
+    @Then("^I see (\\d+) unsent images? in conversation$")
+    public void ISeeXUnsentImagesInConversation(int x) throws Exception {
+        assertThat("Number of unsend images in the conversation", context.getPagesCollection().getPage(ConversationPage.class)
+                .getNumberOfUnsentImagesInCurrentConversation(), equalTo(x));
+    }
+
+    @Then("^I see (\\d+) unsent files? in conversation$")
+    public void ISeeXUnsentFilesInConversation(int x) throws Exception {
+        assertThat("Number of unsend files in the conversation", context.getPagesCollection().getPage(ConversationPage.class)
+                .getNumberOfUnsentFilesInCurrentConversation(), equalTo(x));
     }
 
     @Then("^I verify the database is( not)? containing the message (.*) from (.*) in active conversation$")
@@ -1055,29 +1099,6 @@ public class ConversationPageSteps {
         context.getPagesCollection().getPage(ConversationPage.class).clickOnPicture();
     }
 
-    @Then("^I( do not)? see picture (.*) in fullscreen$")
-    public void ISeePictureInFullscreen(String doNot, String pictureName) throws Exception {
-        ConversationPage conversationPage = context.getPagesCollection().getPage(ConversationPage.class);
-        if (doNot == null) {
-            assertTrue(conversationPage.isPictureInModalDialog());
-            assertTrue(conversationPage.isPictureInFullscreen());
-            assertThat("Overlap score of image comparsion", conversationPage.getOverlapScoreOfFullscreenImage(pictureName),
-                    greaterThan(MIN_ACCEPTABLE_IMAGE_SCORE));
-        } else {
-            assertTrue(conversationPage.isPictureNotInModalDialog());
-        }
-    }
-
-    @When("^I click x button to close fullscreen mode$")
-    public void IClickXButtonToCloseFullscreen() throws Exception {
-        context.getPagesCollection().getPage(ConversationPage.class).clickXButton();
-    }
-
-    @When("^I click on black border to close fullscreen mode$")
-    public void IClickOnBlackBorderToCloseFullscreen() throws Exception {
-        context.getPagesCollection().getPage(ConversationPage.class).clickOnBlackBorder();
-    }
-
     @When("^I click GIF button$")
     public void IClickGIFButton() throws Throwable {
         context.getPagesCollection().getPage(ConversationPage.class).clickGIFButton();
@@ -1290,15 +1311,21 @@ public class ConversationPageSteps {
     @Then("^I (do not )?see a picture (.*) from link preview$")
     public void ISeePictureInLinkPreview(String doNot, String pictureName) throws Exception {
         if (doNot == null) {
-            assertThat("I see a picture from link preview in the conversation",
+            assertThat("I do not see a picture from link preview in the conversation",
                     context.getPagesCollection().getPage(ConversationPage.class).isImageFromLinkPreviewVisible());
-
             final String picturePath = WebCommonUtils.getFullPicturePath(pictureName);
             BufferedImage originalImage = ImageUtil.readImageFromFile(picturePath);
             BufferedImage linkPreviewScreenshot = context.getPagesCollection().getPage(ConversationPage.class).
                     getImageFromLastLinkPreview();
+            
+            // Image matching with SIFT does not work very well on really small images
+            // because it defines the maximum number of matching keys
+            // so we scale them to double size to get enough matching keys
+            final int scaleMultiplicator = 2;
+            originalImage = ImageUtil.resizeImage(originalImage, scaleMultiplicator);
+            linkPreviewScreenshot = ImageUtil.resizeImage(linkPreviewScreenshot, scaleMultiplicator);
 
-            assertThat("Not enough good matches", ImageUtil.getMatches(originalImage, linkPreviewScreenshot), greaterThan(100));
+            assertThat("Not enough good matches", ImageUtil.getMatches(originalImage, linkPreviewScreenshot), greaterThan(80));
         } else {
             assertThat("I see a picture in the conversation", context.getPagesCollection().getPage(ConversationPage.class)
                     .isImageFromLinkPreviewNotVisible());

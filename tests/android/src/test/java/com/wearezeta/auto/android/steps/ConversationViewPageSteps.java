@@ -25,14 +25,10 @@ import org.junit.Assert;
 public class ConversationViewPageSteps {
     private final ElementState mediaButtonState = new ElementState(
             () -> getConversationViewPage().getMediaButtonState());
-    private final ElementState conversationViewState = new ElementState(
-            () -> getConversationViewPage().getConvoViewStateScreenshot());
     private final ElementState verifiedConversationShieldState = new ElementState(
             () -> getConversationViewPage().getShieldStateScreenshot());
     private final ElementState topToolbarState = new ElementState(
             () -> getConversationViewPage().getTopToolbarState());
-    private final ElementState filePlaceHolderActionButtonState = new ElementState(
-            () -> getConversationViewPage().getFilePlaceholderActionButtonState());
     private final ElementState audiomessageSeekbarState = new ElementState(
             () -> getConversationViewPage().getAudioMessageSeekbarState());
     private final ElementState audiomessagePreviewSeekbarState = new ElementState(
@@ -597,7 +593,7 @@ public class ConversationViewPageSteps {
                 .findUserByNameOrNameAlias(contact).getName();
         final String expectedMsg = message + " " + contact;
         Assert.assertTrue(String.format("The message '%s' is not visible in the conversation view", expectedMsg),
-                getConversationViewPage().waitForPeopleMessage(expectedMsg));
+                getConversationViewPage().waitUntilSystemMessageVisible(expectedMsg));
     }
 
     /**
@@ -717,17 +713,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Store the screenshot of current file placeholder action button
-     *
-     * @throws Exception
-     * @step. ^I remember the state of (?:Download|View) button on file (?:upload|download) placeholder$
-     */
-    @When("^I remember the state of (?:Download|View) button on file (?:upload|download) placeholder$")
-    public void IRememberFileTransferActionBtnState() throws Exception {
-        filePlaceHolderActionButtonState.remember();
-    }
-
-    /**
      * Store the screenshot of current audio message seekbar
      *
      * @throws Exception
@@ -747,29 +732,6 @@ public class ConversationViewPageSteps {
     @When("^I remember the state of audio message preview seekbar$")
     public void IRememberAudioMessagePreviewSeekbar() throws Exception {
         audiomessagePreviewSeekbarState.remember();
-    }
-
-    /**
-     * Wait to check whether the file placeholder action button is changed
-     *
-     * @param timeout            timeout in seconds
-     * @param shouldNotBeChanged is not null if the button should not be changed
-     * @throws Exception
-     * @step. ^I wait up to (\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download)
-     * placeholder is changed$
-     */
-    @When("^I wait up to (\\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download)" +
-            " placeholder is (not )?changed$")
-    public void IWaitFileTransferActionButtonChanged(int timeout, String shouldNotBeChanged) throws Exception {
-        if (shouldNotBeChanged == null) {
-            Assert.assertTrue(String.format("State of file transfer action button has not been changed after %s seconds",
-                    timeout), filePlaceHolderActionButtonState.isChanged(Timedelta.fromSeconds(timeout),
-                    FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE));
-        } else {
-            Assert.assertTrue(String.format("State of file transfer action button has been changed after %s seconds",
-                    timeout), filePlaceHolderActionButtonState.isNotChanged(Timedelta.fromSeconds(timeout),
-                    FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE));
-        }
     }
 
     /**
@@ -875,7 +837,7 @@ public class ConversationViewPageSteps {
      * @step. ^I see the picture in the (conversation|preview) is animated$
      */
     @Then("^I see the picture in the (conversation|preview) is animated$")
-    public void ISeeDialogPictureIsAnimated(String destination) throws Exception {
+    public void ISeePictureIsAnimated(String destination) throws Exception {
         final PictureDestination dst = PictureDestination.valueOf(destination.toUpperCase());
         double avgThreshold;
         // no need to wait, since screenshoting procedure itself is quite long
@@ -895,47 +857,6 @@ public class ConversationViewPageSteps {
                 Assert.assertTrue(String.format("The picture in the image preview view seems to be static (%.2f >= %.2f)",
                         avgThreshold, MAX_SIMILARITY_THRESHOLD), avgThreshold < MAX_SIMILARITY_THRESHOLD);
                 break;
-        }
-    }
-
-    /**
-     * Verifies that after deleting there is no content in the conversation view
-     *
-     * @throws Exception
-     * @step. ^I see there is no content in the conversation$
-     */
-    @Then("^I see there is no content in the conversation$")
-    public void ISeeThereIsNoContentInTheConversation() throws Exception {
-        int actualValue = getConversationViewPage().getCurrentNumberOfItemsInConversation();
-        Assert.assertEquals("It looks like the conversation has some content", actualValue, 0);
-    }
-
-    /**
-     * Store the screenshot of current convo view into internal variable
-     *
-     * @throws Exception
-     * @step. ^I remember the conversation view$
-     */
-    @And("^I remember the conversation view$")
-    public void IRememberConvoViewState() throws Exception {
-        conversationViewState.remember();
-    }
-
-    /**
-     * Verify that conversation view is different from what was remembered before
-     *
-     * @param shouldNotBeChanged equals to null is the view should be changed
-     * @throws Exception
-     * @step. ^I see the conversation view is (not )?changed$
-     */
-    @Then("^I see the conversation view is (not )?changed$")
-    public void ISeeTheConvoViewISChanged(String shouldNotBeChanged) throws Exception {
-        if (shouldNotBeChanged == null) {
-            Assert.assertTrue("State of conversation view has not been changed",
-                    conversationViewState.isChanged(CONVO_VIEW_STATE_CHANGE_TIMEOUT, CONVO_VIEW_MIN_SIMILARITY_SCORE));
-        } else {
-            Assert.assertTrue("State of conversation view has been changed",
-                    conversationViewState.isNotChanged(CONVO_VIEW_STATE_CHANGE_TIMEOUT, CONVO_VIEW_MIN_SIMILARITY_SCORE));
         }
     }
 
@@ -1115,10 +1036,10 @@ public class ConversationViewPageSteps {
      * @param timeout       (optional) to define the validation should be complete within timeout
      * @param actionFailed  equals null means current action successfully
      * @throws Exception
-     * @step. ^I( do not)? see the result of (.*) file (upload|received)? having name "(.*)" and extension "(\w+)"( in \d+
+     * @step. ^I( do not)? see the result of \"(.*)\" file (upload|received)? having name "(.*)" and extension "(\w+)"( in \d+
      * seconds)?( failed)?$
      */
-    @Then("^I( do not)? see the result of (.*) file (upload|received)? having name \"(.*)\"" +
+    @Then("^I( do not)? see the result of \"(.*)\" file (upload|received)? having name \"(.*)\"" +
             " and extension \"(\\w+)\"( in \\d+ seconds)?( failed)?$")
     public void ISeeTheResultOfXFileUpload(String doNotSee, String size, String loadDirection, String fileFullName,
                                            String extension, String timeout, String actionFailed) throws Exception {

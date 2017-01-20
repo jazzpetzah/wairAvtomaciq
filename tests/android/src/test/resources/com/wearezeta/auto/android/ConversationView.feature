@@ -90,9 +90,6 @@ Feature: Conversation View
     And I tap on user name found on Search page <Contact2>
     And I see Add to conversation button
     And I tap on Add to conversation button
-    # Workaround for AN-4011, for following two steps
-    And I tap conversation name from top toolbar
-    And I tap back button
     Then I see group chat page with users <Contact1>,<Contact2>
     And I navigate back from conversation
     And I see group conversation with <Contact1>,<Contact2> in conversations list
@@ -169,7 +166,7 @@ Feature: Conversation View
       | user1Name | user2Name |
 
   @C419 @regression
-  Scenario Outline: (AN-4782) I want to exit fullscreen view in landscape (rotations)
+  Scenario Outline: I want to exit fullscreen view in landscape (rotations)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
@@ -402,7 +399,7 @@ Feature: Conversation View
   @C250856 @regression
   Scenario Outline: Verify I see someone is typing in 1:1 conversation
     Given There are 2 users where <Name> is me
-    Given User <Contact> adds new device <ContactDevice>
+    Given User adds the following device: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -419,8 +416,7 @@ Feature: Conversation View
   Scenario Outline: Verify I see someone are typing in group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given User <Contact1> adds new device <D1>
-    Given User <Contact2> adds new device <D2>
+    Given Users add the following devices: {"<Contact1>": [{"name": "<D1>"}], "<Contact2>": [{"name": "<D2>"}]}
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible

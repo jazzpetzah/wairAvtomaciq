@@ -136,4 +136,10 @@ class SingleUserInfoPopoverPage extends AbstractUserInfoPopoverPage {
         DriverUtils.waitUntilElementClickable(getDriver(), device);
         device.click();
     }
+
+    public void clickFirstDevice() throws Exception {
+        waitForDevices();
+        DriverUtils.waitUntilElementClickable(getDriver(), firstDevice);
+        firstDevice.click();
+    }
 }

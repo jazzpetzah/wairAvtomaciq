@@ -75,16 +75,23 @@ Feature: Analytics
     # Location
     When I tap Share location button from cursor toolbar
     And I tap Send button on Share Location page
+    # Issue: Autoscroll
+    And I scroll to the bottom of conversation view
     And I see Share Location container in the conversation view
     Then I verify that <LogType> log contains string "ACTION=location"
     # Video message
     When I tap Video message button from cursor toolbar
+    # Issue: Autoscroll, and wait for video message animation
+    And I wait for 3 seconds
+    And I scroll to the bottom of conversation view
     And I see Video Message container in the conversation view
     And I wait for 10 seconds
     Then I verify that <LogType> log contains string "media.sent_video_message"
     And I verify that <LogType> log contains string "ACTION=video"
     # File
     When I tap File button from cursor toolbar
+    # Issue: Autoscroll
+    And I scroll to the bottom of conversation view
     And I see File Upload container in the conversation view
     And I wait for 5 seconds
     Then I verify that <LogType> log contains string "ACTION=file"

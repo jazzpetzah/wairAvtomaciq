@@ -516,6 +516,8 @@ public final class WebAppLocators {
 
         public static final String cssFilePlaceholder = cssFile + " .asset-placeholder";
 
+        public static final String cssUnsentFileAmount = "[data-uie-name='file'] .asset-placeholder";
+
         public static final String cssFileType = cssFile + " [data-uie-name='file-type']";
 
         public static final String cssFileCancelUpload = cssFile + " .icon-close";
@@ -556,9 +558,13 @@ public final class WebAppLocators {
 
         public static final String cssImageEntries = "[data-uie-name='go-image-detail'][data-uie-visible='true']";
 
-        public static final String cssLoadingImageEntries = "[data-uie-name='go-image-detail'][data-uie-visible='true'].image-loading";
+        public static final String cssUnsentImageAmount = "[data-uie-name='go-image-detail'][data-uie-visible='true'].image-loading";
+
+        // messages
 
         public static final String cssMessageAmount = "[data-uie-name='item-message']";
+
+        public static final String cssUnsentMessageAmount = "[data-uie-name='item-message'] .message-body .text-graphite";
 
         public static final String cssDeletedMessageAmount = "[data-uie-name='item-message'][data-uie-value='delete']";
 
@@ -639,15 +645,6 @@ public final class WebAppLocators {
 
         public static final String cssLabelOnOutgoingCall = "#call-controls .cc-label-message";
 
-        // image fullscreen
-        public static final String cssModalDialog = ".modal-show";
-
-        public static final String xpathXButton = "//*[@data-uie-name='do-close-detail-view']";
-
-        public static final String idBlackBorder = "detail-view";
-
-        public static final String cssFullscreenImage = ".detail-view-image";
-
         public static final Function<String, String> cssUserAvatarById = id -> String
                 .format("[user-id='%s'].user-avatar-sm", id);
 
@@ -655,7 +652,7 @@ public final class WebAppLocators {
 
         public static final String cssConnectedMessageLabel = ".message-connected .label-xs";
 
-        public static final String cssConversationVerifiedIcon = ".conversation-verified";
+        public static final String cssConversationVerifiedIcon = "#conversation-titlebar .conversation-verified-icon";
 
         public static final String cssTitlebarLabel = ".conversation-titlebar-name-label";
 
@@ -670,12 +667,48 @@ public final class WebAppLocators {
                 "]//div[contains(@class, 'modal-close')]";
 
         public static final String cssFirstTimeExperienceMessage = "[data-uie-name='start-conversation-hint']";
+
+        // New device warning modal
+
+        public static final String cssNewDeviceWarning = "[data-uie-name='modal-new-device']";
+
+        public static final String cssCancelNewDeviceWarning = "[data-uie-name='go-show-device']";
+
+        public static final String cssSendAnyway = cssNewDeviceWarning + " [data-uie-name='do-send']";
+    }
+    
+    public static final class PictureFullscreenPage {
+        public static final String cssModalDialog = ".modal-show";
+        
+        public static final String cssModalBackground = "#detail-view.modal";
+
+        public static final String cssXButton = "[data-uie-name='do-close-detail-view']";
+
+        public static final String idBlackBorder = "detail-view";
+
+        public static final String cssFullscreenImage = ".detail-view-image";
+        
+        public static final String cssIsLiked = "[data-uie-name='do-like-fullscreen-picture'] .text-red";
+        
+        public static final String cssSender = "[data-uie-name='fullscreen-picture-sender']";
+        
+        public static final String cssTimestamp = ".detail-view-header [data-timestamp]";
+        
+        public static final String cssLikeButton = "[data-uie-name='do-like-fullscreen-picture']";
+        
+        public static final String cssDownloadButton = "[data-uie-name='do-download-fullscreen-picture']";
+        
+        public static final String cssDeleteForMeButton = "[data-uie-name='do-delete-fullscreen-picture']";
+        
+        public static final String cssDeleteEverywhereButton = "[data-uie-name='do-delete-everywhere-fullscreen-picture']";
     }
 
     public static final class CollectionPage {
+        public static final String cssCloseButton = "#collection .icon-close";
+
         public static final String cssPictures = "[data-uie-name='collection-section-image'] image-component";
 
-        public static final String cssPictureCollectionSize = "[data-uie-name='collection-section-image'] [data-uie-name='collection-size']";
+        public static final String cssPictureCollectionSize = "[data-uie-name='collection-section-image'] [data-uie-name='collection-show-all']";
 
         public static final String cssVideos = "[data-uie-name='collection-section-video'] video-asset";
 
@@ -687,11 +720,25 @@ public final class WebAppLocators {
 
         public static final String cssFileCollectionSize = "[data-uie-name='collection-section-file'] [data-uie-name='collection-show-all']";
 
-        public static final String cssLinks = "[data-uie-name='collection-section-link'] image-component";
+        public static final String cssLinkPreviewUrls = "[data-uie-name='collection-section-link'] [data-uie-name='link-preview-url']";
+
+        public static final String cssLinkPreviewTitles = "[data-uie-name='collection-section-link'] [data-uie-name='link-preview-title']";
+
+        public static final String cssLinkPreviewImages = "[data-uie-name='collection-section-link'] image-component";
+
+        public static final String cssLinkPreviewFroms = "[data-uie-name='collection-section-link'] asset-header span";
 
         public static final String cssLinkCollectionSize = "[data-uie-name='collection-section-link'] [data-uie-name='collection-size']";
 
         public static final String cssNoItemsPlaceholder = "[data-uie-name='collection-no-items']";
+
+        public static final String cssShowAllPictures = "[data-uie-name='collection-section-image'] [data-uie-name='collection-show-all']";
+
+        public static final String idCollectionDetails = "collection-details";
+
+        public static final String cssBackToCollectionButton = "[data-uie-name='do-collection-details-close']";
+
+        public static final String cssPicturesOnCollectionDetails = "#collection-details image-component";
 
     }
 

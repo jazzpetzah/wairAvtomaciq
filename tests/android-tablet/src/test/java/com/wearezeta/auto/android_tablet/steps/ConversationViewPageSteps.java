@@ -74,7 +74,7 @@ public class ConversationViewPageSteps {
                 String.format(
                         "The system message containing text '%s' is not visible in the conversation view",
                         expectedMessage), getConversationViewPage()
-                        .waitForSystemMessageContains(expectedMessage));
+                        .waitUntilSystemMessageVisible(expectedMessage));
     }
 
     /**
@@ -82,60 +82,17 @@ public class ConversationViewPageSteps {
      *
      * @param expectedMessage the expected conversation name
      * @throws Exception
-     * @step. ^I see the conversation name system message \"(.*)\" on
-     * [Cc]onversation view page$
+     * @step. ^I see the new conversation name "(.*)" on [Cc]onversation view page$
      */
-    @Then("^I see the conversation name system message \"(.*)\" on [Cc]onversation view page$")
-    public void ISeeTheConversationNameSystemMessage(String expectedMessage)
+    @Then("^I see the system message of new conversation name \"(.*)\" on [Cc]onversation view page$")
+    public void ISeeTheNewConversationName(String expectedMessage)
             throws Exception {
         expectedMessage = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(expectedMessage, FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format(
                 "The conversation name system message does not equal to '%s'",
                 expectedMessage), getConversationViewPage()
-                .waitForConversationNameSystemMessage(expectedMessage));
-    }
-
-    /**
-     * Verify the connection system conversation message contains expected text
-     *
-     * @param expectedMessage the message to verify
-     * @throws Exception
-     * @step. ^I see the system connection message contains \"(.*)\" text on
-     * [Cc]onversation view page$
-     */
-    @Then("^I see the system connection message contains \"(.*)\" text on [Cc]onversation view page$")
-    public void ISeeTheSystemConnectionMessage(String expectedMessage)
-            throws Exception {
-        expectedMessage = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
-                .replaceAliasesOccurences(expectedMessage, FindBy.NAME_ALIAS);
-        Assert.assertTrue(
-                String.format(
-                        "The system connection message containing text '%s' is not visible in the conversation view",
-                        expectedMessage),
-                getConversationViewPage()
-                        .waitForSystemConnectionMessageContains(expectedMessage));
-    }
-
-    /**
-     * Verify whether the particular outgoing invitation message is visible in
-     * conversation view
-     *
-     * @param expectedMessage the expected message text
-     * @throws Exception
-     * @step. ^I see the outgoing invitation message \"(.*)\" on [Cc]onversation
-     * view page$
-     */
-    @Then("^I see the outgoing invitation message \"(.*)\" on [Cc]onversation view page$")
-    public void ISeeOutgoungInvitationMessage(String expectedMessage)
-            throws Exception {
-        expectedMessage = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
-                .replaceAliasesOccurences(expectedMessage, FindBy.NAME_ALIAS);
-        Assert.assertTrue(
-                String.format(
-                        "The outgoing invitation message containing text '%s' is not visible in the conversation view",
-                        expectedMessage), getConversationViewPage()
-                        .waitForOutgoingInvitationMessage(expectedMessage));
+                .waitUntilNewConversationNameSystemMessage(expectedMessage));
     }
 
     /**
@@ -193,13 +150,13 @@ public class ConversationViewPageSteps {
                     String.format(
                             "The expected message '%s' is not visible in the conversation view",
                             expectedMessage), getConversationViewPage()
-                            .waitUntilMessageIsVisible(expectedMessage));
+                            .waitUntilMessageWithTextVisible(expectedMessage));
         } else {
             Assert.assertTrue(
                     String.format(
                             "The expected message '%s' is visible in the conversation view, but it should not",
                             expectedMessage), getConversationViewPage()
-                            .waitUntilMessageIsNotVisible(expectedMessage));
+                            .waitUntilMessageWithTextInvisible(expectedMessage));
         }
     }
 
@@ -321,19 +278,20 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verify whether missed call notification is visible in conversation view
+     * Verify that Conversation contains missed call from contact
      *
+     * @param contact contact name string
      * @throws Exception
-     * @step. ^I see missed (?:group |\\s*)call notification in (?:the
-     * |\\s*)[Cc]onversation view$
+     * @step. ^I see missed call from (.*) in the conversation$
      */
-    @Then("^I see missed (?:group |\\s*)call notification in (?:the |\\s*)[Cc]onversation view$")
-    public void ISeeMissedCallNotification() throws Exception {
-        // Notifications for both group and 1:1 calls have the same locators so
-        // we don't really care
-        Assert.assertTrue(
-                "The expected missed call notification is not visible in the conversation view",
-                getConversationViewPage().waitUntilGCNIsVisible());
+    @Then("^I see missed call from (.*) in the conversation$")
+    public void ISeeMissedCallFrom(String contact) throws Exception {
+        contact = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+        final String expectedMessage = contact + " CALLED";
+        Assert.assertTrue(String.format("Missed call message '%s' is not visible in the conversation view",
+                expectedMessage),
+                getConversationViewPage().waitUntilMissedCallMessageIsVisible(expectedMessage));
     }
 
     /**
@@ -671,10 +629,10 @@ public class ConversationViewPageSteps {
      * @param timeout       (optional) to define the validation should be complete within timeout
      * @param actionFailed  equals null means current action successfully
      * @throws Exception
-     * @step. ^I( do not)? see the result of (.*) file (upload|received)? having name "(.*)" and extension "(\w+)"( in \d+
+     * @step. ^I( do not)? see the result of \"(.*)\" file (upload|received)? having name "(.*)" and extension "(\w+)"( in \d+
      * seconds)?( failed)?$
      */
-    @Then("^I( do not)? see the result of (.*) file (upload|received)? having name \"(.*)\"" +
+    @Then("^I( do not)? see the result of \"(.*)\" file (upload|received)? having name \"(.*)\"" +
             " and extension \"(\\w+)\"( in \\d+ seconds)?( failed)?$")
     public void ThenISeeTheResultOfXFileUpload(String doNotSee, String size, String loadDirection, String fileFullName,
                                                String extension, String timeout, String actionFailed) throws Exception {
@@ -715,17 +673,6 @@ public class ConversationViewPageSteps {
                     timeout), filePlaceHolderActionButtonState.isNotChanged(timeout,
                     FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE));
         }
-    }
-
-    /**
-     * Tap sketch image paint button on Picture preview overlay
-     *
-     * @throws Exception
-     * @step. ^I tap Sketch Image Paint button on Picture preview overlay$
-     */
-    @When("^I tap Sketch Image Paint button on Picture preview overlay$")
-    public void ITapSketchOnPictureView() throws Exception {
-        getConversationViewPage().tapSketchOnPicturePreviewOverlay();
     }
 
     /**

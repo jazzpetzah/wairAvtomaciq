@@ -273,7 +273,7 @@ Feature: Like
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new devices <ContactDevice>
+    Given Users add the following devices: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
@@ -298,10 +298,7 @@ Feature: Like
     Given I rotate UI to landscape
     Given <Contact1> is connected to Myself,<Contact2>,<Contact3>,<Contact4>
     Given <Contact1> has group chat <Group> with Myself,<Contact2>,<Contact3>,<Contact4>
-    Given User <Contact1> adds new device <D1>
-    Given User <Contact2> adds new device <D2>
-    Given User <Contact3> adds new device <D3>
-    Given User <Contact4> adds new device <D4>
+    Given Users add the following device: {"<Contact1>": [{"name": "<D1>"}], "<Contact2>": [{"name": "<D2>"}],"<Contact3>": [{"name": "<D3>"}],"<Contact4>": [{"name": "<D4>"}]}
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations

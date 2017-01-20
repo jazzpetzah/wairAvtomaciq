@@ -4,7 +4,7 @@ Feature: Ephemeral Messages
   Scenario Outline: Verify ephemeral messages don't leave a trace in the database
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <DeviceName>
+    Given User adds the following device: {"<Contact>": [{"name": "<DeviceName>"}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I tap on contact name <Contact>
@@ -52,7 +52,7 @@ Feature: Ephemeral Messages
   Scenario Outline: Verify the message is deleted on the sender side when it's read on the receiver side
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <DeviceName>
+    Given User adds the following device: {"<Contact>": [{"name": "<DeviceName>"}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I tap on contact name <Contact>
@@ -275,7 +275,7 @@ Feature: Ephemeral Messages
   Scenario Outline: Verify the message is deleted on the receiver side when timer is over
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <DeviceName>
+    Given User adds the following device: {"<Contact>": [{"name": "<DeviceName>"}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     Given User <Contact> switches user Myself to ephemeral mode with <Timeout> seconds timeout
@@ -293,7 +293,7 @@ Feature: Ephemeral Messages
   Scenario Outline: Verify receiving ephemeral assets (picture, video, audio, link preview, location)
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <DeviceName>
+    Given User adds the following device: {"<Contact>": [{"name": "<DeviceName>"}]}
     Given I sign in using my email or phone number
     Given User <Contact> switches user Myself to ephemeral mode with <EphemeralTimeout> seconds timeout
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
@@ -329,7 +329,7 @@ Feature: Ephemeral Messages
   Scenario Outline: Verify edit/delete/like/copy/forward are switched off
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds a new device <DeviceName> with label <DeviceLabel>
+    Given Users add the following devices: {"<Contact>": [{"name": "<DeviceName>", "label": "<DeviceLabel>"}]}
     Given I sign in using my email or phone number
     Given User <Contact> switches user Myself to ephemeral mode with <EphemeralTimeout> seconds timeout
     Given I see conversations list
@@ -352,7 +352,7 @@ Feature: Ephemeral Messages
   Scenario Outline: Verify ephemeral messages are not sent to my other devices
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
-    Given User Myself adds new device <DeviceName>
+    Given User adds the following device: {"Myself": [{"name": "<DeviceName>"}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I tap on contact name <Contact>
@@ -391,25 +391,3 @@ Feature: Ephemeral Messages
     Examples:
       | Name      | Contact   | Timer | EphemeralTimeLabel |
       | user1Name | user2Name | 15    | seconds            |
-
-  @C261693 @regression @fastLogin
-  Scenario Outline: Verify missed call didn't disappear after receiver saw it
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <DeviceName>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    Given I tap on contact name <Contact>
-    Given I tap Hourglass button in conversation view
-    Given I set ephemeral messages expiration timer to <Timeout> seconds
-    Given I tap Audio Call button
-    Given I see Calling overlay
-    Given I tap Leave button on Calling overlay
-    Given I see "<Message>" system message in the conversation view
-    When User <Contact> reads the recent message from user <Name>
-    And I wait for <Timeout> seconds
-    Then I see "<Message>" system message in the conversation view
-
-    Examples:
-      | Name      | Contact   | Timeout | Message    | DeviceName |
-      | user1Name | user2Name | 5       | YOU CALLED | userDevice |

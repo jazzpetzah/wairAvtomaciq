@@ -19,7 +19,7 @@ Feature: Copy Message
       | user1Name | user2Name | Yo      |
 
   @C119436 @regression @rc
-  Scenario Outline: (BUG AN-4543) Verify copy multimedia link from youtube/soundcould
+  Scenario Outline: Verify copy multimedia link from youtube/soundcould
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
@@ -28,7 +28,7 @@ Feature: Copy Message
     And I tap on conversation name <Contact>
     When User <Contact> sends encrypted message "<Message>" to user Myself
     Then I see Play button on Youtube container
-    When I long tap the Text message "<Message>" in the conversation view
+    When I long tap Youtube container in the conversation view
     And I tap Copy button on the message bottom menu
     Then I verify that Android clipboard content equals to "<Message>"
 

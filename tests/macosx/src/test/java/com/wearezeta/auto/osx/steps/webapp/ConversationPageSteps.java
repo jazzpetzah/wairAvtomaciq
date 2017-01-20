@@ -40,8 +40,15 @@ public class ConversationPageSteps {
             BufferedImage expectedImage = ImageUtil.readImageFromFile(WebCommonUtils.getFullPicturePath(pictureName));
             BufferedImage actualImage = webContext.getPagesCollection().getPage(ConversationPage.class).
                     getImageFromLastLinkPreview();
+            
+            // Image matching with SIFT does not work very well on really small images
+            // because it defines the maximum number of matching keys
+            // so we scale them to double size to get enough matching keys
+            final int scaleMultiplicator = 2;
+            expectedImage = ImageUtil.resizeImage(expectedImage, scaleMultiplicator);
+            actualImage = ImageUtil.resizeImage(actualImage, scaleMultiplicator);
 
-            assertThat("Not enough good matches", ImageUtil.getMatches(expectedImage, actualImage), greaterThan(100));
+            assertThat("Not enough good matches", ImageUtil.getMatches(expectedImage, actualImage), greaterThan(70));
         } else {
             assertThat("I see a picture in the conversation", webContext.getPagesCollection().getPage(ConversationPage.class)
                     .isImageFromLinkPreviewNotVisible());

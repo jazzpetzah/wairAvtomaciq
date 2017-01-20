@@ -93,7 +93,7 @@ public class RegistrationPage extends IOSPage {
         Thread.sleep(2000);
         final WebElement searchResults = getElement(nameSearchResultsTable);
         final By searchResultLocator = By.xpath(xpathStrSearchResultByPrefix.apply(WIRE_COUNTRY_NAME_PREFIX));
-        searchResults.findElement(searchResultLocator).click();
+        getElement(searchResults, searchResultLocator).click();
         // Wait for animation
         Thread.sleep(1000);
     }

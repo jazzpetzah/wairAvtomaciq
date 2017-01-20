@@ -23,17 +23,18 @@ public class ConversationsListPage extends IOSPage {
 
     private static final By nameOpenArchiveButton = MobileBy.AccessibilityId("bottomBarArchivedButton");
 
-    private static final String xpathStrContactListRoot = "//XCUIElementTypeCollectionView";
+    protected static final By fbClassConversationsListRoot = FBBy.className("XCUIElementTypeCollectionView");
 
-    protected static final String xpathStrContactListItems = xpathStrContactListRoot + "/XCUIElementTypeCell";
-    private static final Function<String, String> xpathStrContactListItemByExpr = xpathExpr ->
-            String.format("%s//XCUIElementTypeStaticText[%s]", xpathStrContactListItems, xpathExpr);
-    protected static final Function<String, String> xpathStrConvoListEntryByName = name ->
-            String.format("%s[ .//XCUIElementTypeStaticText[@value='%s'] ]", xpathStrContactListItems, name);
+    // TODO: change these locators to relative after WDA update
+    private static final Function<String, String> xpathStrConvoListItemRelativeByExpr = xpathExpr ->
+            String.format("//XCUIElementTypeCell[ .//XCUIElementTypeStaticText[%s] ]", xpathExpr);
+    protected static final Function<String, String> xpathStrConvoListRelativeEntryByName = name ->
+            xpathStrConvoListItemRelativeByExpr.apply("@value='" + name + "'");
     private static final Function<Integer, String> xpathStrConvoListEntryByIdx = idx ->
-            String.format("%s[%s]", xpathStrContactListItems, idx);
+            String.format("//XCUIElementTypeCollectionView/XCUIElementTypeCell[%s]", idx);
     private static final Function<String, String> xpathStrFirstConversationEntryByName = name ->
-            String.format("%s[1][ .//XCUIElementTypeStaticText[@value='%s'] ]", xpathStrContactListItems, name);
+            String.format("%s[ .//XCUIElementTypeStaticText[@value='%s'] ]",
+                    xpathStrConvoListEntryByIdx.apply(1), name);
 
     private static final String strNameContactsButton = "bottomBarContactsButton";
 
@@ -94,9 +95,11 @@ public class ConversationsListPage extends IOSPage {
     }
 
     private WebElement getConversationsListItem(String name, Timedelta timeout) throws Exception {
-        final By locator = FBBy.xpath(xpathStrConvoListEntryByName.apply(name));
-        return getElement(locator, String.format("The conversation '%s' is not visible in the list after %s",
-                name, timeout.toString()), timeout);
+        final WebElement convoListRoot = getElement(fbClassConversationsListRoot);
+        final By locator = FBBy.xpath(xpathStrConvoListRelativeEntryByName.apply(name));
+        return getElement(convoListRoot, locator,
+                String.format("The conversation '%s' is not visible in the list after %s", name, timeout.toString()),
+                timeout);
     }
 
     protected WebElement getConversationsListItem(String name) throws Exception {
@@ -110,8 +113,9 @@ public class ConversationsListPage extends IOSPage {
     }
 
     public boolean isConversationInList(String name, Timedelta timeout) throws Exception {
-        final By locator = FBBy.xpath(xpathStrConvoListEntryByName.apply(name));
-        return isLocatorDisplayed(locator, timeout);
+        final WebElement convoListRoot = getElement(fbClassConversationsListRoot);
+        final By locator = FBBy.xpath(xpathStrConvoListRelativeEntryByName.apply(name));
+        return isLocatorDisplayed(convoListRoot, locator, timeout);
     }
 
     private void swipeRightOnContact(String name) throws Exception {
@@ -149,8 +153,9 @@ public class ConversationsListPage extends IOSPage {
     }
 
     public boolean isConversationNotInList(String name, Timedelta timeout) throws Exception {
-        final By locator = FBBy.xpath(xpathStrConvoListEntryByName.apply(name));
-        return isLocatorInvisible(locator, timeout);
+        final WebElement convoListRoot = getElement(fbClassConversationsListRoot);
+        final By locator = FBBy.xpath(xpathStrConvoListRelativeEntryByName.apply(name));
+        return isLocatorInvisible(convoListRoot, locator, timeout);
     }
 
     public boolean isConversationNotInList(String name) throws Exception {
@@ -158,11 +163,12 @@ public class ConversationsListPage extends IOSPage {
     }
 
     public boolean isConversationWithUsersExist(List<String> names, Timedelta timeout) throws Exception {
+        final WebElement root = getElement(fbClassConversationsListRoot);
         final String xpathExpr = String.join(" and ", names.stream().
                 map(x -> String.format("contains(@name, '%s')", x)).
                 collect(Collectors.toList()));
-        final By locator = By.xpath(xpathStrContactListItemByExpr.apply(xpathExpr));
-        return isLocatorDisplayed(locator, timeout);
+        final By locator = FBBy.xpath(xpathStrConvoListItemRelativeByExpr.apply(xpathExpr));
+        return isLocatorDisplayed(root, locator, timeout);
     }
 
     public BufferedImage getConversationEntryScreenshot(int idx) throws Exception {
@@ -177,9 +183,8 @@ public class ConversationsListPage extends IOSPage {
     }
 
     public BufferedImage getConversationEntryScreenshot(String name) throws Exception {
-        final By locator = By.xpath(xpathStrConvoListEntryByName.apply(name));
-        final WebElement el = getElement(locator, String.format("Conversation list entry '%s' is not visible", name));
-        return this.getElementScreenshot(el).orElseThrow(IllegalStateException::new);
+        final WebElement convoEntry = getConversationsListItem(name);
+        return this.getElementScreenshot(convoEntry).orElseThrow(IllegalStateException::new);
         // ImageIO.write(scr, "png", new File("/Users/elf/Desktop/screen_" + System.currentTimeMillis() + ".png"));
         // return scr;
     }
