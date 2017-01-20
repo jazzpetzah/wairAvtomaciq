@@ -183,6 +183,7 @@ public class PictureFullscreenPage extends WebPage {
     }
 
     public boolean isNameInFullscreenVisible(String name) throws Exception {
-
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+                By.cssSelector(WebAppLocators.PictureFullscreenPage.cssSender));
     }
 }

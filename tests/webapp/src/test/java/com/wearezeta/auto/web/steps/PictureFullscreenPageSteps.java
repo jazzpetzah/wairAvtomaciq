@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.PictureFullscreenPage;
 import cucumber.api.java.en.And;
@@ -51,6 +52,9 @@ public class PictureFullscreenPageSteps {
 
     @And("^I see a name (.*) in picture fullscreen$")
     public void ISeeTimestampOnFullscreen(String name) throws Exception {
+        if (!name.equals("YOU")){
+            name = context.getUsersManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        }
         assertThat("Name on picture fullscreen", context.getPagesCollection().getPage(PictureFullscreenPage.class).isNameInFullscreenVisible(name),
                 is(true));
     }
