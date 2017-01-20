@@ -27,6 +27,7 @@ import com.wearezeta.auto.android.pages.registration.BackendSelectPage;
 import com.wearezeta.auto.android.pages.registration.WelcomePage;
 import com.wearezeta.auto.android.tools.WireDatabase;
 import com.wearezeta.auto.common.*;
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.AppiumServer;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
@@ -69,6 +70,8 @@ public class CommonAndroidSteps {
             .orElseThrow(() -> new IllegalStateException("Cannot take a screenshot of the whole screen")));
 
     public static final Platform CURRENT_PLATFORM = Platform.Android;
+
+    public static final String DEFAULT_AUTOMATION_MESSAGE = "1 message";
 
     public static final String PATH_ON_DEVICE = "/mnt/sdcard/DCIM/Camera/userpicture.jpg";
     public static final Timedelta DEFAULT_SWIPE_TIME = Timedelta.fromMilliSeconds(1500);
@@ -1126,7 +1129,6 @@ public class CommonAndroidSteps {
 
     /**
      * Add one or more remote devices to one or more remote users
-     * @step. ^Users? adds? devices? (.*)
      *
      * @param mappingAsJson this should be valid JSON string. Keys are mandatory and
      *                      are interpreted as user names/aliases and values are device(s) info
@@ -1137,10 +1139,10 @@ public class CommonAndroidSteps {
      *                      Examples:
      *                      {"user1Name" : [{}]}
      *                      {"user1Name" : [{}], "user2Name" : [{"name": "blabla", "label": "label"},
-     *                                                          {"name": "blabla2", "label": "label2"}]}
-     *
+     *                      {"name": "blabla2", "label": "label2"}]}
      * @param mappingAsJson
      * @throws Exception
+     * @step. ^Users? adds? devices? (.*)
      */
     @Given("^Users? adds? the following devices?: (.*)")
     public void UsersAddDevices(String mappingAsJson) throws Exception {
@@ -2061,4 +2063,57 @@ public class CommonAndroidSteps {
     }
 
 
+    /**
+     * Send multiple images or videos to the conversation
+     *
+     * @param senderUserNameAlias sender name/alias
+     * @param count               count of items to send
+     * @param fileName            the name of existing media file.
+     *                            Only m4a/mp4 files can be set for audio and video types
+     * @param fileType            one of possible file types
+     * @param dstConversationName destination conversation name
+     * @throws Exception
+     * @step. ^User (.*) sends (\d+) (image|video|audio|temporary) files? (.*) to conversation (.*)
+     */
+    @Given("^User (.*) sends (\\d+) (image|video|audio|temporary) files? (.*) to conversation (.*)")
+    public void UserSendsMultiplePictures(String senderUserNameAlias, int count,
+                                          String fileType, String fileName,
+                                          String dstConversationName) throws Exception {
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .UserSendMultipleMedias(senderUserNameAlias, count, fileType, fileName, dstConversationName);
+    }
+
+    /**
+     * Send multiple messages to the conversation
+     *
+     * @param senderUserNameAlias sender name/alias
+     * @param count               count of text messages to send
+     * @param msg                 either 'default' to send the default message or the actual messages
+     *                            enclosed by double quotes
+     * @param dstConversationName destination conversation name
+     * @throws Exception
+     * @step. ^User (.*) sends (\d+) (default|".*") messages? to conversation (.*)
+     */
+    @Given("^User (.*) sends (\\d+) (default|\".*\") messages? to conversation (.*)")
+    public void UserSendsMultipleMessages(String senderUserNameAlias, int count,
+                                          String msg, String dstConversationName) throws Exception {
+        AndroidTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .UserSendsMultipleMessages(senderUserNameAlias, count, msg, dstConversationName,
+                        CommonAndroidSteps.DEFAULT_AUTOMATION_MESSAGE);
+    }
+
+    /**
+     * Create random file in project.build.directory folder for further usage
+     *
+     * @param size file size. Can be float value. Example: 1MB, 2.00KB
+     * @param name file name without extension
+     * @param ext  file extension
+     * @throws Exception
+     * @step. ^I create temporary file (.*) in size with name "(.*)" and extension "(.*)"
+     */
+    @Given("^I create temporary file (.*) in size with name \"(.*)\" and extension \"(.*)\"$")
+    public void ICreateTemporaryFile(String size, String name, String ext) throws Exception {
+        final String tmpFilesRoot = CommonUtils.getBuildPathFromConfig(getClass());
+        CommonUtils.createRandomAccessFile(tmpFilesRoot + File.separator + name + "." + ext, size);
+    }
 }

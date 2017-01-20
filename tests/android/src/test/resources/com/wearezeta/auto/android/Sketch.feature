@@ -86,7 +86,7 @@ Feature: Sketch
       | Name      | Contact1  | FileName       |
       | user1Name | user2Name | avatarTest.png |
 
-  @C318630 @staging
+  @C318630 @regression
   Scenario Outline: I can send a text sketch
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

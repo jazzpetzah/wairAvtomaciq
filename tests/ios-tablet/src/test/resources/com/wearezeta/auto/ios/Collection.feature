@@ -1,6 +1,6 @@
 Feature: Collection
 
-  @C395995 @staging @fastLogin
+  @C395995 @regression @fastLogin
   Scenario Outline: Verify you can see collections properly after changing display orientation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
