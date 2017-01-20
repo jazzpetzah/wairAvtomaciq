@@ -216,7 +216,7 @@ Feature: Ephemeral
       | user1Email | user1Password | user1Name | user2Name | edit me         | edited        | 30   | 30 seconds | s             |
 
   @C261733 @ephemeral @smoke
-  Scenario Outline: Verify sending different types of ephemeral messages (ping, picture, video, audio, file) in 1:1
+  Scenario Outline: Verify sending ephemeral ping, picture, video, audio, file in 1:1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
