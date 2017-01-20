@@ -238,3 +238,26 @@ Feature: Collection
     Examples:
       | Email      | Password      | Name      | Contact   | FileName        | FileSize | Amount |
       | user1Email | user1Password | user1Name | user2Name | collections.txt | 1MB      | 5      |
+
+  @C399357 @collection @staging
+  Scenario Outline: Verify deleted media isn't in collection on other side
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given user <Contact> adds a new device Device1 with label Label1
+    Given I switch to Sign in page
+    Given I Sign in using login <Email> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <Contact>
+    And User <Contact> sends image <PictureName> to single user conversation <Name>
+    Then I see only 1 pictures in the conversation
+    When I click collection button in conversation
+    And I see 1 pictures in collection
+    And I close collection overview
+    And User <Contact> deletes the recent 1 messages everywhere in single conversation <Name> via device Device1
+    Then I see only 0 pictures in the conversation
+    And I click collection button in conversation
+    And I see info about no collection items
+
+    Examples:
+      | Email      | Password      | Name      | Contact   | PictureName               |
+      | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg |
