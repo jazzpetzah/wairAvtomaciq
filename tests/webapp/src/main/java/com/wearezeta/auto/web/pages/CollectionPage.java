@@ -68,7 +68,7 @@ public class CollectionPage extends WebPage {
         return files.size();
     }
 
-    public int getNumberOfFilesInFilePage() {
+    public int getNumberOfFilesInFileDetailPage() {
         return filesPage.size();
     }
 
@@ -88,20 +88,7 @@ public class CollectionPage extends WebPage {
         pictures.get(index - 1).click();
     }
 
-    public void clickShowAllPicturesLabel() {
-        pictureCollectionSize.click();
-    }
-
-    public void clickShowAllVideosLabel() {
-        videoCollectionSize.click();
-    }
-
     public void clickShowAllFilesLabel() {
         fileCollectionSize.click();
     }
-
-    public void clickShowAllLinksLabel() {
-        linkCollectionSize.click();
-    }
-
 }

@@ -89,27 +89,14 @@ public class CollectionPageSteps {
         context.getPagesCollection().getPage(CollectionPage.class).clickFirstPictureInCollection(index);
     }
 
-    @When("I click show all (pictures |videos |files |links )?label$")
-    public void IClickShowAllLabel(String media) throws Exception {
-        switch (media) {
-            case "pictures ":
-                context.getPagesCollection().getPage(CollectionPage.class).clickShowAllPicturesLabel();
-                break;
-            case "videos ":
-                context.getPagesCollection().getPage(CollectionPage.class).clickShowAllVideosLabel();
-                break;
-            case "files ":
-                context.getPagesCollection().getPage(CollectionPage.class).clickShowAllFilesLabel();
-                break;
-            case "links ":
-                context.getPagesCollection().getPage(CollectionPage.class).clickShowAllLinksLabel();
-                break;
-        }
+    @When("I click show all files label$")
+    public void IClickShowAllLabel() throws Exception {
+        context.getPagesCollection().getPage(CollectionPage.class).clickShowAllFilesLabel();
     }
 
-    @Then("I see (\\d+) files in all files page$")
-    public void ISeeAllFilesPage(int amount) throws Exception {
-        assertThat("Number of files", context.getPagesCollection().getPage(CollectionPage.class).getNumberOfFilesInFilePage(),
+    @Then("I see (\\d+) files in files detail page$")
+    public void ISeeAllFilesDetailPage(int amount) throws Exception {
+        assertThat("Number of files", context.getPagesCollection().getPage(CollectionPage.class).getNumberOfFilesInFileDetailPage(),
                 equalTo(amount));
     }
 }

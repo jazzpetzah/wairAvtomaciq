@@ -173,7 +173,7 @@ Feature: Collections
     When I click collection button in conversation
     And I see <Amount> files in collection
     And I click show all files label
-    Then I see <Amount> files in all files page
+    Then I see <Amount> files in files detail page
 
     Examples:
       | Email      | Password      | Name      | Contact   | FileName        | FileSize | Amount |
