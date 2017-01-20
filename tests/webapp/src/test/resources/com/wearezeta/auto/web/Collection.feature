@@ -38,7 +38,7 @@ Feature: Collection
       | Email      | Password      | Name      | Contact   | Picture                   | FileSize | FileName        | Link                                                                                                               | LinkInPreview                                                                                           |
       | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg | 1MB      | collections.txt | http://www.heise.de/newsticker/meldung/Wire-Neuer-WebRTC-Messenger-soll-WhatsApp-Co-Konkurrenz-machen-2477770.html | heise.de/newsticker/meldung/Wire-Neuer-WebRTC-Messenger-soll-WhatsApp-Co-Konkurrenz-machen-2477770.html |
 
-  @C378052 @collection @staging
+  @C378052 @collection @regression
   Scenario Outline: Verify no pictures from different conversations are in the overview
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -164,7 +164,7 @@ Feature: Collection
       | Email      | Password      | Name      | Contact1  | Contact2  | ChatName   | Picture                   | Picture2                 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | group conv | userpicture_landscape.jpg | userpicture_portrait.jpg |
 
-  @C382595 @collection @staging
+  @C382595 @collection @regression
   Scenario Outline: Verify opening overview of all links
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
