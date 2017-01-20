@@ -505,3 +505,38 @@ Feature: E2EE
     Examples:
       | Name      |
       | user1Name |
+
+  @C395996 @staging @fastLogin
+  Scenario Outline: Verify forwarding message into downgraded conversation
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given I sign in using my email
+    Given User <Contact1> sends 1 encrypted message to user Myself
+    Given I see conversations list
+    Given I tap on contact name <Contact1>
+    Given I open conversation details
+    Given I switch to Devices tab on Single user profile page
+    Given I open details page of device number 1 on Devices tab
+    Given I tap Verify switcher on Device Details page
+    Given I tap Back button on Device Details page
+    Given I tap X button on Single user profile page
+    Given I navigate back to conversations list
+    When Users add the following devices: {"<Contact1>": [{"name": "<DeviceName2>", "label": "<DeviceLabel2>"}]}
+    And I tap on contact name <Contact2>
+    And User <Contact2> sends 1 encrypted message to user Myself
+    And I see 1 default message in the conversation view
+    And I long tap default message in conversation view
+    And I tap on Forward badge item
+    And I select <Contact1> conversation on Forward page
+    And I tap Send button on Forward page
+    And I navigate back to conversations list
+    And I tap on contact name <Contact1>
+    And I close New Device overlay
+    And I resend the last message in the conversation with Resend button
+# Wait until the message is sent
+    And I wait for 3 seconds
+    Then I see 2 default messages in the conversation view
+
+    Examples:
+      | Name      | Contact1  | DeviceName2 | DeviceLabel2 | Contact2  |
+      | user1Name | user2Name | Device2     | Label2       | user3Name |
