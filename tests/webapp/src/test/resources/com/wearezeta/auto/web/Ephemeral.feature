@@ -243,8 +243,8 @@ Feature: Ephemeral
     And I see 1 messages in conversation
   #picture
     When I send picture <PictureName> to the current conversation
-    Then I see sent picture <PictureName> in the conversation view
     And I see only 1 picture in the conversation
+    Then I see sent picture <PictureName> in the conversation view
     And I see timer next to the last message
     When I wait for <Time> seconds
     Then I see block replaces the last message in the conversation view
