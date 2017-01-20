@@ -6,6 +6,7 @@ Feature: Welcome
     Given I switch to sign in page
     Given I remember current page
     When I click Change Password button
+    And I switch to Change Password page
     Then I see Password Change Request page
     When I enter email <Email> on Password Change Request page
     And Myself starts listening for password change confirmation
