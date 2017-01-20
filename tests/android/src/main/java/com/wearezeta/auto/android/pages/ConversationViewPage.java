@@ -147,9 +147,13 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
 
     private static final By idCursorSketch = By.id("cursor_menu_item_draw");
 
+    //region Top toolbar button
     private static final By idAudioCall = By.id("action_audio_call");
 
     private static final By idVideoCall = By.id("action_video_call");
+
+    private static final By idCollectionsButton = By.id("action_collection");
+    //endregion
 
     private static final By idCursorFile = By.id("cursor_menu_item_file");
 
@@ -642,6 +646,8 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
                 return idAudioCall;
             case "video call":
                 return idVideoCall;
+            case "collections":
+                return idCollectionsButton;
             case "back":
                 return xpathToolBarNavigation;
             default:
