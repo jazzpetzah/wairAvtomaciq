@@ -316,3 +316,27 @@ Feature: Collections
     Examples:
       | Name      | Contact   | Picture     | MsgCount |
       | user1Name | user2Name | testing.jpg | 20       |
+
+  @C368987 @staging @fastLogin
+  Scenario Outline: Verify no pictures from different conversations are in the overview
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact2>
+    Given Users add the following devices: {"Myself": [{}], "<Contact>": [{"name": "<ContactDevice>"}]}
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    And User Myself sends encrypted image <Picture> to single user conversation <Contact>
+    Then I see 2 photos in the conversation view
+    When I tap Collection button in conversation view
+    Then I see collection category PICTURES
+    And I tap X button in collection view
+    And I navigate back to conversations list
+    And I tap on contact name <Contact2>
+    When I tap Collection button in conversation view
+    Then I see "No Items" placeholder in collection view
+
+
+    Examples:
+      | Name      | Contact   | Contact2  | ContactDevice | Picture     |
+      | user1Name | user2Name | user3Name | device1       | testing.jpg |
