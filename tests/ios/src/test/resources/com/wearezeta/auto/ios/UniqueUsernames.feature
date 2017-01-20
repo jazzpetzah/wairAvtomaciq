@@ -259,7 +259,7 @@ Feature: Unique Usernames
       | Name      | MyUniqueUsername    | Contact   | ExpectedText  | ReservedUniqueUsername | ReservedText           |
       | user1Name | user1UniqueUsername | user2Name | Already taken | admin                  | Unable to set username |
 
-  @C352058 @addressbookStart @forceReset @regression
+  @C352058 @addressbookStart @forceReset @regression @rc
   Scenario Outline: Verify 1-to-1 conversation details
     Given There are 7 users where <Name> is me
     Given Users <Name>,<Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact5WithSameNameInAB>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact6Common> upload own details
