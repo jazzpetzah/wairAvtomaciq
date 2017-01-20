@@ -216,3 +216,25 @@ Feature: Collection
     Examples:
       | Email      | Password      | Name      | Contact   | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg |
+
+  @C378058 @collection @staging
+  Scenario Outline: Verify opening overview of all files
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Email> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <Contact>
+    And I send <FileSize> sized file with name <FileName> to the current conversation
+    And I send <FileSize> sized file with name <FileName> to the current conversation
+    And I send <FileSize> sized file with name <FileName> to the current conversation
+    And I send <FileSize> sized file with name <FileName> to the current conversation
+    And I send <FileSize> sized file with name <FileName> to the current conversation
+    When I click collection button in conversation
+    And I see <Amount> files in collection
+    And I click show all files label
+    Then I see <Amount> files in files detail page
+
+    Examples:
+      | Email      | Password      | Name      | Contact   | FileName        | FileSize | Amount |
+      | user1Email | user1Password | user1Name | user2Name | collections.txt | 1MB      | 5      |
