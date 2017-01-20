@@ -28,6 +28,9 @@ public class CollectionPage extends WebPage {
     @FindBy(css = WebAppLocators.CollectionPage.cssFiles)
     private List<WebElement> files;
 
+    @FindBy(css = WebAppLocators.CollectionPage.cssFilesPage)
+    private List<WebElement> filesPage;
+
     @FindBy(css = WebAppLocators.CollectionPage.cssFileCollectionSize)
     private WebElement fileCollectionSize;
 
@@ -65,6 +68,10 @@ public class CollectionPage extends WebPage {
         return files.size();
     }
 
+    public int getNumberOfFilesInFilePage() {
+        return filesPage.size();
+    }
+
     public String getLabelOfFileCollectionSize() {
         return fileCollectionSize.getText();
     }
@@ -80,4 +87,21 @@ public class CollectionPage extends WebPage {
     public void clickFirstPictureInCollection(int index) {
         pictures.get(index - 1).click();
     }
+
+    public void clickShowAllPicturesLabel() {
+        pictureCollectionSize.click();
+    }
+
+    public void clickShowAllVideosLabel() {
+        videoCollectionSize.click();
+    }
+
+    public void clickShowAllFilesLabel() {
+        fileCollectionSize.click();
+    }
+
+    public void clickShowAllLinksLabel() {
+        linkCollectionSize.click();
+    }
+
 }

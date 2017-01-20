@@ -683,7 +683,9 @@ public final class WebAppLocators {
 
         public static final String cssFiles = "[data-uie-name='collection-section-file'] [data-uie-name='file-name']";
 
-        public static final String cssFileCollectionSize = "[data-uie-name='collection-section-file'] [data-uie-name='collection-size']";
+        public static final String cssFilesPage = ".content-list file-asset";
+
+        public static final String cssFileCollectionSize = "[data-uie-name='collection-section-file'] [data-uie-name='collection-show-all']";
 
         public static final String cssLinks = "[data-uie-name='collection-section-link'] image-component";
 

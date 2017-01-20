@@ -24,10 +24,14 @@ public class CollectionPageSteps {
 
     @Then("^I see (\\d+) pictures? in collection$")
     public void ISeeXPictures(int amount) throws Exception {
-        assertThat("Number of shown pictures", context.getPagesCollection().getPage(CollectionPage.class).getNumberOfPictures(),
-                equalTo(amount));
+        if (amount <= 12) {
+            assertThat("Number of shown pictures", context.getPagesCollection().getPage(CollectionPage.class).getNumberOfPictures(),
+                    equalTo(amount));
+        }
         // Label is not shown for less than 13 pictures
-        if (amount > 12) {
+        else if (amount > 12) {
+            assertThat("Number of shown pictures", context.getPagesCollection().getPage(CollectionPage.class).getNumberOfPictures(),
+                    equalTo(12));
             assertThat("Label to show all", context.getPagesCollection().getPage(CollectionPage.class).getLabelOfPictureCollectionSize(),
                     equalTo("Show all " + String.valueOf(amount)));
         }
@@ -35,10 +39,14 @@ public class CollectionPageSteps {
 
     @Then("^I see (\\d+) videos? in collection$")
     public void ISeeXVideos(int amount) throws Exception {
-        assertThat("Number of shown videos", context.getPagesCollection().getPage(CollectionPage.class).getNumberOfVideos(),
-                equalTo(amount));
+        if (amount <= 4) {
+            assertThat("Number of shown videos", context.getPagesCollection().getPage(CollectionPage.class).getNumberOfVideos(),
+                    equalTo(amount));
+        }
         // Label is not shown for less than 5 videos
-        if (amount > 4) {
+        else if (amount > 4) {
+            assertThat("Number of shown videos", context.getPagesCollection().getPage(CollectionPage.class).getNumberOfVideos(),
+                    equalTo(4));
             assertThat("Label to show all", context.getPagesCollection().getPage(CollectionPage.class).getLabelOfVideoCollectionSize(),
                     equalTo("Show all " + String.valueOf(amount)));
         }
@@ -46,10 +54,16 @@ public class CollectionPageSteps {
 
     @Then("^I see (\\d+) files? in collection$")
     public void ISeeXFiles(int amount) throws Exception {
-        assertThat("Number of files", context.getPagesCollection().getPage(CollectionPage.class).getNumberOfFiles(),
-                equalTo(amount));
+        if (amount <= 4) {
+            assertThat("Number of files", context.getPagesCollection().getPage(CollectionPage.class).getNumberOfFiles(),
+                    equalTo(amount));
+        }
         // Label is not shown for less than 5 files
-        if (amount > 4) {
+        else if (amount > 4) {
+            System.out.println("AMOUNT: " + context.getPagesCollection().getPage(CollectionPage.class).getNumberOfFiles());
+            System.out.println("LABEL: " + context.getPagesCollection().getPage(CollectionPage.class).getLabelOfFileCollectionSize());
+            assertThat("Number of files", context.getPagesCollection().getPage(CollectionPage.class).getNumberOfFiles(),
+                    equalTo(4));
             assertThat("Label to show all", context.getPagesCollection().getPage(CollectionPage.class).getLabelOfFileCollectionSize(),
                     equalTo("Show all " + String.valueOf(amount)));
         }
@@ -57,10 +71,14 @@ public class CollectionPageSteps {
 
     @Then("^I see (\\d+) links? in collection$")
     public void ISeeXLinks(int amount) throws Exception {
-        assertThat("Number of links", context.getPagesCollection().getPage(CollectionPage.class).getNumberOfLinks(),
-                equalTo(amount));
+        if (amount <= 4) {
+            assertThat("Number of links", context.getPagesCollection().getPage(CollectionPage.class).getNumberOfLinks(),
+                    equalTo(amount));
+        }
         // Label is not shown for less than 5 links
-        if (amount > 4) {
+        else if (amount > 4) {
+            assertThat("Number of links", context.getPagesCollection().getPage(CollectionPage.class).getNumberOfLinks(),
+                    equalTo(4));
             assertThat("Label to show all", context.getPagesCollection().getPage(CollectionPage.class).getLabelOfLinkCollectionSize(),
                     equalTo("Show all " + String.valueOf(amount)));
         }
@@ -69,5 +87,29 @@ public class CollectionPageSteps {
     @When("I click on picture (\\d+) in collection$")
     public void IClickOnFirstPictureInCollection(int index) throws Exception {
         context.getPagesCollection().getPage(CollectionPage.class).clickFirstPictureInCollection(index);
+    }
+
+    @When("I click show all (pictures |videos |files |links )?label$")
+    public void IClickShowAllLabel(String media) throws Exception {
+        switch (media) {
+            case "pictures ":
+                context.getPagesCollection().getPage(CollectionPage.class).clickShowAllPicturesLabel();
+                break;
+            case "videos ":
+                context.getPagesCollection().getPage(CollectionPage.class).clickShowAllVideosLabel();
+                break;
+            case "files ":
+                context.getPagesCollection().getPage(CollectionPage.class).clickShowAllFilesLabel();
+                break;
+            case "links ":
+                context.getPagesCollection().getPage(CollectionPage.class).clickShowAllLinksLabel();
+                break;
+        }
+    }
+
+    @Then("I see (\\d+) files in all files page$")
+    public void ISeeAllFilesPage(int amount) throws Exception {
+        assertThat("Number of files", context.getPagesCollection().getPage(CollectionPage.class).getNumberOfFilesInFilePage(),
+                equalTo(amount));
     }
 }
