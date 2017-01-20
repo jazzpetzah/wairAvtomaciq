@@ -423,7 +423,8 @@ Feature: Ephemeral
   @C318623 @ephemeral @staging @WEBAPP-3302 @localytics
   Scenario Outline: Verify sending ephemeral text message in group
     Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>, <Contact2>
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Contact1> has unique username
     Given Myself have group chat <ChatName> with <Contact1>,<Contact2>
     Given I enable localytics via URL parameter
     Given I switch to Sign In page
