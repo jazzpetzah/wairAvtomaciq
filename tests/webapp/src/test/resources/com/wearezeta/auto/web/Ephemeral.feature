@@ -297,7 +297,7 @@ Feature: Ephemeral
 
     Examples:
       | Login1     | Password      | Name      | Contact   | Time | TimeLong   | TimeShortUnit | PING       | PictureName               | VideoFile   | SizeVideo | AudioFile   | AudioTime | File         | SizeFile | TypeFile |
-      | user1Email | user1Password | user1Name | user2Name | 15   | 15 seconds | s             | you pinged | userpicture_landscape.jpg | C261733.mp4 | 1 MB      | example.wav | 00:20     | C261733.zip  | 512KB    | ZIP      |
+      | user1Email | user1Password | user1Name | user2Name | 30   | 30 seconds | s             | you pinged | userpicture_landscape.jpg | C261733.mp4 | 1 MB      | example.wav | 00:20     | C261733.zip  | 512KB    | ZIP      |
 
   @C310631 @ephemeral @regression
   Scenario Outline: Verify sender can not download asset while it is obfuscated in 1:1
