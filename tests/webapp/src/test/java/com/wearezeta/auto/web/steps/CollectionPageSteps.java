@@ -27,6 +27,11 @@ public class CollectionPageSteps {
         this.context = context;
     }
 
+    private static final int MAXPICTURES = 12;
+    private static final int MAXVIDEOS = 4;
+    private static final int MAXFILES = 4;
+    private static final int MAXLINKS = 4;
+
     @When("I close collection overview$")
     public void ICloseCollectionOverview() throws Exception {
         context.getPagesCollection().getPage(CollectionPage.class).clickClose();
@@ -40,14 +45,14 @@ public class CollectionPageSteps {
 
     @Then("^I see (\\d+) pictures? in collection$")
     public void ISeeXPictures(int amount) throws Exception {
-        if (amount <= 12) {
+        if (amount <= MAXPICTURES && amount >= 0) {
             assertThat("Number of shown pictures", context.getPagesCollection().getPage(CollectionPage.class).getNumberOfPictures(),
                     equalTo(amount));
         }
         // Label is not shown for less than 13 pictures
-        else if (amount > 12) {
+        else if (amount > MAXPICTURES) {
             assertThat("Number of shown pictures", context.getPagesCollection().getPage(CollectionPage.class).getNumberOfPictures(),
-                    equalTo(12));
+                    equalTo(MAXPICTURES));
             assertThat("Label to show all", context.getPagesCollection().getPage(CollectionPage.class).getLabelOfPictureCollectionSize(),
                     equalTo("Show all " + String.valueOf(amount)));
         }
@@ -56,14 +61,14 @@ public class CollectionPageSteps {
 
     @Then("^I see (\\d+) videos? in collection$")
     public void ISeeXVideos(int amount) throws Exception {
-        if (amount <= 4) {
+        if (amount <= MAXVIDEOS && amount >= 0) {
             assertThat("Number of shown videos", context.getPagesCollection().getPage(CollectionPage.class).getNumberOfVideos(),
                     equalTo(amount));
         }
         // Label is not shown for less than 5 videos
-        else if (amount > 4) {
+        else if (amount > MAXVIDEOS) {
             assertThat("Number of shown videos", context.getPagesCollection().getPage(CollectionPage.class).getNumberOfVideos(),
-                    equalTo(4));
+                    equalTo(MAXVIDEOS));
             assertThat("Label to show all", context.getPagesCollection().getPage(CollectionPage.class).getLabelOfVideoCollectionSize(),
                     equalTo("Show all " + String.valueOf(amount)));
         }
@@ -71,16 +76,14 @@ public class CollectionPageSteps {
 
     @Then("^I see (\\d+) files? in collection$")
     public void ISeeXFiles(int amount) throws Exception {
-        if (amount <= 4) {
+        if (amount <= MAXFILES && amount >= 0) {
             assertThat("Number of files", context.getPagesCollection().getPage(CollectionPage.class).getNumberOfFiles(),
                     equalTo(amount));
         }
         // Label is not shown for less than 5 files
-        else if (amount > 4) {
-            System.out.println("AMOUNT: " + context.getPagesCollection().getPage(CollectionPage.class).getNumberOfFiles());
-            System.out.println("LABEL: " + context.getPagesCollection().getPage(CollectionPage.class).getLabelOfFileCollectionSize());
+        else if (amount > MAXFILES) {
             assertThat("Number of files", context.getPagesCollection().getPage(CollectionPage.class).getNumberOfFiles(),
-                    equalTo(4));
+                    equalTo(MAXFILES));
             assertThat("Label to show all", context.getPagesCollection().getPage(CollectionPage.class).getLabelOfFileCollectionSize(),
                     equalTo("Show all " + String.valueOf(amount)));
         }
@@ -88,14 +91,14 @@ public class CollectionPageSteps {
 
     @Then("^I see (\\d+) links? in collection$")
     public void ISeeXLinks(int amount) throws Exception {
-        if (amount <= 4) {
+        if (amount <= MAXLINKS && amount >= 0) {
             assertThat("Number of links", context.getPagesCollection().getPage(CollectionPage.class).getNumberOfLinks(),
                     equalTo(amount));
         }
         // Label is not shown for less than 5 links
-        else if (amount > 4) {
+        else if (amount > MAXLINKS) {
             assertThat("Number of links", context.getPagesCollection().getPage(CollectionPage.class).getNumberOfLinks(),
-                    equalTo(4));
+                    equalTo(MAXLINKS));
             assertThat("Label to show all", context.getPagesCollection().getPage(CollectionPage.class).getLabelOfLinkCollectionSize(),
                     equalTo("Show all " + String.valueOf(amount)));
         }
