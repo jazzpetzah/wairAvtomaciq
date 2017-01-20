@@ -539,3 +539,5 @@ Feature: E2EE
     Examples:
       | Name      | Contact1  | DeviceName2 | DeviceLabel2 | Contact2  |
       | user1Name | user2Name | Device2     | Label2       | user3Name |
+      | user1Name | user2Name | Device2     | Label2       | user3Name |
+      | user1Name | user2Name | Device2     | Label2       | user3Name |
