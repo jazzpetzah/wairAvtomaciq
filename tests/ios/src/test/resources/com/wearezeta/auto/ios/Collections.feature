@@ -175,7 +175,7 @@ Feature: Collections
       | Name      | Contact   | Picture1    | Picture2                 |
       | user1Name | user2Name | testing.jpg | userpicture_portrait.jpg |
 
-  @C368985 @staging @fastLogin
+  @C368985 @regression @fastLogin
   Scenario Outline: Share picture, link, file into one different conversation
     Given There are 6 users where <Name> is me
     Given Myself is connected to all other users
@@ -265,7 +265,7 @@ Feature: Collections
       | Name      | MySecondDevice | Contact   | Picture     | Link                  | FileName | FileExt | FileSize | FileMIME                 | ContactDevice | FileNameVideo | MIMEType  |
       | user1Name | SecondDev      | user2Name | testing.jpg | https://www.wire.com/ | testing  | bin     | 240 KB   | application/octet-stream | device1       | testing.mp4   | video/mp4 |
 
-  @C395992 @staging @fastLogin
+  @C395992 @regression @fastLogin
   Scenario Outline: Verify collection content is updated after reopen if new media item appears in chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
