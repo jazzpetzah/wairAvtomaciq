@@ -254,7 +254,7 @@ Feature: Collection
     And I see 1 pictures in collection
     And I close collection overview
     And User <Contact> deletes the recent 1 messages everywhere in single conversation <Name> via device Device1
-    Then I see 0 pictures in collection
+    Then I see only 0 pictures in the conversation
     And I click collection button in conversation
     And I see info about no collection items
 
