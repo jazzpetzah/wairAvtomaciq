@@ -81,11 +81,7 @@ public class RegistrationPage extends IOSPage {
     }
 
     private void selectWirestan() throws Exception {
-        final WebElement countryPickerBtn = getElement(nameCountryPickerButton);
-        countryPickerBtn.click();
-        if (!isLocatorInvisible(nameCountryPickerButton, Timedelta.fromSeconds(5))) {
-            countryPickerBtn.click();
-        }
+        getElement(nameCountryPickerButton).click();
         final WebElement searchInput = getElement(nameSearchField);
         searchInput.click();
         searchInput.sendKeys(WIRE_COUNTRY_NAME_PREFIX);
