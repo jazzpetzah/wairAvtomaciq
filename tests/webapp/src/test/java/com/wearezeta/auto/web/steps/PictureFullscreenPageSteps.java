@@ -52,9 +52,7 @@ public class PictureFullscreenPageSteps {
 
     @And("^I see a name (.*) in picture fullscreen$")
     public void ISeeSenderNameOnFullscreen(String name) throws Exception {
-        if (!name.equals("YOU")){
             name = context.getUsersManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
-        }
         assertThat("Name on picture fullscreen", context.getPagesCollection().getPage(PictureFullscreenPage.class).getSenderName().equals(name));
     }
 
