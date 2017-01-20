@@ -135,7 +135,7 @@ Feature: Collection
 
     Examples:
       | Email      | Password      | Name      | Contact   | Time | TimeLong   | TimeShortUnit | PictureName               | VideoFile   | SizeVideo | AudioFile   | AudioTime | File         | SizeFile |
-      | user1Email | user1Password | user1Name | user2Name | 5    | 5 seconds  | s             | userpicture_landscape.jpg | C261733.mp4 | 1 MB      | example.wav | 00:20     | C261733.zip  | 512KB    |
+      | user1Email | user1Password | user1Name | user2Name | 30   | 30 seconds | s             | userpicture_landscape.jpg | C261733.mp4 | 1 MB      | example.wav | 00:20     | C261733.zip  | 512KB    |
 
   @C378055 @collection @regression
   Scenario Outline: Verify opening overview of all pictures from sender and receiver in group
