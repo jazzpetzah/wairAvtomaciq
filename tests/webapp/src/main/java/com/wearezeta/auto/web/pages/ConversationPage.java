@@ -762,7 +762,7 @@ public class ConversationPage extends WebPage {
     }
 
     public boolean isNewDeviceWarningShown() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.cssSelector(
                 WebAppLocators.ConversationPage.cssNewDeviceWarning));
     }
 
