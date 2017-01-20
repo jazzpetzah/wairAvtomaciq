@@ -416,3 +416,42 @@ Feature: Delete Everywhere
     Examples:
       | Login      | Password      | Name      | Contact   | Youtubelink                                 | Soundcloudlink                                                      | Vimeolink                 | Spotifylink                                           |
       | user1Email | user1Password | user1Name | user2Name | https://www.youtube.com/watch?v=ncHd3sxpEbo | https://soundcloud.com/nour-moukhtar/ludwig-van-beethoven-fur-elise | https://vimeo.com/7265982 | https://play.spotify.com/album/7buEcyw6fJF3WPgr06BomH |
+
+  @C399361 @staging
+  Scenario Outline: Verify I can delete a picture for everyone from fullscreen view
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <Contact>
+    And I send picture <PictureName> to the current conversation
+    And I see sent picture <PictureName> in the conversation view
+    And I click on picture
+    Then I see picture <PictureName> in picture fullscreen
+    And I see delete everywhere button in picture fullscreen
+    When I click delete everywhere button in picture fullscreen
+    Then I see only 0 pictures in the conversation
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | PictureName               |
+      | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg |
+
+  @C399366 @staging
+  Scenario Outline: Verify I can delete a picture for everyone from fullscreen view
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given user <Contact> adds a new device Device1 with label Label1
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <Contact>
+    And User <Contact> sends image <PictureName> to single user conversation <Name>
+    And I see only 1 pictures in the conversation
+    And I click on picture
+    Then I see picture <PictureName> in picture fullscreen
+    And I do not see delete everywhere button in picture fullscreen
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | PictureName               |
+      | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg |

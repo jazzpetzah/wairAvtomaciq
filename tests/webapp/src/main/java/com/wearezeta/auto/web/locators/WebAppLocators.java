@@ -698,9 +698,9 @@ public final class WebAppLocators {
         
         public static final String cssDownloadButton = "[data-uie-name='do-download-fullscreen-picture']";
         
-        public static final String cssDeleteForMeButton = "[data-uie-name='do-delete-fullscreen-picture']";
+        public static final String cssDeleteForMeButton = ".icon-delete-for-me";
         
-        public static final String cssDeleteEverywhereButton = "[data-uie-name='do-delete-everywhere-fullscreen-picture']";
+        public static final String cssDeleteEverywhereButton = ".icon-delete-for-everyone";
     }
 
     public static final class CollectionPage {

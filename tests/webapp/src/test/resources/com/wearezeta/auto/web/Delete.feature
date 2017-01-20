@@ -276,3 +276,23 @@ Feature: Delete
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
+
+  @C399364 @staging
+  Scenario Outline: Verify I can delete a picture for everyone from fullscreen view
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <Contact>
+    And I send picture <PictureName> to the current conversation
+    And I see sent picture <PictureName> in the conversation view
+    And I click on picture
+    Then I see picture <PictureName> in picture fullscreen
+    And I see delete everywhere button in picture fullscreen
+    When I click delete for me button in picture fullscreen
+    Then I see only 0 pictures in the conversation
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | PictureName               |
+      | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg |
