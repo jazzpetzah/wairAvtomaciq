@@ -1,13 +1,8 @@
 package com.wearezeta.auto.ios.steps;
 
-import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.backend.BackendAPIWrappers;
-import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import com.wearezeta.auto.ios.pages.CollectionPage;
 import cucumber.api.java.en.And;
-import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
@@ -87,87 +82,6 @@ public class CollectionPageSteps {
     @And("^I tap (Back|X|Reveal) button in collection view$")
     public void ITapButton(String name) throws Exception {
         getCollectionPage().tapButton(name);
-    }
-
-    /**
-     * Send multiple images or videos to the conversation
-     *
-     * @param senderUserNameAlias sender name/alias
-     * @param count               count of items to send
-     * @param fileName            the name of existing media file.
-     *                            Only m4a/mp4 files can be set for audio and video types
-     * @param fileType            one of possible file types
-     * @param dstConversationName destination conversation name
-     * @throws Exception
-     * @step. ^User (.*) sends (\d+) (image|video|audio|temporary) files? (.*) to conversation (.*)
-     */
-    @Given("^User (.*) sends (\\d+) (image|video|audio|temporary) files? (.*) to conversation (.*)")
-    public void UserSendsMultiplePictures(String senderUserNameAlias, int count,
-                                          String fileType, String fileName,
-                                          String dstConversationName) throws Exception {
-        final ClientUser srcUser = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
-                .findUserByNameOrNameAlias(senderUserNameAlias);
-        dstConversationName = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
-                .replaceAliasesOccurences(dstConversationName, ClientUsersManager.FindBy.NAME_ALIAS);
-        final String dstConvoId = BackendAPIWrappers.getConversationIdByName(srcUser, dstConversationName);
-        String filePath;
-        for (int i = 0; i < count; ++i) {
-            switch (fileType) {
-                case "image":
-                    filePath = CommonUtils.getImagesPathFromConfig(this.getClass()) + File.separator + fileName;
-                    IOSTestContextHolder.getInstance().getTestContext().getDevicesManager().
-                            sendImage(srcUser, dstConvoId, filePath);
-                    break;
-                case "video":
-                case "audio":
-                    filePath = CommonUtils.getAudioPathFromConfig(this.getClass()) + File.separator + fileName;
-                    IOSTestContextHolder.getInstance().getTestContext().getDevicesManager().
-                            sendFile(srcUser, dstConvoId, filePath,
-                                    fileType.equals("video") ? "video/mp4" : "audio/mp4", null);
-                    break;
-                case "temporary":
-                    filePath = CommonUtils.getBuildPathFromConfig(this.getClass()) + File.separator + fileName;
-                    IOSTestContextHolder.getInstance().getTestContext().getDevicesManager().
-                            sendFile(srcUser, dstConvoId, filePath, "application/octet-stream", null);
-                    break;
-                default:
-                    throw new IllegalArgumentException(String.format("Unsupported '%s' file type", fileType));
-            }
-        }
-    }
-
-    /**
-     * Send multiple messages to the conversation
-     *
-     * @param senderUserNameAlias sender name/alias
-     * @param count               count of text messages to send
-     * @param msg                 either 'default' to send the default message or the actual messages
-     *                            enclosed by double quotes
-     * @param dstConversationName destination conversation name
-     * @throws Exception
-     * @step. ^User (.*) sends (\d+) (default|".*") messages? to conversation (.*)
-     */
-    @Given("^User (.*) sends (\\d+) (default|\".*\") messages? to conversation (.*)")
-    public void UserSendsMultipleMessages(String senderUserNameAlias, int count,
-                                          String msg, String dstConversationName) throws Exception {
-        if (msg.equals("default")) {
-            msg = CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE;
-        } else {
-            msg = msg.replaceAll("^\"|\"$", "");
-        }
-        final ClientUser srcUser = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
-                .findUserByNameOrNameAlias(senderUserNameAlias);
-        dstConversationName = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
-                .replaceAliasesOccurences(dstConversationName, ClientUsersManager.FindBy.NAME_ALIAS);
-        final String dstConvoId = BackendAPIWrappers.getConversationIdByName(srcUser, dstConversationName);
-        for (int i = 0; i < count; ++i) {
-            IOSTestContextHolder.getInstance().getTestContext().getDevicesManager().
-                    sendConversationMessage(srcUser, dstConvoId, msg);
-            if (msg.startsWith("http")) {
-                // TODO: Remove the delay after multiple links generation for single domain is fixed on SE side
-                Thread.sleep(3000);
-            }
-        }
     }
 
     /**
