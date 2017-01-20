@@ -988,7 +988,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName    | Message             |
       | user1Email | user1Password | user1Name | user2Name | user3Name | unencryptedGroup | unencrypted message |
 
-  @C399349 @e2ee @staging
+  @C399349 @e2ee @regression
   Scenario Outline: Verify conversation degrades when you add participant to verified group
     Given There are 4 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
@@ -1024,7 +1024,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact   | Contact2  | Contact3  | ALL_VERIFIED                  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | All fingerprints are verified |
 
-  @C399350 @e2ee @staging
+  @C399350 @e2ee @regression
   Scenario Outline: Verify conversation degrades when someone adds participant to verified group
     Given There are 4 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
@@ -1061,7 +1061,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact   | Contact2  | Contact3  | ALL_VERIFIED                  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | All fingerprints are verified |
 
-  @C399346 @staging
+  @C399346 @regression
   Scenario Outline: Verify conversation gets verified if participant deletes device in 1:1
     Given There are 2 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
