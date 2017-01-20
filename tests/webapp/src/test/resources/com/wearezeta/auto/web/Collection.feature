@@ -47,9 +47,7 @@ Feature: Collection
     Given I am signed in properly
     When I open conversation with <Contact1>
     And User <Contact1> sends image <Picture1> to single user conversation <Name>
-    Then I see sent picture <Picture1> in the conversation view
-    And I send picture <Picture2> to the current conversation
-    Then I see sent picture <Picture2> in the conversation view
+    And I send picture <Picture1> to the current conversation
     Then I see only 2 pictures in the conversation
     When I click collection button in conversation
     Then I see 2 picture in collection
@@ -58,8 +56,8 @@ Feature: Collection
     Then I see info about no collection items
 
     Examples:
-      | Email      | Password      | Name      | Contact1  | Contact2  | Picture1                  | Picture2                 |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | userpicture_landscape.jpg | userpicture_portrait.jpg |
+      | Email      | Password      | Name      | Contact1  | Contact2  | Picture1                  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | userpicture_landscape.jpg |
 
   @C378053 @collection @regression
   Scenario Outline: Verify GIF pictures are not presented in library

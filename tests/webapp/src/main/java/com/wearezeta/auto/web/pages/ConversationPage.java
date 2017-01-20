@@ -1372,8 +1372,7 @@ public class ConversationPage extends WebPage {
     }
 
     private List<WebElement> waitUntilAllImagesAreFullyLoaded() throws Exception {
-        By picturesLocator = By.cssSelector(WebAppLocators.ConversationPage.cssImageEntries);
-        By loadingPicturesLocator = By.cssSelector(WebAppLocators.ConversationPage.cssImageEntries);
+        By loadingPicturesLocator = By.cssSelector(WebAppLocators.ConversationPage.cssUnsentImageAmount);
 
         Wait<WebDriver> wait = new FluentWait<WebDriver>(getDriver())
                 .withTimeout(DriverUtils.getDefaultLookupTimeoutSeconds(), TimeUnit.SECONDS)
@@ -1383,9 +1382,8 @@ public class ConversationPage extends WebPage {
                 .ignoring(InvalidElementStateException.class);
         wait.until(new Function<WebDriver, Boolean>() {
             public Boolean apply(WebDriver driver) {
-                List<WebElement> all = driver.findElements(picturesLocator);
                 List<WebElement> loading = driver.findElements(loadingPicturesLocator);
-                return all.size() == loading.size();
+                return loading.isEmpty();
             }
         });
         return pictures;
