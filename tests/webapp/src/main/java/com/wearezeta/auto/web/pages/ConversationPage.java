@@ -57,6 +57,12 @@ public class ConversationPage extends WebPage {
     @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssUnsentMessageAmount)
     private List<WebElement> unsentMessageAmount;
 
+    @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssUnsentImageAmount)
+    private List<WebElement> unsentImageAmount;
+
+    @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssUnsentFileAmount)
+    private List<WebElement> unsentFileAmount;
+
     @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssDeletedMessageAmount)
     private List<WebElement> deletedMessageAmount;
 
@@ -486,6 +492,14 @@ public class ConversationPage extends WebPage {
 
     public int getNumberOfUnsentMessagesInCurrentConversation() {
         return unsentMessageAmount.size();
+    }
+
+    public int getNumberOfUnsentImagesInCurrentConversation() {
+        return unsentImageAmount.size();
+    }
+
+    public int getNumberOfUnsentFilesInCurrentConversation() {
+        return unsentFileAmount.size();
     }
 
     public boolean isEphemeralButtonNotVisible() throws Exception {
@@ -1358,8 +1372,7 @@ public class ConversationPage extends WebPage {
     }
 
     private List<WebElement> waitUntilAllImagesAreFullyLoaded() throws Exception {
-        By picturesLocator = By.cssSelector(WebAppLocators.ConversationPage.cssImageEntries);
-        By loadingPicturesLocator = By.cssSelector(WebAppLocators.ConversationPage.cssImageEntries);
+        By loadingPicturesLocator = By.cssSelector(WebAppLocators.ConversationPage.cssUnsentImageAmount);
 
         Wait<WebDriver> wait = new FluentWait<WebDriver>(getDriver())
                 .withTimeout(DriverUtils.getDefaultLookupTimeoutSeconds(), TimeUnit.SECONDS)
@@ -1369,9 +1382,8 @@ public class ConversationPage extends WebPage {
                 .ignoring(InvalidElementStateException.class);
         wait.until(new Function<WebDriver, Boolean>() {
             public Boolean apply(WebDriver driver) {
-                List<WebElement> all = driver.findElements(picturesLocator);
                 List<WebElement> loading = driver.findElements(loadingPicturesLocator);
-                return all.size() == loading.size();
+                return loading.isEmpty();
             }
         });
         return pictures;
