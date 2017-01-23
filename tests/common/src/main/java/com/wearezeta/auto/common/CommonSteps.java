@@ -48,6 +48,8 @@ public final class CommonSteps {
     private static final int BACKEND_SUGGESTIONS_SYNC_TIMEOUT = 240; // seconds
     private static final int BACKEND_COMMON_CONTACTS_SYNC_TIMEOUT = 240; // seconds
 
+    public static final String DEFAULT_AUTOMATION_MESSAGE = "1 message";
+
     private final ClientUsersManager usersManager;
     private final RemoteDevicesManager devicesManager;
 
@@ -1108,4 +1110,63 @@ public final class CommonSteps {
                     expectedDevicesCount, devicesMapping.keySet(), DEVICES_CREATION_TIMEOUT));
         }
     }
+
+    public void UserSendMultipleMedias(String senderUserNameAlias, int count,
+                                       String fileType, String fileName,
+                                       String dstConversationName) throws Exception {
+        final ClientUser srcUser = getUsersManager().findUserByNameOrNameAlias(senderUserNameAlias);
+        dstConversationName = getUsersManager()
+                .replaceAliasesOccurences(dstConversationName, ClientUsersManager.FindBy.NAME_ALIAS);
+        final String dstConvoId = BackendAPIWrappers.getConversationIdByName(srcUser, dstConversationName);
+        String filePath;
+        for (int i = 0; i < count; ++i) {
+            switch (fileType) {
+                case "image":
+                    filePath = CommonUtils.getImagesPathFromConfig(this.getClass()) + File.separator + fileName;
+                    getDevicesManager().sendImage(srcUser, dstConvoId, filePath);
+                    break;
+                case "video":
+                case "audio":
+                    filePath = CommonUtils.getAudioPathFromConfig(this.getClass()) + File.separator + fileName;
+                    getDevicesManager().sendFile(srcUser, dstConvoId, filePath,
+                            fileType.equals("video") ? "video/mp4" : "audio/mp4", null);
+                    break;
+                case "temporary":
+                    filePath = CommonUtils.getBuildPathFromConfig(this.getClass()) + File.separator + fileName;
+                    getDevicesManager().
+                            sendFile(srcUser, dstConvoId, filePath, "application/octet-stream", null);
+                    break;
+                default:
+                    throw new IllegalArgumentException(String.format("Unsupported '%s' file type", fileType));
+            }
+        }
+    }
+
+    public void UserSendsMultipleMessages(String senderUserNameAlias, int count, String msg,
+                                          String dstConversationName, String defaultMessage) throws Exception {
+        if (msg.equals("default")) {
+            msg = defaultMessage;
+        } else {
+            msg = msg.replaceAll("^\"|\"$", "");
+        }
+        final ClientUser srcUser = getUsersManager().findUserByNameOrNameAlias(senderUserNameAlias);
+        dstConversationName = getUsersManager()
+                .replaceAliasesOccurences(dstConversationName, ClientUsersManager.FindBy.NAME_ALIAS);
+        final String dstConvoId = BackendAPIWrappers.getConversationIdByName(srcUser, dstConversationName);
+        for (int i = 0; i < count; ++i) {
+            getDevicesManager().
+                    sendConversationMessage(srcUser, dstConvoId, msg);
+            if (msg.startsWith("http")) {
+                // TODO: Remove the delay after multiple links generation for single domain is fixed on SE side
+                Thread.sleep(3000);
+            }
+        }
+    }
+
+    public void UserSendsMultipleMessages(String senderUserNameAlias, int count,
+                                          String msg, String dstConversationName) throws Exception {
+        UserSendsMultipleMessages(senderUserNameAlias, count, msg, dstConversationName,
+                CommonSteps.DEFAULT_AUTOMATION_MESSAGE);
+    }
+
 }

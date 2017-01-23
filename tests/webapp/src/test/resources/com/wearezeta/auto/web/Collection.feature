@@ -1,6 +1,6 @@
 Feature: Collection
 
-  @C378049 @collection @regression
+  @C378049 @collection @localytics @regression
   Scenario Outline: Verify message is shown if no media is in collection
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -10,12 +10,12 @@ Feature: Collection
     And I am signed in properly
     When I open conversation with <Contact>
     And I click collection button in conversation
-    #And I see localytics event <Event> without attributes
+    And I see localytics event <Event> with attributes <Attributes>
     Then I see info about no collection items
 
     Examples:
-      | Email      | Password      | Name      | Contact   | Event                          |
-      | user1Email | user1Password | user1Name | user2Name | collections.opened_collections |
+      | Email      | Password      | Name      | Contact   | Event                          | Attributes                                                                   |
+      | user1Email | user1Password | user1Name | user2Name | collections.opened_collections | {\"is_empty\":true,\"conversation_type\":\"one_to_one\",\"with_bot\":false}" |
 
   @C378050 @linkpreview @collection @regression
   Scenario Outline: Verify main overview shows media from all categories
@@ -38,7 +38,7 @@ Feature: Collection
       | Email      | Password      | Name      | Contact   | Picture                   | FileSize | FileName        | Link                                                                                                               | LinkInPreview                                                                                           |
       | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg | 1MB      | collections.txt | http://www.heise.de/newsticker/meldung/Wire-Neuer-WebRTC-Messenger-soll-WhatsApp-Co-Konkurrenz-machen-2477770.html | heise.de/newsticker/meldung/Wire-Neuer-WebRTC-Messenger-soll-WhatsApp-Co-Konkurrenz-machen-2477770.html |
 
-  @C378052 @collection @staging
+  @C378052 @collection @regression
   Scenario Outline: Verify no pictures from different conversations are in the overview
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -46,8 +46,8 @@ Feature: Collection
     Given I Sign in using login <Email> and password <Password>
     Given I am signed in properly
     When I open conversation with <Contact1>
-    And User <Contact1> sends image <Picture> to single user conversation <Name>
-    And I send picture <Picture> to the current conversation
+    And User <Contact1> sends image <Picture1> to single user conversation <Name>
+    And I send picture <Picture1> to the current conversation
     Then I see only 2 pictures in the conversation
     When I click collection button in conversation
     Then I see 2 picture in collection
@@ -56,7 +56,7 @@ Feature: Collection
     Then I see info about no collection items
 
     Examples:
-      | Email      | Password      | Name      | Contact1  | Contact2  | Picture                   |
+      | Email      | Password      | Name      | Contact1  | Contact2  | Picture1                  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | userpicture_landscape.jpg |
 
   @C378053 @collection @regression
@@ -135,7 +135,7 @@ Feature: Collection
 
     Examples:
       | Email      | Password      | Name      | Contact   | Time | TimeLong   | TimeShortUnit | PictureName               | VideoFile   | SizeVideo | AudioFile   | AudioTime | File         | SizeFile |
-      | user1Email | user1Password | user1Name | user2Name | 5    | 5 seconds  | s             | userpicture_landscape.jpg | C261733.mp4 | 1 MB      | example.wav | 00:20     | C261733.zip  | 512KB    |
+      | user1Email | user1Password | user1Name | user2Name | 30   | 30 seconds | s             | userpicture_landscape.jpg | C261733.mp4 | 1 MB      | example.wav | 00:20     | C261733.zip  | 512KB    |
 
   @C378055 @collection @regression
   Scenario Outline: Verify opening overview of all pictures from sender and receiver in group
@@ -164,7 +164,7 @@ Feature: Collection
       | Email      | Password      | Name      | Contact1  | Contact2  | ChatName   | Picture                   | Picture2                 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | group conv | userpicture_landscape.jpg | userpicture_portrait.jpg |
 
-  @C382595 @collection @staging
+  @C382595 @collection @regression
   Scenario Outline: Verify opening overview of all links
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -197,10 +197,11 @@ Feature: Collection
       | Email      | Password      | Name      | Contact   | Link                 | LinkInPreview | LinkTitle | LinkPreviewImage | LinkWithoutImage                                                              | LinkTitleWithoutImage                                 |
       | user1Email | user1Password | user1Name | user2Name | https://app.wire.com | app.wire.com  | Wire      | linkpreview0.png | medium.com/wire-news/simple-privacy-policy-72-hour-log-retention-33d183ea0fb3 | Simpler Privacy Policy, 72h log retention – Wire News |
 
-  @C378056 @collection @regression
+  @C378056 @collection @localytics @regression
   Scenario Outline: Verify opening single picture from all shared media overview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I enable localytics via URL parameter
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
     Given I am signed in properly
@@ -210,8 +211,55 @@ Feature: Collection
     And I see only 1 picture in the conversation
     When I click collection button in conversation
     And I see 1 picture in collection
+    And I see localytics event <Event1> with attributes <Attributes1>
     And I click on picture 1 in collection
     Then I see picture <PictureName> in picture fullscreen
+    And I see localytics event <Event2> with attributes <Attributes2>
+
+    Examples:
+      | Email      | Password      | Name      | Contact   | PictureName               | Event1                         | Attributes1                                                                    | Event2                 | Attributes2                                                                   |
+      | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg | collections.opened_collections | {\"is_empty\":false,\"conversation_type\":\"one_to_one\",\"with_bot\":false}" | collections.opened_item | {\"type\":\"image\",\"conversation_type\":\"one_to_one\",\"with_bot\":false}" |
+
+  @C378058 @collection @staging
+  Scenario Outline: Verify opening overview of all files
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Email> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <Contact>
+    And I send <FileSize> sized file with name <FileName> to the current conversation
+    And I send <FileSize> sized file with name <FileName> to the current conversation
+    And I send <FileSize> sized file with name <FileName> to the current conversation
+    And I send <FileSize> sized file with name <FileName> to the current conversation
+    And I send <FileSize> sized file with name <FileName> to the current conversation
+    When I click collection button in conversation
+    And I see <Amount> files in collection
+    And I click show all files label
+    Then I see <Amount> files in files detail page
+
+    Examples:
+      | Email      | Password      | Name      | Contact   | FileName        | FileSize | Amount |
+      | user1Email | user1Password | user1Name | user2Name | collections.txt | 1MB      | 5      |
+
+  @C399357 @collection @regression
+  Scenario Outline: Verify deleted media isn't in collection on other side
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given user <Contact> adds a new device Device1 with label Label1
+    Given I switch to Sign in page
+    Given I Sign in using login <Email> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <Contact>
+    And User <Contact> sends image <PictureName> to single user conversation <Name>
+    Then I see only 1 pictures in the conversation
+    When I click collection button in conversation
+    And I see 1 pictures in collection
+    And I close collection overview
+    And User <Contact> deletes the recent 1 messages everywhere in single conversation <Name> via device Device1
+    Then I see only 0 pictures in the conversation
+    And I click collection button in conversation
+    And I see info about no collection items
 
     Examples:
       | Email      | Password      | Name      | Contact   | PictureName               |

@@ -426,14 +426,17 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | Message1                                                    | Message2                                     |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat     | is using an old version of Wire. No devices are shown here. | Wire gives every device a unique fingerprint |
 
-  @C12053 @regression
+  @C12053 @e2ee @regression
   Scenario Outline: Verify it is possible to verify 1:1 conversation participants
     Given There are 2 users where <Name> is me
+    Given user <Name> adds a new device OwnDevice with label Label1
     Given user <Contact> adds a new device Device1 with label Label1
     Given user <Contact> adds a new device Device2 with label Label2
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
+    Then I see the history info page
+    And I click confirm on history info page
     And I am signed in properly
     When I open conversation with <Contact>
     And I click People button in one to one conversation
@@ -450,16 +453,26 @@ Feature: E2EE
     Then I see device Device2 of user <Contact> is verified on Single User Profile popover
     Then I see user verified icon on Single User Profile popover
     When I click People button in one to one conversation
+    And I do not see verified icon in conversation
+    When I open preferences by clicking the gear button
+    And I open devices in preferences
+    And I see an active device named OwnDevice
+    And I click on the device OwnDevice
+    And I see a device named OwnDevice with label Label1 in the device details
+    And I verify device on device details
+    And I click back button on device details in preferences
+    And I see device OwnDevice of user <Name> is verified in device section
+    And I close preferences
+    Then I see verified icon in conversation
     # Not yet implemented on webapp:
     #Then I see <ALL_VERIFIED> action in conversation
-    #And I see verified icon in conversation
 
   Examples:
     | Email      | Password      | Name      | Contact   | ALL_VERIFIED                  |
     | user1Email | user1Password | user1Name | user2Name | All fingerprints are verified |
 
-  @C95628 @regression
-  Scenario Outline: Verify device list is updated in people popover if participant deletes or adds new devices in 1:1
+  @C95628 @e2ee @regression
+  Scenario Outline: Verify conversation degrades with warning if participant adds new devices in 1:1
     Given There are 2 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
     Given user <Contact> adds a new device Device2 with label Label2
@@ -476,39 +489,44 @@ Feature: E2EE
     And I click back button on the Device Detail popover
     Then I see device Device2 of user <Contact> is verified on Single User Profile popover
     Then I do not see user verified icon on Single User Profile popover
-    Then User <Contact> only keeps his 1 most recent OTR clients
+    When User <Contact> only keeps his 1 most recent OTR clients
     # We have to close and reopen the people popover to update the device list
-    When I click People button in one to one conversation
+    And I click People button in one to one conversation
     And I wait for 1 seconds
-    When I click People button in one to one conversation
-    When I switch to Devices tab on Single User Profile popover
+    And I click People button in one to one conversation
+    And I switch to Devices tab on Single User Profile popover
     Then I see user verified icon on Single User Profile popover
     When I click People button in one to one conversation
 #   Then I see <ALL_VERIFIED> action in conversation
-#   And I see verified icon in conversation
-    Then user <Contact> adds a new device Device3 with label Label3
-    When I click People button in one to one conversation
-    Then I see Single User Profile popover
-    When I switch to Devices tab on Single User Profile popover
-    Then I do not see user verified icon on Single User Profile popover
-#   And I do not see verified icon in conversation
+    Then I see verified icon in conversation
+    When user <Contact> adds a new device Device3 with label Label3
+    And I write message <MessageThatTriggersWarning>
+    And I send message
+    Then I see the new device warning
+    When I click cancel button in the new device warning
+    And I see 1 unsent messages in conversation
+    Then I do not see verified icon in conversation
+    And I click People button in one to one conversation
+    And I see Single User Profile popover
+    And I switch to Devices tab on Single User Profile popover
+    And I do not see user verified icon on Single User Profile popover
     When I switch to Devices tab on Single User Profile popover
     And I click on device Device3 of user <Contact> on Single User Profile popover
     And I verify device on Device Detail popover
     And I click back button on the Device Detail popover
     Then I see device Device3 of user <Contact> is verified on Single User Profile popover
     Then I see user verified icon on Single User Profile popover
-#   When I click People button in one to one conversation
+    When I click People button in one to one conversation
     # Not yet implemented on webapp:
 #   Then I see <ALL_VERIFIED> action in conversation
-#   And I see verified icon in conversation
+    And I see verified icon in conversation
 
   Examples:
-    | Email      | Password      | Name      | Contact   | ALL_VERIFIED                  |
-    | user1Email | user1Password | user1Name | user2Name | All fingerprints are verified |
+    | Email      | Password      | Name      | Contact   | MessageThatTriggersWarning  | ALL_VERIFIED                  |
+    | user1Email | user1Password | user1Name | user2Name | This should trigger warning | All fingerprints are verified |
 
-  @C95638 @regression
-  Scenario Outline: Verify device list is updated in people popover if participant deletes or adds new devices in group chat
+  @C95638 @e2ee @regression
+  Scenario Outline: Verify conversation degrades with warning if participant adds new devices in group chat
     Given There are 3 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
     Given user <Contact> adds a new device Device2 with label Label2
@@ -523,24 +541,36 @@ Feature: E2EE
     Then I see Group Participants popover
     When I click on participant <Contact> on Group Participants popover
     And I switch to Devices tab on Single User Profile popover
+    And I click on device Device1 of user <Contact> on Single User Profile popover
+    And I verify device on Device Detail popover
+    And I click back button on the Device Detail popover
+    Then I see device Device1 of user <Contact> is verified on Single User Profile popover
+    Then I do not see user verified icon on Single User Profile popover
+    And I click back button on Group Participants popover
+    When I click on participant <Contact2> on Group Participants popover
+    And I switch to Devices tab on Single User Profile popover
+    And I click on device Device1 of user <Contact2> on Single User Profile popover
+    And I verify device on Device Detail popover
+    And I click back button on the Device Detail popover
+    And I click back button on Group Participants popover
+    Then I do not see user verified icon on Single User Profile popover
+    When I click on participant <Contact> on Group Participants popover
+    And I switch to Devices tab on Single User Profile popover
     And I click on device Device2 of user <Contact> on Single User Profile popover
     And I verify device on Device Detail popover
     And I click back button on the Device Detail popover
-    Then I see device Device2 of user <Contact> is verified on Single User Profile popover
-    Then I do not see user verified icon on Single User Profile popover
-    Then User <Contact> only keeps his 1 most recent OTR clients
+    Then I see user verified icon on Single User Profile popover
   # We have to close and reopen the people popover to update the device list
     When I click People button in one to one conversation
-    And I wait for 1 seconds
-    When I click People button in group conversation
-    Then I see Group Participants popover
-    When I click on participant <Contact> on Group Participants popover
-    When I switch to Devices tab on Single User Profile popover
-    Then I see user verified icon on Single User Profile popover
-    When I click People button in group conversation
 #   Then I see <ALL_VERIFIED> action in conversation
-#   And I see verified icon in conversation
-    Then user <Contact> adds a new device Device3 with label Label3
+    And I see verified icon in conversation
+    When user <Contact> adds a new device Device3 with label Label3
+    And I write message <MessageThatTriggersWarning>
+    And I send message
+    Then I see the new device warning
+    When I click cancel button in the new device warning
+    And I see 1 unsent messages in conversation
+    Then I do not see verified icon in conversation
     When I click People button in group conversation
     Then I see Group Participants popover
     When I click on participant <Contact> on Group Participants popover
@@ -548,25 +578,25 @@ Feature: E2EE
     When I switch to Devices tab on Single User Profile popover
     And I wait for 1 seconds
     Then I do not see user verified icon on Single User Profile popover
-#   And I do not see verified icon in conversation
     When I switch to Devices tab on Single User Profile popover
     And I click on device Device3 of user <Contact> on Single User Profile popover
     And I verify device on Device Detail popover
     And I click back button on the Device Detail popover
     Then I see device Device3 of user <Contact> is verified on Single User Profile popover
     Then I see user verified icon on Single User Profile popover
-#   When I click People button in one to one conversation
+    When I click People button in one to one conversation
   # Not yet implemented on webapp:
 #   Then I see <ALL_VERIFIED> action in conversation
-#   And I see verified icon in conversation
+    And I see verified icon in conversation
 
     Examples:
-      | Email      | Password      | Name      | Contact   | Contact2  | ALL_VERIFIED                  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | All fingerprints are verified |
+      | Email      | Password      | Name      | Contact   | Contact2  | MessageThatTriggersWarning  | ALL_VERIFIED                  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | This should trigger warning |All fingerprints are verified |
 
-  @C12055 @regression
+  @C12055 @e2ee @regression
   Scenario Outline: Verify it is possible to verify group conversation participants
     Given There are 3 users where <Name> is me
+    Given user <Name> adds a new device OwnDevice with label Label1
     Given user <Contact1> adds a new device Device1 with label Label1
     Given user <Contact1> adds a new device Device2 with label Label2
     Given user <Contact2> adds a new device Device3 with label Label3
@@ -575,8 +605,20 @@ Feature: E2EE
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
+    Then I see the history info page
+    And I click confirm on history info page
     And I am signed in properly
-    When I open conversation with <GroupChatName>
+    When I open preferences by clicking the gear button
+    And I open devices in preferences
+    And I see an active device named OwnDevice
+    And I click on the device OwnDevice
+    And I see a device named OwnDevice with label Label1 in the device details
+    And I verify device on device details
+    And I click back button on device details in preferences
+    And I see device OwnDevice of user <Name> is verified in device section
+    And I close preferences
+    And I open conversation with <GroupChatName>
+    Then I do not see verified icon in conversation
     And I click People button in group conversation
     Then I see Group Participants popover
     When I click on participant <Contact1> on Group Participants popover
@@ -619,7 +661,7 @@ Feature: E2EE
     Then I see user <Contact2> in verified section
     # Not yet implemented on webapp:
     #And I see <ALL_VERIFIED> action in conversation
-    #And I see verified icon in conversation
+    And I see verified icon in conversation
 
     Examples:
       | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | ALL_VERIFIED                  |
@@ -945,3 +987,198 @@ Feature: E2EE
     Examples:
       | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName    | Message             |
       | user1Email | user1Password | user1Name | user2Name | user3Name | unencryptedGroup | unencrypted message |
+
+  @C399349 @e2ee @regression
+  Scenario Outline: Verify conversation degrades when you add participant to verified group
+    Given There are 4 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
+    Given user <Contact2> adds a new device Device1 with label Label1
+    Given user <Contact3> adds a new device Device1 with label Label1
+    Given Myself is connected to <Contact>,<Contact2>,<Contact3>
+    Given Myself has group chat GROUPCHAT with <Contact>,<Contact2>
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+    And I am signed in properly
+    And I open conversation with GROUPCHAT
+    And I click People button in group conversation
+    And I see Group Participants popover
+    And I click on participant <Contact> on Group Participants popover
+    And I switch to Devices tab on Single User Profile popover
+    And I click on device Device1 of user <Contact> on Single User Profile popover
+    And I verify device on Device Detail popover
+    And I click back button on the Device Detail popover
+    And I click back button on Group Participants popover
+    And I click on participant <Contact2> on Group Participants popover
+    And I switch to Devices tab on Single User Profile popover
+    And I click on device Device1 of user <Contact2> on Single User Profile popover
+    And I verify device on Device Detail popover
+    And I click back button on the Device Detail popover
+    And I click back button on Group Participants popover
+    And I click People button in group conversation
+#   And I see <ALL_VERIFIED> action in conversation
+    Then I see verified icon in conversation
+    When I add <Contact3> to group chat
+    Then I do not see verified icon in conversation
+
+    Examples:
+      | Email      | Password      | Name      | Contact   | Contact2  | Contact3  | ALL_VERIFIED                  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | All fingerprints are verified |
+
+  @C399350 @e2ee @regression
+  Scenario Outline: Verify conversation degrades when someone adds participant to verified group
+    Given There are 4 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
+    Given user <Contact2> adds a new device Device1 with label Label1
+    Given user <Contact3> adds a new device Device1 with label Label1
+    Given Myself is connected to <Contact>,<Contact2>,<Contact3>
+    Given <Contact> is connected to <Contact3>
+    Given Myself has group chat GROUPCHAT with <Contact>,<Contact2>
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+    And I am signed in properly
+    And I open conversation with GROUPCHAT
+    And I click People button in group conversation
+    And I see Group Participants popover
+    And I click on participant <Contact> on Group Participants popover
+    And I switch to Devices tab on Single User Profile popover
+    And I click on device Device1 of user <Contact> on Single User Profile popover
+    And I verify device on Device Detail popover
+    And I click back button on the Device Detail popover
+    And I click back button on Group Participants popover
+    And I click on participant <Contact2> on Group Participants popover
+    And I switch to Devices tab on Single User Profile popover
+    And I click on device Device1 of user <Contact2> on Single User Profile popover
+    And I verify device on Device Detail popover
+    And I click back button on the Device Detail popover
+    And I click back button on Group Participants popover
+    And I click People button in group conversation
+#   And I see <ALL_VERIFIED> action in conversation
+    Then I see verified icon in conversation
+    When User <Contact> added contact <Contact3> to group chat GROUPCHAT
+    Then I do not see verified icon in conversation
+
+    Examples:
+      | Email      | Password      | Name      | Contact   | Contact2  | Contact3  | ALL_VERIFIED                  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | All fingerprints are verified |
+
+  @C399346 @regression
+  Scenario Outline: Verify conversation gets verified if participant deletes device in 1:1
+    Given There are 2 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
+    Given user <Contact> adds a new device Device2 with label Label2
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+    And I am signed in properly
+    When I open conversation with <Contact>
+    And I click People button in group conversation
+    Then I see Single User Profile popover
+    When I switch to Devices tab on Single User Profile popover
+    And I click on device Device2 of user <Contact> on Single User Profile popover
+    And I verify device on Device Detail popover
+    And I click back button on the Device Detail popover
+    Then I see device Device2 of user <Contact> is verified on Single User Profile popover
+    Then I do not see user verified icon on Single User Profile popover
+    Then I do not see verified icon in conversation
+    When User <Contact> only keeps his 1 most recent OTR clients
+    # We have to close and reopen the people popover to update the device list
+    And I click People button in one to one conversation
+    And I wait for 1 seconds
+    And I click People button in group conversation
+    And I switch to Devices tab on Single User Profile popover
+    Then I see user verified icon on Single User Profile popover
+    When I click People button in group conversation
+#   Then I see <ALL_VERIFIED> action in conversation
+    Then I see verified icon in conversation
+
+  Examples:
+    | Email      | Password      | Name      | Contact   | ALL_VERIFIED                  |
+    | user1Email | user1Password | user1Name | user2Name | All fingerprints are verified |
+
+  @C399348 @e2ee @staging
+  Scenario Outline: Verify conversation degrades with warning when sending images, files, pings or ephemeral messages to unverified devices
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login2> and password <Password2>
+    Given I am signed in properly
+    Given I click TakeThisOne button on take over screen
+    Given I see Contact list with name <Name>
+    Given I open preferences by clicking the gear button
+    Given I click logout in account preferences
+    Given I see the clear data dialog
+    Given I click logout button on clear data dialog
+    Given I see Sign In page
+    Given I Sign in using login <Email> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <Contact>
+    And I click People button in one to one conversation
+    Then I see Single User Profile popover
+    When I switch to Devices tab on Single User Profile popover
+    And I click on first device of user <Contact> on Single User Profile popover
+    And I verify device on Device Detail popover
+    And I click back button on the Device Detail popover
+    And I click People button in one to one conversation
+    Then I see verified icon in conversation
+    When user <Contact> adds a new device Device2 with label Label2
+    # image
+    And I send picture <PictureName> to the current conversation
+    Then I see the new device warning
+    When I click cancel button in the new device warning
+    Then I see 1 unsent images in conversation
+    And I do not see verified icon in conversation
+    # file
+    When I send <Size> sized file with name <File> to the current conversation
+    Then I see the new device warning
+    When I click cancel button in the new device warning
+    Then I see 1 unsent image in conversation
+    And I see 1 unsent file in conversation
+    And I do not see verified icon in conversation
+    # ping
+    When I click ping button
+    Then I see the new device warning
+    When I click cancel button in the new device warning
+    Then I see 1 unsent image in conversation
+    And I see 1 unsent file in conversation
+    # Not implemented in webapp
+    # And I see 1 unsent ping in conversation
+    And I do not see verified icon in conversation
+    # ephemeral
+    When I click on ephemeral button
+    And I set the timer for ephemeral to <TimeLong>
+    When I write message <EphemeralMessage>
+    And I send message
+    Then I see the new device warning
+    When I click cancel button in the new device warning
+    Then I see 1 unsent image in conversation
+    And I see 1 unsent file in conversation
+    And I see 1 unsent message in conversation
+    And I do not see verified icon in conversation
+    # Finally send anyway
+    When I click on ephemeral button
+    And I set the timer for ephemeral to OFF
+    And I write message <SentAnyway>
+    And I send message
+    Then I see the new device warning
+    When I click send anyway button in the new device warning
+    Then I see 1 unsent image in conversation
+    And I see 1 unsent file in conversation
+    And I see 1 unsent message in conversation
+    And I see text message <SentAnyway>
+    And I do not see verified icon in conversation
+    # Logout and checked received stuff on the other side
+    When I open preferences by clicking the gear button
+    And I click logout in account preferences
+    And I see the clear data dialog
+    And I click logout button on clear data dialog
+    And I see Sign In page
+    And I Sign in using login <Login2> and password <Password2>
+    And I am signed in properly
+    And I open conversation with <Name>
+    Then I do not see text message <EphemeralMessage>
+    And I see 2 message in conversation
+    And I see text message <SentAnyway>
+
+    Examples:
+      | Email      | Password      | Name      | Contact   | Login2     | Password2     |PictureName               | File        | Size | TimeLong  | EphemeralMessage | SentAnyway |
+      | user1Email | user1Password | user1Name | user2Name | user2Email | user2Password |userpicture_landscape.jpg | C399348.zip | 15KB | 5 seconds | UnsentEphemeral  | SentAnyway |

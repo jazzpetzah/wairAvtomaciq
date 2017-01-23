@@ -216,7 +216,7 @@ Feature: Ephemeral
       | user1Email | user1Password | user1Name | user2Name | edit me         | edited        | 30   | 30 seconds | s             |
 
   @C261733 @ephemeral @smoke
-  Scenario Outline: Verify sending different types of ephemeral messages (ping, picture, video, audio, file) in 1:1
+  Scenario Outline: Verify sending ephemeral ping, picture, video, audio, file in 1:1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
@@ -243,8 +243,8 @@ Feature: Ephemeral
     And I see 1 messages in conversation
   #picture
     When I send picture <PictureName> to the current conversation
-    Then I see sent picture <PictureName> in the conversation view
     And I see only 1 picture in the conversation
+    Then I see sent picture <PictureName> in the conversation view
     And I see timer next to the last message
     When I wait for <Time> seconds
     Then I see block replaces the last message in the conversation view
@@ -297,7 +297,7 @@ Feature: Ephemeral
 
     Examples:
       | Login1     | Password      | Name      | Contact   | Time | TimeLong   | TimeShortUnit | PING       | PictureName               | VideoFile   | SizeVideo | AudioFile   | AudioTime | File         | SizeFile | TypeFile |
-      | user1Email | user1Password | user1Name | user2Name | 5    | 5 seconds  | s             | you pinged | userpicture_landscape.jpg | C261733.mp4 | 1 MB      | example.wav | 00:20     | C261733.zip  | 512KB    | ZIP      |
+      | user1Email | user1Password | user1Name | user2Name | 30   | 30 seconds | s             | you pinged | userpicture_landscape.jpg | C261733.mp4 | 1 MB      | example.wav | 00:20     | C261733.zip  | 512KB    | ZIP      |
 
   @C310631 @ephemeral @regression
   Scenario Outline: Verify sender can not download asset while it is obfuscated in 1:1
@@ -423,7 +423,8 @@ Feature: Ephemeral
   @C318623 @ephemeral @staging @WEBAPP-3302 @localytics
   Scenario Outline: Verify sending ephemeral text message in group
     Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>, <Contact2>
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Contact1> has unique username
     Given Myself have group chat <ChatName> with <Contact1>,<Contact2>
     Given I enable localytics via URL parameter
     Given I switch to Sign In page

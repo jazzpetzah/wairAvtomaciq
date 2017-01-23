@@ -516,6 +516,8 @@ public final class WebAppLocators {
 
         public static final String cssFilePlaceholder = cssFile + " .asset-placeholder";
 
+        public static final String cssUnsentFileAmount = "[data-uie-name='file'] .asset-placeholder";
+
         public static final String cssFileType = cssFile + " [data-uie-name='file-type']";
 
         public static final String cssFileCancelUpload = cssFile + " .icon-close";
@@ -556,9 +558,13 @@ public final class WebAppLocators {
 
         public static final String cssImageEntries = "[data-uie-name='go-image-detail'][data-uie-visible='true']";
 
-        public static final String cssLoadingImageEntries = "[data-uie-name='go-image-detail'][data-uie-visible='true'].image-loading";
+        public static final String cssUnsentImageAmount = "[data-uie-name='go-image-detail'][data-uie-visible='true'].image-loading";
+
+        // messages
 
         public static final String cssMessageAmount = "[data-uie-name='item-message']";
+
+        public static final String cssUnsentMessageAmount = "[data-uie-name='item-message'] .message-body .text-graphite";
 
         public static final String cssDeletedMessageAmount = "[data-uie-name='item-message'][data-uie-value='delete']";
 
@@ -646,7 +652,7 @@ public final class WebAppLocators {
 
         public static final String cssConnectedMessageLabel = ".message-connected .label-xs";
 
-        public static final String cssConversationVerifiedIcon = ".conversation-verified";
+        public static final String cssConversationVerifiedIcon = "#conversation-titlebar .conversation-verified-icon";
 
         public static final String cssTitlebarLabel = ".conversation-titlebar-name-label";
 
@@ -661,6 +667,14 @@ public final class WebAppLocators {
                 "]//div[contains(@class, 'modal-close')]";
 
         public static final String cssFirstTimeExperienceMessage = "[data-uie-name='start-conversation-hint']";
+
+        // New device warning modal
+
+        public static final String cssNewDeviceWarning = "[data-uie-name='modal-new-device']";
+
+        public static final String cssCancelNewDeviceWarning = "[data-uie-name='go-show-device']";
+
+        public static final String cssSendAnyway = cssNewDeviceWarning + " [data-uie-name='do-send']";
     }
     
     public static final class PictureFullscreenPage {
@@ -702,7 +716,9 @@ public final class WebAppLocators {
 
         public static final String cssFiles = "[data-uie-name='collection-section-file'] [data-uie-name='file-name']";
 
-        public static final String cssFileCollectionSize = "[data-uie-name='collection-section-file'] [data-uie-name='collection-size']";
+        public static final String cssFilesPage = ".content-list file-asset";
+
+        public static final String cssFileCollectionSize = "[data-uie-name='collection-section-file'] [data-uie-name='collection-show-all']";
 
         public static final String cssLinkPreviewUrls = "[data-uie-name='collection-section-link'] [data-uie-name='link-preview-url']";
 

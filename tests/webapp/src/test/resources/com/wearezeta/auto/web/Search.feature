@@ -22,7 +22,7 @@ Feature: Search
       | Login      | Password      | Name      | Contact   | ContactUniqueUsername |
       | user1Email | user1Password | user1Name | user2Name | user2UniqueUsername   |
 
-  @C352241 @regression
+  @C399360 @regression
   Scenario Outline: Verify search by username for connected user
     Given There are 2 users where <Name> is me
     Given <Contact> has unique username

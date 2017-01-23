@@ -286,6 +286,12 @@ public class SingleUserPopoverPageSteps {
         context.getPagesCollection().getPage(SingleUserPopoverContainer.class).clickDevice(id);
     }
 
+    @When("^I click on first device of user (.*) on Single User Profile popover$")
+    public void IClickOnFirstDevice(String userAlias) throws Exception {
+        ClientUser user = context.getUsersManager().findUserByNameOrNameAlias(userAlias);
+        context.getPagesCollection().getPage(SingleUserPopoverContainer.class).clickFirstDevice();
+    }
+
     @When("^I see unique username (.*) on Single User popover$")
     public void ISeeUniqueUsernameOnSingleUserPopover(String userAlias) throws Exception {
         ClientUser user = context.getUsersManager().findUserBy(userAlias, FindBy.NAME_ALIAS);

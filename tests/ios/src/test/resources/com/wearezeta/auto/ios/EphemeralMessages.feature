@@ -391,25 +391,3 @@ Feature: Ephemeral Messages
     Examples:
       | Name      | Contact   | Timer | EphemeralTimeLabel |
       | user1Name | user2Name | 15    | seconds            |
-
-  @C261693 @regression @fastLogin
-  Scenario Outline: Verify missed call didn't disappear after receiver saw it
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given User adds the following device: {"<Contact>": [{"name": "<DeviceName>"}]}
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    Given I tap on contact name <Contact>
-    Given I tap Hourglass button in conversation view
-    Given I set ephemeral messages expiration timer to <Timeout> seconds
-    Given I tap Audio Call button
-    Given I see Calling overlay
-    Given I tap Leave button on Calling overlay
-    Given I see "<Message>" system message in the conversation view
-    When User <Contact> reads the recent message from user <Name>
-    And I wait for <Timeout> seconds
-    Then I see "<Message>" system message in the conversation view
-
-    Examples:
-      | Name      | Contact   | Timeout | Message    | DeviceName |
-      | user1Name | user2Name | 5       | YOU CALLED | userDevice |

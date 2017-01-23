@@ -87,7 +87,7 @@ Feature: Unique Usernames
       | Name      | Contact1WithABEmail | Contact1ABName | Contact1Email | Contact2WithABPhoneNumber | Contact2ABName | Contact2PhoneNumber | Contact3WithUniqueUserName | Contact3UniqueUserName | Contact4WithCommonFriends | Contact5WithSameNameInAB | Contact5Email | Contact6Common |
       | user1Name | user2Name           | user2ABName    | user2Email    | user3Name                 | user3ABName    | user3PhoneNumber    | user4Name                  | user4UniqueUsername    | user5Name                 | user6Name                | user6Email    | user7Name      |
 
-  @C352039 @regression @fastLogin
+  @C352039 @regression @fastLogin @rc
   Scenario Outline: Verify impossibility to save incorrect username
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -259,7 +259,7 @@ Feature: Unique Usernames
       | Name      | MyUniqueUsername    | Contact   | ExpectedText  | ReservedUniqueUsername | ReservedText           |
       | user1Name | user1UniqueUsername | user2Name | Already taken | admin                  | Unable to set username |
 
-  @C352058 @addressbookStart @forceReset @regression
+  @C352058 @addressbookStart @forceReset @regression @rc
   Scenario Outline: Verify 1-to-1 conversation details
     Given There are 7 users where <Name> is me
     Given Users <Name>,<Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact5WithSameNameInAB>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact6Common> upload own details
@@ -394,7 +394,7 @@ Feature: Unique Usernames
       | Name      | Contact1WithABEmail | Contact1ABName | Contact1UniqueUsername | Contact1Email | Contact2WithABPhoneNumber | Contact2ABName | Contact2PhoneNumber | Contact3WithUniqueUserName | Contact3UniqueUserName | Contact4WithCommonFriends | Contact5WithSameNameInAB | Contact5Email | Contact6Common | Contact7WoCF |
       | user1Name | user2Name           | user2ABName    | user2UniqueUsername    | user2Email    | user3Name                 | user3ABName    | user3PhoneNumber    | user4Name                  | user4UniqueUsername    | user5Name                 | user6Name                | user6Email    | user7Name      | user8Name    |
 
-  @C352029 @regression @fastLogin
+  @C352029 @regression @fastLogin @rc
   Scenario Outline: Verify autogeneration of a username for an existing user (different scenarios)
     Given There is 1 user
     Given User <NameAlias> is me

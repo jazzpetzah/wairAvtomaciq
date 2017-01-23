@@ -131,6 +131,10 @@ public class SingleUserPopoverContainer extends PeoplePopoverContainer {
         this.singleUserPopoverPage.clickDevice(deviceId);
     }
 
+    public void clickFirstDevice() throws Exception {
+        this.singleUserPopoverPage.clickFirstDevice();
+    }
+
     public void clickConfirmButton() {
         this.blockUserConfirmationPopoverPage.clickConfirmButton();
     }

@@ -1874,4 +1874,43 @@ public class CommonIOSSteps {
         IOSTestContextHolder.getInstance().getTestContext().getCommonSteps().
                 UserIsTypingInConversation(userAs, conversation);
     }
+
+    /**
+     * Send multiple images or videos to the conversation
+     *
+     * @param senderUserNameAlias sender name/alias
+     * @param count               count of items to send
+     * @param fileName            the name of existing media file.
+     *                            Only m4a/mp4 files can be set for audio and video types
+     * @param fileType            one of possible file types
+     * @param dstConversationName destination conversation name
+     * @throws Exception
+     * @step. ^User (.*) sends (\d+) (image|video|audio|temporary) files? (.*) to conversation (.*)
+     */
+    @Given("^User (.*) sends (\\d+) (image|video|audio|temporary) files? (.*) to conversation (.*)")
+    public void UserSendsMultiplePictures(String senderUserNameAlias, int count,
+                                          String fileType, String fileName,
+                                          String dstConversationName) throws Exception {
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .UserSendMultipleMedias(senderUserNameAlias, count, fileType, fileName, dstConversationName);
+    }
+
+    /**
+     * Send multiple messages to the conversation
+     *
+     * @param senderUserNameAlias sender name/alias
+     * @param count               count of text messages to send
+     * @param msg                 either 'default' to send the default message or the actual messages
+     *                            enclosed by double quotes
+     * @param dstConversationName destination conversation name
+     * @throws Exception
+     * @step. ^User (.*) sends (\d+) (default|".*") messages? to conversation (.*)
+     */
+    @Given("^User (.*) sends (\\d+) (default|\".*\") messages? to conversation (.*)")
+    public void UserSendsMultipleMessages(String senderUserNameAlias, int count,
+                                          String msg, String dstConversationName) throws Exception {
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .UserSendsMultipleMessages(senderUserNameAlias, count, msg, dstConversationName,
+                        CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
+    }
 }
