@@ -299,6 +299,8 @@ Feature: Collections
     Given Users add the following devices: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    # Wait for sync
+    Given I wait for 5 seconds
     Given User <Contact> sends <MsgCount> default messages to conversation Myself
     Given I see conversations list
     Given I tap on contact name <Contact>
