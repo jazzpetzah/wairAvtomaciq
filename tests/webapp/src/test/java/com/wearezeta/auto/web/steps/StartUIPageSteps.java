@@ -376,6 +376,6 @@ public class StartUIPageSteps {
         ClientUser user = context.getUsersManager().findUserByNameOrNameAlias(nameAlias);
         assertThat(context.getPagesCollection().getPage(StartUIPage.class)
                         .getCommonFriendsForUser(user.getId()),
-                equalTo(amount));
+                containsString(Integer.toString(amount)));
     }
 }
