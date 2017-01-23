@@ -862,6 +862,10 @@ public final class WebAppLocators {
 
         public static final String cssSearchField = "[data-uie-name='enter-users']";
 
+        public static final Function<String, String> cssCommonFriendsById = uid -> String
+                .format("[data-uie-name='item-user'][data-uie-uid='%s'] [data-uie-common-friends]",
+                        uid);
+
         public static final String cssBringFriendsFromGMailButton = "[data-uie-name='from-gmail']";
 
         public static final String cssBringFriendsFromContactsButton = "[data-uie-name='from-contacts']";
