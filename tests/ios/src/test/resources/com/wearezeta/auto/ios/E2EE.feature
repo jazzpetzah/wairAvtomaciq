@@ -509,6 +509,7 @@ Feature: E2EE
   @C395996 @staging @fastLogin
   Scenario Outline: Verify forwarding message into downgraded conversation
     Given There are 3 users where <Name> is me
+    Given Users add the following devices: {"<Contact1>": [{}], "<Contact2>": [{}]}
     Given Myself is connected to all other users
     Given I sign in using my email
     Given User <Contact1> sends 1 encrypted message to user Myself
