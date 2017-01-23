@@ -171,13 +171,8 @@ public class LoginPageSteps {
 
     @Then("^I see login error \"(.*)\"$")
     public void ISeeLoginError(String expectedError) throws Exception {
-        final String loginErrorText = context.getPagesCollection().getPage(
-                LoginPage.class).getErrorMessage();
-        Assert.assertTrue(
-                String.format(
-                        "The actual login error '%s' is not equal to the expected one: '%s'",
-                        loginErrorText, expectedError), loginErrorText
-                        .equals(expectedError));
+        final String loginErrorText = context.getPagesCollection().getPage(LoginPage.class).getErrorMessage();
+        assertThat("The actual login error is not equal to the expected one", loginErrorText, equalTo(expectedError));
     }
 
     @When("^I switch to phone number sign in page$")
