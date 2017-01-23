@@ -233,6 +233,7 @@ Feature: Collection
     And I send <FileSize> sized file with name <FileName> to the current conversation
     And I send <FileSize> sized file with name <FileName> to the current conversation
     And I send <FileSize> sized file with name <FileName> to the current conversation
+    And I see 6 messages in conversation
     When I click collection button in conversation
     And I see <Amount> files in collection
     And I click show all files label
@@ -240,7 +241,7 @@ Feature: Collection
 
     Examples:
       | Email      | Password      | Name      | Contact   | FileName        | FileSize | Amount |
-      | user1Email | user1Password | user1Name | user2Name | collections.txt | 1MB      | 5      |
+      | user1Email | user1Password | user1Name | user2Name | collections.txt | 700KB    | 5      |
 
   @C399357 @collection @regression
   Scenario Outline: Verify deleted media isn't in collection on other side
