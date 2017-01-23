@@ -214,10 +214,12 @@ Feature: Collection
     And I see localytics event <Event1> with attributes <Attributes1>
     And I click on picture 1 in collection
     Then I see picture <PictureName> in picture fullscreen
+    And I see a name <Name> in picture fullscreen
+    And I see a timestamp in picture fullscreen
     And I see localytics event <Event2> with attributes <Attributes2>
 
     Examples:
-      | Email      | Password      | Name      | Contact   | PictureName               | Event1                         | Attributes1                                                                    | Event2                 | Attributes2                                                                   |
+      | Email      | Password      | Name      | Contact   | PictureName               | Event1                         | Attributes1                                                                   | Event2                  | Attributes2                                                                   |
       | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg | collections.opened_collections | {\"is_empty\":false,\"conversation_type\":\"one_to_one\",\"with_bot\":false}" | collections.opened_item | {\"type\":\"image\",\"conversation_type\":\"one_to_one\",\"with_bot\":false}" |
 
   @C378058 @collection @staging
