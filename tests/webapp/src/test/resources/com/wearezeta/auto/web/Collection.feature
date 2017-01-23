@@ -242,7 +242,7 @@ Feature: Collection
       | Email      | Password      | Name      | Contact   | FileName        | FileSize | Amount |
       | user1Email | user1Password | user1Name | user2Name | collections.txt | 1MB      | 5      |
 
-  @C399357 @collection @staging
+  @C399357 @collection @regression
   Scenario Outline: Verify deleted media isn't in collection on other side
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
