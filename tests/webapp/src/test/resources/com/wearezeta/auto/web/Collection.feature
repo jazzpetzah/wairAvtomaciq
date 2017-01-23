@@ -214,10 +214,12 @@ Feature: Collection
     And I see localytics event <Event1> with attributes <Attributes1>
     And I click on picture 1 in collection
     Then I see picture <PictureName> in picture fullscreen
+    And I see a name <Name> in picture fullscreen
+    And I see a timestamp in picture fullscreen
     And I see localytics event <Event2> with attributes <Attributes2>
 
     Examples:
-      | Email      | Password      | Name      | Contact   | PictureName               | Event1                         | Attributes1                                                                    | Event2                 | Attributes2                                                                   |
+      | Email      | Password      | Name      | Contact   | PictureName               | Event1                         | Attributes1                                                                   | Event2                  | Attributes2                                                                   |
       | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg | collections.opened_collections | {\"is_empty\":false,\"conversation_type\":\"one_to_one\",\"with_bot\":false}" | collections.opened_item | {\"type\":\"image\",\"conversation_type\":\"one_to_one\",\"with_bot\":false}" |
 
   @C378058 @collection @staging
@@ -233,6 +235,7 @@ Feature: Collection
     And I send <FileSize> sized file with name <FileName> to the current conversation
     And I send <FileSize> sized file with name <FileName> to the current conversation
     And I send <FileSize> sized file with name <FileName> to the current conversation
+    And I see 6 messages in conversation
     When I click collection button in conversation
     And I see <Amount> files in collection
     And I click show all files label
@@ -240,9 +243,9 @@ Feature: Collection
 
     Examples:
       | Email      | Password      | Name      | Contact   | FileName        | FileSize | Amount |
-      | user1Email | user1Password | user1Name | user2Name | collections.txt | 1MB      | 5      |
+      | user1Email | user1Password | user1Name | user2Name | collections.txt | 700KB    | 5      |
 
-  @C399357 @collection @staging
+  @C399357 @collection @regression
   Scenario Outline: Verify deleted media isn't in collection on other side
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

@@ -177,4 +177,8 @@ public class PictureFullscreenPage extends WebPage {
                 ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
     }
 
+    public boolean isTimestampVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+                By.cssSelector(WebAppLocators.PictureFullscreenPage.cssTimestamp));
+    }
 }

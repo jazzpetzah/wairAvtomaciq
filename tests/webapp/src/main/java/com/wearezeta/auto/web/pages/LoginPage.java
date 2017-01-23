@@ -154,9 +154,8 @@ public class LoginPage extends WebPage {
         changePasswordButton.click();
     }
 
-    public String getErrorMessage() throws InterruptedException, Exception {
-        DriverUtils.waitUntilLocatorAppears(getDriver(),
-                By.xpath(WebAppLocators.LoginPage.cssLoginErrorText));
+    public String getErrorMessage() throws Exception {
+        DriverUtils.waitUntilLocatorAppears(getDriver(), By.cssSelector(WebAppLocators.LoginPage.cssLoginErrorText));
         return loginErrorText.getText();
     }
 

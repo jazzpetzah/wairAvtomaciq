@@ -22,7 +22,7 @@ public class CollectionPage extends IOSPage {
 
     private static final Function<Integer, String> xpathStrPictureCollectionItemByIndex = idx ->
             String.format("(//XCUIElementTypeCell[ " +
-                    "count(.//XCUIElementTypeImage[not(@name)])=1 ])[%s]", idx);
+                    ".//XCUIElementTypeImage[@name='image'] ])[%s]", idx);
     private static final Function<Integer, String> xpathStrVideoCollectionItemByIndex = idx ->
             String.format("(//XCUIElementTypeCell[ " +
                     ".//XCUIElementTypeButton[@name='VideoActionButton'] ])[%s]", idx);

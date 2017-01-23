@@ -349,3 +349,28 @@ Feature: Search
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName |
       | user1Email | user1Password | user1Name | user2Name | user3Name | OPEN_ME  |
+
+  @C352082 @staging
+  Scenario Outline: Verify search for unconnected user, with the common friends
+    Given There are 6 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <UnknownContact1> has unique username
+    Given <UnknownContact1> is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I wait until <UnknownContact1> has 4 common friends on the backend
+    Given I am signed in properly
+    When I open search by clicking the people button
+    And I see Search is opened
+    And I see Bring Your Friends or Invite People button
+    And I type <UnknownContact1> in search field of People Picker
+    Then I see user <UnknownContact1> with username <ContactUniqueUsername> found in People Picker
+    When I clear the search field of People Picker
+    Then I do not see user <UnknownContact1> found in People Picker
+    When I type <ContactUniqueUsername> in search field of People Picker
+    Then I see user <UnknownContact1> with username <ContactUniqueUsername> found in People Picker
+    And I see 4 common friends on search list for user <UnknownContact1> found in People Picker
+
+    Examples:
+      | Login      | Password      | Name      | UnknownContact1 | ContactUniqueUsername | Contact1  | Contact2  | Contact3  | Contact4  |
+      | user1Email | user1Password | user1Name | user2Name       | user2UniqueUsername   | user3Name | user4Name | user5Name | user6Name |

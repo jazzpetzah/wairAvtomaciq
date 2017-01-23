@@ -1,6 +1,6 @@
 Feature: Collections
 
-  @C399347 @regression
+  @C399347 @regression @rc
   Scenario Outline: Verify main overview shows media from all categories (picture, file, link)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -40,7 +40,7 @@ Feature: Collections
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C399353 @regression
+  @C399353 @regression @rc
   Scenario Outline: Verify opening single picture from all shared media overview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -62,7 +62,7 @@ Feature: Collections
       | Name      | Contact   | Picture        |
       | user1Name | user2Name | avatarTest.png |
 
-  @C399352 @regression
+  @C399352 @regression @rc
   Scenario Outline: Verify opening single picture from pictures overview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -84,7 +84,7 @@ Feature: Collections
       | Name      | Contact   | Picture        |
       | user1Name | user2Name | avatarTest.png |
 
-  @C399355 @regression
+  @C399355 @regression @rc
   Scenario Outline: Verify ephemeral messages are not shown in the collection view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -140,7 +140,7 @@ Feature: Collections
       | Name      | Contact   | Picture        | Link                  | FileName | FileExt | FileSize | Timeout |
       | user1Name | user2Name | avatarTest.png | https://www.wire.com/ | testing  | bin     | 10 KB    | 15      |
 
-  @C399358 @regression
+  @C399358 @regression @rc
   Scenario Outline: Verify collection is available for a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
@@ -192,7 +192,7 @@ Feature: Collections
       | Name      | MySecondDevice | Contact   | Picture        | Link                  | FileName      | FileSize | MIMEType   | ContactDevice |
       | user1Name | SecondDev      | user2Name | avatarTest.png | https://www.wire.com/ | qa_random.txt | 1.00MB   | text/plain | device1       |
 
-  @C399363 @regression
+  @C399363 @regression @rc
   Scenario Outline: Verify collection content is updated after reopen if new media item appears in chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -224,7 +224,7 @@ Feature: Collections
       | Name      | Contact1  | Contact2  | GroupChatName   | Picture        | Link                  |
       | user1Name | user2Name | user3Name | GroupCollection | avatarTest.png | https://www.wire.com/ |
 
-  @C399365 @regression
+  @C399365 @regression @rc
   Scenario Outline: Verify you can Reveal collection item
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -331,7 +331,7 @@ Feature: Collections
       | Name      | Contact   | Picture        | Link                  | FileName      | FileSize | MIMEType   | ContactDevice | Timeout |
       | user1Name | user2Name | avatarTest.png | https://www.wire.com/ | qa_random.txt | 1.00MB   | text/plain | device1       | 10      |
 
-  @C399371 @regression
+  @C399371 @regression @rc
   Scenario Outline: Verify I can like and delete only for me of an image from fullscreen view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

@@ -1,7 +1,9 @@
 package com.wearezeta.auto.web.steps;
 
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.PictureFullscreenPage;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import static org.hamcrest.CoreMatchers.is;
@@ -40,6 +42,18 @@ public class PictureFullscreenPageSteps {
             assertThat("Liked by me", context.getPagesCollection().getPage(PictureFullscreenPage.class).isLikedByMeInvisible(),
                     is(true));
         }
+    }
+
+    @And("^I see a timestamp in picture fullscreen$")
+    public void ISeeTimestampOnFullscreen() throws Exception {
+        assertThat("Timestamp on picture fullscreen", context.getPagesCollection().getPage(PictureFullscreenPage.class).isTimestampVisible(),
+                is(true));
+    }
+
+    @And("^I see a name (.*) in picture fullscreen$")
+    public void ISeeSenderNameOnFullscreen(String name) throws Exception {
+            name = context.getUsersManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        assertThat("Name on picture fullscreen", context.getPagesCollection().getPage(PictureFullscreenPage.class).getSenderName().equals(name));
     }
 
     @Then("^I (do not )?see like button in picture fullscreen$")
