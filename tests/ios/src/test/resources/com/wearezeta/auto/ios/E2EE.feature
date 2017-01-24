@@ -526,7 +526,7 @@ Feature: E2EE
     Given I tap on contact name <Contact2>
     Given User <Contact2> sends 1 encrypted message to user Myself
     When I long tap default message in conversation view
-    And I tap on Forward badge item
+    And I tap on Share badge item
     And I select <Contact1> conversation on Forward page
     And I tap Send button on Forward page
     And I navigate back to conversations list

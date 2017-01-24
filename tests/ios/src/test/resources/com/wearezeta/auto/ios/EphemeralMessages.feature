@@ -342,7 +342,7 @@ Feature: Ephemeral Messages
     And I do not see Delete badge item
     And I do not see Like badge item
     And I do not see Copy badge item
-    And I do not see Forward badge item
+    And I do not see Share badge item
 
     Examples:
       | Name      | Contact   | Message1    | DeviceName | DeviceLabel | EphemeralTimeout |

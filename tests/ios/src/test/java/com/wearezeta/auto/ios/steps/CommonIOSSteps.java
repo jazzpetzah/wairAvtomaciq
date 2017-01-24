@@ -1555,9 +1555,9 @@ public class CommonIOSSteps {
      * @param shouldNotSee equals to null if the corresponding item should be visible
      * @param itemName     the badge item name
      * @throws Exception
-     * @step. ^I (do not )?see (Select All|Copy|Delete|Paste|Save|Edit|Like|Unlike|Forward) badge item$
+     * @step. ^I (do not )?see (Select All|Copy|Delete|Paste|Save|Edit|Like|Unlike|Forward|Share) badge item$
      */
-    @Then("^I (do not )?see (Select All|Copy|Delete|Paste|Save|Edit|Like|Unlike|Forward) badge item$")
+    @Then("^I (do not )?see (Select All|Copy|Delete|Paste|Save|Edit|Like|Unlike|Forward|Share) badge item$")
     public void ISeeBadge(String shouldNotSee, String itemName) throws Exception {
         boolean result;
         if (shouldNotSee == null) {
@@ -1576,9 +1576,9 @@ public class CommonIOSSteps {
      *
      * @param itemName the badge item name
      * @throws Exception
-     * @step. ^I tap on (Select All|Copy|Save|Delete|Paste|Edit|Like|Unlike|Forward|Reveal) badge item$
+     * @step. ^I tap on (Select All|Copy|Save|Delete|Paste|Edit|Like|Unlike|Forward|Reveal|Share) badge item$
      */
-    @When("^I tap on (Select All|Copy|Save|Delete|Paste|Edit|Like|Unlike|Forward|Reveal) badge item$")
+    @When("^I tap on (Select All|Copy|Save|Delete|Paste|Edit|Like|Unlike|Forward|Reveal|Share) badge item$")
     public void ITapBadge(String itemName) throws Exception {
         IOSTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage().tapBadgeItem(itemName);
     }

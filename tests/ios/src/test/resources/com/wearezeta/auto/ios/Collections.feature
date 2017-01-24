@@ -190,19 +190,19 @@ Feature: Collections
     Given I tap on contact name <Contact1Sender>
     Given I tap Collection button in conversation view
     When I long tap the item number 1 in collection category PICTURES
-    And I tap on Forward badge item
+    And I tap on Share badge item
     And I select <Contact2> conversation on Forward page
     Then I tap Send button on Forward page
     When I tap Collection button in conversation view
     And I long tap the item number 1 in collection category VIDEOS
-    Then I do not see Forward badge item
+    Then I do not see Share badge item
     When I long tap the item number 1 in collection category LINKS
-    And I tap on Forward badge item
+    And I tap on Share badge item
     And I select <Contact4> conversation on Forward page
     Then I tap Send button on Forward page
     When I tap Collection button in conversation view
     And I long tap the item number 1 in collection category FILES
-    And I do not see Forward badge item
+    And I do not see Share badge item
     And I tap X button in collection view
     Then I see conversation with user <Contact1Sender>
     When I navigate back to conversations list
