@@ -565,7 +565,7 @@ public class ConversationPageSteps {
 
     @When("^I click cancel to delete message for me$")
     public void IClickCancelToDelete() throws Exception {
-        context.getPagesCollection().getPage(ConversationPage.class).cancelDelete();
+        context.getPagesCollection().getPage(ConversationPage.class).cancelDeleteForMe();
     }
 
     @When("^I hover over the latest message$")
