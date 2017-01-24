@@ -516,7 +516,7 @@ Feature: E2EE
     Then I see device Device3 of user <Contact> is verified on Single User Profile popover
     Then I see user verified icon on Single User Profile popover
     When I click People button in one to one conversation
-    Then I see <ALL_VERIFIED> action in conversation
+    Then I see <ALL_VERIFIED> action 2 times in conversation
     And I see verified icon in conversation
 
   Examples:
@@ -583,7 +583,7 @@ Feature: E2EE
     Then I see device Device3 of user <Contact> is verified on Single User Profile popover
     Then I see user verified icon on Single User Profile popover
     When I click People button in one to one conversation
-    Then I see <ALL_VERIFIED> action in conversation
+    Then I see <ALL_VERIFIED> action 2 times in conversation
     And I see verified icon in conversation
 
     Examples:
