@@ -134,18 +134,18 @@ public final class WebAppLocators {
 
         public static final Function<String, String> xpathMissedCallNotificationByContactName = (
                 name) -> String
-                .format("//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/..//*[local-name() = " +
-                                "'svg' and @data-uie-name='status-unread']", name);
+                .format("//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/.."
+                        + "//*[@data-uie-name='status-unread'] and @data-uie-value='call']", name);
 
         public static final Function<String, String> xpathPingIconByContactName = (
                 name) -> String
-                .format("//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/parent::"
-                                + "*//*[@data-uie-name='status-unread' and contains(@class, 'icon-ping')]", name);
+                .format("//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/.."
+                        + "//*[@data-uie-name='status-unread' and @data-uie-value='ping']", name);
 
         public static final Function<String, String> xpathUnreadDotByContactName = (
                 name) -> String
-                .format("//*[@data-uie-name='item-conversation' and " +
-                                "@data-uie-value='%s']/..//*[@data-uie-name='status-unread']", name);
+                .format("//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/.."
+                        + "//*[@data-uie-name='status-unread' and @data-uie-value='message']", name);
 
         public static final Function<String, String> xpathMuteIconByContactName = (
                 name) -> String.format(
