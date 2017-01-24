@@ -168,7 +168,7 @@ Feature: Collections
     Given I see full-screen image preview in collection view
     Given I remember current picture preview state
     When I swipe left on full-screen image preview in collection view
-    Then I verify that current picture preview similarity score is less than 0.2 within 1 second
+    Then I verify that current picture preview similarity score is less than 0.8 within 1 second
     When I swipe right on full-screen image preview in collection view
     Then I verify that current picture preview similarity score is more than 0.8 within 1 second
 
