@@ -17,13 +17,13 @@ Feature: Offline Mode
     Then I do not see the message "<Message2>" in the conversation view
     When User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     And I wait for 3 seconds
-    Then I do not see any new pictures in the conversation view
+    Then I do not see any pictures in the conversation view
     When I disable Airplane mode on the device
     # To let the content load properly after offline mode
     And I wait for 15 seconds
     Then I see the message "<Message2>" in the conversation view
     And I scroll to the bottom of the conversation view
-    And I see a new picture in the conversation view
+    And I see a picture in the conversation view
 
     Examples:
       | Name      | Contact   | Message1 | Message2  | Picture     |
@@ -48,7 +48,7 @@ Feature: Offline Mode
     And I tap Add picture button from cursor toolbar
     And I tap Take Photo button on Take Picture view
     And I tap Confirm button on Take Picture view
-    Then I see a new picture in the conversation view
+    Then I see a picture in the conversation view
     And I scroll to the bottom of the conversation view
     And I see Message status with expected text "Sending failed. Resend" in conversation view
 
