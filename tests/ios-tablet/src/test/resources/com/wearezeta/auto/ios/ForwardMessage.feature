@@ -4,9 +4,10 @@ Feature: Forward Message
   Scenario Outline: Verify forwarding own picture
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given User adds the following device: {"Myself": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given User Myself sends encrypted image <Picture> to single user conversation <Contact1>
+    Given User Myself sends 1 image file <Picture> to conversation <Contact1>
     Given I see conversations list
     Given I tap on contact name <Contact1>
     # Wait for the picture to be loaded
@@ -31,10 +32,11 @@ Feature: Forward Message
     Given User Myself blocks user <BlockedUser>
     Given <NonConnectedIncomingUser> sent connection request to Me
     Given Myself sent connection request to <NonConnectedOutgoingUser>
+    Given User adds the following device: {"<ConnectedUser1>": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given <ConnectedUser1> removes Me from group chat <GroupChatName>
-    Given User <ConnectedUser1> sends 1 encrypted message to user Myself
+    Given User <ConnectedUser1> sends 1 default message to conversation Myself
     Given I see conversations list
     Given I tap on contact name <ConnectedUser1>
     Given I long tap default message in conversation view
@@ -52,9 +54,10 @@ Feature: Forward Message
   Scenario Outline: Verify message is sent as normal when ephemeral keyboard is chosen in the destination conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given User adds the following device: {"<Contact2>": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given User <Contact2> sends 1 encrypted message to user Myself
+    Given User <Contact2> sends 1 default message to conversation Myself
     Given I see conversations list
     Given I tap on contact name <Contact1>
     Given I tap Hourglass button in conversation view
@@ -78,10 +81,11 @@ Feature: Forward Message
   Scenario Outline: ZIOS-7674 Verify forwarding to archived conversation unarchive it
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given Users add the following devices: {"Myself": [{}], "<Contact1>": [{}]}
     Given User Myself archives single user conversation <Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given User <Contact1> sends 1 encrypted message to user Myself
+    Given User <Contact1> sends 1 default message to conversation Myself
     Given I see conversations list
     Given I do not see conversation <Contact2> in conversations list
     Given I tap on contact name <Contact1>
@@ -121,10 +125,11 @@ Feature: Forward Message
   Scenario Outline: Verify forwarding someone else audio message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given Users add the following devices: {"Myself": [{}], "<Contact1>": [{"name": "<ContactDevice>"}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    Given User Me sends 1 encrypted message to user <Contact1>
+    Given User Me sends 1 default message to conversation <Contact1>
     Given I see conversations list
     Given I tap on contact name <Contact1>
     # Small wait to make the appearence of button on jenkins more stable
@@ -150,6 +155,7 @@ Feature: Forward Message
   Scenario Outline: (ZIOS-7682) Verify forwarding someone else video message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given User adds the following device: {"<Contact1>": [{"name": "<DeviceName>"}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given User <Contact1> sends file <FileName> having MIME type <MIMEType> to single user conversation <Name> using device <DeviceName>

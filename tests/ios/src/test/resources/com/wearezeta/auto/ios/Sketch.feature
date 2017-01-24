@@ -42,8 +42,9 @@ Feature: Sketch
   Scenario Outline: Verify drawing on image by Sketch on image button tap
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
-    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    Given User <Contact> sends 1 image file <Picture> to conversation Myself
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap on image in conversation view
@@ -60,8 +61,9 @@ Feature: Sketch
   Scenario Outline: Verify you can add a smile on sketch
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
-    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    Given User <Contact> sends 1 image file <Picture> to conversation Myself
     Given I see conversations list
     Given I tap on contact name <Contact>
     Given I tap on image in conversation view

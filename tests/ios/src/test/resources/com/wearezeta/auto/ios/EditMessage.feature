@@ -5,7 +5,7 @@ Feature: Edit Message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    Given User <Contact> sends 1 encrypted message to user Myself
+    Given User <Contact> sends 1 default message to conversation Myself
     Given I see conversations list
     When I tap on contact name <Contact>
     Then I see 1 default message in the conversation view
@@ -213,7 +213,7 @@ Feature: Edit Message
     Given Myself is connected to <Contact1>
     Given User adds the following device: {"Myself": [{"name": "<Device>"}]}
     Given I sign in using my email or phone number
-    Given User Myself sends encrypted message "<Message>" to user <Contact1>
+    Given User Myself sends 1 "<Message>" message to conversation <Contact1>
     Given I see conversations list
     When I tap on contact name <Contact1>
     Then I see the conversation view contains message <Message>
@@ -232,7 +232,7 @@ Feature: Edit Message
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given User adds the following device: {"Myself": [{"name": "<Device>"}]}
     Given I sign in using my email or phone number
-    Given User Myself sends encrypted message "<Message>" to group conversation <GroupChatName>
+    Given User Myself sends 1 "<Message>" message to conversation <GroupChatName>
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     Then I see the conversation view contains message <Message>
@@ -248,6 +248,7 @@ Feature: Edit Message
   Scenario Outline: Verify I can't edit picture/video/audio
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
     Given User <Contact> sends file <VideoFileName> having MIME type <VideoMIMEType> to single user conversation <Name> using device <DeviceName>
     Given I see conversations list
@@ -259,7 +260,7 @@ Feature: Edit Message
     And I wait for 5 seconds
     And I long tap on audio message placeholder in conversation view
     Then I do not see Edit badge item
-    When User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    When User <Contact> sends 1 image file <Picture> to conversation Myself
     And I wait for 5 seconds
     And I long tap on image in conversation view
     Then I do not see Edit badge item
@@ -272,10 +273,11 @@ Feature: Edit Message
   Scenario Outline: Verify edited message has an additional name and avatar and save its position in the conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"Myself": [{}]}
     Given I sign in using my email or phone number
-    Given User Myself sends encrypted message "<Message1>" to user <Contact>
-    Given User Myself sends encrypted message "<Message2>" to user <Contact>
-    Given User Myself sends encrypted message "<Message3>" to user <Contact>
+    Given User Myself sends 1 "<Message1>" message to conversation <Contact>
+    Given User Myself sends 1 "<Message2>" message to conversation <Contact>
+    Given User Myself sends 1 "<Message3>" message to conversation <Contact>
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap on text input

@@ -7,7 +7,7 @@ Feature: E2EE
     Given Users add the following devices: {"<Contact1>": [{"name": "<DeviceName1>"}, {"name": "<DeviceName2>"}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given User <Contact1> sends 1 encrypted message to user Myself
+    Given User <Contact1> sends 1 default message to conversation Myself
     Given I see conversations list
     When I tap on contact name <Contact1>
     Then I do not see shield icon in the conversation view
@@ -30,10 +30,11 @@ Feature: E2EE
   Scenario Outline: Verify system message appearance in case of using a new device by you [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given User adds the following device: {"<Contact1>": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    Given User <Contact1> sends 1 encrypted message to user Myself
+    Given User <Contact1> sends 1 default message to conversation Myself
     And I tap on contact name <Contact1>
     And I open conversation details
     And I switch to Devices tab on Single user profile page

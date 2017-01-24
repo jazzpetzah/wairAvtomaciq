@@ -4,7 +4,7 @@ import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContextHolder;
 import com.wearezeta.auto.android_tablet.pages.details_overlay.common.TabletConfirmOverlayPage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.jcodec.common.Assert;
+import org.junit.Assert;
 
 public class ConfirmOverlayPageSteps {
     private TabletConfirmOverlayPage getConfirmOverlayPage() throws Exception {

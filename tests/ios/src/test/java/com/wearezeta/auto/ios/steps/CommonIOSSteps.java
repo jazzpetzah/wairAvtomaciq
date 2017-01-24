@@ -881,41 +881,10 @@ public class CommonIOSSteps {
                 .ChangeGroupChatName(user, oldConversationName, newConversationName);
     }
 
-    @Given("^User (\\w+) (?:securely |\\s*)pings conversation (.*)$")
+    @Given("^User (\\w+) pings conversation (.*)$")
     public void UserPingedConversation(String pingFromUserNameAlias, String dstConversationName) throws Exception {
         IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
                 .UserPingedConversationOtr(pingFromUserNameAlias, dstConversationName);
-    }
-
-    @Given("^User (.*) sends (\\d+) (encrypted )?messages? to (user|group conversation) (.*)$")
-    public void UserSendXMessagesToConversation(String msgFromUserNameAlias,
-                                                int msgsCount, String areEncrypted,
-                                                String conversationType,
-                                                String conversationName) throws Exception {
-        for (int i = 0; i < msgsCount; i++) {
-            if (conversationType.equals("user")) {
-                // 1:1 conversation
-                if (areEncrypted == null) {
-                    IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
-                            .UserSentMessageToUser(msgFromUserNameAlias, conversationName, DEFAULT_AUTOMATION_MESSAGE);
-                } else {
-                    IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
-                            .UserSentOtrMessageToUser(msgFromUserNameAlias,
-                                    conversationName, DEFAULT_AUTOMATION_MESSAGE, null);
-                }
-            } else {
-                // group conversation
-                if (areEncrypted == null) {
-                    IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
-                            .UserSentMessageToConversation(msgFromUserNameAlias,
-                                    conversationName, DEFAULT_AUTOMATION_MESSAGE);
-                } else {
-                    IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
-                            .UserSentOtrMessageToConversation(msgFromUserNameAlias,
-                                    conversationName, DEFAULT_AUTOMATION_MESSAGE, null);
-                }
-            }
-        }
     }
 
     /**
@@ -927,9 +896,9 @@ public class CommonIOSSteps {
      * @param conversationType     user or group conversation
      * @param conversationName     conversation name
      * @throws Exception
-     * @step. ^User (.*) sends? (\d+) encrypted messages? using device (.*) to (user|group conversation) (.*)$
+     * @step. ^User (.*) sends? (\d+) messages? using device (.*) to (user|group conversation) (.*)$
      */
-    @Given("^User (.*) sends? (\\d+) encrypted messages? using device (.*) to (user|group conversation) (.*)$")
+    @Given("^User (.*) sends? (\\d+) messages? using device (.*) to (user|group conversation) (.*)$")
     public void UserSendXMessagesToConversationUsingDevice(String msgFromUserNameAlias,
                                                            int msgsCount, String deviceName,
                                                            String conversationType,
@@ -945,42 +914,6 @@ public class CommonIOSSteps {
                 IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
                         .UserSentOtrMessageToConversation(msgFromUserNameAlias,
                                 conversationName, DEFAULT_AUTOMATION_MESSAGE, deviceName);
-            }
-        }
-    }
-
-    /**
-     * User A sends a simple text message to user/goup B
-     *
-     * @param userFromNameAlias the user who sends the message
-     * @param areEncrypted      whether the message has to be encrypted
-     * @param msg               a message to send. Random string will be sent if it is empty
-     * @param conversationType  either 'user' or 'group conversation'
-     * @param conversationName  The user/group chat to receive the message
-     * @throws Exception
-     * @step. ^User (.*) sends? (encrypted )?message "(.*)" to (user|group conversation) (.*)$
-     */
-    @Given("^User (.*) sends? (encrypted )?message \"(.*)\" to (user|group conversation) (.*)$")
-    public void UserSentMessageToConversation(String userFromNameAlias,
-                                              String areEncrypted, String msg,
-                                              String conversationType, String conversationName) throws Exception {
-        if (conversationType.equals("user")) {
-            // 1:1 conversation
-            if (areEncrypted == null) {
-                IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
-                        .UserSentMessageToConversation(userFromNameAlias, conversationName, msg);
-            } else {
-                IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
-                        .UserSentOtrMessageToConversation(userFromNameAlias, conversationName, msg, null);
-            }
-        } else {
-            // group conversation
-            if (areEncrypted == null) {
-                IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
-                        .UserSentMessageToConversation(userFromNameAlias, conversationName, msg);
-            } else {
-                IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
-                        .UserSentOtrMessageToConversation(userFromNameAlias, conversationName, msg, null);
             }
         }
     }
@@ -1067,22 +1000,6 @@ public class CommonIOSSteps {
     public void UserWaitForCommonFriends(String userAsAlias, String query, int expectedFriendsCount) throws Exception {
         IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
                 .WaitUntilCommonContactsIsGenerated(userAsAlias, query, expectedFriendsCount);
-    }
-
-    @Given("^User (.*) sends (encrypted )?image (.*) to (single user|group) conversation (.*)")
-    public void ContactSendImageToConversation(String imageSenderUserNameAlias,
-                                               String isEncrypted,
-                                               String imageFileName, String conversationType,
-                                               String dstConversationName) throws Exception {
-        final String imagePath = CommonUtils.getImagesPathFromConfig(this.getClass()) + File.separator + imageFileName;
-        final boolean isGroup = conversationType.equals("group");
-        if (isEncrypted == null) {
-            IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
-                    .UserSentImageToConversation(imageSenderUserNameAlias, imagePath, dstConversationName, isGroup);
-        } else {
-            IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
-                    .UserSentImageToConversationOtr(imageSenderUserNameAlias, imagePath, dstConversationName, isGroup);
-        }
     }
 
     /**

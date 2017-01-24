@@ -4,6 +4,7 @@ Feature: Share Location
   Scenario Outline: Verify receiving shared location and opening map in the default Apple app
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
     Given User <Contact> shares the default location to user Myself via device <DeviceName>
     Given I see conversations list
@@ -23,6 +24,7 @@ Feature: Share Location
   Scenario Outline: Verify deleting shared location
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
     Given User <Contact> shares the default location to user Myself via device <DeviceName>
     Given I see conversations list
@@ -43,7 +45,7 @@ Feature: Share Location
   Scenario Outline: Verify sending location from a map view in and opening the map on clicking on map icon (1to1)
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
-    Given User adds the following device: {"<Contact>": [{"name": "<DeviceName1>"}]}
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
@@ -60,8 +62,8 @@ Feature: Share Location
     Then I see "<DeliveredLabel>" on the message toolbox in conversation view
 
     Examples:
-      | Name      | Contact   | DeviceName1 | DeliveredLabel |
-      | user1Name | user2Name | device1     | Delivered      |
+      | Name      | Contact   | DeliveredLabel |
+      | user1Name | user2Name | Delivered      |
 
   @C165126 @regression @fastLogin
   Scenario Outline: Verify sending location from a map view (group conversation)
@@ -88,6 +90,7 @@ Feature: Share Location
   Scenario Outline: Verify copying and pasting the shared location
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
     Given User <Contact> shares the default location to user Myself via device <DeviceName>
     Given I see conversations list

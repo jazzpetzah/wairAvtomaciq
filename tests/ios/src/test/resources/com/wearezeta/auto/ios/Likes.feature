@@ -4,8 +4,9 @@ Feature: Likes
   Scenario Outline: Verify liking/unliking a message by tapping on like icon
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given Users add the following devices: {"<Contact>": []}
     Given I sign in using my email or phone number
-    Given User <Contact> sends 1 encrypted message to user Myself
+    Given User <Contact> sends 1 default message to conversation Myself
     Given I see conversations list
     Given I tap on contact name <Contact>
     When I tap default message in conversation view
@@ -23,8 +24,9 @@ Feature: Likes
   Scenario Outline: Verify liking/unliking a message from a message menu
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given Users add the following devices: {"<Contact>": []}
     Given I sign in using my email or phone number
-    Given User <Contact> sends 1 encrypted message to user Myself
+    Given User <Contact> sends 1 default message to conversation Myself
     Given I see conversations list
     Given I tap on contact name <Contact>
     When I long tap default message in conversation view
@@ -44,8 +46,9 @@ Feature: Likes
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <Group> with <Contact1>,<Contact2>
+    Given Users add the following devices: {"<Contact1>": []}
     Given I sign in using my email or phone number
-    Given User <Contact1> sends 1 encrypted message to group conversation <Group>
+    Given User <Contact1> sends 1 default message to conversation <Group>
     Given I see conversations list
     # Sync message delivery
     Given I wait for 5 seconds
@@ -67,7 +70,7 @@ Feature: Likes
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    Given User Myself sends 1 encrypted message to user <Contact>
+    Given User Myself sends 1 default message to conversation <Contact>
     # Wait for delivery
     Given I wait for 5 seconds
     Given I see conversations list
@@ -90,9 +93,9 @@ Feature: Likes
   Scenario Outline: Verify deleted for myself my message doesn't reappear after someone liked it
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User adds the following device: {"<Contact>": [{}]}
+    Given Users add the following devices: {"Myself": [{}], "<Contact>": [{}]}
     Given I sign in using my email or phone number
-    Given User Myself sends 1 encrypted message to user <Contact>
+    Given User Myself sends 1 default message to conversation <Contact>
     Given I see conversations list
     Given I tap on contact name <Contact>
     When I long tap default message in conversation view
@@ -112,7 +115,7 @@ Feature: Likes
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    Given User Myself sends 1 encrypted message to user <Contact>
+    Given User Myself sends 1 default message to conversation <Contact>
     Given I see conversations list
     Given I tap on contact name <Contact>
     When I tap default message in conversation view
@@ -137,9 +140,10 @@ Feature: Likes
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <Group> with <Contact1>,<Contact2>
+    Given Users add the following devices: {"<Contact1>": [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given User <Contact1> sends encrypted image <Picture> to group conversation <Group>
+    Given User <Contact1> sends 1 image file <Picture> to conversation <Group>
     When I swipe right on a <Group>
     And I tap Delete conversation action button
     And I confirm Delete conversation action
@@ -224,8 +228,9 @@ Feature: Likes
   Scenario Outline: Verify liking Soundcloud
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given Users add the following devices: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
-    Given User <Contact> sends encrypted message "<SCLink>" to user Myself
+    Given User <Contact> sends 1 "<SCLink>" message to conversation Myself
     Given I see conversations list
     Given I tap on contact name <Contact>
     # Wait for sync
@@ -246,9 +251,10 @@ Feature: Likes
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <Group> with <Contact1>,<Contact2>
+    Given Users add the following devices: {"<Contact1>": [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given User <Contact1> sends encrypted image <Picture> to group conversation <Group>
+    Given User <Contact1> sends 1 image file <Picture> to conversation <Group>
     When I swipe right on a <Group>
     And I tap Archive conversation action button
     Then I do not see conversation <Group> in conversations list
@@ -265,8 +271,9 @@ Feature: Likes
   Scenario Outline: Verify liking/unliking a message by double tapping
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given Users add the following devices: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
-    Given User <Contact> sends 1 encrypted message to user Myself
+    Given User <Contact> sends 1 default message to conversation Myself
     Given I see conversations list
     Given I tap on contact name <Contact>
     When I tap default message in conversation view
@@ -284,8 +291,9 @@ Feature: Likes
   Scenario Outline: Verify deleted for myself someone else message doesn't reappear after someone liked it
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given Users add the following devices: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
-    Given User <Contact> sends 1 encrypted message to user Myself
+    Given User <Contact> sends 1 default message to conversation Myself
     Given I see conversations list
     Given I tap on contact name <Contact>
     When I long tap default message in conversation view
@@ -304,8 +312,9 @@ Feature: Likes
   Scenario Outline: Verify liking a link
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given Users add the following devices: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
-    Given User <Contact> sends encrypted message "<Link>" to user Myself
+    Given User <Contact> sends 1 "<Link>" message to conversation Myself
     Given I see conversations list
     Given I tap on contact name <Contact>
     # Load the link
@@ -325,8 +334,9 @@ Feature: Likes
   Scenario Outline: Verify liking a picture
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given Users add the following devices: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
-    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    Given User <Contact> sends 1 image file <Picture> to conversation Myself
     Given I see conversations list
     Given I tap on contact name <Contact>
     When I tap at 5% of width and 5% of height of the recent message
@@ -344,6 +354,7 @@ Feature: Likes
   Scenario Outline: Verify liking an audio message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given Users add the following devices: {"<Contact>": [{"name" : "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Given I see conversations list
@@ -361,6 +372,7 @@ Feature: Likes
   Scenario Outline: Verify liking a location
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given Users add the following devices: {"<Contact>": [{"name" : "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given User <Contact> shares the default location to user Myself via device <ContactDevice>
     # Let it to receive the message
@@ -388,7 +400,7 @@ Feature: Likes
     Given Myself is connected to all other
     Given Myself has group chat <Group> with all other
     Given I sign in using my email or phone number
-    Given User <Contact1> sends 1 encrypted message to group conversation <Group>
+    Given User <Contact1> sends 1 default message to conversation <Group>
     # Wait for sync
     Given I wait for 5 seconds
     Given User <Contact2> likes the recent message from group conversation <Group>

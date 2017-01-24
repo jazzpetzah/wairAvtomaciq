@@ -11,15 +11,15 @@ Feature: Archive
     Given I Sign in on tablet using my email
     Given I see conversations list
     And I do not see conversation <ArchivedUser> in conversations list
-    Given User <ArchivedUser> sends 1 encrypted message to user Myself
+    Given User <ArchivedUser> sends 1 default message to conversation Myself
     Then I see first item in contact list named <ArchivedUser>
     When User Myself archives single user conversation <ArchivedUser>
     And I do not see conversation <ArchivedUser> in conversations list
-    Given User <ArchivedUser> sends encrypted image <Picture> to single user conversation Myself
+    Given User <ArchivedUser> sends 1 image file <Picture> to conversation Myself
     Then I see first item in contact list named <ArchivedUser>
     When User Myself archives single user conversation <ArchivedUser>
     And I do not see conversation <ArchivedUser> in conversations list
-    Given User <ArchivedUser> securely pings conversation <Name>
+    Given User <ArchivedUser> pings conversation <Name>
     Then I see first item in contact list named <ArchivedUser>
     When User Myself archives single user conversation <ArchivedUser>
     And I do not see conversation <ArchivedUser> in conversations list
@@ -44,11 +44,11 @@ Feature: Archive
     Given I Sign in on tablet using my email
     Given I see conversations list
     And I do not see conversation <ArchivedUser> in conversations list
-    Given User <ArchivedUser> sends 1 encrypted message to user Myself
+    Given User <ArchivedUser> sends 1 default message to conversation Myself
     Then I do not see conversation <ArchivedUser> in conversations list
-    Given User <ArchivedUser> sends encrypted image <Picture> to single user conversation Myself
+    When User <ArchivedUser> sends 1 image file <Picture> to conversation Myself
     Then I do not see conversation <ArchivedUser> in conversations list
-    When User <ArchivedUser> securely pings conversation <Name>
+    When User <ArchivedUser> pings conversation <Name>
     And I do not see conversation <ArchivedUser> in conversations list
     And <ArchivedUser> calls me
     And I see call status message contains "<ArchivedUser> calling"
@@ -64,6 +64,7 @@ Feature: Archive
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User adds the following device: {"<Contact1>": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
@@ -72,7 +73,7 @@ Feature: Archive
     And I confirm Leave conversation action
     Then I do not see conversation <GroupChatName> in conversations list
     When <Contact1> added me to group chat <GroupChatName>
-    Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
+    Given User <Contact1> sends 1 default message to conversation <GroupChatName>
     Then I see first item in contact list named <GroupChatName>
 
     Examples:
@@ -87,7 +88,7 @@ Feature: Archive
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When User <ArchivedUser> sends 1 message to user Myself
+    When User <ArchivedUser> sends 1 default message to conversation Myself
     Then I see conversation <ArchivedUser> in conversations list
     And I see Contacts label at the bottom of conversations list
     And I do not see Archive button at the bottom of conversations list
@@ -108,7 +109,7 @@ Feature: Archive
     And I tap Archive conversation action button
     And I do not see conversation <ArchivedUser> in conversations list
     And I see Archive button at the bottom of conversations list
-    And User <ArchivedUser> sends 1 messages to user Myself
+    And User <ArchivedUser> sends 1 default message to conversation Myself
     Then I see conversation <ArchivedUser> in conversations list
     And I do not see Archive button at the bottom of conversations list
 

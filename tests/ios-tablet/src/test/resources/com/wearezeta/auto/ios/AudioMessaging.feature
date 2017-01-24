@@ -25,11 +25,12 @@ Feature: Audio Messaging
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
+    Given User adds the following device: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I Sign in on tablet using my email
     Given I see conversations list
     When User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     And I tap on contact name <Contact>
-    And User <Contact> sends 1 encrypted message to user Myself
+    And User <Contact> sends 1 default message to conversation Myself
     # Wait until the media is loaded
     And I wait for 5 seconds
     And I see state of button on audio message placeholder is play

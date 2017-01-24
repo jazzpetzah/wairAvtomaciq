@@ -21,7 +21,7 @@ Feature: Block
     And I close the Search
     And I see the conversation <Contact> in my conversations list
     # Workaround for https://wearezeta.atlassian.net/browse/AN-2560
-    And I tap the conversation <Contact>
+    And I tap on conversation name <Contact>
     And I do not see the message "<Message>" in the conversation view
     When I tap conversation name from top toolbar
     And I see Single connected user details popover
@@ -54,7 +54,7 @@ Feature: Block
     And I close the Search
     And I see the conversation <Contact> in my conversations list
     # Workaround for https://wearezeta.atlassian.net/browse/AN-2560
-    And I tap the conversation <Contact>
+    And I tap on conversation name <Contact>
     And I do not see the message "<Message>" in the conversation view
     When I tap conversation name from top toolbar
     And I see Single connected user details popover
@@ -136,7 +136,7 @@ Feature: Block
     And I close the Search
     Then I see the conversation <Contact> in my conversations list
     # Workaround for https://wearezeta.atlassian.net/browse/AN-2560
-    When I tap the conversation <Contact>
+    When I tap on conversation name <Contact>
     Then I do not see the message "<Message>" in the conversation view
     And I do not see a new picture in the conversation view
     # FIXME: this work properly in manual tests

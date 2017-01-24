@@ -8,7 +8,7 @@ Feature: Conversation View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <Contact>
+    And I tap on conversation name <Contact>
     And I tap on text input
     When I type the message "<Message>" in the conversation view
     And I send the typed message by cursor Send button in the conversation view
@@ -26,7 +26,7 @@ Feature: Conversation View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <Contact>
+    And I tap on conversation name <Contact>
     And I tap on text input
     When I type the message "<Message>" in the conversation view
     And I send the typed message by cursor Send button in the conversation view
@@ -44,7 +44,7 @@ Feature: Conversation View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <Contact>
+    And I tap on conversation name <Contact>
     When I tap Add picture button from cursor toolbar
     And I tap Take Photo button on Take Picture view
     And I tap Confirm button on Take Picture view
@@ -62,7 +62,7 @@ Feature: Conversation View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <Contact1>
+    And I tap on conversation name <Contact1>
     And I tap conversation name from top toolbar
     And I see Single connected user details popover
     When I tap create group button on Single connected user details popover
@@ -85,7 +85,7 @@ Feature: Conversation View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <Contact1>
+    And I tap on conversation name <Contact1>
     And I tap conversation name from top toolbar
     And I see Single connected user details popover
     When I tap create group button on Single connected user details popover
@@ -110,7 +110,7 @@ Feature: Conversation View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <GroupChatName>
+    And I tap on conversation name <GroupChatName>
     And I tap on text input
     When I type the message "<Message>" in the conversation view
     And I send the typed message by cursor Send button in the conversation view
@@ -129,7 +129,7 @@ Feature: Conversation View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <GroupChatName>
+    And I tap on conversation name <GroupChatName>
     And I tap on text input
     When I type the message "<Message>" in the conversation view
     And I send the typed message by cursor Send button in the conversation view
@@ -147,7 +147,7 @@ Feature: Conversation View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    When I tap the conversation <Contact>
+    When I tap on conversation name <Contact>
     And I tap conversation name from top toolbar
     Then I see Single connected user details popover
     And I see user name "<Contact>" on Single connected user details popover
@@ -179,7 +179,7 @@ Feature: Conversation View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <Contact>
+    And I tap on conversation name <Contact>
     When I tap on text input
     Then I do not see Single connected user details popover
     When I tap conversation name from top toolbar
@@ -204,7 +204,7 @@ Feature: Conversation View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <GroupChatName>
+    And I tap on conversation name <GroupChatName>
     When I tap Add picture button from cursor toolbar
     And I tap Take Photo button on Take Picture view
     And I tap Confirm button on Take Picture view
@@ -222,7 +222,7 @@ Feature: Conversation View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <Contact>
+    And I tap on conversation name <Contact>
     When I tap Add picture button from cursor toolbar
     And I tap Gallery Camera button on Take Picture view
     And I tap Confirm button on Take Picture view
@@ -241,7 +241,7 @@ Feature: Conversation View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <GroupChatName>
+    And I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     And I see Group info popover
     When I rename group conversation to <NewGroupChatName> on Group info popover
@@ -262,7 +262,7 @@ Feature: Conversation View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <GroupChatName>
+    And I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     And I see Group info popover
     When I rename group conversation to <NewGroupChatName> on Group info popover
@@ -282,7 +282,7 @@ Feature: Conversation View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <Contact1>
+    And I tap on conversation name <Contact1>
     And I tap Sketch button from cursor toolbar
     And I draw a sketch with <NumColors> colors on Sketch page
     When I tap Send button on Sketch page
@@ -302,7 +302,7 @@ Feature: Conversation View
     Given I push local file named "<FileName>" to the device
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <Contact1>
+    And I tap on conversation name <Contact1>
     When I tap Add picture button from cursor toolbar
     And I tap Gallery Camera button on Take Picture view
     And I tap Confirm button on Take Picture view

@@ -4,6 +4,7 @@ Feature: Collection
   Scenario Outline: Verify you can see collections properly after changing display orientation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given User <Contact> sends 2 image files <Picture> to conversation Myself

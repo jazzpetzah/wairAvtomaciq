@@ -399,6 +399,7 @@ final class BackendREST {
         return sendPicture(token, convId, reqBuilder);
     }
 
+    @Deprecated
     static void sendConversationMessage(AuthToken userFromToken, String convId, String message) throws Exception {
         Builder webResource = buildDefaultRequestWithAuth(
                 String.format("conversations/%s/messages", convId),
@@ -409,6 +410,7 @@ final class BackendREST {
         restHandlers.httpPost(webResource, requestBody.toString(), new int[]{HttpStatus.SC_CREATED});
     }
 
+    @Deprecated
     static JSONObject sendConversationPing(AuthToken userFromToken, String convId) throws Exception {
         Builder webResource = buildDefaultRequestWithAuth("conversations/"
                 + convId + "/knock", MediaType.APPLICATION_JSON, userFromToken);

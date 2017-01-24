@@ -4,7 +4,7 @@ import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContextHolder;
 import com.wearezeta.auto.android_tablet.pages.details_overlay.single.TabletSingleBlockedUserDetailsOverlayPage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.jcodec.common.Assert;
+import org.junit.Assert;
 
 public class SingleBlockedUserDetailsOverlayPageSteps {
     private TabletSingleBlockedUserDetailsOverlayPage getSingleBlockedUserDetailsOverlayPage() throws Exception {

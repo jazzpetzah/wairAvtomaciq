@@ -110,7 +110,7 @@ Feature: Audio Messaging
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    Given User Me sends 1 encrypted message to user <Contact1>
+    Given User Me sends 1 default message to conversation <Contact1>
     Given I see conversations list
     Given I tap on contact name <Contact1>
     # Small wait to make the appearence of button on jenkins more stable
@@ -131,10 +131,11 @@ Feature: Audio Messaging
   Scenario Outline: Verify playback is stopped when other audio message starts playing
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given User add the following device: {"<Contact1>": [{}]}
     Given I sign in using my email or phone number
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    Given User Me sends 1 encrypted message to user <Contact1>
+    Given User Me sends 1 default message to conversation <Contact1>
     Given I see conversations list
     Given I tap on contact name <Contact1>
     # Small wait to make the appearence of button on jenkins more stable
@@ -152,11 +153,12 @@ Feature: Audio Messaging
   Scenario Outline: (ZIOS-6688) Verify playback is stopped when incoming call has appeared
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    Given User Me sends 1 encrypted message to user <Contact>
+    Given User Me sends 1 default message to conversation <Contact>
     Given I see conversations list
     Given I tap on contact name <Contact>
     # Small wait to make the appearence of button on jenkins more stable
@@ -179,9 +181,9 @@ Feature: Audio Messaging
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    Given User <Contact> sends encrypted message "<SoundCloudLink>" to user Myself
+    Given User <Contact> sends 1 "<SoundCloudLink>" message to conversation Myself
     Given User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    Given User Me sends 1 encrypted message to user <Contact>
+    Given User Me sends 1 default message to conversation <Contact>
     Given I see conversations list
     Given I tap on contact name <Contact>
     # Small wait to make the appearence of button on jenkins more stable
@@ -205,7 +207,7 @@ Feature: Audio Messaging
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    Given User Me sends 1 encrypted message to user <Contact1>
+    Given User Me sends 1 default message to conversation <Contact1>
     Given I see conversations list
     Given I tap on contact name <Contact1>
     # Small wait to make the appearence of button on jenkins more stable
@@ -228,7 +230,7 @@ Feature: Audio Messaging
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    Given User Me sends 1 encrypted message to user <Contact1>
+    Given User Me sends 1 default message to conversation <Contact1>
     Given I see conversations list
     Given I tap on contact name <Contact1>
     # Waiy until the asset is loaded
@@ -251,7 +253,7 @@ Feature: Audio Messaging
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
+    When User Myself sends 1 "<SoundCloudLink>" message to conversation <Contact>
     And I tap on contact name <Contact>
     And I remember media container state
     And I tap on media container in conversation view
@@ -291,7 +293,7 @@ Feature: Audio Messaging
     Given I see conversations list
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     When I tap on contact name <Contact1>
-    And User Me sends 1 encrypted message to user <Contact1>
+    And User Me sends 1 default message to conversation <Contact1>
     And I see audio message container in the conversation view
     And I tap Play audio message button
     Then I see state of button on audio message placeholder is pause
@@ -311,7 +313,7 @@ Feature: Audio Messaging
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    Given User <Contact> sends encrypted message "<SoundCloudLink>" to user Myself
+    Given User <Contact> sends 1 "<SoundCloudLink>" message to conversation Myself
     Given User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Given I see conversations list
     Given I tap on contact name <Contact>

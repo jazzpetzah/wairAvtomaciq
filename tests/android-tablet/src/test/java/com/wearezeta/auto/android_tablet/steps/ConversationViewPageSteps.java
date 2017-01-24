@@ -582,9 +582,9 @@ public class ConversationViewPageSteps {
      *
      * @param btnName button name
      * @throws Exception
-     * @step. ^I tap (Audio Call|Video Call|Back) button from top toolbar$
+     * @step. ^I tap (Audio Call|Video Call|Collections|Back) button from top toolbar$
      */
-    @When("^I tap (Audio Call|Video Call|Back) button from top toolbar$")
+    @When("^I tap (Audio Call|Video Call|Collections|Back) button from top toolbar$")
     public void WhenITapTopToolbarButton(String btnName) throws Exception {
         getConversationViewPage().tapTopBarButton(btnName);
     }
