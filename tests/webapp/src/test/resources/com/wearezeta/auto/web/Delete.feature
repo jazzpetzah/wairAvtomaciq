@@ -278,7 +278,7 @@ Feature: Delete
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
   @C399364 @staging
-  Scenario Outline: Verify I can delete a picture for everyone from fullscreen view
+  Scenario Outline: Verify I can delete pictures for me from fullscreen view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
@@ -291,6 +291,10 @@ Feature: Delete
     Then I see picture <PictureName> in picture fullscreen
     And I see delete everywhere button in picture fullscreen
     When I click delete for me button in picture fullscreen
+    And I click cancel to delete message for me
+    Then I see picture <PictureName> in picture fullscreen
+    When I click delete for me button in picture fullscreen
+    And I click confirm to delete message for me
     Then I see only 0 pictures in the conversation
 
     Examples:

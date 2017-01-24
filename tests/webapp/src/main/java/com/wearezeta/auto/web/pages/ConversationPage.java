@@ -138,6 +138,12 @@ public class ConversationPage extends WebPage {
     @FindBy(css = WebAppLocators.ConversationPage.cssDoDeleteForEveryone)
     private WebElement doDeleteForEveryoneButton;
 
+    @FindBy(css = WebAppLocators.ConversationPage.cssDoCancelForMe)
+    private WebElement doCancelForMeButton;
+
+    @FindBy(css = WebAppLocators.ConversationPage.cssDoCancelForEveryone)
+    private WebElement doCancelForEveryoneButton;
+
     @FindBy(css = WebAppLocators.ConversationPage.cssDoEditMessage)
     private WebElement doEditMessageButton;
 
@@ -1186,9 +1192,19 @@ public class ConversationPage extends WebPage {
         doDeleteButton.click();
     }
 
+    public void cancelDeleteForMe() throws Exception {
+        DriverUtils.waitUntilElementClickable(this.getDriver(), doCancelForMeButton);
+        doCancelForMeButton.click();
+    }
+
     public void confirmDeleteForEveryone() throws Exception {
         DriverUtils.waitUntilElementClickable(this.getDriver(), doDeleteForEveryoneButton);
         doDeleteForEveryoneButton.click();
+    }
+
+    public void cancelDeleteForEveryone() throws Exception {
+        DriverUtils.waitUntilElementClickable(this.getDriver(), doCancelForEveryoneButton);
+        doCancelForEveryoneButton.click();
     }
 
     public boolean isDeleteButtonVisibleForLastMessage() throws Exception {

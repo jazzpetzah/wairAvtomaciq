@@ -443,6 +443,10 @@ public final class WebAppLocators {
 
         public static final String cssDoDeleteForEveryone = "[data-uie-name='do-delete-everyone']";
 
+        public static final String cssDoCancelForMe = "[data-uie-name='modal-delete-message'] [class='modal-close icon-close icon-button pull-right']";
+
+        public static final String cssDoCancelForEveryone = "[data-uie-name='modal-delete-message-everyone'] [class='modal-close icon-close icon-button pull-right']";
+
         public static final Function<String, String> cssEditMessageId = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s'] context-menu [data-context-action='edit']", text);
         
@@ -698,9 +702,9 @@ public final class WebAppLocators {
         
         public static final String cssDownloadButton = "[data-uie-name='do-download-fullscreen-picture']";
         
-        public static final String cssDeleteForMeButton = ".icon-delete-for-me";
+        public static final String cssDeleteForMeButton = "[data-uie-name='do-delete-fullscreen-picture']";
         
-        public static final String cssDeleteEverywhereButton = ".icon-delete-for-everyone";
+        public static final String cssDeleteEverywhereButton = "[data-uie-name='do-delete-everywhere-fullscreen-picture']";
     }
 
     public static final class CollectionPage {

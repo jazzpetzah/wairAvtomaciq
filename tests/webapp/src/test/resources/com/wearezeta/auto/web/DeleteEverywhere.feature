@@ -431,6 +431,10 @@ Feature: Delete Everywhere
     Then I see picture <PictureName> in picture fullscreen
     And I see delete everywhere button in picture fullscreen
     When I click delete everywhere button in picture fullscreen
+    And I click cancel to delete message for for everyone
+    Then I see picture <PictureName> in picture fullscreen
+    When I click delete everywhere button in picture fullscreen
+    And I click confirm to delete message for everyone
     Then I see only 0 pictures in the conversation
 
     Examples:
@@ -438,7 +442,7 @@ Feature: Delete Everywhere
       | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg |
 
   @C399366 @staging
-  Scenario Outline: Verify I can delete a picture for everyone from fullscreen view
+  Scenario Outline: Verify I can't delete a picture from others for everyone from fullscreen view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given user <Contact> adds a new device Device1 with label Label1
