@@ -555,7 +555,7 @@ Feature: E2EE
     Given Users add the following devices: {"<Contact1>": [{"name": "<Device1>", "label": "<Device1label>"}], "<Contact2>": [{}]}
     Given Myself is connected to all other users
     Given I sign in using my email
-    Given User <Contact2> sends encrypted image <Picture> to single user conversation Myself
+    Given User <Contact2> sends 1 image file <Picture> to conversation Myself
     Given I see conversations list
     Given I tap on contact name <Contact1>
     Given I open conversation details
