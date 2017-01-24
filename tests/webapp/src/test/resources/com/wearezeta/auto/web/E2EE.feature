@@ -663,7 +663,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | ALL_VERIFIED                  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat     | All fingerprints are verified |
 
-  @C12056 @mute
+  @C12056 @staging
   Scenario Outline: Verify you get an alert if group conversation participant sends a message from non-verified device
     Given There are 3 users where <Name> is me
     Given user <Contact1> adds a new device Device1 with label Label1
@@ -688,10 +688,14 @@ Feature: E2EE
     And I verify device on Device Detail popover
     And I click People button in group conversation
     And I see <ALL_VERIFIED> action in conversation
+    And I see verified icon in conversation
     When user <Contact1> adds a new device Device2 with label Label2
     And Contact <Contact1> sends message <Message> via device Device2 to group conversation <GroupChatName>
-    Then I see <NEW_DEVICE> action for <Contact1> in conversation
+    Then I do not see verified icon in conversation
+    # TODO: make it possible to check for <Contact1> in the "New device" action
+    And I see <NEW_DEVICE> action in conversation
     And I see text message <Message>
+    # TODO: Verify "New device" link is opening the devices list of the participant
 
     Examples:
       | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | ALL_VERIFIED                  | NEW_DEVICE                 | Message    |
