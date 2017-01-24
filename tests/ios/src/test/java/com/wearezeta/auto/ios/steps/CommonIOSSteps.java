@@ -618,10 +618,10 @@ public class CommonIOSSteps {
      *
      * @param seconds time in seconds to close the app
      * @throws Exception
-     * @step. ^I close the app for (.*) seconds?$
+     * @step. ^I minimize Wire for (.*) seconds?$
      */
-    @When("^I close the app for (\\d+) seconds?$")
-    public void ICloseApp(int seconds) throws Exception {
+    @When("^I minimize Wire for (\\d+) seconds?$")
+    public void IMinimizeWire(int seconds) throws Exception {
         IOSTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage()
                 .putWireToBackgroundFor(seconds);
     }
@@ -675,26 +675,13 @@ public class CommonIOSSteps {
      * @param userToAdd          name of the user to be added
      * @param chatName           name of the group conversation
      * @throws Exception
-     * @step. ^(.*) added (.*) to group chat (.*)
+     * @step. ^User (.*) adds (.*) to group chat (.*)
      */
-    @When("^(.*) added (.*) to group chat (.*)")
-    public void UserXaddUserBToGroupChat(String chatOwnerNameAlias,
-                                         String userToAdd, String chatName) throws Exception {
+    @When("^User (.*) adds (.*) to group chat (.*)")
+    public void UserXDddsUserYToGroupChat(String chatOwnerNameAlias,
+                                          String userToAdd, String chatName) throws Exception {
         IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
                 .UserXAddedContactsToGroupChat(chatOwnerNameAlias, userToAdd, chatName);
-    }
-
-    /**
-     * User leaves group chat
-     *
-     * @param userName name of the user who leaves
-     * @param chatName chat name that user leaves
-     * @throws Exception
-     * @step. ^(.*) leaves? group chat (.*)$
-     */
-    @Given("^(.*) leaves? group chat (.*)$")
-    public void UserLeavesGroupChat(String userName, String chatName) throws Exception {
-        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps().UserXLeavesGroupChat(userName, chatName);
     }
 
     @Given("^(.*) is connected to (.*)$")
@@ -812,9 +799,9 @@ public class CommonIOSSteps {
      *
      * @param userToNameAlias user name who will cancel requests
      * @throws Exception
-     * @step. ^(.*) cancel all outgoing connection requests$
+     * @step. ^User (.*) cancels all outgoing connection requests$
      */
-    @When("^(.*) cancel all outgoing connection requests$")
+    @When("^User (.*) cancels all outgoing connection requests$")
     public void CancelAllOutgoingConnectRequest(String userToNameAlias) throws Exception {
         IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
                 .CancelAllOutgoingConnectRequests(userToNameAlias);
@@ -968,7 +955,7 @@ public class CommonIOSSteps {
                 .IChangeUserAccentColor(userNameAlias, newColor);
     }
 
-    @Given("^There \\w+ (\\d+) shared user[s]* with name prefix (\\w+)$")
+    @Given("^There (are|is) (\\d+) shared user[s]* with name prefix (\\w+)$")
     public void ThereAreNSharedUsersWithNamePrefix(int count, String namePrefix)
             throws Exception {
         IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
@@ -1032,21 +1019,6 @@ public class CommonIOSSteps {
         IOSTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage()
                 .rotateScreen(orientation);
         Thread.sleep(1000); // fix for animation
-    }
-
-    /**
-     * A user adds another user to a group chat
-     *
-     * @param user          that adds someone to a chat
-     * @param userToBeAdded user that gets added by someone
-     * @param group         group chat you get added to
-     * @throws Exception
-     * @step. ^User (.*) adds [Uu]ser (.*) to group chat (.*)$
-     */
-    @When("^User (.*) adds [Uu]ser (.*) to group chat (.*)$")
-    public void UserAddsUserToGroupChat(String user, String userToBeAdded, String group) throws Exception {
-        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
-                .UserXAddedContactsToGroupChat(user, userToBeAdded, group);
     }
 
     /**

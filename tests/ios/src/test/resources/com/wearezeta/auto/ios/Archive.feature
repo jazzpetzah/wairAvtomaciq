@@ -68,7 +68,7 @@ Feature: Archive
     And I tap Leave conversation action button
     And I confirm Leave conversation action
     Then I do not see conversation <GroupChatName> in conversations list
-    When <Contact1> added me to group chat <GroupChatName>
+    When User <Contact1> adds me to group chat <GroupChatName>
     Given User <Contact1> sends 1 default message to conversation <GroupChatName>
     Then I see first item in contact list named <GroupChatName>
 

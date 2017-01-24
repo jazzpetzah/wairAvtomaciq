@@ -568,7 +568,7 @@ Feature: Connect
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I see Pending request link in conversations list
-    And <Contact> cancel all outgoing connection requests
+    And User <Contact> cancels all outgoing connection requests
     Then I do not see Pending request link in conversations list
 
     Examples:
@@ -584,7 +584,7 @@ Feature: Connect
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I see Pending request link in conversations list
-    And <Contact> cancel all outgoing connection requests
+    And User <Contact> cancels all outgoing connection requests
     Then I do not see Pending request link in conversations list
 
     Examples:

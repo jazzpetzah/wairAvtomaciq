@@ -191,7 +191,7 @@ Feature: Calling
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Audio Call button
-    Then I close the app for 5 seconds
+    Then I minimize Wire for 5 seconds
     And I see Calling overlay
 
     Examples:
@@ -466,7 +466,7 @@ Feature: Calling
     And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
     Then I see call status message contains "<Contact>"
-    When I close the app for 5 seconds
+    When I minimize Wire for 5 seconds
     Then I see call status message contains "<Contact>"
     And <Contact> verifies that call status to me is changed to active in 2 seconds
 

@@ -152,7 +152,7 @@ Feature: Calling
     When I tap on contact name <Contact>
     And I tap Audio Call button
     And I see Calling overlay
-    Then I close the app for 5 seconds
+    Then I minimize Wire for 5 seconds
     And I see Calling overlay
 
     Examples:
@@ -236,7 +236,7 @@ Feature: Calling
     And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
     And I see Leave button on Calling overlay
-    When I close the app for 5 seconds
+    When I minimize Wire for 5 seconds
     Then I see Leave button on Calling overlay
 
     Examples:

@@ -524,7 +524,7 @@ Feature: Conversation View
     When <Contact> removes Myself from group chat <GroupChatName>
     Then I do not see conversation tools buttons
     And I do not see text input in conversation view
-    When User <Contact> adds user <Name> to group chat <GroupChatName>
+    When User <Contact> adds Myself to group chat <GroupChatName>
     Then I see conversation tools buttons
     And I see Standard input placeholder text
 

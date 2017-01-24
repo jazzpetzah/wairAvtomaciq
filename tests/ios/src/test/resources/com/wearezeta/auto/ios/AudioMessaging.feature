@@ -78,7 +78,7 @@ Feature: Audio Messaging
     Given I see conversations list
     Given I tap on contact name <Contact>
     Given I long tap Audio Message button from input tools
-    When I close the app for 3 seconds
+    When I minimize Wire for 3 seconds
     Then I see audio message recorder container in the conversation view
 
     Examples:

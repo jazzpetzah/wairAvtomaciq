@@ -136,7 +136,7 @@ Feature: Calling Matrix
     When I tap on contact name <Contact>
     And I tap Audio Call button
     And I accept alert
-    Then I close the app for 5 seconds
+    Then I minimize Wire for 5 seconds
     And I see Calling overlay
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
 
@@ -160,7 +160,7 @@ Feature: Calling Matrix
     And I tap Accept button on Call Kit overlay
     And I accept alert
     Then I see call status message contains "<Contact>"
-    When I close the app for 5 seconds
+    When I minimize Wire for 5 seconds
     Then I see call status message contains "<Contact>"
     And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
 

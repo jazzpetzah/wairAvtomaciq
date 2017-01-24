@@ -12,7 +12,7 @@ Feature: E2EE
     Given User <Contact2> sends 1 default message to conversation <GroupChatName>
     Given User <Contact3> sends 1 default message to conversation <GroupChatName>
     Given I wait for 5 seconds
-    Given User <Contact1> adds user Myself to group chat <GroupChatName>
+    Given User <Contact1> adds Myself to group chat <GroupChatName>
     When I tap on contact name <GroupChatName>
     Then I see the conversation with <GroupChatName>
     And I see 0 conversation entries

@@ -411,7 +411,7 @@ Feature: Connect
     Given I sign in using my email or phone number
     Given I see conversations list
     When I see Pending request link in conversations list
-    And <Contact> cancel all outgoing connection requests
+    And User <Contact> cancels all outgoing connection requests
     Then I do not see Pending request link in conversations list
 
     Examples:
