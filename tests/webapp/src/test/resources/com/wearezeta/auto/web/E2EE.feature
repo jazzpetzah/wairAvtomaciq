@@ -1179,3 +1179,40 @@ Feature: E2EE
     Examples:
       | Email      | Password      | Name      | Contact   | Login2     | Password2     |PictureName               | File        | Size | TimeLong  | EphemeralMessage | SentAnyway | ALL_VERIFIED                  |
       | user1Email | user1Password | user1Name | user2Name | user2Email | user2Password |userpicture_landscape.jpg | C399348.zip | 15KB | 5 seconds | UnsentEphemeral  | SentAnyway | All fingerprints are verified |
+
+  @C399354 @e2ee @staging
+  Scenario Outline: Verify conversation degrades with warning if your own account gets new device
+    Given There are 2 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+    And I am signed in properly
+    When I open conversation with <Contact>
+    And I click People button in one to one conversation
+    Then I see Single User Profile popover
+    When I switch to Devices tab on Single User Profile popover
+    And I click on device Device1 of user <Contact> on Single User Profile popover
+    And I verify device on Device Detail popover
+    And I click back button on the Device Detail popover
+    Then I see device Device1 of user <Contact> is verified on Single User Profile popover
+    Then I see user verified icon on Single User Profile popover
+    When I click People button in one to one conversation
+    Then I see <ALL_VERIFIED> action in conversation
+    Then I see verified icon in conversation
+    When user <Name> adds a new device Device1 with label Label1
+    And I do not see verified icon in conversation
+    And I write message <MessageThatTriggersWarning>
+    And I send message
+    Then I see the new device warning
+    When I click cancel button in the new device warning
+    And I see 1 unsent messages in conversation
+    Then I do not see verified icon in conversation
+    And I click People button in one to one conversation
+    And I see Single User Profile popover
+    And I switch to Devices tab on Single User Profile popover
+    And I see user verified icon on Single User Profile popover
+
+    Examples:
+      | Email      | Password      | Name      | Contact   | MessageThatTriggersWarning  | ALL_VERIFIED                  |
+      | user1Email | user1Password | user1Name | user2Name | This should trigger warning | All fingerprints are verified |
