@@ -470,7 +470,7 @@ Feature: E2EE
     | Email      | Password      | Name      | Contact   | ALL_VERIFIED                  |
     | user1Email | user1Password | user1Name | user2Name | All fingerprints are verified |
 
-  @C95628 @e2ee @regression
+  @C95628 @e2ee @smoke
   Scenario Outline: Verify conversation degrades with warning if participant adds new devices in 1:1
     Given There are 2 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1

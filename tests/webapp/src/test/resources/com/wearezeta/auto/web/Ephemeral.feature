@@ -67,7 +67,7 @@ Feature: Ephemeral
       | user1Email | user1Password | user1Name | user2Name | user2Email | 60   | 1    | 1 minute   | m             | Hello   | media.completed_media_action | {\"action\":\"text\",\"conversation_type\":\"one_to_one\",\"is_ephemeral\":true,\"ephemeral_time\":60,\"with_bot\":false}"  |
      #| user1Email | user1Password | user1Name | user2Name | user2Email | 300  | 5    | 5 minutes  | m             | Hello   | media.completed_media_action | {\"action\":\"text\",\"conversation_type\":\"one_to_one\",\"is_ephemeral\":true,\"ephemeral_time\":300,\"with_bot\":false}" |
 
-  @C261728 @ephemeral @regression
+  @C261728 @ephemeral @smoke
   Scenario Outline: Verify switching on/off ephemeral message in 1:1
     Given There are 2 users where <Name> is me
     #Given user <Contact> adds a new device Device1 with label Label1
@@ -215,7 +215,7 @@ Feature: Ephemeral
       | Login      | Password      | Name      | Contact   | OriginalMessage | EditedMessage | Time | TimeLong   | TimeShortUnit |
       | user1Email | user1Password | user1Name | user2Name | edit me         | edited        | 30   | 30 seconds | s             |
 
-  @C261733 @ephemeral @smoke
+  @C261733 @ephemeral @regression
   Scenario Outline: Verify sending ephemeral ping, picture, video, audio, file in 1:1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
