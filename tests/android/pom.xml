@@ -29,7 +29,7 @@
         <perfReportPath>${user.home}/Documents/performance.json</perfReportPath>
         <androidVersion>44</androidVersion>
         <backendType>staging</backendType>
-        <rcNotificationsRecepients>vova@wire.com,nick@wire.com,robin@wire.com</rcNotificationsRecepients>
+        <rcNotificationsRecepients>alex@wire.com,nick@wire.com,robin@wire.com</rcNotificationsRecepients>
         <adbPrefix></adbPrefix>
         <showLogcat>true</showLogcat>
         <hasBackendSelection>true</hasBackendSelection>
