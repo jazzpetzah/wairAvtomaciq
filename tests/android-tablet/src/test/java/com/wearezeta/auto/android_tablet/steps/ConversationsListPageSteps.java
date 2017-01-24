@@ -90,9 +90,9 @@ public class ConversationsListPageSteps {
      *
      * @param name conversation name
      * @throws Exception
-     * @step. ^I tap conversation (.*)"
+     * @step. ^I tap on conversation name (.*)"
      */
-    @When("^I tap (?:the )conversation (.*)")
+    @When("^I tap on conversation name (.*)")
     public void ITapConversation(String name) throws Exception {
         name = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                 .replaceAliasesOccurences(name, FindBy.NAME_ALIAS);

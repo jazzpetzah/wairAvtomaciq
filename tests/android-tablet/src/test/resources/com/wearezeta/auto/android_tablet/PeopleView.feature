@@ -8,7 +8,7 @@ Feature: People View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    When I tap the conversation <Contact>
+    When I tap on conversation name <Contact>
     And I tap conversation name from top toolbar
     Then I see user name "<Contact>" on Single connected user details popover
 
@@ -24,7 +24,7 @@ Feature: People View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    When I tap the conversation <Contact>
+    When I tap on conversation name <Contact>
     And I tap conversation name from top toolbar
     Then I see user name "<Contact>" on Single connected user details popover
 
@@ -41,7 +41,7 @@ Feature: People View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <GroupChatName>
+    And I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     And I tap open menu button on Group info popover
     When I tap <ItemLeave> button on Group conversation options menu
@@ -62,7 +62,7 @@ Feature: People View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <GroupChatName>
+    And I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     And I tap open menu button on Group info popover
     When I tap <ItemLeave> button on Group conversation options menu
@@ -83,7 +83,7 @@ Feature: People View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <GroupChatName>
+    And I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     And I tap on contact <Contact2> on Group info popover
     When I tap on remove button on Group connected user details page
@@ -106,7 +106,7 @@ Feature: People View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <GroupChatName>
+    And I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     And I tap on contact <Contact2> on Group info popover
     When I tap on remove button on Group connected user details page
@@ -168,7 +168,7 @@ Feature: People View
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     Given User <Contact1> sends encrypted message <Message> to user Myself
-    And I tap the conversation <GroupChatName>
+    And I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     When I tap on contact <Contact1> on Group info popover
     And I tap on open conversation button on Group connected user details page
@@ -189,7 +189,7 @@ Feature: People View
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     Given User <Contact1> sends encrypted message <Message> to user Myself
-    Given I tap the conversation <GroupChatName>
+    Given I tap on conversation name <GroupChatName>
     Given I tap conversation name from top toolbar
     When I tap on contact <Contact1> on Group info popover
     And I tap on open conversation button on Group connected user details page
@@ -209,7 +209,7 @@ Feature: People View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <GroupChatName>
+    And I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     And I tap on contact <Contact1> on Group info popover
     Then I see user name "<Contact1>" on Group connected user details page
@@ -228,7 +228,7 @@ Feature: People View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <GroupChatName>
+    And I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     And I tap on contact <Contact1> on Group info popover
     Then I see user name "<Contact1>" on Group connected user details page
@@ -246,7 +246,7 @@ Feature: People View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <GroupChatName>
+    And I tap on conversation name <GroupChatName>
     When I tap conversation name from top toolbar
     Then I see participant <Contact1> on Group info popover
     And I see participant <Contact2> on Group info popover
@@ -266,7 +266,7 @@ Feature: People View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <GroupChatName>
+    And I tap on conversation name <GroupChatName>
     When I tap conversation name from top toolbar
     Then I see participant <Contact1> on Group info popover
     And I see participant <Contact2> on Group info popover
@@ -286,7 +286,7 @@ Feature: People View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <GroupChatName>
+    And I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     And I see Group info popover
     When I tap open menu button on Group info popover
@@ -308,7 +308,7 @@ Feature: People View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <GroupChatName>
+    And I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     When I tap open menu button on Group info popover
     And I see <ItemLeave> button on Group conversation options menu
@@ -331,7 +331,7 @@ Feature: People View
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
     And I do not see the conversation <Contact2> in my conversations list
-    And I tap the conversation <GroupChatName>
+    And I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     And I tap on contact <Contact2> on Group info popover
     Then I see user name "<Contact2>" on Group unconnected user details page

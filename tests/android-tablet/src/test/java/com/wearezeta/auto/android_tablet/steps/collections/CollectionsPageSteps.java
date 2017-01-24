@@ -1,4 +1,4 @@
-package com.wearezeta.auto.android.steps.collections;
+package com.wearezeta.auto.android_tablet.steps.collections;
 
 
 import com.wearezeta.auto.android.common.AndroidTestContextHolder;

@@ -27,7 +27,7 @@ Feature: Lock/Unlock
     And I unlock the device
     Then I see settings page
     When I navigate back
-    And I tap the conversation <GroupChatName>
+    And I tap on conversation name <GroupChatName>
     And I lock the device
     And I unlock the device
     Then I see the message "<MessageGroup>" in the conversation view
@@ -38,7 +38,7 @@ Feature: Lock/Unlock
     Then I see Group info popover
     And I press Back button 1 time
     When I swipe right to show the conversations list
-    And I tap the conversation <Contact1>
+    And I tap on conversation name <Contact1>
     And I lock the device
     And I unlock the device
     Then I see the message "<Message1to1>" in the conversation view

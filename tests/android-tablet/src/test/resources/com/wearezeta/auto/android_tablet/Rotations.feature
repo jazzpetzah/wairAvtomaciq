@@ -9,7 +9,7 @@ Feature: Rotations
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     Given User <Contact> sends encrypted message <Message> to user Myself
-    When I tap the conversation <Contact>
+    When I tap on conversation name <Contact>
     And I see the message "<Message>" in the conversation view
     When I rotate UI to landscape
     Then I see the message "<Message>" in the conversation view

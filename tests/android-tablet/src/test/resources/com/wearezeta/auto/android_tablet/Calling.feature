@@ -10,7 +10,7 @@ Feature: Calling
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <GroupChatName>
+    And I tap on conversation name <GroupChatName>
     When <Contact1> calls <GroupChatName>
     And I see incoming call
     And <Contact1> stops calling <GroupChatName>
@@ -30,7 +30,7 @@ Feature: Calling
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <Contact>
+    And I tap on conversation name <Contact>
     And <Contact> calls me
     Then I see incoming call
     When I swipe to accept the call
@@ -61,7 +61,7 @@ Feature: Calling
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     Given <Contact2>,<Contact3>,<Contact4> accepts next incoming call automatically
-    And I tap the conversation <GroupChatName>
+    And I tap on conversation name <GroupChatName>
     And <Contact1> calls <GroupChatName>
     Then I see incoming call
     When I swipe to accept the call
@@ -84,7 +84,7 @@ Feature: Calling
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <Contact>
+    And I tap on conversation name <Contact>
     And <Contact> calls me
     Then I see incoming call
     When I swipe to accept the call
@@ -112,14 +112,14 @@ Feature: Calling
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <Contact1>
+    And I tap on conversation name <Contact1>
     When <Contact2> calls me
     And I see incoming call
     And <Contact2> stops calling me
     Then I do not see incoming call
     When I swipe right to show the conversations list
     Then I see missed call notification near <Contact2> conversations list item
-    When I tap the conversation <Contact2>
+    When I tap on conversation name <Contact2>
     Then I see missed call from <Contact2> in the conversation
     When I navigate back
     Then I do not see missed call notification near <Contact2> conversations list item
@@ -137,13 +137,13 @@ Feature: Calling
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <Contact1>
+    And I tap on conversation name <Contact1>
     When <Contact2> calls me
     And I see incoming call
     And <Contact2> stops calling me
     Then I do not see incoming call
     And I see missed call notification near <Contact2> conversations list item
-    When I tap the conversation <Contact2>
+    When I tap on conversation name <Contact2>
     Then I see missed call from <Contact2> in the conversation
     And I do not see missed call notification near <Contact2> conversations list item
 
@@ -228,7 +228,7 @@ Feature: Calling
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <Contact>
+    And I tap on conversation name <Contact>
     And <Contact> calls me
     And I see incoming call
     When I swipe to ignore the call
@@ -248,7 +248,7 @@ Feature: Calling
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <Contact>
+    And I tap on conversation name <Contact>
     And <Contact> calls me
     And I see incoming call
     When I swipe to ignore the call

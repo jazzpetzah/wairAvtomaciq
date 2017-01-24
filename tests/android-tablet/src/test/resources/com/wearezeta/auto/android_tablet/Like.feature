@@ -8,7 +8,7 @@ Feature: Like
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
-    When I tap the conversation <Contact>
+    When I tap on conversation name <Contact>
     And I type the message "<Message>" in the Conversation view
     And I send the typed message by cursor Send button in the Conversation view
     And I tap the Text message "<Message>" in the conversation view
@@ -52,7 +52,7 @@ Feature: Like
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
-    When I tap the conversation <Contact>
+    When I tap on conversation name <Contact>
     And I type the message "<Url>" in the Conversation view
     And I send the typed message by cursor Send button in the Conversation view
     And I tap Link Preview container in the conversation view
@@ -75,7 +75,7 @@ Feature: Like
     Given I accept First Time overlay as soon as it is visible
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     Given I see Conversations list with conversations
-    When I tap the conversation <Contact>
+    When I tap on conversation name <Contact>
     And I see a new picture in the Conversation view
     And I tap Image container in the conversation view
     And I scroll to the bottom of the Conversation view
@@ -96,7 +96,7 @@ Feature: Like
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
-    When I tap the conversation <Contact>
+    When I tap on conversation name <Contact>
     And I tap Sketch button from cursor toolbar
     And I draw a sketch with 2 colors on Sketch page
     And I tap Send button on Sketch page
@@ -142,7 +142,7 @@ Feature: Like
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
-    When I tap the conversation <Contact>
+    When I tap on conversation name <Contact>
     And I type the message "<SoundCloudLink>" in the Conversation view
     And I send the typed message by cursor Send button in the Conversation view
     And I scroll to the bottom of the Conversation view
@@ -165,7 +165,7 @@ Feature: Like
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
-    When I tap the conversation <Contact>
+    When I tap on conversation name <Contact>
     And I type the message "<YoutubeLink>" in the Conversation view
     And I send the typed message by cursor Send button in the Conversation view
     And I tap Youtube container in the conversation view
@@ -188,7 +188,7 @@ Feature: Like
     Given User <Contact> shares his location to user Myself via device <DeviceName>
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
-    When I tap the conversation <Contact>
+    When I tap on conversation name <Contact>
     And I tap Share Location container in the conversation view
     And I press Back button until Wire app is in foreground in 10 seconds
     And I remember the state of like button
@@ -209,7 +209,7 @@ Feature: Like
     Given <Contact> sends local file named "<FileName>" and MIME type "<MIMEType>" via device <DeviceName> to user Myself
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
-    When I tap the conversation <Contact>
+    When I tap on conversation name <Contact>
     And I scroll to the bottom of the Conversation view
     And I tap Audio Message container in the conversation view
     And I scroll to the bottom of the Conversation view
@@ -231,7 +231,7 @@ Feature: Like
     Given I push <FileSize> video file having name "<FileFullName>" to the device
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
-    When I tap the conversation <Contact>
+    When I tap on conversation name <Contact>
     And I tap Video message button from cursor toolbar
     And I scroll to the bottom of the Conversation view
     And I tap Video Message container in the conversation view
@@ -254,7 +254,7 @@ Feature: Like
     Given I push <FileSize> file having name "<FileName>.<FileExtension>" to the device
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
-    When I tap the conversation <Contact>
+    When I tap on conversation name <Contact>
     And I tap File button from cursor toolbar
     # Wait for file uploaded
     And I wait for 5 seconds
@@ -277,7 +277,7 @@ Feature: Like
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
-    Given I tap the conversation <Contact>
+    Given I tap on conversation name <Contact>
     When I type the message "<Message>" in the Conversation view
     And I send the typed message by cursor Send button in the Conversation view
     And User <Contact> likes the recent message from user Myself via device <ContactDevice>
@@ -302,7 +302,7 @@ Feature: Like
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
-    Given I tap the conversation <Group>
+    Given I tap on conversation name <Group>
     And I type the message "<Message>" in the Conversation view
     And I send the typed message by cursor Send button in the Conversation view
     When User <Contact1> likes the recent message from group conversation <Group> via device <D1>
