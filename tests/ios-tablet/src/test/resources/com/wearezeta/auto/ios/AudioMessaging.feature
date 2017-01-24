@@ -25,6 +25,7 @@ Feature: Audio Messaging
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
+    Given User adds the following device: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I Sign in on tablet using my email
     Given I see conversations list
     When User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>

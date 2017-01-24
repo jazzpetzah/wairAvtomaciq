@@ -637,6 +637,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given Users add the following devices: {"Myself": [{}], "<Contact1>": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
@@ -659,6 +660,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User adds the following device: {"Myself": [{}]}
     Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
@@ -688,6 +690,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User adds the following device: {"Myself": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
@@ -717,6 +720,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given Users add the following devices: {"Myself": [{}], "<Contact1>": [{}]}
     Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
@@ -747,6 +751,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given Users add the following devices: {"Myself": [{}], "<Contact1>": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
@@ -776,6 +781,7 @@ Feature: People View
   Scenario Outline: Verify removing the content from 1-to-1 via participant view [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
+    Given Users add the following devices: {"Myself": [{}], "<Contact1>": [{}]}
     Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given User Myself pings conversation <Contact1>
@@ -805,6 +811,7 @@ Feature: People View
   Scenario Outline: Verify removing the content from 1-to-1 via participant view [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
+    Given Users add the following devices: {"Myself": [{}], "<Contact1>": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given User Myself pings conversation <Contact1>
@@ -835,6 +842,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given Users add the following devices: {"Myself": [{}], "<Contact1>": [{}]}
     Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given User Myself sends 1 default message to conversation <GroupChatName>
@@ -859,6 +867,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given Users add the following devices: {"Myself": [{}], "<Contact1>": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given User Myself sends 1 default message to conversation <GroupChatName>

@@ -64,6 +64,7 @@ Feature: Archive
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User adds the following device: {"<Contact1>": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list

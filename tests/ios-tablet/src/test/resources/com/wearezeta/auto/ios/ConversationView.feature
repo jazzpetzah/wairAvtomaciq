@@ -19,6 +19,7 @@ Feature: Conversation View
   Scenario Outline: Receive message from contact [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
@@ -105,6 +106,7 @@ Feature: Conversation View
   Scenario Outline: Receive a camera roll picture from user from contact list [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given User <Contact> sends 1 image file <Picture> to conversation Myself
@@ -120,6 +122,7 @@ Feature: Conversation View
   Scenario Outline: Receive a camera roll picture from user from contact list [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given User <Contact> sends 1 image file <Picture> to conversation Myself
@@ -466,6 +469,7 @@ Feature: Conversation View
   Scenario Outline: Verify player is displayed for vimeo links with video IDs [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given User adds the following device: {"Myself": [{}]}
     Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given User Myself sends 1 "<VimeoLink>" message to conversation <Contact1>
@@ -481,6 +485,7 @@ Feature: Conversation View
   Scenario Outline: Verify player is displayed for vimeo links with video IDs [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given User adds the following device: {"Myself": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given User Myself sends 1 "<VimeoLink>" message to conversation <Contact1>
@@ -495,10 +500,11 @@ Feature: Conversation View
   Scenario Outline: Verify player isn't displayed for vimeo links without video IDs [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"Myself": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    Given User Myself sends encrypted message "<VimeoLink>" to user <Contact>
+    Given User Myself sends 1 "<VimeoLink>" message to conversation <Contact>
     When I tap on contact name <Contact>
     Then I see vimeo link <VimeoLink> without media preview in the conversation view
 
@@ -527,6 +533,7 @@ Feature: Conversation View
   Scenario Outline: Verify possibility to copy image in the conversation view [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given User <Contact> sends 1 image file <Picture> to conversation Myself
@@ -553,6 +560,7 @@ Feature: Conversation View
   Scenario Outline: Verify possibility to copy image in the conversation view [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given User <Contact> sends 1 image file <Picture> to conversation Myself
@@ -579,6 +587,7 @@ Feature: Conversation View
   Scenario Outline: Verify posting in a 1-to-1 conversation without content [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given User adds the following device: {"Myself": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given User Myself sends 1 default message to conversation <Contact1>
@@ -605,6 +614,7 @@ Feature: Conversation View
   Scenario Outline: Verify downloading images in fullscreen [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given User <Contact> sends 1 image file <Picture> to conversation Myself
@@ -625,6 +635,7 @@ Feature: Conversation View
   Scenario Outline: Verify downloading images in fullscreen [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given User <Contact> sends 1 image file <Picture> to conversation Myself
@@ -646,6 +657,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>, <Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>, <Contact2>
     Given User <Name> blocks user <Contact1>
+    Given User adds the following device: {"<Contact1>": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
@@ -663,6 +675,7 @@ Feature: Conversation View
   Scenario Outline: Verify sending GIF format pic [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given User <Contact> sends 1 image file <GifPicture> to conversation Myself

@@ -4,6 +4,7 @@ Feature: Likes
   Scenario Outline: Verify liking/unliking a message by tapping on like icon
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given User <Contact> sends 1 default message to conversation Myself
@@ -24,6 +25,7 @@ Feature: Likes
   Scenario Outline: Verify liking image and link [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given User <Contact> sends 1 image file <Picture> to conversation Myself

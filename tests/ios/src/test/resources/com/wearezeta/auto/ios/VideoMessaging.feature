@@ -4,7 +4,7 @@ Feature: Video Messaging
   Scenario Outline: Verify recording a video
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
-    Given User adds the following device: {"<Contact>": [{"name": "<DeviceName1>"}]}
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I prepare <FileName> to be uploaded as a video message
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -16,8 +16,8 @@ Feature: Video Messaging
     And I see "<DeliveredLabel>" on the message toolbox in conversation view
 
     Examples:
-      | Name      | Contact   | FileName    | DeviceName1 | DeliveredLabel |
-      | user1Name | user2Name | testing.mp4 | device1     | Delivered      |
+      | Name      | Contact   | FileName    | DeliveredLabel |
+      | user1Name | user2Name | testing.mp4 | Delivered      |
 
   @C125733 @rc @regression @fastLogin
   Scenario Outline: Verify receiving video message

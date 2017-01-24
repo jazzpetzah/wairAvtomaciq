@@ -25,6 +25,7 @@ Feature: File Transfer
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I create temporary file <FileSize> in size with name "<FileName>" and extension "<FileExt>"
+    Given User adds the following device: {"<Contact>": [{"name" : "<ContactDevice>"}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given User <Contact> sends temporary file <FileName>.<FileExt> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>

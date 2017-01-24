@@ -20,6 +20,7 @@ Feature: Conversation List
   Scenario Outline: Verify archiving silenced conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     When I swipe right on a <Contact>
@@ -44,6 +45,7 @@ Feature: Conversation List
     Given There are 2 users where <Name> is me
     Given User Myself removes his avatar picture
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
@@ -101,6 +103,7 @@ Feature: Conversation List
   Scenario Outline: Verify conversations are sorted according to most recent activity
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
+    Given Users add the following devices: {"<Contact1>": [{}], "<Contact2>": [{}], "<Contact3>": [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     Given User <Contact3> sends 1 default message to conversation Myself
@@ -195,9 +198,10 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given Users add the following devices: {"<Contact1>": [{}], "Myself": [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given User <Contact1> sends 1 image file <Picture> to conversation GroupChatName
+    Given User <Contact1> sends 1 image file <Picture> to conversation <GroupChatName>
     Given User <Contact1> sends 1 default message to conversation <GroupChatName>
     Given User Myself sends 1 default message to conversation <GroupChatName>
     When I tap on contact name <GroupChatName>
@@ -223,6 +227,7 @@ Feature: Conversation List
   Scenario Outline: ZIOS-6809 Verify removing the history from 1-to1 conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given Users add the following devices: {"<Contact1>": [{}], "Myself": [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     Given User <Contact1> sends 1 image file <Picture> to conversation Myself
@@ -305,8 +310,9 @@ Feature: Conversation List
   Scenario Outline: Verify that deleted conversation isn't going to archive
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given Users add the following devices: {"<Contact1>": [{}], "Myself": [{}]}
     Given I sign in using my email or phone number
-    Given User <Contact1> sends 1 default message to conversation <Name>
+    Given User <Contact1> sends 1 default message to conversation Myself
     Given User Myself sends 1 default message to conversation <Contact1>
     Given I see conversations list
     # Wait for sync
@@ -346,6 +352,7 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User adds the following device: {"Myself": [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     Given User Myself sends 1 default message to conversation <GroupChatName>
@@ -374,6 +381,7 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given Users add the following devices: {"<Contact1>": [{}], "Myself": [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     Given User Myself pings conversation <GroupChatName>
@@ -461,6 +469,7 @@ Feature: Conversation List
     Given There are 2 users where <Name> is me
     Given User Myself removes his avatar picture
     Given <Contact> is connected to <Name>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     Given User <Contact> sends 1 default message to conversation Myself
@@ -521,12 +530,12 @@ Feature: Conversation List
   Scenario Outline: Verify deleting a conversation is synchronised to all devices
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given Users add the following devices: {"Myself": [{"name": "<DeviceName>"}], "<Contact1>": [{}]}
     Given I sign in using my email or phone number
+    Given User <Contact1> sends 1 default message to conversation Myself
     Given I see conversations list
-    And I see conversation <Contact1> in conversations list
-    When User adds the following device: {"Myself": [{"name": "<DeviceName>"}]}
-    And User <Contact1> sends 1 default message to conversation Myself
-    And User Myself deletes single user conversation <Contact1> using device <DeviceName>
+    Given I see conversation <Contact1> in conversations list
+    When User Myself deletes single user conversation <Contact1> using device <DeviceName>
     # Let the stuff to sync up
     Then I wait up to <Timeout> seconds until conversation <Contact1> disappears from the list
 

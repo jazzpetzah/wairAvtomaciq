@@ -75,8 +75,9 @@ Feature: Link Preview
   Scenario Outline: Verify preview is shown for different formats of link
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"Myself": [{}]}
     Given I sign in using my email or phone number
-    Given User Myself send 1 "<Link>" message to conversation <Contact>
+    Given User Myself sends 1 "<Link>" message to conversation <Contact>
     Given I see conversations list
     Given I tap on contact name <Contact>
     # Wait for link preview to be loaded
@@ -84,19 +85,19 @@ Feature: Link Preview
     Then I see link preview container in the conversation view
     When User Myself deletes the recent message from user <Contact>
     Then I do not see link preview container in the conversation view
-    When User Myself send 1 "<Link1>" message to conversation <Contact>
+    When User Myself sends 1 "<Link1>" message to conversation <Contact>
     # Wait for link preview to be loaded
     And I wait for <LinkLoadTimeout> seconds
     Then I see link preview container in the conversation view
     When User Myself deletes the recent message from user <Contact>
     Then I do not see link preview container in the conversation view
-    When User Myself send 1 "<Link2>" message to conversation <Contact>
+    When User Myself sends 1 "<Link2>" message to conversation <Contact>
     # Wait for link preview to be loaded
     And I wait for <LinkLoadTimeout> seconds
     Then I see link preview container in the conversation view
     When User Myself deletes the recent message from user <Contact>
     Then I do not see link preview container in the conversation view
-    When User Myself send 1 "<Link3>" message to conversation <Contact>
+    When User Myself sends 1 "<Link3>" message to conversation <Contact>
     # Wait for link preview to be loaded
     And I wait for <LinkLoadTimeout> seconds
     Then I see link preview container in the conversation view
@@ -113,6 +114,7 @@ Feature: Link Preview
   Scenario Outline: Verify copying link preview
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
     Given User <Contact> sends 1 "<Link>" message to conversation Myself
     Given I see conversations list
@@ -152,6 +154,7 @@ Feature: Link Preview
   Scenario Outline: Verify link preview isn't shown for YouTube, SoundCloud, Vimeo, Giphy
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>

@@ -131,6 +131,7 @@ Feature: Audio Messaging
   Scenario Outline: Verify playback is stopped when other audio message starts playing
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given User add the following device: {"<Contact1>": [{}]}
     Given I sign in using my email or phone number
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
@@ -152,6 +153,7 @@ Feature: Audio Messaging
   Scenario Outline: (ZIOS-6688) Verify playback is stopped when incoming call has appeared
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number

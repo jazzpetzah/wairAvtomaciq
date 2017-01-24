@@ -88,6 +88,7 @@ Feature: Conversation List
   Scenario Outline: Verify conversations are sorted according to most recent activity [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given <Name> is connected to <Contact>,<Contact2>,<Contact3>
+    Given Users add the following devices: {"<Contact>": [{}], "<Contact3>": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given User <Contact> sends <Number> default messages to conversation Myself
@@ -129,6 +130,7 @@ Feature: Conversation List
     Given User Myself removes his avatar picture
     Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
+    Given Users add the following devices: {"<Contact>": [{}]}
     Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     And I see conversations list
@@ -227,6 +229,7 @@ Feature: Conversation List
   Scenario Outline: Verify that deleted conversation isn't going to archive [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given Users add the following devices: {"<Contact1>": [{}], "Myself": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
@@ -268,6 +271,7 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given Users add the following devices: {"<Contact1>": [{}], "Myself": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
@@ -312,6 +316,7 @@ Feature: Conversation List
   Scenario Outline: Verify archiving silenced conversation [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see conversations list
@@ -338,6 +343,7 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User adds the following device: {"Myself": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list

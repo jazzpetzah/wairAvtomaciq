@@ -25,9 +25,10 @@ Feature: Rich Media
   Scenario Outline: (MediaBar disappears on Simulator) Verify the Media Bar disappears when playing media is back in view - SoundCloud
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given User adds the following device: {"Myself": [{}]}
     Given I sign in using my email or phone number
-    Given User <Name> sends 40 default messages to conversation <Contact1>
-    Given User <Name> sends encrypted message "<SoundCloudLink>" to user <Contact1>
+    Given User Myself sends 40 default messages to conversation <Contact1>
+    Given User Myself sends 1 "<SoundCloudLink>" message to conversation <Contact1>
     Given I see conversations list
     Given I tap on contact name <Contact1>
     Given I scroll to the bottom of the conversation
@@ -44,9 +45,10 @@ Feature: Rich Media
   Scenario Outline: Verify play/pause controls are visible in the list if there is active media item in other conversation - SoundCloud
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given User adds the following device: {"Myself": [{}]}
     Given I sign in using my email or phone number
-    Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact1>
-    Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact2>
+    Given User Myself sends 1 "<SoundCloudLink>" message to conversation <Contact1>
+    Given User Myself sends 1 "<SoundCloudLink>" message to conversation <Contact2>
     Given I see conversations list
     Given I tap on contact name <Contact1>
     Given I tap on media container in conversation view
@@ -66,8 +68,9 @@ Feature: Rich Media
   Scenario Outline: Play/pause controls can change playing media state (SoundCloud)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
-    Given User <Contact> sends encrypted message "<SoundCloudLink>" to user Myself
+    Given User <Contact> sends 1 "<SoundCloudLink>" message to conversation Myself
     Given I see conversations list
     When I tap on contact name <Contact>
     And I remember media container state

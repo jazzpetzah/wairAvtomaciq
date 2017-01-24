@@ -232,6 +232,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given User <Name> blocks user <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
@@ -259,6 +260,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given User <Name> blocks user <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list

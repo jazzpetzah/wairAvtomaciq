@@ -32,6 +32,7 @@ Feature: Forward Message
     Given User Myself blocks user <BlockedUser>
     Given <NonConnectedIncomingUser> sent connection request to Me
     Given Myself sent connection request to <NonConnectedOutgoingUser>
+    Given User adds the following device: {"<ConnectedUser1>": [{}]}
     Given I sign in using my email or phone number
     Given <ConnectedUser1> removes Me from group chat <GroupChatName>
     Given User <ConnectedUser1> sends 1 default message to conversation Myself
@@ -52,6 +53,7 @@ Feature: Forward Message
   Scenario Outline: Verify message is sent as normal when ephemeral keyboard is chosen in the destination conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given User adds the following device: {"<Contact2>": [{}]}
     Given I sign in using my email or phone number
     Given User <Contact2> sends 1 default message to conversation Myself
     Given I see conversations list
@@ -78,6 +80,7 @@ Feature: Forward Message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given User Myself archives single user conversation <Contact2>
+    Given User adds the following device: {"<Contact1>": [{}]}
     Given I sign in using my email or phone number
     Given User <Contact1> sends 1 default message to conversation Myself
     Given I see conversations list
@@ -119,6 +122,7 @@ Feature: Forward Message
   Scenario Outline: Verify forwarding someone else audio message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given Users add the following devices: {"Myself": [{}], "<Contact1>": ["name": "<ContactDevice>"]}
     Given I sign in using my email or phone number
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Given User Me sends 1 default message to conversation <Contact1>
@@ -148,6 +152,7 @@ Feature: Forward Message
   Scenario Outline: Verify forwarding someone else video message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given User adds the following device: {"<Contact1>": ["name": "<ContactDevice>"]}
     Given I sign in using my email or phone number
     Given User <Contact1> sends file <FileName> having MIME type <MIMEType> to single user conversation <Name> using device <DeviceName>
     # Given User Me sends 1 encrypted message to user <Contact1>

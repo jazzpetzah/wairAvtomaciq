@@ -4,6 +4,7 @@ Feature: Copy/Delete Message
   Scenario Outline: Verify copy/delete menu disappears on the rotation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
@@ -22,6 +23,7 @@ Feature: Copy/Delete Message
   Scenario Outline: Delete Message. Verify deleting a picture [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list

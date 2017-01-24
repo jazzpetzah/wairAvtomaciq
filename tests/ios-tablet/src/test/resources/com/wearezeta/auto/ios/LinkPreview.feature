@@ -39,6 +39,7 @@ Feature: Link Preview
   Scenario Outline: Verify preview is shown for received link
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given User <Contact> sends 1 "<Link>" message to conversation Myself

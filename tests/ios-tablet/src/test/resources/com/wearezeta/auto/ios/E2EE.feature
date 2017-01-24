@@ -30,6 +30,7 @@ Feature: E2EE
   Scenario Outline: Verify system message appearance in case of using a new device by you [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given User adds the following device: {"<Contact1>": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list

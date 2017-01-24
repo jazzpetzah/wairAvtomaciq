@@ -4,6 +4,7 @@ Feature: Likes
   Scenario Outline: Verify liking/unliking a message by tapping on like icon
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given Users add the following devices: {"<Contact>": []}
     Given I sign in using my email or phone number
     Given User <Contact> sends 1 default message to conversation Myself
     Given I see conversations list
@@ -23,6 +24,7 @@ Feature: Likes
   Scenario Outline: Verify liking/unliking a message from a message menu
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given Users add the following devices: {"<Contact>": []}
     Given I sign in using my email or phone number
     Given User <Contact> sends 1 default message to conversation Myself
     Given I see conversations list
@@ -44,6 +46,7 @@ Feature: Likes
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <Group> with <Contact1>,<Contact2>
+    Given Users add the following devices: {"<Contact1>": []}
     Given I sign in using my email or phone number
     Given User <Contact1> sends 1 default message to conversation <Group>
     Given I see conversations list
@@ -90,7 +93,7 @@ Feature: Likes
   Scenario Outline: Verify deleted for myself my message doesn't reappear after someone liked it
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User adds the following device: {"<Contact>": [{}]}
+    Given Users add the following devices: {"Myself": [{}], "<Contact>": [{}]}
     Given I sign in using my email or phone number
     Given User Myself sends 1 default message to conversation <Contact>
     Given I see conversations list
@@ -137,6 +140,7 @@ Feature: Likes
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <Group> with <Contact1>,<Contact2>
+    Given Users add the following devices: {"<Contact1>": [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     Given User <Contact1> sends 1 image file <Picture> to conversation <Group>
@@ -224,6 +228,7 @@ Feature: Likes
   Scenario Outline: Verify liking Soundcloud
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given Users add the following devices: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
     Given User <Contact> sends 1 "<SCLink>" message to conversation Myself
     Given I see conversations list
@@ -246,6 +251,7 @@ Feature: Likes
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <Group> with <Contact1>,<Contact2>
+    Given Users add the following devices: {"<Contact1>": [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     Given User <Contact1> sends 1 image file <Picture> to conversation <Group>
@@ -265,6 +271,7 @@ Feature: Likes
   Scenario Outline: Verify liking/unliking a message by double tapping
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given Users add the following devices: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
     Given User <Contact> sends 1 default message to conversation Myself
     Given I see conversations list
@@ -284,6 +291,7 @@ Feature: Likes
   Scenario Outline: Verify deleted for myself someone else message doesn't reappear after someone liked it
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given Users add the following devices: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
     Given User <Contact> sends 1 default message to conversation Myself
     Given I see conversations list
@@ -304,6 +312,7 @@ Feature: Likes
   Scenario Outline: Verify liking a link
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given Users add the following devices: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
     Given User <Contact> sends 1 "<Link>" message to conversation Myself
     Given I see conversations list
@@ -325,6 +334,7 @@ Feature: Likes
   Scenario Outline: Verify liking a picture
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given Users add the following devices: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
     Given User <Contact> sends 1 image file <Picture> to conversation Myself
     Given I see conversations list
@@ -344,6 +354,7 @@ Feature: Likes
   Scenario Outline: Verify liking an audio message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given Users add the following devices: {"<Contact>": [{"name" : "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Given I see conversations list
@@ -361,6 +372,7 @@ Feature: Likes
   Scenario Outline: Verify liking a location
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given Users add the following devices: {"<Contact>": [{"name" : "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given User <Contact> shares the default location to user Myself via device <ContactDevice>
     # Let it to receive the message

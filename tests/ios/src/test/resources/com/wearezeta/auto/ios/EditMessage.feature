@@ -248,6 +248,7 @@ Feature: Edit Message
   Scenario Outline: Verify I can't edit picture/video/audio
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
     Given User <Contact> sends file <VideoFileName> having MIME type <VideoMIMEType> to single user conversation <Name> using device <DeviceName>
     Given I see conversations list
@@ -272,6 +273,7 @@ Feature: Edit Message
   Scenario Outline: Verify edited message has an additional name and avatar and save its position in the conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"Myself": [{}]}
     Given I sign in using my email or phone number
     Given User Myself sends 1 "<Message1>" message to conversation <Contact>
     Given User Myself sends 1 "<Message2>" message to conversation <Contact>
