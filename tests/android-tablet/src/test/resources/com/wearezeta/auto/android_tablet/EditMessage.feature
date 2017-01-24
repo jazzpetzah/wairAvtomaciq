@@ -10,7 +10,7 @@ Feature: Edit message
     Given User <Contact1> sends encrypted message "<Message>" via device <ContactDevice> to user Myself
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
-    When I tap the conversation <Contact1>
+    When I tap on conversation name <Contact1>
     And User <Contact1> edits the recent message to "<NewMessage>" from user Myself via device <ContactDevice>
     Then I do not see the message "<Message>" in the conversation view
     And I see the message "<NewMessage>" in the conversation view
@@ -30,7 +30,7 @@ Feature: Edit message
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
-    When I tap the conversation <GroupChatName>
+    When I tap on conversation name <GroupChatName>
     And I type the message "<Message>" in the Conversation view
     And I send the typed message by cursor Send button in the Conversation view
     And User <Contact1> remembers the recent message from group conversation <GroupChatName> via device <ContactDevice>
@@ -56,7 +56,7 @@ Feature: Edit message
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     Given User <Contact> sends encrypted message "<Message>" to user Myself
-    Given I tap the conversation <Contact>
+    Given I tap on conversation name <Contact>
     When I long tap the Text message "<Message>" in the conversation view
     Then I do not see Edit button on the message bottom menu
 
@@ -72,7 +72,7 @@ Feature: Edit message
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
-    Given I tap the conversation <Contact1>
+    Given I tap on conversation name <Contact1>
     And I type the message "<Message>" in the Conversation view
     And I send the typed message by cursor Send button in the Conversation view
     And I long tap the Text message "<Message>" in the conversation view

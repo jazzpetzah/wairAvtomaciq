@@ -8,7 +8,7 @@ Feature: Conversation List
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <Contact>
+    And I tap on conversation name <Contact>
     And I tap conversation name from top toolbar
     And I see Single connected user details popover
     And I tap open menu button on Single connected user details popover
@@ -40,7 +40,7 @@ Feature: Conversation List
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <Contact>
+    And I tap on conversation name <Contact>
     And I tap conversation name from top toolbar
     And I see Single connected user details popover
     And I tap open menu button on Single connected user details popover
@@ -50,7 +50,7 @@ Feature: Conversation List
     And I tap outside of Single connected user details popover
     And I do not see Single connected user details popover
     When I swipe right to show the conversations list
-    When I tap the conversation <Contact>
+    When I tap on conversation name <Contact>
     And I tap conversation name from top toolbar
     Then I see Single connected user details popover
     When I tap open menu button on Single connected user details popover
@@ -120,7 +120,7 @@ Feature: Conversation List
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <Contact>
+    And I tap on conversation name <Contact>
     And I tap on text input
     When I type the message "<SoundCloudLink>" in the conversation view
     And I send the typed message by cursor Send button in the conversation view
@@ -141,7 +141,7 @@ Feature: Conversation List
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <Contact>
+    And I tap on conversation name <Contact>
     And I tap on text input
     When I type the message "<SoundCloudLink>" in the conversation view
     And I send the typed message by cursor Send button in the conversation view
@@ -174,7 +174,7 @@ Feature: Conversation List
     Then I see "<Contact1>" avatar in Search result list
     And I close Search
     When User <Contact1> sends encrypted message <Msg2> to user Myself
-    When I tap the conversation <Contact1>
+    When I tap on conversation name <Contact1>
     And I see the message "<Msg2>" in the conversation view
     And I do not see the message "<Msg1>" in the conversation view
 
@@ -203,7 +203,7 @@ Feature: Conversation List
     Then I see "<GroupChatName>" group avatar in Search result list
     And I close Search
     And User <Contact1> sends encrypted message <Msg2> to group conversation <GroupChatName>
-    When I tap the conversation <GroupChatName>
+    When I tap on conversation name <GroupChatName>
     And I see the message "<Msg2>" in the conversation view
     And I do not see the message "<Msg1>" in the conversation view
 
@@ -233,7 +233,7 @@ Feature: Conversation List
     Then I see "<GroupChatName>" group avatar in Search result list
     And I close Search
     And User <Contact1> sends encrypted message <Msg2> to group conversation <GroupChatName>
-    When I tap the conversation <GroupChatName>
+    When I tap on conversation name <GroupChatName>
     And I see the message "<Msg2>" in the conversation view
     And I do not see the message "<Msg1>" in the conversation view
 

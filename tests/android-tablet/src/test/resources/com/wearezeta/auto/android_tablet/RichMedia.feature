@@ -9,7 +9,7 @@ Feature: Rich Media
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     Given User <Contact> sends encrypted image <GifName> to single user conversation Myself
-    And I tap the conversation <Contact>
+    And I tap on conversation name <Contact>
     When I scroll to the bottom of the conversation view
     Then I see a new picture in the conversation view
     And I see the picture in the conversation view is animated
@@ -30,7 +30,7 @@ Feature: Rich Media
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     Given User <Contact> sends encrypted image <GifName> to single user conversation Myself
-    And I tap the conversation <Contact>
+    And I tap on conversation name <Contact>
     When I scroll to the bottom of the conversation view
     Then I see a new picture in the conversation view
     And I see the picture in the conversation view is animated
@@ -51,7 +51,7 @@ Feature: Rich Media
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I remember the coordinates of conversation item <Contact>
-    And I tap the conversation <Contact>
+    And I tap on conversation name <Contact>
     And I tap on text input
     When I type the message "<SoundCloudLink>" in the conversation view
     And I send the typed message by cursor Send button in the conversation view
@@ -76,7 +76,7 @@ Feature: Rich Media
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I remember the coordinates of conversation item <Contact>
-    And I tap the conversation <Contact>
+    And I tap on conversation name <Contact>
     And I tap on text input
     When I type the message "<SoundCloudLink>" in the conversation view
     And I send the typed message by cursor Send button in the conversation view
@@ -99,7 +99,7 @@ Feature: Rich Media
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <Contact>
+    And I tap on conversation name <Contact>
     When I tap on text input
     And I type the message "<Message>" in the conversation view
     And I tap Gif button from cursor toolbar
@@ -123,7 +123,7 @@ Feature: Rich Media
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <Contact>
+    And I tap on conversation name <Contact>
     When I tap on text input
     And I type the message "<Message>" in the conversation view
     And I tap Gif button from cursor toolbar
@@ -149,7 +149,7 @@ Feature: Rich Media
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     Given User <Contact> sends <MsgsInConvo> encrypted messages to user Myself
-    And I tap the conversation <Contact>
+    And I tap on conversation name <Contact>
     And I tap on text input
     When I type the message "<SoundCloudLink>" in the conversation view
     And I send the typed message by cursor Send button in the conversation view
