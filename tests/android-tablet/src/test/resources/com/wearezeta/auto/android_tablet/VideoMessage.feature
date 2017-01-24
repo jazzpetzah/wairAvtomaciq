@@ -9,7 +9,7 @@ Feature: Video Message
     Given I push <FileSize> video file having name "<FileFullName>" to the device
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    Given I tap the conversation <Contact>
+    Given I tap on conversation name <Contact>
     When I tap Video message button from cursor toolbar
     Then I see Video Message container in the conversation view
 

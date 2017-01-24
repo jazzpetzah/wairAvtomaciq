@@ -232,12 +232,13 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given User <Name> blocks user <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
-    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
-    Given User <Contact> securely pings conversation <Name>
-    Given User <Contact> sends 1 encrypted message to user Myself
+    Given User <Contact> sends 1 image file <Picture> to conversation Myself
+    Given User <Contact> pings conversation <Name>
+    Given User <Contact> sends 1 default message to conversation Myself
     When I wait for 5 seconds
     Then I do not see conversation <Contact> in conversations list
     When I wait until <Contact> exists in backend search results
@@ -259,12 +260,13 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given User <Name> blocks user <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
-    Given User <Contact> securely pings conversation <Name>
-    Given User <Contact> sends 1 encrypted message to user Myself
+    Given User <Contact> sends 1 image file <Picture> to conversation Myself
+    Given User <Contact> pings conversation <Name>
+    Given User <Contact> sends 1 default message to conversation Myself
     When I wait for 5 seconds
     Then I do not see conversation <Contact> in conversations list
     When I wait until <Contact> exists in backend search results
@@ -566,7 +568,7 @@ Feature: Connect
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I see Pending request link in conversations list
-    And <Contact> cancel all outgoing connection requests
+    And User <Contact> cancels all outgoing connection requests
     Then I do not see Pending request link in conversations list
 
     Examples:
@@ -582,7 +584,7 @@ Feature: Connect
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I see Pending request link in conversations list
-    And <Contact> cancel all outgoing connection requests
+    And User <Contact> cancels all outgoing connection requests
     Then I do not see Pending request link in conversations list
 
     Examples:

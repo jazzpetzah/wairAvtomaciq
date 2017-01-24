@@ -5,7 +5,7 @@ import com.wearezeta.auto.ios.pages.VoiceFiltersOverlay;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.jcodec.common.Assert;
+import org.junit.Assert;
 
 public class VoiceFiltersOverlaySteps {
     private VoiceFiltersOverlay getVoiceFiltersOverlay() throws Exception {

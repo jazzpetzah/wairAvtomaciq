@@ -20,6 +20,7 @@ Feature: Conversation List
   Scenario Outline: Verify archiving silenced conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     When I swipe right on a <Contact>
@@ -27,9 +28,9 @@ Feature: Conversation List
     When I swipe right on a <Contact>
     And I tap Archive conversation action button
     Then I do not see conversation <Contact> in conversations list
-    Given User <Contact> sends 1 encrypted message to user Myself
+    Given User <Contact> sends 1 default message to conversation Myself
     And I do not see conversation <Contact> in conversations list
-    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    Given User <Contact> sends 1 image file <Picture> to conversation Myself
     Then I do not see conversation <Contact> in conversations list
     And I open archived conversations
     And I tap on contact name <Contact>
@@ -44,18 +45,19 @@ Feature: Conversation List
     Given There are 2 users where <Name> is me
     Given User Myself removes his avatar picture
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
     And I navigate back to conversations list
     And I remember the state of <Contact> conversation item
-    When User <Contact> sends 1 encrypted message to user Myself
+    When User <Contact> sends 1 default message to conversation Myself
     Then I see the state of <Contact> conversation item is changed
     When I remember the state of <Contact> conversation item
-    And User <Contact> sends 4 encrypted message to user Myself
+    And User <Contact> sends 4 default messages to conversation Myself
     Then I see the state of <Contact> conversation item is changed
     When I remember the state of <Contact> conversation item
-    Given User <Contact> sends 5 encrypted messages to user Myself
+    Given User <Contact> sends 5 default messages to conversation Myself
     Then I see the state of <Contact> conversation item is changed
 
     Examples:
@@ -101,13 +103,14 @@ Feature: Conversation List
   Scenario Outline: Verify conversations are sorted according to most recent activity
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
+    Given Users add the following devices: {"<Contact1>": [{}], "<Contact2>": [{}], "<Contact3>": [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given User <Contact3> sends 1 encrypted message to user Myself
+    Given User <Contact3> sends 1 default message to conversation Myself
     And I see first item in contact list named <Contact3>
-    Given User <Contact2> securely pings conversation Myself
+    Given User <Contact2> pings conversation Myself
     And I see first item in contact list named <Contact2>
-    Given User <Contact1> sends encrypted image <Picture> to single user conversation Myself
+    Given User <Contact1> sends 1 image file <Picture> to conversation Myself
     Then I see first item in contact list named <Contact1>
 
     Examples:
@@ -195,11 +198,12 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given Users add the following devices: {"<Contact1>": [{}], "Myself": [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given User <Contact1> sends encrypted image <Picture> to group conversation <GroupChatName>
-    Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
-    Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
+    Given User <Contact1> sends 1 image file <Picture> to conversation <GroupChatName>
+    Given User <Contact1> sends 1 default message to conversation <GroupChatName>
+    Given User Myself sends 1 default message to conversation <GroupChatName>
     When I tap on contact name <GroupChatName>
     Then I see 1 photo in the conversation view
     When I navigate back to conversations list
@@ -223,11 +227,12 @@ Feature: Conversation List
   Scenario Outline: ZIOS-6809 Verify removing the history from 1-to1 conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given Users add the following devices: {"<Contact1>": [{}], "Myself": [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given User <Contact1> sends encrypted image <Picture> to single user conversation Myself
-    Given User <Contact1> sends 1 encrypted message to user <Name>
-    Given User Myself sends 1 encrypted message to user <Contact1>
+    Given User <Contact1> sends 1 image file <Picture> to conversation Myself
+    Given User <Contact1> sends 1 default message to conversation <Name>
+    Given User Myself sends 1 default message to conversation <Contact1>
     Given I wait until <Contact1> exists in backend search results
     When I tap on contact name <Contact1>
     Then I see 1 photo in the conversation view
@@ -305,9 +310,10 @@ Feature: Conversation List
   Scenario Outline: Verify that deleted conversation isn't going to archive
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given Users add the following devices: {"<Contact1>": [{}], "Myself": [{}]}
     Given I sign in using my email or phone number
-    Given User <Contact1> sends 1 encrypted message to user <Name>
-    Given User Myself sends 1 encrypted message to user <Contact1>
+    Given User <Contact1> sends 1 default message to conversation Myself
+    Given User Myself sends 1 default message to conversation <Contact1>
     Given I see conversations list
     # Wait for sync
     Given I wait for 5 seconds
@@ -346,9 +352,10 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User adds the following device: {"Myself": [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
+    Given User Myself sends 1 default message to conversation <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I tap Delete conversation action button
     And I tap Also Leave checkbox on Group info page
@@ -374,12 +381,13 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given Users add the following devices: {"<Contact1>": [{}], "Myself": [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given User Myself securely pings conversation <GroupChatName>
-    Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
-    Given User Myself sends encrypted image <Picture> to group conversation <GroupChatName>
-    Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
+    Given User Myself pings conversation <GroupChatName>
+    Given User Myself sends 1 default message to conversation <GroupChatName>
+    Given User Myself sends 1 image file <Picture> to conversation <GroupChatName>
+    Given User <Contact1> sends 1 default message to conversation <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I tap Delete conversation action button
     And I confirm Delete conversation action
@@ -461,9 +469,10 @@ Feature: Conversation List
     Given There are 2 users where <Name> is me
     Given User Myself removes his avatar picture
     Given <Contact> is connected to <Name>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given User <Contact> sends 1 encrypted messages to user Myself
+    Given User <Contact> sends 1 default message to conversation Myself
     When I remember the state of <Contact> conversation item
     And I tap on contact name <Contact>
     And I see conversation view page
@@ -521,12 +530,12 @@ Feature: Conversation List
   Scenario Outline: Verify deleting a conversation is synchronised to all devices
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given Users add the following devices: {"Myself": [{"name": "<DeviceName>"}], "<Contact1>": [{}]}
     Given I sign in using my email or phone number
+    Given User <Contact1> sends 1 default message to conversation Myself
     Given I see conversations list
-    And I see conversation <Contact1> in conversations list
-    When User adds the following device: {"Myself": [{"name": "<DeviceName>"}]}
-    And User <Contact1> sends 1 encrypted message to user Myself
-    And User Myself deletes single user conversation <Contact1> using device <DeviceName>
+    Given I see conversation <Contact1> in conversations list
+    When User Myself deletes single user conversation <Contact1> using device <DeviceName>
     # Let the stuff to sync up
     Then I wait up to <Timeout> seconds until conversation <Contact1> disappears from the list
 

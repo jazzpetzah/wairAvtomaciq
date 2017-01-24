@@ -20,7 +20,7 @@ Feature: Recall Message
     And I verify the remembered message has been deleted from the local database
     And User <Contact> sees the recent message from user Myself via device <HisDevice> is changed in <Wait1> seconds
     And User Myself sees the recent message from user <Contact> via device <MySecondDevice> is changed in <Wait2> seconds
-    When User Myself send 1 encrypted message using device <MySecondDevice> to user <Contact>
+    When User Myself send 1 message using device <MySecondDevice> to user <Contact>
     # Wait until the message is synchronized
     And I wait for 5 seconds
     And I see 1 default message in the conversation view
@@ -113,7 +113,7 @@ Feature: Recall Message
     And User <Contact1> sees the recent message from group conversation <Group> via device <Contact1Device> is changed in <Wait1> seconds
     And User <Contact2> sees the recent message from group conversation <Group> via device <Contact2Device> is changed in <Wait2> seconds
     And User Myself sees the recent message from group conversation <Group> via device <MySecondDevice> is changed in <Wait2> seconds
-    When User Myself send 1 encrypted message using device <MySecondDevice> to group conversation <Group>
+    When User Myself send 1 message using device <MySecondDevice> to group conversation <Group>
     # Wait until the message is delivered
     And I wait for 5 seconds
     Then I see 1 default message in the conversation view
@@ -162,7 +162,7 @@ Feature: Recall Message
     Given Myself is connected to <Contact1>
     Given User adds the following device: {"<Contact1>": [{"name": "<Contact1Device>"}]}
     Given I sign in using my email or phone number
-    Given User <Contact1> sends 1 encrypted message to user Myself
+    Given User <Contact1> sends 1 default message to conversation Myself
     Given I see conversations list
     When I tap on contact name <Contact1>
     Then I see 1 default message in the conversation view
@@ -181,7 +181,7 @@ Feature: Recall Message
     Given User adds the following device: {"<Contact1>": [{"name": "<Contact1Device>"}]}
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given User <Contact1> sends 1 encrypted message to group conversation <Group>
+    Given User <Contact1> sends 1 default message to conversation <Group>
     When I tap on contact name <Group>
     Then I see 1 default message in the conversation view
     When User <Contact1> deletes the recent message everywhere from group conversation <Group> via device <Contact1Device>
@@ -213,7 +213,7 @@ Feature: Recall Message
     And I do not see the conversation view contains message <YouTubeLink>
     And User <Contact> sees the recent message from user Myself via device <HisDevice> is changed in <Wait1> seconds
     And User Myself sees the recent message from user <Contact> via device <MySecondDevice> is changed in <Wait2> seconds
-    When User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
+    When User Myself sends 1 "<SoundCloudLink>" message to conversation <Contact>
     # Wait for sync
     And I wait for 5 seconds
     Then I see media container in the conversation view
@@ -226,7 +226,7 @@ Feature: Recall Message
     And I do not see the conversation view contains message <SoundCloudLink>
     And User <Contact> sees the recent message from user Myself via device <HisDevice> is changed in <Wait1> seconds
     And User Myself sees the recent message from user <Contact> via device <MySecondDevice> is changed in <Wait2> seconds
-    When User <Contact> sends encrypted message "<VimeoLink>" to user Myself
+    When User <Contact> sends 1 "<VimeoLink>" message to conversation Myself
     # Wait for the preview to be generated
     And I wait for 5 seconds
     Then I see media container in the conversation view
@@ -278,7 +278,7 @@ Feature: Recall Message
     Given Myself is connected to <Contact>
     Given User adds the following device: {"<Contact>": [{"name": "<HisDevice>"}]}
     Given I sign in using my email or phone number
-    Given User Myself sends encrypted message "Try this app <Link>" to user <Contact>
+    Given User Myself sends 1 "Try this app <Link>" message to conversation <Contact>
     Given I see conversations list
     When I tap on contact name <Contact>
     Then I see link preview container in the conversation view
@@ -342,7 +342,7 @@ Feature: Recall Message
     Given Myself is connected to <Contact1>
     Given User adds the following device: {"<Contact1>": [{"name": "<DeviceName>"}]}
     Given I sign in using my email or phone number
-    Given User <Contact1> sends 1 encrypted message to user Myself
+    Given User <Contact1> sends 1 default message to conversation Myself
     # Wait for message to be delivered
     Given I wait for 3 seconds
     Given I see conversations list
@@ -368,7 +368,7 @@ Feature: Recall Message
     Given User adds the following device: {"<Contact1>": [{"name": "<Contact1Device>"}]}
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given User <Contact1> sends 1 encrypted message to group conversation <Group>
+    Given User <Contact1> sends 1 default message to conversation <Group>
     When I swipe right on a <Group>
     And I tap Archive conversation action button
     Then I do not see conversation <Group> in conversations list

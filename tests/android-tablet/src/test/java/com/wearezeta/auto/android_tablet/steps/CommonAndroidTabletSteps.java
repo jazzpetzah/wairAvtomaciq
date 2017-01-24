@@ -883,7 +883,6 @@ public class CommonAndroidTabletSteps {
 
     /**
      * Add one or more remote devices to one or more remote users
-     * @step. ^Users? adds? devices? (.*)
      *
      * @param mappingAsJson this should be valid JSON string. Keys are mandatory and
      *                      are interpreted as user names/aliases and values are device(s) info
@@ -894,10 +893,10 @@ public class CommonAndroidTabletSteps {
      *                      Examples:
      *                      {"user1Name" : [{}]}
      *                      {"user1Name" : [{}], "user2Name" : [{"name": "blabla", "label": "label"},
-     *                                                          {"name": "blabla2", "label": "label2"}]}
-     *
+     *                      {"name": "blabla2", "label": "label2"}]}
      * @param mappingAsJson
      * @throws Exception
+     * @step. ^Users? adds? devices? (.*)
      */
     @Given("^Users? adds? the following devices?: (.*)")
     public void UsersAddDevices(String mappingAsJson) throws Exception {
@@ -1126,5 +1125,40 @@ public class CommonAndroidTabletSteps {
                 throw new IllegalArgumentException(String.format("Unknown action '%s'", action));
 
         }
+    }
+
+    /**
+     * Send multiple images or videos to the conversation
+     *
+     * @param senderUserNameAlias sender name/alias
+     * @param count               count of items to send
+     * @param fileName            the name of existing media file.
+     *                            Only m4a/mp4 files can be set for audio and video types
+     * @param fileType            one of possible file types
+     * @param dstConversationName destination conversation name
+     * @throws Exception
+     * @step. ^User (.*) sends (\d+) (image|video|audio|temporary) files? (.*) to conversation (.*)
+     */
+    @Given("^User (.*) sends (\\d+) (image|video|audio|temporary) files? (.*) to conversation (.*)")
+    public void UserSendsMultiplePictures(String senderUserNameAlias, int count,
+                                          String fileType, String fileName,
+                                          String dstConversationName) throws Exception {
+        AndroidTabletTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .UserSendMultipleMedias(senderUserNameAlias, count, fileType, fileName, dstConversationName);
+    }
+
+    /**
+     * Create random file in project.build.directory folder for further usage
+     *
+     * @param size file size. Can be float value. Example: 1MB, 2.00KB
+     * @param name file name without extension
+     * @param ext  file extension
+     * @throws Exception
+     * @step. ^I create temporary file (.*) in size with name "(.*)" and extension "(.*)"
+     */
+    @Given("^I create temporary file (.*) in size with name \"(.*)\" and extension \"(.*)\"$")
+    public void ICreateTemporaryFile(String size, String name, String ext) throws Exception {
+        final String tmpFilesRoot = CommonUtils.getBuildPathFromConfig(getClass());
+        CommonUtils.createRandomAccessFile(String.format("%s%s%s.%s", tmpFilesRoot, File.separator, name, ext), size);
     }
 }

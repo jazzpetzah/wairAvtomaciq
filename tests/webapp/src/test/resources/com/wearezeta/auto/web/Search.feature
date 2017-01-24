@@ -350,7 +350,7 @@ Feature: Search
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName |
       | user1Email | user1Password | user1Name | user2Name | user3Name | OPEN_ME  |
 
-  @C352082 @staging
+  @C352082 @regression
   Scenario Outline: Verify search for unconnected user, with the common friends
     Given There are 6 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>

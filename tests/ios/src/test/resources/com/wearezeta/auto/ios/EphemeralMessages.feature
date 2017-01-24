@@ -16,7 +16,7 @@ Feature: Ephemeral Messages
     Then I see 0 default messages in the conversation view
     And I verify the remembered message has been changed in the local database
     When User <Contact> switches user Myself to ephemeral mode with <Timeout> seconds timeout
-    And User <Contact> sends 1 encrypted message to user Myself
+    And User <Contact> sends 1 default message to conversation Myself
     # Wait for the message to be delivered
     And I wait for 3 seconds
     And I remember the state of the recent message from user <Contact> in the local database
@@ -279,7 +279,7 @@ Feature: Ephemeral Messages
     Given I sign in using my email or phone number
     Given I see conversations list
     Given User <Contact> switches user Myself to ephemeral mode with <Timeout> seconds timeout
-    Given User <Contact> sends encrypted message "<Message>" to user Myself
+    Given User <Contact> sends 1 "<Message>" message to conversation Myself
     Given I tap on contact name <Contact>
     When I see the conversation view contains message <Message>
     And I wait for <Timeout> seconds
@@ -296,7 +296,7 @@ Feature: Ephemeral Messages
     Given User adds the following device: {"<Contact>": [{"name": "<DeviceName>"}]}
     Given I sign in using my email or phone number
     Given User <Contact> switches user Myself to ephemeral mode with <EphemeralTimeout> seconds timeout
-    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    Given User <Contact> sends 1 image file <Picture> to conversation Myself
     Given I see conversations list
     Given I tap on contact name <Contact>
     Given I wait for 2 seconds
@@ -313,7 +313,7 @@ Feature: Ephemeral Messages
     Then I do not see audio message container in the conversation view
     # Link Preview
     When User <Contact> switches user Myself to ephemeral mode with 15 seconds timeout
-    And User <Contact> sends encrypted message "<Link>" to user Myself
+    And User <Contact> sends 1 "<Link>" message to conversation Myself
     And I wait for 12 seconds
     Then I do not see link preview container in the conversation view
     # Location
@@ -342,7 +342,7 @@ Feature: Ephemeral Messages
     And I do not see Delete badge item
     And I do not see Like badge item
     And I do not see Copy badge item
-    And I do not see Forward badge item
+    And I do not see Share badge item
 
     Examples:
       | Name      | Contact   | Message1    | DeviceName | DeviceLabel | EphemeralTimeout |

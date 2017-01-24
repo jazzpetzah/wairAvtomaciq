@@ -142,9 +142,9 @@ Feature: Recall Message
   Scenario Outline: Verify delete everywhere works for link preview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given User adds the following device: {"<Contact>": [{"name": "<ContactDevice>"}]}
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
     When I type the message "<Link>" and send it by cursor Send button

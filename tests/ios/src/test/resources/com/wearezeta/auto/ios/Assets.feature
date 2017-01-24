@@ -11,7 +11,7 @@ Feature: Assets
     Given I see conversations list
     Given I tap on contact name <Contact>
      # Picture
-    When User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    When User <Contact> sends 1 image file <Picture> to conversation Myself
     And I wait for <SyncTimeout> seconds
     Then I see 1 photo in the conversation view
      # Video
@@ -23,7 +23,7 @@ Feature: Assets
     And I wait for <SyncTimeout> seconds
     Then I see audio message container in the conversation view
      # Link Preview
-    And User <Contact> sends encrypted message "<Link>" to user Myself
+    And User <Contact> sends 1 "<Link>" message to conversation Myself
     And I wait for <SyncTimeout> seconds
     Then I see link preview container in the conversation view
      # Binary file

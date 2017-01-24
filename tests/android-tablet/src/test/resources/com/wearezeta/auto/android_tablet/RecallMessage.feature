@@ -10,7 +10,7 @@ Feature: Recall Message
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     # Delete from otherview
-    When I tap the conversation <Contact1>
+    When I tap on conversation name <Contact1>
     And User <Contact1> send encrypted message "<Message>" via device <ContactDevice> to user Myself
     And I see the message "<Message>" in the conversation view
     And User <Contact1> delete the recent message everywhere from user Myself via device <ContactDevice>
@@ -43,7 +43,7 @@ Feature: Recall Message
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
    # Delete from otherview
-    When I tap the conversation <Group>
+    When I tap on conversation name <Group>
     And User <Contact1> send encrypted message "<Message>" via device <ContactDevice> to group conversation <Group>
     And I see the message "<Message>" in the conversation view
     And User <Contact1> delete the recent message everywhere from group conversation <Group> via device <ContactDevice>
@@ -76,7 +76,7 @@ Feature: Recall Message
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
-    When I tap the conversation <Contact>
+    When I tap on conversation name <Contact>
     And I tap Add picture button from cursor toolbar
     And I tap Gallery Camera button on Take Picture view
     And I tap Confirm button on Take Picture view
@@ -100,7 +100,7 @@ Feature: Recall Message
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
-    When I tap the conversation <Contact>
+    When I tap on conversation name <Contact>
     And I tap on text input
     And I type the message "<Message>" in the Conversation view
     And I tap Gif button from cursor toolbar
@@ -128,7 +128,7 @@ Feature: Recall Message
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
-    Given I tap the conversation <Contact>
+    Given I tap on conversation name <Contact>
     When I type the message "<Link>" in the Conversation view
     And I send the typed message by cursor Send button in the Conversation view
     And I hide keyboard
@@ -152,7 +152,7 @@ Feature: Recall Message
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
-    Given I tap the conversation <Contact>
+    Given I tap on conversation name <Contact>
     When I tap Share location button from cursor toolbar
     And I tap Send button on Share Location page
     And I long tap Share Location container in the conversation view
@@ -176,7 +176,7 @@ Feature: Recall Message
     Given I push <FileSize> file having name "<FileName>.<FileExtension>" to the device
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
-    Given I tap the conversation <Contact>
+    Given I tap on conversation name <Contact>
     When I tap File button from cursor toolbar
     And I wait up to <UploadingTimeout> seconds until <FileSize> file with extension "<FileExtension>" is uploaded
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
@@ -199,7 +199,7 @@ Feature: Recall Message
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
-    Given I tap the conversation <Contact>
+    Given I tap on conversation name <Contact>
     When I long tap Audio message button from cursor toolbar for <TapDuration> seconds
     And I tap audio recording Send button
     # Wait for the audio to be fully uploaded
@@ -225,7 +225,7 @@ Feature: Recall Message
     Given I push <FileSize> video file having name "<FileFullName>" to the device
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
-    Given I tap the conversation <Contact>
+    Given I tap on conversation name <Contact>
     When I tap Video message button from cursor toolbar
     Then I see Video Message container in the conversation view
   # Wait for the video to be fully uploaded

@@ -1,8 +1,8 @@
-package com.wearezeta.auto.android.steps.collections;
+package com.wearezeta.auto.android_tablet.steps.collections;
 
 
-import com.wearezeta.auto.android.common.AndroidTestContextHolder;
-import com.wearezeta.auto.android.pages.collections.CollectionsPage;
+import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContextHolder;
+import com.wearezeta.auto.android_tablet.pages.collections.TabletCollectionsPage;
 import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import cucumber.api.java.en.Then;
@@ -11,9 +11,9 @@ import org.junit.Assert;
 
 public class CollectionsPageSteps {
 
-    private CollectionsPage getCollectionsPage() throws Exception {
-        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
-                .getPage(CollectionsPage.class);
+    private TabletCollectionsPage getCollectionsPage() throws Exception {
+        return AndroidTabletTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(TabletCollectionsPage.class);
     }
 
     /**
@@ -100,7 +100,7 @@ public class CollectionsPageSteps {
     @Then("^I see (sender name)( \"(.*)\")? on Collection page$")
     public void ISeeUserInfo(String type, String hasText, String text) throws Exception {
         if (hasText != null) {
-            text = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+            text = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                     .replaceAliasesOccurences(text, ClientUsersManager.FindBy.NAME_ALIAS);
         }
         Assert.assertTrue(

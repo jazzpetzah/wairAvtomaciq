@@ -16,6 +16,8 @@ Feature: Group Ephemeral Messages
     And I accept alert if visible
     And I select the first picture from Keyboard Gallery
     Then I tap Confirm button on Picture preview page
+    # Wait for sync
+    And I wait for 5 seconds
     When I remember asset container state at cell 1
     And I wait for <Timeout> seconds
     Then I see asset container state is changed
@@ -106,7 +108,7 @@ Feature: Group Ephemeral Messages
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given User <Contact1> switches group conversation <GroupChatName> to ephemeral mode with <Timeout> seconds timeout
     Given I sign in using my email or phone number
-    Given User <Contact1> sends encrypted message "<Message>" to group conversation <GroupChatName>
+    Given User <Contact1> sends 1 "<Message>" message to conversation <GroupChatName>
     Given I see conversations list
     Given I tap on group chat with name <GroupChatName>
     When I see the conversation view contains message <Message>
@@ -128,7 +130,7 @@ Feature: Group Ephemeral Messages
     Given I tap on group chat with name <GroupChatName>
     Given User <Contact1> switches group conversation <GroupChatName> to ephemeral mode with <EphemeralTimeout> seconds timeout
     # Picture
-    When User <Contact1> sends encrypted image <Picture> to group conversation <GroupChatName>
+    When User <Contact1> sends 1 image file <Picture> to conversation <GroupChatName>
     And I wait for <SyncTimeout> seconds
     And I see 1 photo in the conversation view
     And I wait for <EphemeralTimeout> seconds
@@ -146,7 +148,7 @@ Feature: Group Ephemeral Messages
     And I wait for <EphemeralTimeout> seconds
     Then I do not see audio message container in the conversation view
     # Link Preview
-    When User <Contact1> sends encrypted message "<Link>" to group conversation <GroupChatName>
+    When User <Contact1> sends 1 "<Link>" message to conversation <GroupChatName>
     And I wait for <SyncTimeout> seconds
     And I see link preview container in the conversation view
     And I wait for <EphemeralTimeout> seconds
@@ -166,7 +168,7 @@ Feature: Group Ephemeral Messages
     Given I sign in using my email or phone number
     Given I see conversations list
     Given User <Contact1> switches group conversation <GroupChatName> to ephemeral mode with <Timeout> seconds timeout
-    Given User <Contact1> sends encrypted message "<Message>" to group conversation <GroupChatName>
+    Given User <Contact1> sends 1 "<Message>" message to conversation <GroupChatName>
     Given User <Contact1> remembers the recent message from group conversation <GroupChatName> via device <DeviceName1>
     # Wait for sync
     Given I wait for 3 seconds

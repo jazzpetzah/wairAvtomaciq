@@ -139,12 +139,13 @@ Feature: Connect
   Scenario Outline: Verify you don't receive any messages from blocked person in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Myself
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     Given User Myself blocks user <Contact>
-    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
-    Given User <Contact> securely pings conversation Myself
-    Given User <Contact> sends 1 encrypted message to user Myself
+    Given User <Contact> sends 1 image file <Picture> to conversation Myself
+    Given User <Contact> pings conversation Myself
+    Given User <Contact> sends 1 default message to conversation Myself
     Then I do not see conversation <Contact> in conversations list
     When I wait until <Contact> exists in backend search results
     And I open search UI
@@ -410,7 +411,7 @@ Feature: Connect
     Given I sign in using my email or phone number
     Given I see conversations list
     When I see Pending request link in conversations list
-    And <Contact> cancel all outgoing connection requests
+    And User <Contact> cancels all outgoing connection requests
     Then I do not see Pending request link in conversations list
 
     Examples:

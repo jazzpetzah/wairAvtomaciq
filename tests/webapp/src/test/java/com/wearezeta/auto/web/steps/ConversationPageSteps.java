@@ -553,9 +553,19 @@ public class ConversationPageSteps {
         context.getPagesCollection().getPage(ConversationPage.class).confirmDeleteForEveryone();
     }
 
+    @When("^I click cancel to delete message for for everyone$")
+    public void IClickCancelToDeleteForEveryone() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).cancelDeleteForEveryone();
+    }
+
     @When("^I click confirm to delete message for me$")
     public void IClickConfirmToDelete() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).confirmDelete();
+    }
+
+    @When("^I click cancel to delete message for me$")
+    public void IClickCancelToDelete() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).cancelDeleteForMe();
     }
 
     @When("^I hover over the latest message$")

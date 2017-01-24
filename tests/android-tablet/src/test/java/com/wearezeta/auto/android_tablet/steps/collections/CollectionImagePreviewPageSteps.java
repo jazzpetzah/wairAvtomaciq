@@ -1,16 +1,17 @@
-package com.wearezeta.auto.android.steps.collections;
+package com.wearezeta.auto.android_tablet.steps.collections;
 
-import com.wearezeta.auto.android.common.AndroidTestContextHolder;
-import com.wearezeta.auto.android.pages.collections.CollectionImagePreviewPage;
+import com.wearezeta.auto.android_tablet.common.AndroidTabletTestContextHolder;
+import com.wearezeta.auto.android_tablet.pages.collections.TabletCollectionImagePreviewPage;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 
 public class CollectionImagePreviewPageSteps {
-    private CollectionImagePreviewPage getCollectionImagePreviewPage() throws Exception {
-        return AndroidTestContextHolder.getInstance().getTestContext().getPagesCollection()
-                .getPage(CollectionImagePreviewPage.class);
+
+    private TabletCollectionImagePreviewPage getCollectionImagePreviewPage() throws Exception {
+        return AndroidTabletTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                .getPage(TabletCollectionImagePreviewPage.class);
     }
 
     /**
@@ -55,7 +56,7 @@ public class CollectionImagePreviewPageSteps {
     @Then("^I see (timestamp|sender name)( \"(.*)\")? on Collection image preview top toolbar$")
     public void ISeeUserInfo(String type, String hasText, String text) throws Exception {
         if (hasText != null) {
-            text = AndroidTestContextHolder.getInstance().getTestContext().getUsersManager()
+            text = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
                     .replaceAliasesOccurences(text, ClientUsersManager.FindBy.NAME_ALIAS);
         }
         Assert.assertTrue(

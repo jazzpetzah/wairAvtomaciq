@@ -56,6 +56,7 @@ public abstract class IOSPage extends BasePage {
     private static final By nameBadgeItemUnlike = MobileBy.AccessibilityId("Unlike");
     private static final By nameBadgeItemForward = MobileBy.AccessibilityId("Forward");
     private static final By nameBadgeItemReveal = MobileBy.AccessibilityId("Reveal");
+    private static final By nameBadgeItemShare = MobileBy.AccessibilityId("Share");
 
     private static final Function<String, String> xpathStrAlertByText = text ->
             String.format("//XCUIElementTypeAlert[ .//*[contains(@name, '%s')] or contains(@name, '%s')]", text, text);
@@ -139,6 +140,8 @@ public abstract class IOSPage extends BasePage {
                 return nameBadgeItemForward;
             case "reveal":
                 return nameBadgeItemReveal;
+            case "share":
+                return nameBadgeItemShare;
             default:
                 throw new IllegalArgumentException(String.format("Unknown badge name: '%s'", name));
         }

@@ -119,10 +119,10 @@ Feature: Calling
     And <Contact> stops outgoing call to me
     Then I see the state of <Contact> conversation item is changed
     When I remember the state of <Contact> conversation item
-    And User <Contact> sends <Number> encrypted messages to user Myself
+    And User <Contact> sends <Number> default messages to conversation Myself
     Then I see the state of <Contact> conversation item is not changed
     When I remember the state of <Contact> conversation item
-    And User <Contact1> sends <Number> encrypted messages to user Myself
+    And User <Contact1> sends <Number> default messages to conversation Myself
     And I see first item in contact list named <Contact1>
     Then I see the state of <Contact> conversation item is not changed
 
@@ -191,7 +191,7 @@ Feature: Calling
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Audio Call button
-    Then I close the app for 5 seconds
+    Then I minimize Wire for 5 seconds
     And I see Calling overlay
 
     Examples:
@@ -466,7 +466,7 @@ Feature: Calling
     And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
     Then I see call status message contains "<Contact>"
-    When I close the app for 5 seconds
+    When I minimize Wire for 5 seconds
     Then I see call status message contains "<Contact>"
     And <Contact> verifies that call status to me is changed to active in 2 seconds
 

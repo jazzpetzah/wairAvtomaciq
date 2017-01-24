@@ -39,9 +39,10 @@ Feature: Link Preview
   Scenario Outline: Verify preview is shown for received link
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given User <Contact> sends encrypted message "<Link>" to user Myself
+    Given User <Contact> sends 1 "<Link>" message to conversation Myself
     Given I see conversations list
     When I tap on contact name <Contact>
     Then I see link preview container in the conversation view

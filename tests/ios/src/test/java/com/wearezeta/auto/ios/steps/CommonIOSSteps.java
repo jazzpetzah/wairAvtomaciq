@@ -618,10 +618,10 @@ public class CommonIOSSteps {
      *
      * @param seconds time in seconds to close the app
      * @throws Exception
-     * @step. ^I close the app for (.*) seconds?$
+     * @step. ^I minimize Wire for (.*) seconds?$
      */
-    @When("^I close the app for (\\d+) seconds?$")
-    public void ICloseApp(int seconds) throws Exception {
+    @When("^I minimize Wire for (\\d+) seconds?$")
+    public void IMinimizeWire(int seconds) throws Exception {
         IOSTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage()
                 .putWireToBackgroundFor(seconds);
     }
@@ -675,26 +675,13 @@ public class CommonIOSSteps {
      * @param userToAdd          name of the user to be added
      * @param chatName           name of the group conversation
      * @throws Exception
-     * @step. ^(.*) added (.*) to group chat (.*)
+     * @step. ^User (.*) adds (.*) to group chat (.*)
      */
-    @When("^(.*) added (.*) to group chat (.*)")
-    public void UserXaddUserBToGroupChat(String chatOwnerNameAlias,
-                                         String userToAdd, String chatName) throws Exception {
+    @When("^User (.*) adds (.*) to group chat (.*)")
+    public void UserXDddsUserYToGroupChat(String chatOwnerNameAlias,
+                                          String userToAdd, String chatName) throws Exception {
         IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
                 .UserXAddedContactsToGroupChat(chatOwnerNameAlias, userToAdd, chatName);
-    }
-
-    /**
-     * User leaves group chat
-     *
-     * @param userName name of the user who leaves
-     * @param chatName chat name that user leaves
-     * @throws Exception
-     * @step. ^(.*) leaves? group chat (.*)$
-     */
-    @Given("^(.*) leaves? group chat (.*)$")
-    public void UserLeavesGroupChat(String userName, String chatName) throws Exception {
-        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps().UserXLeavesGroupChat(userName, chatName);
     }
 
     @Given("^(.*) is connected to (.*)$")
@@ -812,9 +799,9 @@ public class CommonIOSSteps {
      *
      * @param userToNameAlias user name who will cancel requests
      * @throws Exception
-     * @step. ^(.*) cancel all outgoing connection requests$
+     * @step. ^User (.*) cancels all outgoing connection requests$
      */
-    @When("^(.*) cancel all outgoing connection requests$")
+    @When("^User (.*) cancels all outgoing connection requests$")
     public void CancelAllOutgoingConnectRequest(String userToNameAlias) throws Exception {
         IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
                 .CancelAllOutgoingConnectRequests(userToNameAlias);
@@ -881,41 +868,10 @@ public class CommonIOSSteps {
                 .ChangeGroupChatName(user, oldConversationName, newConversationName);
     }
 
-    @Given("^User (\\w+) (?:securely |\\s*)pings conversation (.*)$")
+    @Given("^User (\\w+) pings conversation (.*)$")
     public void UserPingedConversation(String pingFromUserNameAlias, String dstConversationName) throws Exception {
         IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
                 .UserPingedConversationOtr(pingFromUserNameAlias, dstConversationName);
-    }
-
-    @Given("^User (.*) sends (\\d+) (encrypted )?messages? to (user|group conversation) (.*)$")
-    public void UserSendXMessagesToConversation(String msgFromUserNameAlias,
-                                                int msgsCount, String areEncrypted,
-                                                String conversationType,
-                                                String conversationName) throws Exception {
-        for (int i = 0; i < msgsCount; i++) {
-            if (conversationType.equals("user")) {
-                // 1:1 conversation
-                if (areEncrypted == null) {
-                    IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
-                            .UserSentMessageToUser(msgFromUserNameAlias, conversationName, DEFAULT_AUTOMATION_MESSAGE);
-                } else {
-                    IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
-                            .UserSentOtrMessageToUser(msgFromUserNameAlias,
-                                    conversationName, DEFAULT_AUTOMATION_MESSAGE, null);
-                }
-            } else {
-                // group conversation
-                if (areEncrypted == null) {
-                    IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
-                            .UserSentMessageToConversation(msgFromUserNameAlias,
-                                    conversationName, DEFAULT_AUTOMATION_MESSAGE);
-                } else {
-                    IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
-                            .UserSentOtrMessageToConversation(msgFromUserNameAlias,
-                                    conversationName, DEFAULT_AUTOMATION_MESSAGE, null);
-                }
-            }
-        }
     }
 
     /**
@@ -927,9 +883,9 @@ public class CommonIOSSteps {
      * @param conversationType     user or group conversation
      * @param conversationName     conversation name
      * @throws Exception
-     * @step. ^User (.*) sends? (\d+) encrypted messages? using device (.*) to (user|group conversation) (.*)$
+     * @step. ^User (.*) sends? (\d+) messages? using device (.*) to (user|group conversation) (.*)$
      */
-    @Given("^User (.*) sends? (\\d+) encrypted messages? using device (.*) to (user|group conversation) (.*)$")
+    @Given("^User (.*) sends? (\\d+) messages? using device (.*) to (user|group conversation) (.*)$")
     public void UserSendXMessagesToConversationUsingDevice(String msgFromUserNameAlias,
                                                            int msgsCount, String deviceName,
                                                            String conversationType,
@@ -945,42 +901,6 @@ public class CommonIOSSteps {
                 IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
                         .UserSentOtrMessageToConversation(msgFromUserNameAlias,
                                 conversationName, DEFAULT_AUTOMATION_MESSAGE, deviceName);
-            }
-        }
-    }
-
-    /**
-     * User A sends a simple text message to user/goup B
-     *
-     * @param userFromNameAlias the user who sends the message
-     * @param areEncrypted      whether the message has to be encrypted
-     * @param msg               a message to send. Random string will be sent if it is empty
-     * @param conversationType  either 'user' or 'group conversation'
-     * @param conversationName  The user/group chat to receive the message
-     * @throws Exception
-     * @step. ^User (.*) sends? (encrypted )?message "(.*)" to (user|group conversation) (.*)$
-     */
-    @Given("^User (.*) sends? (encrypted )?message \"(.*)\" to (user|group conversation) (.*)$")
-    public void UserSentMessageToConversation(String userFromNameAlias,
-                                              String areEncrypted, String msg,
-                                              String conversationType, String conversationName) throws Exception {
-        if (conversationType.equals("user")) {
-            // 1:1 conversation
-            if (areEncrypted == null) {
-                IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
-                        .UserSentMessageToConversation(userFromNameAlias, conversationName, msg);
-            } else {
-                IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
-                        .UserSentOtrMessageToConversation(userFromNameAlias, conversationName, msg, null);
-            }
-        } else {
-            // group conversation
-            if (areEncrypted == null) {
-                IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
-                        .UserSentMessageToConversation(userFromNameAlias, conversationName, msg);
-            } else {
-                IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
-                        .UserSentOtrMessageToConversation(userFromNameAlias, conversationName, msg, null);
             }
         }
     }
@@ -1035,7 +955,7 @@ public class CommonIOSSteps {
                 .IChangeUserAccentColor(userNameAlias, newColor);
     }
 
-    @Given("^There \\w+ (\\d+) shared user[s]* with name prefix (\\w+)$")
+    @Given("^There (are|is) (\\d+) shared user[s]* with name prefix (\\w+)$")
     public void ThereAreNSharedUsersWithNamePrefix(int count, String namePrefix)
             throws Exception {
         IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
@@ -1069,22 +989,6 @@ public class CommonIOSSteps {
                 .WaitUntilCommonContactsIsGenerated(userAsAlias, query, expectedFriendsCount);
     }
 
-    @Given("^User (.*) sends (encrypted )?image (.*) to (single user|group) conversation (.*)")
-    public void ContactSendImageToConversation(String imageSenderUserNameAlias,
-                                               String isEncrypted,
-                                               String imageFileName, String conversationType,
-                                               String dstConversationName) throws Exception {
-        final String imagePath = CommonUtils.getImagesPathFromConfig(this.getClass()) + File.separator + imageFileName;
-        final boolean isGroup = conversationType.equals("group");
-        if (isEncrypted == null) {
-            IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
-                    .UserSentImageToConversation(imageSenderUserNameAlias, imagePath, dstConversationName, isGroup);
-        } else {
-            IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
-                    .UserSentImageToConversationOtr(imageSenderUserNameAlias, imagePath, dstConversationName, isGroup);
-        }
-    }
-
     /**
      * Send Giphy image to a conversation
      *
@@ -1115,21 +1019,6 @@ public class CommonIOSSteps {
         IOSTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage()
                 .rotateScreen(orientation);
         Thread.sleep(1000); // fix for animation
-    }
-
-    /**
-     * A user adds another user to a group chat
-     *
-     * @param user          that adds someone to a chat
-     * @param userToBeAdded user that gets added by someone
-     * @param group         group chat you get added to
-     * @throws Exception
-     * @step. ^User (.*) adds [Uu]ser (.*) to group chat (.*)$
-     */
-    @When("^User (.*) adds [Uu]ser (.*) to group chat (.*)$")
-    public void UserAddsUserToGroupChat(String user, String userToBeAdded, String group) throws Exception {
-        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
-                .UserXAddedContactsToGroupChat(user, userToBeAdded, group);
     }
 
     /**
@@ -1356,7 +1245,7 @@ public class CommonIOSSteps {
     @Given("^I create temporary file (.*) in size with name \"(.*)\" and extension \"(.*)\"$")
     public void ICreateTemporaryFile(String size, String name, String ext) throws Exception {
         final String tmpFilesRoot = CommonUtils.getBuildPathFromConfig(getClass());
-        CommonUtils.createRandomAccessFile(tmpFilesRoot + File.separator + name + "." + ext, size);
+        CommonUtils.createRandomAccessFile(String.format("%s%s%s.%s", tmpFilesRoot, File.separator, name, ext), size);
     }
 
     // Check ZIOS-6570 for more details
@@ -1555,9 +1444,9 @@ public class CommonIOSSteps {
      * @param shouldNotSee equals to null if the corresponding item should be visible
      * @param itemName     the badge item name
      * @throws Exception
-     * @step. ^I (do not )?see (Select All|Copy|Delete|Paste|Save|Edit|Like|Unlike|Forward) badge item$
+     * @step. ^I (do not )?see (Select All|Copy|Delete|Paste|Save|Edit|Like|Unlike|Forward|Share) badge item$
      */
-    @Then("^I (do not )?see (Select All|Copy|Delete|Paste|Save|Edit|Like|Unlike|Forward) badge item$")
+    @Then("^I (do not )?see (Select All|Copy|Delete|Paste|Save|Edit|Like|Unlike|Forward|Share) badge item$")
     public void ISeeBadge(String shouldNotSee, String itemName) throws Exception {
         boolean result;
         if (shouldNotSee == null) {
@@ -1576,9 +1465,9 @@ public class CommonIOSSteps {
      *
      * @param itemName the badge item name
      * @throws Exception
-     * @step. ^I tap on (Select All|Copy|Save|Delete|Paste|Edit|Like|Unlike|Forward|Reveal) badge item$
+     * @step. ^I tap on (Select All|Copy|Save|Delete|Paste|Edit|Like|Unlike|Forward|Reveal|Share) badge item$
      */
-    @When("^I tap on (Select All|Copy|Save|Delete|Paste|Edit|Like|Unlike|Forward|Reveal) badge item$")
+    @When("^I tap on (Select All|Copy|Save|Delete|Paste|Edit|Like|Unlike|Forward|Reveal|Share) badge item$")
     public void ITapBadge(String itemName) throws Exception {
         IOSTestContextHolder.getInstance().getTestContext().getPagesCollection().getCommonPage().tapBadgeItem(itemName);
     }

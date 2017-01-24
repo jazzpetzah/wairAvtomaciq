@@ -76,7 +76,7 @@ Feature: Conversation List
     When I tap on contact name <Contact2>
     And I navigate back to conversations list
     Given I remember the left side state of <Contact> conversation item on iPad
-    When User <Contact> securely pings conversation Myself
+    When User <Contact> pings conversation Myself
     And I see first item in contact list named <Contact>
     Then I see the state of <Contact> conversation item is changed on iPad
 
@@ -88,16 +88,17 @@ Feature: Conversation List
   Scenario Outline: Verify conversations are sorted according to most recent activity [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given <Name> is connected to <Contact>,<Contact2>,<Contact3>
+    Given Users add the following devices: {"<Contact>": [{}], "<Contact3>": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given User <Contact> sends <Number> encrypted messages to user Myself
-    Given User <Contact3> sends <Number> encrypted messages to user Myself
+    Given User <Contact> sends <Number> default messages to conversation Myself
+    Given User <Contact3> sends <Number> default messages to conversation Myself
     Given I see conversations list
     Given I see first item in contact list named <Contact3>
-    When User <Contact2> securely pings conversation <Name>
+    When User <Contact2> pings conversation <Name>
     And I wait for 5 seconds
     Then I see first item in contact list named <Contact2>
-    When User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    When User <Contact> sends 1 image file <Picture> to conversation Myself
     And I wait for 5 seconds
     Then I see first item in contact list named <Contact>
 
@@ -129,6 +130,7 @@ Feature: Conversation List
     Given User Myself removes his avatar picture
     Given User <Contact> sets the unique username
     Given <Contact> starts instance using <CallBackend>
+    Given Users add the following devices: {"<Contact>": [{}]}
     Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     And I see conversations list
@@ -139,7 +141,7 @@ Feature: Conversation List
     And <Contact> stops outgoing call to me
     Then I see the state of <Contact> conversation item is changed on iPad
     When I remember the left side state of <Contact> conversation item on iPad
-    And User <Contact> sends <Number> encrypted messages to user Myself
+    And User <Contact> sends <Number> default messages to conversation Myself
     Then I see the state of <Contact> conversation item is not changed on iPad
 
     Examples:
@@ -157,7 +159,7 @@ Feature: Conversation List
     When I tap on contact name <Contact2>
     And I navigate back to conversations list
     And I remember the left side state of <Contact> conversation item on iPad
-    When User <Contact> sends 10 encrypted message to user Myself
+    When User <Contact> sends 10 default messages to conversation Myself
     And I see first item in contact list named <Contact>
     # FIXME: Screenshotscomparison on Jenkins nodes works a bit differently
 #    Then I see the state of <Contact> conversation item is changed on iPad
@@ -227,11 +229,12 @@ Feature: Conversation List
   Scenario Outline: Verify that deleted conversation isn't going to archive [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given Users add the following devices: {"<Contact1>": [{}], "Myself": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    Given User <Contact1> sends 1 encrypted message to user Myself
-    Given User Myself sends 1 encrypted message to user <Contact1>
+    Given User <Contact1> sends 1 default message to conversation Myself
+    Given User Myself sends 1 default message to conversation <Contact1>
     When I swipe right on iPad the conversation named <Contact1>
     And I tap Delete conversation action button
     And I confirm Delete conversation action
@@ -268,13 +271,14 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given Users add the following devices: {"<Contact1>": [{}], "Myself": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    Given User Myself securely pings conversation <GroupChatName>
-    Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
-    Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
-    Given User Myself sends encrypted image <Image> to group conversation <GroupChatName>
+    Given User Myself pings conversation <GroupChatName>
+    Given User Myself sends 1 default message to conversation <GroupChatName>
+    Given User <Contact1> sends 1 default message to conversation <GroupChatName>
+    Given User Myself sends 1 image file <Image> to conversation <GroupChatName>
     When I swipe right on iPad the conversation named <GroupChatName>
     And I tap Delete conversation action button
     And I confirm Delete conversation action
@@ -312,6 +316,7 @@ Feature: Conversation List
   Scenario Outline: Verify archiving silenced conversation [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see conversations list
@@ -320,9 +325,9 @@ Feature: Conversation List
     When I swipe right on iPad the conversation named <Contact>
     And I tap Archive conversation action button
     Then I do not see conversation <Contact> in conversations list
-    Given User <Contact> sends 1 encrypted message to user Myself
+    When User <Contact> sends 1 default message to conversation Myself
     And I do not see conversation <Contact> in conversations list
-    Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
+    And User <Contact> sends 1 image file <Picture> to conversation Myself
     Then I do not see conversation <Contact> in conversations list
     And I open archived conversations
     Then I see conversation <Contact> in conversations list
@@ -338,10 +343,11 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User adds the following device: {"Myself": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    Given User <Name> sends 1 encrypted message to group conversation <GroupChatName>
+    Given User <Name> sends 1 default message to conversation <GroupChatName>
     When I swipe right on iPad the conversation named <GroupChatName>
     And I tap Delete conversation action button
     And I tap Also Leave checkbox on Group info page
@@ -416,7 +422,7 @@ Feature: Conversation List
     When I tap on contact name <Contact1>
     And I remember the left side state of <Contact1> conversation item on iPad
     And I tap on contact name <Contact2>
-    And User <Contact1> sends 10 encrypted messages to user Myself
+    And User <Contact1> sends 10 default messages to conversation Myself
     And I tap on contact name <Contact1>
     Then I see the state of <Contact1> conversation item is not changed on iPad
 

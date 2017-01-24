@@ -87,9 +87,10 @@ Feature: Conversation View
   Scenario Outline: Tap the cursor to get to the end of the conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given User <Contact> sends 40 encrypted messages to user Myself
+    Given User <Contact> sends 40 default messages to conversation Myself
     When I tap on contact name <Contact>
     Then I see conversation is scrolled to the end
 
@@ -187,12 +188,13 @@ Feature: Conversation View
   Scenario Outline: Rotate image in fullscreen mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
-    And I tap on contact name <Contact>
-    And I see 1 photo in the conversation view
-    And I tap on image in conversation view
+    Given User <Contact> sends 1 image file <Picture> to conversation Myself
+    Given I tap on contact name <Contact>
+    Given I see 1 photo in the conversation view
+    When I tap on image in conversation view
     And I tap Fullscreen button on image
     And I see Full Screen Page opened
     When I rotate UI to landscape
@@ -226,9 +228,10 @@ Feature: Conversation View
   Scenario Outline: Receive message from contact
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given User <Contact> sends 1 encrypted message to user Myself
+    Given User <Contact> sends 1 default message to conversation Myself
     When I tap on contact name <Contact>
     Then I see 1 default message in the conversation view
 
@@ -240,9 +243,10 @@ Feature: Conversation View
   Scenario Outline: Receive a camera roll picture from user from contact list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
+    Given User <Contact> sends 1 image file <Picture> to conversation Myself
     When I tap on contact name <Contact>
     Then I see 1 photo in the conversation view
 
@@ -273,9 +277,10 @@ Feature: Conversation View
   Scenario Outline: Verify player isn't displayed for vimeo links without video IDs
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"Myself: [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given User <Name> sends encrypted message "<VimeoLink>" to user <Contact>
+    Given User <Name> sends 1 "<VimeoLink>" message to conversation <Contact>
     When I tap on contact name <Contact>
     Then I see vimeo link <VimeoLink> without media preview in the conversation view
 
@@ -287,8 +292,9 @@ Feature: Conversation View
   Scenario Outline: (ZIOS-7010) Verify player is displayed for vimeo links with video IDs
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given User adds the following device: {"Myself: [{}]}
     Given I sign in using my email or phone number
-    Given User <Name> sends encrypted message "<VimeoLink>" to user <Contact1>
+    Given User <Name> sends 1 "<VimeoLink>" message to conversation <Contact1>
     Given I see conversations list
     When I tap on contact name <Contact1>
     Then I see vimeo link <VimeoLink> with media preview in the conversation view
@@ -301,8 +307,9 @@ Feature: Conversation View
   Scenario Outline: Verify posting in a 1-to-1 conversation without content
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given User adds the following device: {"Myself: [{}]}
     Given I sign in using my email or phone number
-    Given User <Name> sends 1 encrypted message to user <Contact1>
+    Given User Myself sends 1 default message to conversation <Contact1>
     Given I see conversations list
     When I swipe right on a <Contact1>
     And I tap Delete conversation action button
@@ -328,9 +335,10 @@ Feature: Conversation View
   Scenario Outline: (ZIOS-6517) Verify possibility to copy image in the conversation view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    Given User <Contact> sends 1 image file <Picture> to conversation Myself
     And I tap on contact name <Contact>
     And I see 1 photo in the conversation view
     And I long tap on image in conversation view
@@ -352,11 +360,12 @@ Feature: Conversation View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>, <Contact2>
+    Given User adds the following device: {"<Contact1>": [{}]}
     Given User <Name> blocks user <Contact1>
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
-    Given User <Contact1> sends encrypted image <Picture> to group conversation <GroupChatName>
+    Given User <Contact1> sends 1 default message to conversation <GroupChatName>
+    Given User <Contact1> sends 1 image file <Picture> to conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     And I see 1 default message in the conversation view
     Then I see 1 photo in the conversation view
@@ -482,8 +491,9 @@ Feature: Conversation View
   Scenario Outline: Verify opening the image twice in the raw
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
-    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    Given User <Contact> sends 1 image file <Picture> to conversation Myself
     Given I see conversations list
     When I tap on contact name <Contact>
     Then I see 1 photo in the conversation view
@@ -514,7 +524,7 @@ Feature: Conversation View
     When <Contact> removes Myself from group chat <GroupChatName>
     Then I do not see conversation tools buttons
     And I do not see text input in conversation view
-    When User <Contact> adds user <Name> to group chat <GroupChatName>
+    When User <Contact> adds Myself to group chat <GroupChatName>
     Then I see conversation tools buttons
     And I see Standard input placeholder text
 
@@ -526,9 +536,10 @@ Feature: Conversation View
   Scenario Outline: Verify downloading images by Save on image button tap
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    Given User <Contact> sends 1 image file <Picture> to conversation Myself
     When I tap on contact name <Contact>
     And I see 1 photo in the conversation view
     And I tap Add Picture button from input tools

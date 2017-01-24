@@ -5,6 +5,7 @@ Feature: Share Location
     Given There are 3 user where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>, <Contact2>
+    Given User adds the following device: {"<Contact1>": [{"name": "<DeviceName>"}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given User <Contact1> shares the default location to user Myself via device <DeviceName>

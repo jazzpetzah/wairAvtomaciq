@@ -53,7 +53,7 @@ Feature: Connect
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversation
-    When I tap the conversation <WaitingMess>
+    When I tap on conversation name <WaitingMess>
     And I see user name "<Contact>" on Single pending incoming connection page
     And I tap connect button on Single pending incoming connection page
     Then I see the conversation <Contact> in my conversations list
@@ -71,7 +71,7 @@ Feature: Connect
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversation
-    When I tap the conversation <WaitingMess>
+    When I tap on conversation name <WaitingMess>
     And I see user name "<Contact>" on Single pending incoming connection page
     And I tap connect button on Single pending incoming connection page
     Then I see the conversation <Contact> in my conversations list
@@ -92,7 +92,7 @@ Feature: Connect
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
     Given I do not see the conversation <Contact2> in my conversations list
-    Given I tap the conversation <GroupChatName>
+    Given I tap on conversation name <GroupChatName>
     When I tap conversation name from top toolbar
     And I see Group info popover
     And I tap on contact <Contact2> on Group info popover
@@ -117,7 +117,7 @@ Feature: Connect
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
     Given I do not see the conversation <Contact2> in my conversations list
-    Given I tap the conversation <GroupChatName>
+    Given I tap on conversation name <GroupChatName>
     When I tap conversation name from top toolbar
     And I see Group info popover
     And I tap on contact <Contact2> on Group info popover
@@ -187,7 +187,7 @@ Feature: Connect
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversation
-    When I tap the conversation <WaitingMess>
+    When I tap on conversation name <WaitingMess>
     And I see user name "<Contact>" on Single pending incoming connection page
     And I tap ignore button on Single pending incoming connection page
     # Workaround for a bug
@@ -219,7 +219,7 @@ Feature: Connect
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversation
-    When I tap the conversation <WaitingMess>
+    When I tap on conversation name <WaitingMess>
     And I see user name "<Contact>" on Single pending incoming connection page
     And I tap ignore button on Single pending incoming connection page
     Then I do not see the conversation <Contact> in my conversations list
@@ -248,13 +248,13 @@ Feature: Connect
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversation
-    When I tap the conversation <WaitingMess2>
+    When I tap on conversation name <WaitingMess2>
     And I scroll to contact <Contact2> on Single pending incoming connection page
     And I see user name "<Contact2>" on Single pending incoming connection page
     And I tap ignore button for user <Contact2> on Single pending incoming connection page
     And I swipe right to show the conversations list
     Then I see the conversation <WaitingMess1> in my conversations list
-    When I tap the conversation <WaitingMess1>
+    When I tap on conversation name <WaitingMess1>
     And I see user name "<Contact1>" on Single pending incoming connection page
     And I tap ignore button for user <Contact1> on Single pending incoming connection page
     Then I see the Conversations list with no conversations
@@ -274,11 +274,11 @@ Feature: Connect
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversation
-    When I tap the conversation <WaitingMess2>
+    When I tap on conversation name <WaitingMess2>
     And I scroll to contact <Contact2> on Single pending incoming connection page
     And I see user name "<Contact2>" on Single pending incoming connection page
     And I tap ignore button for user <Contact2> on Single pending incoming connection page
-    When I tap the conversation <WaitingMess1>
+    When I tap on conversation name <WaitingMess1>
     And I see user name "<Contact1>" on Single pending incoming connection page
     And I tap ignore button for user <Contact1> on Single pending incoming connection page
     Then I see the Conversations list with no conversations
@@ -299,7 +299,7 @@ Feature: Connect
     When <Contact> sent connection request to me
     # Workaround for a bug
     And I swipe right to show the conversations list
-    When I tap the conversation <WaitingMsg>
+    When I tap on conversation name <WaitingMsg>
     Then I see user name "<Contact>" on Single pending incoming connection page
 
     Examples:
@@ -314,7 +314,7 @@ Feature: Connect
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with no conversations
     When <Contact> sent connection request to me
-    When I tap the conversation <WaitingMsg>
+    When I tap on conversation name <WaitingMsg>
     Then I see user name "<Contact>" on Single pending incoming connection page
 
     Examples:
@@ -329,12 +329,12 @@ Feature: Connect
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
-    When I tap the conversation <Contact>
+    When I tap on conversation name <Contact>
     Then I see user name "<Contact>" on Single pending outgoing connection page
     When <Contact> accepts all requests
     # Workaround for AN-2897 with following 2 lines
     And I navigate back
-    And I tap the conversation <Contact>
+    And I tap on conversation name <Contact>
     Then I see the conversation view
 
     Examples:
@@ -349,12 +349,12 @@ Feature: Connect
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
-    When I tap the conversation <Contact>
+    When I tap on conversation name <Contact>
     Then I see user name "<Contact>" on Single pending outgoing connection page
     When <Contact> accepts all requests
     # Workaround for AN-2897 with following 2 lines
     And I navigate back
-    And I tap the conversation <Contact>
+    And I tap on conversation name <Contact>
     Then I see the conversation view
 
     Examples:
@@ -369,7 +369,7 @@ Feature: Connect
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
-    When I tap the conversation <Contact>
+    When I tap on conversation name <Contact>
     Then I see user name "<Contact>" on Single pending outgoing connection page
     When <Contact> ignores all requests
     Then I do not see conversation view
@@ -389,7 +389,7 @@ Feature: Connect
     When I minimize the application
     And <Contact> sent connection request to me
     And I restore the application
-    When I tap the conversation <WaitingMsg>
+    When I tap on conversation name <WaitingMsg>
     Then I see user name "<Contact>" on Single pending incoming connection page
 
     Examples:

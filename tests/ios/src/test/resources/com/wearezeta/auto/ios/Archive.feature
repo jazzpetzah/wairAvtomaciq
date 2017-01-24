@@ -10,15 +10,15 @@ Feature: Archive
     Given I sign in using my email or phone number
     Given I see conversations list
     And I do not see conversation <ArchivedUser> in conversations list
-    And User <ArchivedUser> sends 1 encrypted message to user Myself
+    And User <ArchivedUser> sends 1 default message to conversation Myself
     Then I see first item in contact list named <ArchivedUser>
     When User Myself archives single user conversation <ArchivedUser>
     And I do not see conversation <ArchivedUser> in conversations list
-    And User <ArchivedUser> sends encrypted image <Picture> to single user conversation Myself
+    And User <ArchivedUser> sends 1 image files <Picture> to conversation Myself
     Then I see first item in contact list named <ArchivedUser>
     When User Myself archives single user conversation <ArchivedUser>
     And I do not see conversation <ArchivedUser> in conversations list
-    And User <ArchivedUser> securely pings conversation <Name>
+    And User <ArchivedUser> pings conversation <Name>
     Then I see first item in contact list named <ArchivedUser>
     When User Myself archives single user conversation <ArchivedUser>
     And I do not see conversation <ArchivedUser> in conversations list
@@ -41,12 +41,12 @@ Feature: Archive
     Given User Myself archives single user conversation <ArchivedUser>
     Given I sign in using my email or phone number
     Given I see conversations list
-    And I do not see conversation <ArchivedUser> in conversations list
-    Given User <ArchivedUser> sends 1 encrypted message to user Myself
+    When I do not see conversation <ArchivedUser> in conversations list
+    And User <ArchivedUser> sends 1 default message to conversation Myself
     Then I do not see conversation <ArchivedUser> in conversations list
-    Given User <ArchivedUser> sends encrypted image <Picture> to single user conversation Myself
+    And User <ArchivedUser> sends 1 image file <Picture> to conversation Myself
     Then I do not see conversation <ArchivedUser> in conversations list
-    When User <ArchivedUser> securely pings conversation <Name>
+    When User <ArchivedUser> pings conversation <Name>
     Then I do not see conversation <ArchivedUser> in conversations list
     And <ArchivedUser> calls me
     And I see call status message contains "<ArchivedUser> calling"
@@ -68,8 +68,8 @@ Feature: Archive
     And I tap Leave conversation action button
     And I confirm Leave conversation action
     Then I do not see conversation <GroupChatName> in conversations list
-    When <Contact1> added me to group chat <GroupChatName>
-    Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
+    When User <Contact1> adds me to group chat <GroupChatName>
+    Given User <Contact1> sends 1 default message to conversation <GroupChatName>
     Then I see first item in contact list named <GroupChatName>
 
     Examples:
@@ -83,7 +83,7 @@ Feature: Archive
     Given User Myself archives single user conversation <ArchivedUser>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When User <ArchivedUser> sends 1 message to user Myself
+    When User <ArchivedUser> sends 1 default message to conversation Myself
     Then I see conversation <ArchivedUser> in conversations list
     And I see Contacts label at the bottom of conversations list
     And I do not see Archive button at the bottom of conversations list
@@ -104,7 +104,7 @@ Feature: Archive
     And I tap Archive conversation action button
     And I do not see conversation <ArchivedUser> in conversations list
     And I see Archive button at the bottom of conversations list
-    And User <ArchivedUser> sends 1 messages to user Myself
+    And User <ArchivedUser> sends 1 default message to conversation Myself
     Then I see conversation <ArchivedUser> in conversations list
     And I do not see Archive button at the bottom of conversations list
 

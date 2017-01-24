@@ -5,13 +5,14 @@ Feature: E2EE
     Given There are 4 users where <Name> is me
     Given <Contact1> is connected to Myself,<Contact2>,<Contact3>
     Given <Contact1> has group chat <GroupChatName> with <Contact2>,<Contact3>
+    Given Users add the following devices: {"<Contact1>": [{}], "<Contact2>": [{}], "<Contact3>": [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
-    Given User <Contact2> sends 1 encrypted message to group conversation <GroupChatName>
-    Given User <Contact3> sends 1 encrypted message to group conversation <GroupChatName>
+    Given User <Contact1> sends 1 default message to conversation <GroupChatName>
+    Given User <Contact2> sends 1 default message to conversation <GroupChatName>
+    Given User <Contact3> sends 1 default message to conversation <GroupChatName>
     Given I wait for 5 seconds
-    Given User <Contact1> adds user Myself to group chat <GroupChatName>
+    Given User <Contact1> adds Myself to group chat <GroupChatName>
     When I tap on contact name <GroupChatName>
     Then I see the conversation with <GroupChatName>
     And I see 0 conversation entries
@@ -26,7 +27,7 @@ Feature: E2EE
     Given Myself is connected to <Contact1>
     Given Users add the following devices: {"<Contact1>": [{"name": "<DeviceName1>"}, {"name": "<DeviceName2>"}, {"name": "<DeviceName3>"}]}
     Given I sign in using my email
-    Given User <Contact1> sends 1 encrypted message to user Myself
+    Given User <Contact1> sends 1 default message to conversation Myself
     Given I see conversations list
     Given I tap on contact name <Contact1>
     Given I open conversation details
@@ -65,7 +66,7 @@ Feature: E2EE
     Given Myself is connected to <Contact1>
     Given Users add the following devices: {"<Contact1>": [{"name": "<DeviceName1>"}, {"name": "<DeviceName2>"}]}
     Given I sign in using my email
-    Given User <Contact1> sends 1 encrypted message to user Myself
+    Given User <Contact1> sends 1 default message to conversation Myself
     Given I see conversations list
     And I tap on contact name <Contact1>
     And I open conversation details
@@ -90,8 +91,8 @@ Feature: E2EE
     Given Myself is connected to <Contact1>,<Contact2>
     Given Users add the following devices: {"<Contact1>": [{"name": "<DeviceName1>", "label": "<DeviceLabel1>"}], "<Contact2>": [{"name": "<DeviceName2>", "label": "<DeviceLabel2>"}]}
     Given I sign in using my email
-    Given User <Contact1> sends 1 encrypted message to user Myself
-    Given User <Contact2> sends 1 encrypted message to user Myself
+    Given User <Contact1> sends 1 default message to conversation Myself
+    Given User <Contact2> sends 1 default message to conversation Myself
     Given I see conversations list
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     When I tap on contact name <GroupChatName>
@@ -120,18 +121,19 @@ Feature: E2EE
   Scenario Outline: Verify system message appearance in case of using a new device by friend
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given User adds the following device: {"<Contact1>": [{}]}
     Given I sign in using my email
     Given I see conversations list
-    Given User <Contact1> sends 1 encrypted message to user Myself
-    And I tap on contact name <Contact1>
-    And I open conversation details
-    And I switch to Devices tab on Single user profile page
-    And I open details page of device number 1 on Devices tab
-    And I tap Verify switcher on Device Details page
-    And I tap Back button on Device Details page
-    And I tap X button on Single user profile page
+    Given User <Contact1> sends 1 default message to conversation Myself
+    Given I tap on contact name <Contact1>
+    Given I open conversation details
+    Given I switch to Devices tab on Single user profile page
+    Given I open details page of device number 1 on Devices tab
+    Given I tap Verify switcher on Device Details page
+    Given I tap Back button on Device Details page
+    Given I tap X button on Single user profile page
     When Users add the following devices: {"<Contact1>": [{"name": "<DeviceName2>", "label": "<DeviceLabel2>"}]}
-    And User <Contact1> sends 1 encrypted message using device <DeviceName2> to user Myself
+    And User <Contact1> sends 1 message using device <DeviceName2> to user Myself
     # Wait for sync
     And I wait for 4 seconds
     Then I do not see shield icon in the conversation view
@@ -145,8 +147,9 @@ Feature: E2EE
   Scenario Outline: Verify system message appearance in case of using a new device by you
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given User adds the following device: {"<Contact1>": [{}]}
     Given I sign in using my email
-    Given User <Contact1> sends 1 encrypted message to user Myself
+    Given User <Contact1> sends 1 default message to conversation Myself
     Given I see conversations list
     Given I tap on contact name <Contact1>
     Given I open conversation details
@@ -239,8 +242,9 @@ Feature: E2EE
   Scenario Outline: First time when 1:1 conversation is degraded - I can ignore alert screen and send messages with resend button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given User adds the following device: {"<Contact1>": [{}]}
     Given I sign in using my email
-    Given User <Contact1> sends 1 encrypted message to user Myself
+    Given User <Contact1> sends 1 default message to conversation Myself
     Given I see conversations list
     Given I tap on contact name <Contact1>
     Given I open conversation details
@@ -265,8 +269,9 @@ Feature: E2EE
   Scenario Outline: Verify conversation is downgraded after adding a new device
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given User adds the following device: {"<Contact1>": [{}]}
     Given I sign in using my email
-    Given User <Contact1> sends 1 encrypted message to user Myself
+    Given User <Contact1> sends 1 default message to conversation Myself
     Given I see conversations list
     Given I tap on contact name <Contact1>
     Given I open conversation details
@@ -289,7 +294,7 @@ Feature: E2EE
     Given Myself is connected to <Contact1>
     Given Users add the following devices: {"<Contact1>": [{"name": "<DeviceName1>"}, {"name": "<DeviceName2>"}]}
     Given I sign in using my email
-    Given User <Contact1> sends 1 encrypted message to user Myself
+    Given User <Contact1> sends 1 default message to conversation Myself
     Given I see conversations list
     When I tap on contact name <Contact1>
     Then I do not see shield icon in the conversation view
@@ -329,8 +334,8 @@ Feature: E2EE
     Given Myself is connected to <Contact1>,<Contact2>
     Given Users add the following devices: {"<Contact1>": [{"name": "<DeviceName1>"}, {"name": "<DeviceName2>"}], "<Contact2>": [{"name": "<DeviceName3>"}, {"name": "<DeviceName4>"}]}
     Given I sign in using my email
-    Given User <Contact1> sends 1 encrypted message to user Myself
-    Given User <Contact2> sends 1 encrypted message to user Myself
+    Given User <Contact1> sends 1 default message to conversation Myself
+    Given User <Contact2> sends 1 default message to conversation Myself
     Given I see conversations list
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     When I tap on contact name <GroupChatName>
@@ -352,9 +357,10 @@ Feature: E2EE
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given Users add the following devices: {"<Contact1>": [{}], "<Contact2>": [{}]}
     Given I sign in using my email
-    Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
-    Given User <Contact2> sends 1 encrypted message to group conversation <GroupChatName>
+    Given User <Contact1> sends 1 default message to conversation <GroupChatName>
+    Given User <Contact2> sends 1 default message to conversation <GroupChatName>
     Given I see conversations list
     Given I tap on group chat with name <GroupChatName>
     Given I open conversation details
@@ -424,7 +430,7 @@ Feature: E2EE
     Given Myself is connected to <Contact1>
     Given Users add the following devices: {"<Contact1>": [{"name": "<DeviceName1>"}, {"name": "<DeviceName2>"}]}
     Given I sign in using my email
-    Given User <Contact1> sends 1 encrypted message to user Myself
+    Given User <Contact1> sends 1 default message to conversation Myself
     Given I see conversations list
     When I tap on contact name <Contact1>
     Then I do not see shield icon in the conversation view
@@ -446,8 +452,9 @@ Feature: E2EE
   Scenario Outline: Verify "learn more" leads to the proper page
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given User adds the following device: {"<Contact1>": [{}]}
     Given I sign in using my email
-    Given User <Contact1> sends 1 encrypted message to user Myself
+    Given User <Contact1> sends 1 default message to conversation Myself
     Given I see conversations list
     And I tap on contact name <Contact1>
     And I open conversation details
@@ -469,8 +476,9 @@ Feature: E2EE
   Scenario Outline: Verify unverifying of the device in verified conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given User adds the following device: {"<Contact1>": [{}]}
     Given I sign in using my email
-    Given User <Contact1> sends 1 encrypted message to user Myself
+    Given User <Contact1> sends 1 default message to conversation Myself
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
@@ -507,12 +515,12 @@ Feature: E2EE
       | user1Name |
 
   @C395996 @staging @fastLogin
-  Scenario Outline: Verify forwarding message into downgraded conversation
+  Scenario Outline: Verify forwarded message is not delivered in downgraded conversation
     Given There are 3 users where <Name> is me
-    Given Users add the following devices: {"<Contact1>": [{}], "<Contact2>": [{}]}
+    Given Users add the following devices: {"<Contact1>": [{"name": "<Device1>", "label": "<Device1label>"}], "<Contact2>": [{}]}
     Given Myself is connected to all other users
     Given I sign in using my email
-    Given User <Contact1> sends 1 encrypted message to user Myself
+    Given User <Contact1> sends 1 default message to conversation Myself
     Given I see conversations list
     Given I tap on contact name <Contact1>
     Given I open conversation details
@@ -522,21 +530,56 @@ Feature: E2EE
     Given I tap Back button on Device Details page
     Given I tap X button on Single user profile page
     Given I navigate back to conversations list
-    Given Users add the following devices: {"<Contact1>": [{"name": "<DeviceName2>", "label": "<DeviceLabel2>"}]}
+    Given Users add the following devices: {"<Contact1>": [{"name": "<Device2>", "label": "<Device2label>"}]}
+    Given User <Contact1> remembers the recent message from user Myself via device <Device1>
+    Given User <Contact1> remembers the recent message from user Myself via device <Device2>
     Given I tap on contact name <Contact2>
-    Given User <Contact2> sends 1 encrypted message to user Myself
     When I long tap default message in conversation view
-    And I tap on Forward badge item
+    And I tap on Share badge item
     And I select <Contact1> conversation on Forward page
     And I tap Send button on Forward page
     And I navigate back to conversations list
     And I tap on contact name <Contact1>
     And I close New Device overlay
-    And I resend the last message in the conversation with Resend button
-# Wait until the message is sent
-    And I wait for 3 seconds
-    Then I see 2 default messages in the conversation view
+    And I see "<ResendLabel>" on the message toolbox in conversation view
+    Then User <Contact1> sees the recent message from user Myself via device <Device1> is not changed in 5 seconds
+    And User <Contact1> sees the recent message from user Myself via device <Device2> is not changed in 5 seconds
 
     Examples:
-      | Name      | Contact1  | DeviceName2 | DeviceLabel2 | Contact2  |
-      | user1Name | user2Name | Device2     | Label2       | user3Name |
+      | Name      | Contact1  | Contact2  | ResendLabel | Device1 | Device1label | Device2 | Device2label |
+      | user1Name | user2Name | user3Name | Resend      | Device1 | Device1label | Device2 | Device2label |
+
+  @C395997 @staging @fastLogin
+  Scenario Outline: Verify forwarded image is not delivered in downgraded conversation
+    Given There are 3 users where <Name> is me
+    Given Users add the following devices: {"<Contact1>": [{"name": "<Device1>", "label": "<Device1label>"}], "<Contact2>": [{}]}
+    Given Myself is connected to all other users
+    Given I sign in using my email
+    Given User <Contact2> sends 1 image file <Picture> to conversation Myself
+    Given I see conversations list
+    Given I tap on contact name <Contact1>
+    Given I open conversation details
+    Given I switch to Devices tab on Single user profile page
+    Given I open details page of device number 1 on Devices tab
+    Given I tap Verify switcher on Device Details page
+    Given I tap Back button on Device Details page
+    Given I tap X button on Single user profile page
+    Given I navigate back to conversations list
+    Given Users add the following devices: {"<Contact1>": [{"name": "<Device2>", "label": "<Device2label>"}]}
+    Given User <Contact1> remembers the recent message from user Myself via device <Device1>
+    Given User <Contact1> remembers the recent message from user Myself via device <Device2>
+    Given I tap on contact name <Contact2>
+    When I long tap on image in conversation view
+    And I tap on Share badge item
+    And I select <Contact1> conversation on Forward page
+    And I tap Send button on Forward page
+    And I navigate back to conversations list
+    And I tap on contact name <Contact1>
+    And I close New Device overlay
+    And I see "<ResendLabel>" on the message toolbox in conversation view
+    Then User <Contact1> sees the recent message from user Myself via device <Device1> is not changed in 5 seconds
+    And User <Contact1> sees the recent message from user Myself via device <Device2> is not changed in 5 seconds
+
+    Examples:
+      | Name      | Contact1  | Contact2  | ResendLabel | Picture     | Device1 | Device1label | Device2 | Device2label |
+      | user1Name | user2Name | user3Name | Resend      | testing.jpg | Device1 | Device1label | Device2 | Device2label |
