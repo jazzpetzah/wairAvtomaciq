@@ -765,7 +765,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | GroupMessage | UserMessage   |
       | user1Email | user1Password | user1Name | user2Name | user3Name | User1Chat     | Hello Group  | Hello User    |
 
-  @C12054 @mute
+  @C12054 @staging
   Scenario Outline: Verify you see an alert in verified 1:1 conversation when the other participant sends message from non-verified device
     Given There are 2 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
@@ -785,10 +785,12 @@ Feature: E2EE
     Then I see user verified icon on Single User Profile popover
     When I click People button in one to one conversation
     Then I see <ALL_VERIFIED> action in conversation
+    And I see verified icon in conversation
     When user <Contact> adds a new device Device2 with label Label2
     And Contact <Contact> sends message <Message> via device Device2 to user Myself
-    Then I see <NEW_DEVICE> action in conversation
-    # Not sure if we want to check for the message. Should it be shown or not? Assuming it should
+    Then I do not see verified icon in conversation
+    And I see <NEW_DEVICE> action in conversation
+    And I see text message <Message>
 
     Examples:
       | Email      | Password      | Name      | Contact   | ALL_VERIFIED                  | NEW_DEVICE                 | Message          |
