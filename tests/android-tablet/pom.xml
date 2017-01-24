@@ -21,8 +21,6 @@
         <loginActivity>com.waz.zclient.AppEntryActivity</loginActivity>
         <launchActivity>com.waz.zclient.LaunchActivity</launchActivity>
         <driverTimeoutSeconds>7</driverTimeoutSeconds>
-        <androidClientInfoPath>/Project/builds_info/classes.dex</androidClientInfoPath>
-        <androidAppiumLogPath>/Project/appium_android.log</androidAppiumLogPath>
         <defaultEmail>smoketester@wire.com</defaultEmail>
         <specialEmail>smoketester.android@wire.com</specialEmail>
         <specialPassword>aqa12345678</specialPassword>
@@ -38,17 +36,6 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>com.google.android</groupId>
-            <artifactId>android</artifactId>
-            <version>4.1.1.4</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.3.4</version>
-        </dependency>
 
         <dependency>
             <groupId>com.wearezeta.auto</groupId>

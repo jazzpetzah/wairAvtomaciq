@@ -2114,6 +2114,6 @@ public class CommonAndroidSteps {
     @Given("^I create temporary file (.*) in size with name \"(.*)\" and extension \"(.*)\"$")
     public void ICreateTemporaryFile(String size, String name, String ext) throws Exception {
         final String tmpFilesRoot = CommonUtils.getBuildPathFromConfig(getClass());
-        CommonUtils.createRandomAccessFile(tmpFilesRoot + File.separator + name + "." + ext, size);
+        CommonUtils.createRandomAccessFile(String.format("%s%s%s.%s", tmpFilesRoot, File.separator, name, ext), size);
     }
 }
