@@ -1200,7 +1200,9 @@ Feature: E2EE
     When I click People button in one to one conversation
     Then I see <ALL_VERIFIED> action in conversation
     Then I see verified icon in conversation
-    When user <Name> adds a new device Device1 with label Label1
+    When user <Name> adds a new device Device2 with label Label2
+#    TODO
+#    And I See <NEW_DEVICE> action in conversation
     And I do not see verified icon in conversation
     And I write message <MessageThatTriggersWarning>
     And I send message
@@ -1208,10 +1210,12 @@ Feature: E2EE
     When I click cancel button in the new device warning
     And I see 1 unsent messages in conversation
     Then I do not see verified icon in conversation
-    And I click People button in one to one conversation
-    And I see Single User Profile popover
-    And I switch to Devices tab on Single User Profile popover
-    And I see user verified icon on Single User Profile popover
+    And I verify a badge is shown on gear button
+    When I open preferences by clicking the gear button
+    Then I see connected devices dialog
+    And I see Device2 on connected devices dialog
+    And I click OK on connected devices dialog
+    And I do not see connected devices dialog
 
     Examples:
       | Email      | Password      | Name      | Contact   | MessageThatTriggersWarning  | ALL_VERIFIED                  |
