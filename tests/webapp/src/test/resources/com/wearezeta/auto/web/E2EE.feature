@@ -1226,3 +1226,41 @@ Feature: E2EE
     Examples:
       | Email      | Password      | Name      | Contact   | MessageThatTriggersWarning  | ALL_VERIFIED                  |
       | user1Email | user1Password | user1Name | user2Name | This should trigger warning | All fingerprints are verified |
+
+  @C399838 @e2ee @staging
+  Scenario Outline: Verifying all people in a group should also verify individual 1:1 conversations with them
+    Given There are 3 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
+    Given user <Contact2> adds a new device Device1 with label Label1
+    Given Myself is connected to <Contact>,<Contact2>
+    Given Myself has group chat GROUPCHAT with <Contact>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Email> and password <Password>
+    Given I am signed in properly
+    When I open conversation with GROUPCHAT
+    And I click People button in group conversation
+    Then I see Group Participants popover
+    When I click on participant <Contact> on Group Participants popover
+    And I switch to Devices tab on Single User Profile popover
+    And I click on device Device1 of user <Contact> on Single User Profile popover
+    And I verify device on Device Detail popover
+    And I click back button on the Device Detail popover
+    And I see user verified icon on Single User Profile popover
+    When I click back button on Group Participants popover
+    And I click on participant <Contact2> on Group Participants popover
+    And I switch to Devices tab on Single User Profile popover
+    And I click on device Device1 of user <Contact2> on Single User Profile popover
+    And I verify device on Device Detail popover
+    And I click back button on the Device Detail popover
+    And I see user verified icon on Single User Profile popover
+    When I click back button on Group Participants popover
+    And I close Group Participants popover
+    Then I see <ALL_VERIFIED> action in conversation
+    And I see verified icon in conversation
+    When I open conversation with <Contact>
+    Then I see verified icon in conversation
+#    And I see <ALL_VERIFIED> action in conversation
+
+    Examples:
+      | Email      | Password      | Name      | Contact   | Contact2  | ALL_VERIFIED                  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | All fingerprints are verified |
