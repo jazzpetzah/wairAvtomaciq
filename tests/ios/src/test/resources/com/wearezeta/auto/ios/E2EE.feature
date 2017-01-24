@@ -540,3 +540,38 @@ Feature: E2EE
     Examples:
       | Name      | Contact1  | Contact2  | ResendLabel |
       | user1Name | user2Name | user3Name | Resend      |
+
+  @C395997 @staging @fastLogin
+  Scenario Outline: Verify forwarding image into downgraded conversation
+    Given There are 3 users where <Name> is me
+    Given Users add the following devices: {"<Contact1>": [{"name": "D1", "label": "D1"}], "<Contact2>": [{}]}
+    Given Myself is connected to all other users
+    Given I sign in using my email
+    Given User <Contact2> sends encrypted image <Picture> to single user conversation Myself
+    Given I see conversations list
+    Given I tap on contact name <Contact1>
+    Given I open conversation details
+    Given I switch to Devices tab on Single user profile page
+    Given I open details page of device number 1 on Devices tab
+    Given I tap Verify switcher on Device Details page
+    Given I tap Back button on Device Details page
+    Given I tap X button on Single user profile page
+    Given I navigate back to conversations list
+    Given Users add the following devices: {"<Contact1>": [{"name": "D2", "label": "D2"}]}
+    Given User <Contact1> remembers the recent message from user Myself via device D1
+    Given User <Contact1> remembers the recent message from user Myself via device D2
+    Given I tap on contact name <Contact2>
+    When I long tap on image in conversation view
+    And I tap on Share badge item
+    And I select <Contact1> conversation on Forward page
+    And I tap Send button on Forward page
+    And I navigate back to conversations list
+    And I tap on contact name <Contact1>
+    And I close New Device overlay
+    And I see "<ResendLabel>" on the message toolbox in conversation view
+    Then User <Contact1> sees the recent message from user Myself via device D1 is not changed in 5 seconds
+    And User <Contact1> sees the recent message from user Myself via device D2 is not changed in 5 seconds
+
+    Examples:
+      | Name      | Contact1  | Contact2  | ResendLabel | Picture     |
+      | user1Name | user2Name | user3Name | Resend      | testing.jpg |
