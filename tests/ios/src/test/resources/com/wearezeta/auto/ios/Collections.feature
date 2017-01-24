@@ -7,7 +7,7 @@ Feature: Collections
     Given Users add the following devices: {"Myself": [{}], "<Contact>": [{"name": "<ContactDevice>"}]}
     Given I create temporary file <FileSize> in size with name "<FileName>" and extension "<FileExt>"
     Given I sign in using my email or phone number
-    Given User <Contact> sends 1 image file <Picture>  to conversation Myself
+    Given User <Contact> sends 1 image file <Picture> to conversation Myself
     Given User <Contact> sends file <FileNameVideo> having MIME type <MIMEType> to single user conversation <Name> using device <ContactDevice>
     Given User <Contact> sends temporary file <FileName>.<FileExt> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Given User Myself sends 1 "<Link>" message to conversation <Contact>
