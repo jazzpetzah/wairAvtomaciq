@@ -26,7 +26,7 @@ Feature: Rich Media
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
-    Given User <Name> sends 40 encrypted messages to user <Contact1>
+    Given User <Name> sends 40 default messages to conversation <Contact1>
     Given User <Name> sends encrypted message "<SoundCloudLink>" to user <Contact1>
     Given I see conversations list
     Given I tap on contact name <Contact1>

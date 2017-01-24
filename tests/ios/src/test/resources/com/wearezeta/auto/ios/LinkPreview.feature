@@ -76,7 +76,7 @@ Feature: Link Preview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    Given User Myself send encrypted message "<Link>" to user <Contact>
+    Given User Myself send 1 "<Link>" message to conversation <Contact>
     Given I see conversations list
     Given I tap on contact name <Contact>
     # Wait for link preview to be loaded
@@ -84,19 +84,19 @@ Feature: Link Preview
     Then I see link preview container in the conversation view
     When User Myself deletes the recent message from user <Contact>
     Then I do not see link preview container in the conversation view
-    When User Myself send encrypted message "<Link1>" to user <Contact>
+    When User Myself send 1 "<Link1>" message to conversation <Contact>
     # Wait for link preview to be loaded
     And I wait for <LinkLoadTimeout> seconds
     Then I see link preview container in the conversation view
     When User Myself deletes the recent message from user <Contact>
     Then I do not see link preview container in the conversation view
-    When User Myself send encrypted message "<Link2>" to user <Contact>
+    When User Myself send 1 "<Link2>" message to conversation <Contact>
     # Wait for link preview to be loaded
     And I wait for <LinkLoadTimeout> seconds
     Then I see link preview container in the conversation view
     When User Myself deletes the recent message from user <Contact>
     Then I do not see link preview container in the conversation view
-    When User Myself send encrypted message "<Link3>" to user <Contact>
+    When User Myself send 1 "<Link3>" message to conversation <Contact>
     # Wait for link preview to be loaded
     And I wait for <LinkLoadTimeout> seconds
     Then I see link preview container in the conversation view
@@ -114,7 +114,7 @@ Feature: Link Preview
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
     Given I sign in using my email or phone number
-    Given User <Contact> sends encrypted message "<Link>" to user Myself
+    Given User <Contact> sends 1 "<Link>" message to conversation Myself
     Given I see conversations list
     Given I tap on contact name <Contact>
     Given I long tap on link preview in conversation view
@@ -155,17 +155,17 @@ Feature: Link Preview
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And User <Contact> sends encrypted message "<YouTubeLink>" to user <Name>
+    And User <Contact> sends 1 "<YouTubeLink>" message to conversation <Name>
     # Wait for the message to be received and rendered
     And I wait for 5 seconds
     Then I see the conversation view contains message <YouTubeLink>
     And I do not see link preview container in the conversation view
-    When User <Contact> sends encrypted message "<SoundCloudLink>" to user <Name>
+    When User <Contact> sends 1 "<SoundCloudLink>" message to conversation <Name>
     # Wait for the message to be received and rendered
     And I wait for 5 seconds
     Then I see the conversation view contains message <SoundCloudLink>
     And I do not see link preview container in the conversation view
-    When User <Contact> sends encrypted message "<VimeoLink>" to user <Name>
+    When User <Contact> sends 1 "<VimeoLink>" message to conversation <Name>
     # Wait for the message to be delivered
     And I wait for 5 seconds
     Then I see the conversation view contains message <VimeoLink>

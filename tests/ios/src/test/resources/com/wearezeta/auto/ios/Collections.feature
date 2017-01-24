@@ -7,10 +7,10 @@ Feature: Collections
     Given Users add the following devices: {"Myself": [{}], "<Contact>": [{"name": "<ContactDevice>"}]}
     Given I create temporary file <FileSize> in size with name "<FileName>" and extension "<FileExt>"
     Given I sign in using my email or phone number
-    Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
+    Given User <Contact> sends 1 image file <Picture>  to conversation Myself
     Given User <Contact> sends file <FileNameVideo> having MIME type <MIMEType> to single user conversation <Name> using device <ContactDevice>
     Given User <Contact> sends temporary file <FileName>.<FileExt> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    Given User Myself sends encrypted message "<Link>" to user <Contact>
+    Given User Myself sends 1 "<Link>" message to conversation <Contact>
     Given I see conversations list
     Given I tap on contact name <Contact>
     When I tap Collection button in conversation view
@@ -60,7 +60,7 @@ Feature: Collections
     Given Myself is connected to <Contact>
     Given Users add the following devices: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
-    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    Given User <Contact> sends 1 image file <Picture> to conversation Myself
     Given I see conversations list
     Given I tap on contact name <Contact>
     Given I tap Collection button in conversation view
@@ -100,10 +100,10 @@ Feature: Collections
     Given I create temporary file <FileSize> in size with name "<FileName>" and extension "<FileExt>"
     Given I sign in using my email or phone number
     Given User <Contact> switches user Myself to ephemeral mode with 1 minute timeout
-    Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
+    Given User <Contact> sends 1 image file <Picture> to conversation Myself
     Given User <Contact> sends file <FileNameVideo> having MIME type <MIMEType> to single user conversation <Name> using device <ContactDevice>
     Given User <Contact> sends temporary file <FileName>.<FileExt> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    Given User <Contact> sends encrypted message "<Link>" to user Myself
+    Given User <Contact> sends 1 "<Link>" message to conversation Myself
     Given I see conversations list
     Given I tap on contact name <Contact>
     When I tap Collection button in conversation view
@@ -159,8 +159,8 @@ Feature: Collections
     Given Myself is connected to <Contact>
     Given Users add the following devices: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
-    Given User <Contact> sends encrypted image <Picture1> to single user conversation Myself
-    Given User Myself sends encrypted image <Picture2> to single user conversation <Contact>
+    Given User <Contact> sends 1 image file <Picture1> to conversation Myself
+    Given User Myself sends 1 image file <Picture2> to conversation <Contact>
     Given I see conversations list
     Given I tap on contact name <Contact>
     Given I tap Collection button in conversation view
@@ -250,10 +250,10 @@ Feature: Collections
     Given User <Contact> switches assets to V3 protocol via device <ContactDevice>
     Given I create temporary file <FileSize> in size with name "<FileName>" and extension "<FileExt>"
     Given I sign in using my email or phone number
-    Given User Myself sends encrypted image <Picture> to single user conversation <Contact>
+    Given User Myself sends 1 image file <Picture> to conversation <Contact>
     Given User <Contact> sends file <FileNameVideo> having MIME type <MIMEType> to single user conversation <Name> using device <ContactDevice>
     Given User <Contact> sends temporary file <FileName>.<FileExt> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    Given User Myself sends encrypted message "<Link>" to user <Contact>
+    Given User Myself sends 1 "<Link>" message to conversation <Contact>
     Given I see conversations list
     Given I tap on contact name <Contact>
     When I tap Collection button in conversation view
@@ -298,7 +298,7 @@ Feature: Collections
     Given Myself is connected to <Contact>
     Given Users add the following devices: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
-    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    Given User <Contact> sends 1 image file <Picture> to conversation Myself
     # Wait for sync
     Given I wait for 5 seconds
     Given User <Contact> sends <MsgCount> default messages to conversation Myself

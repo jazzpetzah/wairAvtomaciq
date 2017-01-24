@@ -5,8 +5,8 @@ Feature: Upgrade
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    Given User <Contact> sends 1 encrypted message to user Myself
-    Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
+    Given User <Contact> sends 1 default message to conversation Myself
+    Given User <Contact> sends 1 image file <Picture> to conversation Myself
     Given I see conversations list
     # To let the content to be synchronized
     Given I wait for 5 seconds

@@ -29,7 +29,7 @@ Feature: Audio Messaging
     Given I see conversations list
     When User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     And I tap on contact name <Contact>
-    And User <Contact> sends 1 encrypted message to user Myself
+    And User <Contact> sends 1 default message to conversation Myself
     # Wait until the media is loaded
     And I wait for 5 seconds
     And I see state of button on audio message placeholder is play

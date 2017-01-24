@@ -119,10 +119,10 @@ Feature: Calling
     And <Contact> stops outgoing call to me
     Then I see the state of <Contact> conversation item is changed
     When I remember the state of <Contact> conversation item
-    And User <Contact> sends <Number> encrypted messages to user Myself
+    And User <Contact> sends <Number> default messages to conversation Myself
     Then I see the state of <Contact> conversation item is not changed
     When I remember the state of <Contact> conversation item
-    And User <Contact1> sends <Number> encrypted messages to user Myself
+    And User <Contact1> sends <Number> default messages to conversation Myself
     And I see first item in contact list named <Contact1>
     Then I see the state of <Contact> conversation item is not changed
 

@@ -5,7 +5,7 @@ Feature: Likes
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    Given User <Contact> sends 1 encrypted message to user Myself
+    Given User <Contact> sends 1 default message to conversation Myself
     Given I see conversations list
     Given I tap on contact name <Contact>
     When I tap default message in conversation view
@@ -24,7 +24,7 @@ Feature: Likes
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    Given User <Contact> sends 1 encrypted message to user Myself
+    Given User <Contact> sends 1 default message to conversation Myself
     Given I see conversations list
     Given I tap on contact name <Contact>
     When I long tap default message in conversation view
@@ -45,7 +45,7 @@ Feature: Likes
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <Group> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    Given User <Contact1> sends 1 encrypted message to group conversation <Group>
+    Given User <Contact1> sends 1 default message to conversation <Group>
     Given I see conversations list
     # Sync message delivery
     Given I wait for 5 seconds
@@ -67,7 +67,7 @@ Feature: Likes
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    Given User Myself sends 1 encrypted message to user <Contact>
+    Given User Myself sends 1 default message to conversation <Contact>
     # Wait for delivery
     Given I wait for 5 seconds
     Given I see conversations list
@@ -92,7 +92,7 @@ Feature: Likes
     Given Myself is connected to <Contact>
     Given User adds the following device: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
-    Given User Myself sends 1 encrypted message to user <Contact>
+    Given User Myself sends 1 default message to conversation <Contact>
     Given I see conversations list
     Given I tap on contact name <Contact>
     When I long tap default message in conversation view
@@ -112,7 +112,7 @@ Feature: Likes
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    Given User Myself sends 1 encrypted message to user <Contact>
+    Given User Myself sends 1 default message to conversation <Contact>
     Given I see conversations list
     Given I tap on contact name <Contact>
     When I tap default message in conversation view
@@ -139,7 +139,7 @@ Feature: Likes
     Given Myself has group chat <Group> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given User <Contact1> sends encrypted image <Picture> to group conversation <Group>
+    Given User <Contact1> sends 1 image file <Picture> to conversation <Group>
     When I swipe right on a <Group>
     And I tap Delete conversation action button
     And I confirm Delete conversation action
@@ -225,7 +225,7 @@ Feature: Likes
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    Given User <Contact> sends encrypted message "<SCLink>" to user Myself
+    Given User <Contact> sends 1 "<SCLink>" message to conversation Myself
     Given I see conversations list
     Given I tap on contact name <Contact>
     # Wait for sync
@@ -248,7 +248,7 @@ Feature: Likes
     Given Myself has group chat <Group> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given User <Contact1> sends encrypted image <Picture> to group conversation <Group>
+    Given User <Contact1> sends 1 image file <Picture> to conversation <Group>
     When I swipe right on a <Group>
     And I tap Archive conversation action button
     Then I do not see conversation <Group> in conversations list
@@ -266,7 +266,7 @@ Feature: Likes
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    Given User <Contact> sends 1 encrypted message to user Myself
+    Given User <Contact> sends 1 default message to conversation Myself
     Given I see conversations list
     Given I tap on contact name <Contact>
     When I tap default message in conversation view
@@ -285,7 +285,7 @@ Feature: Likes
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    Given User <Contact> sends 1 encrypted message to user Myself
+    Given User <Contact> sends 1 default message to conversation Myself
     Given I see conversations list
     Given I tap on contact name <Contact>
     When I long tap default message in conversation view
@@ -305,7 +305,7 @@ Feature: Likes
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    Given User <Contact> sends encrypted message "<Link>" to user Myself
+    Given User <Contact> sends 1 "<Link>" message to conversation Myself
     Given I see conversations list
     Given I tap on contact name <Contact>
     # Load the link
@@ -326,7 +326,7 @@ Feature: Likes
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    Given User <Contact> sends 1 image file <Picture> to conversation Myself
     Given I see conversations list
     Given I tap on contact name <Contact>
     When I tap at 5% of width and 5% of height of the recent message
@@ -388,7 +388,7 @@ Feature: Likes
     Given Myself is connected to all other
     Given Myself has group chat <Group> with all other
     Given I sign in using my email or phone number
-    Given User <Contact1> sends 1 encrypted message to group conversation <Group>
+    Given User <Contact1> sends 1 default message to conversation <Group>
     # Wait for sync
     Given I wait for 5 seconds
     Given User <Contact2> likes the recent message from group conversation <Group>

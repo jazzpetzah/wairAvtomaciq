@@ -22,7 +22,7 @@ Feature: Conversation View
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    Given User <Contact> sends 1 encrypted message to user Myself
+    Given User <Contact> sends 1 default message to conversation Myself
     When I tap on contact name <Contact>
     Then I see 1 default message in the conversation view
 
@@ -77,7 +77,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given I tap on contact name <Contact1>
-    Given User <Contact1> securely pings conversation <Name>
+    Given User <Contact1> pings conversation <Name>
     When I wait for 3 seconds
     Then I see "<ContactName> PINGED" system message in the conversation view
 
@@ -94,7 +94,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given I tap on group chat with name <GroupChatName>
-    When User <Contact1> securely pings conversation <GroupChatName>
+    When User <Contact1> pings conversation <GroupChatName>
     Then I see "<Contact1> PINGED" system message in the conversation view
 
     Examples:
@@ -107,14 +107,14 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I rotate UI to portrait
     Given I Sign in on tablet using my email
+    Given User <Contact> sends 1 image file <Picture> to conversation Myself
     Given I see conversations list
-    Given User <Contact> sends encrypted image <Picture> to <ConversationType> conversation <Name>
     When I tap on contact name <Contact>
     Then I see 1 photo in the conversation view
 
     Examples:
-      | Name      | Contact   | Picture     | ConversationType |
-      | user1Name | user2Name | testing.jpg | single user      |
+      | Name      | Contact   | Picture     |
+      | user1Name | user2Name | testing.jpg |
 
   @C2628 @regression @fastLogin
   Scenario Outline: Receive a camera roll picture from user from contact list [LANDSCAPE]
@@ -122,8 +122,8 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
+    Given User <Contact> sends 1 image file <Picture> to conversation Myself
     Given I see conversations list
-    Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     When I tap on contact name <Contact>
     Then I see 1 photo in the conversation view
 
@@ -269,7 +269,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given User <Contact> sends 40 encrypted messages to user Myself
+    Given User <Contact> sends 40 default messages to conversation Myself
     Given I see conversations list
     When I tap on contact name <Contact>
     Then I see conversation is scrolled to the end
@@ -468,7 +468,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>
     Given I rotate UI to portrait
     Given I Sign in on tablet using my email
-    Given User Myself sends encrypted message "<VimeoLink>" to user <Contact1>
+    Given User Myself sends 1 "<VimeoLink>" message to conversation <Contact1>
     Given I see conversations list
     When I tap on contact name <Contact1>
     Then I see vimeo link <VimeoLink> with media preview in the conversation view
@@ -483,7 +483,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given User Myself sends encrypted message "<VimeoLink>" to user <Contact1>
+    Given User Myself sends 1 "<VimeoLink>" message to conversation <Contact1>
     When I see conversations list
     Then I see vimeo link <VimeoLink> with media preview in the conversation view
 
@@ -529,8 +529,8 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I rotate UI to portrait
     Given I Sign in on tablet using my email
+    Given User <Contact> sends 1 image file <Picture> to conversation Myself
     Given I see conversations list
-    Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     When I tap on contact name <Contact>
     And I see 1 photo in the conversation view
     # Wait for polka dots to disappear
@@ -555,13 +555,13 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
+    Given User <Contact> sends 1 image file <Picture> to conversation Myself
     Given I see conversations list
-    Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
-    And I tap on contact name <Contact>
-    And I see 1 photo in the conversation view
+    Given I tap on contact name <Contact>
+    Given I see 1 photo in the conversation view
     # Wait for polka dots to disappear
-    And I wait for 7 seconds
-    And I long tap on image in conversation view
+    Given I wait for 7 seconds
+    When I long tap on image in conversation view
     And I tap on Copy badge item
     And I tap on text input
     And I long tap on text input
@@ -581,7 +581,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given User Myself sends 1 encrypted message to user <Contact1>
+    Given User Myself sends 1 default message to conversation <Contact1>
     Given I see conversations list
     When I swipe right on iPad the conversation named <Contact1>
     And I tap Delete conversation action button
@@ -607,7 +607,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I rotate UI to portrait
     Given I Sign in on tablet using my email
-    Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
+    Given User <Contact> sends 1 image file <Picture> to conversation Myself
     Given I see conversations list
     Given I tap on contact name <Contact>
     When I long tap on image in conversation view
@@ -627,7 +627,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
+    Given User <Contact> sends 1 image file <Picture> to conversation Myself
     Given I see conversations list
     When I long tap on image in conversation view
     Then I see Save badge item
@@ -649,8 +649,8 @@ Feature: Conversation View
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
-    Given User <Contact1> sends encrypted image <Picture> to group conversation <GroupChatName>
+    Given User <Contact1> sends 1 default message to conversation <GroupChatName>
+    Given User <Contact1> sends 1 image file <Picture> to conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     Then I see 1 default message in the conversation view
     And I see 1 photo in the conversation view
@@ -665,7 +665,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given User <Contact> sends encrypted image <GifPicture> to single user conversation Myself
+    Given User <Contact> sends 1 image file <GifPicture> to conversation Myself
     Given I see conversations list
     Given I tap on contact name <Contact>
     # Wait for the picture to be loaded

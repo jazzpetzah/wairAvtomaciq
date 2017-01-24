@@ -618,8 +618,8 @@ Feature: People View
     Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
-    Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
-    Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
+    Given User <Contact1> sends 1 default message to conversation <GroupChatName>
+    Given User Myself sends 1 default message to conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap Open Menu button on Group info page
@@ -640,8 +640,8 @@ Feature: People View
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
-    Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
+    Given User <Contact1> sends 1 default message to conversation <GroupChatName>
+    Given User Myself sends 1 default message to conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap Open Menu button on Group info page
@@ -662,7 +662,7 @@ Feature: People View
     Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
-    Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
+    Given User Myself sends 1 default message to conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap Open Menu button on Group info page
@@ -691,7 +691,7 @@ Feature: People View
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
+    Given User Myself sends 1 default message to conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap Open Menu button on Group info page
@@ -720,10 +720,10 @@ Feature: People View
     Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
-    Given User Myself securely pings conversation <GroupChatName>
-    Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
-    Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
-    Given User Myself sends encrypted image <Image> to group conversation <GroupChatName>
+    Given User Myself pings conversation <GroupChatName>
+    Given User Myself sends 1 default message to conversation <GroupChatName>
+    Given User <Contact1> sends 1 default message to conversation <GroupChatName>
+    Given User Myself sends 1 image file <Image> to conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap Open Menu button on Group info page
@@ -750,10 +750,10 @@ Feature: People View
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    Given User Myself securely pings conversation <GroupChatName>
-    Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
-    Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
-    Given User Myself sends encrypted image <Image> to group conversation <GroupChatName>
+    Given User Myself pings conversation <GroupChatName>
+    Given User Myself sends 1 default message to conversation <GroupChatName>
+    Given User <Contact1> sends 1 default message to conversation <GroupChatName>
+    Given User Myself sends 1 image file <Image> to conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap Open Menu button on Group info page
@@ -778,10 +778,10 @@ Feature: People View
     Given Myself is connected to all other users
     Given I rotate UI to portrait
     Given I Sign in on tablet using my email
-    Given User Myself securely pings conversation <Contact1>
-    Given User Myself sends 1 encrypted message to user <Contact1>
-    Given User <Contact1> sends 1 encrypted message to user Myself
-    Given User <Contact1> sends encrypted image <Image> to single user conversation Myself
+    Given User Myself pings conversation <Contact1>
+    Given User Myself sends 1 default message to conversation <Contact1>
+    Given User <Contact1> sends 1 default message to conversation Myself
+    Given User <Contact1> sends 1 image file <Image> to conversation Myself
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
@@ -807,10 +807,10 @@ Feature: People View
     Given Myself is connected to all other users
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given User Myself securely pings conversation <Contact1>
-    Given User Myself sends 1 encrypted message to user <Contact1>
-    Given User <Contact1> sends 1 encrypted message to user Myself
-    Given User <Contact1> sends encrypted image <Image> to single user conversation Myself
+    Given User Myself pings conversation <Contact1>
+    Given User Myself sends 1 default message to conversation <Contact1>
+    Given User <Contact1> sends 1 default message to conversation Myself
+    Given User <Contact1> sends 1 image file <Image> to conversation Myself
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
@@ -837,8 +837,8 @@ Feature: People View
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to portrait
     Given I Sign in on tablet using my email
-    Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
-    Given User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
+    Given User Myself sends 1 default message to conversation <GroupChatName>
+    Given User <Contact1> sends 1 image file <Image> to conversation <GroupChatName>
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
@@ -861,8 +861,8 @@ Feature: People View
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
-    Given User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
+    Given User Myself sends 1 default message to conversation <GroupChatName>
+    Given User <Contact1> sends 1 image file <Image> to conversation <GroupChatName>
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details

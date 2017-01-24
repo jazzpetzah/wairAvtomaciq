@@ -7,7 +7,7 @@ Feature: Copy/Delete Message
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    Given User <Contact> sends 1 encrypted message to user Myself
+    Given User <Contact> sends 1 default message to conversation Myself
     When I tap on contact name <Contact>
     And I long tap default message in conversation view
     Then I see Copy badge item
@@ -25,8 +25,8 @@ Feature: Copy/Delete Message
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
-    Given User <Contact> sends <MessagesCount> encrypted message to user Myself
+    Given User <Contact> sends 1 image file <Picture> to conversation Myself
+    Given User <Contact> sends <MessagesCount> default messages to conversation Myself
     When I tap on contact name <Contact>
     Then I see 1 photo in the conversation view
     And I see <MessagesCount> default messages in the conversation view

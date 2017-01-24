@@ -43,7 +43,7 @@ Feature: Sketch
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    Given User <Contact> sends 1 image file <Picture> to conversation Myself
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap on image in conversation view
@@ -61,7 +61,7 @@ Feature: Sketch
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    Given User <Contact> sends 1 image file <Picture> to conversation Myself
     Given I see conversations list
     Given I tap on contact name <Contact>
     Given I tap on image in conversation view

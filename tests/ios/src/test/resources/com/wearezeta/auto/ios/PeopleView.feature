@@ -352,8 +352,8 @@ Feature: People View
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
-    Given User Myself sends 1 message to group conversation <GroupChatName>
+    Given User <Contact1> sends 1 default message to conversation <GroupChatName>
+    Given User Myself sends 1 default message to conversation <GroupChatName>
     Given I see conversations list
     Given I tap on group chat with name <GroupChatName>
     Given I open group conversation details
@@ -373,7 +373,7 @@ Feature: People View
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    Given User <Name> sends 1 encrypted message to group conversation <GroupChatName>
+    Given User <Name> sends 1 default message to conversation <GroupChatName>
     Given I see conversations list
     Given I tap on group chat with name <GroupChatName>
     Given I open group conversation details
@@ -402,10 +402,10 @@ Feature: People View
     Given Myself is connected to all other users
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    Given User <Contact1> securely pings conversation <GroupChatName>
-    Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
-    Given User <Contact2> sends 1 encrypted message to group conversation <GroupChatName>
-    Given User <Contact2> sends encrypted image <Picture> to group conversation <GroupChatName>
+    Given User <Contact1> pings conversation <GroupChatName>
+    Given User <Contact1> sends 1 default message to conversation <GroupChatName>
+    Given User <Contact2> sends 1 default message to conversation <GroupChatName>
+    Given User <Contact2> sends 1 image file <Picture> to conversation <GroupChatName>
     Given I see conversations list
     # Wait for delivery
     Given I wait for 5 seconds
@@ -431,10 +431,10 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given I sign in using my email or phone number
-    Given User Myself securely pings conversation <Contact1>
-    Given User Myself sends 1 encrypted message to user <Contact1>
-    Given User <Contact1> sends 1 encrypted message to user Myself
-    Given User <Contact1> sends encrypted image <Image> to single user conversation Myself
+    Given User Myself pings conversation <Contact1>
+    Given User Myself sends 1 default message to conversation <Contact1>
+    Given User <Contact1> sends 1 default message to conversation Myself
+    Given User <Contact1> sends 1 image file <Image> to conversation Myself
     Given I wait until <Contact1> exists in backend search results
     Given I see conversations list
     # Wait for delivery

@@ -235,9 +235,9 @@ Feature: Connect
     Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
-    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
-    Given User <Contact> securely pings conversation <Name>
-    Given User <Contact> sends 1 encrypted message to user Myself
+    Given User <Contact> sends 1 image file <Picture> to conversation Myself
+    Given User <Contact> pings conversation <Name>
+    Given User <Contact> sends 1 default message to conversation Myself
     When I wait for 5 seconds
     Then I do not see conversation <Contact> in conversations list
     When I wait until <Contact> exists in backend search results
@@ -262,9 +262,9 @@ Feature: Connect
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
-    Given User <Contact> securely pings conversation <Name>
-    Given User <Contact> sends 1 encrypted message to user Myself
+    Given User <Contact> sends 1 image file <Picture> to conversation Myself
+    Given User <Contact> pings conversation <Name>
+    Given User <Contact> sends 1 default message to conversation Myself
     When I wait for 5 seconds
     Then I do not see conversation <Contact> in conversations list
     When I wait until <Contact> exists in backend search results
