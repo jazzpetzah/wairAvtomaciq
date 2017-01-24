@@ -9,7 +9,7 @@ Feature: File Transfer
     Given I push <FileSize><FileSizeType> file having name "<FileName>.<FileExtension>" to the device
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
-    When I tap the conversation <Contact>
+    When I tap on conversation name <Contact>
     And I tap File button from cursor toolbar
     And I wait up to <UploadingTimeout> seconds until <FileSize> <FileSizeType> file with extension "<FileExtension>" is uploaded
     Then I see the result of "<FileSize><FileSizeType>" file upload having name "<FileName>.<FileExtension>" and extension "<FileExtension>"

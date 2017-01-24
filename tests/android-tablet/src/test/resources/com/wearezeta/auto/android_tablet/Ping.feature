@@ -8,7 +8,7 @@ Feature: Ping
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <Contact>
+    And I tap on conversation name <Contact>
     When I tap Ping button from cursor toolbar
     Then I see the ping message "<Message1>" in the conversation view
     When I tap Ping button from cursor toolbar
@@ -26,7 +26,7 @@ Feature: Ping
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <Contact>
+    And I tap on conversation name <Contact>
     When I tap Ping button from cursor toolbar
     Then I see the ping message "<Message1>" in the conversation view
     And I tap Ping button from cursor toolbar
@@ -45,7 +45,7 @@ Feature: Ping
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <GroupChatName>
+    And I tap on conversation name <GroupChatName>
     When User <Contact1> securely pings conversation <GroupChatName>
     Then I see the ping message "<PingMessage>" in the conversation view
     When User <Contact1> securely pings conversation <GroupChatName>
@@ -64,7 +64,7 @@ Feature: Ping
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the conversation <GroupChatName>
+    And I tap on conversation name <GroupChatName>
     When User <Contact1> securely pings conversation <GroupChatName>
     Then I see the ping message "<PingMessage>" in the conversation view
     When User <Contact1> securely pings conversation <GroupChatName>

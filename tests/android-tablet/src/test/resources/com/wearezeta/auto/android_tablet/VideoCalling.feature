@@ -10,7 +10,7 @@ Feature: Video Calling
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    Given I tap the conversation <Contact>
+    Given I tap on conversation name <Contact>
     When I tap Video Call button from top toolbar
     Then I see outgoing video call
     When <Contact> accepts next incoming video call automatically
@@ -34,7 +34,7 @@ Feature: Video Calling
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    Given I tap the conversation <Contact>
+    Given I tap on conversation name <Contact>
     Given <Contact> accepts next incoming video call automatically
     When I tap Video Call button from top toolbar
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
