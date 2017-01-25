@@ -307,7 +307,7 @@ Feature: Conversation View
   Scenario Outline: Verify posting in a 1-to-1 conversation without content
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User adds the following device: {"Myself: [{}]}
+    Given User adds the following device: {"Myself": [{}]}
     Given I sign in using my email or phone number
     Given User Myself sends 1 default message to conversation <Contact1>
     Given I see conversations list
