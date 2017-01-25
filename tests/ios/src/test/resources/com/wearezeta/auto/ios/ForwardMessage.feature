@@ -183,7 +183,6 @@ Feature: Forward Message
     Given Myself is connected to all other users
     Given I sign in using my email
     Given User <Contact2> sends 1 default message to conversation Myself
-#    Given User <Contact2> sends 1 image file <Picture> to conversation Myself
     Given I see conversations list
     Given I tap on contact name <Contact1>
     Given I open conversation details
