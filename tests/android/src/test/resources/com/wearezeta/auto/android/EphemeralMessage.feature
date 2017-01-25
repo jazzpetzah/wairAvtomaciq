@@ -112,11 +112,10 @@ Feature: Ephemeral Message
     And I verify the state of Image container is changed
     # Audio message
     When I long tap Audio message cursor button 2 seconds and swipe up
-    Then I see Audio Message container in the conversation view
-    And I do not see Message status with expected text "<MessageStatus>" in conversation view
+    And I see Audio Message container in the conversation view
+    And I remember the state of Audio Message container in the conversation view
     And I wait for <EphemeraTimeout>
-    And I do not see Audio Message container in the conversation view
-    And I see Audio Message Placeholder container in the conversation view
+    Then I verify the state of Audio Message container is changed
     # Ping
     When I tap Ping button from cursor toolbar
     Then I see Ping message "<PingMsg>" in the conversation view

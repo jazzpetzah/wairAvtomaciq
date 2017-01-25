@@ -1150,10 +1150,10 @@ public class ConversationViewPageSteps {
      * @param containerType which could be Image/Youtube/Soundcloud/File upload/Video message/Audio Message/Share location
      *                      /Link Preview
      * @throws Exception
-     * @step. ^I (do not )?see (Image|Youtube|Soundcloud|File Upload|File Upload Placeholder|Video Message|Audio Message|Audio Message Placeholder|Share Location|Link Preview) container in the conversation view$
+     * @step. ^I (do not )?see (Image|Youtube|Soundcloud|File Upload|File Upload Placeholder|Video Message|Audio Message|Share Location|Link Preview) container in the conversation view$
      */
     @Then("^I (do not )?see " +
-            "(Image|Youtube|Soundcloud|File Upload|File Upload Placeholder|Video Message|Audio Message|Audio Message Placeholder|Share Location|Link Preview)" +
+            "(Image|Youtube|Soundcloud|File Upload|File Upload Placeholder|Video Message|Audio Message|Share Location|Link Preview)" +
             " container in the conversation view$")
     public void ISeeContainer(String shouldNotSee, String containerType) throws Exception {
         final boolean condition = (shouldNotSee == null) ?

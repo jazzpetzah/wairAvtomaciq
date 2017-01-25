@@ -228,8 +228,6 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
 
     private static final By idAudioMessageContainer = By.id("message_audio_asset");
 
-    private static final By idAudioMessagePlaceholder = By.id("pdv__row_conversation__audio_placeholder_dots");
-
     private static final By idAudioContainerButton = By.id("action_button");
 
     private static final By idShareLocationContainer = By.id("message_location");
@@ -964,8 +962,6 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
                 return idVideoMessageContainer;
             case "audio message":
                 return idAudioMessageContainer;
-            case "audio message placeholder":
-                return idAudioMessagePlaceholder;
             case "share location":
                 return idShareLocationContainer;
             case "link preview":
