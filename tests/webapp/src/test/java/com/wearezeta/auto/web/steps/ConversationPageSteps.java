@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
+import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
@@ -1387,4 +1388,11 @@ public class ConversationPageSteps {
         }
     }
 
+    @And("^I see name (.*) in the conversation view has (.*) color$")
+    public void ISeeNameWithAccentColor(String userNameAlias, String accentColor) throws Exception {
+        final AccentColor expectedColor = AccentColor.getByName(accentColor);
+        final AccentColor nameColor = context.getPagesCollection().getPage(ConversationPage.class)
+                .getCurrentNameAccentColor(userNameAlias);
+        Assert.assertEquals(expectedColor, nameColor);
+    }
 }

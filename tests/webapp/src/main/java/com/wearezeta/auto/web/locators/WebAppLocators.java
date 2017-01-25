@@ -367,6 +367,8 @@ public final class WebAppLocators {
         // message header contains action description
         public static String cssMessageHeader = cssMessage + " .message-header";
 
+        public static Function<String, String> xpathSenderName = cssMessageHeader + ;
+
         public static String cssTextMessage = cssMessage + " .text";
         
         public static final String cssMessages = "[data-uie-name='item-message']";
