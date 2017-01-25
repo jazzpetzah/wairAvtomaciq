@@ -97,8 +97,8 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         return getConversationViewPage().getPreviewPictureScreenshot();
     }
 
-    public void tapContainer(String tapType, String containerName) throws Exception {
-        getConversationViewPage().tapContainer(tapType, containerName);
+    public void tapContainer(String tapType, String index, String containerName) throws Exception {
+        getConversationViewPage().tapContainer(tapType, index, containerName);
     }
 
     public boolean waitUntilNewConversationNameSystemMessage(String expectedMessage) throws Exception {

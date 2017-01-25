@@ -985,9 +985,11 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathLinkPreviewUrlByValue.apply(url)));
     }
 
-    public void tapContainer(String tapType, String name) throws Exception {
+    public void tapContainer(String tapType, String index, String name) throws Exception {
         final By locator = getContainerLocatorByName(name);
-        final WebElement el = getElement(locator);
+        final List<WebElement> els = selectVisibleElements(locator);
+        // By default, we get last matched element
+        WebElement el = (index != null && index.toLowerCase().equals("first")) ? els.get(0) : els.get(els.size() - 1);
         final Point location = el.getLocation();
         final Dimension size = el.getSize();
         if (Arrays.asList(idAudioMessageContainer, idVideoMessageContainer, idYoutubeContainer).contains(locator)) {

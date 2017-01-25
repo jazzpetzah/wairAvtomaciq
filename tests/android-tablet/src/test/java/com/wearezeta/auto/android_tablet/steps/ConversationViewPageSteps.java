@@ -209,12 +209,14 @@ public class ConversationViewPageSteps {
      * @param tapType       Tap type
      * @param containerType one of available container types
      * @throws Exception
-     * @step. ^I (long tap|double tap|tap) (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) container in the conversation view$
+     * @step. ^I (long tap|double tap|tap) (?:the (first|last)\s+)?(Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) container in the conversation view$
      */
-    @When("^I (long tap|double tap|tap) (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) " +
+    @When("^I (long tap|double tap|tap) " +
+            "(?:the (first|last)\\s+)?"+
+            "(Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) " +
             "container in the conversation view$")
-    public void ITapContainer(String tapType, String containerType) throws Exception {
-        getConversationViewPage().tapContainer(tapType, containerType);
+    public void ITapContainer(String tapType, String index, String containerType) throws Exception {
+        getConversationViewPage().tapContainer(tapType, index, containerType);
     }
 
     /**
