@@ -24,7 +24,7 @@ Feature: Delete Message
   Scenario Outline: Verify deleting received text message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User adds the following device: {"<Contact>: [{}]}
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     Given User <Contact> sends 1 default message to conversation Myself
@@ -43,7 +43,7 @@ Feature: Delete Message
   Scenario Outline: Verify deleting the picture, gif from Giphy
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User adds the following device: {"<Contact>: [{}]}
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
     Given User <Contact> sends 1 image file <Picture> to conversation Myself
     Given I see conversations list
@@ -75,7 +75,7 @@ Feature: Delete Message
   Scenario Outline: Verify deleting soundcloud message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User adds the following device: {"Myself: [{}]}
+    Given User adds the following device: {"Myself": [{}]}
     Given I sign in using my email or phone number
     Given User Myself sends 1 "<SoundCloudLink>" message to conversation <Contact>
     When I tap on contact name <Contact>
@@ -92,7 +92,7 @@ Feature: Delete Message
   Scenario Outline: Verify deleting messages containing links
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User adds the following device: {"Myself: [{}]}
+    Given User adds the following device: {"Myself": [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     Given User Myself sends 1 "Try this app <Link>" message to conversation <Contact>
@@ -133,7 +133,7 @@ Feature: Delete Message
   Scenario Outline: Verify canceling deleting a message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User adds the following device: {"<Contact1>: [{}]}
+    Given User adds the following device: {"<Contact1>": [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     Given User <Contact1> sends 1 default message to conversation Myself

@@ -76,7 +76,7 @@ Feature: Like
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
-    And I see a new picture in the Conversation view
+    And I see a picture in the conversation view
     And I tap Image container in the conversation view
     And I scroll to the bottom of the Conversation view
     And I remember the state of like button

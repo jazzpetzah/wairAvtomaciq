@@ -1,6 +1,6 @@
 Feature: Collections
 
-  @C368979 @regression @fastLogin
+  @C368979 @rc @regression @fastLogin
   Scenario Outline: Verify main overview shows media from all categories (picture, file, link)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -23,7 +23,7 @@ Feature: Collections
       | Name      | Contact   | Picture     | Link                  | FileName | FileExt | FileSize | FileMIME                 | ContactDevice | FileNameVideo | MIMEType  |
       | user1Name | user2Name | testing.jpg | https://www.wire.com/ | testing  | bin     | 240 KB   | application/octet-stream | device1       | testing.mp4   | video/mp4 |
 
-  @C368980 @regression @fastLogin
+  @C368980 @rc @regression @fastLogin
   Scenario Outline: Verify message is shown if no media in collection
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -73,7 +73,7 @@ Feature: Collections
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C368983 @regression @fastLogin
+  @C368983 @rc @regression @fastLogin
   Scenario Outline: Opening single picture from media overview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -176,7 +176,7 @@ Feature: Collections
       | Name      | Contact   | Picture1    | Picture2                 |
       | user1Name | user2Name | testing.jpg | userpicture_portrait.jpg |
 
-  @C368985 @regression @fastLogin
+  @C368985 @rc @regression @fastLogin
   Scenario Outline: Share picture, link, file into one different conversation
     Given There are 6 users where <Name> is me
     Given Myself is connected to all other users

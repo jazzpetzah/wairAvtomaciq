@@ -69,10 +69,6 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         return getConversationViewPage().waitUntilPingMessageWithTextVisible(expectedMessage);
     }
 
-    public boolean waitUntilAPictureAppears() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), ConversationViewPage.idConversationImageContainer);
-    }
-
     public boolean waitUntilMissedCallMessageIsVisible(String expectedMessage) throws Exception {
         return getConversationViewPage().waitUntilMissedCallMessageIsVisible(expectedMessage);
     }
@@ -101,8 +97,8 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         return getConversationViewPage().getPreviewPictureScreenshot();
     }
 
-    public void tapContainer(String tapType, String containerName) throws Exception {
-        getConversationViewPage().tapContainer(tapType, containerName);
+    public void tapContainer(String tapType, String index, String containerName) throws Exception {
+        getConversationViewPage().tapContainer(tapType, index, containerName);
     }
 
     public boolean waitUntilNewConversationNameSystemMessage(String expectedMessage) throws Exception {
@@ -112,10 +108,6 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 
     public boolean waitUntilInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), ConversationViewPage.idConversationRoot);
-    }
-
-    public boolean waitUntilPicturesNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), ConversationViewPage.idConversationImageContainer);
     }
 
     public void tapPlayPauseButton() throws Exception {
@@ -282,4 +274,11 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         return getConversationViewPage().waitUntilCursorInputTextVisible(text);
     }
 
+    public boolean waitUntilImageVisible() throws Exception {
+        return getConversationViewPage().waitUntilImageVisible();
+    }
+
+    public boolean waitUnilImageInvisible() throws Exception {
+        return getConversationViewPage().waitUntilImageInvisible();
+    }
 }

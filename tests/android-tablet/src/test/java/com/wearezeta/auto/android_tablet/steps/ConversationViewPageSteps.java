@@ -15,7 +15,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class ConversationViewPageSteps {
-   private static final String ANY_MESSAGE = "*ANY MESSAGE*";
+    private static final String ANY_MESSAGE = "*ANY MESSAGE*";
     private static final Timedelta LIKE_BUTTON_CHANGE_TIMEOUT = Timedelta.fromSeconds(15);
     private static final double LIKE_BUTTON_MIN_SIMILARITY_SCORE = 0.6;
     private static final double LIKE_BUTTON_NOT_CHANGED_MIN_SCORE = -0.5;
@@ -187,23 +187,19 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verify whether there is at least one picture in the conversation view
+     * Checks to see that a photo exists in the chat history. Does not check which photo though
      *
-     * @param shouldNotSee equals to null if 'do not' exists in step signature
+     * @param shouldNotSee equals to null if 'do not' part does not exist
      * @throws Exception
-     * @step. ^I (do not )?see (?:a|any) new pictures? in (?:the
-     * |\\s*)[Cc]onversation view$
+     * @step. ^I (do not )?see (?:any|a) (?:photos?|pictures?) in the conversation view$
      */
-    @Then("^I (do not )?see (?:a|any) new pictures? in (?:the |\\s*)[Cc]onversation view$")
-    public void ISeeNewPicture(String shouldNotSee) throws Exception {
+    @Then("^I (do not )?see (?:any|a) (?:photos?|pictures?) in the conversation view$")
+    public void ISeePicture(String shouldNotSee) throws Exception {
         if (shouldNotSee == null) {
-            Assert.assertTrue(
-                    "No new pictures are visible in the conversation view",
-                    getConversationViewPage().waitUntilAPictureAppears());
+            Assert.assertTrue("The picture is invisible", getConversationViewPage().waitUntilImageVisible());
         } else {
-            Assert.assertTrue(
-                    "Some pictures are still visible in the conversation view",
-                    getConversationViewPage().waitUntilPicturesNotVisible());
+            Assert.assertTrue("The picture is still invisible",
+                    getConversationViewPage().waitUnilImageInvisible());
         }
     }
 
@@ -213,12 +209,14 @@ public class ConversationViewPageSteps {
      * @param tapType       Tap type
      * @param containerType one of available container types
      * @throws Exception
-     * @step. ^I (long tap|double tap|tap) (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) container in the conversation view$
+     * @step. ^I (long tap|double tap|tap) (?:the (first|last)\s+)?(Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) container in the conversation view$
      */
-    @When("^I (long tap|double tap|tap) (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) " +
+    @When("^I (long tap|double tap|tap) " +
+            "(?:the (first|last)\\s+)?"+
+            "(Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) " +
             "container in the conversation view$")
-    public void ITapContainer(String tapType, String containerType) throws Exception {
-        getConversationViewPage().tapContainer(tapType, containerType);
+    public void ITapContainer(String tapType, String index, String containerType) throws Exception {
+        getConversationViewPage().tapContainer(tapType, index, containerType);
     }
 
     /**
@@ -244,7 +242,7 @@ public class ConversationViewPageSteps {
      * @step. ^I (do not )?see the [Pp]ing message \"<(.*)>\" in (?:the
      * |\\s*)[Cc]onversation view$
      */
-    @Then("^I (do not )?see the [Pp]ing message \"(.*)\" in (?:the |\\s*)[Cc]onversation view$")
+    @Then("^I (do not )?see Ping message \"(.*)\" in the conversation view")
     public void ISeePingMessage(String shouldNotBeVisible,
                                 String expectedMessage) throws Exception {
         expectedMessage = AndroidTabletTestContextHolder.getInstance().getTestContext().getUsersManager()
@@ -524,9 +522,9 @@ public class ConversationViewPageSteps {
      * @param shouldNotSee  equals to null if the container should be visible
      * @param containerType euiter Youtube or Soundcloud or File Upload or Video Message
      * @throws Exception
-     * @step. ^I (do not )?see (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) container in the conversation view$
+     * @step. ^I (do not )?see (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Audio Message Placeholder|Share Location|Link Preview) container in the conversation view$
      */
-    @Then("^I (do not )?see (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) " +
+    @Then("^I (do not )?see (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Audio Message Placeholder|Share Location|Link Preview) " +
             "container in the conversation view$")
     public void ISeeContainer(String shouldNotSee, String containerType) throws Exception {
         final boolean condition = (shouldNotSee == null) ?
@@ -750,7 +748,7 @@ public class ConversationViewPageSteps {
     /**
      * Tap on Any msg meta item
      *
-     * @param itemType    Message Meta Item type
+     * @param itemType Message Meta Item type
      * @throws Exception
      * @step. ^^I tap (Like button|Like description|Message status|First like avatar|Second like avatar)
      * in conversation view$

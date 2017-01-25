@@ -1097,7 +1097,7 @@ Feature: E2EE
     | Email      | Password      | Name      | Contact   | ALL_VERIFIED                  |
     | user1Email | user1Password | user1Name | user2Name | All fingerprints are verified |
 
-  @C399348 @e2ee @staging
+  @C399348 @e2ee @regression
   Scenario Outline: Verify conversation degrades with warning when sending images, files, pings or ephemeral messages to unverified devices
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -1186,7 +1186,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact   | Login2     | Password2     |PictureName               | File        | Size | TimeLong  | EphemeralMessage | SentAnyway | ALL_VERIFIED                  |
       | user1Email | user1Password | user1Name | user2Name | user2Email | user2Password |userpicture_landscape.jpg | C399348.zip | 15KB | 5 seconds | UnsentEphemeral  | SentAnyway | All fingerprints are verified |
 
-  @C399354 @e2ee @staging
+  @C399354 @e2ee @regression
   Scenario Outline: Verify conversation degrades with warning if your own account gets new device
     Given There are 2 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
@@ -1227,7 +1227,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact   | MessageThatTriggersWarning  | ALL_VERIFIED                  |
       | user1Email | user1Password | user1Name | user2Name | This should trigger warning | All fingerprints are verified |
 
-  @C399838 @e2ee @staging
+  @C399838 @e2ee @regression
   Scenario Outline: Verifying all people in a group should also verify individual 1:1 conversations with them
     Given There are 3 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1

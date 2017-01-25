@@ -84,7 +84,7 @@ Feature: Recall Message
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
     And I tap Delete for everyone button on the message bottom menu
     And I tap Delete button on the alert
-    Then I do not see any new picture in the Conversation view
+    Then I do not see any pictures in the conversation view
     And User <Contact> see the recent message from user Myself via device <ContactDevice> is changed in 15 seconds
 
     Examples:
@@ -111,7 +111,7 @@ Feature: Recall Message
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
     And I tap Delete for everyone button on the message bottom menu
     And I tap Delete button on the alert
-    Then I do not see any new picture in the Conversation view
+    Then I do not see any pictures in the conversation view
     And I see the message "<Message> · via giphy.com" in the conversation view
     And User <Contact> see the recent message from user Myself via device <ContactDevice> is changed in 15 seconds
 

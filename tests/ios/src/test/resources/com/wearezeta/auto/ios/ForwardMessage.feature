@@ -122,7 +122,7 @@ Feature: Forward Message
   Scenario Outline: Verify forwarding someone else audio message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given Users add the following devices: {"Myself": [{}], "<Contact1>": ["name": "<ContactDevice>"]}
+    Given Users add the following devices: {"Myself": [{}], "<Contact1>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Given User Me sends 1 default message to conversation <Contact1>
@@ -152,7 +152,7 @@ Feature: Forward Message
   Scenario Outline: Verify forwarding someone else video message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given User adds the following device: {"<Contact1>": ["name": "<ContactDevice>"]}
+    Given User adds the following device: {"<Contact1>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given User <Contact1> sends file <FileName> having MIME type <MIMEType> to single user conversation <Name> using device <DeviceName>
     # Given User Me sends 1 encrypted message to user <Contact1>
@@ -175,3 +175,69 @@ Feature: Forward Message
     Examples:
       | Name      | Contact1  | Contact2  | FileName    | MIMEType  | DeviceName |
       | user1Name | user2Name | user3name | testing.mp4 | video/mp4 | Device1    |
+
+  @C399835 @staging @fastLogin
+  Scenario Outline: Verify forwarding message into downgraded conversation
+    Given There are 3 users where <Name> is me
+    Given Users add the following devices: {"<Contact1>": [{}], "<Contact2>": [{}]}
+    Given Myself is connected to all other users
+    Given I sign in using my email
+    Given User <Contact2> sends 1 default message to conversation Myself
+    Given I see conversations list
+    Given I tap on contact name <Contact1>
+    Given I open conversation details
+    Given I switch to Devices tab on Single user profile page
+    Given I open details page of device number 1 on Devices tab
+    Given I tap Verify switcher on Device Details page
+    Given I tap Back button on Device Details page
+    Given I tap X button on Single user profile page
+    Given I navigate back to conversations list
+    Given Users add the following devices: {"<Contact1>": [{"name": "<Device2>", "label": "<Device2label>"}]}
+    Given User <Contact1> remembers the recent message from user Myself via device <Device2>
+    Given I tap on contact name <Contact2>
+    When I long tap default message in conversation view
+    And I tap on Share badge item
+    And I select <Contact1> conversation on Forward page
+    And I tap Send button on Forward page
+    And I navigate back to conversations list
+    And I tap on contact name <Contact1>
+    And I tap Send Anyway button on New Device overlay
+    Then I see "<DeliveredLabel>" on the message toolbox in conversation view
+    And User <Contact1> sees the recent message from user Myself via device <Device2> is changed in 5 seconds
+
+    Examples:
+      | Name      | Contact1  | Contact2  | DeliveredLabel | Device2 | Device2label |
+      | user1Name | user2Name | user3Name | Delivered      | Device2 | Device2label |
+
+  @C399836 @staging @fastLogin
+  Scenario Outline: Verify forwarding image into downgraded conversation
+    Given There are 3 users where <Name> is me
+    Given Users add the following devices: {"<Contact1>": [{}], "<Contact2>": [{}]}
+    Given Myself is connected to all other users
+    Given I sign in using my email
+    Given User <Contact2> sends 1 image file <Picture> to conversation Myself
+    Given I see conversations list
+    Given I tap on contact name <Contact1>
+    Given I open conversation details
+    Given I switch to Devices tab on Single user profile page
+    Given I open details page of device number 1 on Devices tab
+    Given I tap Verify switcher on Device Details page
+    Given I tap Back button on Device Details page
+    Given I tap X button on Single user profile page
+    Given I navigate back to conversations list
+    Given Users add the following devices: {"<Contact1>": [{"name": "<Device2>", "label": "<Device2label>"}]}
+    Given User <Contact1> remembers the recent message from user Myself via device <Device2>
+    Given I tap on contact name <Contact2>
+    When I long tap on image in conversation view
+    And I tap on Share badge item
+    And I select <Contact1> conversation on Forward page
+    And I tap Send button on Forward page
+    And I navigate back to conversations list
+    And I tap on contact name <Contact1>
+    And I tap Send Anyway button on New Device overlay
+    Then I see "<DeliveredLabel>" on the message toolbox in conversation view
+    And User <Contact1> sees the recent message from user Myself via device <Device2> is changed in 5 seconds
+
+    Examples:
+      | Name      | Contact1  | Contact2  | DeliveredLabel | Picture     |  Device2 | Device2label |
+      | user1Name | user2Name | user3Name | Delivered      | testing.jpg |  Device2 | Device2label |

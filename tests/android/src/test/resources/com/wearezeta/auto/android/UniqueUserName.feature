@@ -1,7 +1,7 @@
 Feature: Unique Username
 
   @C352018 @regression
-  Scenario Outline: (AN-4845)Verify I see Unique User Name and AB name within Incoming Request and Conversation View in different condition
+  Scenario Outline: Verify I see Unique User Name and AB name within Incoming Request and Conversation View in different condition
     Given I delete all contacts from Address Book
     Given There are 4 users where <Name> is me
     Given I add <ContactInABEmail> having custom name "<ABNameEmail>" into Address Book with email
@@ -274,6 +274,7 @@ Feature: Unique Username
     Given There is 2 user where <Name> is me without unique user name
     Given User <User2Name> changes the unique username to "<User2Name>"
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Unique Username Takeover page
     Given I tap Choose Your Own button on Unique Username Takeover page
     When I see unique username edit field on Settings page

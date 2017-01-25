@@ -35,10 +35,10 @@ public class WireDatabase {
                     "FROM ZMESSAGE " +
                     "INNER JOIN ZUSER " +
                     "ON ZMESSAGE.ZSENDER=ZUSER.Z_PK " +
-                    "WHERE ZUSER.ZEMAILADDRESS=\"%s\" " +
+                    "WHERE ZUSER.ZNAME=\"%s\" " +
                     "ORDER BY ZMESSAGE.ZSERVERTIMESTAMP DESC " +
                     "LIMIT 1";
-            final ResultSet rs = getQueryResult(connection, queryTpl, user.getEmail());
+            final ResultSet rs = getQueryResult(connection, queryTpl, user.getName());
             if (rs.next()) {
                 return Optional.of(rs.getLong("MSG_ID"));
             }
