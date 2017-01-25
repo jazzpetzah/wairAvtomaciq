@@ -431,7 +431,7 @@ Feature: Conversation View
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact2>,<Contact3>
-    Given I leave group chat <GroupChatName>
+    Given User Myself leaves group chat <GroupChatName>
     Given Me sent connection request to <Contact1>
     Given I rotate UI to portrait
     Given I Sign in on tablet using my email
@@ -451,7 +451,7 @@ Feature: Conversation View
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact2>,<Contact3>
-    Given I leave group chat <GroupChatName>
+    Given User Myself leaves group chat <GroupChatName>
     Given Me sent connection request to <Contact1>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email

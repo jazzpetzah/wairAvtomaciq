@@ -259,7 +259,7 @@ Feature: Conversation View
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact2>,<Contact3>
-    Given I leave group chat <GroupChatName>
+    Given User Myself leaves group chat <GroupChatName>
     Given Me sent connection request to <Contact1>
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -446,7 +446,7 @@ Feature: Conversation View
     Given Myself has group chat <GroupChatName> with all other
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I leave group chat <GroupChatName>
+    When User Myself leaves group chat <GroupChatName>
     And I do not see conversation <GroupChatName> in conversations list
     And I open archived conversations
     And I tap on group chat with name <GroupChatName>

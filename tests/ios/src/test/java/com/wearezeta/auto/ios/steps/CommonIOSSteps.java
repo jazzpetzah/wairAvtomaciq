@@ -653,6 +653,20 @@ public class CommonIOSSteps {
     }
 
     /**
+     * User leaves group chat
+     *
+     * @param userName name of the user who leaves
+     * @param chatName chat name that user leaves
+     * @throws Exception
+     * @step. ^User (.*) leaves group chat (.*)$
+     */
+    @Given("^User (.*) leaves group chat (.*)$")
+    public void UserLeavesGroupChat(String userName, String chatName) throws Exception {
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps().UserXLeavesGroupChat(userName, chatName);
+    }
+
+
+    /**
      * Removes user from group conversation
      *
      * @param chatOwnerNameAlias name of the user who deletes
