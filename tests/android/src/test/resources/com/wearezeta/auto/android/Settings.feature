@@ -136,7 +136,7 @@ Feature: Settings
   @C165103 @regression
   Scenario Outline: Verify I can delete multiple devices without filling password every time
     Given There is 1 user where <Name> is me
-    Given Users add the following devices: {"Myself": [{"name": "Device1", "name": "<DeviceToRemove>", {"name": "<DeviceToRemoveWithoutPassword>", "name": "<OtherDevice>", {"name": "Device5"}]}
+    Given Users add the following devices: {"Myself": [{"name": "Device1"}, {"name": "<DeviceToRemove>"}, {"name": "<DeviceToRemoveWithoutPassword>"}, {"name": "<OtherDevice>"}, {"name": "Device5"}]}
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with no conversations

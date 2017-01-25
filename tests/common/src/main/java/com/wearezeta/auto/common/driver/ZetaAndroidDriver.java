@@ -49,6 +49,7 @@ import org.openqa.selenium.remote.UnreachableBrowserException;
 
 public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements ZetaDriver, HasTouchScreen {
     public static final long MAX_COMMAND_DURATION_MILLIS = 120000;
+    private static final int LONG_TAP_DURATION = 3000;
 
     private static final Logger log = ZetaLogger.getLog(ZetaAndroidDriver.class
             .getSimpleName());
@@ -205,7 +206,7 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
     public void tap(String tapType, int x, int y) {
         switch (tapType.toLowerCase()) {
             case "long tap":
-                longTap(x, y, DriverUtils.LONG_TAP_DURATION);
+                longTap(x, y, LONG_TAP_DURATION);
                 break;
             case "double tap":
                 doubleTap(x, y);
@@ -221,7 +222,7 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
     public void tap(String tapType, WebElement el) {
         switch (tapType.toLowerCase()) {
             case "long tap":
-                longTap(el, DriverUtils.LONG_TAP_DURATION);
+                longTap(el, LONG_TAP_DURATION);
                 break;
             case "double tap":
                 doubleTap(el);
