@@ -29,12 +29,14 @@ public class NewDeviceOverlaySteps {
     }
 
     /**
-     * Tap the close button of the neew device overlay
-     * @step. ^I close New Device overlay$
+     * Tap button on New Device overlay
+     *
+     * @param buttonName name of button
      * @throws Exception
+     * @step. ^I tap (X|Show Device|Send Anyway) button on New Device overlay$
      */
-    @When("^I close New Device overlay$")
-    public void ICloseNewDeviceOverlay() throws Exception {
-        getNewDeviceOverlay().closeNewDeviceOverlay();
+    @When("^I tap (X|Show Device|Send Anyway) button on New Device overlay$")
+    public void ITapButtonOnNewDeviceOverlay(String buttonName) throws Exception {
+        getNewDeviceOverlay().tapButton(buttonName);
     }
 }
