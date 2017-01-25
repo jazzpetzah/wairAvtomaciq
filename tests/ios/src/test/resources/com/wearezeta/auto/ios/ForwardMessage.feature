@@ -122,7 +122,7 @@ Feature: Forward Message
   Scenario Outline: Verify forwarding someone else audio message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given Users add the following devices: {"Myself": [{}], "<Contact1>": ["name": "<ContactDevice>"]}
+    Given Users add the following devices: {"Myself": [{}], "<Contact1>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Given User Me sends 1 default message to conversation <Contact1>
@@ -152,7 +152,7 @@ Feature: Forward Message
   Scenario Outline: Verify forwarding someone else video message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given User adds the following device: {"<Contact1>": ["name": "<ContactDevice>"]}
+    Given User adds the following device: {"<Contact1>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given User <Contact1> sends file <FileName> having MIME type <MIMEType> to single user conversation <Name> using device <DeviceName>
     # Given User Me sends 1 encrypted message to user <Contact1>
