@@ -12,6 +12,8 @@ public class NewDeviceOverlay extends IOSPage {
             String.format("//XCUIElementTypeStaticText[contains(@name, '%s')]", text);
 
     private static final By nameCloseOverlayButton = MobileBy.AccessibilityId("RightButton");
+    private static final By nameShowDeviceButton = MobileBy.AccessibilityId("SHOW DEVICE");
+    private static final By nameSendAnywayButton = MobileBy.AccessibilityId("SEND ANYWAY");
 
     public NewDeviceOverlay(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -22,7 +24,21 @@ public class NewDeviceOverlay extends IOSPage {
         return isLocatorDisplayed(locator);
     }
 
-    public void closeNewDeviceOverlay() throws Exception {
-        getElement(nameCloseOverlayButton).click();
+    private static By getButtonLocatorByName(String name) {
+        switch (name.toLowerCase()) {
+            case "x":
+                return nameCloseOverlayButton;
+            case "show device":
+                return nameShowDeviceButton;
+            case "send anyway":
+                return nameSendAnywayButton;
+            default:
+                throw new IllegalArgumentException(String.format("There is no '%s' button on Search UI page", name));
+        }
+    }
+
+    public void tapButton(String name) throws Exception {
+        final By locator = getButtonLocatorByName(name);
+        getElement(locator).click();
     }
 }
