@@ -11,7 +11,6 @@ import java.nio.file.attribute.PosixFilePermission;
 import java.util.*;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import com.google.common.base.Throwables;
 import com.wearezeta.auto.common.*;
@@ -1041,9 +1040,9 @@ public class CommonIOSSteps {
      * @param strX float number 0 <= x <= 1, relative width position of click point
      * @param strY float number 0 <= y <= 1, relative height position of click point
      * @throws Exception
-     * @step. ^I click at ([\d\.]+),([\d\.]+) of Simulator window$
+     * @step. ^I click at ([\d.]+),([\d.]+) of Simulator window$
      */
-    @When("^I click at ([\\d\\.]+),([\\d\\.]+) of Simulator window$")
+    @When("^I click at ([\\d.]+),([\\d.]+) of Simulator window$")
     public void ReturnToWireApp(String strX, String strY) throws Exception {
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
             IOSSimulatorHelpers.clickAt(strX, strY, String.format("%.3f", DriverUtils.SINGLE_TAP_DURATION / 1000.0));
@@ -1531,15 +1530,14 @@ public class CommonIOSSteps {
         }
         final List<File> files = IOSSimulatorHelpers.locateFilesOnInternalFS(WireDatabase.DB_FILE_NAME);
         final String currentBundleId = IOSDistributable.getInstance(getAppPath()).getBundleId();
-        final List<File> matchedFiles = files.stream().filter(
+        final Optional<File> matchedFile = files.stream().filter(
                 x -> x.getParentFile().getName().equals(currentBundleId)
-        ).collect(Collectors.toList());
-        if (matchedFiles.isEmpty()) {
-            throw new IllegalStateException(
-                    String.format("The internal Wire database file cannot be located in\n%s", files)
-            );
-        }
-        return new WireDatabase(matchedFiles.get(0));
+        ).findFirst();
+        return new WireDatabase(matchedFile.orElseThrow(
+                () -> new IllegalStateException(
+                        String.format("The internal Wire database file cannot be located in\n%s", files)
+                ))
+        );
     }
 
     /**
@@ -1557,7 +1555,8 @@ public class CommonIOSSteps {
         this.recentMsgId = db.getRecentMessageId(dstUser).orElseThrow(
                 () -> new IllegalStateException(
                         String.format("No messages from user %s have been found in the local database",
-                                dstUser.getName()))
+                                dstUser.getName())
+                )
         );
     }
 
