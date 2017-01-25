@@ -10,7 +10,7 @@ Feature: Ping
     Given I see the conversations list with conversations
     And I tap on conversation name <Contact>
     When I tap Ping button from cursor toolbar
-    Then I see the ping message "<Message1>" in the conversation view
+    Then I see Ping message "<Message1>" in the conversation view
     When I tap Ping button from cursor toolbar
     Then I see <Count> Ping messages in the conversation view
 
@@ -28,7 +28,7 @@ Feature: Ping
     Given I see the conversations list with conversations
     And I tap on conversation name <Contact>
     When I tap Ping button from cursor toolbar
-    Then I see the ping message "<Message1>" in the conversation view
+    Then I see Ping message "<Message1>" in the conversation view
     And I tap Ping button from cursor toolbar
     Then I see <Count> Ping messages in the conversation view
 
@@ -47,7 +47,7 @@ Feature: Ping
     Given I see the conversations list with conversations
     And I tap on conversation name <GroupChatName>
     When User <Contact1> securely pings conversation <GroupChatName>
-    Then I see the ping message "<PingMessage>" in the conversation view
+    Then I see Ping message "<PingMessage>" in the conversation view
     When User <Contact1> securely pings conversation <GroupChatName>
     Then I see <Count> Ping messages in the conversation view
 
@@ -66,7 +66,7 @@ Feature: Ping
     Given I see the conversations list with conversations
     And I tap on conversation name <GroupChatName>
     When User <Contact1> securely pings conversation <GroupChatName>
-    Then I see the ping message "<PingMessage>" in the conversation view
+    Then I see Ping message "<PingMessage>" in the conversation view
     When User <Contact1> securely pings conversation <GroupChatName>
     Then I see <Count> Ping messages in the conversation view
 

@@ -277,7 +277,7 @@ Feature: Delete
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @C399364 @staging
+  @C399364 @regression
   Scenario Outline: Verify I can delete pictures for me from fullscreen view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

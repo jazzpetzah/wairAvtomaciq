@@ -170,7 +170,7 @@ Feature: Search
     When I tap Send Image action button on Search page
     And I tap Take Photo button on Take Picture view
     And I tap Confirm button on Take Picture view
-    Then I see a new picture in the conversation view
+    Then I see a picture in the conversation view
     And I do not see Search page
 
     Examples:
@@ -195,7 +195,7 @@ Feature: Search
     When I tap Send Image action button on Search page
     And I tap Take Photo button on Take Picture view
     And I tap Confirm button on Take Picture view
-    Then I see a new picture in the conversation view
+    Then I see a picture in the conversation view
     And I do not see Search page
     When I tap conversation name from top toolbar
     And I see Group info popover
@@ -225,7 +225,7 @@ Feature: Search
     When I tap Send Image action button on Search page
     And I tap Take Photo button on Take Picture view
     And I tap Confirm button on Take Picture view
-    Then I see a new picture in the conversation view
+    Then I see a picture in the conversation view
     And I do not see Search page
     When I tap conversation name from top toolbar
     And I see Group info popover
