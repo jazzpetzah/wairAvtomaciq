@@ -4,7 +4,7 @@ Feature: Likes
   Scenario Outline: Verify liking/unliking a message by tapping on like icon
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given Users add the following devices: {"<Contact>": []}
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
     Given User <Contact> sends 1 default message to conversation Myself
     Given I see conversations list
@@ -24,7 +24,7 @@ Feature: Likes
   Scenario Outline: Verify liking/unliking a message from a message menu
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given Users add the following devices: {"<Contact>": []}
+    Given User adds the following device: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
     Given User <Contact> sends 1 default message to conversation Myself
     Given I see conversations list
@@ -46,7 +46,7 @@ Feature: Likes
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <Group> with <Contact1>,<Contact2>
-    Given Users add the following devices: {"<Contact1>": []}
+    Given User adds the following device: {"<Contact1>": [{}]}
     Given I sign in using my email or phone number
     Given User <Contact1> sends 1 default message to conversation <Group>
     Given I see conversations list
