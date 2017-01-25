@@ -28,7 +28,6 @@ import com.wearezeta.auto.common.calling2.v1.model.Flow;
 import com.wearezeta.auto.common.calling2.v1.model.Instance;
 import com.wearezeta.auto.common.calling2.v1.model.VersionedInstanceType;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.test_context.TestContext;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
@@ -41,7 +40,7 @@ public final class CommonCallingSteps2 {
 
     private static final String CALL_BACKEND_VERSION_SEPARATOR = ":";
 
-    private static final String ZCALL_DEFAULT_VERSION = "2.9.14";
+    private static final String ZCALL_DEFAULT_VERSION = "3.1.29";
     private String zcallVersion = ZCALL_DEFAULT_VERSION;
 
     public String getZcallVersion() {
@@ -52,7 +51,7 @@ public final class CommonCallingSteps2 {
         this.zcallVersion = zcallVersion;
     }
 
-    private static final String FIREFOX_DEFAULT_VERSION = "50.0.2";
+    private static final String FIREFOX_DEFAULT_VERSION = "50.1.0";
     private static final String CHROME_DEFAULT_VERSION = "55.0.2883.75";
 
     // Request timeout of 180 secs is set by callingservice, we add additional
