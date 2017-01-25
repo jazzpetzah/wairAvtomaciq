@@ -697,7 +697,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public boolean isImageVisible() throws Exception {
+    public boolean waitUntilImageVisible() throws Exception {
         return DriverUtils.waitUntilLocatorAppears(this.getDriver(), idConversationImageContainer) &&
                 DriverUtils.waitUntilLocatorDissapears(getDriver(), idClickedImageSendingIndicator, 20);
     }
@@ -836,7 +836,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
         return this.getElementScreenshot(getElement(idFullScreenImage));
     }
 
-    public boolean isImageInvisible() throws Exception {
+    public boolean waitUntilImageInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idConversationImageContainer);
     }
 

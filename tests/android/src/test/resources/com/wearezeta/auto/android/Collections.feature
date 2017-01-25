@@ -235,7 +235,7 @@ Feature: Collections
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
     Given I scroll to the bottom of conversation view
-    Given I do not see any picture in the conversation view
+    Given I do not see any pictures in the conversation view
     Given I tap Collections button from top toolbar
     When I tap on the 1st picture on Collections page
     And I see collection image preview
@@ -290,7 +290,7 @@ Feature: Collections
     And I see 1 picture in <Timeout> seconds on Collection page
     And I tap on Close button on Collection page
     And User <Contact> delete the recent message everywhere from user Myself via device <ContactDevice>
-    Then I do not see any picture in the conversation view
+    Then I do not see any pictures in the conversation view
     When I tap Collections button from top toolbar
     Then I see NO ITEM placeholder on Collections page
 

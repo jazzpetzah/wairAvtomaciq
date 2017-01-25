@@ -11,7 +11,7 @@ Feature: Rich Media
     Given User <Contact> sends encrypted image <GifName> to single user conversation Myself
     And I tap on conversation name <Contact>
     When I scroll to the bottom of the conversation view
-    Then I see a new picture in the conversation view
+    Then I see a picture in the conversation view
     And I see the picture in the conversation view is animated
     When I tap Image container in the conversation view
     And I tap on Fullscreen button on the recent image in the conversation view
@@ -32,7 +32,7 @@ Feature: Rich Media
     Given User <Contact> sends encrypted image <GifName> to single user conversation Myself
     And I tap on conversation name <Contact>
     When I scroll to the bottom of the conversation view
-    Then I see a new picture in the conversation view
+    Then I see a picture in the conversation view
     And I see the picture in the conversation view is animated
     When I tap Image container in the conversation view
     And I tap on Fullscreen button on the recent image in the conversation view
@@ -107,7 +107,7 @@ Feature: Rich Media
     Then I see Giphy preview page
     When I tap Send button on the Giphy preview page
     Then I see the conversation view
-    And I see a new picture in the conversation view
+    And I see a picture in the conversation view
     And I scroll to the bottom of the Conversation view
     # And I see the picture in the conversation view is animated
 
@@ -131,7 +131,7 @@ Feature: Rich Media
     Then I see Giphy preview page
     When I tap Send button on the Giphy preview page
     Then I see the conversation view
-    And I see a new picture in the conversation view
+    And I see a picture in the conversation view
     And I scroll to the bottom of the Conversation view
     # And I see the picture in the conversation view is animated
 

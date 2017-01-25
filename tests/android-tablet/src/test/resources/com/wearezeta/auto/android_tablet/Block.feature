@@ -138,7 +138,7 @@ Feature: Block
     # Workaround for https://wearezeta.atlassian.net/browse/AN-2560
     When I tap on conversation name <Contact>
     Then I do not see the message "<Message>" in the conversation view
-    And I do not see a new picture in the conversation view
+    And I do not see any pictures in the conversation view
     # FIXME: this work properly in manual tests
     # When User <Contact> sends encrypted message "<Message>" to user Myself
     # Then I see the message "<Message>" in the conversation view
