@@ -549,7 +549,7 @@ Feature: E2EE
       | Name      | Contact1  | Contact2  | ResendLabel | Device1 | Device1label | Device2 | Device2label |
       | user1Name | user2Name | user3Name | Resend      | Device1 | Device1label | Device2 | Device2label |
 
-  @C395997 @staging @fastLogin
+  @C395997 @regression @fastLogin
   Scenario Outline: Verify forwarded image is not delivered in downgraded conversation
     Given There are 3 users where <Name> is me
     Given Users add the following devices: {"<Contact1>": [{"name": "<Device1>", "label": "<Device1label>"}], "<Contact2>": [{}]}
