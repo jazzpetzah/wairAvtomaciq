@@ -1490,9 +1490,8 @@ public class ConversationPage extends WebPage {
         return lastGenericMessage.getAttribute("data-uie-expired-status").contains("true");
     }
 
-    public AccentColor getCurrentNameAccentColor(String name)
-            throws Exception {
-        final By locator = By.xpath(WebAppLocators.ConversationPage.xpathSenderName.apply(name));
+    public AccentColor getCurrentNameAccentColorForLastMessage() throws Exception {
+        final By locator = By.xpath(WebAppLocators.ConversationPage.cssAccentColorSenderNameForLastMessage);
         assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator, 3);
         final WebElement entry = getDriver().findElement(locator);
         return AccentColor.getByRgba(entry.getCssValue("color"));

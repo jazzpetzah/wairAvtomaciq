@@ -1388,11 +1388,13 @@ public class ConversationPageSteps {
         }
     }
 
-    @And("^I see name (.*) in the conversation view has (.*) color$")
-    public void ISeeNameWithAccentColor(String userNameAlias, String accentColor) throws Exception {
+    @And("^I see sender name in last message in the conversation view has (.*) color$")
+    public void ISeeNameWithAccentColor(String accentColor) throws Exception {
         final AccentColor expectedColor = AccentColor.getByName(accentColor);
         final AccentColor nameColor = context.getPagesCollection().getPage(ConversationPage.class)
-                .getCurrentNameAccentColor(userNameAlias);
+                .getCurrentNameAccentColorForLastMessage();
+        log.debug("nameColor = ");
+        log.debug(nameColor);
         Assert.assertEquals(expectedColor, nameColor);
     }
 }

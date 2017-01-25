@@ -367,8 +367,6 @@ public final class WebAppLocators {
         // message header contains action description
         public static String cssMessageHeader = cssMessage + " .message-header";
 
-        public static Function<String, String> xpathSenderName = cssMessageHeader + ;
-
         public static String cssTextMessage = cssMessage + " .text";
         
         public static final String cssMessages = "[data-uie-name='item-message']";
@@ -466,6 +464,8 @@ public final class WebAppLocators {
         public static final String cssLastMessage = "[data-uie-name='item-message']:nth-last-child(1)";
 
         public static final String cssSecondLastMessage = "[data-uie-name='item-message']:nth-last-child(2)";
+
+        public static String cssAccentColorSenderNameForLastMessage = cssLastMessage + " .message-header-label-sender";
 
         public static final Function<Integer, String> cssLastMessageByIndex = (
                 index) -> String.format("%s:nth-last-child(%s)", cssMessage, index);

@@ -111,7 +111,7 @@ Feature: Self Profile
     And I verify my avatar background color is set to <ColorName> color
     And I close preferences
     When I open conversation with <Contact3>
-    Then I see name <Contact3> in the conversation view has <ColorName4> color
+    Then I see sender name in last message in the conversation view has <ColorName4> color
     When User <Contact1> pinged in the conversation with <Name>
     And Contact <Contact2> sends message Msg1 to user <Name>
     Then I verify ping icon in conversation with <Contact1> has <ColorName2> color
