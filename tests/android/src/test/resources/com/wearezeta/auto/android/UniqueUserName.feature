@@ -1,7 +1,7 @@
 Feature: Unique Username
 
   @C352018 @regression
-  Scenario Outline: (AN-4845)Verify I see Unique User Name and AB name within Incoming Request and Conversation View in different condition
+  Scenario Outline: Verify I see Unique User Name and AB name within Incoming Request and Conversation View in different condition
     Given I delete all contacts from Address Book
     Given There are 4 users where <Name> is me
     Given I add <ContactInABEmail> having custom name "<ABNameEmail>" into Address Book with email

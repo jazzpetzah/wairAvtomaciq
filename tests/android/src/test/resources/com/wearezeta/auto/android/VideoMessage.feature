@@ -20,7 +20,7 @@ Feature: Video Message
       | user1Name | user2Name | testing.mp4 | video/mp4 | Device1    |
 
   @C119748 @regression
-  Scenario Outline: Verify download video message in offline mode
+  Scenario Outline: (AN-4839) Verify download video message in offline mode
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
@@ -36,7 +36,7 @@ Feature: Video Message
     And I see No Internet bar in 5 seconds
     #Wait for animation
     And I wait for 5 seconds
-    Then I verify the state of Play button on the recent video message in the conversation view is not changed
+    Then I verify the state of Play button on the recent video message in the conversation view is changed
     When I disable Airplane mode on the device
     And I do not see No Internet bar in 15 seconds
     And I tap Play button on the recent video message in the conversation view
