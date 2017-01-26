@@ -515,13 +515,9 @@ public class ContactListPage extends WebPage {
                 + archiveBtnVisilityTimeout + " second(s)";
     }
 
-    public AccentColor getCurrentPingIconAccentColor(String name)
-            throws Exception {
-        final By locator = By
-                .xpath(WebAppLocators.ContactListPage.xpathPingIconByContactName
-                        .apply(name));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                locator, 3);
+    public AccentColor getCurrentPingIconAccentColor(String name) throws Exception {
+        final By locator = By.xpath(WebAppLocators.ContactListPage.xpathPingIconByContactName.apply(name));
+        assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator, 3);
         final WebElement entry = getDriver().findElement(locator);
         return AccentColor.getByRgba(entry.getCssValue("color"));
     }

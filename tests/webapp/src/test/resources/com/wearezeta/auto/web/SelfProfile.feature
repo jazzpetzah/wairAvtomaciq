@@ -95,12 +95,13 @@ Feature: Self Profile
       | Login      | Password      | Name      | PictureName              |
       | user1Email | user1Password | user1Name | userpicture_portrait.jpg |
 
-  @C1730 @regression @torun
+  @C1730 @regression
   Scenario Outline: Verify you can change your accent color
     Given There is 4 users where <Name> is me
     Given User me change accent color to <ColorName>
     Given User <Contact1> changes accent color to <ColorName2>
     Given User <Contact2> changes accent color to <ColorName3>
+    Given User <Contact3> changes accent color to <ColorName4>
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given I switch to Sign In page
     When I Sign in using login <Login> and password <Password>
@@ -111,11 +112,12 @@ Feature: Self Profile
     And I verify my avatar background color is set to <ColorName> color
     And I close preferences
     When I open conversation with <Contact3>
-    Then I see sender name in last message in the conversation view has <ColorName4> color
     When User <Contact1> pinged in the conversation with <Name>
     And Contact <Contact2> sends message Msg1 to user <Name>
     Then I verify ping icon in conversation with <Contact1> has <ColorName2> color
     And I verify unread dot in conversation with <Contact2> has <ColorName> color
+    When Contact <Contact3> sends message Msg1 to user <Name>
+    Then I see sender name in last message in the conversation view has <ColorName4> color
 
     Examples: 
       | Login      | Password      | Name      | ColorName | Contact1  | Contact2  | Contact3  | ColorName2 | ColorName3 | ColorName4 |
