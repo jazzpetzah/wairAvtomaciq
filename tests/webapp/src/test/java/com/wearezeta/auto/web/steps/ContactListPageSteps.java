@@ -295,8 +295,7 @@ public class ContactListPageSteps {
                 FindBy.NAME_ALIAS);
         final AccentColor expectedColor = AccentColor.getByName(colorName);
         final AccentColor pingIconColor = context.getPagesCollection().getPage(
-                ContactListPage.class).getCurrentPingIconAccentColor(
-                        conversationName);
+                ContactListPage.class).getCurrentPingIconAccentColor(conversationName);
         Assert.assertEquals(expectedColor, pingIconColor);
     }
 

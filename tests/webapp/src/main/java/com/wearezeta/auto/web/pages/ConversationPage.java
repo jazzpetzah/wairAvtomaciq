@@ -2,6 +2,7 @@ package com.wearezeta.auto.web.pages;
 
 import com.google.common.base.Function;
 import com.wearezeta.auto.common.ImageUtil;
+import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -1491,6 +1492,12 @@ public class ConversationPage extends WebPage {
 
     public boolean isLastMessageReplaced() {
         return lastGenericMessage.getAttribute("data-uie-expired-status").contains("true");
+    }
+
+    public AccentColor getCurrentNameAccentColorForLastMessage() throws Exception {
+        final By locator = By.cssSelector(WebAppLocators.ConversationPage.cssAccentColorSenderNameForLastMessage);
+        final WebElement entry = getDriver().findElement(locator);
+        return AccentColor.getByRgba(entry.getCssValue("color"));
     }
 
     public boolean isLastMessageNotReplaced() throws Exception {
