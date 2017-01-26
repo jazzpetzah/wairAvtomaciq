@@ -1393,8 +1393,6 @@ public class ConversationPageSteps {
         final AccentColor expectedColor = AccentColor.getByName(accentColor);
         final AccentColor nameColor = context.getPagesCollection().getPage(ConversationPage.class)
                 .getCurrentNameAccentColorForLastMessage();
-        log.debug("nameColor = ");
-        log.debug(nameColor);
         Assert.assertEquals(expectedColor, nameColor);
     }
 }
