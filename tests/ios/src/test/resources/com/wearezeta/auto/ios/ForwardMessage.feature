@@ -152,7 +152,7 @@ Feature: Forward Message
   Scenario Outline: Verify forwarding someone else video message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given User adds the following device: {"<Contact1>": [{"name": "<ContactDevice>"}]}
+    Given User adds the following device: {"<Contact1>": [{"name": "<DeviceName>"}]}
     Given I sign in using my email or phone number
     Given User <Contact1> sends file <FileName> having MIME type <MIMEType> to single user conversation <Name> using device <DeviceName>
     # Given User Me sends 1 encrypted message to user <Contact1>
@@ -176,7 +176,7 @@ Feature: Forward Message
       | Name      | Contact1  | Contact2  | FileName    | MIMEType  | DeviceName |
       | user1Name | user2Name | user3name | testing.mp4 | video/mp4 | Device1    |
 
-  @C399835 @staging @fastLogin
+  @C399835 @regression @fastLogin
   Scenario Outline: Verify forwarding message into downgraded conversation
     Given There are 3 users where <Name> is me
     Given Users add the following devices: {"<Contact1>": [{}], "<Contact2>": [{}]}
@@ -209,7 +209,7 @@ Feature: Forward Message
       | Name      | Contact1  | Contact2  | DeliveredLabel | Device2 | Device2label |
       | user1Name | user2Name | user3Name | Delivered      | Device2 | Device2label |
 
-  @C399836 @staging @fastLogin
+  @C399836 @regression @fastLogin
   Scenario Outline: Verify forwarding image into downgraded conversation
     Given There are 3 users where <Name> is me
     Given Users add the following devices: {"<Contact1>": [{}], "<Contact2>": [{}]}

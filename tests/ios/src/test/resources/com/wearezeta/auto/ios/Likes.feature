@@ -114,6 +114,7 @@ Feature: Likes
   Scenario Outline: Verify editing already liked message and like after edit
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User adds the following device: {"Myself": [{}]}
     Given I sign in using my email or phone number
     Given User Myself sends 1 default message to conversation <Contact>
     Given I see conversations list

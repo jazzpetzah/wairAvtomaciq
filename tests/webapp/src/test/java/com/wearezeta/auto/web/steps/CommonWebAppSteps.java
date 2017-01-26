@@ -20,6 +20,7 @@ import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.pages.WebPage;
 import com.wearezeta.auto.web.pages.external.DeleteAccountPage;
 import cucumber.api.PendingException;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -116,7 +117,7 @@ public class CommonWebAppSteps {
         context.getCommonSteps().UsersSetUniqueUsername(myNameAlias);
     }
 
-    @Given("^User (\\w+) change accent color to (StrongBlue|StrongLimeGreen|BrightYellow|VividRed|BrightOrange|SoftPink|Violet)$")
+    @Given("^User (\\w+) changes? accent color to (StrongBlue|StrongLimeGreen|BrightYellow|VividRed|BrightOrange|SoftPink|Violet)$")
     public void IChangeAccentColor(String userNameAlias, String newColor)
             throws Exception {
         context.getCommonSteps().IChangeUserAccentColor(userNameAlias, newColor);
