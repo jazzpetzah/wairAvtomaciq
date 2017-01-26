@@ -652,6 +652,16 @@ public class ContactListPage extends WebPage {
         new Actions(getDriver()).contextClick(entry).perform();
     }
 
+    public WebElement getConversationListElement(String name) throws Exception {
+        if (name == null) {
+            throw new Exception("The name to look for in the conversation list was null");
+        }
+        name = fixDefaultGroupConvoName(name, false, false);
+        final String locator = WebAppLocators.ContactListPage.cssContactListEntryByName.apply(name);
+        DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.cssSelector(locator));
+        return getDriver().findElement(By.cssSelector(locator));
+    }
+
     public boolean waitForBadgeVisible() throws Exception {
         return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(WebAppLocators.ContactListPage.cssBadge));
     }

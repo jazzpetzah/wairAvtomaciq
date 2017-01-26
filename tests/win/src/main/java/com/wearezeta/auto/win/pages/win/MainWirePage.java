@@ -183,4 +183,9 @@ public class MainWirePage extends WinPage {
     public void clickMaximizeButton() {
         zoomButton.click();
     }
+
+    public void rightClickOn(int x, int y) {
+        robot.mouseMove(x, y);
+        robot.mousePress(InputEvent.BUTTON2_DOWN_MASK);
+    }
 }

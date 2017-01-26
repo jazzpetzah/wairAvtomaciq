@@ -49,5 +49,4 @@ public class ContactContextMenuPage extends WinPage {
     public void clickLeave() throws Exception {
         selectByIndex(robot, CONTEXT_LEAVE_INDEX, 1000);
     }
-
 }

@@ -2,6 +2,8 @@ package com.wearezeta.auto.win.steps.webapp;
 
 
 import com.wearezeta.auto.web.common.WebAppTestContext;
+import com.wearezeta.auto.win.pages.win.MainWirePage;
+import com.wearezeta.auto.win.pages.win.WinPagesCollection;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
@@ -11,6 +13,7 @@ import com.wearezeta.auto.win.pages.webapp.ContactListPage;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.openqa.selenium.WebElement;
 
 public class ConversationListPageSteps {
 
@@ -65,7 +68,14 @@ public class ConversationListPageSteps {
         name = webContext.getUsersManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         ContactListPage contactListPage = webContext.getPagesCollection().getPage(ContactListPage.class);
         Assert.assertTrue("No contact list loaded.", contactListPage.waitForContactListVisible());
-        contactListPage.openContextMenuWithContextClickForConversation(name);
+        WebElement element = contactListPage.getConversationListElement(name);
+
+        MainWirePage mainWirePage = webContext.getChildContext().getPagesCollection(WinPagesCollection.class).getPage(
+                MainWirePage.class);
+        // get x and y positions to right click
+        int x = mainWirePage.getX() + element.getLocation().getX();
+        int y = mainWirePage.getY() + element.getLocation().getY();
+        mainWirePage.rightClickOn(x, y);
     }
 
 }
