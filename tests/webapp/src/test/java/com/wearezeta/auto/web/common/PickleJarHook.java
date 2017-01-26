@@ -213,9 +213,6 @@ public class PickleJarHook implements PickleJarTestHook {
                     // filter degraded conversation errors for C399348
                     .filter((entry)
                             -> !entry.getMessage().contains("Uncaught a: Message not found"))
-                    // temporary filter for join call reference error
-                    .filter((entry)
-                            -> !entry.getMessage().contains("failed: ReferenceError"))
                     .collect(Collectors.toList());
 
         } catch (Exception e) {
