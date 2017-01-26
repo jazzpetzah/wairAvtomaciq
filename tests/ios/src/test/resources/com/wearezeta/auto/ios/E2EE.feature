@@ -514,7 +514,7 @@ Feature: E2EE
       | Name      |
       | user1Name |
 
-  @C395996 @staging @fastLogin
+  @C395996 @regression @fastLogin
   Scenario Outline: Verify forwarded message is not delivered in downgraded conversation
     Given There are 3 users where <Name> is me
     Given Users add the following devices: {"<Contact1>": [{"name": "<Device1>", "label": "<Device1label>"}], "<Contact2>": [{}]}
