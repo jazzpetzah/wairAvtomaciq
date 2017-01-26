@@ -255,7 +255,7 @@ Feature: E2EE
     Given I tap X button on Single user profile page
     When Users add the following devices: {"<Contact1>": [{"name": "<DeviceName2>", "label": "<DeviceLabel2>"}]}
     And I type the default message and send it
-    And I close New Device overlay
+    And I tap X button on New Device overlay
     And I resend the last message in the conversation with Resend button
     # Wait until the message is sent
     And I wait for 3 seconds
@@ -379,7 +379,7 @@ Feature: E2EE
     Given I tap X button on Group info page
     When Users add the following devices: {"<Contact1>": [{"name": "<DeviceName2>", "label": "<DeviceLabel2>"}]}
     And I type the default message and send it
-    And I close New Device overlay
+    And I tap X button on New Device overlay
     And I resend the last message in the conversation with Resend button
     Then I see 3 default messages in the conversation view
 
@@ -514,7 +514,7 @@ Feature: E2EE
       | Name      |
       | user1Name |
 
-  @C395996 @staging @fastLogin
+  @C395996 @regression @fastLogin
   Scenario Outline: Verify forwarded message is not delivered in downgraded conversation
     Given There are 3 users where <Name> is me
     Given Users add the following devices: {"<Contact1>": [{"name": "<Device1>", "label": "<Device1label>"}], "<Contact2>": [{}]}
@@ -540,7 +540,7 @@ Feature: E2EE
     And I tap Send button on Forward page
     And I navigate back to conversations list
     And I tap on contact name <Contact1>
-    And I close New Device overlay
+    And I tap X button on New Device overlay
     And I see "<ResendLabel>" on the message toolbox in conversation view
     Then User <Contact1> sees the recent message from user Myself via device <Device1> is not changed in 5 seconds
     And User <Contact1> sees the recent message from user Myself via device <Device2> is not changed in 5 seconds
@@ -575,7 +575,7 @@ Feature: E2EE
     And I tap Send button on Forward page
     And I navigate back to conversations list
     And I tap on contact name <Contact1>
-    And I close New Device overlay
+    And I tap X button on New Device overlay
     And I see "<ResendLabel>" on the message toolbox in conversation view
     Then User <Contact1> sees the recent message from user Myself via device <Device1> is not changed in 5 seconds
     And User <Contact1> sees the recent message from user Myself via device <Device2> is not changed in 5 seconds

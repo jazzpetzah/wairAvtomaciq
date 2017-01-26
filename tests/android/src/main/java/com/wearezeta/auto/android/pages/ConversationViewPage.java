@@ -228,8 +228,6 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
 
     private static final By idAudioMessageContainer = By.id("message_audio_asset");
 
-    private static final By idAudioMessagePlaceholder = By.id("pdv__row_conversation__audio_placeholder_dots");
-
     private static final By idAudioContainerButton = By.id("action_button");
 
     private static final By idShareLocationContainer = By.id("message_location");
@@ -964,8 +962,6 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
                 return idVideoMessageContainer;
             case "audio message":
                 return idAudioMessageContainer;
-            case "audio message placeholder":
-                return idAudioMessagePlaceholder;
             case "share location":
                 return idShareLocationContainer;
             case "link preview":
@@ -989,9 +985,11 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathLinkPreviewUrlByValue.apply(url)));
     }
 
-    public void tapContainer(String tapType, String name) throws Exception {
+    public void tapContainer(String tapType, String index, String name) throws Exception {
         final By locator = getContainerLocatorByName(name);
-        final WebElement el = getElement(locator);
+        final List<WebElement> els = selectVisibleElements(locator);
+        // By default, we get last matched element
+        WebElement el = (index != null && index.toLowerCase().equals("first")) ? els.get(0) : els.get(els.size() - 1);
         final Point location = el.getLocation();
         final Dimension size = el.getSize();
         if (Arrays.asList(idAudioMessageContainer, idVideoMessageContainer, idYoutubeContainer).contains(locator)) {

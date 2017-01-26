@@ -1150,10 +1150,10 @@ public class ConversationViewPageSteps {
      * @param containerType which could be Image/Youtube/Soundcloud/File upload/Video message/Audio Message/Share location
      *                      /Link Preview
      * @throws Exception
-     * @step. ^I (do not )?see (Image|Youtube|Soundcloud|File Upload|File Upload Placeholder|Video Message|Audio Message|Audio Message Placeholder|Share Location|Link Preview) container in the conversation view$
+     * @step. ^I (do not )?see (Image|Youtube|Soundcloud|File Upload|File Upload Placeholder|Video Message|Audio Message|Share Location|Link Preview) container in the conversation view$
      */
     @Then("^I (do not )?see " +
-            "(Image|Youtube|Soundcloud|File Upload|File Upload Placeholder|Video Message|Audio Message|Audio Message Placeholder|Share Location|Link Preview)" +
+            "(Image|Youtube|Soundcloud|File Upload|File Upload Placeholder|Video Message|Audio Message|Share Location|Link Preview)" +
             " container in the conversation view$")
     public void ISeeContainer(String shouldNotSee, String containerType) throws Exception {
         final boolean condition = (shouldNotSee == null) ?
@@ -1224,13 +1224,14 @@ public class ConversationViewPageSteps {
      * @param tapType       Tap type
      * @param containerType one of available container types
      * @throws Exception
-     * @step. ^I (long tap|double tap|tap) (Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) container in the conversation view$
+     * @step. ^I (long tap|double tap|tap) (?:the (first|last)\s+)?(Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) container in the conversation view$
      */
     @When("^I (long tap|double tap|tap) " +
+            "(?:the (first|last)\\s+)?" +
             "(Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview)" +
             " container in the conversation view$")
-    public void ITapContainer(String tapType, String containerType) throws Exception {
-        getConversationViewPage().tapContainer(tapType, containerType);
+    public void ITapContainer(String tapType, String index, String containerType) throws Exception {
+        getConversationViewPage().tapContainer(tapType, index, containerType);
     }
 
     /**
