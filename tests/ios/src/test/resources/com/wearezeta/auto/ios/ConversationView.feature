@@ -277,7 +277,7 @@ Feature: Conversation View
   Scenario Outline: Verify player isn't displayed for vimeo links without video IDs
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User adds the following device: {"Myself: [{}]}
+    Given User adds the following device: {"Myself": [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     Given User <Name> sends 1 "<VimeoLink>" message to conversation <Contact>
@@ -292,7 +292,7 @@ Feature: Conversation View
   Scenario Outline: (ZIOS-7010) Verify player is displayed for vimeo links with video IDs
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User adds the following device: {"Myself: [{}]}
+    Given User adds the following device: {"Myself": [{}]}
     Given I sign in using my email or phone number
     Given User <Name> sends 1 "<VimeoLink>" message to conversation <Contact1>
     Given I see conversations list
