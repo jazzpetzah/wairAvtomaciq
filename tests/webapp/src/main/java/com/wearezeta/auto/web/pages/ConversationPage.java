@@ -410,6 +410,10 @@ public class ConversationPage extends WebPage {
 
     public boolean isMessageEmbedded(boolean embedded, String typeOfMessage, String url) throws Exception {
         String pattern = "[\\w\\-\\_]{7,12}";
+        url = url.replaceAll("https:\\/\\/www\\.youtube\\.com\\/", "");
+        url = url.replaceAll("https:\\/\\/open\\.spotify\\.com\\/", "");
+        url = url.replaceAll("https:\\/\\/soundcloud\\.com\\/", "");
+        url = url.replaceAll("https:\\/\\/vimeo.com\\/", "");
         Pattern compiledPattern = Pattern.compile(pattern);
         Matcher matcher = compiledPattern.matcher(url);
         assert matcher.find() : "Could not find " + typeOfMessage + " id in URL: " + url;
