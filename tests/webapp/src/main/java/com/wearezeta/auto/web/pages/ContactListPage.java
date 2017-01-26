@@ -517,7 +517,6 @@ public class ContactListPage extends WebPage {
 
     public AccentColor getCurrentPingIconAccentColor(String name) throws Exception {
         final By locator = By.xpath(WebAppLocators.ContactListPage.xpathPingIconByContactName.apply(name));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator, 3);
         final WebElement entry = getDriver().findElement(locator);
         return AccentColor.getByRgba(entry.getCssValue("color"));
     }

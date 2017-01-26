@@ -1496,7 +1496,6 @@ public class ConversationPage extends WebPage {
 
     public AccentColor getCurrentNameAccentColorForLastMessage() throws Exception {
         final By locator = By.cssSelector(WebAppLocators.ConversationPage.cssAccentColorSenderNameForLastMessage);
-        assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator, TIMEOUT_I_SEE_MESSAGE);
         final WebElement entry = getDriver().findElement(locator);
         return AccentColor.getByRgba(entry.getCssValue("color"));
     }
