@@ -184,8 +184,10 @@ public class MainWirePage extends WinPage {
         zoomButton.click();
     }
 
-    public void rightClickOn(int x, int y) {
+    public void rightClickOn(int x, int y) throws InterruptedException {
         robot.mouseMove(x, y);
+        Thread.sleep(1000);
         robot.mousePress(InputEvent.BUTTON3_DOWN_MASK);
+        robot.mouseRelease(InputEvent.BUTTON3_DOWN_MASK);
     }
 }
