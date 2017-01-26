@@ -200,7 +200,7 @@ Feature: Recall Message
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
-    When I long tap Audio message button from cursor toolbar for <TapDuration> seconds
+    When I long tap Audio message button <TapDuration> seconds from cursor toolbar
     And I tap audio recording Send button
     # Wait for the audio to be fully uploaded
     And I wait for 15 seconds
