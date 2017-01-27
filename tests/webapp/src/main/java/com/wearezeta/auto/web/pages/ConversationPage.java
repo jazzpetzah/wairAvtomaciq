@@ -154,6 +154,9 @@ public class ConversationPage extends WebPage {
     @FindBy(css = WebAppLocators.ConversationPage.cssSecondLastEditTimestamp)
     private WebElement secondLastEditTimestamp;
 
+    @FindBy(css = WebAppLocators.ConversationPage.cssMissedCallTimestamp)
+    private WebElement missedCallTimestamp;
+
     @FindBy(css = WebAppLocators.ConversationPage.cssLastMsgHeader)
     private WebElement lastMsgHeader;
 
@@ -1173,6 +1176,12 @@ public class ConversationPage extends WebPage {
 
     public String getSecondLastEditTimestamp() throws Exception {
         return secondLastEditTimestamp.getAttribute("title");
+    }
+
+    public boolean isMissedCallTimestampVisible() throws Exception {
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssMissedCallTimestamp);
+//        return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean isLastMsgHeaderVisible() throws Exception {
