@@ -46,9 +46,9 @@ public class MainWirePage extends WinPage {
     private static final int APP_MIN_WIDTH = 780;
     private static final int APP_MIN_HEIGHT = 600;
 
-    private static final int TITLEBAR_HEIGHT = 42;
-    private static final int WINDOW_DECORATION_WIDTH = 4;
-    private static final int MENUBAR_HEIGHT = 22;
+    private static final int TITLEBAR_HEIGHT = 40;
+    private static final int WINDOW_DECORATION_WIDTH = 20;
+    private static final int MENUBAR_HEIGHT = 20;
 
     private final Robot robot = new Robot();
 
