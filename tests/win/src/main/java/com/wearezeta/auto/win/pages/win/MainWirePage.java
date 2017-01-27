@@ -2,6 +2,8 @@ package com.wearezeta.auto.win.pages.win;
 
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.log.ZetaLogger;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -13,6 +15,7 @@ import com.wearezeta.auto.win.locators.WinLocators;
 import java.awt.Robot;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 
@@ -36,6 +39,8 @@ on various different factors, like window decoration and screen size. This is a 
 
  */
 public class MainWirePage extends WinPage {
+
+    private static final Logger LOG = ZetaLogger.getLog(MainWirePage.class.getSimpleName());
 
     public static final int APP_MAX_WIDTH = 1103;
     private static final int APP_MIN_WIDTH = 780;
@@ -199,8 +204,9 @@ public class MainWirePage extends WinPage {
     }
 
     public void rightClick(int x, int y) throws InterruptedException {
+        LOG.info("Right click at " + x + ":" + y);
         robot.mouseMove(x, y);
-        Thread.sleep(50);
+        Thread.sleep(100);
         robot.mousePress(InputEvent.BUTTON3_DOWN_MASK);
         robot.mouseRelease(InputEvent.BUTTON3_DOWN_MASK);
     }
