@@ -18,7 +18,6 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.Browser;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.locators.WebAppLocators;
-import com.wearezeta.auto.web.pages.external.PasswordChangeRequestPage;
 
 public class LoginPage extends WebPage {
 
@@ -33,7 +32,7 @@ public class LoginPage extends WebPage {
     @FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathSwitchToRegisterButtons)
     private WebElement switchToRegisterButton;
 
-    @FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathSignInButton)
+    @FindBy(how = How.CSS, using = WebAppLocators.LoginPage.cssSignInButton)
     private WebElement signInButton;
 
     @FindBy(how = How.CSS, using = WebAppLocators.LoginPage.cssPhoneSignInButton)
@@ -93,8 +92,14 @@ public class LoginPage extends WebPage {
 
     public boolean isSignInButtonDisabled() throws Exception {
         DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                By.xpath(WebAppLocators.LoginPage.xpathSignInButton));
+                By.cssSelector(WebAppLocators.LoginPage.cssSignInButton));
         return !signInButton.isEnabled();
+    }
+
+    public boolean isSignInButtonEnabled() throws Exception {
+        DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+                By.cssSelector(WebAppLocators.LoginPage.cssSignInButton));
+        return signInButton.isEnabled();
     }
 
     public void inputEmail(String email) {
@@ -117,7 +122,7 @@ public class LoginPage extends WebPage {
         boolean noSignIn = false;
         try {
             noSignIn = DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-                    By.xpath(WebAppLocators.LoginPage.xpathSignInButton), 60);
+                    By.xpath(WebAppLocators.LoginPage.cssSignInButton), 60);
         } catch (WebDriverException e) {
             if (WebAppExecutionContext.getBrowser() == Browser.InternetExplorer) {
                 noSignIn = true;

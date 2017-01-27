@@ -69,10 +69,16 @@ public class LoginPageSteps {
         context.getPagesCollection().getPage(LoginPage.class).clickSignInButton();
     }
 
-    @When("^Sign In button is disabled$")
-    public void SignInButtonIsDisabled() throws Exception {
-        Assert.assertTrue(context.getPagesCollection().getPage(LoginPage.class)
-                .isSignInButtonDisabled());
+    @When("^Sign In button is (not )?disabled$")
+    public void SignInButtonIsDisabled(String not) throws Exception {
+        if (not == null) {
+            Assert.assertTrue(context.getPagesCollection().getPage(LoginPage.class)
+                    .isSignInButtonDisabled());
+        }
+        else {
+            Assert.assertTrue(context.getPagesCollection().getPage(LoginPage.class)
+                    .isSignInButtonEnabled());
+        }
     }
 
     @Then("^I am signed in properly$")
