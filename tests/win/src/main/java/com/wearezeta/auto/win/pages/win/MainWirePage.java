@@ -12,6 +12,7 @@ import org.openqa.selenium.support.How;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWinDriver;
 import com.wearezeta.auto.win.locators.WinLocators;
+
 import java.awt.Robot;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -125,23 +126,18 @@ public class MainWirePage extends WinPage {
 
     public boolean isApproximatelyWidth(int width) throws Exception {
         int plusMinus = 5;
-        return getWidth() > (width - plusMinus)
-                && getWidth() < (width + plusMinus);
+        return getWidth() > (width - plusMinus) && getWidth() < (width + plusMinus);
     }
 
     public boolean isApproximatelyHeight(int height) throws Exception {
         int plusMinus = 5;
-        return getHeight() > (height - plusMinus)
-                && getHeight() < (height + plusMinus);
+        return getHeight() > (height - plusMinus) && getHeight() < (height + plusMinus);
     }
 
     public void resizeByHand(int width, int height) throws Exception {
-        final Dimension windowDimensions = getDriver().manage().window()
-                .getSize();
-        final Point windowPosition = getDriver().manage().window()
-                .getPosition();
-        final Point lowerRightWindowHandle = getLowerRightWindowHandle(
-                windowDimensions, windowPosition);
+        final Dimension windowDimensions = getDriver().manage().window().getSize();
+        final Point windowPosition = getDriver().manage().window().getPosition();
+        final Point lowerRightWindowHandle = getLowerRightWindowHandle(windowDimensions, windowPosition);
 
         long newWidthOverflow = windowPosition.getX() + (long) width;
         long newHeightOverflow = windowPosition.getY() + (long) height;
@@ -187,10 +183,10 @@ public class MainWirePage extends WinPage {
     }
 
     private Point getLowerRightWindowHandle(Dimension windowDimensions,
-            Point windowPosition) {
+                                            Point windowPosition) {
         // we have to subtract 1 to get the handle
-        return new Point(windowPosition.getX() + windowDimensions.getWidth()
-                - 1, windowPosition.getY() + windowDimensions.getHeight() - 1);
+        return new Point(windowPosition.getX() + windowDimensions.getWidth() - 1,
+                windowPosition.getY() + windowDimensions.getHeight() - 1);
     }
 
     public void clickMaximizeButton() {
