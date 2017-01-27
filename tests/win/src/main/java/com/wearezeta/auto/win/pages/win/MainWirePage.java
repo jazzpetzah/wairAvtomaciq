@@ -41,9 +41,9 @@ public class MainWirePage extends WinPage {
     private static final int APP_MIN_WIDTH = 780;
     private static final int APP_MIN_HEIGHT = 600;
 
-    private static final int TITLEBAR_HEIGHT = 22;
-    private static final int SPACE_FOR_DOCK = 50;
-    private static final int TITLEBAR_HANDLE_OFFSET = 100;
+    private static final int TITLEBAR_HEIGHT = 38;
+    private static final int WINDOW_DECORATION_WIDTH = 2;
+    private static final int MENUBAR_HEIGHT = 20;
 
     private final Robot robot = new Robot();
 
@@ -156,15 +156,12 @@ public class MainWirePage extends WinPage {
     }
 
     public void positionByHand(int x, int y) throws Exception {
-        final Point windowPosition = getDriver().manage().window()
-                .getPosition();
-
-        final Point titleBar = new Point(windowPosition.getX()
-                + TITLEBAR_HANDLE_OFFSET, windowPosition.getY()
-                + TITLEBAR_HEIGHT / 2);
-        final Point customPosition = new Point(SPACE_FOR_DOCK
-                + TITLEBAR_HANDLE_OFFSET + x, TITLEBAR_HEIGHT
-                + (TITLEBAR_HEIGHT / 2) + y);
+        // Offset prevents the click on the logo in the titlebar
+        final int TITLEBAR_X_OFFSET = 100;
+        final int TITLEBAR_Y_OFFSET = 10;
+        final Point windowPosition = getDriver().manage().window().getPosition();
+        final Point titleBar = new Point(windowPosition.getX() + TITLEBAR_X_OFFSET, windowPosition.getY() + TITLEBAR_Y_OFFSET);
+        final Point customPosition = new Point(x + TITLEBAR_X_OFFSET, y + TITLEBAR_Y_OFFSET);
 
         robot.mouseMove(titleBar.getX(), titleBar.getY());
         robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
@@ -196,8 +193,8 @@ public class MainWirePage extends WinPage {
     }
 
     public void rightClickInWebView(int x, int y) throws Exception {
-        x = getX() + x;
-        y = getY() + y;
+        x = getX() + WINDOW_DECORATION_WIDTH + x;
+        y = getY() + TITLEBAR_HEIGHT + MENUBAR_HEIGHT + y;
         rightClick(x, y);
     }
 
