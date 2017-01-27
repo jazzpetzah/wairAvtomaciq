@@ -29,7 +29,7 @@ public final class WebAppLocators {
 
         public static final String xpathCreateAccountButton = "//*[@data-uie-name='do-register']";
 
-        public static final String xpathSignInButton = "//*[@data-uie-name='do-sign-in']";
+        public static final String cssSignInButton = "[data-uie-name='do-sign-in']";
 
         public static final String cssPhoneSignInButton = "[data-uie-name='go-sign-in-phone']";
 
@@ -464,6 +464,8 @@ public final class WebAppLocators {
         public static final String cssLastMessage = "[data-uie-name='item-message']:nth-last-child(1)";
 
         public static final String cssSecondLastMessage = "[data-uie-name='item-message']:nth-last-child(2)";
+
+        public static String cssAccentColorSenderNameForLastMessage = cssLastMessage + " [data-uie-name='sender-name']";
 
         public static final Function<Integer, String> cssLastMessageByIndex = (
                 index) -> String.format("%s:nth-last-child(%s)", cssMessage, index);

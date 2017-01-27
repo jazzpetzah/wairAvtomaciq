@@ -230,11 +230,16 @@ Feature: Collection
     Given I Sign in using login <Email> and password <Password>
     Given I am signed in properly
     When I open conversation with <Contact>
-    And I send <FileSize> sized file with name <FileName> to the current conversation
-    And I send <FileSize> sized file with name <FileName> to the current conversation
-    And I send <FileSize> sized file with name <FileName> to the current conversation
-    And I send <FileSize> sized file with name <FileName> to the current conversation
-    And I send <FileSize> sized file with name <FileName> to the current conversation
+    And I send <FileSize> sized file with name collections1.txt to the current conversation
+    Then I see file transfer for file collections1.txt in the conversation view
+    When I send <FileSize> sized file with name collections2.txt to the current conversation
+    Then I see file transfer for file collections2.txt in the conversation view
+    When I send <FileSize> sized file with name collections3.txt to the current conversation
+    Then I see file transfer for file collections3.txt in the conversation view
+    When I send <FileSize> sized file with name collections4.txt to the current conversation
+    Then I see file transfer for file collections4.txt in the conversation view
+    When I send <FileSize> sized file with name collections5.txt to the current conversation
+    Then I see file transfer for file collections5.txt in the conversation view
     And I see 6 messages in conversation
     When I click collection button in conversation
     And I see <Amount> files in collection
@@ -242,8 +247,8 @@ Feature: Collection
     Then I see <Amount> files in files detail page
 
     Examples:
-      | Email      | Password      | Name      | Contact   | FileName        | FileSize | Amount |
-      | user1Email | user1Password | user1Name | user2Name | collections.txt | 700KB    | 5      |
+      | Email      | Password      | Name      | Contact   | FileSize | Amount |
+      | user1Email | user1Password | user1Name | user2Name | 700KB    | 5      |
 
   @C399357 @collection @regression
   Scenario Outline: Verify deleted media isn't in collection on other side

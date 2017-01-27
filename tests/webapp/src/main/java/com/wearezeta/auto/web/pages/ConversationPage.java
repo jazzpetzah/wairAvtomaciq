@@ -2,6 +2,7 @@ package com.wearezeta.auto.web.pages;
 
 import com.google.common.base.Function;
 import com.wearezeta.auto.common.ImageUtil;
+import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -410,6 +411,10 @@ public class ConversationPage extends WebPage {
 
     public boolean isMessageEmbedded(boolean embedded, String typeOfMessage, String url) throws Exception {
         String pattern = "[\\w\\-\\_]{7,12}";
+        url = url.replaceAll("https:\\/\\/www\\.youtube\\.com\\/", "");
+        url = url.replaceAll("https:\\/\\/open\\.spotify\\.com\\/", "");
+        url = url.replaceAll("https:\\/\\/soundcloud\\.com\\/", "");
+        url = url.replaceAll("https:\\/\\/vimeo.com\\/", "");
         Pattern compiledPattern = Pattern.compile(pattern);
         Matcher matcher = compiledPattern.matcher(url);
         assert matcher.find() : "Could not find " + typeOfMessage + " id in URL: " + url;
@@ -1487,6 +1492,12 @@ public class ConversationPage extends WebPage {
 
     public boolean isLastMessageReplaced() {
         return lastGenericMessage.getAttribute("data-uie-expired-status").contains("true");
+    }
+
+    public AccentColor getCurrentNameAccentColorForLastMessage() throws Exception {
+        final By locator = By.cssSelector(WebAppLocators.ConversationPage.cssAccentColorSenderNameForLastMessage);
+        final WebElement entry = getDriver().findElement(locator);
+        return AccentColor.getByRgba(entry.getCssValue("color"));
     }
 
     public boolean isLastMessageNotReplaced() throws Exception {
