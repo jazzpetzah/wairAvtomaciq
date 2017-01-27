@@ -88,7 +88,7 @@ Feature: Calling_Matrix
     And I hang up call with conversation <Contact>
     And I do not see the call controls for conversation <Contact>
     Then <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
-    And <Contact> verifies that incoming call was successful
+#    And <Contact> verifies that incoming call was successful
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend     | Timeout |
@@ -176,7 +176,7 @@ Feature: Calling_Matrix
     And I hang up call with conversation <Contact>
     And I do not see the call controls for conversation <Contact>
     Then <Contact> verifies that call status to me is changed to destroyed in <Timeout> seconds
-    And <Contact> verifies that call to conversation <Name> was successful
+#    And <Contact> verifies that call to conversation <Name> was successful
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend       | Timeout |
@@ -490,14 +490,14 @@ Feature: Calling_Matrix
     And I see the ongoing call controls for conversation <Contact>
     When I hang up call with conversation <Contact>
     Then <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
-    Then <Contact> verify that incoming call was successful
+#    Then <Contact> verify that incoming call was successful
     And <Contact> accepts next incoming call automatically
     And <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
     When I call
     And I see the ongoing call controls for conversation <Contact>
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     When <Contact> stops calling
-    Then <Contact> verify that incoming call was successful
+#    Then <Contact> verify that incoming call was successful
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend     | Timeout |
