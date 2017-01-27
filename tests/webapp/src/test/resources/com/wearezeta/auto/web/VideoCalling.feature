@@ -566,6 +566,8 @@ Feature: VideoCalling
     When I open conversation with <Contact1>
     Then I do not see missed call notification in the conversation list for conversation <Contact1>
     And I see <Action> action for <Contact1> in conversation
+    And I hover over the latest message
+    And I see timestamp on missed call action
     
     Examples:
       | Login      | Password      | Name      | Contact1   | Contact2   | CallBackend | Timeout | Action |

@@ -114,10 +114,10 @@ Feature: Self Profile
     When I open conversation with <Contact3>
     When User <Contact1> pinged in the conversation with <Name>
     And Contact <Contact2> sends message Msg1 to user <Name>
+    When Contact <Contact3> sends message Msg1 to user <Name>
     Then I see ping icon in conversation with <Contact1>
     Then I verify ping icon in conversation with <Contact1> has <ColorName2> color
     And I verify unread dot in conversation with <Contact2> has <ColorName> color
-    When Contact <Contact3> sends message Msg1 to user <Name>
     And I see 2 messages in conversation
     Then I see sender name in last message in the conversation view has <ColorName4> color
 

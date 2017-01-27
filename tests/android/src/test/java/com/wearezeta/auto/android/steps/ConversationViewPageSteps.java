@@ -47,8 +47,6 @@ public class ConversationViewPageSteps {
     private static final Timedelta MEDIA_BUTTON_STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(15);
     private static final double MEDIA_BUTTON_MIN_SIMILARITY_SCORE = 0.97;
     private static final double MAX_SIMILARITY_THRESHOLD = 0.97;
-    private static final Timedelta CONVO_VIEW_STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(15);
-    private static final double CONVO_VIEW_MIN_SIMILARITY_SCORE = 0.5;
     private static final Timedelta SHIELD_STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(15);
     private static final double SHIELD_MIN_SIMILARITY_SCORE = 0.97;
     private static final Timedelta TOP_TOOLBAR_STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(15);
@@ -56,7 +54,6 @@ public class ConversationViewPageSteps {
     private static final Timedelta LIKE_BUTTON_CHANGE_TIMEOUT = Timedelta.fromSeconds(15);
     private static final double LIKE_BUTTON_MIN_SIMILARITY_SCORE = 0.6;
     private static final double LIKE_BUTTON_NOT_CHANGED_MIN_SCORE = -0.5;
-    private static final double FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE = 0.4;
     private static final Timedelta MESSAGE_CONTAINER_CHANGE_TIMEOUT = Timedelta.fromSeconds(15);
     private static final double MESSAGE_CONTAINER_MIN_SIMILARITY_SCORE = 0.6;
     private static final double MESSAGE_CONTAINER_NOT_CHANGED_MIN_SCORE = -0.5;
@@ -191,36 +188,7 @@ public class ConversationViewPageSteps {
             " button (\\d+ seconds )?from cursor toolbar( without releasing my finger)?$")
     public void ITapCursorToolButton(String tapType, String btnName, String longTapDurationSeconds,
                                      String shouldReleaseFinger) throws Exception {
-        switch (tapType) {
-            case "tap":
-                getConversationViewPage().tapCursorToolButton(btnName);
-                break;
-            case "long tap":
-                int longTapDuration = (longTapDurationSeconds == null) ? DriverUtils.LONG_TAP_DURATION :
-                        Integer.parseInt(longTapDurationSeconds.replaceAll("[\\D]", "")) * 1000;
-
-                if (btnName.toLowerCase().equals("audio message")) {
-                    if (shouldReleaseFinger == null) {
-                        getConversationViewPage().longTapAudioMessageCursorBtn(longTapDuration);
-                    } else {
-                        getConversationViewPage().longTapAndKeepAudioMessageCursorBtn();
-                    }
-                } else {
-                    throw new IllegalStateException(String.format("Unknow button name '%s' for long tap", btnName));
-
-                }
-                break;
-            case "double tap":
-                if (btnName.toLowerCase().equals("ephemeral")) {
-                    getConversationViewPage().doubleTapOnEphemeralButton();
-                } else {
-                    throw new IllegalStateException(String.format("Unknow button name '%s' for double tap", btnName));
-                }
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("Cannot identify tap type '%s'", tapType));
-        }
-
+        getConversationViewPage().tapOnCursorToolButton(tapType, btnName, longTapDurationSeconds, shouldReleaseFinger);
     }
 
     /**

@@ -29,7 +29,7 @@ public final class WebAppLocators {
 
         public static final String xpathCreateAccountButton = "//*[@data-uie-name='do-register']";
 
-        public static final String xpathSignInButton = "//*[@data-uie-name='do-sign-in']";
+        public static final String cssSignInButton = "[data-uie-name='do-sign-in']";
 
         public static final String cssPhoneSignInButton = "[data-uie-name='go-sign-in-phone']";
 
@@ -481,6 +481,8 @@ public final class WebAppLocators {
         public static final String cssLastEditTimestamp = cssLastMessage + " .icon-edit";
 
         public static final String cssSecondLastEditTimestamp = cssSecondLastMessage + " .icon-edit";
+
+        public static final String cssMissedCallTimestamp = "[data-uie-value='call'] .time";
 
         public static final String cssLastMsgHeader = cssLastMessage + " .message-header-label";
 

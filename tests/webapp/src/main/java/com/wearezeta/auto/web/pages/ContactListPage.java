@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
@@ -650,6 +651,16 @@ public class ContactListPage extends WebPage {
         DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.cssSelector(locator));
         WebElement entry = getDriver().findElement(By.cssSelector(locator));
         new Actions(getDriver()).contextClick(entry).perform();
+    }
+
+    public Point getCenterOfConversationListItem(String name) throws Exception {
+        if (name == null) {
+            throw new Exception("The name to look for in the conversation list was null");
+        }
+        name = fixDefaultGroupConvoName(name, false, false);
+        final String locator = WebAppLocators.ContactListPage.cssContactListEntryByName.apply(name);
+        DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.cssSelector(locator));
+        return DriverUtils.getCenterOfElement(getDriver().findElement(By.cssSelector(locator)));
     }
 
     public boolean waitForBadgeVisible() throws Exception {

@@ -2,6 +2,8 @@ package com.wearezeta.auto.win.pages.win;
 
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.log.ZetaLogger;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -10,21 +12,44 @@ import org.openqa.selenium.support.How;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWinDriver;
 import com.wearezeta.auto.win.locators.WinLocators;
+
 import java.awt.Robot;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 
+/*
+
+This page object is used to execute various tasks related to the size of the Wrapper (Resize, minimize etc.). Coordinates depend
+on various different factors, like window decoration and screen size. This is a basic overview of the screen:
+
+ ----------------------------------------
+| Screen                                 |
+|       _______________________________  |
+|      | Window                        | |
+|      | -------------------------     | |
+|      ||  WebView                |    | |
+|      | -------------------------     | |
+|      --------------------------------  |
+ ----------------------------------------
+
+ The screen is the whole desktop size. The window is the wrapper with all window decoration, like title bar, menu bar, etc. The
+ WebView is the Chrome instance that is embedded in the wrapper window.
+
+ */
 public class MainWirePage extends WinPage {
+
+    private static final Logger LOG = ZetaLogger.getLog(MainWirePage.class.getSimpleName());
 
     public static final int APP_MAX_WIDTH = 1103;
     private static final int APP_MIN_WIDTH = 780;
     private static final int APP_MIN_HEIGHT = 600;
 
-    private static final int TITLEBAR_HEIGHT = 22;
-    private static final int SPACE_FOR_DOCK = 50;
-    private static final int TITLEBAR_HANDLE_OFFSET = 100;
+    private static final int TITLEBAR_HEIGHT = 40;
+    private static final int WINDOW_DECORATION_WIDTH = 20;
+    private static final int MENUBAR_HEIGHT = 20;
 
     private final Robot robot = new Robot();
 
@@ -83,12 +108,12 @@ public class MainWirePage extends WinPage {
         return minWidth && minHeight;
     }
 
-    public int getX() {
-        return window.getLocation().getX() - SPACE_FOR_DOCK;
+    public int getX() throws Exception {
+        return getDriver().manage().window().getPosition().getX();
     }
 
-    public int getY() {
-        return window.getLocation().getY() - TITLEBAR_HEIGHT;
+    public int getY() throws Exception {
+        return getDriver().manage().window().getPosition().getY();
     }
 
     public int getWidth() throws Exception {
@@ -99,33 +124,20 @@ public class MainWirePage extends WinPage {
         return getDriver().manage().window().getSize().getHeight();
     }
 
-    public boolean isX(int x) {
-        return x == window.getLocation().getX() - SPACE_FOR_DOCK;
-    }
-
-    public boolean isY(int y) {
-        return y == window.getLocation().getY() - TITLEBAR_HEIGHT;
-    }
-
     public boolean isApproximatelyWidth(int width) throws Exception {
         int plusMinus = 5;
-        return getWidth() > (width - plusMinus)
-                && getWidth() < (width + plusMinus);
+        return getWidth() > (width - plusMinus) && getWidth() < (width + plusMinus);
     }
 
     public boolean isApproximatelyHeight(int height) throws Exception {
         int plusMinus = 5;
-        return getHeight() > (height - plusMinus)
-                && getHeight() < (height + plusMinus);
+        return getHeight() > (height - plusMinus) && getHeight() < (height + plusMinus);
     }
 
     public void resizeByHand(int width, int height) throws Exception {
-        final Dimension windowDimensions = getDriver().manage().window()
-                .getSize();
-        final Point windowPosition = getDriver().manage().window()
-                .getPosition();
-        final Point lowerRightWindowHandle = getLowerRightWindowHandle(
-                windowDimensions, windowPosition);
+        final Dimension windowDimensions = getDriver().manage().window().getSize();
+        final Point windowPosition = getDriver().manage().window().getPosition();
+        final Point lowerRightWindowHandle = getLowerRightWindowHandle(windowDimensions, windowPosition);
 
         long newWidthOverflow = windowPosition.getX() + (long) width;
         long newHeightOverflow = windowPosition.getY() + (long) height;
@@ -145,15 +157,12 @@ public class MainWirePage extends WinPage {
     }
 
     public void positionByHand(int x, int y) throws Exception {
-        final Point windowPosition = getDriver().manage().window()
-                .getPosition();
-
-        final Point titleBar = new Point(windowPosition.getX()
-                + TITLEBAR_HANDLE_OFFSET, windowPosition.getY()
-                + TITLEBAR_HEIGHT / 2);
-        final Point customPosition = new Point(SPACE_FOR_DOCK
-                + TITLEBAR_HANDLE_OFFSET + x, TITLEBAR_HEIGHT
-                + (TITLEBAR_HEIGHT / 2) + y);
+        // Offset prevents the click on the logo in the titlebar
+        final int TITLEBAR_X_OFFSET = 100;
+        final int TITLEBAR_Y_OFFSET = 10;
+        final Point windowPosition = getDriver().manage().window().getPosition();
+        final Point titleBar = new Point(windowPosition.getX() + TITLEBAR_X_OFFSET, windowPosition.getY() + TITLEBAR_Y_OFFSET);
+        final Point customPosition = new Point(x + TITLEBAR_X_OFFSET, y + TITLEBAR_Y_OFFSET);
 
         robot.mouseMove(titleBar.getX(), titleBar.getY());
         robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
@@ -174,13 +183,43 @@ public class MainWirePage extends WinPage {
     }
 
     private Point getLowerRightWindowHandle(Dimension windowDimensions,
-            Point windowPosition) {
+                                            Point windowPosition) {
         // we have to subtract 1 to get the handle
-        return new Point(windowPosition.getX() + windowDimensions.getWidth()
-                - 1, windowPosition.getY() + windowDimensions.getHeight() - 1);
+        return new Point(windowPosition.getX() + windowDimensions.getWidth() - 1,
+                windowPosition.getY() + windowDimensions.getHeight() - 1);
     }
 
     public void clickMaximizeButton() {
         zoomButton.click();
+    }
+
+    public void clickOnWebViewElement(Point point) throws Exception {
+        // Click center of element
+        int x = getX() + WINDOW_DECORATION_WIDTH + point.getX();
+        int y = getY() + TITLEBAR_HEIGHT + MENUBAR_HEIGHT + point.getY();
+        click(x, y);
+    }
+
+    public void rightClickOnWebViewElement(Point point) throws Exception {
+        // Click center of element
+        int x = getX() + WINDOW_DECORATION_WIDTH + point.getX();
+        int y = getY() + TITLEBAR_HEIGHT + MENUBAR_HEIGHT + point.getY();
+        rightClick(x, y);
+    }
+
+    public void click(int x, int y) throws InterruptedException {
+        LOG.info("Click at " + x + ":" + y);
+        robot.mouseMove(x, y);
+        Thread.sleep(100);
+        robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+        robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+    }
+
+    public void rightClick(int x, int y) throws InterruptedException {
+        LOG.info("Right click at " + x + ":" + y);
+        robot.mouseMove(x, y);
+        Thread.sleep(100);
+        robot.mousePress(InputEvent.BUTTON3_DOWN_MASK);
+        robot.mouseRelease(InputEvent.BUTTON3_DOWN_MASK);
     }
 }

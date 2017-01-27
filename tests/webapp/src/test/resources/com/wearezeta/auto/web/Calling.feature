@@ -753,6 +753,8 @@ Feature: Calling
     Then I wait for 5 seconds
     And I hang up call with conversation <Contact>
     Then I see <Message> action in conversation
+    And I hover over the latest message
+    And I see timestamp on missed call action
 
     Examples:
       | Login      | Password      | Name      | Contact   | Message    |
@@ -776,6 +778,8 @@ Feature: Calling
     When I open conversation with <Contact1>
     Then I do not see missed call notification in the conversation list for conversation <Contact1>
     Then I see <MISSED> action for <Contact1> in conversation
+    And I hover over the latest message
+    And I see timestamp on missed call action
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | MISSED | CallBackend |

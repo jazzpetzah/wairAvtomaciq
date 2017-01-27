@@ -188,7 +188,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg |
 
-  @C1784 @regression
+  @C1784 @regression @WEBAPP-3561
   Scenario Outline: Able to send and play youtube link
     Given There are 2 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1

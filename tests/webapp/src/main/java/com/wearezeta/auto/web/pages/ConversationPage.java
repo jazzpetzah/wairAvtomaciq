@@ -154,6 +154,9 @@ public class ConversationPage extends WebPage {
     @FindBy(css = WebAppLocators.ConversationPage.cssSecondLastEditTimestamp)
     private WebElement secondLastEditTimestamp;
 
+    @FindBy(css = WebAppLocators.ConversationPage.cssMissedCallTimestamp)
+    private WebElement missedCallTimestamp;
+
     @FindBy(css = WebAppLocators.ConversationPage.cssLastMsgHeader)
     private WebElement lastMsgHeader;
 
@@ -1175,6 +1178,12 @@ public class ConversationPage extends WebPage {
         return secondLastEditTimestamp.getAttribute("title");
     }
 
+    public boolean isMissedCallTimestampVisible() throws Exception {
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssMissedCallTimestamp);
+//        return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
     public boolean isLastMsgHeaderVisible() throws Exception {
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMsgHeader);
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
@@ -1227,6 +1236,13 @@ public class ConversationPage extends WebPage {
     }
 
     //context menu
+
+    public Point getCenterOfMessageElement(int indexNumber) throws Exception {
+        String id = getMessageId(indexNumber);
+        hoverOverMessage(id);
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssContextMenuButtonByMessageId.apply(id));
+        return DriverUtils.getCenterOfElement(getDriver().findElement(locator));
+    }
 
     public void clickContextMenuOnMessage(int indexNumber) throws Exception {
         String id = getMessageId(indexNumber);

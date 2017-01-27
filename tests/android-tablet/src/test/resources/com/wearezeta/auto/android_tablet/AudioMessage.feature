@@ -9,7 +9,7 @@ Feature: Audio Message
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     Given I tap on conversation name <Contact>
-    When I long tap Audio message button from cursor toolbar for <TapDuration> seconds
+    When I long tap Audio message button <TapDuration> seconds from cursor toolbar
     And I tap audio recording Send button
     Then I see cursor toolbar
     And I see Audio Message container in the conversation view
@@ -27,7 +27,7 @@ Feature: Audio Message
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     Given I tap on conversation name <Contact>
-    When I long tap Audio message button from cursor toolbar for <TapDuration> seconds
+    When I long tap Audio message button <TapDuration> seconds from cursor toolbar
     And I tap audio recording Cancel button
     Then I see cursor toolbar
     And I do not see Audio Message container in the conversation view

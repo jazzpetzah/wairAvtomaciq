@@ -2,6 +2,8 @@ package com.wearezeta.auto.win.steps.webapp;
 
 
 import com.wearezeta.auto.web.common.WebAppTestContext;
+import com.wearezeta.auto.win.pages.win.MainWirePage;
+import com.wearezeta.auto.win.pages.win.WinPagesCollection;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
@@ -11,6 +13,8 @@ import com.wearezeta.auto.win.pages.webapp.ContactListPage;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.WebElement;
 
 public class ConversationListPageSteps {
 
@@ -23,7 +27,13 @@ public class ConversationListPageSteps {
     
     @Given("^I click context menu of the last message$")
     public void IClickContextMenuOfLast() throws Exception {
-        webContext.getPagesCollection().getPage(com.wearezeta.auto.web.pages.ConversationPage.class).clickContextMenuOnMessage(1);
+        Point point = webContext.getPagesCollection().getPage(com.wearezeta.auto.web.pages.ConversationPage.class)
+                .getCenterOfMessageElement(1);
+
+        // get x and y positions to right click in WebView
+        MainWirePage mainWirePage = webContext.getChildContext().getPagesCollection(WinPagesCollection.class).getPage(
+                MainWirePage.class);
+        mainWirePage.clickOnWebViewElement(point);
     }
 
     //TODO move to webapp
@@ -65,7 +75,12 @@ public class ConversationListPageSteps {
         name = webContext.getUsersManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         ContactListPage contactListPage = webContext.getPagesCollection().getPage(ContactListPage.class);
         Assert.assertTrue("No contact list loaded.", contactListPage.waitForContactListVisible());
-        contactListPage.openContextMenuWithContextClickForConversation(name);
+        Point point = contactListPage.getCenterOfConversationListItem(name);
+
+        // get x and y positions to right click in WebView
+        MainWirePage mainWirePage = webContext.getChildContext().getPagesCollection(WinPagesCollection.class).getPage(
+                MainWirePage.class);
+        mainWirePage.rightClickOnWebViewElement(point);
     }
 
 }
