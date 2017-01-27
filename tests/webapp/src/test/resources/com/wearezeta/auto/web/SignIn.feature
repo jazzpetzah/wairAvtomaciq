@@ -98,16 +98,16 @@ Feature: Sign In
       | user1Email | wrongPassword | Please verify your details and try again. |
 
   @C1682 @regression
-  Scenario Outline: Verify sign in button is disabled in case of empty credentials
+  Scenario Outline: Verify sign in button is not disabled in case of empty credentials
     Given There is 1 user where user1Name is me
     When I switch to sign in page
-    Then Sign In button is disabled
+    Then Sign In button is not disabled
     When I enter email "<Email>"
     And I enter password ""
-    Then Sign In button is disabled
+    Then Sign In button is not disabled
     When I enter email ""
     And I enter password "<Password>"
-    Then Sign In button is disabled
+    Then Sign In button is not disabled
 
     Examples: 
       | Email      | Password      |
