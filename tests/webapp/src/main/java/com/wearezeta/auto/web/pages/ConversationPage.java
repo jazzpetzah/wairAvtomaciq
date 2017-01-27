@@ -1180,7 +1180,8 @@ public class ConversationPage extends WebPage {
 
     public boolean isMissedCallTimestampVisible() throws Exception {
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssMissedCallTimestamp);
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
+//        return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean isLastMsgHeaderVisible() throws Exception {
