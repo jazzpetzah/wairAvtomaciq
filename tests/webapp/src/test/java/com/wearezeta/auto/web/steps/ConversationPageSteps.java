@@ -661,6 +661,12 @@ public class ConversationPageSteps {
         assertEquals("The timestamps are not equal", rememberedEditTimeStamp, editTimeStamp);
     }
 
+    @Then("^I see timestamp on missed call action$")
+    public void ISeeMissedCallTimestamp() throws Exception{
+            assertThat("Timestamp is not visible", context.getPagesCollection().getPage(ConversationPage.class)
+                    .isMissedCallTimestampVisible());
+    }
+
     @Then("^I( do not)? see delivery status of last message is (.*)$")
     public void ISeeDeliveryStatus(String doNot, String status) throws Exception {
         boolean isDoNot = " do not".equals(doNot);
