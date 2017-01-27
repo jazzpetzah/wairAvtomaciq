@@ -350,6 +350,38 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     //endregion
 
     //region Cursor
+    public void tapOnCursorToolButton(String tapType, String btnName, String longTapDurationSeconds, String shouldReleaseFinger) throws Exception {
+        switch (tapType) {
+            case "tap":
+                simpleTapCursorToolButton(btnName);
+                break;
+            case "long tap":
+                int longTapDuration = (longTapDurationSeconds == null) ? DriverUtils.LONG_TAP_DURATION :
+                        Integer.parseInt(longTapDurationSeconds.replaceAll("[\\D]", "")) * 1000;
+
+                if (btnName.toLowerCase().equals("audio message")) {
+                    if (shouldReleaseFinger == null) {
+                        longTapAudioMessageCursorBtn(longTapDuration);
+                    } else {
+                        longTapAndKeepAudioMessageCursorBtn();
+                    }
+                } else {
+                    throw new IllegalStateException(String.format("Unknow button name '%s' for long tap", btnName));
+
+                }
+                break;
+            case "double tap":
+                if (btnName.toLowerCase().equals("ephemeral")) {
+                    doubleTapOnEphemeralButton();
+                } else {
+                    throw new IllegalStateException(String.format("Unknow button name '%s' for double tap", btnName));
+                }
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Cannot identify tap type '%s'", tapType));
+        }
+    }
+
     public boolean isCursorViewVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCursorView);
     }
@@ -493,7 +525,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
         return showCursorToolButtonIfNotVisible(locator);
     }
 
-    public void tapCursorToolButton(String name) throws Exception {
+    public void simpleTapCursorToolButton(String name) throws Exception {
         showCursorToolButtonIfNotVisible(name).click();
     }
 
@@ -1219,7 +1251,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
 
     public boolean waitUntilMessageMetaItemInvisible(String itemType) throws Exception {
         String locatorId = getMessageMetaLocatorIdString(itemType);
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.id(locatorId));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.id(locatorId), JENKINS_STABILITY_TIMEOUT_SECONDS);
     }
 
     public boolean waitUntilMessageMetaItemVisible(String itemType, String expectedItemText)

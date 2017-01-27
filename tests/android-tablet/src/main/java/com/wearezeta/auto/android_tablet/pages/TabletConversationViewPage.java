@@ -61,8 +61,9 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         return getConversationViewPage().waitUntilMessageWithTextInvisible(text);
     }
 
-    public void tapCursorToolButton(String name) throws Exception {
-        getConversationViewPage().tapCursorToolButton(name);
+    public void tapOnCursorToolButton(String tapType, String btnName, String longTapDurationSeconds,
+                                      String shouldReleaseFinger) throws Exception {
+        getConversationViewPage().tapOnCursorToolButton(tapType, btnName, longTapDurationSeconds, shouldReleaseFinger);
     }
 
     public boolean waitUntilPingMessageIsVisible(String expectedMessage) throws Exception {
@@ -176,12 +177,8 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         return getConversationViewPage().isCursorToolbarInvisible();
     }
 
-    public void longTapAudioMessageCursorBtn() throws Exception {
-        getConversationViewPage().longTapAudioMessageCursorBtn(DriverUtils.LONG_TAP_DURATION);
-    }
-
-    public void longTapAudioMessageCursorBtn(int durationSeconds) throws Exception {
-        getConversationViewPage().longTapAudioMessageCursorBtn(durationSeconds * 1000);
+    public void longTapAudioMessageCursorBtn(int durationMilliSeconds) throws Exception {
+        getConversationViewPage().longTapAudioMessageCursorBtn(durationMilliSeconds);
     }
 
     public void tapAudioRecordingButton(String name) throws Exception {
@@ -280,5 +277,9 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 
     public boolean waitUnilImageInvisible() throws Exception {
         return getConversationViewPage().waitUntilImageInvisible();
+    }
+
+    public BufferedImage getMessageContainerState(String containerType) throws Exception {
+        return getConversationViewPage().getMessageContainerState(containerType);
     }
 }
