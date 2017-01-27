@@ -73,7 +73,7 @@ public class ConversationListPageSteps {
         // get x and y positions to right click in WebView
         MainWirePage mainWirePage = webContext.getChildContext().getPagesCollection(WinPagesCollection.class).getPage(
                 MainWirePage.class);
-        mainWirePage.rightClickInWebView(element.getLocation().getX(), element.getLocation().getY());
+        mainWirePage.rightClickOnWebViewElement(element);
     }
 
 }

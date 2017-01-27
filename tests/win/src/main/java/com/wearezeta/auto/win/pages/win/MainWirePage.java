@@ -197,9 +197,10 @@ public class MainWirePage extends WinPage {
         zoomButton.click();
     }
 
-    public void rightClickInWebView(int x, int y) throws Exception {
-        x = getX() + WINDOW_DECORATION_WIDTH + x;
-        y = getY() + TITLEBAR_HEIGHT + MENUBAR_HEIGHT + y;
+    public void rightClickOnWebViewElement(WebElement element) throws Exception {
+        // Click center of element
+        int x = getX() + WINDOW_DECORATION_WIDTH + element.getLocation().getX() + (element.getSize().getWidth() / 2);
+        int y = getY() + TITLEBAR_HEIGHT + MENUBAR_HEIGHT + element.getLocation().getY() + (element.getSize().getHeight() / 2);
         rightClick(x, y);
     }
 
