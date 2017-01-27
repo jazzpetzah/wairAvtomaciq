@@ -8,6 +8,9 @@ import cucumber.api.java.en.When;
 
 import org.junit.Assert;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsEqual.equalTo;
+
 public class MainWirePageSteps {
 
     private final WebAppTestContext webContext;
@@ -74,10 +77,8 @@ public class MainWirePageSteps {
     @When("^I verify app X coordinate is (\\d+) and Y coordinate is (\\d+)$")
     public void IVerifyPosition(int x, int y) throws Exception {
         MainWirePage mainWirePage = webContext.getChildContext().getPagesCollection(WinPagesCollection.class).getPage(MainWirePage.class);
-        Assert.assertTrue("Expected X coordinate " + x + " does not match the actual value " + mainWirePage.getX(),
-                mainWirePage.isX(x));
-        Assert.assertTrue("Expected Y coordinate " + y + " does not match the actual value " + mainWirePage.getY(),
-                mainWirePage.isY(y));
+        assertThat("Expected X coordinate does not match the actual value", mainWirePage.getX(), equalTo(x));
+        assertThat("Expected Y coordinate does not match the actual value", mainWirePage.getY(), equalTo(y));
     }
 
     @When("^I resize the app to width (\\d+) px and height (\\d+) px$")

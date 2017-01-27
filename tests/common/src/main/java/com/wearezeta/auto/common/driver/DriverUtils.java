@@ -431,12 +431,9 @@ public class DriverUtils {
     public static final int LONG_TAP_DURATION = 2000;
 
     public static void tapInTheCenterOfTheElement(AppiumDriver<? extends WebElement> driver, WebElement element) {
-        final Point coords = element.getLocation();
-        final Dimension size = element.getSize();
-        final int x = coords.x + size.getWidth() / 2;
-        final int y = coords.y + size.getHeight() / 2;
-        log.info("Tap on " + x + ":" + y);
-        driver.tap(1, x, y, SINGLE_TAP_DURATION);
+        Point center = getCenterOfElement(element);
+        log.info("Tap on " + center.getX() + ":" + center.getY());
+        driver.tap(1, center.getX(), center.getY(), SINGLE_TAP_DURATION);
     }
 
     public static void tapOnPercentOfElement(
@@ -488,5 +485,10 @@ public class DriverUtils {
     public static WebElement verifyPresence(RemoteWebDriver driver, By locator) throws Exception {
         return getElementIfDisplayed(driver, locator).orElseThrow(() ->
                 new IllegalStateException(String.format("The element '%s' is not visible", locator)));
+    }
+
+    public static Point getCenterOfElement(WebElement element) {
+        return new Point(element.getLocation().getX() + (element.getSize().getWidth() / 2),
+                element.getLocation().getY() + (element.getSize().getHeight() / 2));
     }
 }
