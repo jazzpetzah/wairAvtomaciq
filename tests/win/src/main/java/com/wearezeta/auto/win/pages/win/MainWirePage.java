@@ -193,11 +193,26 @@ public class MainWirePage extends WinPage {
         zoomButton.click();
     }
 
+    public void clickOnWebViewElement(WebElement element) throws Exception {
+        // Click center of element
+        int x = getX() + WINDOW_DECORATION_WIDTH + element.getLocation().getX() + (element.getSize().getWidth() / 2);
+        int y = getY() + TITLEBAR_HEIGHT + MENUBAR_HEIGHT + element.getLocation().getY() + (element.getSize().getHeight() / 2);
+        click(x, y);
+    }
+
     public void rightClickOnWebViewElement(WebElement element) throws Exception {
         // Click center of element
         int x = getX() + WINDOW_DECORATION_WIDTH + element.getLocation().getX() + (element.getSize().getWidth() / 2);
         int y = getY() + TITLEBAR_HEIGHT + MENUBAR_HEIGHT + element.getLocation().getY() + (element.getSize().getHeight() / 2);
         rightClick(x, y);
+    }
+
+    public void click(int x, int y) throws InterruptedException {
+        LOG.info("Click at " + x + ":" + y);
+        robot.mouseMove(x, y);
+        Thread.sleep(100);
+        robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+        robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
     }
 
     public void rightClick(int x, int y) throws InterruptedException {

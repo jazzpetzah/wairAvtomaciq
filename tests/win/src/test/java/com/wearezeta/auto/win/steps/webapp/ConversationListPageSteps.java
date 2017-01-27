@@ -26,7 +26,13 @@ public class ConversationListPageSteps {
     
     @Given("^I click context menu of the last message$")
     public void IClickContextMenuOfLast() throws Exception {
-        webContext.getPagesCollection().getPage(com.wearezeta.auto.web.pages.ConversationPage.class).clickContextMenuOnMessage(1);
+        WebElement element = webContext.getPagesCollection().getPage(com.wearezeta.auto.web.pages.ConversationPage.class)
+                .getMessageElement(1);
+
+        // get x and y positions to right click in WebView
+        MainWirePage mainWirePage = webContext.getChildContext().getPagesCollection(WinPagesCollection.class).getPage(
+                MainWirePage.class);
+        mainWirePage.clickOnWebViewElement(element);
     }
 
     //TODO move to webapp
