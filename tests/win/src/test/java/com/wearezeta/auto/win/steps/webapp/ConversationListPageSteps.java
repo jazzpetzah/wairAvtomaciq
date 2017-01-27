@@ -70,12 +70,10 @@ public class ConversationListPageSteps {
         Assert.assertTrue("No contact list loaded.", contactListPage.waitForContactListVisible());
         WebElement element = contactListPage.getConversationListElement(name);
 
+        // get x and y positions to right click in WebView
         MainWirePage mainWirePage = webContext.getChildContext().getPagesCollection(WinPagesCollection.class).getPage(
                 MainWirePage.class);
-        // get x and y positions to right click
-        int x = mainWirePage.getX() + element.getLocation().getX();
-        int y = mainWirePage.getY() + element.getLocation().getY();
-        mainWirePage.rightClickOn(x, y);
+        mainWirePage.rightClickInWebView(element.getLocation().getX(), element.getLocation().getY());
     }
 
 }

@@ -16,6 +16,25 @@ import java.awt.event.KeyEvent;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 
+/*
+
+This page object is used to execute various tasks related to the size of the Wrapper (Resize, minimize etc.). Coordinates depend
+on various different factors, like window decoration and screen size. This is a basic overview of the screen:
+
+ ----------------------------------------
+| Screen                                 |
+|       _______________________________  |
+|      | Window                        | |
+|      | -------------------------     | |
+|      ||  WebView                |    | |
+|      | -------------------------     | |
+|      --------------------------------  |
+ ----------------------------------------
+
+ The screen is the whole desktop size. The window is the wrapper with all window decoration, like title bar, menu bar, etc. The
+ WebView is the Chrome instance that is embedded in the wrapper window.
+
+ */
 public class MainWirePage extends WinPage {
 
     public static final int APP_MAX_WIDTH = 1103;
@@ -83,12 +102,12 @@ public class MainWirePage extends WinPage {
         return minWidth && minHeight;
     }
 
-    public int getX() {
-        return window.getLocation().getX() - SPACE_FOR_DOCK;
+    public int getX() throws Exception {
+        return getDriver().manage().window().getPosition().getX();
     }
 
-    public int getY() {
-        return window.getLocation().getY() - TITLEBAR_HEIGHT;
+    public int getY() throws Exception {
+        return getDriver().manage().window().getPosition().getY();
     }
 
     public int getWidth() throws Exception {
@@ -97,14 +116,6 @@ public class MainWirePage extends WinPage {
 
     public int getHeight() throws Exception {
         return getDriver().manage().window().getSize().getHeight();
-    }
-
-    public boolean isX(int x) {
-        return x == window.getLocation().getX() - SPACE_FOR_DOCK;
-    }
-
-    public boolean isY(int y) {
-        return y == window.getLocation().getY() - TITLEBAR_HEIGHT;
     }
 
     public boolean isApproximatelyWidth(int width) throws Exception {
@@ -184,9 +195,15 @@ public class MainWirePage extends WinPage {
         zoomButton.click();
     }
 
-    public void rightClickOn(int x, int y) throws InterruptedException {
+    public void rightClickInWebView(int x, int y) throws Exception {
+        x = getX() + x;
+        y = getY() + y;
+        rightClick(x, y);
+    }
+
+    public void rightClick(int x, int y) throws InterruptedException {
         robot.mouseMove(x, y);
-        Thread.sleep(1000);
+        Thread.sleep(50);
         robot.mousePress(InputEvent.BUTTON3_DOWN_MASK);
         robot.mouseRelease(InputEvent.BUTTON3_DOWN_MASK);
     }
