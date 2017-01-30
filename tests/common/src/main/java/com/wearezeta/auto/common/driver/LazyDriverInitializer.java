@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.device_helpers.IOSSimulatorHelpers;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Point;
@@ -74,7 +75,7 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
                                 capabilities.setCapability(ZetaIOSDriver.CAPABILITY_NAME_USE_PREBUILT_WDA, false);
                             }
                             appiumServer.restart();
-                            if (ntry > 1 && capabilities.getCapability("udid") == null) {
+                            if (ntry > 1 && CommonUtils.getIsSimulatorFromConfig(getClass())) {
                                 IOSSimulatorHelpers.shutdown();
                                 IOSSimulatorHelpers.start();
                             }
