@@ -434,3 +434,18 @@ Feature: Connect
 
   @C399841 @staging @addressbookStart @forceReset
   Scenario Outline: Verify sending connection request to user on Wire from AB
+    Given There are 2 users where <Name> is me
+    Given I minimize Wire
+    Given I install Address Book Helper app
+    Given I launch Address Book Helper app
+    Given I add name <Contact2> and phone <Contact2Phone> to Address Book
+    Given I sign in using my email or phone number
+    And I wait until <Contact2> exists in backend search results
+    And I accept alert if visible
+    When I open search UI
+    And I accept alert
+    And I tap X button on Search UI page
+
+    Examples:
+      | Name      | Contact2         | Contact2Phone    |
+      | user1Name | JulianeStaging10 | +021119881209    |
