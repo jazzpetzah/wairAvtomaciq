@@ -10,7 +10,7 @@ Feature: Video Messaging
     Given I see conversations list
     Given I tap on contact name <Contact>
     # Wait until the preview is loaded
-    And I wait for 5 seconds
+    And I wait for 8 seconds
     When I tap on video message in conversation view
     # Wait to make sure video is downloaded
     And I wait for <DownloadTimeout> seconds
