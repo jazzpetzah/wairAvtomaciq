@@ -53,6 +53,9 @@ public class SettingsPage extends IOSPage {
     private static final By xpathSettingsProfilePicturePreview = By.xpath("//XCUIElementTypeImage[" +
             "@name='imagePreview' and @value='image']");
 
+    private static final By xpathColorPickerCloseButton = By.xpath("//XCUIElementTypeStaticText[@name='COLOR']" +
+            "/preceding-sibling::XCUIElementTypeButton");
+
     public SettingsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -142,9 +145,14 @@ public class SettingsPage extends IOSPage {
         );
     }
 
+    public void closeColorPicker() throws Exception {
+        getElement(xpathColorPickerCloseButton).click();
+    }
+
     public void selectAccentColor(AccentColor byName) throws Exception {
         final By locator = By.xpath(xpathSreColorByIdx.apply(byName.getId()));
         getElement(locator).click();
+        Thread.sleep(2000);
     }
 
     public boolean isUniqueUsernameInSettingsDisplayed(String uniqueName) throws Exception {

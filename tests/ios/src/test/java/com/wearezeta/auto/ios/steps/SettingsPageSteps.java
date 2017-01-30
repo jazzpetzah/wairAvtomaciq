@@ -98,8 +98,8 @@ public class SettingsPageSteps {
      */
     @Then("^I see the label (Verified|Not Verified) is shown for the device (.*)$")
     public void ISeeForDeviceALabelB(String label, String deviceName) throws Exception {
-        Assert.assertTrue(String.format("Label '%s' is not visible for device '%s'", label, deviceName), getSettingsPage()
-                .isVerificationLabelVisible(deviceName, label));
+        Assert.assertTrue(String.format("Label '%s' is not visible for device '%s'", label, deviceName),
+                getSettingsPage().isVerificationLabelVisible(deviceName, label));
 
     }
 
@@ -296,5 +296,16 @@ public class SettingsPageSteps {
     public void ISeeSettingsPicturePreview() throws Exception {
         Assert.assertTrue("There is no preview of the profile picture shown",
                 getSettingsPage().isProfilePicturePreviewVisible());
+    }
+
+    /**
+     * Tap X button on color picker control
+     *
+     * @throws Exception
+     * @step. ^I close accent color picker on Settings page$
+     */
+    @And("^I close accent color picker on Settings page$")
+    public void ICloseColorPicker() throws Exception {
+        getSettingsPage().closeColorPicker();
     }
 }

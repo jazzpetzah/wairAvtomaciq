@@ -222,7 +222,7 @@ Feature: Collection
       | Email      | Password      | Name      | Contact   | PictureName               | Event1                         | Attributes1                                                                   | Event2                  | Attributes2                                                                   |
       | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg | collections.opened_collections | {\"is_empty\":false,\"conversation_type\":\"one_to_one\",\"with_bot\":false}" | collections.opened_item | {\"type\":\"image\",\"conversation_type\":\"one_to_one\",\"with_bot\":false}" |
 
-  @C378058 @collection @staging
+  @C378058 @collection @regression
   Scenario Outline: Verify opening overview of all files
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

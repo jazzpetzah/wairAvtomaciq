@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.concurrent.*;
 import java.util.concurrent.TimeoutException;
 
+import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableMap;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.*;
@@ -58,7 +59,12 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
     }
 
     public boolean isRealDevice() {
-        return this.getCapabilities().getCapability("udid") != null;
+        try {
+            return !CommonUtils.getIsSimulatorFromConfig(getClass());
+        } catch (Exception e) {
+            Throwables.propagate(e);
+        }
+        return false;
     }
 
     private FBDriverAPI getFbDriverAPI() {

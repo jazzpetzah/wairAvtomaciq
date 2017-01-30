@@ -217,6 +217,7 @@ Feature: Settings
     When I select settings item Color
     And I remember the state of Color Picker
     And I set my accent color to <Color2> on Settings page
+    And I close accent color picker on Settings page
     And I select settings item Color
     Then I verify the state of Color Picker is changed
 
