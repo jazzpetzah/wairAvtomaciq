@@ -442,14 +442,14 @@ Feature: Connect
     Given I add name <Contact2> and email <Contact2Email> to Address Book
     Given I restore Wire
     Given I sign in using my email or phone number
-    And I wait until <Contact2> exists in backend search results
+    Given I wait until <Contact2> exists in backend search results
     When I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
-    And I verify correct details are shown for the found users
+    Then I verify correct details are shown for the found users
       | Name                         | Details                                                  |
       | <Contact2>                   | in Contacts                                              |
-    And I tap on conversation <Contact2> in search result
+    When I tap on conversation <Contact2> in search result
     And I tap Connect button on Single user Pending outgoing connection page
     And I tap X button on Search UI page
     Then I see first item in contact list named <Contact2>
