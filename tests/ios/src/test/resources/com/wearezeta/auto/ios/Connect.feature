@@ -431,3 +431,6 @@ Feature: Connect
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @C399841 @staging @addressbookStart @forceReset
+  Scenario Outline: Verify sending connection request to user on Wire from AB
