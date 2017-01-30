@@ -435,17 +435,25 @@ Feature: Connect
   @C399841 @staging @addressbookStart @forceReset
   Scenario Outline: Verify sending connection request to user on Wire from AB
     Given There are 2 users where <Name> is me
+    Given Users <Contact2> upload own details
     Given I minimize Wire
     Given I install Address Book Helper app
     Given I launch Address Book Helper app
-    Given I add name <Contact2> and phone <Contact2Phone> to Address Book
+    Given I add name <Contact2> and email <Contact2Email> to Address Book
+    Given I restore Wire
     Given I sign in using my email or phone number
     And I wait until <Contact2> exists in backend search results
-    And I accept alert if visible
     When I open search UI
-    And I accept alert
+    And I accept alert if visible
+    And I tap input field on Search UI page
+    And I verify correct details are shown for the found users
+      | Name                         | Details                                                  |
+      | <Contact2>                   | in Contacts                                              |
+    And I tap on conversation <Contact2> in search result
+    And I tap Connect button on Single user Pending outgoing connection page
     And I tap X button on Search UI page
+    Then I see first item in contact list named <Contact2>
 
     Examples:
-      | Name      | Contact2         | Contact2Phone    |
-      | user1Name | JulianeStaging10 | +021119881209    |
+      | Name      | Contact2  | Contact2Email  |
+      | user1Name | user2name | user2Email     |
