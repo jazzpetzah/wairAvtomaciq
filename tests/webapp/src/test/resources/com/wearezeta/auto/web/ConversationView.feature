@@ -261,7 +261,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             | Msg1FromUserA | Msg2FromUserA |
       | user1Email | user1Password | user1Name | user2Name | user3Name | SendPictureGroupChat | Message1      | Message2      |
 
-  @C1710 @regression
+  @C1710 @regression @WEBAPP-3573
   Scenario Outline: Verify you can add maximum+1 number of participants into group conversation
     Given I switch to sign in page
     Given I enter email "<Login>"
