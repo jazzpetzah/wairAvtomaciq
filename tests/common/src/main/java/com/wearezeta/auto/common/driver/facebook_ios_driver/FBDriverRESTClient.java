@@ -114,6 +114,17 @@ final class FBDriverRESTClient {
         return waitForResponse(() -> restHandlers.httpGet(webResource, new int[]{HttpStatus.SC_OK}));
     }
 
+    public JSONObject dragFromToForDuration(String sessionId, FBDragArguments fbDragArguments) throws RESTError  {
+        final Builder webResource = buildDefaultRequest("wda/dragfromtoforduration", sessionId);
+        final JSONObject body = new JSONObject();
+        body.put("fromX", fbDragArguments.getFromX());
+        body.put("fromY", fbDragArguments.getFromY());
+        body.put("toX", fbDragArguments.getToX());
+        body.put("toY", fbDragArguments.getToY());
+        body.put("duration", fbDragArguments.getDuration());
+        return waitForResponse(() -> restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
+    }
+
     @FunctionalInterface
     public interface RequestSender {
         String send() throws RESTError;
@@ -170,6 +181,13 @@ final class FBDriverRESTClient {
     public JSONObject click(String sessionId, String uuid) throws RESTError {
         final Builder webResource = buildDefaultRequest(String.format("element/%s/click", uuid), sessionId);
         return waitForResponse(() -> restHandlers.httpPost(webResource, EMPTY_JSON_BODY, new int[]{HttpStatus.SC_OK}));
+    }
+
+    public JSONObject swipe(String sessionId, String uuid, FBSwipeDirection direction) throws RESTError {
+        final Builder webResource = buildDefaultRequest(String.format("wda/element/%s/swipe", uuid), sessionId);
+        final JSONObject body = new JSONObject();
+        body.put("direction", direction.name().toLowerCase());
+        return waitForResponse(() -> restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
     }
 
     public JSONObject setValue(String sessionId, String uuid, CharSequence... charSequences) throws RESTError {

@@ -33,6 +33,22 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
         }
     }
 
+    public void dragFromToForDuration(FBDragArguments FBDragArguments) {
+        try {
+            fbDriverAPI.dragFromToForDuration(this.uuid, FBDragArguments);
+        } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
+            throw new WebDriverException(e);
+        }
+    }
+
+    public void swipe(FBSwipeDirection direction) {
+        try {
+            fbDriverAPI.swipe(this.uuid, direction);
+        } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
+            throw new WebDriverException(e);
+        }
+    }
+
     public void tap(double x, double y) {
         try {
             fbDriverAPI.tap(this.uuid, x, y);
