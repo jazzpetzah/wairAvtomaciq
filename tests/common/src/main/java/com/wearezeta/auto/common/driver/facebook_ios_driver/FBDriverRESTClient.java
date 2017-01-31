@@ -23,25 +23,25 @@ import java.util.Optional;
 import java.util.concurrent.*;
 
 /**
- * https://github.com/facebook/WebDriverAgent/tree/ab2e0d52e8b4df25423d37f2582bbb9a7903e065/WebDriverAgentLib/Commands
+ * https://github.com/facebook/WebDriverAgent/tree/master/WebDriverAgentLib/Commands
  */
 final class FBDriverRESTClient {
 
     private static final Logger log = ZetaLogger.getLog(FBDriverRESTClient.class.getSimpleName());
 
-    public static final String URL_PROTOCOL = "http://";
+    private static final String URL_PROTOCOL = "http://";
 
     private static final String EMPTY_JSON_BODY = new JSONObject().toString();
 
     private String hostname;
     private int port;
 
-    public FBDriverRESTClient(String ip, int port) {
+    FBDriverRESTClient(String ip, int port) {
         this.hostname = ip;
         this.port = port;
     }
 
-    public String getApiRoot() {
+    private String getApiRoot() {
         return String.format("%s%s:%s", URL_PROTOCOL, this.hostname, this.port);
     }
 
@@ -88,7 +88,7 @@ final class FBDriverRESTClient {
         return client.target(dstUrl).request().header("Content-type", MediaType.APPLICATION_JSON);
     }
 
-    public JSONObject setRotation(String sessionId, FBDeviceRotation o) throws RESTError {
+    JSONObject setRotation(String sessionId, FBDeviceRotation o) throws RESTError {
         final Builder webResource = buildDefaultRequest("rotation", sessionId);
         final JSONObject body = new JSONObject();
         body.put("x", 0);
@@ -97,21 +97,32 @@ final class FBDriverRESTClient {
         return waitForResponse(() -> restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
     }
 
-    public JSONObject getRotation(String sessionId) throws RESTError {
+    JSONObject getRotation(String sessionId) throws RESTError {
         final Builder webResource = buildDefaultRequest("rotation", sessionId);
         return waitForResponse(() -> restHandlers.httpGet(webResource, new int[]{HttpStatus.SC_OK}));
     }
 
-    public JSONObject setOrientation(String sessionId, FBDeviceOrientation o) throws RESTError {
+    JSONObject setOrientation(String sessionId, FBDeviceOrientation o) throws RESTError {
         final Builder webResource = buildDefaultRequest("orientation", sessionId);
         final JSONObject body = new JSONObject();
         body.put("orientation", o.name());
         return waitForResponse(() -> restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
     }
 
-    public JSONObject getOrientation(String sessionId) throws RESTError {
+    JSONObject getOrientation(String sessionId) throws RESTError {
         final Builder webResource = buildDefaultRequest("orientation", sessionId);
         return waitForResponse(() -> restHandlers.httpGet(webResource, new int[]{HttpStatus.SC_OK}));
+    }
+
+    JSONObject dragFromToForDuration(String sessionId, FBDragArguments fbDragArguments) throws RESTError  {
+        final Builder webResource = buildDefaultRequest("wda/dragfromtoforduration", sessionId);
+        final JSONObject body = new JSONObject();
+        body.put("fromX", fbDragArguments.getFromX());
+        body.put("fromY", fbDragArguments.getFromY());
+        body.put("toX", fbDragArguments.getToX());
+        body.put("toY", fbDragArguments.getToY());
+        body.put("duration", fbDragArguments.getDuration());
+        return waitForResponse(() -> restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
     }
 
     @FunctionalInterface
@@ -172,7 +183,14 @@ final class FBDriverRESTClient {
         return waitForResponse(() -> restHandlers.httpPost(webResource, EMPTY_JSON_BODY, new int[]{HttpStatus.SC_OK}));
     }
 
-    public JSONObject setValue(String sessionId, String uuid, CharSequence... charSequences) throws RESTError {
+    public JSONObject swipe(String sessionId, String uuid, FBSwipeDirection direction) throws RESTError {
+        final Builder webResource = buildDefaultRequest(String.format("wda/element/%s/swipe", uuid), sessionId);
+        final JSONObject body = new JSONObject();
+        body.put("direction", direction.name().toLowerCase());
+        return waitForResponse(() -> restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
+    }
+
+    JSONObject setValue(String sessionId, String uuid, CharSequence... charSequences) throws RESTError {
         final Builder webResource = buildDefaultRequest(String.format("element/%s/value", uuid), sessionId);
         final JSONObject body = new JSONObject();
         final JSONArray value = new JSONArray();
@@ -188,7 +206,7 @@ final class FBDriverRESTClient {
         return waitForResponse(() -> restHandlers.httpPost(webResource, EMPTY_JSON_BODY, new int[]{HttpStatus.SC_OK}));
     }
 
-    public JSONObject getTagName(String sessionId, String uuid) throws RESTError {
+    JSONObject getTagName(String sessionId, String uuid) throws RESTError {
         final Builder webResource = buildDefaultRequest(String.format("element/%s/name", uuid), sessionId);
         return waitForResponse(() -> restHandlers.httpGet(webResource, new int[]{HttpStatus.SC_OK}));
     }
@@ -214,22 +232,22 @@ final class FBDriverRESTClient {
         return waitForResponse(() -> restHandlers.httpGet(webResource, new int[]{HttpStatus.SC_OK}));
     }
 
-    public JSONObject getIsDisplayed(String sessionId, String uuid) throws RESTError {
+    JSONObject getIsDisplayed(String sessionId, String uuid) throws RESTError {
         final Builder webResource = buildDefaultRequest(String.format("element/%s/displayed", uuid), sessionId);
         return waitForResponse(() -> restHandlers.httpGet(webResource, new int[]{HttpStatus.SC_OK}));
     }
 
-    public JSONObject getRect(String sessionId, String uuid) throws RESTError {
+    JSONObject getRect(String sessionId, String uuid) throws RESTError {
         final Builder webResource = buildDefaultRequest(String.format("element/%s/rect", uuid), sessionId);
         return waitForResponse(() -> restHandlers.httpGet(webResource, new int[]{HttpStatus.SC_OK}));
     }
 
-    public JSONObject doubleTap(String sessionId, String uuid) throws RESTError {
+    JSONObject doubleTap(String sessionId, String uuid) throws RESTError {
         final Builder webResource = buildDefaultRequest(String.format("uiaElement/%s/doubleTap", uuid), sessionId);
         return waitForResponse(() -> restHandlers.httpPost(webResource, EMPTY_JSON_BODY, new int[]{HttpStatus.SC_OK}));
     }
 
-    public JSONObject doubleTap(String sessionId, double x, double y) throws RESTError {
+    JSONObject doubleTap(String sessionId, double x, double y) throws RESTError {
         final Builder webResource = buildDefaultRequest("doubleTap", sessionId);
         final JSONObject body = new JSONObject();
         body.put("x", x);
@@ -237,14 +255,14 @@ final class FBDriverRESTClient {
         return waitForResponse(() -> restHandlers.httpPost(webResource, body, new int[]{HttpStatus.SC_OK}));
     }
 
-    public JSONObject touchAndHold(String sessionId, String uuid, Timedelta duration) throws RESTError {
+    JSONObject touchAndHold(String sessionId, String uuid, Timedelta duration) throws RESTError {
         final Builder webResource = buildDefaultRequest(String.format("uiaElement/%s/touchAndHold", uuid), sessionId);
         final JSONObject body = new JSONObject();
         body.put("duration", duration.asFloatSeconds());
         return waitForResponse(() -> restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
     }
 
-    public JSONObject touchAndHold(String sessionId, double x, double y, Timedelta duration) throws RESTError {
+    JSONObject touchAndHold(String sessionId, double x, double y, Timedelta duration) throws RESTError {
         // TODO: available since Appium 1.6.1+
         final Builder webResource = buildDefaultRequest("touchAndHold", sessionId);
         final JSONObject body = new JSONObject();
@@ -259,18 +277,10 @@ final class FBDriverRESTClient {
                              Optional<Boolean> toVisible) throws RESTError {
         final Builder webResource = buildDefaultRequest(String.format("uiaElement/%s/scroll", uuid), sessionId);
         final JSONObject body = new JSONObject();
-        if (toChildNamed.isPresent()) {
-            body.put("name", toChildNamed.get());
-        }
-        if (direction.isPresent()) {
-            body.put("direction", direction.get());
-        }
-        if (predicateString.isPresent()) {
-            body.put("predicateString", predicateString.get());
-        }
-        if (toVisible.isPresent()) {
-            body.put("toVisible", toVisible.get());
-        }
+        toChildNamed.ifPresent( x-> body.put("name", x));
+        direction.ifPresent(x -> body.put("direction", x));
+        predicateString.ifPresent(x -> body.put("predicateString", x));
+        toVisible.ifPresent(x -> body.put("toVisible", x));
         return waitForResponse(() -> restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
     }
 
@@ -301,48 +311,48 @@ final class FBDriverRESTClient {
         return waitForResponse(() -> restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
     }
 
-    public JSONObject getIsAccessible(String sessionId, String uuid) throws RESTError {
+    JSONObject getIsAccessible(String sessionId, String uuid) throws RESTError {
         final Builder webResource = buildDefaultRequest(String.format("element/%s/accessible", uuid), sessionId);
         return waitForResponse(() -> restHandlers.httpGet(webResource, new int[]{HttpStatus.SC_OK}));
     }
 
-    public JSONObject getWindowSize(String sessionId, String uuid) throws RESTError {
+    JSONObject getWindowSize(String sessionId, String uuid) throws RESTError {
         final Builder webResource = buildDefaultRequest(String.format("window/%s/size", uuid), sessionId);
         return waitForResponse(() -> restHandlers.httpGet(webResource, new int[]{HttpStatus.SC_OK}));
     }
 
-    public JSONObject deactivateApp(String sessionId, Timedelta duration) throws RESTError {
+    JSONObject deactivateApp(String sessionId, Timedelta duration) throws RESTError {
         final Builder webResource = buildDefaultRequest("deactivateApp", sessionId);
         final JSONObject body = new JSONObject();
         body.put("duration", duration.asFloatSeconds());
         return waitForResponse(() -> restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
     }
 
-    public JSONObject switchToHomescreen() throws RESTError {
+    JSONObject switchToHomescreen() throws RESTError {
         final Builder webResource = buildDefaultRequest("homescreen");
         return waitForResponse(() -> restHandlers.httpPost(webResource, EMPTY_JSON_BODY, new int[]{HttpStatus.SC_OK}));
     }
 
-    public JSONObject getAlertText(String sessionId) throws RESTError {
+    JSONObject getAlertText(String sessionId) throws RESTError {
         final Builder webResource = buildDefaultRequest("alert/text", sessionId);
         return waitForResponse(() -> restHandlers.httpGet(webResource, new int[]{HttpStatus.SC_OK}));
     }
 
-    public JSONObject acceptAlert(String sessionId) throws RESTError {
+    JSONObject acceptAlert(String sessionId) throws RESTError {
         final Builder webResource = buildDefaultRequest("alert/accept", sessionId);
         return waitForResponse(
                 () -> restHandlers.httpPost(webResource, EMPTY_JSON_BODY, new int[]{HttpStatus.SC_OK})
         );
     }
 
-    public JSONObject dismissAlert(String sessionId) throws RESTError {
+    JSONObject dismissAlert(String sessionId) throws RESTError {
         final Builder webResource = buildDefaultRequest("alert/dismiss", sessionId);
         return waitForResponse(
                 () -> restHandlers.httpPost(webResource, EMPTY_JSON_BODY, new int[]{HttpStatus.SC_OK})
         );
     }
 
-    public JSONObject dragFromToForDuration(String sessionId, String uuid, FBDragArguments fbDragArguments)
+    JSONObject dragFromToForDuration(String sessionId, String uuid, FBDragArguments fbDragArguments)
             throws RESTError {
         final Builder webResource = buildDefaultRequest(
                 String.format("uiaTarget/%s/dragfromtoforduration", uuid), sessionId);

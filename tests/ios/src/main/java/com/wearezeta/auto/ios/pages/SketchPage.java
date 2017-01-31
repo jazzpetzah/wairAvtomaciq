@@ -7,7 +7,6 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.device_helpers.IOSSimulatorHelpers;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBDragArguments;
-import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.misc.Timedelta;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
@@ -19,8 +18,13 @@ public class SketchPage extends IOSPage {
     private static final By nameSendButton = MobileBy.AccessibilityId("sendButton");
     private static final By nameDrawButton = MobileBy.AccessibilityId("drawButton");
     private static final By nameEmojiButton = MobileBy.AccessibilityId("emojiButton");
-    private static final By nameOpenGalleryButton = MobileBy.AccessibilityId("photoButton");
+    private static final String strNameOpenGalleryButton = "photoButton";
+    private static final By nameOpenGalleryButton = MobileBy.AccessibilityId(strNameOpenGalleryButton);
     private static final By nameUndoButton = MobileBy.AccessibilityId("undoButton");
+    // TODO: Swipe directly on canvas in Appium 1.6.4+
+    private static final By xpathCanvas = FBBy.xpath(
+            String.format("//XCUIElementTypeButton[@name='%s']/parent::*[1]/preceding-sibling::*[1]",
+                    strNameOpenGalleryButton));
 
     public SketchPage(Future<ZetaIOSDriver> driver) throws Exception {
         super(driver);

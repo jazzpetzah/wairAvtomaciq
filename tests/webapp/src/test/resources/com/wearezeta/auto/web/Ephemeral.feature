@@ -363,7 +363,7 @@ Feature: Ephemeral
     Given I see the clear data dialog
     Given I click logout button on clear data dialog
     Given I see Sign In page
-    When I enter email "<Email1>"
+    When I enter "<Email1>" in email field on Sign In page
     And I enter password "<Password>"
     And I press Sign In button
     Then I see the history info page
@@ -562,7 +562,7 @@ Feature: Ephemeral
     Given I see the clear data dialog
     Given I click logout button on clear data dialog
     Given I see Sign In page
-    When I enter email "<Email1>"
+    When I enter "<Email1>" in email field on Sign In page
     And I enter password "<Password>"
     And I press Sign In button
     Then I see the history info page

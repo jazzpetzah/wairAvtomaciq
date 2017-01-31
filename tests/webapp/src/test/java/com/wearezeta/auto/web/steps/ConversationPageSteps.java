@@ -132,9 +132,9 @@ public class ConversationPageSteps {
     @Then("^I (do not )?see embedded( soundcloud| youtube| vimeo| spotify)? message (.*)")
     public void ISeeEmbeddedMessage(String doNot, String typeOfMessage, String url) throws Exception {
         if (doNot == null) {
-            assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isMessageEmbedded(true, typeOfMessage, url));
+            assertThat("Embedded video '"+url+"' visible: ", context.getPagesCollection().getPage(ConversationPage.class).isMessageEmbedded(true, typeOfMessage, url), is(true));
         } else {
-            assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isMessageEmbedded(false, typeOfMessage, url));
+            assertThat("Embedded video '"+url+"' visible: ", context.getPagesCollection().getPage(ConversationPage.class).isMessageEmbedded(false, typeOfMessage, url), is(false));
         }
     }
 

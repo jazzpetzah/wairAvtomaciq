@@ -54,7 +54,7 @@ public class LoginPageSteps {
         }
         log.debug("Starting to Sign in using login " + login + " and password "
                 + password);
-        this.IEnterEmail(login);
+        this.IEnterInEmailField(login);
         this.IEnterPassword(password);
         if (temporary != null) {
             this.IPressSignInButton();
@@ -109,13 +109,10 @@ public class LoginPageSteps {
                         .isPasswordFieldMarkedAsError());
     }
 
-    @When("^I enter email \"([^\"]*)\"$")
-    public void IEnterEmail(String email) throws Exception {
-        try {
-            email = context.getUsersManager().findUserByEmailOrEmailAlias(email).getEmail();
-        } catch (NoSuchUserException e) {
-            // Ignore silently
-        }
+    @When("^I enter \"([^\"]*)\" in email field on Sign In page$")
+    public void IEnterInEmailField(String email) throws Exception {
+        email = context.getUsersManager().replaceAliasesOccurences(email, ClientUsersManager.FindBy.EMAIL_ALIAS);
+        email = context.getUsersManager().replaceAliasesOccurences(email, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
         context.getPagesCollection().getPage(LoginPage.class).inputEmail(email);
     }
 

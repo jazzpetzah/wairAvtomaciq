@@ -153,6 +153,10 @@ public class FBDriverAPI {
         parseResponseWithStatus(client.deactivateApp(getSessionId(), duration));
     }
 
+    public void swipe(String uuid, FBSwipeDirection direction) throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.swipe(getSessionId(), uuid, direction));
+    }
+
     public static class StatusNotZeroError extends Exception {
         public StatusNotZeroError(String message) {
             super(message);
@@ -261,6 +265,10 @@ public class FBDriverAPI {
 
     public void dragFromToForDuration(String uuid, FBDragArguments FBDragArguments) throws RESTError, StatusNotZeroError {
         parseResponseWithStatus(client.dragFromToForDuration(getSessionId(), uuid, FBDragArguments));
+    }
+
+    public void dragFromToForDuration(FBDragArguments FBDragArguments) throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.dragFromToForDuration(getSessionId(), FBDragArguments));
     }
 
     public String getScreenshot() throws RESTError, StatusNotZeroError {

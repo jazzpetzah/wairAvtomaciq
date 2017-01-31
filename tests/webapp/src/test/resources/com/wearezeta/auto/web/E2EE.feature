@@ -71,7 +71,7 @@ Feature: E2EE
     Then I am informed about the device limit
     When I click on Sign Out on the device limit page
     Then I see Sign In page
-    When I enter email "<Email>"
+    When I enter "<Email>" in email field on Sign In page
     And I enter password "<Password>"
     And I check option to remember me
     And I press Sign In button
@@ -105,7 +105,7 @@ Feature: E2EE
     Given user <Contact> adds a new device Device1 with label Label1
     Given <Contact> is connected to Myself
     Given I switch to Sign In page
-    When I enter email "<Email>"
+    When I enter "<Email>" in email field on Sign In page
     And I enter password "<Password>"
     And I press Sign In button
     And I see the history info page
@@ -115,7 +115,7 @@ Feature: E2EE
     And I see text message <OldMessage>
     And User <Name> removes all his registered OTR clients
     Then I see Sign In page
-    And I enter email "<Email>"
+    And I enter "<Email>" in email field on Sign In page
     And I enter password "<Password>"
     And I press Sign In button
     Then I see the history info page
@@ -143,7 +143,7 @@ Feature: E2EE
     Given user <Contact> adds a new device Device1 with label Label1
     Given <Contact> is connected to Myself
     Given I switch to Sign In page
-    When I enter email "<Email>"
+    When I enter "<Email>" in email field on Sign In page
     And I enter password "<Password>"
     And I press Sign In button
     And I see the history info page
@@ -156,7 +156,7 @@ Feature: E2EE
     And User <Name> removes all his registered OTR clients
     And I navigate to previously remembered page
     And I see Sign In page
-    And I enter email "<Email>"
+    And I enter "<Email>" in email field on Sign In page
     And I enter password "<Password>"
     And I press Sign In button
     Then I see the history info page
@@ -185,7 +185,7 @@ Feature: E2EE
     Given <Contact> is connected to Myself
     Given I switch to Sign In page
     Given I remember current page
-    When I enter email "<Email>"
+    When I enter "<Email>" in email field on Sign In page
     And I enter password "<Password>"
     And I press Sign In button
     And I see the history info page
@@ -196,7 +196,7 @@ Feature: E2EE
     And I navigate to download page
     And User <Name> removes all his registered OTR clients
     And I navigate to previously remembered page
-    And I enter email "<Email>"
+    And I enter "<Email>" in email field on Sign In page
     And I enter password "<Password>"
     And I press Sign In button
     Then I see the history info page
@@ -218,6 +218,44 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact    | OldMessage | Message1 | Message2 | Message3 |
       | user1Email | user1Password | user1Name | user2Name  | Old1       | New1     | New2     | New3     |
 
+  @C404407 @e2ee @regression
+  Scenario Outline: Verify see You've used Wire before page when device was deleted remotely
+    Given There are 2 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
+    Given <Contact> is connected to Myself
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+    And I am signed in properly
+    And I write message <OldMessage>
+    And I send message
+    And I see text message <OldMessage>
+    And Contact <Contact> sends message <OldMessage2> to user Myself
+    And I see text message <OldMessage2>
+    And user <Name> adds a new device Device1 with label Label1
+    And User <Name> only keeps his 1 most recent OTR clients
+    And I see Sign In page
+    And I Sign in using login <Email> and password <Password>
+    And I press Sign In button
+    Then I see the history info page
+    When Contact <Contact> sends message <Message1> to user Myself
+    And I wait for 5 seconds
+    And I click confirm on history info page
+    And I am signed in properly
+    And Contact <Contact> sends message <Message2> to user Myself
+    And I wait for 5 seconds
+    And I open conversation with <Contact>
+    And I write message <Message3>
+    And I send message
+    And I see text message <OldMessage>
+    And I see text message <OldMessage2>
+    And I see text message <Message1>
+    And I see text message <Message2>
+    And I see text message <Message3>
+
+    Examples:
+      | Email      | Password      | Name      | Contact    | OldMessage | OldMessage2 | Message1 | Message2 | Message3 |
+      | user1Email | user1Password | user1Name | user2Name  | Old1       | Old2        | New1     | New2     | New3     |
+
   @C2100 @e2ee @regression
   Scenario Outline: Login as temporary device after device limit is reached
     Given There is 1 user where <Name> is me
@@ -230,7 +268,7 @@ Feature: E2EE
     Given user <Name> adds a new device Device7 with label Label7
     Given I switch to Sign In page
     Given I see Sign In page
-    When I enter email "<Email>"
+    When I enter "<Email>" in email field on Sign In page
     And I enter password "<Password>"
     And I press Sign In button
     Then I see the history info page
@@ -464,7 +502,7 @@ Feature: E2EE
     And I see device OwnDevice of user <Name> is verified in device section
     And I close preferences
     Then I see verified icon in conversation
-    Then I see <ALL_VERIFIED> action in conversation
+    #Then I see <ALL_VERIFIED> action in conversation
 
   Examples:
     | Email      | Password      | Name      | Contact   | ALL_VERIFIED                  |
@@ -496,7 +534,7 @@ Feature: E2EE
     And I switch to Devices tab on Single User Profile popover
     Then I see user verified icon on Single User Profile popover
     When I click People button in one to one conversation
-    Then I see <ALL_VERIFIED> action in conversation
+    #Then I see <ALL_VERIFIED> action in conversation
     Then I see verified icon in conversation
     When user <Contact> adds a new device Device3 with label Label3
     And I write message <MessageThatTriggersWarning>
@@ -516,7 +554,7 @@ Feature: E2EE
     Then I see device Device3 of user <Contact> is verified on Single User Profile popover
     Then I see user verified icon on Single User Profile popover
     When I click People button in one to one conversation
-    Then I see <ALL_VERIFIED> action 2 times in conversation
+    #Then I see <ALL_VERIFIED> action 2 times in conversation
     And I see verified icon in conversation
 
   Examples:
@@ -560,7 +598,7 @@ Feature: E2EE
     Then I see user verified icon on Single User Profile popover
   # We have to close and reopen the people popover to update the device list
     When I click People button in one to one conversation
-    Then I see <ALL_VERIFIED> action in conversation
+    #Then I see <ALL_VERIFIED> action in conversation
     And I see verified icon in conversation
     When user <Contact> adds a new device Device3 with label Label3
     And I write message <MessageThatTriggersWarning>
@@ -583,7 +621,7 @@ Feature: E2EE
     Then I see device Device3 of user <Contact> is verified on Single User Profile popover
     Then I see user verified icon on Single User Profile popover
     When I click People button in one to one conversation
-    Then I see <ALL_VERIFIED> action 2 times in conversation
+    #Then I see <ALL_VERIFIED> action 2 times in conversation
     And I see verified icon in conversation
 
     Examples:
@@ -656,7 +694,7 @@ Feature: E2EE
     Then I see user verified icon on Single User Profile popover
     When I click back button on Group Participants popover
     Then I see user <Contact2> in verified section
-    And I see <ALL_VERIFIED> action in conversation
+    #And I see <ALL_VERIFIED> action in conversation
     And I see verified icon in conversation
 
     Examples:
@@ -687,7 +725,7 @@ Feature: E2EE
     And I click on device Device1 of user <Contact2> on Single User Profile popover
     And I verify device on Device Detail popover
     And I click People button in group conversation
-    And I see <ALL_VERIFIED> action in conversation
+    #And I see <ALL_VERIFIED> action in conversation
     And I see verified icon in conversation
     When user <Contact1> adds a new device Device2 with label Label2
     And Contact <Contact1> sends message <Message> via device Device2 to group conversation <GroupChatName>
@@ -745,7 +783,7 @@ Feature: E2EE
     And I see the clear data dialog
     And I click logout button on clear data dialog
     And I see Sign In page
-    And I enter email "<Email>"
+    And I enter "<Email>" in email field on Sign In page
     And I enter password "<Password>"
     And I press Sign In button
     Then I see the history info page
@@ -788,7 +826,7 @@ Feature: E2EE
     And I click back button on the Device Detail popover
     Then I see user verified icon on Single User Profile popover
     When I click People button in one to one conversation
-    Then I see <ALL_VERIFIED> action in conversation
+    #Then I see <ALL_VERIFIED> action in conversation
     And I see verified icon in conversation
     When user <Contact> adds a new device Device2 with label Label2
     And Contact <Contact> sends message <Message> via device Device2 to user Myself
@@ -1017,7 +1055,7 @@ Feature: E2EE
     And I click back button on the Device Detail popover
     And I click back button on Group Participants popover
     And I click People button in group conversation
-    And I see <ALL_VERIFIED> action in conversation
+    #And I see <ALL_VERIFIED> action in conversation
     Then I see verified icon in conversation
     When I add <Contact3> to group chat
     Then I do not see verified icon in conversation
@@ -1054,7 +1092,7 @@ Feature: E2EE
     And I click back button on the Device Detail popover
     And I click back button on Group Participants popover
     And I click People button in group conversation
-    And I see <ALL_VERIFIED> action in conversation
+    #And I see <ALL_VERIFIED> action in conversation
     Then I see verified icon in conversation
     When User <Contact> added contact <Contact3> to group chat GROUPCHAT
     Then I do not see verified icon in conversation
@@ -1090,7 +1128,7 @@ Feature: E2EE
     And I switch to Devices tab on Single User Profile popover
     Then I see user verified icon on Single User Profile popover
     When I click People button in group conversation
-    Then I see <ALL_VERIFIED> action in conversation
+    #Then I see <ALL_VERIFIED> action in conversation
     Then I see verified icon in conversation
 
   Examples:
@@ -1122,7 +1160,7 @@ Feature: E2EE
     And I click back button on the Device Detail popover
     And I click People button in one to one conversation
     Then I see verified icon in conversation
-    Then I see <ALL_VERIFIED> action in conversation
+    #Then I see <ALL_VERIFIED> action in conversation
     When user <Contact> adds a new device Device2 with label Label2
     # image
     And I send picture <PictureName> to the current conversation
@@ -1204,7 +1242,7 @@ Feature: E2EE
     Then I see device Device1 of user <Contact> is verified on Single User Profile popover
     Then I see user verified icon on Single User Profile popover
     When I click People button in one to one conversation
-    Then I see <ALL_VERIFIED> action in conversation
+    #Then I see <ALL_VERIFIED> action in conversation
     Then I see verified icon in conversation
     When user <Name> adds a new device Device2 with label Label2
 #    TODO
@@ -1255,7 +1293,7 @@ Feature: E2EE
     And I see user verified icon on Single User Profile popover
     When I click back button on Group Participants popover
     And I close Group Participants popover
-    Then I see <ALL_VERIFIED> action in conversation
+    #Then I see <ALL_VERIFIED> action in conversation
     And I see verified icon in conversation
     When I open conversation with <Contact>
     Then I see verified icon in conversation
