@@ -86,8 +86,8 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     private static final By fbXpathRecentImageCell = FBBy.xpath(String.format("(%s)[1]", xpathStrImageCells));
 
     private static final By fbXpathMediaContainerCell = FBBy.xpath(
-            "(//XCUIElementTypeTextView[@name='Message' and contains(@value, '://')]/preceding-sibling::" +
-                    "*[ .//XCUIElementTypeButton ])[last()]");
+            "//XCUIElementTypeTextView[@name='Message' and contains(@value, '://')]/ancestor::" +
+                    "XCUIElementTypeCell[ .//XCUIElementTypeButton ]");
 
     private static final By namePlayButton = MobileBy.AccessibilityId("mediaBarPlayButton");
 
