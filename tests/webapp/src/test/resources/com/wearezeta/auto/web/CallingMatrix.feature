@@ -92,8 +92,8 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend     | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | zcall_v3:3.1.37 | 20      |
-      | user1Email | user1Password | user1Name | user2Name | zcall:3.1.37    | 20      |
+      | user1Email | user1Password | user1Name | user2Name | zcall_v3:3.1.43 | 20      |
+      | user1Email | user1Password | user1Name | user2Name | zcall:3.1.43    | 20      |
       | user1Email | user1Password | user1Name | user2Name | zcall:2.9.14    | 20      |
 
   @C5362 @calling_matrix
@@ -180,8 +180,8 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend       | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | zcall_v3:3.1.37   | 20      |
-      | user1Email | user1Password | user1Name | user2Name | zcall:3.1.37      | 20      |
+      | user1Email | user1Password | user1Name | user2Name | zcall_v3:3.1.43   | 20      |
+      | user1Email | user1Password | user1Name | user2Name | zcall:3.1.43      | 20      |
       | user1Email | user1Password | user1Name | user2Name | zcall:2.9.14      | 20      |
 
   @C5365 @calling_matrix
@@ -247,7 +247,7 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | WaitBackend    | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:3.1.37   | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:3.1.43   | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:2.9.14   | 30      |
 
   @C5367 @calling_matrix
@@ -329,11 +329,11 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend      | WaitBackend          | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:3.1.37 | chrome:55.0.2883.75  | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:3.1.37 | chrome:53.0.2785.116 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:3.1.37 | firefox:50.1.0       | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:3.1.37 | firefox:49.0.2       | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:3.1.37 | firefox:45.5         | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:3.1.43 | chrome:55.0.2883.75  | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:3.1.43 | chrome:53.0.2785.116 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:3.1.43 | firefox:50.1.0       | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:3.1.43 | firefox:49.0.2       | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:3.1.43 | firefox:45.5         | 30      |
 
   @C5369 @calling_matrix
   Scenario Outline: Verify I can join audio group call with AVS <Backend> and <WaitBackend>
@@ -366,8 +366,8 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend        | WaitBackend   | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:2.9.14   | zcall:3.1.37  | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:3.1.37   | zcall:2.9.14  | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:2.9.14   | zcall:3.1.43  | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:3.1.43   | zcall:2.9.14  | 30      |
 
   @C5370 @calling_matrix
   Scenario Outline: Verify I can create, leave and rejoin an audio group call with <WaitBackend>
@@ -432,7 +432,7 @@ Feature: Calling_Matrix
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | WaitBackend  | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | zcall:3.1.37 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | zcall:3.1.43 | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | zcall:2.9.14 | 30      |
 
   @C5372 @calling_matrix
@@ -501,8 +501,8 @@ Feature: Calling_Matrix
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend     | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | zcall_v3:3.1.37 | 20      |
-      | user1Email | user1Password | user1Name | user2Name | zcall:3.1.37    | 20      |
+      | user1Email | user1Password | user1Name | user2Name | zcall_v3:3.1.43 | 20      |
+      | user1Email | user1Password | user1Name | user2Name | zcall:3.1.43    | 20      |
       | user1Email | user1Password | user1Name | user2Name | zcall:2.9.14    | 20      |
 
   @C5374 @calling_matrix
