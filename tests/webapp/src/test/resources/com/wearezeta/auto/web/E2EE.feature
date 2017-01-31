@@ -218,6 +218,44 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact    | OldMessage | Message1 | Message2 | Message3 |
       | user1Email | user1Password | user1Name | user2Name  | Old1       | New1     | New2     | New3     |
 
+  @C404407 @e2ee @regression
+  Scenario Outline: Verify see You've used Wire before page when device was deleted remotely
+    Given There are 2 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
+    Given <Contact> is connected to Myself
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+    And I am signed in properly
+    And I write message <OldMessage>
+    And I send message
+    And I see text message <OldMessage>
+    And Contact <Contact> sends message <OldMessage2> to user Myself
+    And I see text message <OldMessage2>
+    And user <Name> adds a new device Device1 with label Label1
+    And User <Name> only keeps his 1 most recent OTR clients
+    And I see Sign In page
+    And I Sign in using login <Email> and password <Password>
+    And I press Sign In button
+    Then I see the history info page
+    When Contact <Contact> sends message <Message1> to user Myself
+    And I wait for 5 seconds
+    And I click confirm on history info page
+    And I am signed in properly
+    And Contact <Contact> sends message <Message2> to user Myself
+    And I wait for 5 seconds
+    And I open conversation with <Contact>
+    And I write message <Message3>
+    And I send message
+    And I see text message <OldMessage>
+    And I see text message <OldMessage2>
+    And I see text message <Message1>
+    And I see text message <Message2>
+    And I see text message <Message3>
+
+    Examples:
+      | Email      | Password      | Name      | Contact    | OldMessage | OldMessage2 | Message1 | Message2 | Message3 |
+      | user1Email | user1Password | user1Name | user2Name  | Old1       | Old2        | New1     | New2     | New3     |
+
   @C2100 @e2ee @regression
   Scenario Outline: Login as temporary device after device limit is reached
     Given There is 1 user where <Name> is me
