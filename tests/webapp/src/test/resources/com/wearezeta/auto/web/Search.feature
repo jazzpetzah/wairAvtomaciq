@@ -45,7 +45,7 @@ Feature: Search
       | user1Email | user1Password | user1Name | user2Name | user2UniqueUsername   |
 
   @C352244 @smoke
-  Scenario Outline: Verify you cannot search by partial username of unconnected user
+  Scenario Outline: Verify you can search by partial username of unconnected user
     Given There are 2 users where <Name> is me
     Given <Contact> has unique username
     Given I switch to Sign In page
@@ -56,7 +56,7 @@ Feature: Search
     And I see Search is opened
     And I see Bring Your Friends or Invite People button
     When I type <ContactUniqueUsername> in search field of People Picker only partially
-    Then I do not see user <Contact> found in People Picker
+    Then I see user <Contact> found in People Picker
 
     Examples:
       | Login      | Password      | Name      | Contact   | ContactUniqueUsername |
