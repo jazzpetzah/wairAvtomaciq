@@ -71,7 +71,7 @@ Feature: E2EE
     Then I am informed about the device limit
     When I click on Sign Out on the device limit page
     Then I see Sign In page
-    When I enter email "<Email>"
+    When I enter "<Email>" in email field on Sign In page
     And I enter password "<Password>"
     And I check option to remember me
     And I press Sign In button
@@ -105,7 +105,7 @@ Feature: E2EE
     Given user <Contact> adds a new device Device1 with label Label1
     Given <Contact> is connected to Myself
     Given I switch to Sign In page
-    When I enter email "<Email>"
+    When I enter "<Email>" in email field on Sign In page
     And I enter password "<Password>"
     And I press Sign In button
     And I see the history info page
@@ -115,7 +115,7 @@ Feature: E2EE
     And I see text message <OldMessage>
     And User <Name> removes all his registered OTR clients
     Then I see Sign In page
-    And I enter email "<Email>"
+    And I enter "<Email>" in email field on Sign In page
     And I enter password "<Password>"
     And I press Sign In button
     Then I see the history info page
@@ -143,7 +143,7 @@ Feature: E2EE
     Given user <Contact> adds a new device Device1 with label Label1
     Given <Contact> is connected to Myself
     Given I switch to Sign In page
-    When I enter email "<Email>"
+    When I enter "<Email>" in email field on Sign In page
     And I enter password "<Password>"
     And I press Sign In button
     And I see the history info page
@@ -156,7 +156,7 @@ Feature: E2EE
     And User <Name> removes all his registered OTR clients
     And I navigate to previously remembered page
     And I see Sign In page
-    And I enter email "<Email>"
+    And I enter "<Email>" in email field on Sign In page
     And I enter password "<Password>"
     And I press Sign In button
     Then I see the history info page
@@ -185,7 +185,7 @@ Feature: E2EE
     Given <Contact> is connected to Myself
     Given I switch to Sign In page
     Given I remember current page
-    When I enter email "<Email>"
+    When I enter "<Email>" in email field on Sign In page
     And I enter password "<Password>"
     And I press Sign In button
     And I see the history info page
@@ -196,7 +196,7 @@ Feature: E2EE
     And I navigate to download page
     And User <Name> removes all his registered OTR clients
     And I navigate to previously remembered page
-    And I enter email "<Email>"
+    And I enter "<Email>" in email field on Sign In page
     And I enter password "<Password>"
     And I press Sign In button
     Then I see the history info page
@@ -230,7 +230,7 @@ Feature: E2EE
     Given user <Name> adds a new device Device7 with label Label7
     Given I switch to Sign In page
     Given I see Sign In page
-    When I enter email "<Email>"
+    When I enter "<Email>" in email field on Sign In page
     And I enter password "<Password>"
     And I press Sign In button
     Then I see the history info page
@@ -745,7 +745,7 @@ Feature: E2EE
     And I see the clear data dialog
     And I click logout button on clear data dialog
     And I see Sign In page
-    And I enter email "<Email>"
+    And I enter "<Email>" in email field on Sign In page
     And I enter password "<Password>"
     And I press Sign In button
     Then I see the history info page

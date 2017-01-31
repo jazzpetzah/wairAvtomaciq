@@ -245,7 +245,7 @@ Feature: Usernames
     And I delete account of user <Name> via email
     And I navigate to previously remembered page
     And I see Sign In page
-    When I enter email "<Email>"
+    When I enter "<Email>" in email field on Sign In page
     And I enter password "<Password>"
     And I press Sign In button
     Then the sign in error message reads <Error>

@@ -53,7 +53,7 @@ Feature: Sign In
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
     Given I see Sign In page
-    When I enter email "<Email>"
+    When I enter "<Email>" in email field on Sign In page
     And I enter password "<Password>"
     And I press Sign In button
     Then I see the history info page
@@ -67,7 +67,7 @@ Feature: Sign In
     And I open preferences by clicking the gear button
     And I click logout in account preferences
     And I see Sign In page
-    And I enter email "<Email>"
+    And I enter "<Email>" in email field on Sign In page
     And I enter password "<Password>"
     And I press Sign In button
     And I see the history info page
@@ -86,7 +86,7 @@ Feature: Sign In
   Scenario Outline: Verify sign in error appearance in case of wrong credentials
     Given There is 1 user where user1Name is me
     Given I switch to sign in page
-    When I enter email "<Email>"
+    When I enter "<Email>" in email field on Sign In page
     And I enter password "<Password>"
     And I press Sign In button
     Then the sign in error message reads <Error>
@@ -102,16 +102,33 @@ Feature: Sign In
     Given There is 1 user where user1Name is me
     When I switch to sign in page
     Then Sign In button is not disabled
-    When I enter email "<Email>"
+    When I enter "<Email>" in email field on Sign In page
     And I enter password ""
     Then Sign In button is not disabled
-    When I enter email ""
+    When I enter "" in email field on Sign In page
     And I enter password "<Password>"
     Then Sign In button is not disabled
 
     Examples: 
       | Email      | Password      |
       | user1Email | user1Password |
+
+  @C399839 @staging
+  Scenario Outline: Verify you can sign in by username
+    Given There is 1 user where <Name> is me
+    Given I switch to Sign In page
+    Given I see Sign In page
+    When I enter "<UniqueUsername>" in email field on Sign In page
+    And I enter password "<Password>"
+    And I press Sign In button
+    Then I see the history info page
+    When I click confirm on history info page
+    Then I am signed in properly
+
+    Examples:
+      | Name      | UniqueUsername       | Password   |
+      | user1Name | user1UniqueUsername  | aqa123456! |
+      | user1Name | @user1UniqueUsername | aqa123456! |
 
   @C246200 @regression
   Scenario Outline: Verify you can sign in by phone number with already set password and temporary device

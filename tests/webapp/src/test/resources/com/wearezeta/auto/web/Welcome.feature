@@ -19,11 +19,11 @@ Feature: Welcome
     Then I see Password Change Succeeded page
     Given I navigate to previously remembered page
     When I see Sign In page
-    When I enter email "<Email>"
+    When I enter "<Email>" in email field on Sign In page
     And I enter password "<OldPassword>"
     And I press Sign In button
     Then I see login error "<LoginErr>"
-    When I enter email "<Email>"
+    When I enter "<Email>" in email field on Sign In page
     And I enter password "<NewPassword>"
     And I check option to remember me
     And I press Sign In button

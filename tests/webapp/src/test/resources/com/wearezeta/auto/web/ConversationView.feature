@@ -264,7 +264,7 @@ Feature: Conversation View
   @C1710 @regression @WEBAPP-3573
   Scenario Outline: Verify you can add maximum+1 number of participants into group conversation
     Given I switch to sign in page
-    Given I enter email "<Login>"
+    Given I enter "<Login>" in email field on Sign In page
     Given I enter password "<Password>"
     Given I press Sign In button
     Given I see the history info page
