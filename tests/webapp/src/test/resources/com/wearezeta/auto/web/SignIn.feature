@@ -113,7 +113,7 @@ Feature: Sign In
       | Email      | Password      |
       | user1Email | user1Password |
 
-  @C399839 @staging
+  @C399839 @regression
   Scenario Outline: Verify you can sign in by username
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
