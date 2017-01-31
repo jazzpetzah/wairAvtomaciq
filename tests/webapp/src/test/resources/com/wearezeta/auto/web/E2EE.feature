@@ -464,7 +464,7 @@ Feature: E2EE
     And I see device OwnDevice of user <Name> is verified in device section
     And I close preferences
     Then I see verified icon in conversation
-    Then I see <ALL_VERIFIED> action in conversation
+    #Then I see <ALL_VERIFIED> action in conversation
 
   Examples:
     | Email      | Password      | Name      | Contact   | ALL_VERIFIED                  |
@@ -560,7 +560,7 @@ Feature: E2EE
     Then I see user verified icon on Single User Profile popover
   # We have to close and reopen the people popover to update the device list
     When I click People button in one to one conversation
-    Then I see <ALL_VERIFIED> action in conversation
+    #Then I see <ALL_VERIFIED> action in conversation
     And I see verified icon in conversation
     When user <Contact> adds a new device Device3 with label Label3
     And I write message <MessageThatTriggersWarning>
@@ -583,7 +583,7 @@ Feature: E2EE
     Then I see device Device3 of user <Contact> is verified on Single User Profile popover
     Then I see user verified icon on Single User Profile popover
     When I click People button in one to one conversation
-    Then I see <ALL_VERIFIED> action 2 times in conversation
+    #Then I see <ALL_VERIFIED> action 2 times in conversation
     And I see verified icon in conversation
 
     Examples:
