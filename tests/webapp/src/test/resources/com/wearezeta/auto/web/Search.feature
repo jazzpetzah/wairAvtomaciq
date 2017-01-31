@@ -374,3 +374,22 @@ Feature: Search
     Examples:
       | Login      | Password      | Name      | UnknownContact1 | ContactUniqueUsername | Contact1  | Contact2  | Contact3  | Contact4  |
       | user1Email | user1Password | user1Name | user2Name       | user2UniqueUsername   | user3Name | user4Name | user5Name | user6Name |
+
+  @C399359 @staging
+  Scenario Outline: Verify search by username with at (@) symbol
+    Given There is 1 user where <Name> is me
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I open search by clicking the people button
+    And I see Search is opened
+    And I type <SearchNameAlias> in search field of People Picker
+    Then I see user <SearchNameAlias> with username <SearchUsername> found in People Picker
+    When I clear the search field of People Picker
+    Then I do not see user <SearchNameAlias> found in People Picker
+    When I type @<SearchUsername> in search field of People Picker
+    Then I see user <SearchNameAlias> with username <SearchUsername> found in People Picker
+
+    Examples:
+      | Login      | Password      | Name      | SearchNameAlias | SearchUsername  |
+      | user1Email | user1Password | user1Name | nameAlias       | unique_username |
