@@ -1,6 +1,6 @@
 Feature: Ephemeral
 
-  @C261723 @ephemeral @regression @localytics @WEBAPP-3302
+  @C261723 @ephemeral @known @localytics @WEBAPP-3302
   Scenario Outline: Verify sending ephemeral text message in 1:1
     Given There are 2 users where <Name> is me
     Given <Contact> has unique username

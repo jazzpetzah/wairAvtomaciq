@@ -53,7 +53,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Event                        | Attributes                                                                                            |
       | user1Email | user1Password | user1Name | user2Name | media.completed_media_action | {\"action\":\"text\",\"conversation_type\":\"one_to_one\",\"is_ephemeral\":false,\"with_bot\":false}" |
 
-  @C259599 @regression @WEBAPP-3247
+  @C259599 @known @WEBAPP-3247
   Scenario Outline: Verify delivery receipt of message in 1on1 that was read by webapp
     Given There are 2 users where <Name> is me
     Given <Contact> has unique username
@@ -188,7 +188,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg |
 
-  @C1784 @regression @WEBAPP-3561
+  @C1784 @known @WEBAPP-3561
   Scenario Outline: Able to send and play youtube link
     Given There are 2 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
