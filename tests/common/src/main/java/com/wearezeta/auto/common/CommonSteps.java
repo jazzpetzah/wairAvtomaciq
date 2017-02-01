@@ -1169,13 +1169,14 @@ public final class CommonSteps {
                 CommonSteps.DEFAULT_AUTOMATION_MESSAGE);
     }
 
+    public static final String USER_DETAIL_NOT_SET = "NOT_SET";
+
     public void UserVerifiesDetails(String user, String detail, String expectedValue) throws Exception {
         final ClientUser dstUser = getUsersManager().findUserByNameOrNameAlias(user);
-        final String NOT_SET = "<NOT SET>";
         switch (detail.toLowerCase()) {
             case "email":
                 expectedValue = getUsersManager().replaceAliasesOccurences(expectedValue, FindBy.EMAIL_ALIAS);
-                Assert.assertEquals(BackendAPIWrappers.getEmail(dstUser).orElse(NOT_SET),
+                Assert.assertEquals(BackendAPIWrappers.getEmail(dstUser).orElse(USER_DETAIL_NOT_SET),
                         expectedValue);
                 break;
             case "name":
@@ -1184,12 +1185,12 @@ public final class CommonSteps {
                 break;
             case "unique username":
                 expectedValue = getUsersManager().replaceAliasesOccurences(expectedValue, FindBy.UNIQUE_USERNAME_ALIAS);
-                Assert.assertEquals(BackendAPIWrappers.getUniqueUsername(dstUser).orElse(NOT_SET),
+                Assert.assertEquals(BackendAPIWrappers.getUniqueUsername(dstUser).orElse(USER_DETAIL_NOT_SET),
                         expectedValue);
                 break;
             case "phone number":
                 expectedValue = getUsersManager().replaceAliasesOccurences(expectedValue, FindBy.PHONENUMBER_ALIAS);
-                Assert.assertEquals(BackendAPIWrappers.getPhoneNumber(dstUser).orElse(NOT_SET),
+                Assert.assertEquals(BackendAPIWrappers.getPhoneNumber(dstUser).orElse(USER_DETAIL_NOT_SET),
                         expectedValue);
                 break;
             default:

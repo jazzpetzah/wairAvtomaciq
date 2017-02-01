@@ -1822,7 +1822,8 @@ public class CommonIOSSteps {
      * @step. ^I verify user's (.*) (email|name|unique username) on the backend is equal to (.*)
      * @param user user name/alias
      * @param detail one of possible values
-     * @param expectedValue the expected value/value alias
+     * @param expectedValue the expected value/value alias. One may set it to CommonSteps.USER_DETAIL_NOT_SET
+     *                      constant to verify that the corresponding value is not set on the backend
      * @throws Exception
      */
     @Then("^I verify user's (.*) (email|name|unique username|phone number) on the backend is equal to (.*)")
