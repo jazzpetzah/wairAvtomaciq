@@ -432,7 +432,7 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C399841 @staging @addressbookStart @forceReset
+  @C399841 @regression @addressbookStart @forceReset
   Scenario Outline: Verify sending connection request to user on Wire from AB
     Given There are 2 users where <Name> is me
     Given Users <Contact2> upload own details
