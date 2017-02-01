@@ -235,7 +235,6 @@ Feature: E2EE
     And User <Name> only keeps his 1 most recent OTR clients
     And I see Sign In page
     And I Sign in using login <Email> and password <Password>
-    And I press Sign In button
     Then I see the history info page
     When Contact <Contact> sends message <Message1> to user Myself
     And I wait for 5 seconds
