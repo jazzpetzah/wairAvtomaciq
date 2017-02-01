@@ -327,3 +327,20 @@ Feature: Settings
     Examples:
       | Password      | Name      | NewEmail   |
       | user1Password | user1Name | user2Email |
+
+  @C404408 @staging @fastLogin
+  Scenario Outline: Verify impossibility of changing email on already taken email
+    Given There are 2 users where <Name> is me
+    Given I sign in using my email
+    Given I see conversations list
+    Given I tap settings gear button
+    Given I select settings item Account
+    Given I select settings item Email
+    When I change email address to <NewEmail> on Settings page
+    And I tap Save navigation button on Settings page
+    Then I see alert contains text <AlertText>
+
+    Examples:
+      | Name      | NewEmail   | AlertText                              |
+      | user1Name | user2Email | There was an error changing your email |
+    
