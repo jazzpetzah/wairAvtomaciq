@@ -144,6 +144,7 @@ public class Lifecycle {
             Set<String> tagSet = scenario.getTags().stream()
                     .map((tag) -> tag.getName())
                     .collect(Collectors.toSet());
+            log.debug(Arrays.toString(tagSet.toArray()));
             TestrailSyncUtilities.syncExecutedScenarioWithTestrail(scenario.getName(),
                     new BasicScenarioResultToTestrailTransformer(mapScenario(scenario)).transform(), tagSet);
         } catch (Exception e) {
