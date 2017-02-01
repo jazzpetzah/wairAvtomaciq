@@ -20,7 +20,6 @@ import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.pages.WebPage;
 import com.wearezeta.auto.web.pages.external.DeleteAccountPage;
 import cucumber.api.PendingException;
-import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -55,7 +54,7 @@ public class CommonWebAppSteps {
     public CommonWebAppSteps(WebAppTestContext context) {
         this.context = context;
     }
-
+    
     @Given("^My browser( does not)? support[s]? calling$")
     public void MyBrowserSupportsCalling(String doesNot) throws Exception {
         if (doesNot == null) {

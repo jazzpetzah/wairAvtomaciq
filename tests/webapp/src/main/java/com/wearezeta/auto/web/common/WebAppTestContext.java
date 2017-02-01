@@ -9,6 +9,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.test_context.TestContext;
 import com.wearezeta.auto.common.wire_actors.RemoteDevicesManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.web.common.notifications.NotificationManager;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import java.util.concurrent.ExecutionException;
@@ -34,6 +35,7 @@ public class WebAppTestContext extends TestContext {
 
     private final String testname;
     private final LogManager logManager;
+    private final NotificationManager notificationManager;
     private final Future<? extends RemoteWebDriver> driver;
 
     private final ConversationStates conversationStates;
@@ -45,14 +47,15 @@ public class WebAppTestContext extends TestContext {
         this.childContext = null;
 
         this.logManager = new LogManager(this);
+        this.notificationManager = new NotificationManager(this);
         this.conversationStates = new ConversationStates();
         this.pinger = new Pinger(this);
     }
 
     private WebAppTestContext(String testname, CommonSteps commonSteps, ClientUsersManager userManager,
-                              RemoteDevicesManager deviceManager, CommonCallingSteps2 callingManager,
-                              AbstractPagesCollection<? extends BasePage> pagesCollection,
-                              Future<? extends RemoteWebDriver> driver) throws Exception {
+            RemoteDevicesManager deviceManager, CommonCallingSteps2 callingManager,
+            AbstractPagesCollection<? extends BasePage> pagesCollection,
+            Future<? extends RemoteWebDriver> driver) throws Exception {
         super(userManager, deviceManager, callingManager, commonSteps, pagesCollection);
         this.testname = testname;
         this.driver = driver;
@@ -60,11 +63,12 @@ public class WebAppTestContext extends TestContext {
 
         this.conversationStates = new ConversationStates();
         this.logManager = new LogManager(this);
+        this.notificationManager = new NotificationManager(this);
         this.pinger = new Pinger(this);
     }
 
     public WebAppTestContext fromPrimaryContext(Future<? extends RemoteWebDriver> driver,
-                                                AbstractPagesCollection<? extends BasePage> pagesCollection)
+            AbstractPagesCollection<? extends BasePage> pagesCollection)
             throws Exception {
         setChildContext(new WebAppTestContext(this.testname, this.getCommonSteps(), this.getUsersManager(),
                 this.getDevicesManager(), this.getCallingManager(), pagesCollection, driver));
@@ -98,6 +102,10 @@ public class WebAppTestContext extends TestContext {
 
     public ConversationStates getConversationStates() {
         return conversationStates;
+    }
+
+    public NotificationManager getNotificationManager() {
+        return notificationManager;
     }
 
     public LogManager getLogManager() {
