@@ -382,6 +382,7 @@ Feature: Ephemeral Messages
     Given I accept alert if visible
     Given I select the first picture from Keyboard Gallery
     Given I tap Confirm button on Picture preview page
+    Given I wait for 3 seconds
     Given I see "<EphemeralTimeLabel>" on the message toolbox in conversation view
     When I tap Time Indicator button in conversation view
     And I set ephemeral messages expiration timer to Off
