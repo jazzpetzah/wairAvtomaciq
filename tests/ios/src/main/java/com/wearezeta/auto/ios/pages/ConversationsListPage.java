@@ -1,6 +1,5 @@
 package com.wearezeta.auto.ios.pages;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.concurrent.Future;
@@ -8,15 +7,14 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.driver.facebook_ios_driver.FBDragArguments;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBSwipeDirection;
 import com.wearezeta.auto.common.misc.Timedelta;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.*;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import org.openqa.selenium.Point;
 
 public class ConversationsListPage extends IOSPage {
     private static final By nameSettingsGearButton = MobileBy.AccessibilityId("bottomBarSettingsButton");
@@ -119,17 +117,7 @@ public class ConversationsListPage extends IOSPage {
     }
 
     private void swipeRightOnContact(String name) throws Exception {
-        final FBElement dstElement = (FBElement) getConversationsListItem(name);
-        final Rectangle elRect = dstElement.getRect();
-        final Point startPoint = getDriver().fixCoordinates(
-                new Point(elRect.x + elRect.width / 10, elRect.y + elRect.height * 8 / 9)
-        );
-        final Point endPoint = getDriver().fixCoordinates(
-                new Point(elRect.x + elRect.width * 3 / 4, elRect.y + elRect.height * 8 / 9)
-        );
-        getDriver().dragFromToForDuration(
-                new FBDragArguments(startPoint.x, startPoint.y, endPoint.x, endPoint.y, Timedelta.fromSeconds(1))
-        );
+        ((FBElement) getConversationsListItem(name)).swipe(FBSwipeDirection.RIGHT);
     }
 
     public void swipeRightConversationToRevealActionButtons(String conversation) throws Exception {

@@ -49,6 +49,22 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
         }
     }
 
+    public void pinch(FBPinchArguments args) {
+        try {
+            fbDriverAPI.pinch(this.uuid, args);
+        } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
+            throw new WebDriverException(e);
+        }
+    }
+
+    public void twoFingerTap() {
+        try {
+            fbDriverAPI.twoFingerTap(this.uuid);
+        } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
+            throw new WebDriverException(e);
+        }
+    }
+
     public void tap(double x, double y) {
         try {
             fbDriverAPI.tap(this.uuid, x, y);
@@ -80,7 +96,7 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
     /**
      * https://github.com/facebook/WebDriverAgent/blob/master/WebDriverAgentLib/Commands/FBElementCommands.m
      */
-    public void scroll(Optional<FBDriverAPI.ScrollingDirection> direction, Optional<String> toChildNamed,
+    public void scroll(Optional<FBScrollingDirection> direction, Optional<String> toChildNamed,
                        Optional<String> predicateString, Optional<Boolean> toVisible) {
         try {
             fbDriverAPI.scroll(this.uuid, toChildNamed, direction, predicateString, toVisible);
@@ -90,22 +106,22 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
     }
 
     public void scrollUp() {
-        this.scroll(Optional.of(FBDriverAPI.ScrollingDirection.UP),
+        this.scroll(Optional.of(FBScrollingDirection.UP),
                 Optional.empty(), Optional.empty(), Optional.empty());
     }
 
     public void scrollDown() {
-        this.scroll(Optional.of(FBDriverAPI.ScrollingDirection.DOWN),
+        this.scroll(Optional.of(FBScrollingDirection.DOWN),
                 Optional.empty(), Optional.empty(), Optional.empty());
     }
 
     public void scrollRight() {
-        this.scroll(Optional.of(FBDriverAPI.ScrollingDirection.RIGHT),
+        this.scroll(Optional.of(FBScrollingDirection.RIGHT),
                 Optional.empty(), Optional.empty(), Optional.empty());
     }
 
     public void scrollLeft() {
-        this.scroll(Optional.of(FBDriverAPI.ScrollingDirection.LEFT),
+        this.scroll(Optional.of(FBScrollingDirection.LEFT),
                 Optional.empty(), Optional.empty(), Optional.empty());
     }
 
@@ -245,14 +261,6 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
             } else {
                 return new Dimension(rect.getInt("width"), rect.getInt("height"));
             }
-        } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
-            throw new WebDriverException(e);
-        }
-    }
-
-    public Dimension getWindowSize() {
-        try {
-            return apiStringToDimension(fbDriverAPI.getWindowSize(this.uuid));
         } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }

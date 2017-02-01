@@ -3,16 +3,13 @@ package com.wearezeta.auto.ios.pages;
 import java.util.Random;
 import java.util.concurrent.Future;
 
-import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.driver.device_helpers.IOSSimulatorHelpers;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
-import com.wearezeta.auto.common.driver.facebook_ios_driver.FBDragArguments;
-import com.wearezeta.auto.common.misc.Timedelta;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBSwipeDirection;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import org.openqa.selenium.Dimension;
 
 public class SketchPage extends IOSPage {
     private static final By nameSendButton = MobileBy.AccessibilityId("sendButton");
@@ -21,8 +18,7 @@ public class SketchPage extends IOSPage {
     private static final String strNameOpenGalleryButton = "photoButton";
     private static final By nameOpenGalleryButton = MobileBy.AccessibilityId(strNameOpenGalleryButton);
     private static final By nameUndoButton = MobileBy.AccessibilityId("undoButton");
-    // TODO: Swipe directly on canvas in Appium 1.6.4+
-    private static final By xpathCanvas = FBBy.xpath(
+    private static final By fbXpathCanvas = FBBy.xpath(
             String.format("//XCUIElementTypeButton[@name='%s']/parent::*[1]/preceding-sibling::*[1]",
                     strNameOpenGalleryButton));
 
@@ -33,25 +29,11 @@ public class SketchPage extends IOSPage {
     private static final Random rand = new Random();
 
     public void sketchRandomLines() throws Exception {
-        final double startXPercent = 10.0;
-        final double startYPercent = 20.0;
-        for (int i = 0; i < 2; i++) {
-            final double endXPercent = startXPercent + rand.nextInt(80);
-            final double endYPercent = startYPercent + rand.nextInt(30);
-            if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-                IOSSimulatorHelpers.swipe(startXPercent / 100.0, startYPercent / 100.0,
-                        endXPercent / 100.0, endYPercent / 100.0);
-            } else {
-                final Dimension screenSize = getDriver().manage().window().getSize();
-                getDriver().dragFromToForDuration(
-                        new FBDragArguments(
-                                startXPercent * screenSize.getWidth() / 100,
-                                startYPercent * screenSize.getHeight() / 100,
-                                endXPercent * screenSize.getWidth() / 100,
-                                endYPercent * screenSize.getHeight() / 100,
-                                Timedelta.fromSeconds(3))
-                );
-            }
+        final int directionsCount = FBSwipeDirection.values().length;
+        for (int times = 0; times < 2; ++times) {
+            ((FBElement) getElement(fbXpathCanvas)).swipe(
+                    FBSwipeDirection.values()[rand.nextInt(directionsCount)]
+            );
         }
     }
 
