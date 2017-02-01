@@ -149,7 +149,8 @@ public class RegistrationPageSteps {
     public void IStartActivationEmailMonitoring() throws Exception {
         final Map<String, String> additionalHeaders = new HashMap<>();
         additionalHeaders.put(WireMessage.ZETA_PURPOSE_HEADER_NAME, ActivationMessage.MESSAGE_PURPOSE);
-        if (IOSTestContextHolder.getInstance().getTestContext().getUsersManager().isSelfUserSet()) {
+        if (IOSTestContextHolder.getInstance().getTestContext().getUsersManager().isSelfUserSet()
+                && userToRegister == null) {
             userToRegister = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
                     .getSelfUserOrThrowError();
         }
