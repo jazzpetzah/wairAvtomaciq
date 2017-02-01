@@ -6,6 +6,7 @@ import com.wearezeta.auto.common.email.MessagingUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.ClientDeviceInfo;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
+import com.wearezeta.auto.common.wire_actors.models.AssetsVersion;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
@@ -809,6 +810,12 @@ public class AndroidCommonUtils extends CommonUtils {
     public static void openWebsiteFromADB(String url) throws Exception {
         AndroidCommonUtils.executeAdb(String.
                 format("shell am start -a android.intent.action.VIEW -d %s", url));
+    }
+
+    public static void changeCallingSettings(CallingVersions callingVersion) throws Exception {
+        AndroidCommonUtils.executeAdb(String.format(
+                "shell am broadcast -a com.waz.zclient.intent.action.CALLING_%s", callingVersion.toString()
+        ));
     }
 
     public static boolean isKeyboardVisible() throws Exception {
