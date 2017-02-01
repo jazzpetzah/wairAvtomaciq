@@ -7,11 +7,12 @@ import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
 
 public class FBDriverAPI {
     private static final Logger log = ZetaLogger.getLog(FBDriverAPI.class.getSimpleName());
@@ -31,6 +32,10 @@ public class FBDriverAPI {
     private Optional<String> sessionId = Optional.empty();
 
     public FBDriverAPI() {
+    }
+
+    public static URI getURI() throws URISyntaxException {
+        return new URI(String.format("http://%s:%d", HOST_NAME, PORT_NUMBER));
     }
 
     private String getSessionId() throws RESTError {

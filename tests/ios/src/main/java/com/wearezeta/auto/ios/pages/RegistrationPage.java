@@ -202,7 +202,7 @@ public class RegistrationPage extends IOSPage {
         getElement(nameChoosePhotoButton, "Choose photo button is not visible").click();
     }
 
-    public void waitRegistrationToFinish() throws Exception {
+    public void waitForRegistrationToFinish() throws Exception {
         final By locator = By.xpath(xpathStrConfirmationByMessage.apply(getEmail()));
         if (!isLocatorInvisible(locator, Timedelta.fromSeconds(40))) {
             throw new IllegalStateException("Verification page is still visible after the timeout");

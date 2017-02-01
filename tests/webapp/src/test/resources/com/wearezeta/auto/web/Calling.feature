@@ -141,7 +141,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      |
 
-  @C1776 @regression @calling
+  @C1776 @known @calling @WEBAPP-3579
   Scenario Outline: Verify I can call a user twice in a row
     Given My browser supports calling
     Given There are 2 users where <Name> is me

@@ -12,7 +12,9 @@ Feature: Registration
     And I accept terms of service
     And I accept alert if visible
     And I see confirmation page
-    And I verify registration address
+    And I verify email address <Email> for <Name>
+    And User <Name> is me
+    And I wait until the UI detects successful email activation
     And I tap Choose Own Picture button
     And I tap Choose Photo button
     And I accept alert if visible

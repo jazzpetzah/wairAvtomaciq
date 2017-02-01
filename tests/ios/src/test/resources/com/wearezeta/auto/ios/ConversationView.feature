@@ -289,7 +289,7 @@ Feature: Conversation View
       | user1Name | user2Name | https://vimeo.com/categories |
 
   @C907 @regression @fastLogin
-  Scenario Outline: (ZIOS-7010) Verify player is displayed for vimeo links with video IDs
+  Scenario Outline: Verify player is displayed for vimeo links with video IDs
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given User adds the following device: {"Myself": [{}]}

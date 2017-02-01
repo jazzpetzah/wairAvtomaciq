@@ -37,6 +37,39 @@ public class OptionsPageSteps {
         assertThat("Sound alerts setting",
                 context.getPagesCollection().getPage(OptionsPage.class).getSelectedSoundAlertsSetting(), equalTo(value));
     }
+    
+    @When("^I set notification setting to sender and message$")
+    public void ISetNotificationsSenderAndMessage() throws Exception {
+        context.getPagesCollection().getPage(OptionsPage.class).clickNotificationsSenderAndMessageButton();
+    }
+    @When("^I set notification setting to sender$")
+    public void ISetNotificationsObfuscateMessage() throws Exception {
+        context.getPagesCollection().getPage(OptionsPage.class).clickNotificationsObfuscatedMessageButton();
+    }
+    @When("^I set notification setting to hide details$")
+    public void ISetNotificationsObfuscateAll() throws Exception {
+        context.getPagesCollection().getPage(OptionsPage.class).clickNotificationsObfuscateAllButton();
+    }
+    @When("^I set notification setting to off$")
+    public void ISetNotificationsOff() throws Exception {
+        context.getPagesCollection().getPage(OptionsPage.class).clickNotificationsOffButton();
+    }
+
+    /**
+     * TODO We might add a proper mapping here
+     * Options are: 
+     * on - Show sender and message
+     * obfuscate-message - Show sender
+     * obfuscate - Hide details
+     * none - Off
+     * @param value
+     * @throws Exception 
+     */
+    @When("^I see notification setting is set to (.*)$")
+    public void ISeeNotificationSettingIs(String value) throws Exception {
+        assertThat("Notification setting",
+                context.getPagesCollection().getPage(OptionsPage.class).getSelectedNotificationSetting(), equalTo(value));
+    }
 
     @When("^I click button to import contacts from Gmail$")
     public void IClickImportButton() throws Exception {

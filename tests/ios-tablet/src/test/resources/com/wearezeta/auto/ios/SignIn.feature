@@ -83,7 +83,8 @@ Feature: Sign In
     And I have entered password <Password>
     When I tap Login button
     Then I see email verification reminder
-    When I verify registration address
+    And I verify email address <Email> for Myself
+    And I wait until the UI detects successful email activation
     And I accept First Time overlay
     And I dismiss settings warning if visible
     Then I see conversations list
@@ -136,7 +137,8 @@ Feature: Sign In
     And I have entered password <Password>
     And I tap Login button
     And I see email verification reminder
-    And I verify registration address
+    And I verify email address <Email> for Myself
+    And I wait until the UI detects successful email activation
     And I accept First Time overlay
     And I dismiss settings warning if visible
     Then I see conversations list

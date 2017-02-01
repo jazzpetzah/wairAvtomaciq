@@ -1169,4 +1169,34 @@ public final class CommonSteps {
                 CommonSteps.DEFAULT_AUTOMATION_MESSAGE);
     }
 
+    public static final String USER_DETAIL_NOT_SET = "NOT_SET";
+
+    public void UserVerifiesDetails(String user, String detail, String expectedValue) throws Exception {
+        final ClientUser dstUser = getUsersManager().findUserByNameOrNameAlias(user);
+        switch (detail.toLowerCase()) {
+            case "email":
+                expectedValue = getUsersManager().replaceAliasesOccurences(expectedValue, FindBy.EMAIL_ALIAS);
+                Assert.assertEquals(BackendAPIWrappers.getEmail(dstUser).orElse(USER_DETAIL_NOT_SET),
+                        expectedValue);
+                break;
+            case "name":
+                expectedValue = getUsersManager().replaceAliasesOccurences(expectedValue, FindBy.NAME_ALIAS);
+                Assert.assertEquals(BackendAPIWrappers.getName(dstUser), expectedValue);
+                break;
+            case "unique username":
+                expectedValue = getUsersManager().replaceAliasesOccurences(expectedValue, FindBy.UNIQUE_USERNAME_ALIAS);
+                Assert.assertEquals(BackendAPIWrappers.getUniqueUsername(dstUser).orElse(USER_DETAIL_NOT_SET),
+                        expectedValue);
+                break;
+            case "phone number":
+                expectedValue = getUsersManager().replaceAliasesOccurences(expectedValue, FindBy.PHONENUMBER_ALIAS);
+                Assert.assertEquals(BackendAPIWrappers.getPhoneNumber(dstUser).orElse(USER_DETAIL_NOT_SET),
+                        expectedValue);
+                break;
+            default:
+                throw new IllegalArgumentException(
+                        String.format("Unknown value '%s' is passed for user detail", detail)
+                );
+        }
+    }
 }

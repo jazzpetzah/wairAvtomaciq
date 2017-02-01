@@ -29,6 +29,21 @@ public class OptionsPage extends WebPage {
 
     @FindBy(how = How.CSS, using = "label[for='preferences-options-audio-none']")
     private WebElement soundAlertsNone;
+    
+    @FindBy(how = How.CSS, using = "[name='preferences-options-notification']")
+    private List<WebElement> notificationsRadioboxes;
+    
+    @FindBy(how = How.CSS, using = "label[for='preferences-options-notification-on']")
+    private WebElement notificationAll;
+
+    @FindBy(how = How.CSS, using = "label[for='preferences-options-notification-obfuscate-message']")
+    private WebElement notificationObfuscateMessage;
+
+    @FindBy(how = How.CSS, using = "label[for='preferences-options-notification-obfuscate']")
+    private WebElement notificationObfuscateAll;
+    
+    @FindBy(how = How.CSS, using = "label[for='preferences-options-notification-none']")
+    private WebElement notificationNone;
 
     @FindBy(how = How.CSS, using = WebAppLocators.OptionsPage.cssImportButton)
     private WebElement importButton;
@@ -44,7 +59,7 @@ public class OptionsPage extends WebPage {
         DriverUtils.waitUntilElementClickable(getDriver(), importButton);
         importButton.click();
     }
-
+    
     public void clickSoundAlertsAll() throws Exception {
         DriverUtils.waitUntilElementClickable(getDriver(), soundAlertsAll);
         soundAlertsAll.click();
@@ -60,7 +75,7 @@ public class OptionsPage extends WebPage {
         soundAlertsNone.click();
     }
 
-    public Object getSelectedSoundAlertsSetting() {
+    public String getSelectedSoundAlertsSetting() {
         for (WebElement radiobox : soundAlertsRadioboxes) {
             if (radiobox.isSelected()) {
                 String id = radiobox.getAttribute("id");
@@ -70,6 +85,35 @@ public class OptionsPage extends WebPage {
             }
         }
         return "";
+    }
+    
+    public String getSelectedNotificationSetting() {
+        for (WebElement radiobox : notificationsRadioboxes) {
+            if (radiobox.isSelected()) {
+                String id = radiobox.getAttribute("id");
+                if (id != null) {
+                    return id.replace("preferences-options-notification-", "");
+                }
+            }
+        }
+        return "";
+    }
+    
+    public void clickNotificationsSenderAndMessageButton() throws Exception {
+        DriverUtils.waitUntilElementClickable(getDriver(), notificationAll);
+        notificationAll.click();
+    }
+    public void clickNotificationsObfuscatedMessageButton() throws Exception {
+        DriverUtils.waitUntilElementClickable(getDriver(), notificationObfuscateMessage);
+        notificationObfuscateMessage.click();
+    }
+    public void clickNotificationsObfuscateAllButton() throws Exception {
+        DriverUtils.waitUntilElementClickable(getDriver(), notificationObfuscateAll);
+        notificationObfuscateAll.click();
+    }
+    public void clickNotificationsOffButton() throws Exception {
+        DriverUtils.waitUntilElementClickable(getDriver(), notificationNone);
+        notificationNone.click();
     }
 
     public boolean isReportOptionChecked() throws Exception {

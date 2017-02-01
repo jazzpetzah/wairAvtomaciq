@@ -87,7 +87,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
 
     private static final By fbXpathMediaContainerCell = FBBy.xpath(
             "//XCUIElementTypeTextView[@name='Message' and contains(@value, '://')]/ancestor::" +
-                    "XCUIElementTypeCell[ .//XCUIElementTypeButton ]");
+                    "XCUIElementTypeCell[ .//XCUIElementTypeButton[not(@name='likeButton')] ]");
 
     private static final By namePlayButton = MobileBy.AccessibilityId("mediaBarPlayButton");
 
@@ -977,5 +977,9 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     public boolean isTypingIndicatorVisibleFor(String forUser) throws Exception {
         final By locator = By.xpath(xpathStrTypingLabelByName.apply(forUser));
         return isLocatorDisplayed(locator);
+    }
+
+    public boolean isMediaContainerInvisible() throws Exception {
+        return isLocatorInvisible(fbXpathMediaContainerCell);
     }
 }
