@@ -280,7 +280,9 @@ Feature: Settings
     And I start activation email monitoring
     And I tap Create Account button on Registration page
     And I see confirmation page
-    And I verify registration address
+    And I verify email address <Email> for <Name>
+    And User <Name> is me
+    And I wait until the UI detects successful email activation
     And I tap settings gear button
     And I select settings item Account
     Then I verify the value of settings item Email equals to "<Email>"
@@ -303,3 +305,25 @@ Feature: Settings
     Examples:
       | Name      | AlternativeBrowserName |
       | user1Name | Chrome                 |
+
+  @C404391 @staging @useSpecialEmail @fastLogin
+  Scenario Outline: Verify changing email when phone is not assigned
+    Given There is 1 user where <Name> is me with email only
+    Given I sign in using my email
+    Given I see conversations list
+    Given I tap settings gear button
+    Given I select settings item Account
+    Given I select settings item Email
+    When I start activation email monitoring on mailbox <NewEmail> with password <Password>
+    And I change email address to <NewEmail> on Settings page
+    And I tap Save navigation button on Settings page
+    # Wait for sync
+    And I wait for 3 seconds
+    And I verify email address <NewEmail> for Myself
+    And I wait until the UI detects successful email activation on Settings page
+    Then I verify the value of settings item Email equals to "<NewEmail>"
+    And I verify user's Myself email on the backend is equal to <NewEmail>
+
+    Examples:
+      | Password      | Name      | NewEmail   |
+      | user1Password | user1Name | user2Email |

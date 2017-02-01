@@ -1815,4 +1815,19 @@ public class CommonIOSSteps {
                 .UserSendsMultipleMessages(senderUserNameAlias, count, msg, dstConversationName,
                         CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
     }
+
+    /**
+     * Verify user details on the backend
+     *
+     * @step. ^I verify user's (.*) (email|name|unique username) on the backend is equal to (.*)
+     * @param user user name/alias
+     * @param detail one of possible values
+     * @param expectedValue the expected value/value alias
+     * @throws Exception
+     */
+    @Then("^I verify user's (.*) (email|name|unique username|phone number) on the backend is equal to (.*)")
+    public void IVerifyDetailsOnBackend(String user, String detail, String expectedValue) throws Exception {
+        IOSTestContextHolder.getInstance().getTestContext().getCommonSteps()
+                .UserVerifiesDetails(user, detail, expectedValue);
+    }
 }

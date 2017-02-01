@@ -166,9 +166,9 @@ public class SettingsPageSteps {
      *
      * @param name name of the button
      * @throws Exception
-     * @step. ^I tap (Done|Back|Edit) navigation button on Settings page$
+     * @step. ^I tap (Done|Back|Edit|Save) navigation button on Settings page$
      */
-    @And("^I tap (Done|Back|Edit) navigation button on Settings page$")
+    @And("^I tap (Done|Back|Edit|Save) navigation button on Settings page$")
     public void ITapNavigationButton(String name) throws Exception {
         getSettingsPage().tapNavigationButton(name);
     }
@@ -307,5 +307,36 @@ public class SettingsPageSteps {
     @And("^I close accent color picker on Settings page$")
     public void ICloseColorPicker() throws Exception {
         getSettingsPage().closeColorPicker();
+    }
+
+    /**
+     * Change and commit email address
+     *
+     * @step. I change email address to (.*) on Settings page
+     * @param newEmail new email address/alias
+     * @throws Exception
+     */
+    @And("^I change email address to (.*) on Settings page$")
+    public void IChangeEmailAddress(String newEmail) throws Exception {
+        newEmail = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(newEmail, ClientUsersManager.FindBy.EMAIL_ALIAS);
+        getSettingsPage().changeEmailAddress(newEmail);
+    }
+
+    /**
+     * Wait until the "check you email" label disappears from the UIand email address
+     * verification is detected by SE
+     *
+     * @step. ^I wait until the UI detects successful email activation on Settings page$
+     * @throws Exception
+     */
+    @And("^I wait until the UI detects successful email activation on Settings page$")
+    public void IWaitForActivation() throws Exception {
+        final Timedelta timeout = Timedelta.fromSeconds(BackendAPIWrappers.ACTIVATION_TIMEOUT);
+        if (!getSettingsPage().waitUntilEmailVerificationHappens(timeout)) {
+            throw new IllegalStateException(
+                    String.format("The UI didn't detect email activation after %s", timeout)
+            );
+        }
     }
 }

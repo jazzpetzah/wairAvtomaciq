@@ -56,6 +56,12 @@ public class SettingsPage extends IOSPage {
     private static final By xpathColorPickerCloseButton = By.xpath("//XCUIElementTypeStaticText[@name='COLOR']" +
             "/preceding-sibling::XCUIElementTypeButton");
 
+    // TODO: change to accessibility id
+    private static final By xpathEmailInput = By.xpath(
+            "//XCUIElementTypeStaticText[@name='Email']/following::XCUIElementTypeTextField");
+
+    private static final By nameVerifyEmailTitle = MobileBy.AccessibilityId("Verify email");
+
     public SettingsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -99,7 +105,7 @@ public class SettingsPage extends IOSPage {
         return isLocatorDisplayed(locator);
     }
 
-     public boolean isItemInvisible(String itemName) throws Exception {
+    public boolean isItemInvisible(String itemName) throws Exception {
         return isLocatorInvisible(By.xpath(xpathStrMenuItemByName.apply(itemName)));
     }
 
@@ -163,5 +169,15 @@ public class SettingsPage extends IOSPage {
     public boolean isProfilePicturePreviewVisible() throws Exception {
         final WebElement picturePreview = getElement(xpathSettingsProfilePicturePreview);
         return isElementVisible(picturePreview);
+    }
+
+    public void changeEmailAddress(String newEmail) throws Exception {
+        final WebElement emailInput = getElement(xpathEmailInput);
+        emailInput.clear();
+        emailInput.sendKeys(newEmail);
+    }
+
+    public boolean waitUntilEmailVerificationHappens(Timedelta timeout) throws Exception {
+        return isLocatorInvisible(nameVerifyEmailTitle, timeout);
     }
 }

@@ -158,10 +158,8 @@ public final class BackendAPIWrappers {
         return user;
     }
 
-    public static void activateRegisteredUserByEmail(
-            Future<String> activationMessage) throws Exception {
-        final ActivationMessage registrationInfo = new ActivationMessage(
-                activationMessage.get());
+    public static void activateRegisteredUserByEmail(Future<String> activationMessage) throws Exception {
+        final ActivationMessage registrationInfo = new ActivationMessage(activationMessage.get());
         final String key = registrationInfo.getXZetaKey();
         final String code = registrationInfo.getXZetaCode();
         log.debug(String
@@ -713,6 +711,27 @@ public final class BackendAPIWrappers {
         final JSONObject userInfo = BackendREST.getUserInfo(receiveAuthToken(user));
         if (userInfo.has("handle")) {
             return Optional.of(userInfo.getString("handle"));
+        }
+        return Optional.empty();
+    }
+
+    public static Optional<String> getEmail(ClientUser user) throws Exception {
+        final JSONObject userInfo = BackendREST.getUserInfo(receiveAuthToken(user));
+        if (userInfo.has("email")) {
+            return Optional.of(userInfo.getString("email"));
+        }
+        return Optional.empty();
+    }
+
+    public static String getName(ClientUser user) throws Exception {
+        final JSONObject userInfo = BackendREST.getUserInfo(receiveAuthToken(user));
+        return userInfo.getString("name");
+    }
+
+    public static Optional<String> getPhoneNumber(ClientUser user) throws Exception {
+        final JSONObject userInfo = BackendREST.getUserInfo(receiveAuthToken(user));
+        if (userInfo.has("phone")) {
+            return Optional.of(userInfo.getString("phone"));
         }
         return Optional.empty();
     }

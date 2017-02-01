@@ -87,7 +87,8 @@ Feature: Sign In
     And I have entered password <Password>
     And I tap Done keyboard button
     And I see email verification reminder
-    And I verify registration address
+    And I verify email address <Email> for Myself
+    And I wait until the UI detects successful email activation
     And I accept First Time overlay
     And I dismiss settings warning if visible
     Then I see conversations list

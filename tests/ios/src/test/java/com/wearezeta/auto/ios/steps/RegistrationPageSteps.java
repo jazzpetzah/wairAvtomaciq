@@ -6,6 +6,7 @@ import com.wearezeta.auto.common.email.WireMessage;
 import com.wearezeta.auto.common.usrmgmt.*;
 import com.wearezeta.auto.ios.common.IOSTestContextHolder;
 import com.wearezeta.auto.ios.pages.RegistrationPage;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
@@ -22,7 +23,7 @@ public class RegistrationPageSteps {
 
     private ClientUser userToRegister = null;
 
-    private Future<String> activationMessage;
+    private Future<String> activationMessage = null;
 
     /**
      * Input fake phone number for given user
@@ -148,16 +149,64 @@ public class RegistrationPageSteps {
     public void IStartActivationEmailMonitoring() throws Exception {
         final Map<String, String> additionalHeaders = new HashMap<>();
         additionalHeaders.put(WireMessage.ZETA_PURPOSE_HEADER_NAME, ActivationMessage.MESSAGE_PURPOSE);
+        if (IOSTestContextHolder.getInstance().getTestContext().getUsersManager().isSelfUserSet()) {
+            userToRegister = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                    .getSelfUserOrThrowError();
+        }
         activationMessage = BackendAPIWrappers.initMessageListener(userToRegister, additionalHeaders);
     }
 
-    @Then("^I verify registration address$")
-    public void IVerifyRegistrationAddress() throws Exception {
-        BackendAPIWrappers.activateRegisteredUserByEmail(this.activationMessage);
-        if (!IOSTestContextHolder.getInstance().getTestContext().getUsersManager().isSelfUserSet()) {
-            IOSTestContextHolder.getInstance().getTestContext().getUsersManager().setSelfUser(userToRegister);
+    /**
+     * Start monitoring thread for activation email for the particular mailbox
+     *
+     * @param mbox mailbox email address/an alias
+     * @param passwd mailbox password/an alias
+     * @throws Exception
+     * @step. ^I start activation email monitoring on mailbox (.*) with password (.*)
+     */
+    @When("^I start activation email monitoring on mailbox (.*) with password (.*)")
+    public void IStartActivationEmailMonitoringOnMbox(String mbox, String passwd) throws Exception {
+        final Map<String, String> additionalHeaders = new HashMap<>();
+        additionalHeaders.put(WireMessage.ZETA_PURPOSE_HEADER_NAME, ActivationMessage.MESSAGE_PURPOSE);
+        mbox = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(mbox, ClientUsersManager.FindBy.EMAIL_ALIAS);
+        passwd = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(passwd, ClientUsersManager.FindBy.PASSWORD_ALIAS);
+        activationMessage = BackendAPIWrappers.initMessageListener(mbox, passwd, additionalHeaders);
+    }
+
+    /**
+     * Activate email address using activation keys as soon as the corresponding message is received.
+     * This steps expects mailbox monitoring to be already running
+     *
+     * @param address the expected email address for a user
+     * @param user    user name/alias
+     * @throws Exception
+     * @step. ^I verify email address (.*) for (.*)
+     */
+    @Then("^I verify email address (.*) for (.*)")
+    public void IVerifyEmail(String address, String user) throws Exception {
+        if (this.activationMessage == null) {
+            throw new IllegalStateException("Activation email monitoring is expected to be running");
         }
-        getRegistrationPage().waitRegistrationToFinish();
+        BackendAPIWrappers.activateRegisteredUserByEmail(this.activationMessage);
+        address = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(address, ClientUsersManager.FindBy.EMAIL_ALIAS);
+        final ClientUser dstUser = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .findUserByNameOrNameAlias(user);
+        dstUser.setEmail(address);
+        this.activationMessage = null;
+    }
+
+    /**
+     * Wait until email change monitoring overlay disappears in the UI for the Self user
+     *
+     * @throws Exception
+     * @step. ^I wait until the UI detects successful email activation$
+     */
+    @And("^I wait until the UI detects successful email activation$")
+    public void IWaitForEmailActivation() throws Exception {
+        getRegistrationPage().waitForRegistrationToFinish();
     }
 
     /**
