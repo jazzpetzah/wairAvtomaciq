@@ -42,7 +42,6 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
     public static final String AUTOMATION_MODE_XCUITEST = "XCUITest";
 
     public static final String CAPABILITY_NAME_USE_PREBUILT_WDA = "usePrebuiltWDA";
-    public static final String CAPABILITY_NAME_WDA_URL = "webDriverAgentUrl";
 
     private static final Logger log = ZetaLogger.getLog(ZetaIOSDriver.class.getSimpleName());
 

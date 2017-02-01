@@ -8,7 +8,6 @@ import java.util.function.Supplier;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.device_helpers.IOSSimulatorHelpers;
-import com.wearezeta.auto.common.driver.facebook_ios_driver.FBDriverAPI;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriverException;
@@ -81,11 +80,7 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
                                 IOSSimulatorHelpers.start();
                             }
                         }
-                        if (capabilities.is(ZetaIOSDriver.CAPABILITY_NAME_USE_PREBUILT_WDA)) {
-                            capabilities.setCapability(
-                                    ZetaIOSDriver.CAPABILITY_NAME_WDA_URL, FBDriverAPI.getURI().toString()
-                            );
-                        } else {
+                        if (!capabilities.is(ZetaIOSDriver.CAPABILITY_NAME_USE_PREBUILT_WDA)) {
                             ZetaIOSDriver.resetXCTest();
                         }
                         platformDriver = new ZetaIOSDriver(new URL(url), capabilities);
