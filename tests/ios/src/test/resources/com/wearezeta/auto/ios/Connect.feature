@@ -447,13 +447,13 @@ Feature: Connect
     And I accept alert if visible
     And I tap input field on Search UI page
     Then I verify correct details are shown for the found users
-      | Name                         | Details                                                  |
-      | <Contact2>                   | in Contacts                                              |
+      | Name       | Details     |
+      | <Contact2> | in Contacts |
     When I tap on conversation <Contact2> in search result
     And I tap Connect button on Single user Pending outgoing connection page
     And I tap X button on Search UI page
     Then I see first item in contact list named <Contact2>
 
     Examples:
-      | Name      | Contact2  | Contact2Email  |
-      | user1Name | user2name | user2Email     |
+      | Name      | Contact2  | Contact2Email |
+      | user1Name | user2name | user2Email    |
