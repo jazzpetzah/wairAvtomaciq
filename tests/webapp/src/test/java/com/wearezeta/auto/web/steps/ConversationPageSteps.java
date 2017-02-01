@@ -134,7 +134,7 @@ public class ConversationPageSteps {
         if (doNot == null) {
             assertThat("Embedded video '"+url+"' visible: ", context.getPagesCollection().getPage(ConversationPage.class).isMessageEmbedded(true, typeOfMessage, url), is(true));
         } else {
-            assertThat("Embedded video '"+url+"' visible: ", context.getPagesCollection().getPage(ConversationPage.class).isMessageEmbedded(false, typeOfMessage, url), is(false));
+            assertThat("Embedded video '"+url+"' visible: ", context.getPagesCollection().getPage(ConversationPage.class).isMessageEmbedded(false, typeOfMessage, url), is(true));
         }
     }
 
