@@ -540,8 +540,8 @@ public class ConversationViewPageSteps {
             Assert.assertTrue("Media player is missing in the conversation",
                     getConversationViewPage().isMediaContainerVisible());
         } else {
-            Assert.assertFalse("Media player is visible, but should be hidden",
-                    getConversationViewPage().isMediaContainerVisible());
+            Assert.assertTrue("Media player is visible, but should be hidden",
+                    getConversationViewPage().isMediaContainerInvisible());
         }
         Assert.assertTrue(String.format("The recent conversation message does not contain %s link", link),
                 getConversationViewPage().isRecentMessageContain(link));
