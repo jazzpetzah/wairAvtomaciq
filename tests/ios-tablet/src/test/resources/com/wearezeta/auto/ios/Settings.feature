@@ -288,3 +288,26 @@ Feature: Settings
     Examples:
       | Name      | ThemeItemName |
       | user1Name | Dark theme    |
+
+  @C404412 @staging @useSpecialEmail @fastLogin
+  Scenario Outline: Verify changing email when phone is not assigned [LANDSCAPE]
+    Given There is 1 user where <Name> is me with email only
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    Given I see conversations list
+    Given I tap settings gear button
+    Given I select settings item Account
+    Given I select settings item Email
+    When I start activation email monitoring on mailbox <NewEmail> with password <Password>
+    And I change email address to <NewEmail> on Settings page
+    And I tap Save navigation button on Settings page
+    # Wait for sync
+    And I wait for 3 seconds
+    And I verify email address <NewEmail> for Myself
+    And I wait until the UI detects successful email activation on Settings page
+    Then I verify the value of settings item Email equals to "<NewEmail>"
+    And I verify user's Myself email on the backend is equal to <NewEmail>
+
+    Examples:
+      | Password      | Name      | NewEmail   |
+      | user1Password | user1Name | user2Email |
