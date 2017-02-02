@@ -4,6 +4,7 @@ Feature: Archive
   Scenario Outline: Verify unarchive by receiving data [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
+    Given Users add the following devices: {"Myself": [{}], "<ArchivedUser>": [{}]}
     Given User Myself archives single user conversation <ArchivedUser>
     Given User <ArchivedUser> sets the unique username
     Given <ArchivedUser> starts instance using <CallBackend>
@@ -36,6 +37,7 @@ Feature: Archive
   Scenario Outline: Verify unarchiving silenced conversation only by call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
+    Given Users add the following devices: {"Myself": [{}], "<ArchivedUser>": [{}]}
     Given User Myself silences single user conversation <ArchivedUser>
     Given User Myself archives single user conversation <ArchivedUser>
     Given User <ArchivedUser> sets the unique username
@@ -84,6 +86,7 @@ Feature: Archive
   Scenario Outline: Verify archive behaviour when one archive/unarchive a conversation [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
+    Given Users add the following devices: {"Myself": [{}], "<ArchivedUser>": [{}]}
     Given User Myself archives single user conversation <ArchivedUser>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
