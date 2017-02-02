@@ -24,8 +24,8 @@ public class ConversationListPageSteps {
         this.webContext = webContext;
     }
     
-    @Given("^I click context menu of the last message$")
-    public void IClickContextMenuOfLast() throws Exception {
+    @Given("^I click context menu of the (second |third )?last message$")
+    public void IClickContextMenuOfLast(String indexNumber) throws Exception {
         Point point = webContext.getPagesCollection().getPage(com.wearezeta.auto.web.pages.ConversationPage.class)
                 .getCenterOfMessageElement(1);
 
