@@ -306,7 +306,7 @@ Feature: Settings
       | Name      | AlternativeBrowserName |
       | user1Name | Chrome                 |
 
-  @C404391 @staging @useSpecialEmail @fastLogin
+  @C404391 @regression @useSpecialEmail @fastLogin
   Scenario Outline: Verify changing email when phone is not assigned
     Given There is 1 user where <Name> is me with email only
     Given I sign in using my email
@@ -328,7 +328,7 @@ Feature: Settings
       | Password      | Name      | NewEmail   |
       | user1Password | user1Name | user2Email |
 
-  @C404408 @staging @fastLogin
+  @C404408 @regression @fastLogin
   Scenario Outline: Verify impossibility of changing email on already taken email
     Given There are 2 users where <Name> is me
     Given I sign in using my email
@@ -341,6 +341,6 @@ Feature: Settings
     Then I see alert contains text <AlertText>
 
     Examples:
-      | Name      | NewEmail   | AlertText                              |
-      | user1Name | user2Email | There was an error changing your email |
+      | Name      | NewEmail   | AlertText                                                  |
+      | user1Name | user2Email | The email address you provided has already been registered |
     
