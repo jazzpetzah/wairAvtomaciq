@@ -202,9 +202,6 @@ public class PickleJarHook implements PickleJarTestHook {
                     // filter encryption precondition
                     .filter((entry)
                             -> !entry.getMessage().contains("otr") && !entry.getMessage().contains("412 (Precondition Failed)"))
-                    //filter youtube javascript error
-                    .filter((entry)
-                            -> !entry.getMessage().contains("ytcfg is not defined"))
                     .collect(Collectors.toList());
 
         } catch (Exception e) {
