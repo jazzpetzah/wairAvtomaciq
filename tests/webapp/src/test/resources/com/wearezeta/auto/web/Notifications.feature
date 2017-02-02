@@ -7,19 +7,21 @@ Feature: Notifications
     Given Myself is connected to <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I am signed in properly
+    When I am signed in properly
     And I listen for notifications
-    Then I open conversation with <Contact2>
+    And I open conversation with <Contact2>
     And I open preferences by clicking the gear button
     And I open options in preferences
     Then I see notification setting is set to on
-    Then I click next notification from <NotificationSender> with text <ExpectedMessage>
-    When Contact <Contact1> sends message <ExpectedMessage> to user Myself
+    When I close preferences
+    Then Soundfile new_message did not start playing
+    When I click next notification from <NotificationSender> with text <ExpectedMessage>
+    And Contact <Contact1> sends message <ExpectedMessage> to user Myself
     Then I see text message <ExpectedMessage>
-    Then Soundfile new_message did start playing
+    And Soundfile new_message did start playing
     And I got 1 notification
-    Then I saw notification from <NotificationSender> with text <ExpectedMessage>
-    Then I see conversation with <Contact1> is selected in conversations list
+    And I saw notification from <NotificationSender> with text <ExpectedMessage>
+    And I see conversation with <Contact1> is selected in conversations list
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ExpectedMessage | NotificationSender |
@@ -32,21 +34,22 @@ Feature: Notifications
     Given Myself is connected to <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I am signed in properly
+    When I am signed in properly
     And I listen for notifications
-    Then I open conversation with <Contact2>
+    And I open conversation with <Contact2>
     And I open preferences by clicking the gear button
     And I open options in preferences
-    When I set notification setting to sender
+    And I set notification setting to sender
     Then I see notification setting is set to obfuscate-message
+    When I close preferences
     Then Soundfile new_message did not start playing
-    Then I click next notification from <NotificationSender> with text <ExpectedMessage>
-    When Contact <Contact1> sends message <OriginalMessage> to user Myself
+    When I click next notification from <NotificationSender> with text <ExpectedMessage>
+    And Contact <Contact1> sends message <OriginalMessage> to user Myself
     Then I see text message <OriginalMessage>
-    Then Soundfile new_message did start playing
+    And Soundfile new_message did start playing
     And I got 1 notification
-    Then I saw notification from <NotificationSender> with text <ExpectedMessage>
-    Then I see conversation with <Contact1> is selected in conversations list
+    And I saw notification from <NotificationSender> with text <ExpectedMessage>
+    And I see conversation with <Contact1> is selected in conversations list
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | OriginalMessage    | ExpectedMessage    | NotificationSender |
@@ -59,16 +62,17 @@ Feature: Notifications
     Given Myself is connected to <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I am signed in properly
+    When I am signed in properly
     And I listen for notifications
-    Then I open conversation with <Contact2>
+    And I open conversation with <Contact2>
     And I open preferences by clicking the gear button
     And I open options in preferences
-    When I set notification setting to hide details
+    And I set notification setting to hide details
     Then I see notification setting is set to obfuscate
+    When I close preferences
     Then Soundfile new_message did not start playing
-    Then I click next notification from <NotificationSender> with text <ExpectedMessage>
-    When Contact <Contact1> sends message <OriginalMessage> to user Myself
+    When I click next notification from <NotificationSender> with text <ExpectedMessage>
+    And Contact <Contact1> sends message <OriginalMessage> to user Myself
     Then I see text message <OriginalMessage>
     And Soundfile new_message did start playing
     And I got 1 notification
@@ -87,17 +91,17 @@ Feature: Notifications
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When I am signed in properly
-    Then I listen for notifications
-    When I open conversation with <Contact2>
-    Then Soundfile new_message did not start playing
-    Then I click next notification from <Contact1> with text <OriginalMessage1>
-    When Contact <Contact1> sends message <OriginalMessage1> to user Myself
-    And I see text message <OriginalMessage1>
-    Then Soundfile new_message did start playing
+    And I listen for notifications
+    And I open conversation with <Contact2>
+    And Soundfile new_message did not start playing
+    And I click next notification from <Contact1> with text <OriginalMessage1>
+    And Contact <Contact1> sends message <OriginalMessage1> to user Myself
+    Then I see text message <OriginalMessage1>
+    And Soundfile new_message did start playing
     And I got 1 notification
     When I open preferences by clicking the gear button
-    Then I open options in preferences
-    When I set notification setting to off
+    And I open options in preferences
+    And I set notification setting to off
     Then I see notification setting is set to none
     When I close preferences
     And I open conversation with <Contact2>
