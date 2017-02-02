@@ -526,6 +526,11 @@ public class ConversationPage extends WebPage {
         ephemeralButton.click();
     }
 
+    public Point getCenterOfEphemeralButton() throws Exception {
+        DriverUtils.waitUntilElementClickable(getDriver(), ephemeralButton);
+        return DriverUtils.getCenterOfElement(ephemeralButton);
+    }
+
     public List<String> getEphemeralTimers() throws Exception {
         DriverUtils.waitUntilElementClickable(getDriver(), ephemeralTimers.get(0));
         return ephemeralTimers.stream().map(WebElement::getText).collect(Collectors.toList());
