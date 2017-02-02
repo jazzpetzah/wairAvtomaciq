@@ -130,6 +130,7 @@ Feature: Notifications
     And I open preferences by clicking the gear button
     And I open options in preferences
     Then I see notification setting is set to on
+    And Soundfile new_message did not start playing
     Then I click next notification from <NotificationSender> with text <ExpectedMessage>
     When Contact <Contact1> sends message <ExpectedMessage> to user Myself
     Then I see text message <ExpectedMessage>
