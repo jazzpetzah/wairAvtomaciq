@@ -12,8 +12,8 @@ import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
-import com.wearezeta.auto.common.driver.facebook_ios_driver.FBDriverAPI;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBScrollingDirection;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces.FunctionFor2Parameters;
 import com.wearezeta.auto.common.driver.device_helpers.IOSSimulatorHelpers;
@@ -934,7 +934,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
 
     private static final int MAX_SCROLLS = 2;
 
-    private void scrollTo(FBDriverAPI.ScrollingDirection direction) throws Exception {
+    private void scrollTo(FBScrollingDirection direction) throws Exception {
         final FBElement dstCanvas = (FBElement) getElement(fbClassConversationViewRoot);
         for (int i = 0; i < MAX_SCROLLS; i++) {
             switch (direction) {
@@ -953,11 +953,11 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     }
 
     public void scrollToTheTop() throws Exception {
-        scrollTo(FBDriverAPI.ScrollingDirection.UP);
+        scrollTo(FBScrollingDirection.UP);
     }
 
     public void scrollToTheBottom() throws Exception {
-        scrollTo(FBDriverAPI.ScrollingDirection.DOWN);
+        scrollTo(FBScrollingDirection.DOWN);
         if (!isLocatorDisplayed(fbXpathRecentEntry)) {
             throw new IllegalStateException("Failed to scroll to the bottom of the conversation");
         }

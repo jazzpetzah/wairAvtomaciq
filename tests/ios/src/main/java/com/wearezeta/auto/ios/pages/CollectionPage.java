@@ -3,6 +3,7 @@ package com.wearezeta.auto.ios.pages;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBSwipeDirection;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
@@ -136,10 +137,10 @@ public class CollectionPage extends IOSPage {
         final FBElement image = (FBElement) getElement(fbNameFullScreenPage);
         switch (direction.toLowerCase()) {
             case "right":
-                image.scrollLeft();
+                image.swipe(FBSwipeDirection.RIGHT);
                 return;
             case "left":
-                image.scrollRight();
+                image.swipe(FBSwipeDirection.LEFT);
                 return;
             default:
                 throw new IllegalArgumentException(String.format("Unknown swipe direction '%s'", direction));

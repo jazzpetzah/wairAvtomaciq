@@ -379,7 +379,7 @@ public abstract class IOSPage extends BasePage {
             final Rectangle elRect = el.get().getRect();
             tapX = elRect.x + elRect.width * percentX / 100;
             tapY = elRect.y + elRect.height * percentY / 100;
-            return getDriver().fixCoordinates(new Point(tapX, tapY));
+            return new Point(tapX, tapY);
         }
         final Dimension screenSize = getDriver().manage().window().getSize();
         tapX = screenSize.getWidth() * percentX / 100;
