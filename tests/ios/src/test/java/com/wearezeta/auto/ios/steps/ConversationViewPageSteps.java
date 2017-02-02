@@ -330,7 +330,7 @@ public class ConversationViewPageSteps {
     }
 
     private ElementState previousMediaContainerState = new ElementState(
-            () -> getConversationViewPage().getMediaContainerStateGlyphScreenshot()
+            () -> getConversationViewPage().getMediaContainerState()
     );
 
     /**
@@ -387,7 +387,7 @@ public class ConversationViewPageSteps {
         }
     }
 
-    private static final double CONTAINER_COMPARE_MIN_SCORE = 0.9;
+    private static final double CONTAINER_COMPARE_MIN_SCORE = 0.999;
     private static final Timedelta MEDIA_STATE_CHANGE_TIMEOUT = Timedelta.fromSeconds(10);
 
     /**
@@ -1322,9 +1322,9 @@ public class ConversationViewPageSteps {
     /**
      * Verify whether isTyping message is visible for a particular user
      *
-     * @step. ^I see typing indicator for (.*) in the conversation$
      * @param forUser user name/alias
      * @throws Exception
+     * @step. ^I see typing indicator for (.*) in the conversation$
      */
     @Then("^I see typing indicator for (.*) in the conversation$")
     public void ISeeTypingLabel(String forUser) throws Exception {
