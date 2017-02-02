@@ -1242,7 +1242,7 @@ public class ConversationPage extends WebPage {
 
     //context menu
 
-    public Point getCenterOfMessageElement(int indexNumber) throws Exception {
+    public Point getCenterOfContextMenuButtonByMessage(int indexNumber) throws Exception {
         String id = getMessageId(indexNumber);
         hoverOverMessage(id);
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssContextMenuButtonByMessageId.apply(id));
