@@ -15,9 +15,9 @@ Feature: Notifications
     Then I see notification setting is set to on
     Then I click next notification from <NotificationSender> with text <ExpectedMessage>
     When Contact <Contact1> sends message <ExpectedMessage> to user Myself
+    Then I see text message <ExpectedMessage>
     Then I saw notification from <NotificationSender> with text <ExpectedMessage>
     Then I see conversation with <Contact1> is selected in conversations list
-    Then I see text message <ExpectedMessage>
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ExpectedMessage | NotificationSender |
@@ -39,9 +39,9 @@ Feature: Notifications
     Then I see notification setting is set to obfuscate-message
     Then I click next notification from <NotificationSender> with text <ExpectedMessage>
     When Contact <Contact1> sends message <OriginalMessage> to user Myself
+    Then I see text message <OriginalMessage>
     Then I saw notification from <NotificationSender> with text <ExpectedMessage>
     Then I see conversation with <Contact1> is selected in conversations list
-    Then I see text message <OriginalMessage>
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | OriginalMessage    | ExpectedMessage    | NotificationSender |
@@ -63,9 +63,9 @@ Feature: Notifications
     Then I see notification setting is set to obfuscate
     Then I click next notification from <NotificationSender> with text <ExpectedMessage>
     When Contact <Contact1> sends message <OriginalMessage> to user Myself
+    Then I see text message <OriginalMessage>
     Then I saw notification from <NotificationSender> with text <ExpectedMessage>
     Then I see conversation with <Contact1> is selected in conversations list
-    Then I see text message <OriginalMessage>
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | OriginalMessage               | ExpectedMessage    | NotificationSender |
