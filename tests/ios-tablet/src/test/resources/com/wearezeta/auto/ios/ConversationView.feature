@@ -672,7 +672,7 @@ Feature: Conversation View
       | user1Name | user2Name | user3Name | Caramba!      | testing.jpg |
 
   @C2624 @regression @rc @fastLogin
-  Scenario Outline: Verify sending GIF format pic [LANDSCAPE]
+  Scenario Outline: ZIOS-7986 Verify sending GIF format pic [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given User adds the following device: {"<Contact>": [{}]}

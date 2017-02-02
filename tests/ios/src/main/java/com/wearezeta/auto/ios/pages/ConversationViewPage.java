@@ -824,7 +824,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     public void tapImageButton(String buttonName) throws Exception {
         By locator = getImageButtonByName(buttonName);
         getElementIfExists(locator).orElseThrow(
-                () -> new IllegalStateException(buttonName + "button can't be found")
+                () -> new IllegalStateException(String.format("%s button can't be found", buttonName))
         ).click();
         // Wait for animation
         Thread.sleep(1000);
