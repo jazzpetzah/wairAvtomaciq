@@ -51,7 +51,7 @@ public class ConversationPageSteps {
         int messageId = getXLastMessageIndex(indexNumber);
         Point point = webContext.getPagesCollection(WebappPagesCollection.class).
                 getPage(com.wearezeta.auto.web.pages.ConversationPage.class).
-                getCenterOfMessageElement(messageId);
+                getCenterOfContextMenuButtonByMessage(messageId);
 
         webContext.getChildContext().getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class).
                 clickOnWebView(point);
