@@ -118,10 +118,8 @@ public class MainWirePageSteps {
     @When("^I verify app X coordinate is (\\d+) and Y coordinate is (\\d+)$")
     public void IVerifyPosition(int x, int y) throws Exception {
         MainWirePage mainWirePage = webContext.getChildContext().getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class);
-        Assert.assertTrue("Expected X coordinate " + x
-                + " does not match the actual value " + mainWirePage.getStrippedX(), mainWirePage.isStrippedX(x));
-        Assert.assertTrue("Expected Y coordinate " + y
-                + " does not match the actual value " + mainWirePage.getStrippedY(), mainWirePage.isStrippedY(y));
+        assertThat("Expected X coordinate does not match the actual value", mainWirePage.getStrippedX(), equalTo(x));
+        assertThat("Expected Y coordinate does not match the actual value", mainWirePage.getStrippedY(), equalTo(y));
     }
 
     @When("^I resize the app to width (\\d+) px and height (\\d+) px$")

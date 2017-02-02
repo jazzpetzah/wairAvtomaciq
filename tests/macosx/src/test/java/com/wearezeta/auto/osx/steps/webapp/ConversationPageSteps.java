@@ -4,6 +4,8 @@ import static org.hamcrest.Matchers.*;
 
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.osx.pages.osx.MainWirePage;
+import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
 import com.wearezeta.auto.osx.pages.webapp.ConversationPage;
 import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
@@ -12,7 +14,10 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import java.awt.image.BufferedImage;
 
+import cucumber.api.java.en.When;
 import org.apache.log4j.Logger;
+import org.openqa.selenium.Point;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ConversationPageSteps {
@@ -29,6 +34,27 @@ public class ConversationPageSteps {
     public void IOpenContextMenuOfLast() throws Exception {
         webContext.getPagesCollection(WebappPagesCollection.class).getPage(com.wearezeta.auto.web.pages.ConversationPage.class).
                 clickContextMenuOnMessage(1);
+    }
+
+    @When("^I click on ephemeral button$")
+    public void IClickEphemeralButton() throws Exception {
+        Point point = webContext.getPagesCollection(WebappPagesCollection.class).
+                getPage(com.wearezeta.auto.web.pages.ConversationPage.class).
+                getCenterOfEphemeralButton();
+
+        webContext.getChildContext().getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class).
+                clickOnWebView(point);
+    }
+
+    @When("^I click context menu of the (second |third )?last message$")
+    public void IClickContextMenuOfThirdLastMessage(String indexNumber) throws Exception {
+        int messageId = getXLastMessageIndex(indexNumber);
+        Point point = webContext.getPagesCollection(WebappPagesCollection.class).
+                getPage(com.wearezeta.auto.web.pages.ConversationPage.class).
+                getCenterOfMessageElement(messageId);
+
+        webContext.getChildContext().getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class).
+                clickOnWebView(point);
     }
 
     @Then("^I (do not )?see a picture (.*) from link preview$")
@@ -53,5 +79,24 @@ public class ConversationPageSteps {
             assertThat("I see a picture in the conversation", webContext.getPagesCollection().getPage(ConversationPage.class)
                     .isImageFromLinkPreviewNotVisible());
         }
+    }
+
+    private int getXLastMessageIndex(String indexValue) throws Exception {
+        int indexNummer = 1;
+        if (indexValue == null) {
+            return indexNummer;
+        }
+        switch (indexValue) {
+            case "third ":
+                indexNummer = 3;
+                break;
+            case "second ":
+                indexNummer = 2;
+                break;
+            default:
+                indexNummer = 1;
+                break;
+        }
+        return indexNummer;
     }
 }

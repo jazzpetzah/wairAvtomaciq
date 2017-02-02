@@ -5,11 +5,17 @@ import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
+import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.win.pages.webapp.ConversationPage;
+import com.wearezeta.auto.win.pages.win.MainWirePage;
+import com.wearezeta.auto.win.pages.win.WinPagesCollection;
 import cucumber.api.java.en.Then;
 import java.awt.image.BufferedImage;
 
+import cucumber.api.java.en.When;
 import org.apache.log4j.Logger;
+import org.openqa.selenium.Point;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 
@@ -83,4 +89,13 @@ public class ConversationPageSteps {
         webContext.getPagesCollection().getPage(ConversationPage.class).pressShortCutForCopy();
     }
 
+    @When("^I click on ephemeral button$")
+    public void IClickEphemeralButton() throws Exception {
+        Point point = webContext.getPagesCollection(WebappPagesCollection.class).
+                getPage(com.wearezeta.auto.web.pages.ConversationPage.class).
+                getCenterOfEphemeralButton();
+
+        webContext.getChildContext().getPagesCollection(WinPagesCollection.class).getPage(MainWirePage.class).
+                clickOnWebView(point);
+    }
 }
