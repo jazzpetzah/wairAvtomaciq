@@ -142,3 +142,26 @@ Feature: Notifications
     Examples:
       | Login      | Password      | Name      | Contact1  | ExpectedMessage | NotificationSender |
       | user1Email | user1Password | user1Name | user2Name | DEFAULT         | user2Name          |
+
+  @C404414 @notifications @ping @staging
+  Scenario Outline: Verify I can click ping notification while other conversation is opened
+    Given There are 3 users where <Name> is me
+    Given user <Contact1> adds a new device Device1 with label Label1
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    When I am signed in properly
+    Then I listen for notifications
+    When I open conversation with <Contact2>
+    Then Soundfile ping_from_them did not start playing
+    And I click next notification from <Contact1> with text <ExpectedMessage>
+    When User <Contact1> pinged in the conversation with Myself
+    Then I see <PING> action in conversation
+    And Soundfile ping_from_them did start playing
+    And I got 1 notification
+    And I saw notification from <Contact1> with text <ExpectedMessage>
+    And I see conversation with <Contact1> is selected in conversations list
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | ExpectedMessage | PING   |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | Pinged          | pinged |
