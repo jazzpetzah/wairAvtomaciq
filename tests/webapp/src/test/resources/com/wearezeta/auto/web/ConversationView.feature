@@ -261,7 +261,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             | Msg1FromUserA | Msg2FromUserA |
       | user1Email | user1Password | user1Name | user2Name | user3Name | SendPictureGroupChat | Message1      | Message2      |
 
-  @C1710 @regression @WEBAPP-3573
+  @C1710 @known @WEBAPP-3573
   Scenario Outline: Verify you can add maximum+1 number of participants into group conversation
     Given I switch to sign in page
     Given I enter "<Login>" in email field on Sign In page
@@ -340,7 +340,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | ExpectedMessage                   |
       | user1Email | user1Password | user1Name | user2Name | ('a' * 100)('LF' * 10)('b' * 100) |
 
-  @C131207 @regression @CM-1127
+  @C131207 @known @CM-1127
   Scenario Outline: Receive a really long message to group conversation
     Given There is a known user <Contact> with email <ContactEmail> and password <Password>
     Given User <Contact> removes all his registered OTR clients

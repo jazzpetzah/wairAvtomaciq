@@ -375,7 +375,7 @@ Feature: Search
       | Login      | Password      | Name      | UnknownContact1 | ContactUniqueUsername | Contact1  | Contact2  | Contact3  | Contact4  |
       | user1Email | user1Password | user1Name | user2Name       | user2UniqueUsername   | user3Name | user4Name | user5Name | user6Name |
 
-  @C399359 @staging
+  @C399359 @regression
   Scenario Outline: Verify search by username with at (@) symbol
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
