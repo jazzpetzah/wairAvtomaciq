@@ -30,11 +30,9 @@ public class SketchPage extends IOSPage {
 
     public void sketchRandomLines() throws Exception {
         final int directionsCount = FBSwipeDirection.values().length;
-        for (int times = 0; times < 2; ++times) {
-            ((FBElement) getElement(fbXpathCanvas)).swipe(
-                    FBSwipeDirection.values()[rand.nextInt(directionsCount)]
-            );
-        }
+        ((FBElement) getElement(fbXpathCanvas)).swipe(
+                FBSwipeDirection.values()[rand.nextInt(directionsCount)]
+        );
     }
 
     private static By getButtonByName(String name) {
