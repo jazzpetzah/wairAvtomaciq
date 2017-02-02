@@ -85,11 +85,9 @@ Feature: Archive
     Given I see conversations list
     When User <ArchivedUser> sends 1 default message to conversation Myself
     Then I see conversation <ArchivedUser> in conversations list
-    And I see Contacts label at the bottom of conversations list
     And I do not see Archive button at the bottom of conversations list
     When User Myself archives single user conversation <ArchivedUser>
     Then I do not see conversation <ArchivedUser> in conversations list
-    And I do not see Contacts label at the bottom of conversations list
     And I see Archive button at the bottom of conversations list
     And I see NO ACTIVE CONVERSATIONS message in conversations list
     When I open archived conversations

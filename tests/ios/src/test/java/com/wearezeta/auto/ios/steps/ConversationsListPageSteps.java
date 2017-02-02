@@ -286,24 +286,6 @@ public class ConversationsListPageSteps {
     }
 
     /**
-     * Verify whether Contacts label is visible at the bottom of conversations list
-     *
-     * @param shouldNotSee equals to null if Contacts label should be visible
-     * @throws Exception
-     * @step. ^I (do not )?see Archive button at the bottom of conversations list$
-     */
-    @Then("^I (do not )?see Contacts label at the bottom of conversations list$")
-    public void ISeeContactsLabel(String shouldNotSee) throws Exception {
-        if (shouldNotSee == null) {
-            Assert.assertTrue("Contacts label should be visible, but it's hidden",
-                    getConversationsListPage().contactsLabelIsVisible());
-        } else {
-            Assert.assertTrue("Contacts label should be invisible, but it's visible",
-                    getConversationsListPage().contactLabelIsNotVisible());
-        }
-    }
-
-    /**
      * Verify visibility of NO ACTIVE CONVERSATIONS message in conversation list
      *
      * @throws Exception

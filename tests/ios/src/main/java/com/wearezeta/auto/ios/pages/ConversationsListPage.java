@@ -40,9 +40,6 @@ public class ConversationsListPage extends IOSPage {
 
     public static final By nameContactsButton = MobileBy.AccessibilityId(strNameContactsButton);
 
-    protected static final By xpathContactsLabel = By.xpath(
-            String.format("//XCUIElementTypeButton[@name='%s' and @label='CONTACTS']", strNameContactsButton));
-
     private static final By xpathPendingRequest =
             By.xpath("//XCUIElementTypeCell[ .//XCUIElementTypeStaticText[contains(@name,' waiting')] ]");
 
@@ -216,14 +213,6 @@ public class ConversationsListPage extends IOSPage {
 
     public boolean isArchiveButtonInvisible() throws Exception {
         return isLocatorInvisible(nameOpenArchiveButton);
-    }
-
-    public boolean contactsLabelIsVisible() throws Exception {
-        return isLocatorDisplayed(xpathContactsLabel);
-    }
-
-    public boolean contactLabelIsNotVisible() throws Exception {
-        return isLocatorInvisible(xpathContactsLabel);
     }
 
     public boolean noConversationsMessageIsVisible() throws Exception {
