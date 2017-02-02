@@ -33,6 +33,7 @@ public class NotificationPageSteps {
      * This step does not fail after some time. Steps after this one have to verify a proper state.
      *
      * @see #IGotNotification()
+     * @see #IGotNumberOfNotifications()
      * @param from
      * @param body
      * @throws Exception
@@ -65,7 +66,7 @@ public class NotificationPageSteps {
         assertThat(String.format("Found Notification in %s", allNotifications), filteredNotifications, is(not(empty())));
     }
 
-    @Then("^I got (\\d+) notifications$")
+    @Then("^I got (\\d+) notifications?$")
     public void IGotNumberOfNotifications(int expectedNumNotifications) throws Exception {
         if (!context.getNotificationManager().isInitialised()) {
             throw new IllegalStateException(

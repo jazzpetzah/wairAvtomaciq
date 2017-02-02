@@ -1,6 +1,6 @@
 Feature: Settings
 
-  @C1706 @regression
+  @C1706 @preferences @regression
   Scenario Outline: Check Preferences opening
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
@@ -13,7 +13,7 @@ Feature: Settings
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C1773 @regression
+  @C1773 @preferences @regression
   Scenario Outline: Verify sound settings are saved after re-login
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
@@ -54,7 +54,7 @@ Feature: Settings
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C352087 @regression
+  @C352087 @preferences @regression
   Scenario Outline: Verify I can set sound alert settings
     Given There is 2 user where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
@@ -95,7 +95,7 @@ Feature: Settings
       | Email      | Password      | Name      | Contact    |
       | user1Email | user1Password | user1Name | user2Name  |
 
-  @C12064 @regression @useSpecialEmail
+  @C12064 @preferences @regression @useSpecialEmail
   Scenario Outline: Verify you can delete account
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
@@ -120,7 +120,7 @@ Feature: Settings
       | Email      | Password      | Name      | Error                                     |
       | user1Email | user1Password | user1Name | Please verify your details and try again. |
 
-  @C345367 @localytics @regression
+  @C345367 @preferences @localytics @regression
   Scenario Outline: Verify tracking data is never uploaded if user opted out
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -148,7 +148,7 @@ Feature: Settings
       | Email      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @C352073 @localytics @regression
+  @C352073 @preferences @localytics @regression
   Scenario Outline: Verify data is never uploaded to Raygun if user opted out
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -183,7 +183,7 @@ Feature: Settings
       | Email      | Password      | Name      | Contact   | UNABLE_TO_DECRYPT |
       | user1Email | user1Password | user1Name | user2Name | WAS NOT RECEIVED  |
 
-  @C352085 @localytics @regression
+  @C352085 @preferences @localytics @regression
   Scenario Outline: Verify data is uploaded again to Raygun after user opted-out and opted-in
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
