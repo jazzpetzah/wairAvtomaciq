@@ -1,6 +1,6 @@
 Feature: Notifications
 
-  @C318637 @staging
+  @C318637 @staging @WEBAPP-3586
   Scenario Outline: Sender name and a message are shown in notification when 'Show sender and message' item is selected in preferences
     Given There are 3 users where <Name> is me
     Given user <Contact1> adds a new device Device1 with label Label1
@@ -23,8 +23,8 @@ Feature: Notifications
       | Login      | Password      | Name      | Contact1  | Contact2  | ExpectedMessage | NotificationSender |
       | user1Email | user1Password | user1Name | user2Name | user3Name | DEFAULT         | user2Name          |
 
-  @C395989 @staging
-  Scenario Outline: No message content is written on notification when 'Show sender' item is selected in preferences 
+  @C395989 @staging @WEBAPP-3586
+  Scenario Outline: No message content is written on notification when 'Show sender' item is selected in preferences
     Given There are 3 users where <Name> is me
     Given user <Contact1> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact1>,<Contact2>
@@ -47,7 +47,7 @@ Feature: Notifications
       | Login      | Password      | Name      | Contact1  | Contact2  | OriginalMessage    | ExpectedMessage    | NotificationSender |
       | user1Email | user1Password | user1Name | user2Name | user3Name | MESSAGE_OBFUSCATED | Sent you a message | user2Name          |
 
-  @C318638 @staging
+  @C318638 @staging @WEBAPP-3586
   Scenario Outline: No sender name, profile image or message content is written on notification when choose 'Hide details' in preferences
     Given There are 3 users where <Name> is me
     Given user <Contact1> adds a new device Device1 with label Label1
