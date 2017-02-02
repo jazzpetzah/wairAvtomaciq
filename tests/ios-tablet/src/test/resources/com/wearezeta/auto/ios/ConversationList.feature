@@ -7,7 +7,7 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I swipe right on iPad the conversation named <Contact>
+    When I swipe right on conversation <Contact>
     And I tap Archive conversation action button
     Then I do not see conversation <Contact> in conversations list
     And I open archived conversations
@@ -25,7 +25,7 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    And I swipe right on iPad the conversation named <GroupChatName>
+    And I swipe right on conversation <GroupChatName>
     And I tap Archive conversation action button
     Then I do not see conversation <GroupChatName> in conversations list
     And I open archived conversations
@@ -182,7 +182,7 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I swipe right on iPad the conversation named <GroupChatName>
+    When I swipe right on conversation <GroupChatName>
     Then I see Mute conversation action button
     And I see Archive conversation action button
     And I see Delete conversation action button
@@ -200,7 +200,7 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I swipe right on iPad the conversation named <Contact>
+    When I swipe right on conversation <Contact>
     Then I see Mute conversation action button
     And I see Archive conversation action button
     And I see Delete conversation action button
@@ -235,7 +235,7 @@ Feature: Conversation List
     Given I see conversations list
     Given User <Contact1> sends 1 default message to conversation Myself
     Given User Myself sends 1 default message to conversation <Contact1>
-    When I swipe right on iPad the conversation named <Contact1>
+    When I swipe right on conversation <Contact1>
     And I tap Delete conversation action button
     And I confirm Delete conversation action
     Then I do not see conversation <Contact1> in conversations list
@@ -252,11 +252,11 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see conversations list
-    When I swipe right on iPad the conversation named <Contact1>
+    When I swipe right on conversation <Contact1>
     And I tap Archive conversation action button
     And I do not see conversation <Contact1> in conversations list
     And I open archived conversations
-    And I swipe right on iPad the conversation named <Contact1>
+    And I swipe right on conversation <Contact1>
     And I tap Delete conversation action button
     And I confirm Delete conversation action
     Then I do not see conversation <Contact1> in conversations list
@@ -279,7 +279,7 @@ Feature: Conversation List
     Given User Myself sends 1 default message to conversation <GroupChatName>
     Given User <Contact1> sends 1 default message to conversation <GroupChatName>
     Given User Myself sends 1 image file <Image> to conversation <GroupChatName>
-    When I swipe right on iPad the conversation named <GroupChatName>
+    When I swipe right on conversation <GroupChatName>
     And I tap Delete conversation action button
     And I confirm Delete conversation action
     Then I do not see conversation <GroupChatName> in conversations list
@@ -303,7 +303,7 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see conversations list
-    When I swipe right on iPad the conversation named <Contact1>
+    When I swipe right on conversation <Contact1>
     And I tap Block conversation action button
     And I tap Cancel conversation action button
     Then I see actions menu for <Contact1> conversation
@@ -320,9 +320,9 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see conversations list
-    When I swipe right on iPad the conversation named <Contact>
+    When I swipe right on conversation <Contact>
     And I tap Mute conversation action button
-    When I swipe right on iPad the conversation named <Contact>
+    When I swipe right on conversation <Contact>
     And I tap Archive conversation action button
     Then I do not see conversation <Contact> in conversations list
     When User <Contact> sends 1 default message to conversation Myself
@@ -348,7 +348,7 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given User <Name> sends 1 default message to conversation <GroupChatName>
-    When I swipe right on iPad the conversation named <GroupChatName>
+    When I swipe right on conversation <GroupChatName>
     And I tap Delete conversation action button
     And I tap Also Leave checkbox on Group info page
     And I confirm Delete conversation action
@@ -375,7 +375,7 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see conversations list
-    When I swipe right on iPad the conversation named <GroupChatName>
+    When I swipe right on conversation <GroupChatName>
     And I see Archive conversation action button
     And I see Delete conversation action button
     And I see Cancel conversation action button
@@ -395,7 +395,7 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see conversations list
-    When I swipe right on iPad the conversation named <Contact>
+    When I swipe right on conversation <Contact>
     And I tap Block conversation action button
     And I confirm Block conversation action
     Then I do not see conversation <Contact> in conversations list

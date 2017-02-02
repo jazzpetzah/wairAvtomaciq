@@ -1,6 +1,5 @@
 package com.wearezeta.auto.ios.pages;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.concurrent.Future;
@@ -8,8 +7,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.driver.facebook_ios_driver.FBDragArguments;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBDragArguments;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.misc.Timedelta;
 import io.appium.java_client.MobileBy;
@@ -39,9 +38,6 @@ public class ConversationsListPage extends IOSPage {
     private static final String strNameContactsButton = "bottomBarContactsButton";
 
     public static final By nameContactsButton = MobileBy.AccessibilityId(strNameContactsButton);
-
-    protected static final By xpathContactsLabel = By.xpath(
-            String.format("//XCUIElementTypeButton[@name='%s' and @label='CONTACTS']", strNameContactsButton));
 
     private static final By xpathPendingRequest =
             By.xpath("//XCUIElementTypeCell[ .//XCUIElementTypeStaticText[contains(@name,' waiting')] ]");
@@ -118,22 +114,14 @@ public class ConversationsListPage extends IOSPage {
         return isLocatorDisplayed(convoListRoot, locator, timeout);
     }
 
-    private void swipeRightOnContact(String name) throws Exception {
+    public void swipeRightOnConversation(String name) throws Exception {
         final FBElement dstElement = (FBElement) getConversationsListItem(name);
-        final Rectangle elRect = dstElement.getRect();
-        final Point startPoint = getDriver().fixCoordinates(
-                new Point(elRect.x + elRect.width / 10, elRect.y + elRect.height * 8 / 9)
-        );
-        final Point endPoint = getDriver().fixCoordinates(
-                new Point(elRect.x + elRect.width * 3 / 4, elRect.y + elRect.height * 8 / 9)
-        );
-        getDriver().dragFromToForDuration(
+        final Dimension elSize = dstElement.getSize();
+        final Point startPoint = new Point(elSize.width / 10, elSize.height * 8 / 9);
+        final Point endPoint = new Point(elSize.width * 3 / 4, elSize.height * 8 / 9);
+        dstElement.dragFromToForDuration(
                 new FBDragArguments(startPoint.x, startPoint.y, endPoint.x, endPoint.y, Timedelta.fromSeconds(1))
         );
-    }
-
-    public void swipeRightConversationToRevealActionButtons(String conversation) throws Exception {
-        swipeRightOnContact(conversation);
         // Wait for animation
         Thread.sleep(1000);
     }
@@ -216,14 +204,6 @@ public class ConversationsListPage extends IOSPage {
 
     public boolean isArchiveButtonInvisible() throws Exception {
         return isLocatorInvisible(nameOpenArchiveButton);
-    }
-
-    public boolean contactsLabelIsVisible() throws Exception {
-        return isLocatorDisplayed(xpathContactsLabel);
-    }
-
-    public boolean contactLabelIsNotVisible() throws Exception {
-        return isLocatorInvisible(xpathContactsLabel);
     }
 
     public boolean noConversationsMessageIsVisible() throws Exception {

@@ -32,7 +32,7 @@ public class NotificationManager {
     public String loadNotificationManagerScript() throws Exception {
         final String srcScriptPath = String.format("/%s/%s",
                 WebCommonUtils.Scripts.RESOURCES_SCRIPTS_ROOT, NOTIFICATION_MANAGER_SCRIPT);
-        return new String(Files.readAllBytes(Paths.get(srcScriptPath)));
+        return new String(Files.readAllBytes(Paths.get(NotificationManager.class.getResource(srcScriptPath).toURI())));
     }
 
     public List<Notification> getAllNotifications() throws Exception {

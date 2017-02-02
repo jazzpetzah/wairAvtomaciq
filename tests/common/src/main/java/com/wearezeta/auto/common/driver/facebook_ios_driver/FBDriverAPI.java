@@ -162,6 +162,14 @@ public class FBDriverAPI {
         parseResponseWithStatus(client.swipe(getSessionId(), uuid, direction));
     }
 
+    public void pinch(String uuid, FBPinchArguments args) throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.pinch(getSessionId(), uuid, args));
+    }
+
+    public void twoFingerTap(String uuid) throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.twoFingerTap(getSessionId(), uuid));
+    }
+
     public static class StatusNotZeroError extends Exception {
         public StatusNotZeroError(String message) {
             super(message);
@@ -217,7 +225,7 @@ public class FBDriverAPI {
         parseResponseWithStatus(client.touchAndHold(getSessionId(), x, y, duration));
     }
 
-    public void scroll(String uuid, Optional<String> toChildNamed, Optional<ScrollingDirection> direction,
+    public void scroll(String uuid, Optional<String> toChildNamed, Optional<FBScrollingDirection> direction,
                        Optional<String> predicateString, Optional<Boolean> toVisible)
             throws RESTError, StatusNotZeroError {
         Optional<String> strDirection = Optional.empty();
@@ -244,12 +252,8 @@ public class FBDriverAPI {
         return parseResponseWithStatus(client.getIsAccessible(getSessionId(), uuid)).equals(OBJC_YES);
     }
 
-    public String getWindowSize(String uuid) throws RESTError, StatusNotZeroError {
-        return parseResponseWithStatus(client.getWindowSize(getSessionId(), uuid));
-    }
-
-    public enum ScrollingDirection {
-        UP, DOWN, LEFT, RIGHT
+    public String getWindowSize() throws RESTError, StatusNotZeroError {
+        return parseResponseWithStatus(client.getWindowSize(getSessionId()));
     }
 
     public void switchToHomescreen() throws RESTError, StatusNotZeroError {

@@ -6,6 +6,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.log.ZetaLogger;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -23,6 +25,8 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 
 public class MainWirePage extends OSXPage {
+
+    private static final Logger LOG = ZetaLogger.getLog(MainWirePage.class.getSimpleName());
 
     public static final int APP_MAX_WIDTH = 1103;
 
@@ -111,14 +115,6 @@ public class MainWirePage extends OSXPage {
 
     public int getHeight() throws Exception {
         return getDriver().manage().window().getSize().getHeight();
-    }
-
-    public boolean isStrippedX(int x) {
-        return x == window.getLocation().getX() - SPACE_FOR_DOCK;
-    }
-
-    public boolean isStrippedY(int y) {
-        return y == window.getLocation().getY() - TITLEBAR_HEIGHT;
     }
 
     public void resizeByHand(int width, int height) throws Exception {
@@ -282,5 +278,33 @@ public class MainWirePage extends OSXPage {
         robot.keyPress(KeyEvent.VK_N);
         robot.keyRelease(KeyEvent.VK_N);
         robot.keyRelease(KeyEvent.VK_META);
+    }
+
+    public void clickOnWebView(Point point) throws Exception {
+        int x = getX() + point.getX();
+        int y = getY() + point.getY();
+        click(x, y);
+    }
+
+    public void rightClickOnWebView(Point point) throws Exception {
+        int x = getX() + point.getX();
+        int y = getY() + point.getY();
+        rightClick(x, y);
+    }
+
+    public void click(int x, int y) throws InterruptedException {
+        LOG.info("Click at " + x + ":" + y);
+        robot.mouseMove(x, y);
+        Thread.sleep(100);
+        robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+        robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+    }
+
+    public void rightClick(int x, int y) throws InterruptedException {
+        LOG.info("Right click at " + x + ":" + y);
+        robot.mouseMove(x, y);
+        Thread.sleep(100);
+        robot.mousePress(InputEvent.BUTTON3_DOWN_MASK);
+        robot.mouseRelease(InputEvent.BUTTON3_DOWN_MASK);
     }
 }

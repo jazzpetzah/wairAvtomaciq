@@ -1,8 +1,12 @@
 package com.wearezeta.auto.win.steps.win;
 
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.Optional;
+
+import javax.imageio.ImageIO;
+import javax.xml.bind.DatatypeConverter;
 
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
@@ -51,16 +55,18 @@ public class VideoCallPageSteps {
         // resize local video cutout to full screenshot
         BufferedImage resizedLocalVideo = ImageUtil.resizeImage(localScreenShareVideo, 4);
 
-        // Write images to disk
-        String localScreenshotName = "target/mySelfVideo-localScreenshot" + System.currentTimeMillis() + ".png";
-        String resizedLocalScreenShareVideoName = "target/mySelfVideo-resizedLocalScreenshare" + System.currentTimeMillis() + ".png";
-        ImageUtil.storeImage(localScreenshot.get(), new File(localScreenshotName));
-        ImageUtil.storeImage(resizedLocalVideo, new File(resizedLocalScreenShareVideoName));
-        String reportPath = "../artifact/tests/win/";
+        // Convert screenshots to data uris
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(localScreenshot.get(), "png", baos);
+        String localScreenshotDataURI = "data:image/png;base64," + DatatypeConverter.printBase64Binary(baos.toByteArray());
+        ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
+        ImageIO.write(resizedLocalVideo, "png", baos2);
+        String localScreenShareDataURI = "data:image/png;base64," + DatatypeConverter.printBase64Binary(baos2.toByteArray());
 
         // do feature Matching + homography to find objects
         assertThat("Not enough good matches between "
-                + "<a href='" + reportPath + localScreenshotName + "'>screenshot</a> and <a href='" + reportPath + resizedLocalScreenShareVideoName + "'>self video</a>",
+                        + "<img width='200px' src='" + localScreenshotDataURI + "' /> and <img width='200px' src='" +
+                localScreenShareDataURI + "' />",
                 ImageUtil.getMatches(localScreenshot.get(), resizedLocalVideo), greaterThan(40));
     }
 
@@ -76,20 +82,22 @@ public class VideoCallPageSteps {
             Optional<BufferedImage> localScreenshot = webContext.getChildContext().getPagesCollection(WinPagesCollection.class).
                     getPage(MainWirePage.class).getScreenshot();
             Assert.assertTrue("Fullscreen screenshot cannot be captured", localScreenshot.isPresent());
-            
+
             BufferedImage resizedRemoteScreenshot = ImageUtil.resizeImage(remoteScreenshot, 2);
 
-            // Write images to disk
-            long currentTimeMillis = System.currentTimeMillis();
-            String localScreenshotName = "target/seesMyScreen-localScreenshot" + currentTimeMillis + ".png";
-            String resizedRemoteScreenshotName = "target/seesMyScreen-resizedRemoteScreenshot" + currentTimeMillis + ".png";
-            ImageUtil.storeImage(localScreenshot.get(), new File(localScreenshotName));
-            ImageUtil.storeImage(resizedRemoteScreenshot, new File(resizedRemoteScreenshotName));
-            String reportPath = "../artifact/tests/win/";
+            // Convert screenshots to data uris
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(localScreenshot.get(), "png", baos);
+            String localScreenshotDataURI = "data:image/png;base64," + DatatypeConverter.printBase64Binary(baos.toByteArray());
+            ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
+            ImageIO.write(resizedRemoteScreenshot, "png", baos2);
+            String remoteScreenshotDataURI = "data:image/png;base64," + DatatypeConverter.printBase64Binary(baos2.toByteArray
+                    ());
 
             // do feature Matching + homography to find objects
             assertThat("Not enough good matches between "
-                    + "<a href='" + reportPath + localScreenshotName + "'>screenshot</a> and <a href='" + reportPath + resizedRemoteScreenshotName + "'>remote</a>",
+                            + "<img width='200px' src='" + localScreenshotDataURI + "' /> and <img width='200px' src='" +
+                    remoteScreenshotDataURI + "' />",
                     ImageUtil.getMatches(localScreenshot.get(), resizedRemoteScreenshot), greaterThan(35));
         }
     }

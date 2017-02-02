@@ -255,11 +255,11 @@ public class ConversationsListPageSteps {
         }
     }
 
-    @When("^I swipe right on a (.*)$")
-    public void ISwipeRightOnContact(String contact) throws Exception {
-        contact = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
-                .replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-        getConversationsListPage().swipeRightConversationToRevealActionButtons(contact);
+    @When("^I swipe right on conversation (.*)")
+    public void ISwipeRightOnConversation(String name) throws Exception {
+        name = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        getConversationsListPage().swipeRightOnConversation(name);
     }
 
     @Then("^I open archived conversations$")
@@ -282,24 +282,6 @@ public class ConversationsListPageSteps {
         } else {
             Assert.assertTrue("Archive button should be invisible, but it's visible",
                     getConversationsListPage().isArchiveButtonInvisible());
-        }
-    }
-
-    /**
-     * Verify whether Contacts label is visible at the bottom of conversations list
-     *
-     * @param shouldNotSee equals to null if Contacts label should be visible
-     * @throws Exception
-     * @step. ^I (do not )?see Archive button at the bottom of conversations list$
-     */
-    @Then("^I (do not )?see Contacts label at the bottom of conversations list$")
-    public void ISeeContactsLabel(String shouldNotSee) throws Exception {
-        if (shouldNotSee == null) {
-            Assert.assertTrue("Contacts label should be visible, but it's hidden",
-                    getConversationsListPage().contactsLabelIsVisible());
-        } else {
-            Assert.assertTrue("Contacts label should be invisible, but it's visible",
-                    getConversationsListPage().contactLabelIsNotVisible());
         }
     }
 

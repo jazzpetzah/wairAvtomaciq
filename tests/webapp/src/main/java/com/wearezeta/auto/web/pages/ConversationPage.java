@@ -526,6 +526,11 @@ public class ConversationPage extends WebPage {
         ephemeralButton.click();
     }
 
+    public Point getCenterOfEphemeralButton() throws Exception {
+        DriverUtils.waitUntilElementClickable(getDriver(), ephemeralButton);
+        return DriverUtils.getCenterOfElement(ephemeralButton);
+    }
+
     public List<String> getEphemeralTimers() throws Exception {
         DriverUtils.waitUntilElementClickable(getDriver(), ephemeralTimers.get(0));
         return ephemeralTimers.stream().map(WebElement::getText).collect(Collectors.toList());
@@ -1237,7 +1242,7 @@ public class ConversationPage extends WebPage {
 
     //context menu
 
-    public Point getCenterOfMessageElement(int indexNumber) throws Exception {
+    public Point getCenterOfContextMenuButtonByMessage(int indexNumber) throws Exception {
         String id = getMessageId(indexNumber);
         hoverOverMessage(id);
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssContextMenuButtonByMessageId.apply(id));

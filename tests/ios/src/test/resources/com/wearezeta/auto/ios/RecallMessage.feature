@@ -369,7 +369,7 @@ Feature: Recall Message
     Given I sign in using my email or phone number
     Given I see conversations list
     Given User <Contact1> sends 1 default message to conversation <Group>
-    When I swipe right on a <Group>
+    When I swipe right on conversation <Group>
     And I tap Archive conversation action button
     Then I do not see conversation <Group> in conversations list
     When User <Contact1> edits the recent message to "<Message1>" from user Myself via device <Contact1Device>

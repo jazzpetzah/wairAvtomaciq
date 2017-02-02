@@ -1,6 +1,8 @@
 package com.wearezeta.auto.osx.steps.webapp;
 
 
+import com.wearezeta.auto.osx.pages.osx.MainWirePage;
+import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
 import org.apache.log4j.Logger;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -27,7 +29,9 @@ public class ContactListPageSteps {
         ContactListPage contactListPage = webContext.getPagesCollection(WebappPagesCollection.class).getPage(
                 ContactListPage.class);
         Assert.assertTrue("No contact list loaded.", contactListPage.waitForContactListVisible());
-        contactListPage.openContextMenuWithContextClickForConversation(name);
+
+        MainWirePage page = webContext.getChildContext().getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class);
+        page.rightClickOnWebView(contactListPage.getCenterOfConversationListItem(name));
     }
     
     //TODO move to webapp

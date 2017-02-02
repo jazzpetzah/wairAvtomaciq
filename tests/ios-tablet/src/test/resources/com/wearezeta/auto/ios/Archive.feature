@@ -4,6 +4,7 @@ Feature: Archive
   Scenario Outline: Verify unarchive by receiving data [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
+    Given Users add the following devices: {"Myself": [{}], "<ArchivedUser>": [{}]}
     Given User Myself archives single user conversation <ArchivedUser>
     Given User <ArchivedUser> sets the unique username
     Given <ArchivedUser> starts instance using <CallBackend>
@@ -36,6 +37,7 @@ Feature: Archive
   Scenario Outline: Verify unarchiving silenced conversation only by call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
+    Given Users add the following devices: {"Myself": [{}], "<ArchivedUser>": [{}]}
     Given User Myself silences single user conversation <ArchivedUser>
     Given User Myself archives single user conversation <ArchivedUser>
     Given User <ArchivedUser> sets the unique username
@@ -68,7 +70,7 @@ Feature: Archive
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I swipe right on iPad the conversation named <GroupChatName>
+    When I swipe right on conversation <GroupChatName>
     And I tap Leave conversation action button
     And I confirm Leave conversation action
     Then I do not see conversation <GroupChatName> in conversations list
@@ -84,28 +86,27 @@ Feature: Archive
   Scenario Outline: Verify archive behaviour when one archive/unarchive a conversation [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
+    Given Users add the following devices: {"Myself": [{}], "<ArchivedUser>": [{}]}
     Given User Myself archives single user conversation <ArchivedUser>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
     When User <ArchivedUser> sends 1 default message to conversation Myself
     Then I see conversation <ArchivedUser> in conversations list
-    And I see Contacts label at the bottom of conversations list
     And I do not see Archive button at the bottom of conversations list
     When User Myself archives single user conversation <ArchivedUser>
     Then I do not see conversation <ArchivedUser> in conversations list
-    And I do not see Contacts label at the bottom of conversations list
     And I see Archive button at the bottom of conversations list
     And I see NO ACTIVE CONVERSATIONS message in conversations list
     When I open archived conversations
     Then I see conversation <ArchivedUser> in conversations list
-    When I swipe right on iPad the conversation named <ArchivedUser>
+    When I swipe right on conversation <ArchivedUser>
     And I tap Unarchive conversation action button
     Then I do not see conversation <ArchivedUser> in conversations list
     When I tap close Archive page button
     Then I see conversation <ArchivedUser> in conversations list
     And I do not see Archive button at the bottom of conversations list
-    When I swipe right on iPad the conversation named <ArchivedUser>
+    When I swipe right on conversation <ArchivedUser>
     And I tap Archive conversation action button
     And I do not see conversation <ArchivedUser> in conversations list
     And I see Archive button at the bottom of conversations list

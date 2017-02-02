@@ -1,6 +1,6 @@
 Feature: Ping
 
-  @C1717 @regression @localytics
+  @C1717 @ping @regression @localytics
   Scenario Outline: Send ping in 1on1
     Given There are 2 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
@@ -23,7 +23,7 @@ Feature: Ping
       | Login      | Password      | Name      | Contact   | PING       | Event                        | Attributes                                                                                            |
       | user1Email | user1Password | user1Name | user2Name | you pinged | media.completed_media_action | {\"action\":\"ping\",\"conversation_type\":\"one_to_one\",\"is_ephemeral\":false,\"with_bot\":false}" |
 
-  @C1718 @regression
+  @C1718 @ping @regression
   Scenario Outline: Verify you can Ping several times in a row
     Given There are 2 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
@@ -43,7 +43,7 @@ Feature: Ping
       | Login      | Password      | Name      | Contact   | PING       |
       | user1Email | user1Password | user1Name | user2Name | you pinged |
 
-  @C1719 @regression
+  @C1719 @ping @regression
   Scenario Outline: Verify I can receive ping (group conversation)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

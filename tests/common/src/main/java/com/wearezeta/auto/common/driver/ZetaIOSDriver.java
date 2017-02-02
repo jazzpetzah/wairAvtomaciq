@@ -321,15 +321,7 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
             @Override
             public Dimension getSize() {
                 try {
-                    final Dimension originalDimension = FBElement.apiStringToDimension(
-                            getFbDriverAPI().getWindowSize(CommonUtils.generateGUID().toUpperCase())
-                    );
-                    if (ZetaIOSDriver.this.getOrientation() == ScreenOrientation.LANDSCAPE &&
-                            originalDimension.getHeight() > originalDimension.getWidth()) {
-                        // FIXME: workaround for webdriver bug https://github.com/facebook/WebDriverAgent/issues/303
-                        return new Dimension(originalDimension.getHeight(), originalDimension.getWidth());
-                    }
-                    return originalDimension;
+                    return FBElement.apiStringToDimension(getFbDriverAPI().getWindowSize());
                 } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
                     throw new WebDriverException(e);
                 }
@@ -419,35 +411,12 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
         }
     }
 
-    public void dragFromToForDuration(FBDragArguments FBDragArguments) {
+    public void dragFromToForDuration(FBDragArguments fbDragArguments) {
         try {
-            fbDriverAPI.dragFromToForDuration("0", FBDragArguments);
+            fbDriverAPI.dragFromToForDuration(fbDragArguments);
         } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }
-    }
-
-    // TODO: Remove this workaround after the fix for XCTest landscape is merged to WDA
-    public Point fixCoordinates(Point original) throws Exception {
-        if (!CommonUtils.getDeviceName(getClass()).toLowerCase().contains("ipad")) {
-            return original;
-        }
-        final FBDeviceOrientation orientation = getFbDriverAPI().getOrientation();
-        if (orientation == FBDeviceOrientation.PORTRAIT) {
-            return original;
-        }
-        final Dimension screenSize = FBElement.apiStringToDimension(
-                getFbDriverAPI().getWindowSize(CommonUtils.generateGUID().toUpperCase())
-        );
-        switch (orientation) {
-            case UIA_DEVICE_ORIENTATION_PORTRAIT_UPSIDEDOWN:
-                return new Point(screenSize.width - original.x, screenSize.height - original.y);
-            case LANDSCAPE:
-                return new Point(screenSize.width - original.y, original.x);
-            case UIA_DEVICE_ORIENTATION_LANDSCAPERIGHT:
-                return new Point(original.y, screenSize.height - original.x);
-        }
-        return original;
     }
 
     @Override

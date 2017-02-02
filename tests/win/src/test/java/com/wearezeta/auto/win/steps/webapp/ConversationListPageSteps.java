@@ -14,7 +14,6 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.openqa.selenium.Point;
-import org.openqa.selenium.WebElement;
 
 public class ConversationListPageSteps {
 
@@ -25,15 +24,16 @@ public class ConversationListPageSteps {
         this.webContext = webContext;
     }
     
-    @Given("^I click context menu of the last message$")
-    public void IClickContextMenuOfLast() throws Exception {
+    @Given("^I click context menu of the (second |third )?last message$")
+    public void IClickContextMenuOfThirdLastMessage(String indexString) throws Exception {
+        int indexNumber = getXLastMessageIndex(indexString);
         Point point = webContext.getPagesCollection().getPage(com.wearezeta.auto.web.pages.ConversationPage.class)
-                .getCenterOfMessageElement(1);
+                .getCenterOfContextMenuButtonByMessage(indexNumber);
 
         // get x and y positions to right click in WebView
         MainWirePage mainWirePage = webContext.getChildContext().getPagesCollection(WinPagesCollection.class).getPage(
                 MainWirePage.class);
-        mainWirePage.clickOnWebViewElement(point);
+        mainWirePage.clickOnWebView(point);
     }
 
     //TODO move to webapp
@@ -80,7 +80,25 @@ public class ConversationListPageSteps {
         // get x and y positions to right click in WebView
         MainWirePage mainWirePage = webContext.getChildContext().getPagesCollection(WinPagesCollection.class).getPage(
                 MainWirePage.class);
-        mainWirePage.rightClickOnWebViewElement(point);
+        mainWirePage.rightClickOnWebView(point);
     }
 
+    private int getXLastMessageIndex(String indexValue) throws Exception {
+        int indexNummer = 1;
+        if (indexValue == null) {
+            return indexNummer;
+        }
+        switch (indexValue) {
+            case "third ":
+                indexNummer = 3;
+                break;
+            case "second ":
+                indexNummer = 2;
+                break;
+            default:
+                indexNummer = 1;
+                break;
+        }
+        return indexNummer;
+    }
 }

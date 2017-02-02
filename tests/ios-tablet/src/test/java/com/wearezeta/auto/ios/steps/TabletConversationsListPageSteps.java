@@ -69,18 +69,4 @@ public class TabletConversationsListPageSteps {
                     this.savedConvoItemStates.get(name).isNotChanged(timeout, MIN_CONVO_SIMILARITY_SCORE));
         }
     }
-
-    /**
-     * Performs swipe right action on the particular convo list item
-     *
-     * @param name conversation name/alias
-     * @throws Exception
-     * @step. ^I swipe right on iPad the conversation named (.*)
-     */
-    @When("^I swipe right on iPad the conversation named (.*)")
-    public void ISwipeRightConversation(String name) throws Exception {
-        name = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
-                .replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
-        getTabletConversationsListPage().swipeRightConversationToRevealActionButtons(name);
-    }
 }

@@ -12,8 +12,8 @@ import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
-import com.wearezeta.auto.common.driver.facebook_ios_driver.FBDriverAPI;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBScrollingDirection;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces.FunctionFor2Parameters;
 import com.wearezeta.auto.common.driver.device_helpers.IOSSimulatorHelpers;
@@ -392,17 +392,10 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
         getElement(nameRecentMessageToolbox).click();
     }
 
-    public BufferedImage getMediaContainerStateGlyphScreenshot() throws Exception {
-        final BufferedImage containerScreen =
-                this.getElementScreenshot(getElement(fbXpathMediaContainerCell)).orElseThrow(() ->
-                        new IllegalStateException("Cannot take a screenshot of media container"));
-        final int stateGlyphWidth = containerScreen.getWidth() / 7;
-        final int stateGlyphHeight = containerScreen.getHeight() / 7;
-        final int stateGlyphX = (containerScreen.getWidth() - stateGlyphWidth) / 2;
-        final int stateGlyphY = (containerScreen.getHeight() - stateGlyphHeight) / 2;
-//        BufferedImage tmp = containerScreen.getSubimage(stateGlyphX, stateGlyphY, stateGlyphWidth, stateGlyphHeight);
-//        ImageIO.write(tmp, "png", new File("/Users/julianereschke/Desktop/" + System.currentTimeMillis() + ".png"));
-        return containerScreen.getSubimage(stateGlyphX, stateGlyphY, stateGlyphWidth, stateGlyphHeight);
+    public BufferedImage getMediaContainerState() throws Exception {
+        return this.getElementScreenshot(getElement(fbXpathMediaContainerCell)).orElseThrow(() ->
+                new IllegalStateException("Cannot take a screenshot of media container")
+        );
     }
 
     public BufferedImage getAssetContainerStateScreenshot(int index) throws Exception {
@@ -831,7 +824,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     public void tapImageButton(String buttonName) throws Exception {
         By locator = getImageButtonByName(buttonName);
         getElementIfExists(locator).orElseThrow(
-                () -> new IllegalStateException(buttonName + "button can't be found")
+                () -> new IllegalStateException(String.format("%s button can't be found", buttonName))
         ).click();
         // Wait for animation
         Thread.sleep(1000);
@@ -941,7 +934,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
 
     private static final int MAX_SCROLLS = 2;
 
-    private void scrollTo(FBDriverAPI.ScrollingDirection direction) throws Exception {
+    private void scrollTo(FBScrollingDirection direction) throws Exception {
         final FBElement dstCanvas = (FBElement) getElement(fbClassConversationViewRoot);
         for (int i = 0; i < MAX_SCROLLS; i++) {
             switch (direction) {
@@ -960,11 +953,11 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     }
 
     public void scrollToTheTop() throws Exception {
-        scrollTo(FBDriverAPI.ScrollingDirection.UP);
+        scrollTo(FBScrollingDirection.UP);
     }
 
     public void scrollToTheBottom() throws Exception {
-        scrollTo(FBDriverAPI.ScrollingDirection.DOWN);
+        scrollTo(FBScrollingDirection.DOWN);
         if (!isLocatorDisplayed(fbXpathRecentEntry)) {
             throw new IllegalStateException("Failed to scroll to the bottom of the conversation");
         }

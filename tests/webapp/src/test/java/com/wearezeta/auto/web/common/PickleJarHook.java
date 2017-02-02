@@ -204,9 +204,6 @@ public class PickleJarHook implements PickleJarTestHook {
                     // filter encryption precondition
                     .filter((entry)
                             -> !entry.getMessage().contains("otr") && !entry.getMessage().contains("412 (Precondition Failed)"))
-                    //filter youtube javascript error
-                    .filter((entry)
-                            -> !entry.getMessage().contains("ytcfg is not defined"))
                     // filter degraded conversation errors for C95638, C95628 and C399348
                     .filter((entry)
                             -> !entry.getMessage().contains("Unknown ConversationError"))
