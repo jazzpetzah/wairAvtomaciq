@@ -1,5 +1,9 @@
 package com.wearezeta.auto.win.pages.win;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -13,9 +17,11 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWinDriver;
 import com.wearezeta.auto.win.locators.WinLocators;
 
-import java.awt.Robot;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+
+import javax.imageio.ImageIO;
+import javax.xml.bind.DatatypeConverter;
 
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -47,7 +53,7 @@ public class MainWirePage extends WinPage {
     private static final int APP_MIN_WIDTH = 780;
     private static final int APP_MIN_HEIGHT = 600;
 
-    private static final int TITLEBAR_HEIGHT = 40;
+    private static final int TITLEBAR_HEIGHT = 35;
     private static final int WINDOW_DECORATION_WIDTH = 10;
     private static final int MENUBAR_HEIGHT = 20;
 
@@ -209,6 +215,7 @@ public class MainWirePage extends WinPage {
 
     public void click(int x, int y) throws InterruptedException {
         LOG.info("Click at " + x + ":" + y);
+        screenCapturePosition(x, y);
         robot.mouseMove(x, y);
         Thread.sleep(100);
         robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
@@ -217,9 +224,26 @@ public class MainWirePage extends WinPage {
 
     public void rightClick(int x, int y) throws InterruptedException {
         LOG.info("Right click at " + x + ":" + y);
+        screenCapturePosition(x, y);
         robot.mouseMove(x, y);
         Thread.sleep(100);
         robot.mousePress(InputEvent.BUTTON3_DOWN_MASK);
         robot.mouseRelease(InputEvent.BUTTON3_DOWN_MASK);
+    }
+
+    private void screenCapturePosition(int x, int y) {
+        int borderSize = 20;
+        BufferedImage image = robot.createScreenCapture(new Rectangle(x - borderSize, y - borderSize, borderSize * 2 + 1,
+                borderSize * 2 + 1));
+        Color color = new Color(255, 0, 0);
+        image.setRGB(borderSize + 1, borderSize + 1, color.getRGB());
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            ImageIO.write(image, "png", baos);
+        } catch (IOException e) {
+            LOG.error("Could not write screen capture: " + e.getMessage());
+        }
+        LOG.info("data:image/png;base64," + DatatypeConverter.printBase64Binary(baos.toByteArray()));
     }
 }

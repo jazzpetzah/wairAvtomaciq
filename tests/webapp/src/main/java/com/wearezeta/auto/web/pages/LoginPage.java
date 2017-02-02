@@ -138,6 +138,11 @@ public class LoginPage extends WebPage {
                 WebAppLocators.LoginPage.cssRememberMe));
     }
 
+    private boolean waitForEmailFieldDisappearance() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.cssSelector(
+                WebAppLocators.LoginPage.cssEmailInput));
+    }
+
     private boolean waitForHistoryPageDisappearance() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.cssSelector(
                 WebAppLocators.HistoryInfoPage.cssConfirmButton));
@@ -146,12 +151,13 @@ public class LoginPage extends WebPage {
     public boolean waitForLogin() throws Exception {
         boolean noSignIn = waitForLoginButtonDisappearance();
         boolean noRememberMe = waitForRememberMeDisappearance();
+        boolean noEmailField = waitForEmailFieldDisappearance();
         boolean noHistoryPage = waitForHistoryPageDisappearance();
         boolean noSignInSpinner = DriverUtils.waitUntilLocatorDissapears(
                 this.getDriver(),
                 By.className(WebAppLocators.LoginPage.classNameProgressBar),
                 TIMEOUT_SIGNED_IN_PROPERLY);
-        return noSignIn && noRememberMe && noHistoryPage && noSignInSpinner;
+        return noSignIn && noRememberMe && noEmailField && noHistoryPage && noSignInSpinner;
     }
 
     public void clickSignInButton() throws Exception {
