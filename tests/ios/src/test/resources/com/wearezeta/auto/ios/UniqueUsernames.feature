@@ -520,30 +520,30 @@ Feature: Unique Usernames
     Given I open search UI
     Given I accept alert
     Given I tap X button on Search UI page
-    When I swipe right on a <Contact7Unconnected>
+    When I swipe right on conversation <Contact7Unconnected>
     Then I do not see common friends count on Conversation actions page
     And I tap Cancel conversation action button
-    When I swipe right on a <Contact1WithABEmail>
+    When I swipe right on conversation <Contact1WithABEmail>
     Then I see Address Book name "<Contact1ABName>" on Conversation actions page
     And I do not see unique username on Conversation actions page
     And I tap Cancel conversation action button
-    When I swipe right on a <Contact2WithABPhoneNumber>
+    When I swipe right on conversation <Contact2WithABPhoneNumber>
     Then I see Address Book name "<Contact2ABName>" on Conversation actions page
     And I do not see unique username on Conversation actions page
     And I tap Cancel conversation action button
-    When I swipe right on a <Contact3WithUniqueUserName>
+    When I swipe right on conversation <Contact3WithUniqueUserName>
     Then I see unique username "<Contact3UniqueUserName>" on Conversation actions page
     And I do not see Address Book name on Conversation actions page
     And I tap Cancel conversation action button
-    When I swipe right on a <Contact4WithCommonFriends>
+    When I swipe right on conversation <Contact4WithCommonFriends>
     Then I do not see unique username on Conversation actions page
     And I do not see common friends count on Conversation actions page
     And I tap Cancel conversation action button
-    When I swipe right on a <Contact5WithSameNameInAB>
+    When I swipe right on conversation <Contact5WithSameNameInAB>
     Then I do not see unique username on Conversation actions page
     And I see Address Book name "" on Conversation actions page
     And I tap Cancel conversation action button
-    When I swipe right on a <GroupChatName>
+    When I swipe right on conversation <GroupChatName>
     Then I do not see Address Book name on Conversation actions page
     And I do not see unique username on Conversation actions page
 

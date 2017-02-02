@@ -8,13 +8,14 @@ import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBDragArguments;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
-import com.wearezeta.auto.common.driver.facebook_ios_driver.FBSwipeDirection;
 import com.wearezeta.auto.common.misc.Timedelta;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.*;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import org.openqa.selenium.Point;
 
 public class ConversationsListPage extends IOSPage {
     private static final By nameSettingsGearButton = MobileBy.AccessibilityId("bottomBarSettingsButton");
@@ -113,12 +114,14 @@ public class ConversationsListPage extends IOSPage {
         return isLocatorDisplayed(convoListRoot, locator, timeout);
     }
 
-    private void swipeRightOnContact(String name) throws Exception {
-        ((FBElement) getConversationsListItem(name)).swipe(FBSwipeDirection.RIGHT);
-    }
-
-    public void swipeRightConversationToRevealActionButtons(String conversation) throws Exception {
-        swipeRightOnContact(conversation);
+    public void swipeRightOnConversation(String name) throws Exception {
+        final FBElement dstElement = (FBElement) getConversationsListItem(name);
+        final Dimension elSize = dstElement.getSize();
+        final Point startPoint = new Point(elSize.width / 10, elSize.height * 8 / 9);
+        final Point endPoint = new Point(elSize.width * 3 / 4, elSize.height * 8 / 9);
+        dstElement.dragFromToForDuration(
+                new FBDragArguments(startPoint.x, startPoint.y, endPoint.x, endPoint.y, Timedelta.fromSeconds(1))
+        );
         // Wait for animation
         Thread.sleep(1000);
     }

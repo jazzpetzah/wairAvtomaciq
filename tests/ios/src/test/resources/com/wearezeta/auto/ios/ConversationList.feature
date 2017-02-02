@@ -23,9 +23,9 @@ Feature: Conversation List
     Given User adds the following device: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I swipe right on a <Contact>
+    When I swipe right on conversation <Contact>
     And I tap Mute conversation action button
-    When I swipe right on a <Contact>
+    When I swipe right on conversation <Contact>
     And I tap Archive conversation action button
     Then I do not see conversation <Contact> in conversations list
     Given User <Contact> sends 1 default message to conversation Myself
@@ -71,7 +71,7 @@ Feature: Conversation List
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I swipe right on a <GroupChatName>
+    When I swipe right on conversation <GroupChatName>
     And I tap Archive conversation action button
     Then I do not see conversation <GroupChatName> in conversations list
     And I open archived conversations
@@ -124,7 +124,7 @@ Feature: Conversation List
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I swipe right on a <GroupChatName>
+    When I swipe right on conversation <GroupChatName>
     Then I see actions menu for <GroupChatName> conversation
     And I see Mute conversation action button
     And I see Archive conversation action button
@@ -142,7 +142,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I swipe right on a <Contact>
+    When I swipe right on conversation <Contact>
     Then I see actions menu for <Contact> conversation
     And I see Mute conversation action button
     And I see Archive conversation action button
@@ -160,7 +160,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I swipe right on a <Contact>
+    When I swipe right on conversation <Contact>
     And I see actions menu for <Contact> conversation
     And I see Archive conversation action button
     And I tap Archive conversation action button
@@ -179,7 +179,7 @@ Feature: Conversation List
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I swipe right on a <GroupChatName>
+    When I swipe right on conversation <GroupChatName>
     And I see actions menu for <GroupChatName> conversation
     And I tap Leave conversation action button
     And I confirm Leave conversation action
@@ -207,7 +207,7 @@ Feature: Conversation List
     When I tap on contact name <GroupChatName>
     Then I see 1 photo in the conversation view
     When I navigate back to conversations list
-    And I swipe right on a <GroupChatName>
+    And I swipe right on conversation <GroupChatName>
     And I tap Delete conversation action button
     And I confirm Delete conversation action
     And I open search UI
@@ -237,7 +237,7 @@ Feature: Conversation List
     When I tap on contact name <Contact1>
     Then I see 1 photo in the conversation view
     When I navigate back to conversations list
-    And I swipe right on a <Contact1>
+    And I swipe right on conversation <Contact1>
     And I tap Delete conversation action button
     And I confirm Delete conversation action
     And I open search UI
@@ -259,7 +259,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I swipe right on a <Contact>
+    When I swipe right on conversation <Contact>
     Then I see actions menu for <Contact> conversation
     And I tap Cancel conversation action button
     Then I see conversations list
@@ -278,11 +278,11 @@ Feature: Conversation List
     When I remember the state of <Contact> conversation item
     And I tap on contact name <Contact>
     And I navigate back to conversations list
-    When I swipe right on a <Contact>
+    When I swipe right on conversation <Contact>
     And I tap Mute conversation action button
     Then I see the state of <Contact> conversation item is changed
     When I remember the state of <Contact> conversation item
-    And I swipe right on a <Contact>
+    And I swipe right on conversation <Contact>
     And I tap Unmute conversation action button
     Then I see the state of <Contact> conversation item is changed
 
@@ -317,7 +317,7 @@ Feature: Conversation List
     Given I see conversations list
     # Wait for sync
     Given I wait for 5 seconds
-    When I swipe right on a <Contact1>
+    When I swipe right on conversation <Contact1>
     And I tap Delete conversation action button
     And I confirm Delete conversation action
     Then I do not see conversation <Contact1> in conversations list
@@ -333,11 +333,11 @@ Feature: Conversation List
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I swipe right on a <Contact1>
+    When I swipe right on conversation <Contact1>
     And I tap Archive conversation action button
     And I do not see conversation <Contact1> in conversations list
     And I open archived conversations
-    And I swipe right on a <Contact1>
+    And I swipe right on conversation <Contact1>
     And I tap Delete conversation action button
     And I confirm Delete conversation action
     Then I do not see conversation <Contact1> in conversations list
@@ -356,7 +356,7 @@ Feature: Conversation List
     Given I sign in using my email or phone number
     Given I see conversations list
     Given User Myself sends 1 default message to conversation <GroupChatName>
-    When I swipe right on a <GroupChatName>
+    When I swipe right on conversation <GroupChatName>
     And I tap Delete conversation action button
     And I tap Also Leave checkbox on Group info page
     And I confirm Delete conversation action
@@ -388,7 +388,7 @@ Feature: Conversation List
     Given User Myself sends 1 default message to conversation <GroupChatName>
     Given User Myself sends 1 image file <Picture> to conversation <GroupChatName>
     Given User <Contact1> sends 1 default message to conversation <GroupChatName>
-    When I swipe right on a <GroupChatName>
+    When I swipe right on conversation <GroupChatName>
     And I tap Delete conversation action button
     And I confirm Delete conversation action
     Then I do not see conversation <GroupChatName> in conversations list
@@ -415,7 +415,7 @@ Feature: Conversation List
     Given <Contact1> removes Myself from group chat <GroupChatName>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I swipe right on a <GroupChatName>
+    When I swipe right on conversation <GroupChatName>
     And I see Archive conversation action button
     And I see Cancel conversation action button
     And I tap Delete conversation action button
@@ -433,7 +433,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I swipe right on a <Contact1>
+    When I swipe right on conversation <Contact1>
     And I tap Block conversation action button
     And I tap Cancel conversation action button
     Then I see actions menu for <Contact1> conversation
@@ -448,7 +448,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I swipe right on a <Contact>
+    When I swipe right on conversation <Contact>
     And I tap Block conversation action button
     And I confirm Block conversation action
     Then I do not see conversation <Contact> in conversations list
@@ -490,7 +490,7 @@ Feature: Conversation List
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I see first item in contact list named <Contact>
-    When I swipe right on a <Contact>
+    When I swipe right on conversation <Contact>
     Then I see actions menu for <Contact> conversation
     And I see Archive conversation action button
     And I see Cancel conversation action button

@@ -255,11 +255,11 @@ public class ConversationsListPageSteps {
         }
     }
 
-    @When("^I swipe right on a (.*)$")
-    public void ISwipeRightOnContact(String contact) throws Exception {
-        contact = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
-                .replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-        getConversationsListPage().swipeRightConversationToRevealActionButtons(contact);
+    @When("^I swipe right on conversation (.*)")
+    public void ISwipeRightOnConversation(String name) throws Exception {
+        name = IOSTestContextHolder.getInstance().getTestContext().getUsersManager()
+                .replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        getConversationsListPage().swipeRightOnConversation(name);
     }
 
     @Then("^I open archived conversations$")
