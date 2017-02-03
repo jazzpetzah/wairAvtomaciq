@@ -229,6 +229,12 @@ public class GroupPopoverPageSteps {
         }
     }
 
+    @When("^I see (\\d+) common friends on Group Participants popover$")
+    public void ISeeCommonFriendsOnPopover(int amount) throws Exception {
+        Assert.assertTrue(context.getPagesCollection().getPage(GroupPopoverContainer.class)
+                .getCommonFriends().contains(Integer.toString(amount)));
+    }
+
     @When("^I( do not)? see user (.*) in verified section$")
     public void ISeeUserInVerifiedSection(String donot, String contactsAliases) throws Exception {
         List<String> contacts = context.getUsersManager().splitAliases(contactsAliases);

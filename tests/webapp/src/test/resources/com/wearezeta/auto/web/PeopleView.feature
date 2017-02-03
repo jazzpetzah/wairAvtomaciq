@@ -393,3 +393,24 @@ Feature: People View
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName               |
       | user1Email | user1Password | user1Name | user2Name | user3Name | PeoplePopoverGroupChat |
+
+  @C352251 @staging
+  Scenario Outline: Verify number of common friends is shown on participants popover
+    Given There are 3 users where <Name> is me
+    Given <Name>,<Contact1>,<Contact2> have unique usernames
+    Given Myself is connected to <Contact1>
+    Given <Contact1> is connected to <Contact2>
+    Given <Contact1> has group chat <ChatName> with <Name>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I wait until <Contact2> has 1 common friend on the backend
+    Given I am signed in properly
+    When I open conversation with <ChatName>
+    And I click People button in group conversation
+    And I see Group Participants popover
+    And I click on participant <Contact2> on Group Participants popover
+    Then I see 1 common friends on Group Participants popover
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GROUPCHAT |
