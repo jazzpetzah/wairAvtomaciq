@@ -165,3 +165,26 @@ Feature: Notifications
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ExpectedMessage | PING   |
       | user1Email | user1Password | user1Name | user2Name | user3Name | Pinged          | pinged |
+
+  @C415141 @notifications @calling @staging
+  Scenario Outline: Verify I can click calling notification while other conversation is opened
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Contact1> has unique username
+    Given <Contact1> starts instance using <CallBackend>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    When I am signed in properly
+    Then I listen for notifications
+    When I open conversation with <Contact2>
+    Then Soundfile ringing_from_them did not start playing in loop
+    And I click next notification from <Contact1> with text <ExpectedMessage>
+    When <Contact1> calls me
+    And Soundfile ringing_from_them did start playing in loop
+    And I got 1 notification
+    And I saw notification from <Contact1> with text <ExpectedMessage>
+    And I see conversation with <Contact1> is selected in conversations list
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | ExpectedMessage | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | Calling         | chrome      | 20      |
