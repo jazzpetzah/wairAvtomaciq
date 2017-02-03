@@ -158,8 +158,8 @@ Feature: Forward Message
     # Given User Me sends 1 encrypted message to user <Contact1>
     Given I see conversations list
     Given I tap on contact name <Contact1>
-    # Small wait to make the appearence of button on jenkins more stable
-    Given I wait for 3 seconds
+    # Small wait to make the appearфnce of button on jenkins more stable
+    Given I wait for 5 seconds
     # Have to tap play video message to download video. Otherwise Forward button is missing.
     Given I tap on video message in conversation view
     Given I tap Done button on video message player page
