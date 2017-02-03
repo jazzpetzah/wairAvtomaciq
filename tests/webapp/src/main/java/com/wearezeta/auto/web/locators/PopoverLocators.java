@@ -184,6 +184,9 @@ public final class PopoverLocators {
 
 			public static final String xpathUniqueUserName = xpathRootLocator
 					+ "//*[@data-uie-name='status-username']";
+
+			public static final String xpathCommonFriends = xpathRootLocator
+					+ "//*[@data-uie-name='status-user-contacts']";
 		}
 
 		public static final class SelfInfoPage {
