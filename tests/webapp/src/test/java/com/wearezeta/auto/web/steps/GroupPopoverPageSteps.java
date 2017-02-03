@@ -231,8 +231,8 @@ public class GroupPopoverPageSteps {
 
     @When("^I see (\\d+) common friends on Group Participants popover$")
     public void ISeeCommonFriendsOnPopover(int amount) throws Exception {
-        Assert.assertTrue(context.getPagesCollection().getPage(GroupPopoverContainer.class)
-                .getCommonFriends().contains(Integer.toString(amount)));
+        assertThat("Common friends are not correct", context.getPagesCollection().getPage(GroupPopoverContainer.class)
+                .getCommonFriends(), containsString(Integer.toString(amount)));
     }
 
     @When("^I( do not)? see user (.*) in verified section$")
