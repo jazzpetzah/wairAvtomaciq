@@ -44,9 +44,9 @@ Feature: Ephemeral Group Message
     # File
     When I tap File button from cursor toolbar
     Then I see File Upload container in the conversation view
+    And I remember the state of File Upload container in the conversation view
     And I wait for <EphemeraTimeout>
-    And I do not see File Upload container in the conversation view
-    And I see File Upload Placeholder container in the conversation view
+    Then I verify the state of File Upload container is changed
     # Location
     When I tap Share location button from cursor toolbar
     And I tap Send button on Share Location page
