@@ -69,8 +69,7 @@ Feature: Ephemeral Message
     And I set timeout to <EphemeralTimeout> on Extended cursor ephemeral overlay
     And I type the message "<Message>" and send it by cursor Send button
     And I long tap the obfuscated Text message "<Message>" in the conversation view
-    Then I do not see Delete only for me button on the message bottom menu
-    And I do not see Delete for everyone button on the message bottom menu
+    Then I do not see Delete button on the message bottom menu
     And I do not see Like button on the message bottom menu
     And I do not see Copy button on the message bottom menu
     And I do not see Forward button on the message bottom menu

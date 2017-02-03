@@ -15,8 +15,8 @@ Feature: Delete Message
     Then I see Copy button on the message bottom menu
     And I see Forward button on the message bottom menu
     And I see Edit button on the message bottom menu
-    And I see Delete only for me button on the message bottom menu
-    And I see Delete for everyone button on the message bottom menu
+    And I see Delete button on the message bottom menu
+    And I tap Delete button on the message bottom menu
     When I tap Delete only for me button on the message bottom menu
     And I see alert message containing pure text "<AlertText>" in the title
     And I tap Delete button on the alert
@@ -64,6 +64,7 @@ Feature: Delete Message
     And I type the message "<YoutubeLink>" and send it by cursor Send button
     And I hide keyboard
     And I long tap Youtube container in the conversation view
+    And I tap Delete button on the message bottom menu
     And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see the message "<YoutubeLink>" in the conversation view
@@ -90,9 +91,7 @@ Feature: Delete Message
     When I tap on conversation name <Contact>
     And User <Contact> send encrypted message "<Message>" to user Myself
     And I long tap the Text message "<Message>" in the conversation view
-    And I see Delete only for me button on the message bottom menu
-    And I do not see Delete for everyone button on the message bottom menu
-    And I tap Delete only for me button on the message bottom menu
+    And I tap Delete button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see the message "<Message>" in the conversation view
 
@@ -114,16 +113,15 @@ Feature: Delete Message
     And User <Contact> securely pings conversation Myself
     And I see Ping message "<Message2>" in the conversation view
     And I long tap the Ping message "<Message1>" in the conversation view
-    Then I see Delete only for me button on the message bottom menu
-    And I see Delete for everyone button on the message bottom menu
-    When I tap Delete only for me button on the message bottom menu
+    Then I see Delete button on the message bottom menu
+    When I tap Delete button on the message bottom menu
+    And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see Ping message "<Message1>" in the conversation view
     # Other ping
     When I long tap the Ping message "<Message2>" in the conversation view
-    And I see Delete only for me button on the message bottom menu
-    And I do not see Delete for everyone button on the message bottom menu
-    And I tap Delete only for me button on the message bottom menu
+    And I see Delete button on the message bottom menu
+    And I tap Delete button on the message bottom menu
     And I tap Delete button on the alert
     And I do not see Ping message "<Message2>" in the conversation view
 
@@ -143,6 +141,7 @@ Feature: Delete Message
     And I tap File button from cursor toolbar
     And I wait up to <UploadingTimeout> seconds until <FileSize> file with extension "<FileExtension>" is uploaded
     When I long tap File Upload container in the conversation view
+    And I tap Delete button on the message bottom menu
     And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see File Upload container in the conversation view
@@ -180,6 +179,7 @@ Feature: Delete Message
     And I enable Airplane mode on the device
     And I see No Internet bar in 15 seconds
     And I long tap the Text message "<Message2>" in the conversation view
+    And I tap Delete button on the message bottom menu
     And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see the message "<Message2>" in the conversation view
@@ -209,6 +209,7 @@ Feature: Delete Message
     When I tap on the giphy Send button
     Then I see a picture in the conversation view
     When I long tap Image container in the conversation view
+    And I tap Delete button on the message bottom menu
     And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see any pictures in the conversation view
@@ -229,6 +230,7 @@ Feature: Delete Message
     And I enable Airplane mode on the device
     And I type the message "<Message>" and send it by cursor Send button
     And I long tap the Text message "<Message>" in the conversation view
+    And I tap Delete button on the message bottom menu
     And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see the message "<Message>" in the conversation view
@@ -253,7 +255,8 @@ Feature: Delete Message
     And I wait for 5 seconds
     And I long tap Audio Message container in the conversation view
     Then I do not see Copy button on the message bottom menu
-    When I tap Delete only for me button on the message bottom menu
+    When I tap Delete button on the message bottom menu
+    And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see Audio Message container in the conversation view
 
@@ -274,7 +277,8 @@ Feature: Delete Message
     And I tap audio recording Send button
     And I long tap Audio Message container in the conversation view
     Then I do not see Copy button on the message bottom menu
-    When I tap Delete only for me button on the message bottom menu
+    When I tap Delete button on the message bottom menu
+    And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see Audio Message container in the conversation view
 
@@ -297,7 +301,7 @@ Feature: Delete Message
     And I tap Play button on the recent audio message in the conversation view
     And I long tap Audio Message container in the conversation view
     Then I do not see Copy button on the message bottom menu
-    When I tap Delete only for me button on the message bottom menu
+    When I tap Delete button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see Audio Message container in the conversation view
 
@@ -316,7 +320,7 @@ Feature: Delete Message
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
     When I long tap Share Location container in the conversation view
-    And I tap Delete only for me button on the message bottom menu
+    And I tap Delete button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see Share Location container in the conversation view
 
@@ -334,7 +338,7 @@ Feature: Delete Message
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
     When I long tap Link Preview container in the conversation view
-    And I tap Delete only for me button on the message bottom menu
+    And I tap Delete button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see Link Preview container in the conversation view
 

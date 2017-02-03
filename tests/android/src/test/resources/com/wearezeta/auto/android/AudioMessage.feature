@@ -164,7 +164,7 @@ Feature: Audio Message
     Then I verify the state of Pause button on the recent audio message in the conversation view is changed
     When I long tap Audio Message container in the conversation view
     Then I do not see Copy button on the message bottom menu
-    When I tap Delete only for me button on the message bottom menu
+    When I tap Delete button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see Audio Message container in the conversation view
 

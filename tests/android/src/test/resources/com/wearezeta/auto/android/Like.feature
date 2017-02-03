@@ -131,13 +131,14 @@ Feature: Like
     Given I tap on conversation name <Contact>
     When I type the message "<Message>" and send it by cursor Send button
     And I long tap the Text message "<Message>" in the conversation view
+    And I tap Delete button on the message bottom menu
     And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     And User <Contact> likes the recent message from user Myself via device <Device>
     Then I do not see the message "<Message>" in the conversation view
     When User <Contact> sends encrypted message "<OtherMessage>" via device <Device> to user Myself
     And I long tap the Text message "<OtherMessage>" in the conversation view
-    And I tap Delete only for me button on the message bottom menu
+    And I tap Delete button on the message bottom menu
     And I tap Delete button on the alert
     And User <Contact> likes the recent message from user Myself via device <Device>
     Then I do not see the message "<OtherMessage>" in the conversation view
