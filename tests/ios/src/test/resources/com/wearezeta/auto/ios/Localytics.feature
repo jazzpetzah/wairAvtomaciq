@@ -1,9 +1,8 @@
 Feature: Localytics
 
-  @C375780 @regression @enableLocalyticsLogs
-  Scenario Outline: Verify key tracking events
+  @C414645 @regression @enableLocalyticsLogs
+  Scenario Outline: Verify key tracking events for messages and pings
     Given There are 2 users
-    Given I prepare <FileName> to be uploaded as a video message
     Given I see sign in screen
     Given I enter phone number for <Name>
     Given I enter activation code
@@ -26,6 +25,27 @@ Feature: Localytics
     When I tap on contact name <Contact1>
     And I type the default message and send it
     Then I see "media.completed_media_action" event with {"action": "text", "conversation_type": "one_to_one", "with_bot": "false"} attributes is sent to Localytics at least 1 time
+    When I tap Ping button from input tools
+    And I see "YOU PINGED" system message in the conversation view
+    Then I see "media.completed_media_action" event with {"action": "ping", "conversation_type": "one_to_one", "with_bot": "false"} attributes is sent to Localytics at least 1 time
+    When I navigate back to conversations list
+    And I tap on contact name <GroupChatName>
+    And I type the default message and send it
+    Then I see "media.completed_media_action" event with {"action": "text", "conversation_type": "group", "with_bot": "false"} attributes is sent to Localytics at least 1 time
+
+    Examples:
+      | Contact1  | Contact2  | Name      | GroupChatName |
+      | user1Name | user2Name | user3Name | Group         |
+
+  @C375780 @regression @enableLocalyticsLogs @fastLogin
+  Scenario Outline: Verify key tracking events for AVS
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    When I type the default message and send it
+    Then I see "media.completed_media_action" event with {"action": "text", "conversation_type": "one_to_one", "with_bot": "false"} attributes is sent to Localytics at least 1 time
     When I tap Audio Call button
     And I tap Leave button on Calling overlay
     And I do not see Calling overlay
@@ -37,9 +57,17 @@ Feature: Localytics
     And I do not see Calling overlay
     Then I see "media.completed_media_action" event with {"action": "video_call", "conversation_type": "one_to_one", "with_bot": "false"} attributes is sent to Localytics at least 1 time
     And I see "calling.initiated_video_call" event is sent to Localytics at least 1 time
-    When I tap Ping button from input tools
-    And I see "YOU PINGED" system message in the conversation view
-    Then I see "media.completed_media_action" event with {"action": "ping", "conversation_type": "one_to_one", "with_bot": "false"} attributes is sent to Localytics at least 1 time
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @C414646 @regression @enableLocalyticsLogs @fastLogin
+  Scenario Outline: Verify key tracking events for gallery (sketch and GIF incl.)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email
+    Given I tap on contact name <Contact>
     When I tap Sketch button from input tools
     And I draw a random sketch
     And I tap Send button on Sketch page
@@ -59,6 +87,18 @@ Feature: Localytics
     And I tap Confirm button on Picture preview page
     Then I see "media.completed_media_action" event with {"action": "photo", "conversation_type": "one_to_one", "with_bot": "false"} attributes is sent to Localytics at least 3 times
     And I see "media.sent_picture" event with {"source": "gallery"} attribute is sent to Localytics at least 1 time
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @C414647 @regression @enableLocalyticsLogs @fastLogin
+  Scenario Outline: Verify key tracking events for files
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I prepare <FileName> to be uploaded as a video message
+    Given I sign in using my email
+    Given I tap on contact name <Contact>
     When I long tap Audio Message button from input tools
     And I tap Send record control button
     And I see audio message container in the conversation view
@@ -77,12 +117,8 @@ Feature: Localytics
     And I tap Send location button from map view
     And I see location map container in the conversation view
     Then I see "media.completed_media_action" event with {"action": "location", "conversation_type": "one_to_one", "with_bot": "false"} attributes is sent to Localytics at least 1 time
-    When I navigate back to conversations list
-    And I tap on contact name <GroupChatName>
-    And I type the default message and send it
-    Then I see "media.completed_media_action" event with {"action": "text", "conversation_type": "group", "with_bot": "false"} attributes is sent to Localytics at least 1 time
 
     Examples:
-      | Contact1  | Contact2  | Name      | GroupChatName | FileName    | ItemName                   |
-      | user1Name | user2Name | user3Name | Group         | testing.mp4 | FTRANSFER_MENU_DEFAULT_PNG |
-
+      | Name      | Contact   | FileName    | ItemName                   |
+      | user1Name | user2Name | testing.mp4 | FTRANSFER_MENU_DEFAULT_PNG |
+    
