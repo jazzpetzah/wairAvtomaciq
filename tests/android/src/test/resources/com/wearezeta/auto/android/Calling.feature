@@ -376,9 +376,10 @@ Feature: Calling
       | user1Name | user2Name | zcall       |
 
   @C378051 @calling_advanced
-  Scenario Outline: (AUDIO-1144)Make 1:1 call loop to AVS <CallBackend>
+  Scenario Outline: (AUDIO-1144)Make 1:1 call loop from <CallBackend> to calling <MyCallingBackend>
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I switch calling mode to <MyCallingBackend>
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -387,5 +388,5 @@ Feature: Calling
     And I call 10 times for 1 minute with <Contact>
 
     Examples:
-      | Name      | Contact   | CallBackend  |
-      | user1Name | user2Name | zcall:3.0.130 |
+      | Name      | Contact   | CallBackend     | MyCallingBackend |
+      | user1Name | user2Name | zcall_v3:3.1.43 | V3               |

@@ -18,7 +18,6 @@ import java.io.InputStreamReader;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import static com.wearezeta.auto.common.driver.ZetaAndroidDriver.ADB_PREFIX;
@@ -809,6 +808,12 @@ public class AndroidCommonUtils extends CommonUtils {
     public static void openWebsiteFromADB(String url) throws Exception {
         AndroidCommonUtils.executeAdb(String.
                 format("shell am start -a android.intent.action.VIEW -d %s", url));
+    }
+
+    public static void changeCallingSettings(CallingVersions callingVersion) throws Exception {
+        AndroidCommonUtils.executeAdb(String.format(
+                "shell am broadcast -a com.waz.zclient.intent.action.CALLING_%s", callingVersion.toString()
+        ));
     }
 
     public static boolean isKeyboardVisible() throws Exception {

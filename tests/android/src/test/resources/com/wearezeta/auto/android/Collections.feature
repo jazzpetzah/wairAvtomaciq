@@ -351,7 +351,7 @@ Feature: Collections
     And I tap on Back button on Collection image preview
     And I tap on Close button on Collection page
     And I scroll to the bottom of conversation view
-    Then I see Like description with expected text "you" in conversation view
+    Then I see Like description with expected text "<Name>" in conversation view
     # Delete only for me
     When I tap Collections button from top toolbar
     And I tap on the 1st picture on Collections page

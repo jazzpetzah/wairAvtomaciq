@@ -15,6 +15,7 @@ import com.google.common.base.Throwables;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.common.AndroidTestContext;
 import com.wearezeta.auto.android.common.AndroidTestContextHolder;
+import com.wearezeta.auto.android.common.CallingVersions;
 import com.wearezeta.auto.android.common.logging.AndroidLogListener;
 import com.wearezeta.auto.android.common.logging.AndroidLogListener.ListenerType;
 import com.wearezeta.auto.android.common.logging.LoggingProfile;
@@ -2115,5 +2116,18 @@ public class CommonAndroidSteps {
     public void ICreateTemporaryFile(String size, String name, String ext) throws Exception {
         final String tmpFilesRoot = CommonUtils.getBuildPathFromConfig(getClass());
         CommonUtils.createRandomAccessFile(String.format("%s%s%s.%s", tmpFilesRoot, File.separator, name, ext), size);
+    }
+
+    /**
+     * I switch my calling version
+     *
+     * @param callingVersionName the name of calling version
+     * @throws Exception
+     * @step. ^I switch calling mode to (V2|V3|BE_SWITCH)$
+     */
+    @Given("^I switch calling mode to (V2|V3|BE_SWITCH)$")
+    public void ISwitchCallingVersion(String callingVersionName) throws Exception {
+        CallingVersions version = CallingVersions.valueOf(callingVersionName);
+        AndroidCommonUtils.changeCallingSettings(version);
     }
 }

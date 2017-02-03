@@ -1556,7 +1556,7 @@ public class ConversationViewPageSteps {
      */
     @Then("^I (do not )?see (Like button|Like description|Message status|First like avatar|Second like avatar)" +
             " (with expected text \"(.*)\" )?in conversation view$")
-    public void ISeeMessagMetaForText(String shouldNotSee, String itemType, String hasExpectedMsg,
+    public void ISeeMessageMetaForText(String shouldNotSee, String itemType, String hasExpectedMsg,
                                       String expectedMsg) throws Exception {
         boolean isVisible;
         boolean shouldBeVisible = (shouldNotSee == null);
