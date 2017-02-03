@@ -317,13 +317,14 @@ Feature: Collections
     And I see 1 link preview in <Timeout> seconds on Collection page
     And I see 1 file sharing in <Timeout> seconds on Collection page
     And I long tap on the 1st picture on Collections page
-    And I tap Delete only for me button on the message bottom menu
+    And I tap Delete button on the message bottom menu
     And I tap Delete button on the alert
     And I long tap on the 1st link preview on Collections page
+    And I tap Delete button on the message bottom menu
     And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     And I long tap on the 1st file sharing on Collections page
-    And I tap Delete only for me button on the message bottom menu
+    And I tap Delete button on the message bottom menu
     And I tap Delete button on the alert
     Then I see NO ITEM placeholder on Collections page
 

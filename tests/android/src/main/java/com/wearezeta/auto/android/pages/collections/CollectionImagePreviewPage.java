@@ -8,7 +8,7 @@ import org.openqa.selenium.By;
 import java.util.concurrent.Future;
 
 public class CollectionImagePreviewPage extends CollectionsPage implements ISupportsCollectionTopToolbar {
-    private static final By idPreviewRoot = By.id("tiv__image_view");
+    private static final By idPreviewRoot = By.id("collection_image_view");
 
     private static final By idLikeButton = By.id("toolbar_like");
     private static final By idDownloadButton = By.id("toolbar_download");
