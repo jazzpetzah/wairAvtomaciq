@@ -728,10 +728,10 @@ Feature: E2EE
     And I see verified icon in conversation
     When user <Contact1> adds a new device Device2 with label Label2
     And Contact <Contact1> sends message <Message> via device Device2 to group conversation <GroupChatName>
-    Then I do not see verified icon in conversation
+    Then I see text message <Message>
+    And I do not see verified icon in conversation
     # TODO: make it possible to check for <Contact1> in the "New device" action
     And I see <NEW_DEVICE> action in conversation
-    And I see text message <Message>
     # TODO: Verify "New device" link is opening the devices list of the participant
 
     Examples:
