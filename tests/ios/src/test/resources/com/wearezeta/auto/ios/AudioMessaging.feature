@@ -37,9 +37,10 @@ Feature: Audio Messaging
   Scenario Outline: Verify receiving a voice message and deleting it
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given Users add the following devices: {"Myself: [{}], "<Contact1>": {["name": "<ContactDevice>"]}}
     Given I sign in using my email or phone number
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    Given User Me sends 1 encrypted message to user <Contact1>
+    Given User Myself sends 1 default message to conversation <Contact1>
     Given I see conversations list
     Given I tap on contact name <Contact1>
     # Small wait to make the appearence of button on jenkins more stable
