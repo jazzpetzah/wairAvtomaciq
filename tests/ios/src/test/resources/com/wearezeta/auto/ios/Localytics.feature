@@ -44,8 +44,6 @@ Feature: Localytics
     Given I sign in using my email
     Given I see conversations list
     Given I tap on contact name <Contact>
-    When I type the default message and send it
-    Then I see "media.completed_media_action" event with {"action": "text", "conversation_type": "one_to_one", "with_bot": "false"} attributes is sent to Localytics at least 1 time
     When I tap Audio Call button
     And I tap Leave button on Calling overlay
     And I do not see Calling overlay
@@ -121,4 +119,3 @@ Feature: Localytics
     Examples:
       | Name      | Contact   | FileName    | ItemName                   |
       | user1Name | user2Name | testing.mp4 | FTRANSFER_MENU_DEFAULT_PNG |
-    
