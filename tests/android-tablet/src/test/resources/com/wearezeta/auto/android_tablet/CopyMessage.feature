@@ -12,7 +12,7 @@ Feature: Copy Message
     Given I tap on conversation name <Contact>
     When I long tap the Text message "<Message>" in the conversation view
     Then I see Copy button on the message bottom menu
-    And I see Delete only for me button on the message bottom menu
+    And I see Delete button on the message bottom menu
 
     Examples:
       | Name      | Contact   | Message |

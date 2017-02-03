@@ -33,6 +33,9 @@ abstract class AbstractUserInfoPopoverPage extends AbstractPopoverPage {
 	@FindBy(how = How.XPATH, using = PopoverLocators.GroupPopover.ParticipantInfoPage.xpathUniqueUserName)
 	private WebElement uniqueUsername;
 
+	@FindBy(how = How.XPATH, using = PopoverLocators.GroupPopover.ParticipantInfoPage.xpathCommonFriends)
+		private WebElement commonFriends;
+
 	public AbstractUserInfoPopoverPage(Future<ZetaWebAppDriver> lazyDriver,
 			PeoplePopoverContainer container) throws Exception {
 		super(lazyDriver, container);
@@ -101,5 +104,9 @@ abstract class AbstractUserInfoPopoverPage extends AbstractPopoverPage {
 
 	public String getUniqueUsername() {
 		return uniqueUsername.getText();
+	}
+
+	public String getCommonFriends() {
+		return commonFriends.getText();
 	}
 }

@@ -22,6 +22,7 @@ Feature: Recall Message
     And I see the message "<Message2>" in the conversation view
     And User <Contact1> remember the recent message from user Myself via device <ContactDevice>
     And I long tap the Text message "<Message2>" in the conversation view
+    And I tap Delete button on the message bottom menu
     And I tap Delete for everyone button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see the message "<Message2>" in the conversation view
@@ -45,6 +46,7 @@ Feature: Recall Message
     When I type the message "<Text>" and send it by cursor Send button
     And I remember the state of the recent message from user <Contact> in the local database
     And I long tap the Text message "<Text>" in the conversation view
+    And I tap Delete button on the message bottom menu
     And I tap Delete for everyone button on the message bottom menu
     And I tap Delete button on the alert
     Then I verify the remembered message has been deleted from the local database
@@ -76,6 +78,7 @@ Feature: Recall Message
     And I see the message "<Message2>" in the conversation view
     And User <Contact1> remember the recent message from group conversation <Group> via device <ContactDevice>
     And I long tap the Text message "<Message2>" in the conversation view
+    And I tap Delete button on the message bottom menu
     And I tap Delete for everyone button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see the message "<Message2>" in the conversation view
@@ -100,6 +103,7 @@ Feature: Recall Message
     And I tap Confirm button on Take Picture view
     And I long tap Image container in the conversation view
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
+    And I tap Delete button on the message bottom menu
     And I tap Delete for everyone button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see any pictures in the conversation view
@@ -128,6 +132,7 @@ Feature: Recall Message
     And I see the picture in the conversation is animated
     When I long tap Image container in the conversation view
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
+    And I tap Delete button on the message bottom menu
     And I tap Delete for everyone button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see any pictures in the conversation view
@@ -150,6 +155,7 @@ Feature: Recall Message
     When I type the message "<Link>" and send it by cursor Send button
     And I long tap Link Preview container in the conversation view
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
+    And I tap Delete button on the message bottom menu
     And I tap Delete for everyone button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see Link Preview container in the conversation view
@@ -173,6 +179,7 @@ Feature: Recall Message
     And I tap Send button on Share Location page
     And I long tap Share Location container in the conversation view
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
+    And I tap Delete button on the message bottom menu
     And I tap Delete for everyone button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see Share Location container in the conversation view
@@ -196,6 +203,7 @@ Feature: Recall Message
     And I wait up to <UploadingTimeout> seconds until <FileSize> file with extension "<FileExtension>" is uploaded
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
     And I long tap File Upload container in the conversation view
+    And I tap Delete button on the message bottom menu
     And I tap Delete for everyone button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see File Upload container in the conversation view
@@ -219,6 +227,7 @@ Feature: Recall Message
     And I wait up to 30 seconds until audio message upload is completed
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
     And I long tap Audio Message container in the conversation view
+    And I tap Delete button on the message bottom menu
     And I tap Delete for everyone button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see Audio Message container in the conversation view
@@ -243,6 +252,7 @@ Feature: Recall Message
     And I wait up to 30 seconds until video message upload is completed
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
     And I long tap Video Message container in the conversation view
+    And I tap Delete button on the message bottom menu
     And I tap Delete for everyone button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see Video Message container in the conversation view
@@ -314,7 +324,7 @@ Feature: Recall Message
     Then I do not see Like button in conversation view
     # C206252
     When I long tap the Text message "<Message>" in the conversation view
-    Then I do not see Delete for everyone button on the message bottom menu
+    Then I do not see Delete button on the message bottom menu
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName       | Message |
@@ -333,6 +343,7 @@ Feature: Recall Message
     When I type the message "<YoutubeLink>" and send it by cursor Send button
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
     And I long tap Youtube container in the conversation view
+    And I tap Delete button on the message bottom menu
     And I tap Delete for everyone button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see Youtube container in the conversation view
@@ -360,8 +371,10 @@ Feature: Recall Message
     Given User <Contact> sends encrypted message "<Message>" to user Myself
     Given I tap on conversation name <Contact>
     When I long tap the Text message "<Message>" in the conversation view
-    Then I do not see Delete for everyone button on the message bottom menu
+    Then I see Delete button on the message bottom menu
     And I do not see Edit button on the message bottom menu
+    And I tap Delete button on the message bottom menu
+    And I do not see Delete for everyone button on the message bottom menu
 
     Examples:
       | Name      | Contact   | Message |
@@ -410,6 +423,7 @@ Feature: Recall Message
     And User <Contact1> remembers the recent message from user Myself via device <ContactDevice>
     And I enable Airplane mode on the device
     And I long tap the Text message "<Message>" in the conversation view
+    And I tap Delete button on the message bottom menu
     And I tap Delete for everyone button on the message bottom menu
     And I tap Delete button on the alert
     And I do not see the message "<Message>" in the conversation view

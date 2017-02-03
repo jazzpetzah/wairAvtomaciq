@@ -640,6 +640,8 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given User <Contact> sends 1 image file <Picture> to conversation Myself
     Given I see conversations list
+    # Wait for the image to be loaded
+    Given I wait for 5 seconds
     When I long tap on image in conversation view
     Then I see Save badge item
     When I tap on Save badge item

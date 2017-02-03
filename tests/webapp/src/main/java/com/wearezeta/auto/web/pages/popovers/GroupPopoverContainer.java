@@ -276,4 +276,8 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
     public String getUniqueUsername() throws Exception {
         return getCurrentUserInfoPage().getUniqueUsername();
     }
+
+    public String getCommonFriends() throws Exception {
+        return getCurrentUserInfoPage().getCommonFriends();
+    }
 }

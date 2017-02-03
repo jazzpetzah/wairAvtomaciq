@@ -35,7 +35,7 @@ Feature: Links Preview
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     Then I see Link Preview container in the conversation view
-    And I see the link preview message "<Message>" in the conversation view
+    And I see the message "<Message>" in the conversation view
 
     Examples:
       | Name      | Contact   | Message                         |
@@ -72,26 +72,30 @@ Feature: Links Preview
     When I tap on conversation name <Contact>
     And I type the message "<TextLink>" and send it by cursor Send button
     Then I see Link Preview container in the conversation view
-    And I see the link preview message "<TextLink>" in the conversation view
+    And I see the message "<TextLink>" in the conversation view
     When I long tap Link Preview container in the conversation view
+    And I tap Delete button on the message bottom menu
     And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     And I type the message "<LinkText>" and send it by cursor Send button
     Then I see Link Preview container in the conversation view
-    And I see the link preview message "<LinkText>" in the conversation view
+    And I see the message "<LinkText>" in the conversation view
     When I long tap Link Preview container in the conversation view
+    And I tap Delete button on the message bottom menu
     And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     And I type the message "<TextLinkText>" and send it by cursor Send button
     Then I see Link Preview container in the conversation view
-    And I see the link preview message "<TextLinkText>" in the conversation view
+    And I see the message "<TextLinkText>" in the conversation view
     When I long tap Link Preview container in the conversation view
+    And I tap Delete button on the message bottom menu
     And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     And I type the message "<url4>" and send it by cursor Send button
     Then I see Link Preview container in the conversation view
     And I do not see the message "<url4>" in the conversation view
     When I long tap Link Preview container in the conversation view
+    And I tap Delete button on the message bottom menu
     And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     And I type the message "<url5>" and send it by cursor Send button
@@ -113,16 +117,19 @@ Feature: Links Preview
     And I type the message "<Link1>" and send it by cursor Send button
     Then I see Link Preview URL <LinkUrl>
     When I long tap Link Preview container in the conversation view
+    And I tap Delete button on the message bottom menu
     And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     And I type the message "<Link2>" and send it by cursor Send button
     Then I see Link Preview URL <LinkUrl>
     When I long tap Link Preview container in the conversation view
+    And I tap Delete button on the message bottom menu
     And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     And I type the message "<Link3>" and send it by cursor Send button
     Then I see Link Preview URL <LinkUrl>
     When I long tap Link Preview container in the conversation view
+    And I tap Delete button on the message bottom menu
     And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     And I type the message "<Link4>" and send it by cursor Send button

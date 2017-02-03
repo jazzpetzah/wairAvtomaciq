@@ -22,6 +22,7 @@ Feature: Recall Message
     And I see the message "<Message2>" in the conversation view
     And User <Contact1> remember the recent message from user Myself via device <ContactDevice>
     And I long tap the Text message "<Message2>" in the conversation view
+    And I tap Delete button on the message bottom menu
     And I tap Delete for everyone button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see the message "<Message2>" in the conversation view
@@ -55,6 +56,7 @@ Feature: Recall Message
     And I see the message "<Message2>" in the conversation view
     And User <Contact1> remember the recent message from group conversation <Group> via device <ContactDevice>
     And I long tap the Text message "<Message2>" in the conversation view
+    And I tap Delete button on the message bottom menu
     And I tap Delete for everyone button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see the message "<Message2>" in the conversation view
@@ -82,6 +84,7 @@ Feature: Recall Message
     And I tap Confirm button on Take Picture view
     And I long tap Image container in the conversation view
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
+    And I tap Delete button on the message bottom menu
     And I tap Delete for everyone button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see any pictures in the conversation view
@@ -109,6 +112,7 @@ Feature: Recall Message
     When I tap Send button on the Giphy preview page
     And I long tap Image container in the conversation view
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
+    And I tap Delete button on the message bottom menu
     And I tap Delete for everyone button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see any pictures in the conversation view
@@ -134,6 +138,7 @@ Feature: Recall Message
     And I hide keyboard
     And I long tap Link Preview container in the conversation view
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
+    And I tap Delete button on the message bottom menu
     And I tap Delete for everyone button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see Link Preview container in the conversation view
@@ -157,6 +162,7 @@ Feature: Recall Message
     And I tap Send button on Share Location page
     And I long tap Share Location container in the conversation view
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
+    And I tap Delete button on the message bottom menu
     And I tap Delete for everyone button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see Share Location container in the conversation view
@@ -181,6 +187,7 @@ Feature: Recall Message
     And I wait up to <UploadingTimeout> seconds until <FileSize> file with extension "<FileExtension>" is uploaded
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
     And I long tap File Upload container in the conversation view
+    And I tap Delete button on the message bottom menu
     And I tap Delete for everyone button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see File Upload container in the conversation view
@@ -206,6 +213,7 @@ Feature: Recall Message
     And I wait for 15 seconds
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
     And I long tap Audio Message container in the conversation view
+    And I tap Delete button on the message bottom menu
     And I tap Delete for everyone button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see Audio Message container in the conversation view
@@ -232,6 +240,7 @@ Feature: Recall Message
     And I wait for 20 seconds
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
     And I long tap Video Message container in the conversation view
+    And I tap Delete button on the message bottom menu
     And I tap Delete for everyone button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see Video Message container in the conversation view

@@ -35,13 +35,13 @@ Feature: E2EE
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given User <Contact1> sends 1 default message to conversation Myself
-    And I tap on contact name <Contact1>
-    And I open conversation details
-    And I switch to Devices tab on Single user profile page
-    And I open details page of device number 1 on Devices tab
-    And I tap Verify switcher on Device Details page
+    Given I tap on contact name <Contact1>
+    Given I open conversation details
+    Given I switch to Devices tab on Single user profile page
+    Given I open details page of device number 1 on Devices tab
+    When I tap Verify switcher on Device Details page
     And I dismiss popover on iPad
-    When Users add the following devices: {"Myself": [{"name": "<DeviceName2>", "label": "<DeviceLabel2>"}]}
+    And User adds the following device: {"Myself": [{"name": "<DeviceName2>", "label": "<DeviceLabel2>"}]}
     Then I do not see shield icon in the conversation view
     And I see "<StartedUsingMsg>" system message in the conversation view
 

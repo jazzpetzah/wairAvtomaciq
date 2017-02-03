@@ -14,8 +14,7 @@ Feature: File Transfer
     Then I see the result of "<FileSize><FileSizeType>" file upload having name "<FileName>.<FileExtension>" and extension "<FileExtension>"
     # Verify Sender side message bottom menu
     When I long tap File Upload container in the conversation view
-    Then I see Delete only for me button on the message bottom menu
-    And I see Delete for everyone button on the message bottom menu
+    Then I see Delete button on the message bottom menu
     And I see Forward button on the message bottom menu
     And I see Like button on the message bottom menu
     And I see Open button on the message bottom menu
@@ -147,6 +146,7 @@ Feature: File Transfer
     And I tap File button from cursor toolbar
     Then I see a picture in the conversation view
     When I long tap Image container in the conversation view
+    And I tap Delete button on the message bottom menu
     And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see a picture in the conversation view
