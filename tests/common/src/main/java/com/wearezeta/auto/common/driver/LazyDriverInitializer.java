@@ -78,6 +78,9 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
                             if (ntry > 1 && CommonUtils.getIsSimulatorFromConfig(getClass())) {
                                 IOSSimulatorHelpers.shutdown();
                                 IOSSimulatorHelpers.start();
+                                if (!IOSSimulatorHelpers.waitForSpringboard()) {
+                                    throw new WebDriverException("Simulator has failed to load the UI after the timeout");
+                                }
                             }
                         }
                         if (!capabilities.is(ZetaIOSDriver.CAPABILITY_NAME_USE_PREBUILT_WDA)) {
