@@ -557,3 +557,27 @@ Feature: Conversation View
     Examples:
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
+
+  @C404410 @regression @fastLogin
+  Scenario Outline: Verify street address, event, flight number are detected by peek & pop
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{}]}
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    When User <Contact> sends 1 "<Address>" message to conversation Myself
+    And I tap "<Address>" message in conversation view
+    Then I see map application is opened
+    When I restore Wire
+    And User <Contact> sends 1 "<Event>" message to conversation Myself
+    And I tap "<Event>" message in conversation view
+    Then I dismiss alert
+    When User <Contact> sends 1 "<FlightNumber>" message to conversation Myself
+    And I tap "<FlightNumber>" message in conversation view
+    And I dismiss alert
+    Then I see conversation view page
+
+    Examples:
+      | Name      | Contact   | Address            | Event            | FlightNumber |
+      | user1Name | user2Name | Rosenthaler Str.40 | tonight at 18:00 | Air BA269    |
