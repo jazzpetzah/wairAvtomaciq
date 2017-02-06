@@ -34,7 +34,6 @@ public class SheetOverlaySteps {
     @Then("^I see sheet contains text (.*)")
     public void ISeeSheetContainsTextFlightNumber(String expectedText) throws Exception {
         Assert.assertTrue(String.format("There is no sheet containing text '%s'", expectedText),
-                IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
-                        .getCommonPage().isSheetContainingTextVisible(expectedText));
+                getSheetOverlay().isSheetContainingTextVisible(expectedText));
     }
 }

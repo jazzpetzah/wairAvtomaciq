@@ -5,10 +5,13 @@ import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
 import java.util.concurrent.Future;
+import java.util.function.Function;
 
 public class SheetOverlay extends IOSPage {
 
     private static final By nameSheetOverlayCancelButton = MobileBy.AccessibilityId("Cancel");
+    private static final Function<String, String> xpathStrSheetByText = text ->
+            String.format("//XCUIElementTypeSheet[ .//*[contains(@name, '%s')] or contains(@name, '%s')]", text, text);
 
     public SheetOverlay(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -27,5 +30,10 @@ public class SheetOverlay extends IOSPage {
     public void tapButton(String name) throws Exception {
         final By locator = getButtonLocatorByName(name);
         getElement(locator).click();
+    }
+
+    public boolean isSheetContainingTextVisible(String expectedText) throws Exception {
+        final By locator = By.xpath(xpathStrSheetByText.apply(expectedText));
+        return isLocatorDisplayed(locator);
     }
 }

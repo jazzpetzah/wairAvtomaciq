@@ -61,9 +61,6 @@ public abstract class IOSPage extends BasePage {
     private static final Function<String, String> xpathStrAlertByText = text ->
             String.format("//XCUIElementTypeAlert[ .//*[contains(@name, '%s')] or contains(@name, '%s')]", text, text);
 
-    private static final Function<String, String> xpathStrSheetByText = text ->
-            String.format("//XCUIElementTypeSheet[ .//*[contains(@name, '%s')] or contains(@name, '%s')]", text, text);
-
     protected static final By xpathBrowserURLButton = By.xpath("//XCUIElementTypeButton[@name='URL']");
 
     protected static final By nameBackToWireBrowserButton = MobileBy.AccessibilityId("Return to Wire");
@@ -296,11 +293,6 @@ public abstract class IOSPage extends BasePage {
     public boolean isAlertDoesNotContainsText(String expectedText) throws Exception {
         final By locator = By.xpath(xpathStrAlertByText.apply(expectedText));
         return isLocatorInvisible(locator);
-    }
-
-    public boolean isSheetContainingTextVisible(String expectedText) throws Exception {
-        final By locator = By.xpath(xpathStrSheetByText.apply(expectedText));
-        return isLocatorDisplayed(locator);
     }
 
     public void putWireToBackgroundFor(int timeSeconds) throws Exception {
