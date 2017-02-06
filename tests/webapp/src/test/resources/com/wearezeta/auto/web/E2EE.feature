@@ -904,8 +904,6 @@ Feature: E2EE
     And Contact <Name> sends message <Message2> via device Device1 to user <Contact>
     Then I see <UNABLE_TO_DECRYPT> action in conversation
     When I open preferences by clicking the gear button
-    And I see connected devices dialog
-    And I click OK on connected devices dialog
     And I open devices in preferences
     And I wait for devices
     Then I see an active device named Device1

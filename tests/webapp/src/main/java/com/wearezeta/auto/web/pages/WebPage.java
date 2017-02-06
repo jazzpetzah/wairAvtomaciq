@@ -158,13 +158,23 @@ public class WebPage extends BasePage {
      * Breaks the session to a certain device through injecting Javascript that removes the session state in cryptobox
      *
      * @param deviceId Device id
+     * @param remoteUserId Remote user id
      * @throws Exception
      */
-    public void breakSession(String deviceId) throws Exception {
+    public void breakSession(String deviceId, String remoteUserId) throws Exception {
         if (WebAppExecutionContext.getBrowser().isSupportingAccessToJavascriptContext()) {
-            String breakSession = "s = wire.app.repository.cryptography.cryptobox.store.sessions;\n"
-                    + "cs = s[Object.keys(s).filter((x) => x.endsWith(\"" + deviceId + "\"))[0]];\n"
-                    + "cs.session_states = {};";
+            String breakSession = ""
+                    + "var cryptobox_session = wire.app.repository.cryptography.cryptobox.session_load('" + remoteUserId + "@" + deviceId + "')\n"
+                    + ".then(function(cryptobox_session) {\n"
+                    + "  cryptobox_session.session.session_states = {};\n"
+                    + "  return cryptobox_session;\n"
+                    + "})\n"
+                    + ".then(function(cryptobox_session) {\n"
+                    + "  return wire.app.repository.cryptography.cryptobox.session_save(cryptobox_session);\n"
+                    + "})\n"
+                    + ".then(function(session_id) {\n"
+                    + "  console.log(`Corrupted Session ID \"${session_id}\"`);\n"
+                    + "});";
             getDriver().executeScript(breakSession);
         } else {
             throw new Exception("Geckodriver is unable to access script context in Firefox < 48. See https://bugzilla.mozilla"

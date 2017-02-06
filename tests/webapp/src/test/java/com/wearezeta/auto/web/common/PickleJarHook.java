@@ -183,7 +183,7 @@ public class PickleJarHook implements PickleJarTestHook {
                     // filter broken sessions
                     .filter((entry)
                             -> !entry.getMessage().contains(
-                            "broken or out of sync. Reset the session and decryption is likely to work again."))
+                            "Reset the session and decryption is likely to work again."))
                     .filter((entry)
                             -> !entry.getMessage().contains("and we have client ID"))
                     .filter((entry)
@@ -207,9 +207,6 @@ public class PickleJarHook implements PickleJarTestHook {
                     // filter degraded conversation errors for C95638, C95628 and C399348
                     .filter((entry)
                             -> !entry.getMessage().contains("Unknown ConversationError"))
-                    // filter degraded conversation errors for C399348
-                    .filter((entry)
-                            -> !entry.getMessage().contains("Uncaught a: Message not found"))
                     .collect(Collectors.toList());
 
         } catch (Exception e) {
