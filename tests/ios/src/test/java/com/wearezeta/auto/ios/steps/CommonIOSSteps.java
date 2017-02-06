@@ -1100,6 +1100,20 @@ public class CommonIOSSteps {
     }
 
     /**
+     * Verify whether currently visible sheet contains particular text
+     *
+     * @param expectedText
+     * @throws Exception
+     * @step. ^I see sheet contains text (.*)
+     */
+    @Then("^I see sheet contains text (.*)")
+    public void ISeeSheetContainsTextFlightNumber(String expectedText) throws Exception {
+        Assert.assertTrue(String.format("There is no sheet containing text '%s'", expectedText),
+                IOSTestContextHolder.getInstance().getTestContext().getPagesCollection()
+                        .getCommonPage().isSheetContainingTextVisible(expectedText));
+    }
+
+    /**
      * Add one or more remote devices to one or more remote users
      *
      * @param mappingAsJson this should be valid JSON string. Keys are mandatory and

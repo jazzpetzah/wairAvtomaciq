@@ -558,7 +558,7 @@ Feature: Conversation View
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C404410 @regression @fastLogin
+  @C404410 @staging @fastLogin
   Scenario Outline: Verify street address, event, flight number are detected by peek & pop
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -568,16 +568,20 @@ Feature: Conversation View
     Given I tap on contact name <Contact>
     When User <Contact> sends 1 "<Address>" message to conversation Myself
     And I tap "<Address>" message in conversation view
+    # Wait until the map is loaded
+    And I wait for 15 seconds
     Then I see map application is opened
     When I restore Wire
     And User <Contact> sends 1 "<Event>" message to conversation Myself
     And I tap "<Event>" message in conversation view
-    Then I dismiss alert
-    When User <Contact> sends 1 "<FlightNumber>" message to conversation Myself
+    Then I see sheet contains text <Event>
+    When I dismiss alert
+    And User <Contact> sends 1 "<FlightNumber>" message to conversation Myself
     And I tap "<FlightNumber>" message in conversation view
-    And I dismiss alert
+    Then I see sheet contains text <FlightAlert>
+    When I dismiss alert
     Then I see conversation view page
 
     Examples:
-      | Name      | Contact   | Address            | Event            | FlightNumber |
-      | user1Name | user2Name | Rosenthaler Str.40 | tonight at 18:00 | Air BA269    |
+      | Name      | Contact   | Address            | Event            | FlightNumber | FlightAlert |
+      | user1Name | user2Name | Rosenthaler Str.40 | Tonight at 18:00 | Air BA269    | BA269       |
