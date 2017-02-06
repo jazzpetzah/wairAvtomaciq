@@ -40,7 +40,9 @@ public class UniqueUsernamePage extends IOSPage {
         final WebElement el = getElement(nameUniqueUsernameInput);
         el.click();
         el.clear();
-        el.sendKeys(name);
+        if (name.length() > 0) {
+            el.sendKeys(name);
+        }
     }
 
     public boolean isSaveButtonEnabled() throws Exception {

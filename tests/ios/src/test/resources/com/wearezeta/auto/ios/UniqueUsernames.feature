@@ -87,7 +87,7 @@ Feature: Unique Usernames
       | Name      | Contact1WithABEmail | Contact1ABName | Contact1Email | Contact2WithABPhoneNumber | Contact2ABName | Contact2PhoneNumber | Contact3WithUniqueUserName | Contact3UniqueUserName | Contact4WithCommonFriends | Contact5WithSameNameInAB | Contact5Email | Contact6Common |
       | user1Name | user2Name           | user2ABName    | user2Email    | user3Name                 | user3ABName    | user3PhoneNumber    | user4Name                  | user4UniqueUsername    | user5Name                 | user6Name                | user6Email    | user7Name      |
 
-  @C352039 @regression @fastLogin @rc
+  @C352039 @regression @fastLogin @rc @torun
   Scenario Outline: Verify impossibility to save incorrect username
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -95,7 +95,7 @@ Feature: Unique Usernames
     Given I tap settings gear button
     Given I select settings item Account
     Given I select settings item Username
-    When I enter "<Empty>" name on Unique Username page
+    When I enter "" name on Unique Username page
     Then I see Save button state is Disabled on Unique Username page
     When I tap Save button on Unique Username page
     And I enter "<MinChars>" name on Unique Username page
@@ -109,8 +109,8 @@ Feature: Unique Usernames
       | SpecialChars | %^&@#$ |
 
     Examples:
-      | Name      | Empty | MinChars |
-      | user1Name | ""    | 1        |
+      | Name      | MinChars |
+      | user1Name | 1        |
 
   @C375777 @regression @fastLogin
   Scenario Outline: Verify impossibility to enter too long username
