@@ -394,7 +394,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName               |
       | user1Email | user1Password | user1Name | user2Name | user3Name | PeoplePopoverGroupChat |
 
-  @C352251 @staging
+  @C352251 @regression
   Scenario Outline: Verify number of common friends is shown on participants popover
     Given There are 3 users where <Name> is me
     Given <Name>,<Contact1>,<Contact2> have unique usernames
