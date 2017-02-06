@@ -2,8 +2,10 @@ package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.common.notifications.Notification;
+import cucumber.api.PendingException;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import java.util.List;
@@ -26,6 +28,9 @@ public class NotificationPageSteps {
 
     @When("^I listen for notifications$")
     public void IListenForNotifications() throws Exception {
+        if (!WebAppExecutionContext.getBrowser().isSupportingNotifications()) {
+            throw new PendingException("FireFox does not support notification tests");
+        }
         context.getNotificationManager().init();
     }
 
