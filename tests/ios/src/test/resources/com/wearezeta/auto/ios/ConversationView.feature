@@ -570,16 +570,17 @@ Feature: Conversation View
     And I tap "<Address>" message in conversation view
     # Wait until the map is loaded
     And I wait for 15 seconds
+    And I accept alert if visible
     Then I see map application is opened
     When I restore Wire
     And User <Contact> sends 1 "<Event>" message to conversation Myself
     And I tap "<Event>" message in conversation view
     Then I see sheet contains text <Event>
-    When I dismiss alert
+    When I tap Cancel button on Sheet overlay
     And User <Contact> sends 1 "<FlightNumber>" message to conversation Myself
     And I tap "<FlightNumber>" message in conversation view
     Then I see sheet contains text <FlightAlert>
-    When I dismiss alert
+    When I tap Cancel button on Sheet overlay
     Then I see conversation view page
 
     Examples:
