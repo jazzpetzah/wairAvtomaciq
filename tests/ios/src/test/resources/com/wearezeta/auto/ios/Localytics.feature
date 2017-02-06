@@ -23,15 +23,15 @@ Feature: Localytics
     When I see conversation <Contact1> in conversations list
     Then I see "registration.succeeded" event is sent to Localytics at least 1 time
     When I tap on contact name <Contact1>
-    And I type the default message and send it
-    Then I see "media.completed_media_action" event with {"action": "text", "conversation_type": "one_to_one", "with_bot": "false"} attributes is sent to Localytics at least 1 time
-    When I tap Ping button from input tools
+    And I tap Ping button from input tools
     And I see "YOU PINGED" system message in the conversation view
     Then I see "media.completed_media_action" event with {"action": "ping", "conversation_type": "one_to_one", "with_bot": "false"} attributes is sent to Localytics at least 1 time
     When I navigate back to conversations list
     And I tap on contact name <GroupChatName>
     And I type the default message and send it
     Then I see "media.completed_media_action" event with {"action": "text", "conversation_type": "group", "with_bot": "false"} attributes is sent to Localytics at least 1 time
+    When I type the default message and send it
+    Then I see "media.completed_media_action" event with {"action": "text", "conversation_type": "one_to_one", "with_bot": "false"} attributes is sent to Localytics at least 1 time
 
     Examples:
       | Contact1  | Contact2  | Name      | GroupChatName |
