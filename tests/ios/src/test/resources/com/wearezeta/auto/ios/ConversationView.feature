@@ -332,16 +332,18 @@ Feature: Conversation View
       | user1Name | user2Name |
 
   @C879 @regression @fastLogin
-  Scenario Outline: (ZIOS-6517) Verify possibility to copy image in the conversation view
+  Scenario Outline: Verify possibility to copy image in the conversation view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given User adds the following device: {"<Contact>": [{}]}
     Given I sign in using my email or phone number
-    Given I see conversations list
     Given User <Contact> sends 1 image file <Picture> to conversation Myself
-    And I tap on contact name <Contact>
-    And I see 1 photo in the conversation view
-    And I long tap on image in conversation view
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    # Wait for content to be loaded
+    Given I wait for 5 seconds
+    Given I see 1 photo in the conversation view
+    When I long tap on image in conversation view
     And I tap on Copy badge item
     And I tap on text input
     And I long tap on text input
@@ -363,9 +365,9 @@ Feature: Conversation View
     Given User adds the following device: {"<Contact1>": [{}]}
     Given User <Name> blocks user <Contact1>
     Given I sign in using my email or phone number
-    Given I see conversations list
     Given User <Contact1> sends 1 default message to conversation <GroupChatName>
     Given User <Contact1> sends 1 image file <Picture> to conversation <GroupChatName>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I see 1 default message in the conversation view
     Then I see 1 photo in the conversation view

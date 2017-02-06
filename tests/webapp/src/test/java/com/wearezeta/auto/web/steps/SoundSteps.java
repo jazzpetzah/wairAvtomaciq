@@ -5,6 +5,7 @@ import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import cucumber.api.java.en.Then;
 import java.util.Optional;
+import java.util.logging.Level;
 import org.apache.log4j.Logger;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -53,11 +54,12 @@ public class SoundSteps {
         if (!start && loop) {
             throw new IllegalStateException("Stopping sound does not have loop attribute");
         }
-        Optional<LogEntry> found = context.getLogManager().searchUntilLogEntryAppears(searchString, lastSoundCheckMillis,
+
+        Optional<LogEntry> found = context.getLogManager().searchUntilLogEntryAppears(searchString, lastSoundCheckMillis + 1,
                 SOUND_LOG_TIMEOUT_SECONDS, SOUND_LOG_SLEEP_MILLIS);
-        found.ifPresent((entry) -> {
-            lastSoundCheckMillis = entry.getTimestamp() - SOUND_LOG_BACKSCANNING_MILLIS;
-        });
+        lastSoundCheckMillis = found.orElseGet(() -> {
+            return new LogEntry(Level.INFO, System.currentTimeMillis(), "FakeEntry");
+        }).getTimestamp() - SOUND_LOG_BACKSCANNING_MILLIS;
         if (not) {
             assertTrue(String.format("No attempt for '%s'", searchString), found.isPresent());
         } else {

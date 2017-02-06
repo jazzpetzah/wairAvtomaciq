@@ -364,7 +364,8 @@ public class CommonWebAppSteps {
         ClientUser user = context.getUsersManager().findUserByNameOrNameAlias(userAlias);
         String deviceId = context.getDevicesManager().getDeviceId(user, deviceName + context.getTestname().hashCode());
         deviceId = WebCommonUtils.removeDeviceIdPadding(deviceId);
-        context.getPagesCollection().getPage(WebPage.class).breakSession(deviceId);
+        
+        context.getPagesCollection().getPage(WebPage.class).breakSession(deviceId, user.getId());
     }
 
     @When("^(.*) sends? (.*) sized file with name (.*) via device (.*) to (user|group conversation) (.*)$")

@@ -5,6 +5,7 @@ Feature: Archive
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
     Given User <ArchivedUser> sets the unique username
+    Given Users add the following devices: {"Myself": [{}], "<ArchivedUser>": [{}]}
     Given <ArchivedUser> starts instance using <CallBackend>
     Given User Myself archives single user conversation <ArchivedUser>
     Given I sign in using my email or phone number
@@ -36,6 +37,7 @@ Feature: Archive
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
     Given User <ArchivedUser> sets the unique username
+    Given Users add the following devices: {"Myself": [{}], "<ArchivedUser>": [{}]}
     Given <ArchivedUser> starts instance using <CallBackend>
     Given User Myself silences single user conversation <ArchivedUser>
     Given User Myself archives single user conversation <ArchivedUser>
@@ -62,6 +64,7 @@ Feature: Archive
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User adds the following device: {"<Contact1>": [{}]}
     Given I sign in using my email or phone number
     Given I see conversations list
     When I swipe right on conversation <GroupChatName>
@@ -80,6 +83,7 @@ Feature: Archive
   Scenario Outline: ZIOS-7328 Verify archive behaviour when one archive/unarchive a conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
+    Given Users add the following devices: {"Myself": [{}], "<ArchivedUser>": [{}]}
     Given User Myself archives single user conversation <ArchivedUser>
     Given I sign in using my email or phone number
     Given I see conversations list

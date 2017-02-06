@@ -15,7 +15,7 @@ public class LocalyticsHelpers {
     private static final String LOG_RECORD_MARKER = "<ANALYTICS>:";
     private static final Pattern NEXT_LOG_LINE_PATTERN = Pattern.compile("^\\s+");
 
-    private static List<JSONObject> filterLog(String fullLog) {
+    public static List<JSONObject> filterEvents(String fullLog) {
         final List<JSONObject> result = new ArrayList<>();
         boolean isRecordStarted = false;
         StringBuilder currentRecord = new StringBuilder();
@@ -57,7 +57,7 @@ public class LocalyticsHelpers {
 
     public static long getEventOccurrencesCount(String currentLog, String eventName) {
         log.debug(String.format("Getting occurrences count for Localytics event '%s'...", eventName));
-        return filterLog(currentLog).stream().filter(
+        return filterEvents(currentLog).stream().filter(
                 x -> x.has(EVENT_NAME_KEY) && x.getString(EVENT_NAME_KEY).equals(eventName)
         ).count();
     }
@@ -79,7 +79,7 @@ public class LocalyticsHelpers {
     public static long getEventOccurrencesCount(String currentLog, String eventName, JSONObject expectedAttributes) {
         log.debug(String.format("Getting occurrences count for Localytics event '%s' with attributes '%s'...",
                 eventName, expectedAttributes.toString()));
-        return filterLog(currentLog).stream().filter(
+        return filterEvents(currentLog).stream().filter(
                 x -> x.has(EVENT_NAME_KEY) && x.getString(EVENT_NAME_KEY).equals(eventName) &&
                         x.has(ATTRIBUTES_NAME_KEY) && hasAllItems(x.getJSONObject(ATTRIBUTES_NAME_KEY),
                         expectedAttributes)

@@ -501,7 +501,7 @@ Feature: E2EE
     And I see device OwnDevice of user <Name> is verified in device section
     And I close preferences
     Then I see verified icon in conversation
-    #Then I see <ALL_VERIFIED> action in conversation
+    Then I see <ALL_VERIFIED> action in conversation
 
   Examples:
     | Email      | Password      | Name      | Contact   | ALL_VERIFIED                  |
@@ -533,7 +533,7 @@ Feature: E2EE
     And I switch to Devices tab on Single User Profile popover
     Then I see user verified icon on Single User Profile popover
     When I click People button in one to one conversation
-    #Then I see <ALL_VERIFIED> action in conversation
+    Then I see <ALL_VERIFIED> action in conversation
     Then I see verified icon in conversation
     When user <Contact> adds a new device Device3 with label Label3
     And I write message <MessageThatTriggersWarning>
@@ -553,7 +553,7 @@ Feature: E2EE
     Then I see device Device3 of user <Contact> is verified on Single User Profile popover
     Then I see user verified icon on Single User Profile popover
     When I click People button in one to one conversation
-    #Then I see <ALL_VERIFIED> action 2 times in conversation
+    Then I see <ALL_VERIFIED> action 2 times in conversation
     And I see verified icon in conversation
 
   Examples:
@@ -597,7 +597,7 @@ Feature: E2EE
     Then I see user verified icon on Single User Profile popover
   # We have to close and reopen the people popover to update the device list
     When I click People button in one to one conversation
-    #Then I see <ALL_VERIFIED> action in conversation
+    Then I see <ALL_VERIFIED> action in conversation
     And I see verified icon in conversation
     When user <Contact> adds a new device Device3 with label Label3
     And I write message <MessageThatTriggersWarning>
@@ -620,7 +620,7 @@ Feature: E2EE
     Then I see device Device3 of user <Contact> is verified on Single User Profile popover
     Then I see user verified icon on Single User Profile popover
     When I click People button in one to one conversation
-    #Then I see <ALL_VERIFIED> action 2 times in conversation
+    Then I see <ALL_VERIFIED> action 2 times in conversation
     And I see verified icon in conversation
 
     Examples:
@@ -693,14 +693,14 @@ Feature: E2EE
     Then I see user verified icon on Single User Profile popover
     When I click back button on Group Participants popover
     Then I see user <Contact2> in verified section
-    #And I see <ALL_VERIFIED> action in conversation
+    And I see <ALL_VERIFIED> action in conversation
     And I see verified icon in conversation
 
     Examples:
       | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | ALL_VERIFIED                  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat     | All fingerprints are verified |
 
-  @C12056 @staging
+  @C12056 @regression
   Scenario Outline: Verify you get an alert if group conversation participant sends a message from non-verified device
     Given There are 3 users where <Name> is me
     Given user <Contact1> adds a new device Device1 with label Label1
@@ -724,14 +724,14 @@ Feature: E2EE
     And I click on device Device1 of user <Contact2> on Single User Profile popover
     And I verify device on Device Detail popover
     And I click People button in group conversation
-    #And I see <ALL_VERIFIED> action in conversation
+    And I see <ALL_VERIFIED> action in conversation
     And I see verified icon in conversation
     When user <Contact1> adds a new device Device2 with label Label2
     And Contact <Contact1> sends message <Message> via device Device2 to group conversation <GroupChatName>
-    Then I do not see verified icon in conversation
+    Then I see text message <Message>
+    And I do not see verified icon in conversation
     # TODO: make it possible to check for <Contact1> in the "New device" action
     And I see <NEW_DEVICE> action in conversation
-    And I see text message <Message>
     # TODO: Verify "New device" link is opening the devices list of the participant
 
     Examples:
@@ -747,7 +747,7 @@ Feature: E2EE
     And I am signed in properly
     When I open conversation with <Contact>
     And user <Name> adds a new device Device2 with label Label2
-    #Then I see <NEW_DEVICE> action in conversation
+    Then I see <NEW_DEVICE> action in conversation
     And I verify a badge is shown on gear button
     And I open preferences by clicking the gear button
     And I see connected devices dialog
@@ -806,7 +806,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | GroupMessage | UserMessage   |
       | user1Email | user1Password | user1Name | user2Name | user3Name | User1Chat     | Hello Group  | Hello User    |
 
-  @C12054 @staging
+  @C12054 @regression
   Scenario Outline: Verify you see an alert in verified 1:1 conversation when the other participant sends message from non-verified device
     Given There are 2 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
@@ -825,7 +825,7 @@ Feature: E2EE
     And I click back button on the Device Detail popover
     Then I see user verified icon on Single User Profile popover
     When I click People button in one to one conversation
-    #Then I see <ALL_VERIFIED> action in conversation
+    Then I see <ALL_VERIFIED> action in conversation
     And I see verified icon in conversation
     When user <Contact> adds a new device Device2 with label Label2
     And Contact <Contact> sends message <Message> via device Device2 to user Myself
@@ -904,8 +904,6 @@ Feature: E2EE
     And Contact <Name> sends message <Message2> via device Device1 to user <Contact>
     Then I see <UNABLE_TO_DECRYPT> action in conversation
     When I open preferences by clicking the gear button
-    And I see connected devices dialog
-    And I click OK on connected devices dialog
     And I open devices in preferences
     And I wait for devices
     Then I see an active device named Device1
@@ -1054,7 +1052,7 @@ Feature: E2EE
     And I click back button on the Device Detail popover
     And I click back button on Group Participants popover
     And I click People button in group conversation
-    #And I see <ALL_VERIFIED> action in conversation
+    And I see <ALL_VERIFIED> action in conversation
     Then I see verified icon in conversation
     When I add <Contact3> to group chat
     Then I do not see verified icon in conversation
@@ -1091,7 +1089,7 @@ Feature: E2EE
     And I click back button on the Device Detail popover
     And I click back button on Group Participants popover
     And I click People button in group conversation
-    #And I see <ALL_VERIFIED> action in conversation
+    And I see <ALL_VERIFIED> action in conversation
     Then I see verified icon in conversation
     When User <Contact> added contact <Contact3> to group chat GROUPCHAT
     Then I do not see verified icon in conversation
@@ -1127,7 +1125,7 @@ Feature: E2EE
     And I switch to Devices tab on Single User Profile popover
     Then I see user verified icon on Single User Profile popover
     When I click People button in group conversation
-    #Then I see <ALL_VERIFIED> action in conversation
+    Then I see <ALL_VERIFIED> action in conversation
     Then I see verified icon in conversation
 
   Examples:
@@ -1159,7 +1157,7 @@ Feature: E2EE
     And I click back button on the Device Detail popover
     And I click People button in one to one conversation
     Then I see verified icon in conversation
-    #Then I see <ALL_VERIFIED> action in conversation
+    Then I see <ALL_VERIFIED> action in conversation
     When user <Contact> adds a new device Device2 with label Label2
     # image
     And I send picture <PictureName> to the current conversation
@@ -1241,7 +1239,7 @@ Feature: E2EE
     Then I see device Device1 of user <Contact> is verified on Single User Profile popover
     Then I see user verified icon on Single User Profile popover
     When I click People button in one to one conversation
-    #Then I see <ALL_VERIFIED> action in conversation
+    Then I see <ALL_VERIFIED> action in conversation
     Then I see verified icon in conversation
     When user <Name> adds a new device Device2 with label Label2
 #    TODO
@@ -1292,11 +1290,11 @@ Feature: E2EE
     And I see user verified icon on Single User Profile popover
     When I click back button on Group Participants popover
     And I close Group Participants popover
-    #Then I see <ALL_VERIFIED> action in conversation
+    Then I see <ALL_VERIFIED> action in conversation
     And I see verified icon in conversation
     When I open conversation with <Contact>
     Then I see verified icon in conversation
-#    And I see <ALL_VERIFIED> action in conversation
+    And I see <ALL_VERIFIED> action in conversation
 
     Examples:
       | Email      | Password      | Name      | Contact   | Contact2  | ALL_VERIFIED                  |

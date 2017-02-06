@@ -120,7 +120,7 @@ Feature: Settings
       | Email      | Password      | Name      | Error                                     |
       | user1Email | user1Password | user1Name | Please verify your details and try again. |
 
-  @C345367 @preferences @localytics @regression
+  @C345367 @preferences @localytics @regression @e2ee
   Scenario Outline: Verify tracking data is never uploaded if user opted out
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -148,7 +148,7 @@ Feature: Settings
       | Email      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @C352073 @preferences @localytics @regression
+  @C352073 @preferences @localytics @regression @e2ee
   Scenario Outline: Verify data is never uploaded to Raygun if user opted out
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -183,7 +183,7 @@ Feature: Settings
       | Email      | Password      | Name      | Contact   | UNABLE_TO_DECRYPT |
       | user1Email | user1Password | user1Name | user2Name | WAS NOT RECEIVED  |
 
-  @C352085 @preferences @localytics @regression
+  @C352085 @preferences @localytics @regression @e2ee
   Scenario Outline: Verify data is uploaded again to Raygun after user opted-out and opted-in
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

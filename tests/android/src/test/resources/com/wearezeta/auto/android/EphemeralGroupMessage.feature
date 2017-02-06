@@ -44,9 +44,9 @@ Feature: Ephemeral Group Message
     # File
     When I tap File button from cursor toolbar
     Then I see File Upload container in the conversation view
+    And I remember the state of File Upload container in the conversation view
     And I wait for <EphemeraTimeout>
-    And I do not see File Upload container in the conversation view
-    And I see File Upload Placeholder container in the conversation view
+    Then I verify the state of File Upload container is changed
     # Location
     When I tap Share location button from cursor toolbar
     And I tap Send button on Share Location page
@@ -105,8 +105,7 @@ Feature: Ephemeral Group Message
     And I set timeout to <EphemeralTimeout> on Extended cursor ephemeral overlay
     And I type the message "<Message>" and send it by cursor Send button
     And I long tap the obfuscated Text message "<Message>" in the conversation view
-    Then I do not see Delete only for me button on the message bottom menu
-    And I do not see Delete for everyone button on the message bottom menu
+    Then I do not see Delete button on the message bottom menu
     And I do not see Like button on the message bottom menu
     And I do not see Copy button on the message bottom menu
     And I do not see Forward button on the message bottom menu

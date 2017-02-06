@@ -317,13 +317,14 @@ Feature: Collections
     And I see 1 link preview in <Timeout> seconds on Collection page
     And I see 1 file sharing in <Timeout> seconds on Collection page
     And I long tap on the 1st picture on Collections page
-    And I tap Delete only for me button on the message bottom menu
+    And I tap Delete button on the message bottom menu
     And I tap Delete button on the alert
     And I long tap on the 1st link preview on Collections page
+    And I tap Delete button on the message bottom menu
     And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     And I long tap on the 1st file sharing on Collections page
-    And I tap Delete only for me button on the message bottom menu
+    And I tap Delete button on the message bottom menu
     And I tap Delete button on the alert
     Then I see NO ITEM placeholder on Collections page
 
@@ -351,7 +352,7 @@ Feature: Collections
     And I tap on Back button on Collection image preview
     And I tap on Close button on Collection page
     And I scroll to the bottom of conversation view
-    Then I see Like description with expected text "you" in conversation view
+    Then I see Like description with expected text "<Name>" in conversation view
     # Delete only for me
     When I tap Collections button from top toolbar
     And I tap on the 1st picture on Collections page

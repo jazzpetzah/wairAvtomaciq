@@ -360,6 +360,8 @@ Feature: Likes
     Given User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Given I see conversations list
     Given I tap on contact name <Contact>
+    # Wait for content load
+    Given I wait for 3 seconds
     When I long tap on audio message placeholder in conversation view
     And I tap on Like badge item
     And I tap toolbox of the recent message

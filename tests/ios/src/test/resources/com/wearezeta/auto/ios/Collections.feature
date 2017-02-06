@@ -224,13 +224,15 @@ Feature: Collections
     Given Users add the following devices: {"Myself": [{}], "<Contact>": [{}]}
     Given I create temporary file <FileSize> in size with name "<FileName>" and extension "<FileExt>"
     Given I sign in using my email or phone number
+    Given User <Contact> sends 1 "<Link>" message to conversation <GroupChatName>
     Given User <Contact> sends 1 video file <VideoFileName> to conversation <GroupChatName>
     Given User Myself sends 1 image file <Picture> to conversation <GroupChatName>
     Given User Myself sends 1 temporary file <FileName>.<FileExt> to conversation <GroupChatName>
     Given User <Contact> sends 1 audio file <AudioFileName> to conversation <GroupChatName>
-    Given User <Contact> sends 1 "<Link>" message to conversation <GroupChatName>
     Given I see conversations list
     Given I tap on group chat with name <GroupChatName>
+    # Wait for content to be loaded
+    Given I wait for 5 seconds
     When I tap Collection button in conversation view
     Then I see collection category PICTURES
     And I see collection category VIDEOS

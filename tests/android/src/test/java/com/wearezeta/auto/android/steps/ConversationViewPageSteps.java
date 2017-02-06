@@ -363,27 +363,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Checks to see that a link preview message that has been sent appears in the chat history
-     *
-     * @param shouldNotSee equals to null if the message should be visible
-     * @param msg          the expected message
-     * @throws Exception
-     * @step. ^I (do not )?see the message "(.*)" in the conversation view$
-     */
-    @Then("^I (do not )?see the link preview message \"(.*)\" in the conversation view$")
-    public void ISeeLinkPreviewMessage(String shouldNotSee, String msg) throws Exception {
-        msg = expandMessage(msg);
-        if (shouldNotSee == null) {
-            Assert.assertTrue(String.format("The link preview message '%s' is not visible in the conversation view", msg),
-                    getConversationViewPage().waitUntilLinkPreviewMessageVisible(msg));
-        } else {
-            Assert.assertTrue(
-                    String.format("The link preview message '%s' is still visible in the conversation view", msg),
-                    getConversationViewPage().waitUntilLinkPreviewMessageInvisible(msg));
-        }
-    }
-
-    /**
      * Checks to see that a photo exists in the chat history. Does not check which photo though
      *
      * @param shouldNotSee equals to null if 'do not' part does not exist
@@ -1067,9 +1046,9 @@ public class ConversationViewPageSteps {
      *
      * @param name one of possible message bottom menu button name
      * @throws Exception
-     * @step. ^I (do not )?see (Delete only for me|Delete for everyone|Copy|Forward|Edit|Like|Unlike|Open) button on the message bottom menu$
+     * @step. ^I (do not )?see (Delete|Delete only for me|Delete for everyone|Copy|Forward|Edit|Like|Unlike|Open) button on the message bottom menu$
      */
-    @Then("^I (do not )?see (Delete only for me|Delete for everyone|Copy|Forward|Edit|Like|Unlike|Open) button on the message bottom menu$")
+    @Then("^I (do not )?see (Delete|Delete only for me|Delete for everyone|Copy|Forward|Edit|Like|Unlike|Open) button on the message bottom menu$")
     public void ISeeMessageBottomMenuButton(String shouldNotSee, String name) throws Exception {
         final boolean condition = (shouldNotSee == null) ?
                 getConversationViewPage().waitUntilMessageBottomMenuButtonVisible(name) :
@@ -1083,9 +1062,9 @@ public class ConversationViewPageSteps {
      *
      * @param name one of possible message bottom menu button name
      * @throws Exception
-     * @step. ^I tap (Delete only for me|Delete for everyone|Copy|Forward|Edit|Like|Unlike|Open) button on the message bottom menu$
+     * @step. ^I tap (Delete|Delete only for me|Delete for everyone|Copy|Forward|Edit|Like|Unlike|Open) button on the message bottom menu$
      */
-    @When("^I tap (Delete only for me|Delete for everyone|Copy|Forward|Edit|Like|Unlike|Open) button on the message bottom menu$")
+    @When("^I tap (Delete|Delete only for me|Delete for everyone|Copy|Forward|Edit|Like|Unlike|Open) button on the message bottom menu$")
     public void ITapMessageBottomMenuButton(String name) throws Exception {
         getConversationViewPage().tapMessageBottomMenuButton(name);
     }
@@ -1556,7 +1535,7 @@ public class ConversationViewPageSteps {
      */
     @Then("^I (do not )?see (Like button|Like description|Message status|First like avatar|Second like avatar)" +
             " (with expected text \"(.*)\" )?in conversation view$")
-    public void ISeeMessagMetaForText(String shouldNotSee, String itemType, String hasExpectedMsg,
+    public void ISeeMessageMetaForText(String shouldNotSee, String itemType, String hasExpectedMsg,
                                       String expectedMsg) throws Exception {
         boolean isVisible;
         boolean shouldBeVisible = (shouldNotSee == null);

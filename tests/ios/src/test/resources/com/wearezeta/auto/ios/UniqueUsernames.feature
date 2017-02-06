@@ -95,7 +95,7 @@ Feature: Unique Usernames
     Given I tap settings gear button
     Given I select settings item Account
     Given I select settings item Username
-    When I enter "<Empty>" name on Unique Username page
+    When I enter "" name on Unique Username page
     Then I see Save button state is Disabled on Unique Username page
     When I tap Save button on Unique Username page
     And I enter "<MinChars>" name on Unique Username page
@@ -109,8 +109,8 @@ Feature: Unique Usernames
       | SpecialChars | %^&@#$ |
 
     Examples:
-      | Name      | Empty | MinChars |
-      | user1Name | ""    | 1        |
+      | Name      | MinChars |
+      | user1Name | 1        |
 
   @C375777 @regression @fastLogin
   Scenario Outline: Verify impossibility to enter too long username

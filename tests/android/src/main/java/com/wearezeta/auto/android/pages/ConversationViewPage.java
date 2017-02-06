@@ -39,8 +39,6 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
             By.xpath(String.format("(//*[@id='%s'])[last()]", idStrRowConversationMessage));
     private static final By xpathFirstConversationMessage =
             By.xpath(String.format("(//*[@id='%s'])[1]", idStrRowConversationMessage));
-    private static final Function<String, String> xpathStrLinkPreviewTextMessage = text ->
-            String.format("//*[@id='cv__row_conversation__link_preview__text_message' and @value='%s']", text);
 
     // Image
     private static final String idStrConversationImages = "message_image";
@@ -122,6 +120,7 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     //region Message Bottom Menu
     private static final By idMessageBottomMenu = By.id("action_bar_root");
     private static final By idMessageBottomMenuForwardButton = By.id("message_bottom_menu_item_forward");
+    private static final By idMessageBottomMenuDeleteGeneralButton = By.id("message_bottom_menu_item_delete");
     private static final By idMessageBottomMenuDeleteLocalButton = By.id("message_bottom_menu_item_delete_local");
     private static final By idMessageBottomMenuDeleteGlobalButton = By.id("message_bottom_menu_item_delete_global");
     private static final By idMessageBottomMenuCopyButton = By.id("message_bottom_menu_item_copy");
@@ -712,16 +711,6 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
                 By.xpath(xpathStrSystemMessageNewDeviceByValue.apply(userName)));
     }
 
-    public boolean waitUntilLinkPreviewMessageVisible(String text) throws Exception {
-        final By locator = By.xpath(xpathStrLinkPreviewTextMessage.apply(text));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-    }
-
-    public boolean waitUntilLinkPreviewMessageInvisible(String text) throws Exception {
-        final By locator = By.xpath(xpathStrLinkPreviewTextMessage.apply(text));
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
-    }
-
     public boolean waitUntilSystemMessageVisible(String text) throws Exception {
         final By locator = By.xpath(xpathStrSystemMessageByExp.apply(String.format("contains(@value, '%s')", text.toUpperCase())));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
@@ -1143,6 +1132,8 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
     //region Message Bottom Menu
     private By getMessageBottomMenuButtonLocatorByName(String btnName) {
         switch (btnName.toLowerCase()) {
+            case "delete":
+                return idMessageBottomMenuDeleteGeneralButton;
             case "delete only for me":
                 return idMessageBottomMenuDeleteLocalButton;
             case "delete for everyone":

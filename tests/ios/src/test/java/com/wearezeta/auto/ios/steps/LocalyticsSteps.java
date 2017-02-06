@@ -48,14 +48,16 @@ public class LocalyticsSteps {
                         () -> getOccurrencesCount(getDeviceLogs(), expectedEvent, expectedAttributes) >= expectedCount
                 );
                 Assert.assertTrue(String.format("The actual count of '%s' event occurrences in the log " +
-                        "is less than the expected count %d", expectedEvent, expectedCount), result);
+                        "is less than the expected count %d. Recent events:\n%s", expectedEvent, expectedCount,
+                        LocalyticsHelpers.filterEvents(getDeviceLogs())), result);
                 break;
             case "exactly":
                 result = CommonUtils.waitUntilTrue(TIMEOUT, INTERVAL,
                         () -> getOccurrencesCount(getDeviceLogs(), expectedEvent, expectedAttributes) == expectedCount
                 );
                 Assert.assertTrue(String.format("The actual count of '%s' event occurrences in the log " +
-                        "is not equal to the expected count %d", expectedEvent, expectedCount), result);
+                        "is not equal to the expected count %d. Recent events:\n%s", expectedEvent, expectedCount,
+                        LocalyticsHelpers.filterEvents(getDeviceLogs())), result);
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown comparator value '%s'", comparator));

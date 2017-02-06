@@ -11,7 +11,7 @@ Feature: Delete Message
     Given I see the conversations list with conversations
     Given I tap on conversation name <Contact>
     When I long tap the Text message "<Message>" in the conversation view
-    And I tap Delete only for me button on the message bottom menu
+    And I tap Delete button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see the message "<Message>" in the conversation view
 

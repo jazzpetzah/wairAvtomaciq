@@ -356,6 +356,9 @@ public class CommonIOSSteps {
                     IOSSimulatorHelpers.uninstallApp(currentPackage.getBundleId());
                 }
                 IOSSimulatorHelpers.installApp(currentPackage.getAppRoot());
+                if (!IOSSimulatorHelpers.waitForSpringboard()) {
+                    throw new IllegalStateException("Simulator has failed to load the UI after the timeout");
+                }
                 break;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1819,12 +1822,12 @@ public class CommonIOSSteps {
     /**
      * Verify user details on the backend
      *
-     * @step. ^I verify user's (.*) (email|name|unique username) on the backend is equal to (.*)
-     * @param user user name/alias
-     * @param detail one of possible values
+     * @param user          user name/alias
+     * @param detail        one of possible values
      * @param expectedValue the expected value/value alias. One may set it to CommonSteps.USER_DETAIL_NOT_SET
      *                      constant to verify that the corresponding value is not set on the backend
      * @throws Exception
+     * @step. ^I verify user's (.*) (email|name|unique username) on the backend is equal to (.*)
      */
     @Then("^I verify user's (.*) (email|name|unique username|phone number) on the backend is equal to (.*)")
     public void IVerifyDetailsOnBackend(String user, String detail, String expectedValue) throws Exception {

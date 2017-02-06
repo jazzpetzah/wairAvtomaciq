@@ -74,11 +74,11 @@ Feature: Delivery
     When I long tap the Text message "<Msg>" in the conversation view
     And I tap Like button on the message bottom menu
     Then I see 1 Message status in conversation view
-    And I see Like description with expected text "you" in conversation view
+    And I see Like description with expected text "<Name>" in conversation view
     And I see Like button in conversation view
     When I type the message "<Msg3>" and send it by cursor Send button
     Then I see 1 Message status in conversation view
-    And I see Like description with expected text "you" in conversation view
+    And I see Like description with expected text "<Name>" in conversation view
     And I see Like button in conversation view
 
     Examples:
