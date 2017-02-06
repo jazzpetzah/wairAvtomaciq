@@ -10,15 +10,15 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class GiphyPreviewPage extends IOSPage {
     // TODO: assign a name to Giphy image element
-    private static final By classImagePreview = FBBy.className("XCUIElementTypeImage");
+    private static final By classImagePreview = By.className("XCUIElementTypeImage");
 
-    // private static final By classCellPreview = FBBy.className("XCUIElementTypeCell");
+    private static final By fbClassCellPreview = FBBy.className("XCUIElementTypeCell");
 
     private static final By nameCancelButton = MobileBy.AccessibilityId("CANCEL");
 
     public static final By nameSendButton = MobileBy.AccessibilityId("SEND");
 
-    private static final By namePreviewGrid = MobileBy.AccessibilityId("giphyCollectionView");
+    private static final By fbNamePreviewGrid = FBBy.AccessibilityId("giphyCollectionView");
 
     public GiphyPreviewPage(Future<ZetaIOSDriver> driver) throws Exception {
         super(driver);
@@ -29,15 +29,11 @@ public class GiphyPreviewPage extends IOSPage {
     }
 
     public boolean isGridVisible() throws Exception {
-        return isLocatorDisplayed(namePreviewGrid);
+        return isLocatorDisplayed(fbNamePreviewGrid);
     }
 
     public void selectFirstItem() throws Exception {
-        // FIXME: The driver simply freezes on this page
-        //        getElementIfExists(classCellPreview).orElseThrow(
-        //                () -> new IllegalStateException("No Giphy preview calls are visible on the page")
-        //        ).click();
-        clickAt(15, 15);
+        getElement(getElement(fbNamePreviewGrid), fbClassCellPreview).click();
         // Wait for animation
         Thread.sleep(1000);
     }

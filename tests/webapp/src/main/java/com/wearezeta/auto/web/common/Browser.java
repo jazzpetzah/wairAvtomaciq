@@ -51,6 +51,7 @@ public enum Browser {
 	public boolean isSupportingConsoleLogManagement() {
 		switch (this) {
 		case Chrome:
+                case Firefox:
 		case Opera:
 		case Safari:
 			return true;
@@ -123,6 +124,15 @@ public enum Browser {
 			case Chrome:
 			case Opera:
 			case Firefox:
+				return true;
+			default:
+				return false;
+		}
+	}
+        
+        public boolean isSupportingNotifications() {
+		switch (this) {
+			case Chrome:
 				return true;
 			default:
 				return false;

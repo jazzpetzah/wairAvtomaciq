@@ -10,6 +10,8 @@ import org.junit.Assert;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+import com.wearezeta.auto.web.common.Browser;
+import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.LoginPage;
 
@@ -86,6 +88,9 @@ public class LoginPageSteps {
         Assert.assertTrue(
                 "Sign In button/login progress spinner are still visible",
                 context.getPagesCollection().getPage(LoginPage.class).waitForLogin());
+        if (Browser.Firefox == WebAppExecutionContext.getBrowser()) {
+            context.getLogManager().applyFirefoxLoggerScript();
+        }
     }
 
     @Then("^the sign in error message reads (.*)")

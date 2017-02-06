@@ -10,7 +10,7 @@ Feature: Giphy
     When I tap on contact name <Contact>
     And I type the "<GiphyTag>" message
     And I tap GIF button from input tools
-    # Wait for GIF picture to be downloaded
+    # Wait for GIF grid to be downloaded
     And I wait for 10 seconds
     And I select the first item from Giphy grid
     Then I see Giphy preview page
@@ -29,7 +29,7 @@ Feature: Giphy
     When I tap on contact name <Contact>
     And I type the "<GiphyTag>" message
     And I tap GIF button from input tools
-    # Wait for GIF picture to be downloaded
+    # Wait for GIF grid to be downloaded
     And I wait for 10 seconds
     And I select the first item from Giphy grid
     And I tap Send button on Giphy preview page

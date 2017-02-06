@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces;
+import com.wearezeta.auto.common.misc.Timedelta;
 import com.wearezeta.auto.common.process.UnixProcessHelpers;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.log4j.Logger;
@@ -23,14 +24,15 @@ import static com.wearezeta.auto.common.CommonUtils.getIOSToolsRoot;
 import static com.wearezeta.auto.common.CommonUtils.getImagesPathFromConfig;
 
 public class IOSSimulatorHelpers {
-    public static final int SIMULATOR_INTERACTION_TIMEOUT = 3 * 60; //seconds
+    private static final Timedelta SIMULATOR_INTERACTION_TIMEOUT = Timedelta.fromMinutes(3);
 
     private static final String TESTING_IMAGE_NAME = "testing.jpg";
 
-    private static final long INSTALL_SYNC_TIMEOUT_MS = 3000;
+    private static final Timedelta INSTALL_SYNC_TIMEOUT = Timedelta.fromSeconds(3);
 
-    private static final long SIMULATOR_BOOT_TIMEOUT_MS = 80000;
-    private static final long SIMULATOR_BOOTING_INTERVAL_CHECK_MS = SIMULATOR_BOOT_TIMEOUT_MS / 20;
+    private static final Timedelta SIMULATOR_BOOT_TIMEOUT = Timedelta.fromSeconds(80);
+    private static final Timedelta SIMULATOR_BOOTING_INTERVAL_CHECK =
+            Timedelta.fromMilliSeconds(SIMULATOR_BOOT_TIMEOUT.asMilliSeconds() / 20);
 
     private static final String SIMULATOR_PROCESS_NAME = "Simulator";
 
@@ -57,7 +59,7 @@ public class IOSSimulatorHelpers {
                 String.format("/usr/bin/python '%s/%s' %.2f %.2f %.2f %.2f",
                         getIOSToolsRoot(IOSSimulatorHelpers.class), SWIPE_SCRIPT_NAME,
                         startX, startY, endX, endY)
-        }).get(SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+        }).get(SIMULATOR_INTERACTION_TIMEOUT.asSeconds(), TimeUnit.SECONDS);
     }
 
     /**
@@ -74,7 +76,7 @@ public class IOSSimulatorHelpers {
                 String.format("/usr/bin/python '%s/%s' %.2f %.2f %.2f %.2f %d",
                         getIOSToolsRoot(IOSSimulatorHelpers.class), SWIPE_SCRIPT_NAME,
                         startX, startY, endX, endY, durationMillis)
-        }).get(SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+        }).get(SIMULATOR_INTERACTION_TIMEOUT.asSeconds(), TimeUnit.SECONDS);
     }
 
     public static void swipeDown() throws Exception {
@@ -89,14 +91,14 @@ public class IOSSimulatorHelpers {
         CommonUtils.executeUIShellScript(new String[]{
                 String.format("/usr/bin/python '%s/%s' %s %s",
                         getIOSToolsRoot(IOSSimulatorHelpers.class), DOUBLE_CLICK_SCRIPT_NAME, relativeX, relativeY)
-        }).get(SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+        }).get(SIMULATOR_INTERACTION_TIMEOUT.asSeconds(), TimeUnit.SECONDS);
     }
 
     public static void clickAt(String relativeX, String relativeY, String durationSeconds) throws Exception {
         CommonUtils.executeUIShellScript(new String[]{
-                String.format("/usr/bin/python '%s/%s' %s %s %s",
-                        getIOSToolsRoot(IOSSimulatorHelpers.class), CLICK_SCRIPT_NAME, relativeX, relativeY, durationSeconds)
-        }).get(SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+                String.format("/usr/bin/python '%s/%s' %s %s %s", getIOSToolsRoot(IOSSimulatorHelpers.class),
+                        CLICK_SCRIPT_NAME, relativeX, relativeY, durationSeconds)
+        }).get(SIMULATOR_INTERACTION_TIMEOUT.asSeconds(), TimeUnit.SECONDS);
     }
 
     public static void activateWindow() throws Exception {
@@ -105,7 +107,7 @@ public class IOSSimulatorHelpers {
                 "set frontmost to false",
                 "set frontmost to true",
                 "end tell"
-        }).get(IOSSimulatorHelpers.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+        }).get(IOSSimulatorHelpers.SIMULATOR_INTERACTION_TIMEOUT.asSeconds(), TimeUnit.SECONDS);
         // To make sure the window is really activated
         Thread.sleep(4000);
     }
@@ -117,35 +119,35 @@ public class IOSSimulatorHelpers {
                 "keystroke \"h\" using {command down, shift down}",
                 "keystroke \"h\" using {command down, shift down}",
                 "end tell"
-        }).get(IOSSimulatorHelpers.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+        }).get(IOSSimulatorHelpers.SIMULATOR_INTERACTION_TIMEOUT.asSeconds(), TimeUnit.SECONDS);
     }
 
     public static void lock() throws Exception {
         activateWindow();
         CommonUtils.executeUIAppleScript(new String[]{
                 "tell application \"System Events\" to keystroke \"l\" using {command down}"
-        }).get(IOSSimulatorHelpers.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+        }).get(IOSSimulatorHelpers.SIMULATOR_INTERACTION_TIMEOUT.asSeconds(), TimeUnit.SECONDS);
     }
 
     public static void goHome() throws Exception {
         activateWindow();
         CommonUtils.executeUIAppleScript(new String[]{
                 "tell application \"System Events\" to keystroke \"h\" using {command down, shift down}"
-        }).get(IOSSimulatorHelpers.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+        }).get(IOSSimulatorHelpers.SIMULATOR_INTERACTION_TIMEOUT.asSeconds(), TimeUnit.SECONDS);
     }
 
     public static void pressEnterKey() throws Exception {
         activateWindow();
         CommonUtils.executeUIAppleScript(new String[]{
                 "tell application \"System Events\" to keystroke return"
-        }).get(IOSSimulatorHelpers.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+        }).get(IOSSimulatorHelpers.SIMULATOR_INTERACTION_TIMEOUT.asSeconds(), TimeUnit.SECONDS);
     }
 
     public static void toggleSoftwareKeyboard() throws Exception {
         activateWindow();
         CommonUtils.executeUIAppleScript(new String[]{
                 "tell application \"System Events\" to keystroke \"k\" using {command down}"
-        }).get(IOSSimulatorHelpers.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+        }).get(IOSSimulatorHelpers.SIMULATOR_INTERACTION_TIMEOUT.asSeconds(), TimeUnit.SECONDS);
     }
 
     public static void selectPasteMenuItem() throws Exception {
@@ -159,7 +161,7 @@ public class IOSSimulatorHelpers {
                 "    end tell",
                 "  end tell",
                 "end tell",
-        }).get(IOSSimulatorHelpers.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+        }).get(IOSSimulatorHelpers.SIMULATOR_INTERACTION_TIMEOUT.asSeconds(), TimeUnit.SECONDS);
     }
 
     private static final String SUBSECTION_MARKER = "--";
@@ -320,7 +322,7 @@ public class IOSSimulatorHelpers {
 
     private static String retryUntilSimulatorBooted(FunctionalInterfaces.ISupplierWithException<String> f)
             throws Exception {
-        final long msStarted = System.currentTimeMillis();
+        final Timedelta started = Timedelta.now();
         do {
             try {
                 final String output = f.call();
@@ -332,18 +334,18 @@ public class IOSSimulatorHelpers {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            Thread.sleep(SIMULATOR_BOOTING_INTERVAL_CHECK_MS);
-        } while (System.currentTimeMillis() - msStarted <= SIMULATOR_BOOT_TIMEOUT_MS);
-        throw new IllegalStateException(String.format("Cannot apply simctl command after %s seconds timeout",
-                SIMULATOR_BOOT_TIMEOUT_MS / 1000));
+            Thread.sleep(SIMULATOR_BOOTING_INTERVAL_CHECK.asMilliSeconds());
+        } while (Timedelta.now().isDiffLessOrEqual(started, SIMULATOR_BOOT_TIMEOUT));
+        throw new IllegalStateException(String.format("Cannot apply simctl command after %s timeout",
+                SIMULATOR_BOOT_TIMEOUT));
     }
 
     public static void installApp(File appPath) throws Exception {
         retryUntilSimulatorBooted(
                 () -> executeSimctl("install", "booted", appPath.getCanonicalPath())
         );
-        log.debug(String.format("Sleeping %s seconds to sync application install...", INSTALL_SYNC_TIMEOUT_MS / 1000));
-        Thread.sleep(INSTALL_SYNC_TIMEOUT_MS);
+        log.debug(String.format("Sleeping %s to sync application install...", INSTALL_SYNC_TIMEOUT));
+        Thread.sleep(INSTALL_SYNC_TIMEOUT.asMilliSeconds());
     }
 
     public static void uninstallApp(String bundleId) throws Exception {
@@ -460,21 +462,28 @@ public class IOSSimulatorHelpers {
                 "-CurrentDeviceUDID", getId(),
                 String.format("-SimulatorWindowLastScale-%s", getInternalDeviceType()), getDefaultScaleFactor())
         );
-        long msStarted = System.currentTimeMillis();
+        final Timedelta started = Timedelta.now();
         do {
             if (isBooted()) {
                 return;
             }
-            Thread.sleep(SIMULATOR_BOOTING_INTERVAL_CHECK_MS);
-        } while (System.currentTimeMillis() - msStarted <= SIMULATOR_BOOT_TIMEOUT_MS);
+            Thread.sleep(SIMULATOR_BOOTING_INTERVAL_CHECK.asMilliSeconds());
+        } while (Timedelta.now().isDiffLessOrEqual(started, SIMULATOR_BOOT_TIMEOUT));
         if (!isBooted()) {
-            throw new IllegalStateException(String.format("iOS Simulator booting failed after %s seconds timeout",
-                    SIMULATOR_BOOT_TIMEOUT_MS / 1000));
+            throw new IllegalStateException(String.format("iOS Simulator booting failed after %s timeout",
+                    SIMULATOR_BOOT_TIMEOUT));
         }
     }
 
-    public static boolean isBooted() throws Exception {
+    private static boolean isBooted() throws Exception {
         return UnixProcessHelpers.isProcessRunning("nsurlstoraged", Optional.of("Simulator"));
+    }
+
+    public static boolean waitForSpringboard() throws Exception {
+        final String[] cmd = new String[]{XCRUN_PATH, "simctl", "launch", getId(), "com.apple.springboard"};
+        log.debug(String.format("Executing: %s", Arrays.toString(cmd)));
+        final Process process = new ProcessBuilder(cmd).redirectErrorStream(true).start();
+        return process.waitFor(SIMULATOR_BOOT_TIMEOUT.asSeconds(), TimeUnit.SECONDS) && process.exitValue() == 0;
     }
 
     public static boolean isRunning() throws Exception {
