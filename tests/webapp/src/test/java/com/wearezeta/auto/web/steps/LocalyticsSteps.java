@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.web.common.Browser;
 import com.wearezeta.auto.web.common.WebAppTestContext;
 
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
@@ -31,7 +30,7 @@ public class LocalyticsSteps {
 
     @When("^I enable localytics via URL parameter$")
     public void IEnableLocalytics() throws Exception {
-        if (WebAppExecutionContext.getBrowser().isSupportingConsoleLogManagement()) {
+        if (WebAppExecutionContext.getBrowser().isSupportingLocalyticsCheck()) {
             String currentUrl = context.getDriver().getCurrentUrl();
             if (currentUrl.contains("?")) {
                 context.getDriver().get(currentUrl + "&localytics");
@@ -43,8 +42,7 @@ public class LocalyticsSteps {
 
     @Then("^I( do not)? see localytics event (.*) without attributes$")
     public void ISeeLocalyticsEvent(String doNot, String event) throws Exception {
-        if (WebAppExecutionContext.getBrowser().isSupportingConsoleLogManagement()) {
-            
+        if (WebAppExecutionContext.getBrowser().isSupportingLocalyticsCheck()) {
             List<String> localyticsEvents = this.getLoggedEvents("localytics");
             if (doNot == null) {
                 assertThat("Did not find localytics event " + event + " in browser console", localyticsEvents,
@@ -58,10 +56,7 @@ public class LocalyticsSteps {
 
     @Then("^I( do not)? see localytics event (.*) with attributes (.*)$")
     public void ISeeLocalyticsEvent(String doNot, String event, String attributes) throws Exception {
-        if (WebAppExecutionContext.getBrowser().isSupportingConsoleLogManagement()) {
-            if (Browser.Firefox == WebAppExecutionContext.getBrowser()) {
-                attributes = attributes.replaceAll("\\\\", "").replaceAll("\\\"$", "");
-            }
+        if (WebAppExecutionContext.getBrowser().isSupportingLocalyticsCheck()) {
             List<String> localyticsEvents = this.getLoggedEvents("localytics");
             if (doNot == null) {
                 assertThat("Did not find localytics event " + event + " in browser console", localyticsEvents,
@@ -75,14 +70,14 @@ public class LocalyticsSteps {
 
     @When("^I remember number of (localytics|raygun) events$")
     public void IRememberLoggedEvents(String eventType) throws Exception {
-        if (WebAppExecutionContext.getBrowser().isSupportingConsoleLogManagement()) {
+        if (WebAppExecutionContext.getBrowser().isSupportingLocalyticsCheck()) {
             rememberedEvents = getLoggedEvents(eventType).size();
         }
     }
 
     @Then("^There are( no)? added (localytics|raygun) events$")
     public void ThereAreAddedEvents(String no, String eventType) throws Exception {
-        if (WebAppExecutionContext.getBrowser().isSupportingConsoleLogManagement()) {
+        if (WebAppExecutionContext.getBrowser().isSupportingLocalyticsCheck()) {
             if (rememberedEvents == -1) {
                 throw new Exception("Please use step to remember " + eventType + " events before this step");
             }

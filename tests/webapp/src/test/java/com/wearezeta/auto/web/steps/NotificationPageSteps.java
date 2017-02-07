@@ -5,7 +5,6 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.common.notifications.Notification;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import java.util.List;
@@ -28,10 +27,9 @@ public class NotificationPageSteps {
 
     @When("^I listen for notifications$")
     public void IListenForNotifications() throws Exception {
-        if (!WebAppExecutionContext.getBrowser().isSupportingNotifications()) {
-            throw new PendingException("FireFox does not support notification tests");
+        if (WebAppExecutionContext.getBrowser().isSupportingNotificationCheck()) {
+            context.getNotificationManager().init();
         }
-        context.getNotificationManager().init();
     }
 
     /**
@@ -45,6 +43,10 @@ public class NotificationPageSteps {
      */
     @When("^I click next notification from (\\w+) with text (.*)$")
     public void IClickNotificationFromUserWithBody(String from, String body) throws Exception {
+        // Since this step changes the test workflow the feature has to be enabled
+        if (!WebAppExecutionContext.getBrowser().isSupportingNotificationCheck()) {
+            throw new IllegalStateException(String.format("NotificationCheck is not supported with browser '%s'.", WebAppExecutionContext.getBrowserName()));
+        }
         if (!context.getNotificationManager().isInitialised()) {
             throw new IllegalStateException(
                     "NotificationManager is not initialised. Please consider adding the step 'I listen for notifications'.");
@@ -56,29 +58,33 @@ public class NotificationPageSteps {
 
     @Then("^I saw notification from (\\w+) with text (.*)$")
     public void IGotNotification(String from, String body) throws Exception {
-        if (!context.getNotificationManager().isInitialised()) {
-            throw new IllegalStateException(
-                    "NotificationManager is not initialised. Please consider adding the step 'I listen for notifications'.");
+        if (WebAppExecutionContext.getBrowser().isSupportingNotificationCheck()) {
+            if (!context.getNotificationManager().isInitialised()) {
+                throw new IllegalStateException(
+                        "NotificationManager is not initialised. Please consider adding the step 'I listen for notifications'.");
+            }
+            // can be namealias or 'Someone'
+            final String user = context.getUsersManager().replaceAliasesOccurences(from, ClientUsersManager.FindBy.NAME_ALIAS);
+            List<Notification> allNotifications = context.getNotificationManager().getAllNotifications();
+            List<Notification> filteredNotifications = allNotifications.stream()
+                    .filter((notification)
+                            -> user.equalsIgnoreCase(notification.getTitle())
+                    && body.equalsIgnoreCase(notification.getBody()))
+                    .collect(Collectors.toList());
+            assertThat(String.format("Found Notification in %s", allNotifications), filteredNotifications, is(not(empty())));
         }
-        // can be namealias or 'Someone'
-        final String user = context.getUsersManager().replaceAliasesOccurences(from, ClientUsersManager.FindBy.NAME_ALIAS);
-        List<Notification> allNotifications = context.getNotificationManager().getAllNotifications();
-        List<Notification> filteredNotifications = allNotifications.stream()
-                .filter((notification)
-                        -> user.equalsIgnoreCase(notification.getTitle())
-                && body.equalsIgnoreCase(notification.getBody()))
-                .collect(Collectors.toList());
-        assertThat(String.format("Found Notification in %s", allNotifications), filteredNotifications, is(not(empty())));
     }
 
     @Then("^I got (\\d+) notifications?$")
     public void IGotNumberOfNotifications(int expectedNumNotifications) throws Exception {
-        if (!context.getNotificationManager().isInitialised()) {
-            throw new IllegalStateException(
-                    "NotificationManager is not initialised. Please consider adding the step 'I listen for notifications'.");
+        if (WebAppExecutionContext.getBrowser().isSupportingNotificationCheck()) {
+            if (!context.getNotificationManager().isInitialised()) {
+                throw new IllegalStateException(
+                        "NotificationManager is not initialised. Please consider adding the step 'I listen for notifications'.");
+            }
+            assertThat("Number of notifications",
+                    context.getNotificationManager().getAllNotifications().size(),
+                    is(expectedNumNotifications));
         }
-        assertThat("Number of notifications",
-                context.getNotificationManager().getAllNotifications().size(),
-                is(expectedNumNotifications));
     }
 }

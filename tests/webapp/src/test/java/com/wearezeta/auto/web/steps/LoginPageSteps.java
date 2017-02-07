@@ -82,7 +82,7 @@ public class LoginPageSteps {
                     .isSignInButtonEnabled());
         }
     }
-
+    
     @Then("^I am signed in properly$")
     public void IAmSignedInProperly() throws Exception {
         Assert.assertTrue(

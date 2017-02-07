@@ -31,6 +31,13 @@ public class LogManager {
         this.context = context;
     }
 
+    /**
+     * Enables basic logging functionality for Firefox. The script and the log gets vanished after a full page load.
+     * @throws IOException
+     * @throws InterruptedException
+     * @throws ExecutionException
+     * @throws TimeoutException 
+     */
     public void applyFirefoxLoggerScript() throws IOException, InterruptedException, ExecutionException, TimeoutException {
         final String SAVE_CONSOLE_SCRIPT = IOUtils.readFully(this.getClass().getResourceAsStream("/scripts/save_firefox_console.js"));
         context.getDriver().executeScript(SAVE_CONSOLE_SCRIPT);
