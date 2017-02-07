@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.common.Browser;
 import com.wearezeta.auto.web.common.WebAppTestContext;
 
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
@@ -18,7 +19,7 @@ import static org.hamcrest.Matchers.not;
 
 public class LocalyticsSteps {
 
-    private static final Logger log = ZetaLogger.getLog(LocalyticsSteps.class.getSimpleName());
+    private static final Logger LOG = ZetaLogger.getLog(LocalyticsSteps.class.getSimpleName());
 
     private final WebAppTestContext context;
 
@@ -43,6 +44,7 @@ public class LocalyticsSteps {
     @Then("^I( do not)? see localytics event (.*) without attributes$")
     public void ISeeLocalyticsEvent(String doNot, String event) throws Exception {
         if (WebAppExecutionContext.getBrowser().isSupportingConsoleLogManagement()) {
+            
             List<String> localyticsEvents = this.getLoggedEvents("localytics");
             if (doNot == null) {
                 assertThat("Did not find localytics event " + event + " in browser console", localyticsEvents,
@@ -57,6 +59,9 @@ public class LocalyticsSteps {
     @Then("^I( do not)? see localytics event (.*) with attributes (.*)$")
     public void ISeeLocalyticsEvent(String doNot, String event, String attributes) throws Exception {
         if (WebAppExecutionContext.getBrowser().isSupportingConsoleLogManagement()) {
+            if (Browser.Firefox == WebAppExecutionContext.getBrowser()) {
+                attributes = attributes.replaceAll("\\\\", "").replaceAll("\\\"$", "");
+            }
             List<String> localyticsEvents = this.getLoggedEvents("localytics");
             if (doNot == null) {
                 assertThat("Did not find localytics event " + event + " in browser console", localyticsEvents,
@@ -102,7 +107,7 @@ public class LocalyticsSteps {
                 .map((entry) -> entry.getMessage().substring(entry.getMessage().lastIndexOf("|") + 2))
                 .collect(Collectors.toList());
         loggedEvents.forEach((localyticsEvent) -> {
-            log.info("Found event: " + localyticsEvent);
+            LOG.info("Found event: " + localyticsEvent);
         });
         return loggedEvents;
     }
