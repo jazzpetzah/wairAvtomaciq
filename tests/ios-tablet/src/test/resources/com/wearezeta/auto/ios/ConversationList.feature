@@ -232,9 +232,9 @@ Feature: Conversation List
     Given Users add the following devices: {"<Contact1>": [{}], "Myself": [{}]}
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see conversations list
     Given User <Contact1> sends 1 default message to conversation Myself
     Given User Myself sends 1 default message to conversation <Contact1>
+    Given I see conversations list
     When I swipe right on conversation <Contact1>
     And I tap Delete conversation action button
     And I confirm Delete conversation action

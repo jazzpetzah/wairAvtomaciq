@@ -130,7 +130,16 @@ public enum Browser {
 		}
 	}
         
-        public boolean isSupportingNotifications() {
+        public boolean isSupportingNotificationCheck() {
+		switch (this) {
+			case Chrome:
+				return true;
+			default:
+				return false;
+		}
+	}
+        
+        public boolean isSupportingLocalyticsCheck() {
 		switch (this) {
 			case Chrome:
 				return true;

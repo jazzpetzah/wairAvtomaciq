@@ -666,6 +666,8 @@ Feature: Unique Usernames
     Then I do not see unique username <Name> on Unique Username Takeover page
     When I remember the unique username on Unique Username Takeover page
     When I tap Keep This One button on Unique Username Takeover page
+    # Wait for animation
+    And I wait for 1 second
     Then I verify my unique username on the backend is equal to the one which was visible on Unique Username Takeover page
 
     Examples:

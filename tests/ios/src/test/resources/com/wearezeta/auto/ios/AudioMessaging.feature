@@ -37,7 +37,7 @@ Feature: Audio Messaging
   Scenario Outline: Verify receiving a voice message and deleting it
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given Users add the following devices: {"Myself: [{}], "<Contact1>": [{"name": "<ContactDevice>"}]}
+    Given Users add the following devices: {"Myself": [{}], "<Contact1>": [{"name": "<ContactDevice>"}]}
     Given I sign in using my email or phone number
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Given User Myself sends 1 default message to conversation <Contact1>

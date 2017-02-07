@@ -560,7 +560,7 @@ Feature: Conversation View
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C404410 @staging @fastLogin
+  @C404410 @regression @fastLogin
   Scenario Outline: Verify street address, event, flight number are detected by peek & pop
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
