@@ -895,6 +895,15 @@ public class ConversationPageSteps {
                 context.getPagesCollection().getPage(ConversationPage.class).getUniqueUsername(), equalTo(username));
     }
 
+    @Then("^I see avatar of user is (.*) in conversation view$")
+    public void ISeeAvatarOfUser(String pictureName) throws Exception {
+        //ClientUser user = context.getUsersManager().findUserByNameOrNameAlias(nameAlias);
+        //actualPicture = context.getPagesCollection().getPage(ConversationPage.class).getAvatarById(user.getId());
+        assertThat("Overlap score of image comparsion", context.getPagesCollection().getPage(ConversationPage.class)
+                    .getOverlapScoreOfLastImage(pictureName), greaterThan(MIN_ACCEPTABLE_IMAGE_SCORE));
+
+    }
+
     @Then("^I see (.*) action (\\d+) times for (.*) in conversation$")
     public void ThenISeeActionForContactInConversation(String message, int times, String contacts) throws Exception {
         contacts = context.getUsersManager().replaceAliasesOccurences(contacts, FindBy.NAME_ALIAS);

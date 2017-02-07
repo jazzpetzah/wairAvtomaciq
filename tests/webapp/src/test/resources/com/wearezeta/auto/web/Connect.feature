@@ -1,9 +1,10 @@
 Feature: Connect
 
-  @C1756 @smoke
+  @C1756 @smoke @torun
   Scenario Outline: Accept connection request
     Given There are 2 users where <Name> is me
     Given <Contact> has unique username
+    Given User <Contact> changes avatar picture to <Picture1>
     Given <Contact> sent connection request to <Name>
     Given User me change accent color to VividRed
     Given I switch to Sign In page
@@ -17,13 +18,14 @@ Feature: Connect
     And I accept connection request from user <Contact>
     Then I see Contact list with name <Contact>
     And I see unique username of <Contact> in conversation
+    And I see avatar of user is <Picture1> in conversation view
     When I write message <Message>
     And I send message
     Then I see text message <Message>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Message |
-      | user1Email | user1Password | user1Name | user2Name | message |
+      | Login      | Password      | Name      | Contact   | Message | Picture1                 |
+      | user1Email | user1Password | user1Name | user2Name | message | userpicture_portrait.jpg |
 
   @C1691 @regression
   Scenario Outline: Verify pending user profiles contain all the info required by spec

@@ -286,6 +286,11 @@ public class ConversationPage extends WebPage {
         return uniqueUsername.getText();
     }
 
+    public boolean isAvatarByIdVisible(String userId) throws Exception {
+        String locator = WebAppLocators.ConversationPage.cssAvatarByUserId.apply(userId);
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.cssSelector(locator));
+    }
+
     /**
      * An expectation for checking that a system message is visible that contains all strings of the expected strings.
      *
@@ -475,8 +480,7 @@ public class ConversationPage extends WebPage {
 
     public double getOverlapScoreOfLastImage(String pictureName)
             throws Exception {
-        final String picturePath = WebCommonUtils
-                .getFullPicturePath(pictureName);
+        final String picturePath = WebCommonUtils.getFullPicturePath(pictureName);
         if (!isImageMessageFound()) {
             return 0.0;
         }
