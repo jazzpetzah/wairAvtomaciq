@@ -697,5 +697,5 @@ Feature: Ephemeral
     And I see 0 messages in database from <Name> in active conversation
 
     Examples:
-      | Login1     | Password      | Name      | Contact1  | Contact2  | ChatName | Time | TimeLong   | TimeShortUnit | PING       | PictureName               | VideoFile   | SizeVideo | AudioFile   | AudioTime | File         | SizeFile | WaitingTime |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | ephGroup | 5    | 5 seconds  | s             | you pinged | userpicture_landscape.jpg | C261733.mp4 | 1 MB      | example.wav | 00:20     | C261733.zip  | 512KB    | 10          |
+      | Login1     | Password      | Name      | Contact1  | Contact2  | ChatName | Time | TimeLong    | TimeShortUnit | PING       | PictureName               | VideoFile   | SizeVideo | AudioFile   | AudioTime | File         | SizeFile | WaitingTime |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | ephGroup | 15   | 15 seconds  | s             | you pinged | userpicture_landscape.jpg | C261733.mp4 | 1 MB      | example.wav | 00:20     | C261733.zip  | 512KB    | 20          |
