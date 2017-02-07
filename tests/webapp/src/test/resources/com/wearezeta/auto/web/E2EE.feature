@@ -1299,3 +1299,51 @@ Feature: E2EE
     Examples:
       | Email      | Password      | Name      | Contact   | Contact2  | ALL_VERIFIED                  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | All fingerprints are verified |
+
+    @C404406 @e2ee @staging
+    Scenario Outline: Verify you can unverify a conversation by unverify your devices
+      Given There are 2 users where <Name> is me
+      Given user <Name> adds a new device Device1 with label Label1
+      Given user <Contact> adds a new device Device1 with label Label1
+      Given Myself is connected to <Contact>
+      Given I switch to Sign In page
+      Given I Sign in using login <Email> and password <Password>
+      Given I see the history info page
+      Given I click confirm on history info page
+      Given I am signed in properly
+      When I open preferences by clicking the gear button
+      And I open devices in preferences
+      And I wait for devices
+      And I see an active device named Device1
+      And I click on the device Device1
+      And I verify device on device details
+      And I click back button on device details in preferences
+      Then I see device Device1 of user <Name> is verified in device section
+      When I close preferences
+      And I open conversation with <Contact>
+      And I click People button in one to one conversation
+      Then I see Single User Profile popover
+      When I switch to Devices tab on Single User Profile popover
+      And I click on device Device1 of user <Contact> on Single User Profile popover
+      And I verify device on Device Detail popover
+      And I click back button on the Device Detail popover
+      Then I see device Device1 of user <Contact> is verified on Single User Profile popover
+      And I see user verified icon on Single User Profile popover
+      When I click People button in one to one conversation
+      Then I see <ALL_VERIFIED> action in conversation
+      And I see verified icon in conversation
+      When I open preferences by clicking the gear button
+      And I open devices in preferences
+      And I see an active device named Device1
+      And I click on the device Device1
+      And I verify device on device details
+      And I click back button on device details in preferences
+      Then I do not see device Device1 of user <Name> is verified in device section
+      When I close preferences
+      And I open conversation with <Contact>
+      Then I do not see verified icon in conversation
+      And I see <UNVERIFIED> action in conversation
+
+      Examples:
+        | Email      | Password      | Name     | Contact   | ALL_VERIFIED                  | UNVERIFIED                         |
+        | user1Email | user1Password |user1Name | user2Name | All fingerprints are verified | You unverified one of your devices |
