@@ -2,7 +2,9 @@ package com.wearezeta.auto.web.pages;
 
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.driver.DriverUtils;
 import org.apache.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
@@ -52,6 +54,10 @@ public class PreferencesPage extends WebPage {
     public void openAbout() throws Exception {
         preferencesAboutButton.click();
     }
-    
+
+    public boolean isDevicesOpened() throws Exception {
+        final By locator = By.cssSelector(WebAppLocators.DevicesPage.cssCurrentDeviceId);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
 
 }

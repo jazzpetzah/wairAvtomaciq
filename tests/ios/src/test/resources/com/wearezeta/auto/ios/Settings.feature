@@ -306,7 +306,7 @@ Feature: Settings
       | Name      | AlternativeBrowserName |
       | user1Name | Chrome                 |
 
-  @C404391 @regression @useSpecialEmail @fastLogin
+  @C404391 @rc @regression @useSpecialEmail @fastLogin
   Scenario Outline: Verify changing email when phone is not assigned
     Given There is 1 user where <Name> is me with email only
     Given I sign in using my email

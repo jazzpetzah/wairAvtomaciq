@@ -1242,25 +1242,27 @@ Feature: E2EE
     Then I see <ALL_VERIFIED> action in conversation
     Then I see verified icon in conversation
     When user <Name> adds a new device Device2 with label Label2
-#    TODO
-#    And I See <NEW_DEVICE> action in conversation
+    And I see <NEW_DEVICE> action in conversation
+    And I verify a badge is shown on gear button
     And I do not see verified icon in conversation
+    When I click on new device link in the new device warning
+    Then I see connected devices dialog
+    And I see Device2 on connected devices dialog
+    And I click OK on connected devices dialog
+    And I do not see connected devices dialog
+    Then I see devices tab opened in preferences
+    And I close preferences
     And I write message <MessageThatTriggersWarning>
     And I send message
     Then I see the new device warning
     When I click cancel button in the new device warning
     And I see 1 unsent messages in conversation
     Then I do not see verified icon in conversation
-    And I verify a badge is shown on gear button
-    When I open preferences by clicking the gear button
-    Then I see connected devices dialog
-    And I see Device2 on connected devices dialog
-    And I click OK on connected devices dialog
-    And I do not see connected devices dialog
 
     Examples:
-      | Email      | Password      | Name      | Contact   | MessageThatTriggersWarning  | ALL_VERIFIED                  |
-      | user1Email | user1Password | user1Name | user2Name | This should trigger warning | All fingerprints are verified |
+      | Email      | Password      | Name      | Contact   | MessageThatTriggersWarning  | ALL_VERIFIED                  | NEW_DEVICE                     |
+      | user1Email | user1Password | user1Name | user2Name | This should trigger warning | All fingerprints are verified | YOU STARTED USING A NEW DEVICE |
+
 
   @C399838 @e2ee @regression
   Scenario Outline: Verifying all people in a group should also verify individual 1:1 conversations with them
@@ -1300,7 +1302,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact   | Contact2  | ALL_VERIFIED                  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | All fingerprints are verified |
 
-    @C404406 @e2ee @staging
+    @C404406 @e2ee @regression
     Scenario Outline: Verify you can unverify a conversation by unverify your devices
       Given There are 2 users where <Name> is me
       Given user <Name> adds a new device Device1 with label Label1

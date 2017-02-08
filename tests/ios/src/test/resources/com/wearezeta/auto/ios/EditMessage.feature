@@ -269,7 +269,7 @@ Feature: Edit Message
       | Name      | Contact   | VideoFileName | VideoMIMEType | DeviceName | AudioFileName | AudioMIMEType | Picture     |
       | user1Name | user2Name | testing.mp4   | video/mp4     | Device1    | test.m4a      | audio/mp4     | testing.jpg |
 
-  @C202355 @regression @fastLogin
+  @C202355 @rc @regression @fastLogin
   Scenario Outline: Verify edited message has an additional name and avatar and save its position in the conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
