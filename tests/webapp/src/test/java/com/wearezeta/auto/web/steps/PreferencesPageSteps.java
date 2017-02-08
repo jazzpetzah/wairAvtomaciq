@@ -4,6 +4,8 @@ import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.PreferencesPage;
 import cucumber.api.java.en.When;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+
 public class PreferencesPageSteps {
 
     private final WebAppTestContext context;
@@ -25,6 +27,12 @@ public class PreferencesPageSteps {
     @When("^I open devices in preferences$")
     public void IOpenDevices() throws Exception {
         context.getPagesCollection().getPage(PreferencesPage.class).openDevices();
+    }
+
+    @When("^I see devices tab opened in preferences$")
+    public void ISeeDevices() throws Exception {
+        assertThat("Devices tab is not opened",
+                context.getPagesCollection().getPage(PreferencesPage.class).isDevicesOpened());
     }
     
     @When("^I open options in preferences$")
