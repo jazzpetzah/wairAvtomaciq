@@ -24,7 +24,7 @@ Feature: Forward Message
       | Name      | Contact1  | Contact2  | Picture     |
       | user1Name | user2Name | user3name | testing.jpg |
 
-  @C345394 @regression @fastLogin
+  @C345394 @rc @regression @fastLogin
   Scenario Outline: Verify outgoing/incoming connection requests/ left conversations are not in a forward list
     Given There are 6 users where <Name> is me
     Given Myself is connected to <ConnectedUser1>,<ConnectedUser2>,<BlockedUser>
@@ -50,7 +50,7 @@ Feature: Forward Message
       | Name      | ConnectedUser1 | ConnectedUser2 | NonConnectedIncomingUser | NonConnectedOutgoingUser | BlockedUser | GroupChatName |
       | user1Name | user2Name      | user3name      | user4name                | user5Name                | user6Name   | Group         |
 
-  @C345393 @regression @fastLogin
+  @C345393 @rc @regression @fastLogin
   Scenario Outline: Verify message is sent as normal when ephemeral keyboard is chosen in the destination conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

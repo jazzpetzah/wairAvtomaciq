@@ -50,7 +50,7 @@ Feature: Sign In
       | WrongMail  | WrongPassword |
       | wrongwrong | wrong         |
 
-  @C3136 @regression
+  @C3136 @rc @regression
   Scenario Outline: Verify phone sign in when email is assigned [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape

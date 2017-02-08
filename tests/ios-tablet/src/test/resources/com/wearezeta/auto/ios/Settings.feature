@@ -289,7 +289,7 @@ Feature: Settings
       | Name      | ThemeItemName |
       | user1Name | Dark theme    |
 
-  @C404412 @regression @useSpecialEmail @fastLogin
+  @C404412 @rc @regression @useSpecialEmail @fastLogin
   Scenario Outline: Verify changing email when phone is not assigned [LANDSCAPE]
     Given There is 1 user where <Name> is me with email only
     Given I rotate UI to landscape
