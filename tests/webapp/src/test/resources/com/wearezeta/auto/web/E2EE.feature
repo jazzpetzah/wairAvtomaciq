@@ -1300,7 +1300,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact   | Contact2  | ALL_VERIFIED                  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | All fingerprints are verified |
 
-    @C404406 @e2ee @staging
+    @C404406 @e2ee @regression
     Scenario Outline: Verify you can unverify a conversation by unverify your devices
       Given There are 2 users where <Name> is me
       Given user <Name> adds a new device Device1 with label Label1
