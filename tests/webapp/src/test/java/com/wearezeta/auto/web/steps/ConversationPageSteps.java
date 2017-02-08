@@ -183,6 +183,11 @@ public class ConversationPageSteps {
         }
     }
 
+    @Then("^I click on new device link in the new device warning")
+    public void IClickOnDeviceLinkInNewDevice() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).clickNewDeviceInNewDeviceMessage();
+    }
+
     @Then("^I click cancel button in the new device warning$")
     public void IClickCancelOnNewDeviceWarning() throws Throwable {
         context.getPagesCollection().getPage(ConversationPage.class).clickCancelOnNewDeviceWarning();

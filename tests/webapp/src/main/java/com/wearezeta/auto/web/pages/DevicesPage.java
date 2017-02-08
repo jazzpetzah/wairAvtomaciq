@@ -27,6 +27,12 @@ public class DevicesPage extends WebPage {
     @FindBy(css = WebAppLocators.DevicesPage.cssXButtons)
     private List<WebElement> xButtons;
 
+    @FindBy(css = WebAppLocators.DevicesPage.cssManageDevicesOnNewDeviceModal)
+    private WebElement manageDevicesOnNewDeviceModal;
+
+    @FindBy(css = WebAppLocators.DevicesPage.cssOKButtonOnNewDeviceModal)
+    private WebElement okButtonOnNewDeviceModal;
+
     public DevicesPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }

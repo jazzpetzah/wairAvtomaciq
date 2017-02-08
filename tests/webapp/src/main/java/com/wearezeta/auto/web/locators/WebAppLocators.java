@@ -307,6 +307,11 @@ public final class WebAppLocators {
 
         public static final Function<String, String> xpathDeviceLabel = (name) -> String
                 .format("//*[@data-uie-name='preferences-device-active-model' and contains(text(),'%s')]", name);
+
+        // new device warning modal
+        public static final String cssManageDevicesOnNewDeviceModal = ".modal-connected-device [data-uie-name='go-manage-devices']";
+
+        public static final String cssOKButtonOnNewDeviceModal = ".modal-connected-device [data-uie-name='do-ok']";
     }
 
     public static final class OptionsPage {
@@ -683,6 +688,8 @@ public final class WebAppLocators {
         public static final String cssCancelNewDeviceWarning = "[data-uie-name='go-show-device']";
 
         public static final String cssSendAnyway = cssNewDeviceWarning + " [data-uie-name='do-send']";
+
+        public static final String cssNewDeviceLink = ".message-system [data-uie-name='go-devices']";
     }
     
     public static final class PictureFullscreenPage {

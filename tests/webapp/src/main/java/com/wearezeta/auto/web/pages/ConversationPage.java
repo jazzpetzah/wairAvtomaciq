@@ -199,6 +199,9 @@ public class ConversationPage extends WebPage {
     @FindBy(css = WebAppLocators.ConversationPage.cssSendAnyway)
     private WebElement sendAnyway;
 
+    @FindBy(css = WebAppLocators.ConversationPage.cssNewDeviceLink)
+    private WebElement newDeviceLink;
+
     public ConversationPage(Future<ZetaWebAppDriver> lazyDriver)
             throws Exception {
         super(lazyDriver);
@@ -798,6 +801,9 @@ public class ConversationPage extends WebPage {
         sendAnyway.click();
     }
 
+    public void clickNewDeviceInNewDeviceMessage() throws Exception {
+        newDeviceLink.click();
+    }
     //file transfer
 
     public boolean isFileTransferDisplayed(String fileName) throws Exception {
