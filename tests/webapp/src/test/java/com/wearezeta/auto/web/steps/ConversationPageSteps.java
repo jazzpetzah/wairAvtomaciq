@@ -899,8 +899,8 @@ public class ConversationPageSteps {
     public void ISeeAvatarOfUser(String pictureName) throws Exception {
         //ClientUser user = context.getUsersManager().findUserByNameOrNameAlias(nameAlias);
         //actualPicture = context.getPagesCollection().getPage(ConversationPage.class).getAvatarById(user.getId());
-        assertThat("Overlap score of image comparsion", context.getPagesCollection().getPage(ConversationPage.class)
-                    .getOverlapScoreOfLastImage(pictureName), greaterThan(MIN_ACCEPTABLE_IMAGE_SCORE));
+        assertThat("Overlap score of image comparison", context.getPagesCollection().getPage(ConversationPage.class)
+                    .getOverlapScoreOfAvatarImage(pictureName), greaterThan(MIN_ACCEPTABLE_IMAGE_SCORE));
 
     }
 

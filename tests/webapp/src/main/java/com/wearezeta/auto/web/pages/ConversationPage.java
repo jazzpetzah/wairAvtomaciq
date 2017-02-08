@@ -494,6 +494,22 @@ public class ConversationPage extends WebPage {
                 ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
     }
 
+    public double getOverlapScoreOfAvatarImage(String pictureName)
+            throws Exception {
+        final String picturePath = WebCommonUtils.getFullPicturePath(pictureName);
+        if (!isImageMessageFound()) {
+            return 0.0;
+        }
+        // try to get the latest image
+        BufferedImage actualImage;
+        List<WebElement> avatarImages = waitUntilAllImagesAreFullyLoaded();
+        actualImage = this.getElementScreenshot(avatarImages.get(avatarImages.size() - 1)).orElseThrow(IllegalStateException::new);
+        // comparison of the original and sent pictures
+        BufferedImage expectedImage = ImageUtil.readImageFromFile(picturePath);
+        return ImageUtil.getOverlapScore(actualImage, expectedImage,
+                ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+    }
+
     public boolean isImageMessageFound() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
                 By.cssSelector(WebAppLocators.ConversationPage.cssFirstImage),
