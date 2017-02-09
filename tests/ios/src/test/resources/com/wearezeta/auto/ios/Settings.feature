@@ -89,6 +89,29 @@ Feature: Settings
       | Name      |
       | user1Name |
 
+  @C3247 @staging
+  Scenario Outline: Verify deleting the account registered by phone
+    Given I see sign in screen
+    Given I enter phone number for <Name>
+    Given I enter activation code
+    Given I accept terms of service
+    Given I input name <Name> and commit it
+    Given I accept alert if visible
+    Given I tap Keep This One button
+    Given I tap Not Now button on Share Contacts overlay
+    Given I tap Keep This One button on Unique Username Takeover page
+    Given I see conversations list
+    Given I tap settings gear button
+    Given I select settings item Account
+    Given I select settings item Delete Account
+    When I see alert contains text <AlertText>
+    And I accept alert
+    Then I see sign in screen
+
+    Examples:
+      | Name      | AlertText |
+      | user1Name | delete    |
+
   @C3211 @rc @regression @fastLogin
   Scenario Outline: Change your profile picture
     Given There is 1 user where <Name> is me

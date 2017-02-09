@@ -601,7 +601,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      |
 
-  @C77946 @videocalling @regression
+  @C77946 @videocalling @regression @WEBAPP-3616
   Scenario Outline: Verify I can start an audio call back after declining a video call
     Given My browser supports calling
     Given There are 2 users where <Name> is me

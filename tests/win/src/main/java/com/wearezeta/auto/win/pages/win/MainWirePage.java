@@ -25,6 +25,9 @@ import javax.xml.bind.DatatypeConverter;
 
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 /*
 
@@ -50,9 +53,9 @@ public class MainWirePage extends WinPage {
     private static final Logger LOG = ZetaLogger.getLog(MainWirePage.class.getSimpleName());
 
     public static final int APP_MAX_WIDTH = 1103;
-    private static final int APP_MIN_WIDTH = 780;
-    private static final int APP_MIN_HEIGHT = 600;
-
+    private static final Dimension LOGIN_PAGE_DIMENSION = new Dimension(403, 618);
+    private static final Dimension APP_MIN_DIMENSION = new Dimension(780, 600);
+    private static final int APP_EXPAND_TIMEOUT_MILLIS = 10000;
     private static final int TITLEBAR_HEIGHT = 35;
     private static final int WINDOW_DECORATION_WIDTH = 10;
     private static final int MENUBAR_HEIGHT = 20;
@@ -107,11 +110,23 @@ public class MainWirePage extends WinPage {
     }
 
     public boolean isMini() throws Exception {
-        Dimension size = getDriver().manage().window().getSize();
-        // TODO adjust for retina and non-retina
-        boolean minWidth = size.getWidth() == APP_MIN_WIDTH;
-        boolean minHeight = size.getHeight() == APP_MIN_HEIGHT;
-        return minWidth && minHeight;
+        return isApproximatelyWidth(APP_MIN_DIMENSION.getWidth()) && isApproximatelyHeight(APP_MIN_DIMENSION.getHeight());
+    }
+    
+    public boolean isLoginPageSize() throws Exception {
+        return isApproximatelyWidth(LOGIN_PAGE_DIMENSION.getWidth()) && isApproximatelyHeight(LOGIN_PAGE_DIMENSION.getHeight());
+    }
+    
+    public boolean waitUntilAppExpands() throws Exception{
+        WebDriverWait wait = new WebDriverWait(getDriver(), APP_EXPAND_TIMEOUT_MILLIS, 1000);
+        return wait.until((ExpectedCondition<Boolean>) (WebDriver unusedDriver) -> {
+            try {
+                return !isLoginPageSize();
+            } catch (Exception ex) {
+                LOG.warn("Check for window expanded failed", ex);
+                return false;
+            }
+        });
     }
 
     public int getX() throws Exception {

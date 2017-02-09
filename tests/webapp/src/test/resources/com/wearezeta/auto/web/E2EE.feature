@@ -1349,3 +1349,58 @@ Feature: E2EE
       Examples:
         | Email      | Password      | Name     | Contact   | ALL_VERIFIED                  | UNVERIFIED                         |
         | user1Email | user1Password |user1Name | user2Name | All fingerprints are verified | You unverified one of your devices |
+
+  @C421365 @e2ee @staging
+  Scenario Outline: Verify group conversation degrades with warning when you add a new device
+    Given There are 3 users where <Name> is me
+    Given user <Contact1> adds a new device Device1 with label Label1
+    Given user <Contact2> adds a new device Device2 with label Label2
+    Given Myself is connected to <Contact1>, <Contact2>
+    Given Me has group chat GROUPCHAT with <Contact1>, <Contact2>
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+    And I am signed in properly
+    When I open conversation with GROUPCHAT
+    And I click People button in group conversation
+    Then I see Group Participants popover
+    When I click on participant <Contact1> on Group Participants popover
+    When I switch to Devices tab on Single User Profile popover
+    And I click on device Device1 of user <Contact1> on Single User Profile popover
+    And I verify device on Device Detail popover
+    And I click back button on the Device Detail popover
+    Then I see device Device1 of user <Contact1> is verified on Single User Profile popover
+    Then I see user verified icon on Single User Profile popover
+    When I click back button on Group Participants popover
+    And I click on participant <Contact2> on Group Participants popover
+    Then I switch to Devices tab on Single User Profile popover
+    And I click on device Device2 of user <Contact2> on Single User Profile popover
+    And I verify device on Device Detail popover
+    And I click back button on the Device Detail popover
+    Then I see device Device2 of user <Contact2> is verified on Single User Profile popover
+    And I see user verified icon on Single User Profile popover
+    When I click back button on Group Participants popover
+    And I close Group Participants popover
+    Then I see <ALL_VERIFIED> action in conversation
+    Then I see verified icon in conversation
+    When user <Name> adds a new device Device3 with label Label3
+    And I see <NEW_DEVICE> action in conversation
+    And I verify a badge is shown on gear button
+    And I do not see verified icon in conversation
+    And I write message <MessageThatTriggersWarning>
+    And I send message
+    Then I see the new device warning
+    When I click cancel button in the new device warning
+    And I see 1 unsent messages in conversation
+    Then I do not see verified icon in conversation
+    When I click on new device link in the new device warning
+    Then I see connected devices dialog
+    And I see Device3 on connected devices dialog
+    And I click OK on connected devices dialog
+    And I do not see connected devices dialog
+    Then I see devices tab opened in preferences
+    And I close preferences
+
+    Examples:
+      | Email      | Password      | Name      | Contact1  | Contact2  | MessageThatTriggersWarning  | ALL_VERIFIED                  | NEW_DEVICE                     |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | This should trigger warning | All fingerprints are verified | YOU STARTED USING A NEW DEVICE |
+

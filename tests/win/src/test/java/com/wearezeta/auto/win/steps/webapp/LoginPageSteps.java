@@ -6,9 +6,13 @@ import org.apache.log4j.Logger;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.web.pages.LoginPage;
+import com.wearezeta.auto.win.pages.win.MainWirePage;
+import com.wearezeta.auto.win.pages.win.WinPagesCollection;
 
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.junit.Assert;
 
 public class LoginPageSteps {
 
@@ -47,6 +51,14 @@ public class LoginPageSteps {
         webContext.getPagesCollection().getPage(LoginPage.class).clickSignInButton();
     }
 
+    @Then("^I am signed in properly$")
+    public void IAmSignedInProperly() throws Exception {
+        webContext.getChildContext().getPagesCollection(WinPagesCollection.class).getPage(MainWirePage.class)
+                .waitUntilAppExpands();
+        Assert.assertTrue(
+                "Sign In button/login progress spinner are still visible",
+                webContext.getPagesCollection().getPage(LoginPage.class).waitForLogin());
+    }
 
     @When("^I enter email (\\S+)$")
     public void IEnterEmail(String email) throws Exception {
