@@ -208,7 +208,7 @@ Feature: Settings
 
   @C250836 @regression
   Scenario Outline: I can enable/disable send button in Settings
-    Given There is 2 users where <Name> is me
+    Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -236,3 +236,33 @@ Feature: Settings
     Examples:
       | Name      | Contact   | Message1 | Message2 |
       | user1Name | user2Name | Yo       | NoPb     |
+
+  @C420862 @staging
+  Scenario Outline: Verify the theme color could be changed from light to dark and dart to light
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    # Change to dark
+    When I tap on conversation name <Contact1>
+    And I take screenshot
+    And I navigate back from conversation
+    And I tap conversations list settings button
+    And I select "Options" settings menu item
+    And I select "Dark theme" settings menu item
+    And I tap Back button 2 times
+    And I tap on conversation name <Contact1>
+    Then I verify the previous and the current screenshots are different
+    # Change back to light
+    When I navigate back from conversation
+    And I tap conversations list settings button
+    And I select "Options" settings menu item
+    And I select "Dark theme" settings menu item
+    And I tap Back button 2 times
+    And I tap on conversation name <Contact1>
+    Then I verify the previous and the current screenshots are not different
+
+    Examples:
+      | Name      | Contact1  |
+      | user1Name | user2Name |
