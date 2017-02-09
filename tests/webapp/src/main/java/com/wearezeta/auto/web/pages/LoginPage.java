@@ -18,6 +18,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.Browser;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.locators.WebAppLocators;
+import org.openqa.selenium.Point;
 
 public class LoginPage extends WebPage {
 
@@ -158,6 +159,10 @@ public class LoginPage extends WebPage {
                 By.className(WebAppLocators.LoginPage.classNameProgressBar),
                 TIMEOUT_SIGNED_IN_PROPERLY);
         return noSignIn && noRememberMe && noEmailField && noHistoryPage && noSignInSpinner;
+    }
+    
+    public Point getCenterOfSignInButton() throws Exception {
+        return DriverUtils.getCenterOfElement(signInButton);
     }
 
     public void clickSignInButton() throws Exception {
