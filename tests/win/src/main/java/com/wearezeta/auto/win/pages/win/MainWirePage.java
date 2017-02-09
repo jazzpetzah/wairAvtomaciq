@@ -55,8 +55,7 @@ public class MainWirePage extends WinPage {
 
     private static final int TITLEBAR_HEIGHT = 35;
     private static final int WINDOW_DECORATION_WIDTH = 10;
-    // TODO change to private
-    public static final int MENUBAR_HEIGHT = 20;
+    private static final int MENUBAR_HEIGHT = 20;
 
     private final Robot robot = new Robot();
 
