@@ -56,7 +56,6 @@ public class CollectionPageSteps {
             assertThat("Label to show all", context.getPagesCollection().getPage(CollectionPage.class).getLabelOfPictureCollectionSize(),
                     equalTo("Show all " + String.valueOf(amount)));
         }
-
     }
 
     @Then("^I see (\\d+) videos? in collection$")
@@ -85,6 +84,21 @@ public class CollectionPageSteps {
             assertThat("Number of files", context.getPagesCollection().getPage(CollectionPage.class).getNumberOfFiles(),
                     equalTo(MAXFILES));
             assertThat("Label to show all", context.getPagesCollection().getPage(CollectionPage.class).getLabelOfFileCollectionSize(),
+                    equalTo("Show all " + String.valueOf(amount)));
+        }
+    }
+
+    @Then("^I see (\\d+) audios? in collection$")
+    public void ISeeXAudios(int amount) throws Exception {
+        if (amount <= MAXFILES && amount >= 0) {
+            assertThat("Number of audios", context.getPagesCollection().getPage(CollectionPage.class).getNumberOfAudioFiles(),
+                    equalTo(amount));
+        }
+        // Label is not shown for less than 5 audios
+        else if (amount > MAXFILES) {
+            assertThat("Number of audios", context.getPagesCollection().getPage(CollectionPage.class).getNumberOfAudioFiles(),
+                    equalTo(MAXFILES));
+            assertThat("Label to show all", context.getPagesCollection().getPage(CollectionPage.class).getLabelOfAudioCollectionSize(),
                     equalTo("Show all " + String.valueOf(amount)));
         }
     }
