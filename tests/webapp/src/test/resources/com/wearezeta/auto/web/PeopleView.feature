@@ -414,3 +414,31 @@ Feature: People View
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GROUPCHAT |
+
+  @C352250 @staging
+  Scenario Outline: Verify big profile picture and username are shown on participant popover
+    Given There are 3 users where <Name> is me
+    Given User <Contact1> changes avatar picture to <Avatar>
+    Given <Name>,<Contact1>,<Contact2> have unique usernames
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <Contact1>
+    And I click People button in one to one conversation
+    Then I see Single User Profile popover
+    And I see username <Contact1> on Single User Profile popover
+    And I see avatar <Avatar> of user <Contact1> on Single Participant popover
+    And I see unique username <Contact1> on Single User popover
+    When I open conversation with <ChatName>
+    And I click People button in group conversation
+    And I see Group Participants popover
+    And I click on participant <Contact1> on Group Participants popover
+    Then I see username <Contact1> on Group Participants popover
+    And I see unique username <Contact1> on Group Participants popover
+    And I see avatar <Avatar> of user <Contact1> on Group Participant popover
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName | Avatar                   |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GOUPCHAT | userpicture_portrait.jpg |

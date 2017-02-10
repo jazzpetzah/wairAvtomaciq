@@ -225,10 +225,10 @@ Feature: Settings
       | Name      | Color1 | Color2          | Contact   |
       | user1Name | Violet | StrongLimeGreen | user2Name |
 
-  @C2860 @regression
-  Scenario Outline: Verify adding phone number to the contact signed up with email [PORTRAIT]
+  @C2859 @rc @regression
+  Scenario Outline: Verify adding phone number to the contact signed up with email [LANDSCAPE]
     Given There is 1 users where <Name> is me with email only
-    Given I rotate UI to portrait
+    Given I rotate UI to landscape
     Given I switch to Log In tab
     Given I have entered login <Email>
     Given I have entered password <Password>

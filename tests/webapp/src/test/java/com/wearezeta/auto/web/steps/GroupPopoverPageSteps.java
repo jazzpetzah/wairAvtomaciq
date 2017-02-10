@@ -1,20 +1,26 @@
 package com.wearezeta.auto.web.steps;
 
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
+import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.pages.popovers.GroupPopoverContainer;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 import org.junit.Assert;
 
+import static com.wearezeta.auto.common.email.InvitationMessage.log;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.Matchers.not;
 
 public class GroupPopoverPageSteps {
@@ -383,6 +389,26 @@ public class GroupPopoverPageSteps {
     public void IseeAvatarOnUserProfilePage() throws Exception {
         Assert.assertTrue(context.getPagesCollection().getPage(
                 GroupPopoverContainer.class).isAvatarVisible());
+    }
+
+    @Then("^I( do not)? see avatar (.*) of user (.*) on Group Participant popover$")
+    public void ISeeAvatarOfUserInGroup(String not, String avatar, String userAlias)
+            throws Exception {
+        final String picturePath = WebCommonUtils.getFullPicturePath(avatar);
+        BufferedImage expectedAvatar = ImageUtil.readImageFromFile(picturePath);
+        BufferedImage actualAvatar = context.getPagesCollection().getPage(
+                GroupPopoverContainer.class).getAvatar();
+        double overlapScore = ImageUtil.getOverlapScore(actualAvatar,
+                expectedAvatar,
+                ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+        log.info("Overlap score: " + overlapScore);
+        if (not == null) {
+            assertThat("Overlap score of image comparsion", overlapScore,
+                    greaterThanOrEqualTo(0.3));
+        } else {
+            assertThat("Overlap score of image comparsion", overlapScore,
+                    lessThan(0.3));
+        }
     }
 
     @Then("^I( do not)? see Mail of user (.*) on Group Participants popover$")
