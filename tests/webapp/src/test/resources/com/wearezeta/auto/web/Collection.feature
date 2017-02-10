@@ -17,7 +17,7 @@ Feature: Collection
       | Email      | Password      | Name      | Contact   | Event                          | Attributes                                                                   |
       | user1Email | user1Password | user1Name | user2Name | collections.opened_collections | {\"is_empty\":true,\"conversation_type\":\"one_to_one\",\"with_bot\":false}" |
 
-  @C378050 @linkpreview @collection @regression @torun
+  @C378050 @linkpreview @collection @regression
   Scenario Outline: Verify main overview shows media from all categories
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
