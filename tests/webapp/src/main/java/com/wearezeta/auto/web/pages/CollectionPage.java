@@ -145,11 +145,11 @@ public class CollectionPage extends WebPage {
         pictures.get(index - 1).click();
     }
 
-    public void clickShowAllPicturesInCollection() {
-        showAllPictures.click();
-    }
+    public void clickShowAllPicturesInCollection() {showAllPictures.click();}
 
     public void clickShowAllFilesLabel() {
         fileCollectionSize.click();
     }
+
+    public void clickShowAllAudioInCollection() {audioCollectionSize.click();}
 }
