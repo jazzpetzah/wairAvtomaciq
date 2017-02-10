@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.pages.popovers;
 
+import java.awt.image.BufferedImage;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
@@ -238,6 +239,10 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 
     public boolean isAvatarVisible() throws Exception {
         return getCurrentUserInfoPage().isAvatarVisible();
+    }
+
+    public BufferedImage getAvatar() throws IllegalStateException, Exception {
+        return getCurrentUserInfoPage().getAvatar();
     }
 
     public String getUserMail() throws Exception {

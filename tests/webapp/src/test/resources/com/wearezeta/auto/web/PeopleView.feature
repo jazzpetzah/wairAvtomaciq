@@ -437,7 +437,7 @@ Feature: People View
     And I click on participant <Contact1> on Group Participants popover
     Then I see username <Contact1> on Group Participants popover
     And I see unique username <Contact1> on Group Participants popover
-    And I see an avatar on Group Participants popover
+    And I see avatar <Avatar> of user <Contact1> on Group Participant popover
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName | Avatar                   |
