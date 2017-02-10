@@ -759,7 +759,7 @@ public final class WebAppLocators {
 
         public static final String cssPicturesOnCollectionDetails = "#collection-details image-component";
 
-        public static final String cssAudioFilesOnCollectionDetails = "#collection-details collection-audios";
+        public static final String cssAudioFilesOnCollectionDetails = "#collection-details audio-asset";
 
     }
 
