@@ -224,20 +224,21 @@ public class ZetaWinWebAppDriver extends ZetaWebAppDriver {
 
         @Override
         public <X> X getScreenshotAs(OutputType<X> outputType) throws WebDriverException {
-            Point windowPosition = manage().window().getPosition();
-            Dimension windowSize = manage().window().getSize();
+            final String APP_NAME = "Wire";
+            final String WINDOW_LOCATOR = "/*[@ClassName='Chrome_WidgetWin_1' and contains(@Name,'" + APP_NAME + "')]";
+            final WebElement webview = winDriver.findElement(By.xpath(WINDOW_LOCATOR));
+            Point webviewPosition = webview.getLocation();
+            Dimension webviewSize = webview.getSize();
             Point elLocation = this.getLocation();
             Dimension elSize = this.getSize();
 
             if (OutputType.BASE64.equals(outputType)) {
                 throw new WebDriverException("Base64 screenshot not supported yet");
             } else if (OutputType.BYTES.equals(outputType)) {
-                BufferedImage fullScreenshot = getWinDriver().getRobot().createScreenCapture(new Rectangle(Toolkit.
-                        getDefaultToolkit().
-                        getScreenSize()));
-                BufferedImage webappScreenshot = fullScreenshot.getSubimage(windowPosition.getX(), windowPosition.getY(),
-                        windowSize.getWidth(), windowSize.getHeight());
-                BufferedImage elementScreenshot = webappScreenshot.getSubimage(elLocation.getX(), elLocation.getY(), elSize.
+                BufferedImage webviewScreenshot = getWinDriver().getRobot().createScreenCapture(
+                        new Rectangle(webviewPosition.getX(), webviewPosition.getY(),
+                                webviewSize.getWidth(), webviewSize.getHeight()));
+                BufferedImage elementScreenshot = webviewScreenshot.getSubimage(elLocation.getX(), elLocation.getY(), elSize.
                         getWidth(), elSize.getHeight());
                 return (X) getWinDriver().bufferedImageAsByteArray(elementScreenshot);
             } else if (OutputType.FILE.equals(outputType)) {

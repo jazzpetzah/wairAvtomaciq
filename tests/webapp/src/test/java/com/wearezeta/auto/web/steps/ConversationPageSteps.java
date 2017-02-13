@@ -4,11 +4,15 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.*;
 
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.RandomAccessFile;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
+import javax.imageio.ImageIO;
+import javax.xml.bind.DatatypeConverter;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
@@ -1336,18 +1340,28 @@ public class ConversationPageSteps {
             assertThat("I do not see a picture from link preview in the conversation",
                     context.getPagesCollection().getPage(ConversationPage.class).isImageFromLinkPreviewVisible());
             final String picturePath = WebCommonUtils.getFullPicturePath(pictureName);
-            BufferedImage originalImage = ImageUtil.readImageFromFile(picturePath);
-            BufferedImage linkPreviewScreenshot = context.getPagesCollection().getPage(ConversationPage.class).
+            BufferedImage expectedImage = ImageUtil.readImageFromFile(picturePath);
+            BufferedImage actualImage = context.getPagesCollection().getPage(ConversationPage.class).
                     getImageFromLastLinkPreview();
             
             // Image matching with SIFT does not work very well on really small images
             // because it defines the maximum number of matching keys
             // so we scale them to double size to get enough matching keys
             final int scaleMultiplicator = 2;
-            originalImage = ImageUtil.resizeImage(originalImage, scaleMultiplicator);
-            linkPreviewScreenshot = ImageUtil.resizeImage(linkPreviewScreenshot, scaleMultiplicator);
+            expectedImage = ImageUtil.resizeImage(expectedImage, scaleMultiplicator);
+            actualImage = ImageUtil.resizeImage(actualImage, scaleMultiplicator);
 
-            assertThat("Not enough good matches", ImageUtil.getMatches(originalImage, linkPreviewScreenshot), greaterThan(80));
+            // Convert screenshots to data uris
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(expectedImage, "png", baos);
+            String expectedDataURI = "data:image/png;base64," + DatatypeConverter.printBase64Binary(baos.toByteArray());
+            ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
+            ImageIO.write(actualImage, "png", baos2);
+            String actualDataURI = "data:image/png;base64," + DatatypeConverter.printBase64Binary(baos2.toByteArray());
+
+            assertThat("Not enough good matches between expected " + "<img width='200px' src='" + expectedDataURI
+                    + "' /> and actual <img width='200px' src='" + actualDataURI + "' />",
+                    ImageUtil.getMatches(expectedImage, actualImage), greaterThan(80));
         } else {
             assertThat("I see a picture in the conversation", context.getPagesCollection().getPage(ConversationPage.class)
                     .isImageFromLinkPreviewNotVisible());
