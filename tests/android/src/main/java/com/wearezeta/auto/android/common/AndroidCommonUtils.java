@@ -736,6 +736,30 @@ public class AndroidCommonUtils extends CommonUtils {
         return getAdbOutput("shell am broadcast -a com.wire.testinggallery.notification --es command clear");
     }
 
+    /**
+     * The function will help you to trigger the event of "REPLY" and "CALL" button on Wire Android notification,
+     * before you trigger this function, you need to ensure there is at least one unread notification received,
+     * See https://github.com/wireapp/wire-android/pull/582 for more details
+     *
+     * @param action which could be the value of NotificationActions enum
+     * @throws Exception
+     */
+    public static void fireActionOnWirePushNotification(NotificationActions action) throws Exception {
+        executeAdb(String.format("shell am broadcast -a com.wire.testinggallery.notification --es command %s", action.toString().toLowerCase()));
+    }
+
+    /**
+     * Verify Testing Gallery has the 'Notification Access' permission
+     *
+     * @return true means the notification access permission is granted
+     * @throws Exception
+     */
+    public static boolean isTestingGalleryNoticationAccessPermissionGranted() throws Exception {
+        executeAdb("shell am start -n com.wire.testinggallery/.MainActivity");
+        String response = getAdbOutput("shell am broadcast -a com.wire.testinggallery.main.receiver --es command check_notification_access");
+        return response.contains("data=\"VERIFIED\"");
+    }
+
     // ***
 
     // ***
@@ -810,9 +834,27 @@ public class AndroidCommonUtils extends CommonUtils {
                 format("shell am start -a android.intent.action.VIEW -d %s", url));
     }
 
+    /**
+     * See https://github.com/wireapp/wire-android/pull/533
+     *
+     * @param callingVersion which could be the values of CallingVersions enum: V2, V3, BE_SWITCH
+     * @throws Exception
+     */
     public static void changeCallingSettings(CallingVersions callingVersion) throws Exception {
         AndroidCommonUtils.executeAdb(String.format(
                 "shell am broadcast -a com.waz.zclient.intent.action.CALLING_%s", callingVersion.toString()
+        ));
+    }
+
+    /**
+     * See https://github.com/wireapp/wire-android/pull/533
+     *
+     * @param command which could be enable / disable
+     * @throws Exception
+     */
+    public static void changeGCMSettings(String command) throws Exception {
+        AndroidCommonUtils.executeAdb(String.format(
+                "shell am broadcast -a com.waz.zclient.intent.action.%s_GCM", command.toUpperCase()
         ));
     }
 

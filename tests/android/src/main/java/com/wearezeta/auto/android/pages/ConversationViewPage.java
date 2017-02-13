@@ -417,10 +417,8 @@ public class ConversationViewPage extends BaseUserDetailsOverlay {
             cursorInput.clear();
             cursorInput.sendKeys(message);
             ntry++;
-        }
-        while (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathCursorEditTextByValue.apply
-                (message)), 2)
-                && ntry < maxTries);
+        } while (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.xpath(xpathCursorEditTextByValue.apply(message)), 2) && ntry < maxTries);
         if (ntry >= maxTries) {
             throw new IllegalStateException(String.format(
                     "The string '%s' was autocorrected. Please disable autocorrection on the device and restart the " +

@@ -525,11 +525,11 @@ Feature: Calling
     Given I sign in using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I call 15 times for 1 minutes with <Contact>
+    And I call 20 times for 1 minutes with <Contact>
 
     Examples:
-      | Name      | Contact   | CallBackend  |
-      | user1Name | user2Name | zcall        |
+      | Name      | Contact   | CallBackend     |
+      | user1Name | user2Name | zcall_v3:3.1.43 |
 
   @fastLogin @consecutive_call
   Scenario Outline: I receive 1:1 call loop from AVS <CallBackend>
@@ -539,11 +539,11 @@ Feature: Calling
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email
     Given I see conversations list
-    And <Contact> calls to me in Background 15 times for 1 minute
+    And <Contact> calls to me in Background 20 times for 1 minute
 
     Examples:
-      | Name      | Contact   | CallBackend  |
-      | user1Name | user2Name | zcall        |
+      | Name      | Contact   | CallBackend     |
+      | user1Name | user2Name | zcall_v3:3.1.43 |
 
   @C343168 @regression @calling_basic @fastLogin
   Scenario Outline: Verify you see group call conformation dialog for >5 participants group chat

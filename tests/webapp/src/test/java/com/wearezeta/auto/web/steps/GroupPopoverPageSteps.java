@@ -391,15 +391,14 @@ public class GroupPopoverPageSteps {
                 GroupPopoverContainer.class).isAvatarVisible());
     }
 
-    @Then("^I( do not)? see avatar (.*) of user (.*) on Group Participant popover$")
-    public void ISeeAvatarOfUserInGroup(String not, String avatar, String userAlias)
+    @Then("^I( do not)? see avatar (.*) on Group Participant popover$")
+    public void ISeeAvatarOfUserInGroup(String not, String avatar)
             throws Exception {
         final String picturePath = WebCommonUtils.getFullPicturePath(avatar);
         BufferedImage expectedAvatar = ImageUtil.readImageFromFile(picturePath);
         BufferedImage actualAvatar = context.getPagesCollection().getPage(
                 GroupPopoverContainer.class).getAvatar();
-        double overlapScore = ImageUtil.getOverlapScore(actualAvatar,
-                expectedAvatar,
+        double overlapScore = ImageUtil.getOverlapScore(actualAvatar, expectedAvatar,
                 ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
         log.info("Overlap score: " + overlapScore);
         if (not == null) {

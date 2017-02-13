@@ -11,6 +11,10 @@ import com.wearezeta.auto.win.pages.win.MainWirePage;
 import com.wearezeta.auto.win.pages.win.WinPagesCollection;
 import cucumber.api.java.en.Then;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+
+import javax.imageio.ImageIO;
+import javax.xml.bind.DatatypeConverter;
 
 import cucumber.api.java.en.When;
 import org.apache.log4j.Logger;
@@ -47,7 +51,17 @@ public class ConversationPageSteps {
             expectedImage = ImageUtil.resizeImage(expectedImage, scaleMultiplicator);
             actualImage = ImageUtil.resizeImage(actualImage, scaleMultiplicator);
 
-            assertThat("Not enough good matches", ImageUtil.getMatches(expectedImage, actualImage), greaterThan(80));
+            // Convert screenshots to data uris
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(expectedImage, "png", baos);
+            String expectedDataURI = "data:image/png;base64," + DatatypeConverter.printBase64Binary(baos.toByteArray());
+            ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
+            ImageIO.write(actualImage, "png", baos2);
+            String actualDataURI = "data:image/png;base64," + DatatypeConverter.printBase64Binary(baos2.toByteArray());
+
+            assertThat("Not enough good matches between expected " + "<img width='200px' src='" + expectedDataURI
+                    + "' /> and actual <img width='200px' src='" + actualDataURI + "' />",
+                    ImageUtil.getMatches(expectedImage, actualImage), greaterThan(80));
         } else {
             assertThat("I see a picture in the conversation", webContext.getPagesCollection().getPage(ConversationPage.class)
                     .isImageFromLinkPreviewNotVisible());

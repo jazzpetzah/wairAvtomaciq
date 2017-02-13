@@ -202,6 +202,9 @@ public class ConversationPage extends WebPage {
     @FindBy(css = WebAppLocators.ConversationPage.cssNewDeviceLink)
     private WebElement newDeviceLink;
 
+    @FindBy(css = WebAppLocators.ConversationPage.cssAvatar)
+    private WebElement avatar;
+
     public ConversationPage(Future<ZetaWebAppDriver> lazyDriver)
             throws Exception {
         super(lazyDriver);
@@ -287,6 +290,10 @@ public class ConversationPage extends WebPage {
 
     public String getUniqueUsername() throws Exception{
         return uniqueUsername.getText();
+    }
+
+    public BufferedImage getAvatar() throws Exception {
+        return this.getElementScreenshot(avatar).orElseThrow(IllegalStateException::new);
     }
 
     /**

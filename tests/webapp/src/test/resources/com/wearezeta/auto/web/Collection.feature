@@ -26,17 +26,19 @@ Feature: Collection
     And I am signed in properly
     When I open conversation with <Contact>
     And I send picture <Picture> to the current conversation
+    And I send audio file with length <Time> and name <File> to the current conversation
     And I send <FileSize> sized file with name <FileName> to the current conversation
     And Contact <Contact> sends message <Link> via device Device1 to user me
     And I see link <LinkInPreview> in link preview message
     And I click collection button in conversation
     Then I see 1 picture in collection
+    And I see 1 audio in collection
     And I see 1 file in collection
     And I see 1 link in collection
 
     Examples:
-      | Email      | Password      | Name      | Contact   | Picture                   | FileSize | FileName        | Link                                                                                                               | LinkInPreview                                                                                           |
-      | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg | 1MB      | collections.txt | http://www.heise.de/newsticker/meldung/Wire-Neuer-WebRTC-Messenger-soll-WhatsApp-Co-Konkurrenz-machen-2477770.html | heise.de/newsticker/meldung/Wire-Neuer-WebRTC-Messenger-soll-WhatsApp-Co-Konkurrenz-machen-2477770.html |
+      | Email      | Password      | Name      | Contact   | Picture                   | FileSize | FileName        | Link                                                                                                               | LinkInPreview                                                                                           | File        | Time  |
+      | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg | 1MB      | collections.txt | http://www.heise.de/newsticker/meldung/Wire-Neuer-WebRTC-Messenger-soll-WhatsApp-Co-Konkurrenz-machen-2477770.html | heise.de/newsticker/meldung/Wire-Neuer-WebRTC-Messenger-soll-WhatsApp-Co-Konkurrenz-machen-2477770.html | example.wav | 00:20 |
 
   @C378052 @collection @regression
   Scenario Outline: Verify no pictures from different conversations are in the overview
@@ -272,3 +274,29 @@ Feature: Collection
     Examples:
       | Email      | Password      | Name      | Contact   | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg |
+
+  @C421364 @collection @regression
+  Scenario Outline: Verify opening overview of all audio files from sender and receiver in group
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Email> and password <Password>
+    When User <Contact1> sends 3 audio files <AudioFile> via Device1 to group conversation <ChatName>
+    And I am signed in properly
+    When I open conversation with <ChatName>
+    When User <Contact2> sends 3 audio files <AudioFile> via Device2 to group conversation <ChatName>
+    And I send audio file with length <AudioTime> and name <AudioFile> to the current conversation
+    And I wait for 10 seconds
+    And I see 8 messages in conversation
+    And I click collection button in conversation
+    Then I see 7 audios in collection
+    When I click on Show all audio files button in collections
+    Then I see 7 audios in audio details in collections
+    And I see conversation <ChatName> is on the top
+    When I click on back button on collection details page
+    Then I see 7 audios in collection
+
+    Examples:
+      | Email      | Password      | Name      | Contact1  | Contact2  | ChatName   | AudioFile   | AudioTime |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | group conv | example.wav | 00:20     |

@@ -638,11 +638,12 @@ Feature: Ephemeral
     When I click ping button
     Then I see <PING> action in conversation
     And I see timer next to the last message
-    When I wait for <WaitingTime> seconds
+    When I wait for <Time> seconds
     Then I see the last message is obfuscated
     And I see 2 messages in conversation
   #Contact read the message (remote step)
     When User <Contact1> reads the recent message from group conversation <ChatName> via device Device1
+    And I wait for <Time> seconds
     Then I do not see ping action in conversation
     And I see 1 messages in conversation
   #picture
@@ -650,10 +651,11 @@ Feature: Ephemeral
     Then I see sent picture <PictureName> in the conversation view
     And I see only 1 picture in the conversation
     And I see timer next to the last message
-    When I wait for <WaitingTime> seconds
+    When I wait for <Time> seconds
     Then I see block replaces the last message in the conversation view
     And I see 2 messages in conversation
-    When User <Contact1> reads the recent message from user <Name> via device Device1
+    When User <Contact1> reads the recent message from group conversation <ChatName> via device Device1
+    And I wait for <Time> seconds
     And I do not see any picture in the conversation view
     And I see 1 messages in conversation
   #video
@@ -662,40 +664,42 @@ Feature: Ephemeral
     And I wait until video <VideoFile> is uploaded completely
     And I see video message <VideoFile> in the conversation view
     And I see timer next to the last message
-    When I wait for <WaitingTime> seconds
+    When I wait for <Time> seconds
     Then I see block replaces the last message in the conversation view
     And I do not see video message <VideoFile> in the conversation view
     And I see 2 messages in conversation
-    When User <Contact1> reads the recent message from user <Name> via device Device1
-    When I wait for <WaitingTime> seconds
+    When User <Contact1> reads the recent message from group conversation <ChatName> via device Device1
+    When I wait for <Time> seconds
     And I do not see video message <VideoFile> in the conversation view
     And I do not see block replaces the last message in the conversation view
     And I see 1 messages in conversation
-  #audio
+#audio
     When I send audio file with length <AudioTime> and name <AudioFile> to the current conversation
     And I wait until audio <AudioFile> is uploaded completely
     Then I see audio message <AudioFile> in the conversation view
     And I see timer next to the last message
-    When I wait for <WaitingTime> seconds
+    When I wait for <Time> seconds
     Then I see block replaces the last message in the conversation view
     And I see 2 messages in conversation
-    When User <Contact1> reads the recent message from user <Name> via device Device1
+    When User <Contact1> reads the recent message from group conversation <ChatName> via device Device1
+    And I wait for <Time> seconds
     And I do not see audio message <AudioFile> in the conversation view
     And I do not see block replaces the last message in the conversation view
     And I see 1 messages in conversation
-  #file
+    #file
     When I send <SizeFile> sized file with name <File> to the current conversation
     And I wait until file <File> is uploaded completely
     And I see timer next to the last message
-    When I wait for <WaitingTime> seconds
+    When I wait for <Time> seconds
     Then I see block replaces the last message in the conversation view
     And I see 2 messages in conversation
-    When User <Contact1> reads the recent message from user <Name> via device Device1
+    When User <Contact1> reads the recent message from group conversation <ChatName> via device Device1
+    And I wait for <Time> seconds
     And I do not see file transfer for file <File> in the conversation view
     And I do not see block replaces the last message in the conversation view
     And I see 1 messages in conversation
     And I see 0 messages in database from <Name> in active conversation
 
     Examples:
-      | Login1     | Password      | Name      | Contact1  | Contact2  | ChatName | Time | TimeLong    | TimeShortUnit | PING       | PictureName               | VideoFile   | SizeVideo | AudioFile   | AudioTime | File         | SizeFile | WaitingTime |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | ephGroup | 15   | 15 seconds  | s             | you pinged | userpicture_landscape.jpg | C261733.mp4 | 1 MB      | example.wav | 00:20     | C261733.zip  | 512KB    | 20          |
+      | Login1     | Password      | Name      | Contact1  | Contact2  | ChatName | Time | TimeLong    | TimeShortUnit | PING       | PictureName               | VideoFile   | SizeVideo | AudioFile   | AudioTime | File         | SizeFile |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | ephGroup | 15   | 15 seconds  | s             | you pinged | userpicture_landscape.jpg | C261733.mp4 | 1 MB      | example.wav | 00:20     | C261733.zip  | 512KB    |

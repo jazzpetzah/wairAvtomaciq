@@ -224,20 +224,18 @@ public class ZetaWinWebAppDriver extends ZetaWebAppDriver {
 
         @Override
         public <X> X getScreenshotAs(OutputType<X> outputType) throws WebDriverException {
-            Point windowPosition = manage().window().getPosition();
-            Dimension windowSize = manage().window().getSize();
+            Point webviewPosition = manage().window().getPosition();
+            Dimension webviewSize = manage().window().getSize();
             Point elLocation = this.getLocation();
             Dimension elSize = this.getSize();
 
             if (OutputType.BASE64.equals(outputType)) {
                 throw new WebDriverException("Base64 screenshot not supported yet");
             } else if (OutputType.BYTES.equals(outputType)) {
-                BufferedImage fullScreenshot = getWinDriver().getRobot().createScreenCapture(new Rectangle(Toolkit.
-                        getDefaultToolkit().
-                        getScreenSize()));
-                BufferedImage webappScreenshot = fullScreenshot.getSubimage(windowPosition.getX(), windowPosition.getY(),
-                        windowSize.getWidth(), windowSize.getHeight());
-                BufferedImage elementScreenshot = webappScreenshot.getSubimage(elLocation.getX(), elLocation.getY(), elSize.
+                BufferedImage webviewScreenshot = getWinDriver().getRobot().createScreenCapture(
+                        new Rectangle(webviewPosition.getX(), webviewPosition.getY(),
+                                webviewSize.getWidth(), webviewSize.getHeight()));
+                BufferedImage elementScreenshot = webviewScreenshot.getSubimage(elLocation.getX(), elLocation.getY(), elSize.
                         getWidth(), elSize.getHeight());
                 return (X) getWinDriver().bufferedImageAsByteArray(elementScreenshot);
             } else if (OutputType.FILE.equals(outputType)) {
@@ -255,6 +253,8 @@ public class ZetaWinWebAppDriver extends ZetaWebAppDriver {
     }
 
     protected class ZetaRemoteWebDriverOptions extends RemoteWebDriverOptions {
+        public static final String xpathWebview = "/*[@ClassName='Chrome_WidgetWin_1' and @ControlType='ControlType.Window' and contains(@Name,'Wire')]/*[@ControlType='ControlType.Custom']/*[@ControlType='ControlType.Custom']/*[@ControlType='ControlType.Custom']/*[@ControlType='ControlType.Custom']";
+        final WebElement webview = winDriver.findElement(By.xpath(xpathWebview));
 
         @Beta
         @Override
@@ -268,12 +268,12 @@ public class ZetaWinWebAppDriver extends ZetaWebAppDriver {
 
             @Override
             public Dimension getSize() {
-                return winDriver.manage().window().getSize();
+                return webview.getSize();
             }
 
             @Override
             public Point getPosition() {
-                return winDriver.manage().window().getPosition();
+                return webview.getLocation();
             }
 
         }

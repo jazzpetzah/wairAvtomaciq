@@ -3,6 +3,7 @@ Feature: Notifications
   @C147866 @regression @rc
   Scenario Outline: Verify push notifications are received after successful registration
     Given I am on Android 4.4 or better
+    Given I verify Testing gallery has the Notification access permission
     Given I see welcome screen
     Given I input a new phone number for user <Name>
     Given I input the verification code
@@ -30,6 +31,7 @@ Feature: Notifications
   Scenario Outline: Verify push notifications after receiving any type of message
     Given I am on Android with Google Location Service
     Given I am on Android 4.4 or better
+    Given I verify Testing gallery has the Notification access permission
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -74,6 +76,7 @@ Feature: Notifications
   @C321202 @regression
   Scenario Outline: Verify push notification of group message
     Given I am on Android 4.4 or better
+    Given I verify Testing gallery has the Notification access permission
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
     Given Myself has group chat <Group> with <Contact>,<Contact1>
@@ -91,6 +94,7 @@ Feature: Notifications
   @C165125 @regression @rc
   Scenario Outline: Verify no GCM notifications are shown for muted chats
     Given I am on Android 4.4 or better
+    Given I verify Testing gallery has the Notification access permission
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -111,7 +115,9 @@ Feature: Notifications
   @C248344 @regression @GCMToken
   Scenario Outline: Verify unregister push token at backend and see if client can resume getting notifications by itself
     Given I am on Android with GCM Service
+    Given I enable GCM
     Given I am on Android 4.4 or better
+    Given I verify Testing gallery has the Notification access permission
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -134,6 +140,7 @@ Feature: Notifications
   @C226044 @regression
   Scenario Outline: When somebody likes my message - I receive notification and do not receive when muted(app in background)
     Given I am on Android 4.4 or better
+    Given I verify Testing gallery has the Notification access permission
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given Users add the following devices: {"<Contact>": [{"name": "<ContactDevice>"}]}
@@ -165,6 +172,7 @@ Feature: Notifications
   @C255424 @regression @rc
   Scenario Outline: Verify notifications list is cleaned once I open Wire app
     Given I am on Android 4.4 or better
+    Given I verify Testing gallery has the Notification access permission
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given User adds the following device: {"<Contact>": [{"name": "<ContactDevice>"}]}
@@ -182,3 +190,31 @@ Feature: Notifications
     Examples:
       | Name      | Contact   | Message | ContactDevice |
       | user1Name | user2Name | hello   | Device1       |
+
+  @C420860 @staging
+  Scenario Outline: (AN-4983|AN-4997) Verify I could reply notification when GCM is <GCMState>
+    Given I am on Android 4.4 or better
+    Given I verify Testing gallery has the Notification access permission
+    Given I <GCMState> GCM
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User adds the following device: {"<Contact>": [{"name": "Device1"}]}
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I minimize the application
+    # Workaround for AN-4983/AN-4997
+    And I wait for 5 seconds
+    And User <Contact> sends encrypted message <Message> to user Myself
+    And I see the message "<Message>" in push notifications list
+    And I tap REPLY action button on Wire notification
+    Then I see quick reply page
+    And I see Reply name with value "<Contact>" on Quick reply page
+    And I see Received message with value "<Message>" on Quick reply page
+    When I tap Open wire button on Quick reply page
+    Then I see the message "<Message>" in the conversation view
+
+    Examples:
+      | Name      | Contact   | Message | GCMState |
+      | user1Name | user2Name | hello   | enable   |
+      | user1Name | user2Name | hello   | disable  |

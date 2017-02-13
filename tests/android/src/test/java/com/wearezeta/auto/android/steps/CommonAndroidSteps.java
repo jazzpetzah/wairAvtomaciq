@@ -12,10 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.google.common.base.Throwables;
-import com.wearezeta.auto.android.common.AndroidCommonUtils;
-import com.wearezeta.auto.android.common.AndroidTestContext;
-import com.wearezeta.auto.android.common.AndroidTestContextHolder;
-import com.wearezeta.auto.android.common.CallingVersions;
+import com.wearezeta.auto.android.common.*;
 import com.wearezeta.auto.android.common.logging.AndroidLogListener;
 import com.wearezeta.auto.android.common.logging.AndroidLogListener.ListenerType;
 import com.wearezeta.auto.android.common.logging.LoggingProfile;
@@ -28,7 +25,6 @@ import com.wearezeta.auto.android.pages.registration.BackendSelectPage;
 import com.wearezeta.auto.android.pages.registration.WelcomePage;
 import com.wearezeta.auto.android.tools.WireDatabase;
 import com.wearezeta.auto.common.*;
-import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.AppiumServer;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
@@ -1660,6 +1656,20 @@ public class CommonAndroidSteps {
     private static final int PUSH_NOTIFICATION_TIMEOUT_SEC = 30;
 
     /**
+     * Ensure the Testing Gallery has the notification access permission
+     *
+     * @throws Exception
+     * @step. ^I verify Testing gallery has the Notification access permission$
+     */
+    @Given("^I verify Testing gallery has the Notification access permission$")
+    public void TestingGalleryHasNotificationAccess() throws Exception {
+        Assert.assertTrue("Testing Gallery needs Notification access permission!",
+                AndroidCommonUtils.isTestingGalleryNoticationAccessPermissionGranted());
+        AndroidCommonUtils.switchToApplication(getPackageName());
+        WaitForTime(UI_DELAY_TIME.asSeconds());
+    }
+
+    /**
      * Verify whether the particular string is present in Wire push messages
      *
      * @param expectedMessage the expected push message
@@ -1682,8 +1692,7 @@ public class CommonAndroidSteps {
             Thread.sleep(500);
         } while (System.currentTimeMillis() - millisecondsStarted <= PUSH_NOTIFICATION_TIMEOUT_SEC * 1000);
         if (shouldNotSee == null) {
-            Assert.assertTrue(String.format("Push message '%s' has not been received within %s seconds timeout OR "
-                            + "TestingGallery app has no access to read push notifications (please check phone settings)",
+            Assert.assertTrue(String.format("Push message '%s' has not been received within %s seconds timeout",
                     expectedMessage, PUSH_NOTIFICATION_TIMEOUT_SEC), isMsgFound);
         } else {
             Assert.assertFalse(String.format("Push message '%s' has been received, although it is not expected",
@@ -1700,6 +1709,18 @@ public class CommonAndroidSteps {
     @When("^I clear Wire push notifications$")
     public void IClearNotification() throws Exception {
         AndroidCommonUtils.clearWirePushNotifications();
+    }
+
+    /**
+     * Tap on Wire notification action button
+     *
+     * @param action which could be REPLY and CALL
+     * @throws Exception
+     * @step. I tap (REPLY|CALL) action button on Wire notification$
+     */
+    @When("^I tap (REPLY|CALL) action button on Wire notification$")
+    public void ITapOnNotificationActionButton(String action) throws Exception {
+        AndroidCommonUtils.fireActionOnWirePushNotification(NotificationActions.valueOf(action));
     }
 
     /**
@@ -2129,5 +2150,20 @@ public class CommonAndroidSteps {
     public void ISwitchCallingVersion(String callingVersionName) throws Exception {
         CallingVersions version = CallingVersions.valueOf(callingVersionName);
         AndroidCommonUtils.changeCallingSettings(version);
+    }
+
+    /**
+     * Change the wire GCM settings
+     * The default settings on Dev/Exp/QA/CAND build will set GCM disabled, but Product will set GCM enabled by default
+     * Thus if we want to test same as Product, we need to change GCM to enabled, otherwise, whole notification will
+     * only depends on WebSocket.
+     *
+     * @param command enable or disable
+     * @throws Exception
+     * @step. ^I (enable|disable) GCM$
+     */
+    @Given("^I (enable|disable) GCM$")
+    public void IChangeGCMSettings(String command) throws Exception {
+        AndroidCommonUtils.changeGCMSettings(command);
     }
 }
