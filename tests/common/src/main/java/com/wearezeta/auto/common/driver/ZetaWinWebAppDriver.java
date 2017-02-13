@@ -224,11 +224,8 @@ public class ZetaWinWebAppDriver extends ZetaWebAppDriver {
 
         @Override
         public <X> X getScreenshotAs(OutputType<X> outputType) throws WebDriverException {
-            final String APP_NAME = "Wire";
-            final String WINDOW_LOCATOR = "/*[@ClassName='Chrome_WidgetWin_1' and contains(@Name,'" + APP_NAME + "')]";
-            final WebElement webview = winDriver.findElement(By.xpath(WINDOW_LOCATOR));
-            Point webviewPosition = webview.getLocation();
-            Dimension webviewSize = webview.getSize();
+            Point webviewPosition = manage().window().getPosition();
+            Dimension webviewSize = manage().window().getSize();
             Point elLocation = this.getLocation();
             Dimension elSize = this.getSize();
 
@@ -257,6 +254,9 @@ public class ZetaWinWebAppDriver extends ZetaWebAppDriver {
 
     protected class ZetaRemoteWebDriverOptions extends RemoteWebDriverOptions {
 
+        final String WINDOW_LOCATOR = "/*[@Name='Google Chrome']";
+        final WebElement webview = winDriver.findElement(By.xpath(WINDOW_LOCATOR));
+
         @Beta
         @Override
         public WebDriver.Window window() {
@@ -269,12 +269,12 @@ public class ZetaWinWebAppDriver extends ZetaWebAppDriver {
 
             @Override
             public Dimension getSize() {
-                return winDriver.manage().window().getSize();
+                return webview.getSize();
             }
 
             @Override
             public Point getPosition() {
-                return winDriver.manage().window().getPosition();
+                return webview.getLocation();
             }
 
         }
