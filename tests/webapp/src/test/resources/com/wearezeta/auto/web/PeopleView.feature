@@ -1,6 +1,6 @@
 Feature: People View
 
-  @C1708 @regression @torun
+  @C1708 @regression
   Scenario Outline: Verify you can access proﬁle information for the other participant in a 1to1 conversation
     Given There are 2 users where <Name> is me
     Given User <Contact> changes avatar picture to <Avatar>

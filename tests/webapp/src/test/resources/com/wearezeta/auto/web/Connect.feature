@@ -5,6 +5,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given <Contact> has unique username
     Given <Contact> sent connection request to <Name>
+    Given User <Contact> changes avatar picture to <Avatar>
     Given User me change accent color to VividRed
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
