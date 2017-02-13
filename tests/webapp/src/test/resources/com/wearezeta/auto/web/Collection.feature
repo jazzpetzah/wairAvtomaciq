@@ -26,17 +26,19 @@ Feature: Collection
     And I am signed in properly
     When I open conversation with <Contact>
     And I send picture <Picture> to the current conversation
+    And I send audio file with length <Time> and name <File> to the current conversation
     And I send <FileSize> sized file with name <FileName> to the current conversation
     And Contact <Contact> sends message <Link> via device Device1 to user me
     And I see link <LinkInPreview> in link preview message
     And I click collection button in conversation
     Then I see 1 picture in collection
+    And I see 1 audio in collection
     And I see 1 file in collection
     And I see 1 link in collection
 
     Examples:
-      | Email      | Password      | Name      | Contact   | Picture                   | FileSize | FileName        | Link                                                                                                               | LinkInPreview                                                                                           |
-      | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg | 1MB      | collections.txt | http://www.heise.de/newsticker/meldung/Wire-Neuer-WebRTC-Messenger-soll-WhatsApp-Co-Konkurrenz-machen-2477770.html | heise.de/newsticker/meldung/Wire-Neuer-WebRTC-Messenger-soll-WhatsApp-Co-Konkurrenz-machen-2477770.html |
+      | Email      | Password      | Name      | Contact   | Picture                   | FileSize | FileName        | Link                                                                                                               | LinkInPreview                                                                                           | File        | Time  |
+      | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg | 1MB      | collections.txt | http://www.heise.de/newsticker/meldung/Wire-Neuer-WebRTC-Messenger-soll-WhatsApp-Co-Konkurrenz-machen-2477770.html | heise.de/newsticker/meldung/Wire-Neuer-WebRTC-Messenger-soll-WhatsApp-Co-Konkurrenz-machen-2477770.html | example.wav | 00:20 |
 
   @C378052 @collection @regression
   Scenario Outline: Verify no pictures from different conversations are in the overview
