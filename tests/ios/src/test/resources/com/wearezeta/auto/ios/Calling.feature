@@ -529,7 +529,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend     |
-      | user1Name | user2Name | zcall_v3:3.1.43 |
+      | user1Name | user2Name | zcall           |
 
   @fastLogin @consecutive_call
   Scenario Outline: I receive 1:1 call loop from AVS <CallBackend>
