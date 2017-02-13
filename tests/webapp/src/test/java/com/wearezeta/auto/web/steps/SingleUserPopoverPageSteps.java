@@ -151,15 +151,12 @@ public class SingleUserPopoverPageSteps {
         }
     }
 
-    @Then("^I( do not)? see avatar (.*) of user (.*) on Single Participant popover$")
-    public void ISeeAvatarOfUser(String not, String avatar, String userAlias)
-            throws Exception {
+    @Then("^I( do not)? see avatar (.*) on Single Participant popover$")
+    public void ISeeAvatarOfUser(String not, String avatar) throws Exception {
         final String picturePath = WebCommonUtils.getFullPicturePath(avatar);
         BufferedImage expectedAvatar = ImageUtil.readImageFromFile(picturePath);
-        BufferedImage actualAvatar = context.getPagesCollection().getPage(
-                SingleUserPopoverContainer.class).getAvatar();
-        double overlapScore = ImageUtil.getOverlapScore(actualAvatar,
-                expectedAvatar,
+        BufferedImage actualAvatar = context.getPagesCollection().getPage(SingleUserPopoverContainer.class).getAvatar();
+        double overlapScore = ImageUtil.getOverlapScore(actualAvatar, expectedAvatar,
                 ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
         log.info("Overlap score: " + overlapScore);
         if (not == null) {

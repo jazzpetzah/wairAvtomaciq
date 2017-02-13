@@ -904,6 +904,22 @@ public class ConversationPageSteps {
                 context.getPagesCollection().getPage(ConversationPage.class).getUniqueUsername(), equalTo(username));
     }
 
+    @Then("^I( do not)? see avatar (.*) in conversation$")
+    public void ISeeAvatarOfUserInConversation(String not, String avatar)
+            throws Exception {
+        final String picturePath = WebCommonUtils.getFullPicturePath(avatar);
+        BufferedImage expectedAvatar = ImageUtil.readImageFromFile(picturePath);
+        BufferedImage actualAvatar = context.getPagesCollection().getPage(ConversationPage.class).getAvatar();
+        double overlapScore = ImageUtil.getOverlapScore(actualAvatar, expectedAvatar,
+                ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+        log.info("Overlap score: " + overlapScore);
+        if (not == null) {
+            assertThat("Overlap score of image comparsion", overlapScore, greaterThanOrEqualTo(0.3));
+        } else {
+            assertThat("Overlap score of image comparsion", overlapScore, lessThan(0.3));
+        }
+    }
+
     @Then("^I see (.*) action (\\d+) times for (.*) in conversation$")
     public void ThenISeeActionForContactInConversation(String message, int times, String contacts) throws Exception {
         contacts = context.getUsersManager().replaceAliasesOccurences(contacts, FindBy.NAME_ALIAS);

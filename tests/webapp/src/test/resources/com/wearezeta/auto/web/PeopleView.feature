@@ -14,7 +14,7 @@ Feature: People View
     Then I see Single User Profile popover
     And I see username <Contact> on Single User Profile popover
     And I do not see Mail of user <Contact> on Single Participant popover
-    And I see avatar <Avatar> of user <Contact> on Single Participant popover
+    And I see avatar <Avatar> on Single Participant popover
     And I see Add people button on Single User Profile popover
     And I see Block button on Single User Profile popover
 
@@ -429,7 +429,7 @@ Feature: People View
     And I click People button in one to one conversation
     Then I see Single User Profile popover
     And I see username <Contact1> on Single User Profile popover
-    And I see avatar <Avatar> of user <Contact1> on Single Participant popover
+    And I see avatar <Avatar> on Single Participant popover
     And I see unique username <Contact1> on Single User popover
     When I open conversation with <ChatName>
     And I click People button in group conversation
@@ -437,7 +437,7 @@ Feature: People View
     And I click on participant <Contact1> on Group Participants popover
     Then I see username <Contact1> on Group Participants popover
     And I see unique username <Contact1> on Group Participants popover
-    And I see avatar <Avatar> of user <Contact1> on Group Participant popover
+    And I see avatar <Avatar> on Group Participant popover
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName | Avatar                   |

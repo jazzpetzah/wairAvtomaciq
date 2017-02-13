@@ -275,7 +275,7 @@ Feature: Collection
       | Email      | Password      | Name      | Contact   | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg |
 
-  @C421364 @collection @regression @torun
+  @C421364 @collection @regression
   Scenario Outline: Verify opening overview of all audio files from sender and receiver in group
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
