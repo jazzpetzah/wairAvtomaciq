@@ -241,7 +241,7 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
         return getCurrentUserInfoPage().isAvatarVisible();
     }
 
-    public BufferedImage getAvatar() throws IllegalStateException, Exception {
+    public BufferedImage getAvatar() throws Exception {
         return getCurrentUserInfoPage().getAvatar();
     }
 

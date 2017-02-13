@@ -5,6 +5,7 @@ import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.email.MessagingUtils;
 
+import java.awt.image.BufferedImage;
 import java.util.*;
 
 public class ClientUser {
@@ -160,8 +161,10 @@ public class ClientUser {
         this.phoneNumberAliases.clear();
     }
 
-    public String getUniqueUsername() {
-        return uniqueUsername;
+    public String getUniqueUsername() {return uniqueUsername;}
+
+    public BufferedImage getAvatar() throws Exception {
+        return this.getElementScreenshot(avatar).orElseThrow(IllegalStateException::new);
     }
 
     public void setUniqueUsername(String uniqueUsername) {
