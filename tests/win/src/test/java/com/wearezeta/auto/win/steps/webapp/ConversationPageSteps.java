@@ -59,7 +59,7 @@ public class ConversationPageSteps {
             ImageIO.write(actualImage, "png", baos2);
             String actualDataURI = "data:image/png;base64," + DatatypeConverter.printBase64Binary(baos2.toByteArray());
 
-            assertThat("Not enough good matches between expected " + "<img width='200px' src='" + expectedImage
+            assertThat("Not enough good matches between expected " + "<img width='200px' src='" + expectedDataURI
                     + "' /> and actual <img width='200px' src='" + actualDataURI + "' />",
                     ImageUtil.getMatches(expectedImage, actualImage), greaterThan(80));
         } else {
