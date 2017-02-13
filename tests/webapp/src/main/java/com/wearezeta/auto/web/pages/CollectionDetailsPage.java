@@ -21,6 +21,9 @@ public class CollectionDetailsPage extends WebPage {
     @FindBy(css = WebAppLocators.CollectionPage.cssPicturesOnCollectionDetails)
     private List<WebElement> picturesOnCollectionDetails;
 
+    @FindBy(css = WebAppLocators.CollectionPage.cssAudioFilesOnCollectionDetails)
+    private List<WebElement> audioFilesOnCollectionDetails;
+
     public CollectionDetailsPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -30,5 +33,9 @@ public class CollectionDetailsPage extends WebPage {
 
     public void clickBackButtonCollectionDetails(){
         backToCollectionButton.click();
+    }
+
+    public int getNumberOfAudioFiles(){
+        return audioFilesOnCollectionDetails.size();
     }
 }
