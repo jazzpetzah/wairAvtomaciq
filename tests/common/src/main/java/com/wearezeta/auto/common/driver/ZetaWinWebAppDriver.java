@@ -253,7 +253,7 @@ public class ZetaWinWebAppDriver extends ZetaWebAppDriver {
     }
 
     protected class ZetaRemoteWebDriverOptions extends RemoteWebDriverOptions {
-        public static final String xpathWebview = "/*[@ClassName='Chrome_WidgetWin_1' and @ControlType='ControlType.Window' and contains(@Name,'Wire')]/*[@ControlType='ControlType.Window']/*[@ControlType='ControlType.Window']/*[@ControlType='ControlType.Window']/*[@ControlType='ControlType.Window']/*[@Role='document']";
+        public static final String xpathWebview = "/*[@ClassName='Chrome_WidgetWin_1' and @ControlType='ControlType.Window' and contains(@Name,'Wire')]/*[@ControlType='ControlType.Window']/*[@ControlType='ControlType.Window']/*[@ControlType='ControlType.Window']/*[@ControlType='ControlType.Window']";
         final WebElement webview = winDriver.findElement(By.xpath(xpathWebview));
 
         @Beta
