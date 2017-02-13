@@ -1350,7 +1350,7 @@ Feature: E2EE
         | Email      | Password      | Name     | Contact   | ALL_VERIFIED                  | UNVERIFIED                         |
         | user1Email | user1Password |user1Name | user2Name | All fingerprints are verified | You unverified one of your devices |
 
-  @C421365 @e2ee @staging
+  @C421365 @e2ee @regression
   Scenario Outline: Verify group conversation degrades with warning when you add a new device
     Given There are 3 users where <Name> is me
     Given user <Contact1> adds a new device Device1 with label Label1

@@ -415,7 +415,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GROUPCHAT |
 
-  @C352250 @staging
+  @C352250 @regression
   Scenario Outline: Verify big profile picture and username are shown on participant popover
     Given There are 3 users where <Name> is me
     Given User <Contact1> changes avatar picture to <Avatar>
