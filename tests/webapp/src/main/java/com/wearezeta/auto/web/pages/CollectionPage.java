@@ -31,6 +31,12 @@ public class CollectionPage extends WebPage {
     @FindBy(css = WebAppLocators.CollectionPage.cssVideoCollectionSize)
     private WebElement videoCollectionSize;
 
+    @FindBy(css = WebAppLocators.CollectionPage.cssAudioFiles)
+    private List<WebElement> audioFiles;
+
+    @FindBy(css = WebAppLocators.CollectionPage.cssAudioCollectionSize)
+    private WebElement audioCollectionSize;
+
     @FindBy(css = WebAppLocators.CollectionPage.cssFiles)
     private List<WebElement> files;
 
@@ -82,8 +88,16 @@ public class CollectionPage extends WebPage {
         return videos.size();
     }
 
+    public int getNumberOfAudioFiles() {
+        return audioFiles.size();
+    }
+
     public String getLabelOfVideoCollectionSize() {
         return videoCollectionSize.getText();
+    }
+
+    public String getLabelOfAudioCollectionSize() {
+        return audioCollectionSize.getText();
     }
 
     public int getNumberOfFiles() {
@@ -131,11 +145,11 @@ public class CollectionPage extends WebPage {
         pictures.get(index - 1).click();
     }
 
-    public void clickShowAllPicturesInCollection() {
-        showAllPictures.click();
-    }
+    public void clickShowAllPicturesInCollection() {showAllPictures.click();}
 
     public void clickShowAllFilesLabel() {
         fileCollectionSize.click();
     }
+
+    public void clickShowAllAudioInCollection() {audioCollectionSize.click();}
 }

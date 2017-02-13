@@ -31,6 +31,7 @@ public class CollectionPageSteps {
     private static final int MAXVIDEOS = 4;
     private static final int MAXFILES = 4;
     private static final int MAXLINKS = 4;
+    private static final int MAXAUDIOS = 4;
 
     @When("I close collection overview$")
     public void ICloseCollectionOverview() throws Exception {
@@ -56,7 +57,6 @@ public class CollectionPageSteps {
             assertThat("Label to show all", context.getPagesCollection().getPage(CollectionPage.class).getLabelOfPictureCollectionSize(),
                     equalTo("Show all " + String.valueOf(amount)));
         }
-
     }
 
     @Then("^I see (\\d+) videos? in collection$")
@@ -85,6 +85,21 @@ public class CollectionPageSteps {
             assertThat("Number of files", context.getPagesCollection().getPage(CollectionPage.class).getNumberOfFiles(),
                     equalTo(MAXFILES));
             assertThat("Label to show all", context.getPagesCollection().getPage(CollectionPage.class).getLabelOfFileCollectionSize(),
+                    equalTo("Show all " + String.valueOf(amount)));
+        }
+    }
+
+    @Then("^I see (\\d+) audios? in collection$")
+    public void ISeeXAudios(int amount) throws Exception {
+        if (amount <= MAXAUDIOS && amount >= 0) {
+            assertThat("Number of audios", context.getPagesCollection().getPage(CollectionPage.class).getNumberOfAudioFiles(),
+                    equalTo(amount));
+        }
+        // Label is not shown for less than 5 audios
+        else if (amount > MAXAUDIOS) {
+            assertThat("Number of audios", context.getPagesCollection().getPage(CollectionPage.class).getNumberOfAudioFiles(),
+                    equalTo(MAXAUDIOS));
+            assertThat("Label to show all", context.getPagesCollection().getPage(CollectionPage.class).getLabelOfAudioCollectionSize(),
                     equalTo("Show all " + String.valueOf(amount)));
         }
     }
@@ -141,20 +156,31 @@ public class CollectionPageSteps {
                 hasItem(contact));
     }
 
-    @When("I click on picture (\\d+) in collection$")
+    @When("^I click on picture (\\d+) in collection$")
     public void IClickOnFirstPictureInCollection(int index) throws Exception {
         context.getPagesCollection().getPage(CollectionPage.class).clickFirstPictureInCollection(index);
     }
 
-    @When("I click on Show all pictures button in collections$")
+    @When("^I click on Show all pictures button in collections$")
     public void IClickOnAllPicturesButtonInCollections() throws Exception{
         context.getPagesCollection().getPage(CollectionPage.class).clickShowAllPicturesInCollection();
+    }
+
+    @When("^I click on Show all audio files button in collections$")
+    public void IClickOnAllAudioButtonInCollections() throws Exception{
+        context.getPagesCollection().getPage(CollectionPage.class).clickShowAllAudioInCollection();
     }
 
     @Then("^I see (\\d+) pictures? in pictures details in collections$")
     public void ISeeXPicturesInDetails(int amount) throws Exception {
         assertThat("Number of shown pictures", context.getPagesCollection().getPage(CollectionDetailsPage.class).getNumberOfPictures(),
                     equalTo(amount));
+    }
+
+    @Then("I see (\\d+) audios? in audio details in collections")
+    public void ISeeXAudiosInDetails(int amount) throws Exception {
+        assertThat("Number of shown audio files", context.getPagesCollection().getPage(CollectionDetailsPage.class).getNumberOfAudioFiles(),
+                equalTo(amount));
     }
 
     @When("^I click on back button on collection details page$")

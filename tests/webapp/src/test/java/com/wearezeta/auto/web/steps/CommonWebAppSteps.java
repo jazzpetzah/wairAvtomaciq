@@ -359,6 +359,18 @@ public class CommonWebAppSteps {
         }
     }
 
+    @When("^User (.*) sends (\\d+)? audio files? (.*) via (.*) to (single user|group) conversation (.*)")
+    public void ContactSendAudioFilesToConversation(String audioSenderUserNameAlias, int quantity, String audioFileName, String deviceName, String conversationType,
+                                               String dstConversationName) throws Exception {
+        String path = WebCommonUtils.class.getResource("/filetransfer").getPath();
+        path = path.replace("%40", "@");
+        final boolean isGroup = conversationType.equals("group");
+        for (int i = 0; i < quantity; i++) {
+            context.getCommonSteps().UserSentFileToConversation(audioSenderUserNameAlias, dstConversationName, path + "/" + audioFileName, "audio/mp4",
+                    deviceName + context.getTestname().hashCode(), isGroup);
+        }
+    }
+
     @When("^I break the session with device (.*) of user (.*)$")
     public void IBreakTheSession(String deviceName, String userAlias) throws Exception {
         ClientUser user = context.getUsersManager().findUserByNameOrNameAlias(userAlias);

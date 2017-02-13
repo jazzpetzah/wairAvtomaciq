@@ -731,6 +731,10 @@ public final class WebAppLocators {
 
         public static final String cssVideoCollectionSize = "[data-uie-name='collection-section-video'] [data-uie-name='collection-size']";
 
+        public static final String cssAudioFiles = "[data-uie-name='collection-section-audio'] audio-asset";
+
+        public static final String cssAudioCollectionSize = "[data-uie-name='collection-section-audio'] [data-uie-name='collection-show-all']";
+
         public static final String cssFiles = "[data-uie-name='collection-section-file'] [data-uie-name='file-name']";
 
         public static final String cssFilesPage = ".content-list file-asset";
@@ -756,6 +760,8 @@ public final class WebAppLocators {
         public static final String cssBackToCollectionButton = "[data-uie-name='do-collection-details-close']";
 
         public static final String cssPicturesOnCollectionDetails = "#collection-details image-component";
+
+        public static final String cssAudioFilesOnCollectionDetails = "#collection-details audio-asset";
 
     }
 
