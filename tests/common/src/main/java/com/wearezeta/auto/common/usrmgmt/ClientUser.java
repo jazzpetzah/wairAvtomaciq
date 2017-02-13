@@ -163,10 +163,6 @@ public class ClientUser {
 
     public String getUniqueUsername() {return uniqueUsername;}
 
-    public BufferedImage getAvatar() throws Exception {
-        return this.getElementScreenshot(avatar).orElseThrow(IllegalStateException::new);
-    }
-
     public void setUniqueUsername(String uniqueUsername) {
         this.uniqueUsername = uniqueUsername;
     }

@@ -23,7 +23,7 @@ Feature: Connect
     Then I see text message <Message>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Message | Avatar |
+      | Login      | Password      | Name      | Contact   | Message | Avatar                   |
       | user1Email | user1Password | user1Name | user2Name | message | userpicture_portrait.jpg |
 
   @C1691 @regression

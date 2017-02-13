@@ -366,6 +366,8 @@ public final class WebAppLocators {
 
         public static final String cssUsername = ".message-connected-username.label-username";
 
+        public static final String cssAvatar = "";
+
         // messages (including images, text, missed call notifications, pings)
         public static final String cssMessage = "[data-uie-name='item-message']";
 

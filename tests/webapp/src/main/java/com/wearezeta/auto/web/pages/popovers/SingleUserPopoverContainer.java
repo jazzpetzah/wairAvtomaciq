@@ -186,7 +186,7 @@ public class SingleUserPopoverContainer extends PeoplePopoverContainer {
         return getCurrentUserInfoPage().getMailHref();
     }
 
-    public BufferedImage getAvatar() throws IllegalStateException, Exception {
+    public BufferedImage getAvatar() throws Exception {
         return getCurrentUserInfoPage().getAvatar();
     }
 
