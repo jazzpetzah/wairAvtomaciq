@@ -648,8 +648,8 @@ Feature: Ephemeral
     And I see 1 messages in conversation
   #picture
     When I send picture <PictureName> to the current conversation
-    Then I see sent picture <PictureName> in the conversation view
     And I see only 1 picture in the conversation
+    Then I see sent picture <PictureName> in the conversation view
     And I see timer next to the last message
     When I wait for <Time> seconds
     Then I see block replaces the last message in the conversation view
@@ -702,4 +702,4 @@ Feature: Ephemeral
 
     Examples:
       | Login1     | Password      | Name      | Contact1  | Contact2  | ChatName | Time | TimeLong    | TimeShortUnit | PING       | PictureName               | VideoFile   | SizeVideo | AudioFile   | AudioTime | File         | SizeFile |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | ephGroup | 15   | 15 seconds  | s             | you pinged | userpicture_landscape.jpg | C261733.mp4 | 1 MB      | example.wav | 00:20     | C261733.zip  | 512KB    |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | ephGroup | 30   | 30 seconds  | s             | you pinged | userpicture_landscape.jpg | C261733.mp4 | 1 MB      | example.wav | 00:20     | C261733.zip  | 512KB    |
