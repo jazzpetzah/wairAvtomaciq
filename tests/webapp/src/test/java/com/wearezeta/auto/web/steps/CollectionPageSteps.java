@@ -32,6 +32,11 @@ public class CollectionPageSteps {
     private static final int MAXFILES = 4;
     private static final int MAXLINKS = 4;
     private static final int MAXAUDIOS = 4;
+    
+    @When("^I enter search query (.*) in collection$")
+    public void IEnterQuery(String query) throws Exception {
+        context.getPagesCollection().getPage(CollectionPage.class).enterSearchQuery(query);
+    }
 
     @When("I close collection overview$")
     public void ICloseCollectionOverview() throws Exception {

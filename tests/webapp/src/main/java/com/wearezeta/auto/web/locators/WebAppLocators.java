@@ -610,8 +610,7 @@ public final class WebAppLocators {
         // This is needed for IE workaround
         public static final String classNameShowParticipantsButton = "show-participants";
 
-        //public static final String cssCollectionsButton = "[data-uie-name='do-collections']";
-        public static final String cssCollectionsButton = ".icon-collection";
+        public static final String cssCollectionsButton = "[data-uie-name='do-collections']";
 
         public static final String cssShowParticipantsButton = "[data-uie-name='do-participants']";
 
@@ -760,10 +759,19 @@ public final class WebAppLocators {
         public static final String cssBackToCollectionButton = "[data-uie-name='do-collection-details-close']";
 
         public static final String cssPicturesOnCollectionDetails = "#collection-details image-component";
+        
+        public static final String cssSearchInput = "#collection .full-search-header-input input";
 
         public static final String cssAudioFilesOnCollectionDetails = "#collection-details audio-asset";
 
     }
+    public static final class ContentSearchPage {
+        public static final String cssSearchResults = "#collection .full-search-list .full-search-item";
+        public static final String cssSearchList = "#collection .full-search-list";
+        public static final Function<String, String> xpathSearchResultByText = (text) -> String
+                .format("//*[@id='collection']//*[@class='full-search-list']//*[@class='full-search-item' and contains(string(),'%s')]", text);
+    }
+    
 
     public static final class ConnectToPage {
 

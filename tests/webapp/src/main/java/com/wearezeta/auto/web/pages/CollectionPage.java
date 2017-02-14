@@ -63,6 +63,9 @@ public class CollectionPage extends WebPage {
 
     @FindBy(css = WebAppLocators.CollectionPage.cssShowAllPictures)
     private WebElement showAllPictures;
+    
+    @FindBy(css = WebAppLocators.CollectionPage.cssSearchInput)
+    private WebElement searchInput;
 
     public CollectionPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -70,6 +73,13 @@ public class CollectionPage extends WebPage {
 
     public void clickClose() {
         closeButton.click();
+    }
+    
+    public void enterSearchQuery(String query) throws Exception {
+        searchInput.click();
+        Thread.sleep(1000);
+        searchInput.clear();
+        searchInput.sendKeys(query);
     }
 
     public String getNoItemsPlaceholder() {
