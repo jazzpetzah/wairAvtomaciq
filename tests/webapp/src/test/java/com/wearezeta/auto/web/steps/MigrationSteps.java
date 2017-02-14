@@ -5,11 +5,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
+
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.WebAppTestContext;
 import com.wearezeta.auto.web.pages.WebPage;
 import cucumber.api.java.en.When;
+import java.util.Map;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -17,6 +19,10 @@ import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.log4j.Logger;
 
+/**
+ * Steps that are only used for migration tests (tests that check if a release is not breaking accounts from already registered
+ * users)
+ */
 public class MigrationSteps {
     
     private static final Logger log = ZetaLogger.getLog(MigrationSteps.class.getSimpleName());
@@ -51,6 +57,8 @@ public class MigrationSteps {
     private void runCommand(Path temp, String... command) throws IOException {
         ProcessBuilder builder = new ProcessBuilder(command);
         builder.directory(temp.toFile());
+        Map<String, String> env = builder.environment();
+        env.put("PATH", env.get("PATH")+":/usr/local/bin/");
         builder.redirectErrorStream(true); //merge error and input steam into one stream
         Process process = builder.start();
         createProcessLogger(process);
@@ -59,6 +67,8 @@ public class MigrationSteps {
     private Process runCommandUnattached(Path temp, String... command) throws IOException {
         ProcessBuilder builder = new ProcessBuilder(command);
         builder.directory(temp.toFile());
+        Map<String, String> env = builder.environment();
+        env.put("PATH", env.get("PATH")+":/usr/local/bin/");
         builder.redirectErrorStream(true); //merge error and input steam into one stream
         Process process = builder.start();
         Thread unattachedLogger = new Thread(() -> createProcessLogger(process));
@@ -104,7 +114,7 @@ public class MigrationSteps {
         if (temp == null) {
             temp = Files.createTempDirectory("webapp");
             log.info("Created temp directory: " + temp.toAbsolutePath());
-            runCommand(temp, "git", "clone", "git@github.com:wearezeta/mars.git", ".");
+            runCommand(temp, "git", "clone", "git@github.com:wireapp/wire-webapp.git", ".");
         }
         if (gruntProcess != null) {
             try {
@@ -117,13 +127,13 @@ public class MigrationSteps {
         }
         runCommand(temp, "git", "checkout", branch);
         // cherry pick the feature to set port number
-        runCommand(temp, "git", "cherry-pick", "93cd7fb11e54b1883e3c122bb876db3a57e75eae");
-        runCommand(temp, "npm", "install");
-        runCommand(temp, "grunt", "prepare_dist", "gitinfo", "set_version:staging");
+//        runCommand(temp, "git", "cherry-pick", "93cd7fb11e54b1883e3c122bb876db3a57e75eae");
+        runCommand(temp, "/usr/local/bin/npm", "install");
+        runCommand(temp, "/usr/local/bin/grunt", "prepare_dist", "gitinfo", "set_version:staging");
         // Get a port number in between 9000 and 10000
         // TODO: String port = String.valueOf(ThreadLocalRandom.current().nextInt(9000, 10000));
         String port = "8888";
-        gruntProcess = runCommandUnattached(temp, "grunt", "host:" + port + ":false");
+        gruntProcess = runCommandUnattached(temp, "/usr/local/bin/grunt", "host:" + port + ":false");
         final String backend = CommonUtils.getBackendType(MigrationSteps.class);
         // We use wire.ms as a alias-domain for localhost
         final String host = "wire.ms";
